@@ -20,15 +20,12 @@ npx react-native run-ios
 5. Copy environment variables
 
 <h1>Testing/Cleaning</h1>
-```
-yarn eslint-check
-yarn lint
-```
+
+```yarn eslint-check
+yarn lint```
 
 <h1>Deployment</h1>
 Android:
-```
-yarn android-release
-```
+```yarn android-release```
 
 **See React Native guide on deploying to app stores
