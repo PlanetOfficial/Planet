@@ -31,3 +31,5 @@ Android:
 ```
 
 **See React Native guide on deploying to app stores
+
+**When adding new libraries, don't forget to '''npx pod-install ios''' if on mac
