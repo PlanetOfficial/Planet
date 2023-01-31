@@ -1,17 +1,23 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const navigation = useNavigation();
+
   const handleLogin = () => {
     // Perform login logic, e.g. send login request to API
+
+    //navigate to trending after sucessful login
+    navigation.navigate('TabStack')
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Login</Text>
+      <Text style={styles.title}>Rivalet</Text>
       <TextInput
         style={styles.input}
         placeholder="Email"
