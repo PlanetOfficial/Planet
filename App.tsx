@@ -1,6 +1,6 @@
 import React from 'react';
-import RootStack from './app/navigation/RootStack';
+import AppNavigation from './app/navigation/AppNavigation';
 
 export default function App() {
-  return <RootStack/>;
+  return <AppNavigation/>;
 }

@@ -1,17 +1,13 @@
 import React from 'react';
-import { View, Text, StyleSheet, Dimensions, Button } from 'react-native';
+import { View, Text, StyleSheet, Dimensions } from 'react-native';
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
-const CreatePlan = ({navigation}) => {
+const MapSelection = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Coming Soon</Text>
-      <Button 
-        title="Go to Next Screen" 
-        onPress={() => navigation.navigate('MapSelection')} 
-      />
     </View>
   );
 };
@@ -30,4 +26,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default CreatePlan;
+export default MapSelection;
