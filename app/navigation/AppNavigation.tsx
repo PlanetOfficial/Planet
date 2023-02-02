@@ -7,7 +7,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import LoginScreen from '../screens/LoginScreen';
 import TrendingScreen from '../screens/TrendingScreen';
 import FriendScreen from '../screens/FriendScreen'
-import CreatePlan from '../screens/CreatePlan';
 import Library from '../screens/Library'
 import Settings from '../screens/Settings'
 import MapSelection from '../screens/MapSelection';
@@ -16,7 +15,6 @@ const PlanCreationStack = createStackNavigator();
 function CreatePlanStack() {
   return (
     <PlanCreationStack.Navigator initialRouteName="Create" >
-        <PlanCreationStack.Screen name="CreatePlan" component={CreatePlan} options={ {headerShown: false} } />
         <PlanCreationStack.Screen name="MapSelection" component={MapSelection} options={ {headerShown: false} }/>
     </PlanCreationStack.Navigator>
   );
