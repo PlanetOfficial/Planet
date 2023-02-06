@@ -10,12 +10,22 @@ import FriendScreen from '../screens/FriendScreen'
 import Library from '../screens/Library'
 import Settings from '../screens/Settings'
 import MapSelection from '../screens/MapSelection';
+import SelectCategories from '../screens/SelectCategories';
+import SelectDestinations from '../screens/SelectDestinations';
+import SelectGenres from '../screens/SelectGenres';
+import FinalizePlan from '../screens/FinalizePlan';
+import DestinationDetails from '../screens/DestinationDetails'
 
 const PlanCreationStack = createStackNavigator();
 function CreatePlanStack() {
   return (
     <PlanCreationStack.Navigator initialRouteName="Create" >
         <PlanCreationStack.Screen name="MapSelection" component={MapSelection} options={ {headerShown: false} }/>
+        <PlanCreationStack.Screen name="SelectCategories" component={SelectCategories} options={ {headerShown: false} }/>
+        <PlanCreationStack.Screen name="SelectGenres" component={SelectGenres} options={ {headerShown: false} }/>
+        <PlanCreationStack.Screen name="SelectDestinations" component={SelectDestinations} options={ {headerShown: false} }/>
+        <PlanCreationStack.Screen name="DestinationDetails" component={DestinationDetails} options={ {headerShown: false} }/>
+        <PlanCreationStack.Screen name="FinalizePlan" component={FinalizePlan} options={ {headerShown: false} }/>
     </PlanCreationStack.Navigator>
   );
 }
