@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, Dimensions } from 'react-native';
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
-const MapSelection = () => {
+const SignUp = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Coming Soon</Text>
@@ -26,4 +26,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default MapSelection;
+export default SignUp;
