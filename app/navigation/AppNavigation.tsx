@@ -11,19 +11,19 @@ import FriendScreen from '../screens/Tabs/FriendScreen'
 import Library from '../screens/Tabs/Library'
 import Settings from '../screens/Tabs/Settings'
 import MapSelection from '../screens/Tabs/CreateScreens/MapSelection';
-import SelectCategories from '../screens/Tabs/CreateScreens/SelectCategories';
-import SelectDestinations from '../screens/Tabs/CreateScreens/SelectDestinations';
 import SelectGenres from '../screens/Tabs/CreateScreens/SelectGenres';
-import FinalizePlan from '../screens/Tabs/FinalizePlan';
-import DestinationDetails from '../screens/Tabs/DestinationDetails'
+import SelectDestinations from '../screens/Tabs/CreateScreens/SelectDestinations';
+import SelectCategories from '../screens/Tabs/CreateScreens/SelectCategories';
+import FinalizePlan from '../screens/Tabs/CreateScreens/FinalizePlan';
+import DestinationDetails from '../screens/Tabs/CreateScreens/DestinationDetails'
 
 const PlanCreationStack = createStackNavigator();
 function CreatePlanStack() {
   return (
     <PlanCreationStack.Navigator initialRouteName="Create" >
       <PlanCreationStack.Screen name="MapSelection" component={MapSelection} options={{ headerShown: false }} />
-      <PlanCreationStack.Screen name="SelectCategories" component={SelectCategories} options={ {headerShown: false} }/>
       <PlanCreationStack.Screen name="SelectGenres" component={SelectGenres} options={ {headerShown: false} }/>
+      <PlanCreationStack.Screen name="SelectCategories" component={SelectCategories} options={ {headerShown: false} }/>
       <PlanCreationStack.Screen name="SelectDestinations" component={SelectDestinations} options={ {headerShown: false} }/>
       <PlanCreationStack.Screen name="DestinationDetails" component={DestinationDetails} options={ {headerShown: false} }/>
       <PlanCreationStack.Screen name="FinalizePlan" component={FinalizePlan} options={ {headerShown: false} }/>

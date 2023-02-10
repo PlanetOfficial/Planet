@@ -1,28 +1,41 @@
 import React from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, Image, Button } from 'react-native';
+import images from '../../../constants/Images';
 
-const screenWidth = Dimensions.get('window').width;
-const screenHeight = Dimensions.get('window').height;
-
-const SelectDestinations = () => {
+const SelectDestinations = ({navigation}) => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Coming Soon</Text>
-    </View>
+    <SafeAreaView>
+      <View>
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => navigation.navigate('SelectGenres')}>
+            <Image
+              source={images.BackArrow}
+            />
+          </TouchableOpacity>
+          <Text style={styles.headerTitle}>Select Destinations</Text>
+          <View />
+        </View>
+      </View>
+      <View>
+        <Button
+          title="Done"
+          onPress={() => navigation.navigate('FinalizePlan')}
+        />
+      </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  header: {
+    height: 60,
+    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    width: screenWidth,
-    height: screenHeight
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
   },
-  text: {
-    fontSize: 20,
-    fontWeight: 'bold'
+  headerTitle: {
+    fontSize: 20
   }
 });
 

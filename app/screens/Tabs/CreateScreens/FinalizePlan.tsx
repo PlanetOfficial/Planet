@@ -2,24 +2,24 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, Image, Button } from 'react-native';
 import images from '../../../constants/Images';
 
-const SelectGenres = ({navigation}) => {
+const SelectDestinations = ({navigation}) => {
   return (
     <SafeAreaView>
       <View>
         <View style={styles.header}>
-          <TouchableOpacity onPress={() => navigation.navigate('MapSelection')}>
+          <TouchableOpacity onPress={() => navigation.navigate('SelectDestinations')}>
             <Image
               source={images.BackArrow}
             />
           </TouchableOpacity>
-          <Text style={styles.headerTitle}>Select Categories</Text>
+          <Text style={styles.headerTitle}>Untitled Event</Text>
           <View />
         </View>
       </View>
       <View>
         <Button
-          title="Done"
-          onPress={() => navigation.navigate('SelectDestinations')}
+          title="Save"
+          onPress={() => navigation.navigate('Library')}
         />
       </View>
     </SafeAreaView>
@@ -39,4 +39,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default SelectGenres;
+export default SelectDestinations;

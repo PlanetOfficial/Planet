@@ -19,7 +19,7 @@ const MapScreen = ({navigation}) => {
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Plan an Event</Text>
         <TouchableOpacity
-          onPress={() => navigation.navigate('SelectCategories')}
+          onPress={() => navigation.navigate('SelectGenres')}
         >
           <Image
             source={images.NextArrow}
