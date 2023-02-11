@@ -36,6 +36,21 @@ const LoginScreen = ({navigation}) => {
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
+      <Text
+        style={styles.forgotPassword}
+        onPress={() => navigation.navigate('ForgotPassword')}
+      >
+        Forgot Password?
+      </Text>
+      <View style={styles.bottomContainer}>
+        <Text style={styles.bottomText}>Don't have an account?</Text>
+        <Text
+          style={styles.bottomTextLink}
+          onPress={() => navigation.navigate('SignUp')}
+        >
+          Sign up
+        </Text>
+      </View>
     </View>
   );
 };
@@ -72,6 +87,26 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold',
   },
+  forgotPassword: {
+    marginTop: 8,
+    fontSize: 14,
+    color: 'blue',
+    textAlign: 'right',
+    width: '80%'
+  },
+  bottomText: {
+    fontSize: 14,
+    textAlign: 'center'
+  },
+  bottomContainer: {
+    flexDirection: 'row',
+    marginTop: 24
+  },
+  bottomTextLink: {
+    color: 'blue',
+    marginLeft: 8,
+    fontWeight: 'bold'
+  }
 });
 
 export default LoginScreen;

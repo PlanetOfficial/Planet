@@ -6,6 +6,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import LoginScreen from '../screens/auth/LoginScreen';
 import SignUp from '../screens/auth/SignUp';
+import ForgotPassword from '../screens/auth/ForgotPassword'
 import TrendingScreen from '../screens/Tabs/TrendingScreen';
 import FriendScreen from '../screens/Tabs/FriendScreen'
 import Library from '../screens/Tabs/Library'
@@ -55,6 +56,7 @@ function AppNavigation() {
       <MainStack.Navigator initialRouteName="Main">
         <MainStack.Screen name="Login" component={LoginScreen} />
         <MainStack.Screen name="SignUp" component={SignUp} />
+        <MainStack.Screen name="ForgotPassword" component={ForgotPassword} />
         <MainStack.Screen name="TabStack" component={TabStack} options={{ headerShown: false }}/>
         <MainStack.Screen name="CreateStack" component={CreatePlanStack} options={ { headerShown: false} }/>
       </MainStack.Navigator>
