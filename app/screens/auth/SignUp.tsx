@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 
+import { signup } from '../../utils/auth/signup';
+
 const SignUp = ({navigation}) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -8,6 +10,18 @@ const SignUp = ({navigation}) => {
   const [passwordConfirmed, setPasswordConfirmed] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [age, setAge] = useState('');
+
+  const handleSignUp = async () => {
+    // Perform login logic, e.g. send login request to API
+
+    const response = await signup(name, email, password);
+    if (response?.authToken) {
+      // successful login
+      navigation.navigate('TabStack')
+    } else {
+      console.log("Failed login, error: " + response?.message);
+    }
+  }
 
   return (
     <View style={styles.container}>
@@ -55,7 +69,7 @@ const SignUp = ({navigation}) => {
       <View style={styles.verticalSpace} />
       <TouchableOpacity 
         style={styles.button}
-        onPress={() => navigation.navigate('TabStack')}
+        onPress={() => handleSignUp()}
       >
         <Text style={styles.buttonText}>Sign Up</Text>
       </TouchableOpacity>

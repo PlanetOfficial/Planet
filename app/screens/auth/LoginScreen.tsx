@@ -11,11 +11,11 @@ const LoginScreen = ({navigation}) => {
     // Perform login logic, e.g. send login request to API
 
     const response = await login(email, password);
-    if (response.authToken) {
+    if (response?.authToken) {
       // successful login
       navigation.navigate('TabStack')
     } else {
-      console.log("Failed login, error: " + response.message);
+      console.log("Failed login, error: " + response?.message);
     }
   };
 
