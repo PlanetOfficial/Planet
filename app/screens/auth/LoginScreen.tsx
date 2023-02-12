@@ -1,15 +1,22 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 
+import { login } from '../../utils/auth/login';
+
 const LoginScreen = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     // Perform login logic, e.g. send login request to API
 
-    //navigate to trending after sucessful login
-    navigation.navigate('TabStack')
+    const response = await login(email, password);
+    if (response.authToken) {
+      // successful login
+      navigation.navigate('TabStack')
+    } else {
+      console.log("Failed login, error: " + response.message);
+    }
   };
 
   return (
