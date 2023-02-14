@@ -27,6 +27,13 @@ const strings = {
     selectCategories: 'Select Categories',
     selectDestinations: 'Select Destinations',
   },
+  settings: {
+    firstName: "First Name",
+    lastName: "Last Name",
+    resetPassword: "Reset Password",
+    upgrade: "Upgrade to Premium",
+    logout: "Log out"
+  },
 };
 
 export default strings;
