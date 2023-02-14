@@ -26,6 +26,7 @@ const strings = {
     search: 'Search',
     selectCategories: 'Select Categories',
     selectDestinations: 'Select Destinations',
+    radius: 'Radius (in miles)'
   },
   settings: {
     firstName: "First Name",
