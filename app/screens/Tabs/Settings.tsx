@@ -1,12 +1,15 @@
 import React from 'react';
 import { View, Text, TextInput, TouchableOpacity, ScrollView } from 'react-native';
 import strings from '../../constants/strings';
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 const ProfileScreen = ({navigation}) => {
-  const handleLogout = () => {
+  const handleLogout = async () => {
     // TODO: remove authentication token
 
-    navigation.navigate('Login')
+    await EncryptedStorage.removeItem("auth_token");
+
+    navigation.navigate('Login');
   }
 
   return (
