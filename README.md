@@ -28,6 +28,8 @@ npm run lint
 npm run lint -- --fix
 ```
 
+UPDATE LIBRARIES OFTEN!!
+
 <h1>Deployment</h1>
 Android:
 ```yarn android-release
