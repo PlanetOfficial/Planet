@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, Image, Button } from 'react-native';
-import images from '../../../constants/Images';
+import images from '../../constants/Images';
+import strings from '../../constants/strings';
 
 const SelectDestinations = ({navigation}) => {
   return (
@@ -12,13 +13,13 @@ const SelectDestinations = ({navigation}) => {
               source={images.BackArrow}
             />
           </TouchableOpacity>
-          <Text style={styles.headerTitle}>Select Destinations</Text>
+          <Text style={styles.headerTitle}>{strings.createTabStack.selectDestinations}</Text>
           <View />
         </View>
       </View>
       <View>
         <Button
-          title="Done"
+          title={strings.main.done}
           onPress={() => navigation.navigate('FinalizePlan')}
         />
       </View>

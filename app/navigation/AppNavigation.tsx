@@ -11,12 +11,12 @@ import TrendingScreen from '../screens/Tabs/TrendingScreen';
 import FriendScreen from '../screens/Tabs/FriendScreen'
 import Library from '../screens/Tabs/Library'
 import Settings from '../screens/Tabs/Settings'
-import MapSelection from '../screens/Tabs/CreateScreens/MapSelection';
-import SelectGenres from '../screens/Tabs/CreateScreens/SelectGenres';
-import SelectDestinations from '../screens/Tabs/CreateScreens/SelectDestinations';
-import SelectCategories from '../screens/Tabs/CreateScreens/SelectCategories';
-import FinalizePlan from '../screens/Tabs/CreateScreens/FinalizePlan';
-import DestinationDetails from '../screens/Tabs/CreateScreens/DestinationDetails'
+import MapSelection from '../screens/CreateScreens/MapSelection';
+import SelectGenres from '../screens/CreateScreens/SelectGenres';
+import SelectDestinations from '../screens/CreateScreens/SelectDestinations';
+import SelectCategories from '../screens/CreateScreens/SelectCategories';
+import FinalizePlan from '../screens/CreateScreens/FinalizePlan';
+import DestinationDetails from '../screens/CreateScreens/DestinationDetails'
 
 const PlanCreationStack = createStackNavigator();
 function CreatePlanStack() {
@@ -54,7 +54,7 @@ function AppNavigation() {
   return (
     <NavigationContainer>
       <MainStack.Navigator initialRouteName="Main">
-        <MainStack.Screen name="Login" component={LoginScreen} />
+        <MainStack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
         <MainStack.Screen name="SignUp" component={SignUp} />
         <MainStack.Screen name="ForgotPassword" component={ForgotPassword} />
         <MainStack.Screen name="TabStack" component={TabStack} options={{ headerShown: false }}/>

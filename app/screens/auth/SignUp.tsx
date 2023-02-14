@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 
+import strings from '../../constants/strings';
+
 import { signup } from '../../utils/auth/signup';
 
 const SignUp = ({navigation}) => {
@@ -27,42 +29,42 @@ const SignUp = ({navigation}) => {
     <View style={styles.container}>
       <TextInput
         style={styles.input}
-        placeholder="Name/Username"
+        placeholder={strings.signUp.nameAndUsername}
         value={name}
         onChangeText={text => setName(text)}
       />
       <View style={styles.verticalSpace} />
       <TextInput
         style={styles.input}
-        placeholder="Email"
+        placeholder={strings.login.email}
         value={email}
         onChangeText={text => setEmail(text)}
       />
       <View style={styles.verticalSpace} />
       <TextInput
         style={styles.input}
-        placeholder="Password"
+        placeholder={strings.login.password}
         value={password}
         onChangeText={text => setPassword(text)}
       />
       <View style={styles.verticalSpace} />
       <TextInput
         style={styles.input}
-        placeholder="Confirm Password"
+        placeholder={strings.signUp.confirmPassword}
         value={passwordConfirmed}
         onChangeText={text => setPasswordConfirmed(text)}
       />
       <View style={styles.verticalSpace} />
       <TextInput
         style={styles.input}
-        placeholder="Phone Number"
+        placeholder={strings.signUp.phoneNumber}
         value={phoneNumber}
         onChangeText={text => setPhoneNumber(text)}
       />
       <View style={styles.verticalSpace} />
       <TextInput
         style={styles.input}
-        placeholder="Age (optional)"
+        placeholder={strings.signUp.age}
         value={age}
         onChangeText={text => setAge(text)}
       />
@@ -71,11 +73,11 @@ const SignUp = ({navigation}) => {
         style={styles.button}
         onPress={() => handleSignUp()}
       >
-        <Text style={styles.buttonText}>Sign Up</Text>
+        <Text style={styles.buttonText}>{strings.signUp.signUp}</Text>
       </TouchableOpacity>
       <View style={styles.verticalSpace} />
       <Text style={styles.footerText}>
-        By signing up, you agree to Rivalet's Terms and Conditions and Privacy Policy.
+      {strings.signUp.termsAgreement}
       </Text>
     </View>
   );

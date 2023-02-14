@@ -1,8 +1,11 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, Image, Button } from 'react-native';
-import images from '../../../constants/Images';
+import images from '../../constants/Images';
+import strings from '../../constants/strings';
 
 const SelectDestinations = ({navigation}) => {
+  const eventTitle = "Untitled Event"
+
   return (
     <SafeAreaView>
       <View>
@@ -12,13 +15,13 @@ const SelectDestinations = ({navigation}) => {
               source={images.BackArrow}
             />
           </TouchableOpacity>
-          <Text style={styles.headerTitle}>Untitled Event</Text>
+          <Text style={styles.headerTitle}>{eventTitle}</Text>
           <View />
         </View>
       </View>
       <View>
         <Button
-          title="Save"
+          title={strings.main.save}
           onPress={() => navigation.navigate('Library')}
         />
       </View>

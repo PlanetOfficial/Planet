@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, TextInput, StyleSheet, SafeAreaView, Image } from 'react-native';
 import MapView from 'react-native-maps';
 
-import images from '../../../constants/Images';
+import images from '../../constants/Images';
+import strings from '../../constants/strings';
 
 const MapScreen = ({navigation}) => {
   const [search, setSearch] = useState('');
@@ -17,7 +18,7 @@ const MapScreen = ({navigation}) => {
             source={images.XButton}
           />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Plan an Event</Text>
+        <Text style={styles.headerTitle}>{strings.createTabStack.planEvent}</Text>
         <TouchableOpacity
           onPress={() => navigation.navigate('SelectGenres')}
         >
@@ -31,7 +32,7 @@ const MapScreen = ({navigation}) => {
           <TextInput
             value={search}
             onChangeText={text => setSearch(text)}
-            placeholder="Search"
+            placeholder={strings.createTabStack.search}
             style={styles.searchBar}
           />
         </View>

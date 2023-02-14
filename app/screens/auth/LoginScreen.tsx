@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 
+import strings from '../../constants/strings';
+
 import { login } from '../../utils/auth/login';
 
 const LoginScreen = ({navigation}) => {
@@ -21,10 +23,10 @@ const LoginScreen = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Rivalet</Text>
+      <Text style={styles.title}>{strings.main.rivalet}</Text>
       <TextInput
         style={styles.input}
-        placeholder="Email"
+        placeholder={strings.login.email}
         value={email}
         onChangeText={setEmail}
         autoCapitalize="none"
@@ -34,28 +36,28 @@ const LoginScreen = ({navigation}) => {
       />
       <TextInput
         style={styles.input}
-        placeholder="Password"
+        placeholder={strings.login.password}
         value={password}
         onChangeText={setPassword}
         secureTextEntry={true}
         textContentType="password"
       />
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Login</Text>
+        <Text style={styles.buttonText}>{strings.login.login}</Text>
       </TouchableOpacity>
       <Text
         style={styles.forgotPassword}
         onPress={() => navigation.navigate('ForgotPassword')}
       >
-        Forgot Password?
+        {strings.login.forgotPassword}
       </Text>
       <View style={styles.bottomContainer}>
-        <Text style={styles.bottomText}>Don't have an account?</Text>
+        <Text style={styles.bottomText}>{strings.login.noAccount}</Text>
         <Text
           style={styles.bottomTextLink}
           onPress={() => navigation.navigate('SignUp')}
         >
-          Sign up
+          {strings.login.signUp}
         </Text>
       </View>
     </View>
