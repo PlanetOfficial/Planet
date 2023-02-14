@@ -22,7 +22,7 @@ npx react-native run-ios
 <h1>Testing/Cleaning (**required before merging pull requests**)</h1>
 
 ```
-npm run test
+npm run test (this command is a optional, sometimes node modules can give issues)
 
 npm run lint
 npm run lint -- --fix
