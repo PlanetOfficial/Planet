@@ -1,9 +1,15 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
+import React, {useState} from 'react';
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 
 import strings from '../../constants/strings';
 
-import { signup } from '../../utils/auth/signup';
+import {signup} from '../../utils/auth/signup';
 
 const SignUp = ({navigation}) => {
   const [name, setName] = useState('');
@@ -19,11 +25,11 @@ const SignUp = ({navigation}) => {
     const response = await signup(name, email, password);
     if (response?.authToken) {
       // successful login
-      navigation.navigate('TabStack')
+      navigation.navigate('TabStack');
     } else {
-      console.log("Failed login, error: " + response?.message);
+      console.log('Failed login, error: ' + response?.message);
     }
-  }
+  };
 
   return (
     <View style={styles.container}>
@@ -69,16 +75,11 @@ const SignUp = ({navigation}) => {
         onChangeText={text => setAge(text)}
       />
       <View style={styles.verticalSpace} />
-      <TouchableOpacity 
-        style={styles.button}
-        onPress={() => handleSignUp()}
-      >
+      <TouchableOpacity style={styles.button} onPress={() => handleSignUp()}>
         <Text style={styles.buttonText}>{strings.signUp.signUp}</Text>
       </TouchableOpacity>
       <View style={styles.verticalSpace} />
-      <Text style={styles.footerText}>
-      {strings.signUp.termsAgreement}
-      </Text>
+      <Text style={styles.footerText}>{strings.signUp.termsAgreement}</Text>
     </View>
   );
 };
@@ -86,32 +87,32 @@ const SignUp = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20
+    padding: 20,
   },
   input: {
     height: 40,
     borderColor: 'gray',
     borderWidth: 1,
     marginBottom: 20,
-    padding: 10
+    padding: 10,
   },
   verticalSpace: {
-    height: 20
+    height: 20,
   },
   button: {
     backgroundColor: 'blue',
     padding: 10,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   buttonText: {
     color: 'white',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   footerText: {
     fontSize: 12,
     textAlign: 'center',
-    color: 'gray'
-  }
-})
+    color: 'gray',
+  },
+});
 
 export default SignUp;

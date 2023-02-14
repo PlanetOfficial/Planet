@@ -1,19 +1,26 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, Image, Button } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  SafeAreaView,
+  Image,
+  Button,
+} from 'react-native';
 import images from '../../constants/Images';
 import strings from '../../constants/strings';
 
 const SelectDestinations = ({navigation}) => {
-  const eventTitle = "Untitled Event"
+  const eventTitle = 'Untitled Event';
 
   return (
     <SafeAreaView>
       <View>
         <View style={styles.header}>
-          <TouchableOpacity onPress={() => navigation.navigate('SelectDestinations')}>
-            <Image
-              source={images.BackArrow}
-            />
+          <TouchableOpacity
+            onPress={() => navigation.navigate('SelectDestinations')}>
+            <Image source={images.BackArrow} />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>{eventTitle}</Text>
           <View />
@@ -38,8 +45,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   headerTitle: {
-    fontSize: 20
-  }
+    fontSize: 20,
+  },
 });
 
 export default SelectDestinations;

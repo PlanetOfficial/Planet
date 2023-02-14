@@ -1,5 +1,13 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, TextInput, StyleSheet, SafeAreaView, Image } from 'react-native';
+import React, {useState} from 'react';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  TextInput,
+  StyleSheet,
+  SafeAreaView,
+  Image,
+} from 'react-native';
 import MapView from 'react-native-maps';
 
 import images from '../../constants/Images';
@@ -9,22 +17,16 @@ const MapScreen = ({navigation}) => {
   const [search, setSearch] = useState('');
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={styles.safeAreaView}>
       <View style={styles.header}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('TabStack')}
-        >
-          <Image
-            source={images.XButton}
-          />
+        <TouchableOpacity onPress={() => navigation.navigate('TabStack')}>
+          <Image source={images.XButton} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>{strings.createTabStack.planEvent}</Text>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('SelectGenres')}
-        >
-          <Image
-            source={images.NextArrow}
-          />
+        <Text style={styles.headerTitle}>
+          {strings.createTabStack.planEvent}
+        </Text>
+        <TouchableOpacity onPress={() => navigation.navigate('SelectGenres')}>
+          <Image source={images.NextArrow} />
         </TouchableOpacity>
       </View>
       <View style={styles.container}>
@@ -51,37 +53,40 @@ const MapScreen = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
+  safeAreaView: {
+    flex: 1,
+  },
   header: {
     height: 60,
     padding: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
   },
   headerTitle: {
     fontSize: 20,
     textAlign: 'center',
-    paddingRight: 15
+    paddingRight: 15,
   },
   container: {
     flex: 1,
-    padding: 10
+    padding: 10,
   },
   searchContainer: {
-    marginVertical: 10
+    marginVertical: 10,
   },
   searchBar: {
     height: 40,
     borderRadius: 17.5,
     borderWidth: 1,
     paddingHorizontal: 10,
-    fontSize: 16
+    fontSize: 16,
   },
   map: {
     flex: 1,
-    marginTop: 10
-  }
+    marginTop: 10,
+  },
 });
 
 export default MapScreen;

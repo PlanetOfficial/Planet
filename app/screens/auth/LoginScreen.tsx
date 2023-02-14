@@ -1,9 +1,15 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import React, {useState} from 'react';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+} from 'react-native';
 
 import strings from '../../constants/strings';
 
-import { login } from '../../utils/auth/login';
+import {login} from '../../utils/auth/login';
 
 const LoginScreen = ({navigation}) => {
   const [email, setEmail] = useState('');
@@ -15,9 +21,9 @@ const LoginScreen = ({navigation}) => {
     const response = await login(email, password);
     if (response?.authToken) {
       // successful login
-      navigation.navigate('TabStack')
+      navigation.navigate('TabStack');
     } else {
-      console.log("Failed login, error: " + response?.message);
+      console.log('Failed login, error: ' + response?.message);
     }
   };
 
@@ -47,16 +53,14 @@ const LoginScreen = ({navigation}) => {
       </TouchableOpacity>
       <Text
         style={styles.forgotPassword}
-        onPress={() => navigation.navigate('ForgotPassword')}
-      >
+        onPress={() => navigation.navigate('ForgotPassword')}>
         {strings.login.forgotPassword}
       </Text>
       <View style={styles.bottomContainer}>
         <Text style={styles.bottomText}>{strings.login.noAccount}</Text>
         <Text
           style={styles.bottomTextLink}
-          onPress={() => navigation.navigate('SignUp')}
-        >
+          onPress={() => navigation.navigate('SignUp')}>
           {strings.login.signUp}
         </Text>
       </View>
@@ -101,21 +105,21 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: 'blue',
     textAlign: 'right',
-    width: '80%'
+    width: '80%',
   },
   bottomText: {
     fontSize: 14,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   bottomContainer: {
     flexDirection: 'row',
-    marginTop: 24
+    marginTop: 24,
   },
   bottomTextLink: {
     color: 'blue',
     marginLeft: 8,
-    fontWeight: 'bold'
-  }
+    fontWeight: 'bold',
+  },
 });
 
 export default LoginScreen;

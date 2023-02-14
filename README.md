@@ -17,12 +17,15 @@ npx react-native start
 npx react-native run-ios
 ```
 
-5. Copy environment variables
+5. Copy environment variables (if there are any)
 
-<h1>Testing/Cleaning</h1>
+<h1>Testing/Cleaning (**required before merging pull requests**)</h1>
 
-```yarn eslint-check
-yarn lint
+```
+npm run test
+
+npm run lint
+npm run lint -- --fix
 ```
 
 <h1>Deployment</h1>

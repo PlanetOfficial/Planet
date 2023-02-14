@@ -1,5 +1,13 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, Image, Button } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  SafeAreaView,
+  Image,
+  Button,
+} from 'react-native';
 import images from '../../constants/Images';
 import strings from '../../constants/strings';
 
@@ -9,11 +17,11 @@ const SelectGenres = ({navigation}) => {
       <View>
         <View style={styles.header}>
           <TouchableOpacity onPress={() => navigation.navigate('MapSelection')}>
-            <Image
-              source={images.BackArrow}
-            />
+            <Image source={images.BackArrow} />
           </TouchableOpacity>
-          <Text style={styles.headerTitle}>{strings.createTabStack.selectCategories}</Text>
+          <Text style={styles.headerTitle}>
+            {strings.createTabStack.selectCategories}
+          </Text>
           <View />
         </View>
       </View>
@@ -36,8 +44,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   headerTitle: {
-    fontSize: 20
-  }
+    fontSize: 20,
+  },
 });
 
 export default SelectGenres;
