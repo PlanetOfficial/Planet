@@ -21,8 +21,8 @@ const MapScreen = ({navigation}) => {
   const [longitude, setLongitude] = useState(-122.4324);
 
   const getRadius = () => {
-    if (!Number.isNaN(parseInt(radius))) {
-      return parseInt(radius)*integers.milesToMeters
+    if (!Number.isNaN(parseFloat(radius))) {
+      return parseFloat(radius)*integers.milesToMeters
     }
 
     return 0;

@@ -1,4 +1,4 @@
-import {APIURL} from '../api/APIConstants';
+import {APIURL} from '../APIConstants';
 
 export const signup = async (name: String, email: String, password: String) => {
   // TODO: filter inputs**
