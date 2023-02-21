@@ -11,7 +11,9 @@ import {
 import images from '../../constants/Images';
 import strings from '../../constants/strings';
 
-const SelectDestinations = ({navigation}) => {
+const SelectDestinations = ({navigation, route}) => {
+  console.log(route?.params)
+
   return (
     <SafeAreaView>
       <View>

@@ -12,7 +12,10 @@ import {
 } from 'react-native';
 import images from '../../constants/Images';
 import strings from '../../constants/strings';
+import integers from '../../constants/integers';
+import { getCategories } from '../../utils/api/CreateCalls/getCategories';
 
+// TODO: remove this and make it dynamic once images are settled
 const genres = [
   {
     id: 1,
@@ -35,28 +38,58 @@ const genres = [
     image: images.outdoors,
   },
   {
-    id: 5,
+    id: 6,
     name: strings.createTabStack.restaurants,
     image: images.restaurant,
   },
   {
-    id: 6,
+    id: 5,
     name: strings.createTabStack.drinksAndDessert,
     image: images.dessert,
   },
 ];
 
 const SelectGenres = ({navigation, route}) => {
-  console.log(route.params) // save in a useState
+  const [latitude, setLatitude] = useState(route?.params?.latitude)
+  const [longitude, setLongitude] = useState(route?.params?.longitude)
+  const [radius, setRadius] = useState(0) // in meters
 
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedGenre, setSelectedGenre] = useState('');
+
+  const [allCategories, setAllCategories] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
 
-  const handleCategoryPress = (category) => {
-    console.log(category)
-    setSelectedGenre(category.name);
+  const [cachedGenres, setCachedGenres] = useState({});
+
+  const setRadiusParam = () => {
+    if (route?.params?.radius) {
+      setRadius(parseFloat(route.params.radius)*integers.milesToMeters)
+    }    
+  }
+
+  useEffect(() => {
+    setRadiusParam();
+  }, [])
+
+  const handleGenrePress = async (genre) => {
+    setSelectedGenre(genre.name);
     setModalVisible(true);
+
+    // display categories from genre logic
+    if (!cachedGenres[genre.id]) { // call API and add to cache if not in cache
+      const response = await getCategories(genre.id);
+      
+      let updatedCache = { ...cachedGenres };
+      updatedCache[genre.id] = response;
+      setCachedGenres(updatedCache);
+
+      setAllCategories(response);
+    }
+
+    else {
+      setAllCategories(cachedGenres[genre.id]);
+    }
   };
 
   return (
@@ -69,16 +102,15 @@ const SelectGenres = ({navigation, route}) => {
           <Text style={styles.headerTitle}>
             {strings.createTabStack.selectCategories}
           </Text>
-          <View />
         </View>
         <View style={styles.categoriesGrid}>
-          {genres.map((category) => (
-            <TouchableOpacity key={category.id} onPress={() => handleCategoryPress(category)}>
+          {genres.map((genre) => (
+            <TouchableOpacity key={genre.id} onPress={() => handleGenrePress(genre)}>
               <Image
-                style={styles.categoryImage}
-                source={category.image}
+                style={styles.genreImage}
+                source={genre.image}
               />
-              <Text>{category.name}</Text>
+              <Text>{genre.name}</Text>
             </TouchableOpacity>
           ))}
         </View>
@@ -93,7 +125,12 @@ const SelectGenres = ({navigation, route}) => {
           </ScrollView>
           <Button
             title={strings.main.done}
-            onPress={() => navigation.navigate('SelectDestinations')}
+            onPress={() => navigation.navigate('SelectDestinations', {
+              selectedCategories: selectedCategories.map(item => item.id),
+              radius: radius,
+              latitude: latitude,
+              longitude: longitude
+            })}
           />
         </View>
       </View>
@@ -104,13 +141,37 @@ const SelectGenres = ({navigation, route}) => {
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalView}>
-          <TouchableOpacity onPress={() => {
-            setModalVisible(false); 
-            setSelectedGenre('');
-          }}>
-            <Image source={images.BackArrow} />
-          </TouchableOpacity>
-          <Text>{selectedGenre}</Text>
+            <View style={styles.modalHeader}>
+              <TouchableOpacity style={styles.back} onPress={() => {
+                setModalVisible(false); 
+                setSelectedGenre('');
+              }}>
+                <Image source={images.BackArrow} />
+              </TouchableOpacity>
+              <View style={styles.genreHeader}>
+                <Text style={styles.genreText}>{selectedGenre}</Text>
+              </View>
+            </View>
+            <ScrollView>
+              <View>
+                {allCategories && allCategories.map(selected => (
+                  <View key={selected.id}>
+                    <TouchableOpacity onPress={() => {
+                      if (!selectedCategories.find(item => item.id === selected.id)) {
+                        setSelectedCategories(prevCategories => [...prevCategories, {id: selected.id, name: selected.name}])
+                      } else {
+                        setSelectedCategories(selectedCategories.filter(item => item.id !== selected.id))
+                      }
+                    }}>
+                        <View style={styles.circle}>
+                          <Image source={images.XButton} style={styles.image} />
+                        </View>
+                        <Text>{selected.name}</Text>
+                    </TouchableOpacity>
+                  </View>
+                ))}
+              </View>
+            </ScrollView>
           </View>
         </View>
       </Modal>
@@ -149,15 +210,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 30,
   },
-  categoryImage: {
+  genreImage: {
     width: 100,
     height: 100,
     borderRadius: 50,
     marginBottom: 20,
-  },
-  categoryImageSelected: {
-    borderWidth: 2,
-    borderColor: 'blue',
   },
   selectedCategoriesContainer: {
     borderTopWidth: 1,
@@ -197,12 +254,45 @@ const styles = StyleSheet.create({
     alignItems: 'center', 
     backgroundColor: 'rgba(0,0,0,0.5)',
   },
+  modalHeader: {
+    flexDirection: 'row'
+  },
   modalView: {
     backgroundColor: '#fff', 
     width: '100%', 
     height: '80%', 
     borderRadius: 10,
-  }
+  },
+  circle: {
+    width: 70,
+    height: 70,
+    borderRadius: 50,
+    backgroundColor: 'lightblue',
+    margin: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  image: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+  },
+  back: {
+    margin: 10,
+  },
+  SelectGenre: {
+    alignItems: 'center'
+  },
+  genreHeader: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  genreText: {
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    fontSize: 20,
+  },
 });
 
 export default SelectGenres;
