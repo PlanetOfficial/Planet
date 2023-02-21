@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -11,8 +11,24 @@ import {
 import images from '../../constants/Images';
 import strings from '../../constants/strings';
 
+import { requestLocations } from '../../utils/api/CreateCalls/requestLocations';
+
 const SelectDestinations = ({navigation, route}) => {
-  console.log(route?.params)
+  const [latitude, setLatitude] = useState(route?.params?.latitude);
+  const [longitude, setLongitude] = useState(route?.params?.longitude);
+  const [radius, setRadius] = useState(route?.params?.radius);
+  const [categories, setCategories] = useState(route?.params?.selectedCategories);
+
+  const [locations, setLocations] = useState({});
+
+  const loadDestinations = async () => {
+    const response = await requestLocations(categories, radius, latitude, longitude, 5);
+    setLocations(response);
+  }
+
+  useEffect(() => {
+    loadDestinations();
+  }, [])
 
   return (
     <SafeAreaView>
