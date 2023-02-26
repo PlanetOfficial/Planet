@@ -1,10 +1,10 @@
-import {CustomCallsURL} from '../APIConstants';
+import {DBOpsURL} from '../APIConstants';
 
 export const getCategories = async (genreId: number) => {
   // TODO: filter inputs**
 
   const response = await fetch(
-    CustomCallsURL + `/request_categories_of_genre?genre_id=${genreId}`,
+    DBOpsURL + `/categories/${genreId}`,
     {
       method: 'GET',
     },

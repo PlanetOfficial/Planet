@@ -10,7 +10,7 @@ export const requestLocations = async (categories: Array<number>, radius: number
   })
 
   const response = await fetch(
-    CustomCallsURL + `/request_location_list?${categoryString}radius=${radius}&ll=${latitude},${longitude}&count=${count}`,
+    CustomCallsURL + `/location_list?${categoryString}radius=${radius}&ll=${latitude},${longitude}&count=${count}`,
     {
       method: 'GET',
     },
