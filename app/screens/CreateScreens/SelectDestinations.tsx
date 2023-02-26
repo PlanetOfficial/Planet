@@ -7,11 +7,17 @@ import {
   SafeAreaView,
   Image,
   Button,
+  ScrollView,
 } from 'react-native';
 import images from '../../constants/Images';
 import strings from '../../constants/strings';
+import { colors } from '../../constants/theme';
+
+import DestinationCard from '../../components/Destination';
 
 import { requestLocations } from '../../utils/api/CreateCalls/requestLocations';
+
+import { Category } from '../../utils/api/interfaces/Category';
 
 const SelectDestinations = ({navigation, route}) => {
   const [latitude, setLatitude] = useState(route?.params?.latitude);
@@ -21,14 +27,33 @@ const SelectDestinations = ({navigation, route}) => {
 
   const [locations, setLocations] = useState({});
 
-  const loadDestinations = async () => {
-    const response = await requestLocations(categories, radius, latitude, longitude, 5);
+  const [selectedDestinations, setSelectedDestinations] = useState([]);
+
+  const loadDestinations = async (categoryIds: Array<number>) => {
+    const response = await requestLocations(categoryIds, radius, latitude, longitude, 5);
+
     setLocations(response);
   }
 
   useEffect(() => {
-    loadDestinations();
+    const filteredCategories = categories.map(item => item.id);
+
+    loadDestinations(filteredCategories);
   }, [])
+
+  const getImage = (imagesData: Array<number>) => {
+    // TODO: if there are images provided by API, then return one of those images instead
+
+    return images.experience;
+  }
+
+  const handleDestinationSelect = (destination: Object) => {
+    if (!selectedDestinations.find(item => item.id === destination.id)) {
+      setSelectedDestinations(prevDestinations => [...prevDestinations, destination]);
+    } else {
+      setSelectedDestinations(selectedDestinations.filter(item => item.id !== destination.id));
+    }
+  }
 
   return (
     <SafeAreaView>
@@ -44,9 +69,35 @@ const SelectDestinations = ({navigation, route}) => {
         </View>
       </View>
       <View>
+        <ScrollView style={styles.destinationScrollView}>
+            {categories && categories.map((category: Category) => (
+              <View key={category.id}>
+                <Text style={styles.categoryTitle}>{category.name}</Text>
+                <ScrollView horizontal={true}>
+                  {locations[category.id] && (locations[category.id]).map((destination: Object) => (
+                    <View key={destination.id}>
+                      <TouchableOpacity
+                        onPress={() => handleDestinationSelect(destination)}
+                        style={{backgroundColor: selectedDestinations.some(item => item.id === destination.id) ? colors.lightBlue : colors.white}}
+                      >
+                        <DestinationCard
+                          name={destination.name}
+                          rating={destination.rating}
+                          price={destination.price}
+                          image={getImage(destination.images)}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                  ))}
+                </ScrollView>
+              </View>
+            ))}
+        </ScrollView>
+      </View>
+      <View>
         <Button
           title={strings.main.done}
-          onPress={() => navigation.navigate('FinalizePlan')}
+          onPress={() => navigation.navigate('FinalizePlan', {selectedDestinations: selectedDestinations})}
         />
       </View>
     </SafeAreaView>
@@ -62,6 +113,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   headerTitle: {
+    fontSize: 20,
+  },
+  destinationScrollView: {
+    height: '88%',
+  },
+  categoryTitle: {
+    marginLeft: 10,
     fontSize: 20,
   },
 });

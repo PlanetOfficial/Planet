@@ -11,8 +11,10 @@ import {
 import images from '../../constants/Images';
 import strings from '../../constants/strings';
 
-const SelectDestinations = ({navigation}) => {
+const SelectDestinations = ({navigation, route}) => {
   const eventTitle = 'Untitled Event';
+
+  console.log(route.params.selectedDestinations)
 
   return (
     <SafeAreaView>

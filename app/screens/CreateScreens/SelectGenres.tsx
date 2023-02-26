@@ -126,7 +126,7 @@ const SelectGenres = ({navigation, route}) => {
           <Button
             title={strings.main.done}
             onPress={() => navigation.navigate('SelectDestinations', {
-              selectedCategories: selectedCategories.map(item => item.id),
+              selectedCategories: selectedCategories,
               radius: radius,
               latitude: latitude,
               longitude: longitude
