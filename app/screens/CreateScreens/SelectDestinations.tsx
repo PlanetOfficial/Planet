@@ -97,7 +97,11 @@ const SelectDestinations = ({navigation, route}) => {
       <View>
         <Button
           title={strings.main.done}
-          onPress={() => navigation.navigate('FinalizePlan', {selectedDestinations: selectedDestinations})}
+          onPress={() => {
+            if (selectedDestinations?.length > 0) {
+              navigation.navigate('FinalizePlan', {selectedDestinations: selectedDestinations});
+            }
+          }}
         />
       </View>
     </SafeAreaView>
