@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -7,14 +7,23 @@ import {
   SafeAreaView,
   Image,
   Button,
+  ScrollView,
 } from 'react-native';
 import images from '../../constants/Images';
 import strings from '../../constants/strings';
 
+import DestinationSimplified from '../../components/DestinationSimplified';
+
 const SelectDestinations = ({navigation, route}) => {
+  const [selectedDestinations, setSelectedDestinations] = useState(route?.params?.selectedDestinations);
+
   const eventTitle = 'Untitled Event';
 
-  console.log(route.params.selectedDestinations)
+  const getImage = (imagesData: Array<number>) => {
+    // TODO: if there are images provided by API, then return one of those images instead
+
+    return images.experience;
+  }
 
   return (
     <SafeAreaView>
@@ -27,6 +36,18 @@ const SelectDestinations = ({navigation, route}) => {
           <Text style={styles.headerTitle}>{eventTitle}</Text>
           <View />
         </View>
+      </View>
+      <View>
+        <ScrollView style={styles.scrollView}>
+          {selectedDestinations && selectedDestinations.map((destination: Object) => (
+            <View key={destination.id}>
+              <DestinationSimplified
+                name={destination.name}
+                image={getImage(destination.images)}
+              />
+            </View>
+          ))}
+        </ScrollView>
       </View>
       <View>
         <Button
@@ -48,6 +69,9 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontSize: 20,
+  },
+  scrollView: {
+    height: '88%',
   },
 });
 
