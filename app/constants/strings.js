@@ -33,7 +33,8 @@ const strings = {
     outdoors: 'Outdoors',
     restaurants: 'Restaurants',
     drinksAndDessert: 'Drinks & Desserts',
-    selectedCategories: 'Selected Categories'
+    selectedCategories: 'Selected Categories',
+    untitledEvent: 'Untitled Event',
   },
   settings: {
     firstName: "First Name",
