@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import {View, Text, Image, StyleSheet} from 'react-native';
 
 interface Props {
   name: string;
@@ -8,7 +8,7 @@ interface Props {
   image: Object;
 }
 
-const DestinationCard: React.FC<Props> = ({ name, rating, price, image }) => {
+const DestinationCard: React.FC<Props> = ({name, rating, price, image}) => {
   return (
     <View style={styles.container}>
       <View style={styles.infoContainer}>
@@ -18,7 +18,7 @@ const DestinationCard: React.FC<Props> = ({ name, rating, price, image }) => {
         </View>
         <Text style={styles.price}>{price}</Text>
       </View>
-      <Image source={image} style={styles.image}  />
+      <Image source={image} style={styles.image} />
     </View>
   );
 };

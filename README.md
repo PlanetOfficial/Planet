@@ -28,6 +28,8 @@ npm run lint
 npm run lint -- --fix
 ```
 
+Test on android and iOS for functionality.
+
 UPDATE LIBRARIES OFTEN!!
 
 <h1>Deployment</h1>

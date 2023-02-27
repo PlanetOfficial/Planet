@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -16,11 +16,15 @@ import DatePicker from 'react-native-date-picker';
 
 import DestinationSimplified from '../../components/DestinationSimplified';
 import EncryptedStorage from 'react-native-encrypted-storage';
-import { sendEvent } from '../../utils/api/CreateCalls/sendEvent';
+import {sendEvent} from '../../utils/api/CreateCalls/sendEvent';
 
 const SelectDestinations = ({navigation, route}) => {
-  const [selectedDestinations, setSelectedDestinations] = useState(route?.params?.selectedDestinations);
-  const [eventTitle, setEventTitle] = useState(strings.createTabStack.untitledEvent);
+  const [selectedDestinations, setSelectedDestinations] = useState(
+    route?.params?.selectedDestinations,
+  );
+  const [eventTitle, setEventTitle] = useState(
+    strings.createTabStack.untitledEvent,
+  );
 
   // date picker useStates
   const [date, setDate] = useState(new Date());
@@ -30,14 +34,19 @@ const SelectDestinations = ({navigation, route}) => {
     // TODO: if there are images provided by API, then return one of those images instead
 
     return images.experience;
-  }
+  };
 
   const handleSave = async () => {
     // send destinations to backend
     const placeIds = selectedDestinations.map(item => item.id);
-    const authToken = await EncryptedStorage.getItem("auth_token");
-    
-    const responseStatus = await sendEvent(eventTitle, placeIds, authToken, date.toLocaleDateString());
+    const authToken = await EncryptedStorage.getItem('auth_token');
+
+    const responseStatus = await sendEvent(
+      eventTitle,
+      placeIds,
+      authToken,
+      date.toLocaleDateString(),
+    );
 
     if (responseStatus === 200) {
       navigation.navigate('Library');
@@ -45,7 +54,7 @@ const SelectDestinations = ({navigation, route}) => {
     } else {
       // TODO: error, make sure connected to internet and logged in
     }
-  }
+  };
 
   return (
     <SafeAreaView>
@@ -55,7 +64,9 @@ const SelectDestinations = ({navigation, route}) => {
             onPress={() => navigation.navigate('SelectDestinations')}>
             <Image source={images.BackArrow} />
           </TouchableOpacity>
-          <TextInput style={styles.headerTitle} onChangeText={setEventTitle}>{eventTitle}</TextInput>
+          <TextInput style={styles.headerTitle} onChangeText={setEventTitle}>
+            {eventTitle}
+          </TextInput>
           <View />
         </View>
         <TouchableOpacity onPress={() => setOpen(true)}>
@@ -65,10 +76,10 @@ const SelectDestinations = ({navigation, route}) => {
           modal
           open={open}
           date={date}
-          onConfirm={(date => {
+          onConfirm={newDate => {
             setOpen(false);
-            setDate(date);
-          })}
+            setDate(newDate);
+          }}
           onCancel={() => {
             setOpen(false);
           }}
@@ -76,21 +87,19 @@ const SelectDestinations = ({navigation, route}) => {
       </View>
       <View>
         <ScrollView style={styles.scrollView}>
-          {selectedDestinations && selectedDestinations.map((destination: Object) => (
-            <View key={destination.id}>
-              <DestinationSimplified
-                name={destination.name}
-                image={getImage(destination.images)}
-              />
-            </View>
-          ))}
+          {selectedDestinations &&
+            selectedDestinations.map((destination: Object) => (
+              <View key={destination.id}>
+                <DestinationSimplified
+                  name={destination.name}
+                  image={getImage(destination.images)}
+                />
+              </View>
+            ))}
         </ScrollView>
       </View>
       <View>
-        <Button
-          title={strings.main.save}
-          onPress={() => handleSave()}
-        />
+        <Button title={strings.main.save} onPress={() => handleSave()} />
       </View>
     </SafeAreaView>
   );

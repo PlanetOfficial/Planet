@@ -38,11 +38,11 @@ const strings = {
     pickDate: 'Pick a date',
   },
   settings: {
-    firstName: "First Name",
-    lastName: "Last Name",
-    resetPassword: "Reset Password",
-    upgrade: "Upgrade to Premium",
-    logout: "Log out"
+    firstName: 'First Name',
+    lastName: 'Last Name',
+    resetPassword: 'Reset Password',
+    upgrade: 'Upgrade to Premium',
+    logout: 'Log out',
   },
 };
 

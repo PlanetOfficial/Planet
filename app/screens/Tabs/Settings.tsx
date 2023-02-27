@@ -1,40 +1,47 @@
 import React from 'react';
-import { View, Text, TextInput, TouchableOpacity, ScrollView } from 'react-native';
+import {Text, TextInput, TouchableOpacity, ScrollView} from 'react-native';
 import strings from '../../constants/strings';
 import EncryptedStorage from 'react-native-encrypted-storage';
 
 const ProfileScreen = ({navigation}) => {
   const handleLogout = async () => {
     try {
-      await EncryptedStorage.removeItem("auth_token");
-    }
-
-    catch (error) {
+      await EncryptedStorage.removeItem('auth_token');
+    } catch (error) {
       // TODO: display error
       console.log(error);
-    }
-    
-    finally {
+    } finally {
       navigation.navigate('Login');
     }
-  }
+  };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <TextInput placeholder={strings.settings.firstName} style={styles.input} />
+      <TextInput
+        placeholder={strings.settings.firstName}
+        style={styles.input}
+      />
       <TextInput placeholder={strings.settings.lastName} style={styles.input} />
       <TextInput placeholder={strings.login.email} style={styles.input} />
-      <TextInput placeholder={strings.login.password} secureTextEntry style={styles.input} />
+      <TextInput
+        placeholder={strings.login.password}
+        secureTextEntry
+        style={styles.input}
+      />
       <TouchableOpacity style={styles.button}>
         <Text style={styles.buttonText}>{strings.main.save}</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.forgotButton}>
-        <Text style={styles.forgotButtonText}>{strings.settings.resetPassword}</Text>
+        <Text style={styles.forgotButtonText}>
+          {strings.settings.resetPassword}
+        </Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.upgradeButton}>
         <Text style={styles.upgradeButtonText}>{strings.settings.upgrade}</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.logoutButton} onPress={() => handleLogout()}>
+      <TouchableOpacity
+        style={styles.logoutButton}
+        onPress={() => handleLogout()}>
         <Text style={styles.logoutButtonText}>{strings.settings.logout}</Text>
       </TouchableOpacity>
     </ScrollView>

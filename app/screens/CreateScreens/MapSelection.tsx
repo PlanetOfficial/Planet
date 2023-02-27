@@ -22,16 +22,16 @@ const MapScreen = ({navigation}) => {
 
   const getRadius = () => {
     if (!Number.isNaN(parseFloat(radius))) {
-      return parseFloat(radius)*integers.milesToMeters
+      return parseFloat(radius) * integers.milesToMeters;
     }
 
     return 0;
-  }
+  };
 
-  const onRegionChange = (reg) => {
+  const onRegionChange = reg => {
     setLatitude(reg.latitude);
     setLongitude(reg.longitude);
-  }
+  };
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
@@ -42,13 +42,16 @@ const MapScreen = ({navigation}) => {
         <Text style={styles.headerTitle}>
           {strings.createTabStack.planEvent}
         </Text>
-        <TouchableOpacity onPress={() => {
-          if (getRadius() != 0) navigation.navigate('SelectGenres', {
-            latitude: latitude,
-            longitude: longitude, 
-            radius: radius,
-          });
-        }}>
+        <TouchableOpacity
+          onPress={() => {
+            if (getRadius() !== 0) {
+              navigation.navigate('SelectGenres', {
+                latitude: latitude,
+                longitude: longitude,
+                radius: radius,
+              });
+            }
+          }}>
           <Image source={images.NextArrow} />
         </TouchableOpacity>
       </View>
@@ -63,7 +66,7 @@ const MapScreen = ({navigation}) => {
         </View>
         <View style={styles.searchContainer}>
           <TextInput
-            value={(radius)}
+            value={radius}
             onChangeText={text => setRadius(text)}
             placeholder={strings.createTabStack.radius}
             style={styles.searchBar}
@@ -77,8 +80,7 @@ const MapScreen = ({navigation}) => {
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
           }}
-          onRegionChange={onRegionChange}
-        >
+          onRegionChange={onRegionChange}>
           <Circle
             center={{latitude: latitude, longitude: longitude}}
             radius={getRadius()}

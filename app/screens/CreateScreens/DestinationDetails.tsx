@@ -1,5 +1,12 @@
-import React, { useState } from 'react';
-import {View, Text, StyleSheet, SafeAreaView, TouchableOpacity, Image} from 'react-native';
+import React, {useState} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
 
 import images from '../../constants/Images';
 
@@ -15,9 +22,7 @@ const DestinationDetails = ({navigation, route}) => {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image source={images.BackArrow} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>
-          {destination?.name}
-        </Text>
+        <Text style={styles.headerTitle}>{destination?.name}</Text>
       </View>
       <View>
         <Text style={styles.category}>{category}</Text>
@@ -28,12 +33,8 @@ const DestinationDetails = ({navigation, route}) => {
         <Text>Rating</Text>
         <Text>{destination.rating}</Text>
       </View>
-      <View style={styles.images}>
-
-      </View>
-      <View style={styles.ratings}>
-
-      </View>
+      <View style={styles.images} />
+      <View style={styles.ratings} />
     </SafeAreaView>
   );
 };

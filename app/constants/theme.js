@@ -1,12 +1,8 @@
-export const lightMode = {
+export const lightMode = {};
 
-}
-
-export const darkMode = {
-    
-}
+export const darkMode = {};
 
 export const colors = {
-    white: '#ffffff',
-    lightBlue: '#0db5f2',
-}
+  white: '#ffffff',
+  lightBlue: '#0db5f2',
+};

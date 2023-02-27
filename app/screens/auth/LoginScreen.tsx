@@ -23,7 +23,7 @@ const LoginScreen = ({navigation}) => {
     const response = await login(email, password);
     if (response?.authToken) {
       // successful login
-      await EncryptedStorage.setItem("auth_token", response?.authToken);
+      await EncryptedStorage.setItem('auth_token', response?.authToken);
       navigation.navigate('TabStack');
     } else {
       console.log('Failed login, error: ' + response?.message);

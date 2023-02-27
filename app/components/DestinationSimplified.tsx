@@ -1,18 +1,18 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import {View, Text, Image, StyleSheet} from 'react-native';
 
 interface Props {
   name: string;
   image: Object;
 }
 
-const DestinationSimplified: React.FC<Props> = ({ name, image }) => {
+const DestinationSimplified: React.FC<Props> = ({name, image}) => {
   return (
     <View style={styles.container}>
       <View style={styles.infoContainer}>
         <Text style={styles.name}>{name}</Text>
       </View>
-      <Image source={image} style={styles.image}  />
+      <Image source={image} style={styles.image} />
     </View>
   );
 };
