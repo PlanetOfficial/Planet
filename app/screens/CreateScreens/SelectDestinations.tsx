@@ -65,7 +65,6 @@ const SelectDestinations = ({navigation, route}) => {
           <Text style={styles.headerTitle}>
             {strings.createTabStack.selectDestinations}
           </Text>
-          <View />
         </View>
       </View>
       <View>
@@ -78,6 +77,7 @@ const SelectDestinations = ({navigation, route}) => {
                     <View key={destination.id}>
                       <TouchableOpacity
                         onPress={() => handleDestinationSelect(destination)}
+                        onLongPress={() => navigation.navigate('DestinationDetails', {destination: destination, category: category.name})}
                         style={{backgroundColor: selectedDestinations.some(item => item.id === destination.id) ? colors.lightBlue : colors.white}}
                       >
                         <DestinationCard
