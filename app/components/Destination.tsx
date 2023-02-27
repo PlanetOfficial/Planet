@@ -1,6 +1,8 @@
 import React from 'react';
 import {View, Text, Image, StyleSheet} from 'react-native';
 
+import { colors } from '../constants/theme';
+
 interface Props {
   name: string;
   rating: number;
@@ -25,11 +27,11 @@ const DestinationCard: React.FC<Props> = ({name, rating, price, image}) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     borderRadius: 10,
     margin: 10,
     padding: 10,
-    shadowColor: '#000',
+    shadowColor: colors.black,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -50,14 +52,14 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   ratingContainer: {
-    backgroundColor: '#f0ad4e',
+    backgroundColor: colors.orange,
     borderRadius: 5,
     paddingVertical: 2,
     paddingHorizontal: 5,
     marginRight: 5,
   },
   rating: {
-    color: '#fff',
+    color: colors.white,
     fontSize: 16,
     fontWeight: 'bold',
   },

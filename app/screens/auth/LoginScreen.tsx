@@ -12,6 +12,7 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 import strings from '../../constants/strings';
 
 import {login} from '../../utils/api/auth/login';
+import { colors } from '../../constants/theme';
 
 const LoginScreen = ({navigation}) => {
   const [email, setEmail] = useState('');
@@ -76,7 +77,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
   },
   title: {
     fontSize: 32,
@@ -88,25 +89,25 @@ const styles = StyleSheet.create({
     height: 40,
     paddingHorizontal: 8,
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: colors.grey,
     marginVertical: 8,
   },
   button: {
     width: '80%',
     height: 40,
-    backgroundColor: '#000',
+    backgroundColor: colors.black,
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 24,
   },
   buttonText: {
-    color: '#fff',
+    color: colors.white,
     fontWeight: 'bold',
   },
   forgotPassword: {
     marginTop: 8,
     fontSize: 14,
-    color: 'blue',
+    color: colors.lightBlue,
     textAlign: 'right',
     width: '80%',
   },
@@ -119,7 +120,7 @@ const styles = StyleSheet.create({
     marginTop: 24,
   },
   bottomTextLink: {
-    color: 'blue',
+    color: colors.lightBlue,
     marginLeft: 8,
     fontWeight: 'bold',
   },

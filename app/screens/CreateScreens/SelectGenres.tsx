@@ -14,6 +14,7 @@ import images from '../../constants/Images';
 import strings from '../../constants/strings';
 import integers from '../../constants/integers';
 import {getCategories} from '../../utils/api/CreateCalls/getCategories';
+import { colors } from '../../constants/theme';
 
 // TODO: remove this and make it dynamic once images are settled
 const genres = [
@@ -205,7 +206,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
   },
   categoriesContainer: {
     flex: 1,
@@ -231,7 +232,7 @@ const styles = StyleSheet.create({
   },
   selectedCategoriesContainer: {
     borderTopWidth: 1,
-    borderTopColor: '#ccc',
+    borderTopColor: colors.grey,
     paddingTop: 20,
     paddingHorizontal: 20,
     paddingBottom: 40,
@@ -251,13 +252,13 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   doneButton: {
-    backgroundColor: 'blue',
+    backgroundColor: colors.lightBlue,
     paddingVertical: 10,
     paddingHorizontal: 30,
     borderRadius: 5,
   },
   doneButtonText: {
-    color: '#fff',
+    color: colors.white,
     fontSize: 18,
     fontWeight: 'bold',
   },
@@ -265,13 +266,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: colors.blackTint,
   },
   modalHeader: {
     flexDirection: 'row',
   },
   modalView: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     width: '100%',
     height: '80%',
     borderRadius: 10,
@@ -280,7 +281,7 @@ const styles = StyleSheet.create({
     width: 70,
     height: 70,
     borderRadius: 50,
-    backgroundColor: 'lightblue',
+    backgroundColor: colors.lightBlue,
     margin: 10,
     alignItems: 'center',
     justifyContent: 'center',

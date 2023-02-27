@@ -10,6 +10,7 @@ import {
 import strings from '../../constants/strings';
 
 import {signup} from '../../utils/api/auth/signup';
+import { colors } from '../../constants/theme';
 
 const SignUp = ({navigation}) => {
   const [name, setName] = useState('');
@@ -91,7 +92,7 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 40,
-    borderColor: 'gray',
+    borderColor: colors.grey,
     borderWidth: 1,
     marginBottom: 20,
     padding: 10,
@@ -100,18 +101,18 @@ const styles = StyleSheet.create({
     height: 20,
   },
   button: {
-    backgroundColor: 'blue',
+    backgroundColor: colors.lightBlue,
     padding: 10,
     alignItems: 'center',
   },
   buttonText: {
-    color: 'white',
+    color: colors.white,
     fontWeight: 'bold',
   },
   footerText: {
     fontSize: 12,
     textAlign: 'center',
-    color: 'gray',
+    color: colors.grey,
   },
 });
 

@@ -2,6 +2,7 @@ import React from 'react';
 import {Text, TextInput, TouchableOpacity, ScrollView} from 'react-native';
 import strings from '../../constants/strings';
 import EncryptedStorage from 'react-native-encrypted-storage';
+import { colors } from '../../constants/theme';
 
 const ProfileScreen = ({navigation}) => {
   const handleLogout = async () => {
@@ -64,14 +65,14 @@ const styles = {
     marginBottom: 10,
   },
   button: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: colors.lightBlue,
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
     marginTop: 20,
   },
   buttonText: {
-    color: '#FFF',
+    color: colors.white,
     fontSize: 16,
     fontWeight: 'bold',
   },
@@ -79,17 +80,17 @@ const styles = {
     marginTop: 20,
   },
   forgotButtonText: {
-    color: '#1E90FF',
+    color: colors.lightBlue,
     fontSize: 14,
   },
   upgradeButton: {
     marginTop: 20,
   },
   upgradeButtonText: {
-    color: '#FFF',
+    color: colors.white,
     fontSize: 16,
     fontWeight: 'bold',
-    backgroundColor: '#FFD700',
+    backgroundColor: colors.lightBlue,
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
@@ -98,7 +99,7 @@ const styles = {
     marginTop: 20,
   },
   logoutButtonText: {
-    color: '#FF0000',
+    color: colors.lightBlue,
     fontSize: 16,
     fontWeight: 'bold',
   },

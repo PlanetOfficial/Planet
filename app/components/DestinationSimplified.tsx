@@ -1,5 +1,6 @@
 import React from 'react';
 import {View, Text, Image, StyleSheet} from 'react-native';
+import { colors } from '../constants/theme';
 
 interface Props {
   name: string;
@@ -19,11 +20,11 @@ const DestinationSimplified: React.FC<Props> = ({name, image}) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     borderRadius: 10,
     margin: 10,
     padding: 10,
-    shadowColor: '#000',
+    shadowColor: colors.black,
     shadowOffset: {
       width: 0,
       height: 2,
