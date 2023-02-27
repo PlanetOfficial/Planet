@@ -35,6 +35,7 @@ const strings = {
     drinksAndDessert: 'Drinks & Desserts',
     selectedCategories: 'Selected Categories',
     untitledEvent: 'Untitled Event',
+    pickDate: 'Pick a date',
   },
   settings: {
     firstName: "First Name",

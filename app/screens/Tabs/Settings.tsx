@@ -5,9 +5,18 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 
 const ProfileScreen = ({navigation}) => {
   const handleLogout = async () => {
-    await EncryptedStorage.removeItem("auth_token");
+    try {
+      await EncryptedStorage.removeItem("auth_token");
+    }
 
-    navigation.navigate('Login');
+    catch (error) {
+      // TODO: display error
+      console.log(error);
+    }
+    
+    finally {
+      navigation.navigate('Login');
+    }
   }
 
   return (

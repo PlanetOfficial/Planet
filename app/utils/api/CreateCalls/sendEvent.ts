@@ -10,7 +10,7 @@ export const sendEvent = async (name: String, place_ids: Array<number>, authToke
   })
 
   const response = await fetch(
-    DBOpsURL + `/event?${placesString}authtoken=${authToken}&name=${name}`,
+    DBOpsURL + `/event?${placesString}authtoken=${authToken}&name=${name}&date=${date}`,
     {
       method: 'POST',
     },
