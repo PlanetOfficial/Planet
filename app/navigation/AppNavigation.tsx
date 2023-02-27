@@ -14,7 +14,6 @@ import Settings from '../screens/Tabs/Settings';
 import MapSelection from '../screens/CreateScreens/MapSelection';
 import SelectGenres from '../screens/CreateScreens/SelectGenres';
 import SelectDestinations from '../screens/CreateScreens/SelectDestinations';
-import SelectCategories from '../screens/CreateScreens/SelectCategories';
 import FinalizePlan from '../screens/CreateScreens/FinalizePlan';
 import DestinationDetails from '../screens/CreateScreens/DestinationDetails';
 
@@ -30,11 +29,6 @@ function CreatePlanStack() {
       <PlanCreationStack.Screen
         name="SelectGenres"
         component={SelectGenres}
-        options={{headerShown: false}}
-      />
-      <PlanCreationStack.Screen
-        name="SelectCategories"
-        component={SelectCategories}
         options={{headerShown: false}}
       />
       <PlanCreationStack.Screen
