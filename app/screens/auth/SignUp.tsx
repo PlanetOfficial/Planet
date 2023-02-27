@@ -9,7 +9,7 @@ import {
 
 import strings from '../../constants/strings';
 
-import {signup} from '../../utils/auth/signup';
+import {signup} from '../../utils/api/auth/signup';
 
 const SignUp = ({navigation}) => {
   const [name, setName] = useState('');

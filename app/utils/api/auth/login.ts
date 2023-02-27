@@ -1,10 +1,10 @@
-import {APIURL} from '../api/APIConstants';
+import {UserOpsURL} from '../APIConstants';
 
 export const login = async (email: String, password: String) => {
   // TODO: filter inputs**
 
   const response = await fetch(
-    APIURL + `/auth/login?email=${email}&password=${password}`,
+    UserOpsURL + `/auth/login?email=${email}&password=${password}`,
     {
       method: 'POST',
     },

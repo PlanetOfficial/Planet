@@ -28,6 +28,8 @@ npm run lint
 npm run lint -- --fix
 ```
 
+UPDATE LIBRARIES OFTEN!!
+
 <h1>Deployment</h1>
 Android:
 ```yarn android-release
@@ -38,3 +40,10 @@ Test on android and iOS constantly!!
 **See React Native guide on deploying to app stores
 
 **When adding new libraries, don't forget to '''npx pod-install ios''' if on mac
+Upgrade RN library with npx react-native upgrade
+
+------------
+
+When merging pull requests, go through the following checklist:
+-Run Testing/Cleaning code procedure
+-Test on android and iOS

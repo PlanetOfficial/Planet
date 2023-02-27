@@ -26,6 +26,23 @@ const strings = {
     search: 'Search',
     selectCategories: 'Select Categories',
     selectDestinations: 'Select Destinations',
+    radius: 'Radius (in miles)',
+    adventure: 'Adventure',
+    experience: 'Experience',
+    shopping: 'Shopping',
+    outdoors: 'Outdoors',
+    restaurants: 'Restaurants',
+    drinksAndDessert: 'Drinks & Desserts',
+    selectedCategories: 'Selected Categories',
+    untitledEvent: 'Untitled Event',
+    pickDate: 'Pick a date',
+  },
+  settings: {
+    firstName: "First Name",
+    lastName: "Last Name",
+    resetPassword: "Reset Password",
+    upgrade: "Upgrade to Premium",
+    logout: "Log out"
   },
 };
 

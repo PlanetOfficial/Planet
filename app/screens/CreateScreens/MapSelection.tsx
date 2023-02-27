@@ -8,13 +8,30 @@ import {
   SafeAreaView,
   Image,
 } from 'react-native';
-import MapView from 'react-native-maps';
+import MapView, {Circle} from 'react-native-maps';
 
 import images from '../../constants/Images';
 import strings from '../../constants/strings';
+import integers from '../../constants/integers';
 
 const MapScreen = ({navigation}) => {
   const [search, setSearch] = useState('');
+  const [radius, setRadius] = useState('');
+  const [latitude, setLatitude] = useState(37.78825);
+  const [longitude, setLongitude] = useState(-122.4324);
+
+  const getRadius = () => {
+    if (!Number.isNaN(parseFloat(radius))) {
+      return parseFloat(radius)*integers.milesToMeters
+    }
+
+    return 0;
+  }
+
+  const onRegionChange = (reg) => {
+    setLatitude(reg.latitude);
+    setLongitude(reg.longitude);
+  }
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
@@ -25,7 +42,13 @@ const MapScreen = ({navigation}) => {
         <Text style={styles.headerTitle}>
           {strings.createTabStack.planEvent}
         </Text>
-        <TouchableOpacity onPress={() => navigation.navigate('SelectGenres')}>
+        <TouchableOpacity onPress={() => {
+          if (getRadius() != 0) navigation.navigate('SelectGenres', {
+            latitude: latitude,
+            longitude: longitude, 
+            radius: radius,
+          });
+        }}>
           <Image source={images.NextArrow} />
         </TouchableOpacity>
       </View>
@@ -38,15 +61,29 @@ const MapScreen = ({navigation}) => {
             style={styles.searchBar}
           />
         </View>
+        <View style={styles.searchContainer}>
+          <TextInput
+            value={(radius)}
+            onChangeText={text => setRadius(text)}
+            placeholder={strings.createTabStack.radius}
+            style={styles.searchBar}
+          />
+        </View>
         <MapView
           style={styles.map}
           initialRegion={{
-            latitude: 37.78825,
-            longitude: -122.4324,
+            latitude: latitude,
+            longitude: longitude,
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
           }}
-        />
+          onRegionChange={onRegionChange}
+        >
+          <Circle
+            center={{latitude: latitude, longitude: longitude}}
+            radius={getRadius()}
+          />
+        </MapView>
       </View>
     </SafeAreaView>
   );

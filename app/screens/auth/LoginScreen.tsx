@@ -7,9 +7,11 @@ import {
   StyleSheet,
 } from 'react-native';
 
+import EncryptedStorage from 'react-native-encrypted-storage';
+
 import strings from '../../constants/strings';
 
-import {login} from '../../utils/auth/login';
+import {login} from '../../utils/api/auth/login';
 
 const LoginScreen = ({navigation}) => {
   const [email, setEmail] = useState('');
@@ -21,6 +23,7 @@ const LoginScreen = ({navigation}) => {
     const response = await login(email, password);
     if (response?.authToken) {
       // successful login
+      await EncryptedStorage.setItem("auth_token", response?.authToken);
       navigation.navigate('TabStack');
     } else {
       console.log('Failed login, error: ' + response?.message);
