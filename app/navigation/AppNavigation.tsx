@@ -1,21 +1,17 @@
 import React from 'react';
-import {TouchableOpacity} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
+import NavBar from '../screens/tabs/NavBar';
 import LoginScreen from '../screens/auth/LoginScreen';
 import SignUp from '../screens/auth/SignUp';
 import ForgotPassword from '../screens/auth/ForgotPassword';
-import TrendingScreen from '../screens/Tabs/TrendingScreen';
-import FriendScreen from '../screens/Tabs/FriendScreen';
-import Library from '../screens/Tabs/Library';
-import Settings from '../screens/Tabs/Settings';
-import MapSelection from '../screens/CreateScreens/MapSelection';
-import SelectGenres from '../screens/CreateScreens/SelectGenres';
-import SelectDestinations from '../screens/CreateScreens/SelectDestinations';
-import FinalizePlan from '../screens/CreateScreens/FinalizePlan';
-import DestinationDetails from '../screens/CreateScreens/DestinationDetails';
+import MapSelection from '../screens/createScreens/MapSelection';
+import SelectGenres from '../screens/createScreens/SelectGenres';
+import SelectDestinations from '../screens/createScreens/SelectDestinations';
+import FinalizePlan from '../screens/createScreens/FinalizePlan';
+import DestinationDetails from '../screens/createScreens/DestinationDetails';
 
 const PlanCreationStack = createStackNavigator();
 function CreatePlanStack() {
@@ -53,24 +49,7 @@ function CreatePlanStack() {
 const Tab = createBottomTabNavigator();
 function TabStack({navigation}) {
   return (
-    <Tab.Navigator>
-      <Tab.Screen name="Trending" component={TrendingScreen} />
-      <Tab.Screen name="Friend Groups" component={FriendScreen} />
-      <Tab.Screen
-        name="Create"
-        component={CreatePlanStack}
-        options={{
-          tabBarButton: props => (
-            <TouchableOpacity
-              {...props}
-              onPress={() => navigation.navigate('CreateStack')}
-            />
-          ),
-        }}
-      />
-      <Tab.Screen name="Library" component={Library} />
-      <Tab.Screen name="Settings" component={Settings} />
-    </Tab.Navigator>
+    NavBar
   );
 }
 

@@ -4,7 +4,7 @@ import strings from '../../constants/strings';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import { colors } from '../../constants/theme';
 
-const ProfileScreen = ({navigation}) => {
+const Settings = ({navigation}) => {
   const handleLogout = async () => {
     try {
       await EncryptedStorage.removeItem('auth_token');
@@ -105,4 +105,4 @@ const styles = {
   },
 };
 
-export default ProfileScreen;
+export default Settings;

@@ -9,7 +9,7 @@ import {
   Button,
   ScrollView,
 } from 'react-native';
-import images from '../../constants/Images';
+import images from '../../constants/icons';
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 

@@ -8,7 +8,7 @@ import {
   Image,
 } from 'react-native';
 
-import images from '../../constants/Images';
+import images from '../../constants/icons';
 
 const DestinationDetails = ({navigation, route}) => {
   const [destination, setDestination] = useState(route?.params?.destination);

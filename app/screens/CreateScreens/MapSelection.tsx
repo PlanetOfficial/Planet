@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import MapView, {Circle} from 'react-native-maps';
 
-import images from '../../constants/Images';
+import images from '../../constants/icons';
 import strings from '../../constants/strings';
 import integers from '../../constants/integers';
 import { colors } from '../../constants/theme';

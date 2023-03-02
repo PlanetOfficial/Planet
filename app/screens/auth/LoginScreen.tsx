@@ -21,14 +21,15 @@ const LoginScreen = ({navigation}) => {
   const handleLogin = async () => {
     // Perform login logic, e.g. send login request to API
 
-    const response = await login(email, password);
-    if (response?.authToken) {
-      // successful login
-      await EncryptedStorage.setItem('auth_token', response?.authToken);
-      navigation.navigate('TabStack');
-    } else {
-      console.log('Failed login, error: ' + response?.message);
-    }
+    // const response = await login(email, password);
+    // if (response?.authToken) {
+    //   // successful login
+    //   await EncryptedStorage.setItem('auth_token', response?.authToken);
+    //   navigation.navigate('TabStack');
+    // } else {
+    //   console.log('Failed login, error: ' + response?.message);
+    // }
+    navigation.navigate('TabStack');
   };
 
   return (

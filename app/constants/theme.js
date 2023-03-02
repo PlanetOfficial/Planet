@@ -5,6 +5,7 @@ export const colors = {
   orange: '#f0ad4e',
   grey: '#ccc',
   blackTint: 'rgba(0,0,0,0.5)',
+  accent: '#f36f3f'
 };
 
 export const darkMode = {

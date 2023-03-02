@@ -10,7 +10,7 @@ import {
   Button,
   Modal,
 } from 'react-native';
-import images from '../../constants/Images';
+import images from '../../constants/icons';
 import strings from '../../constants/strings';
 import integers from '../../constants/integers';
 import {getCategories} from '../../utils/api/CreateCalls/getCategories';
