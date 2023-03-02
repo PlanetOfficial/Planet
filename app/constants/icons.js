@@ -18,8 +18,6 @@ const icons = {
   trendingActive: require('../assets/icons/trending-active.png'),
   trendingInactive: require('../assets/icons/trending-inactive.png'),
   create: require('../assets/icons/create.png'),
-
-  path: require('../assets/svgs/path.svg'),
 };
 
 export default icons;

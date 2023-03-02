@@ -1,6 +1,5 @@
 import React from "react";
-
-import { Image, StyleSheet, Dimensions, View, Text } from 'react-native'
+import { Image, StyleSheet, Dimensions, Animated, View, Text, Alert, TouchableOpacity } from 'react-native'
 // TODO: index.js to clean up imports
 import Trending from './Trending';
 import Friends from './Friends';
@@ -8,78 +7,97 @@ import Library from './Library';
 import Settings from './Settings';
 import MapSelection from '../createScreens/MapSelection'
 import icons from "../../constants/icons";
-import {colors} from "../../constants/theme";
-import integers from "../../constants/integers";
+import {colors} from "../../constants/colors";
+import { CurvedBottomBar } from 'react-native-curved-bottom-bar';
 
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+export const NavBar = () => {
+    const renderIcon = (routeName: string, selectedTab: string) => {
+        let source: number;
+        let focused: boolean = routeName == selectedTab;
 
-const Tab = createBottomTabNavigator();
+        switch(routeName){
+            case 'Trending':
+                source = focused ? icons.trendingActive: icons.trendingInactive;
+                break;
+            case 'Friends':
+                source = focused? icons.friendsActive: icons.friendsInactive;
+                break;
+            case 'Library':
+                source = focused? icons.libraryActive: icons.libraryInactive;
+                break;
+            case 'Settings':
+                source = focused? icons.settingsActive: icons.settingsInactive;
+                break;
+            default:
+                source = -1;
+                break;
+        };
 
-function NavBar(){ 
-    return(
-        <Tab.Navigator screenOptions={({route}) => ({
-            tabBarStyle: styles.navBar,
-            headerShown: false,
-            tabBarShowLabel: false,
-            tabBarIcon: ({focused}) => {
-                let source: number;
+        return (<Image style={{width: 32, height: 32, tintColor: focused? colors.accent: colors.black}} source={source}/>);
+    };
 
-                switch(route.name){
-                    case 'Trending':
-                        source = focused? icons.trendingActive: icons.trendingInactive;
-                        break;
-                    case 'Friends':
-                        source = focused? icons.friendsActive: icons.friendsInactive;
-                        break;
-                    case 'Library':
-                        source = focused? icons.libraryActive: icons.libraryInactive;
-                        break;
-                    case 'Settings':
-                        source = focused? icons.settingsActive: icons.settingsInactive;
-                        break;
-                    default:
-                        source = -1;
-                        break;
-                };
-
-                return (<Image style={{width: 30, height: 30, tintColor: focused? colors.accent: colors.black}} source={source}/>);
-            }
-        })}>
-            <Tab.Screen name='Trending' component={Trending}/>
-            <Tab.Screen name='Friends' component={Friends} />
-            <Tab.Screen name='Create' component={MapSelection} options={{
-                tabBarIcon: () => (
-                    <View>
+    return (
+        <View style={{ flex: 1 }}>
+            <CurvedBottomBar.Navigator
+                screenOptions={{ headerShown: false }}
+                height={64}
+                circleWidth={56}
+                bgColor="white"
+                initialRouteName="trending"
+                borderTopLeftRight={true}
+                renderCircle={() => (
+                    <Animated.View style={styles.circle}>
+                    <TouchableOpacity onPress={() => Alert.alert("Create")}>
                         <Image style={styles.plus} source={icons.create}/>
-                    </View>
-                )
-            }}/>
-            <Tab.Screen name='Library' component={Library} />
-            <Tab.Screen name='Settings' component={Settings} />
-        </Tab.Navigator>
-    )
+                    </TouchableOpacity>
+                    </Animated.View>
+                )}
+                tabBar = {({routeName, selectedTab, navigate}) => {
+                    return (
+                        <TouchableOpacity
+                            onPress={() => navigate(routeName)}
+                            style={styles.icon}>
+                            {renderIcon(routeName, selectedTab)}
+                        </TouchableOpacity>
+                    )
+                }}>
+                <CurvedBottomBar.Screen name='Trending' position={"LEFT"} component={Trending}/>
+                <CurvedBottomBar.Screen name='Friends' position={"LEFT"} component={Friends} />
+                <CurvedBottomBar.Screen name='Library' position={"RIGHT"} component={Library} />
+                <CurvedBottomBar.Screen name='Settings' position={"RIGHT"} component={Settings} />
+            </CurvedBottomBar.Navigator>
+        </View>
+    );
 }
 
-const styles = StyleSheet.create({
-    navBar: {
-        height: 75,
-        width: Dimensions.get('window').width + integers.borderWidth * 2,
-        left: -integers.borderWidth,
-        borderTopRightRadius: 20,
-        borderTopLeftRadius: 20,
-        borderTopColor: colors.accent,
-        borderRightColor: colors.accent,
-        borderLeftColor: colors.accent,
-        borderTopWidth: integers.borderWidth,
-        borderRightWidth: integers.borderWidth,
-        borderLeftWidth: integers.borderWidth,
+export const styles = StyleSheet.create({
+    circle: {
+        width: 60,
+        height: 60,
+        borderRadius: 30,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: colors.white,
+        shadowColor: colors.black,
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.2,
+        shadowRadius: 2,
+        bottom: 25,
     },
     plus: {
-        height: 60,
-        width: 60,
+        width: 62, 
+        height: 62, 
         tintColor: colors.accent,
-        bottom: 24,
+    },
+    icon: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingBottom: 10,
+        marginHorizontal: 20,
     }
-})
+});
 
 export default NavBar();

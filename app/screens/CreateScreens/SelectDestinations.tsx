@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import images from '../../constants/icons';
 import strings from '../../constants/strings';
-import {colors} from '../../constants/theme';
+import {colors} from '../../constants/colors';
 
 import DestinationCard from '../../components/Destination';
 
@@ -102,7 +102,7 @@ const SelectDestinations = ({navigation, route}) => {
                             backgroundColor: selectedDestinations.some(
                               item => item.id === destination.id,
                             )
-                              ? colors.lightBlue
+                              ? colors.accent
                               : colors.white,
                           }}>
                           <DestinationCard

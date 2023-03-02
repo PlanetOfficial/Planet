@@ -13,7 +13,7 @@ import MapView, {Circle} from 'react-native-maps';
 import images from '../../constants/icons';
 import strings from '../../constants/strings';
 import integers from '../../constants/integers';
-import { colors } from '../../constants/theme';
+import { colors } from '../../constants/colors';
 
 const MapScreen = ({navigation}) => {
   const [search, setSearch] = useState('');

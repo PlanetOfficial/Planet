@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, Image, StyleSheet} from 'react-native';
 
-import { colors } from '../constants/theme';
+import { colors } from '../constants/colors';
 
 interface Props {
   name: string;
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   ratingContainer: {
-    backgroundColor: colors.orange,
+    backgroundColor: colors.accent,
     borderRadius: 5,
     paddingVertical: 2,
     paddingHorizontal: 5,
