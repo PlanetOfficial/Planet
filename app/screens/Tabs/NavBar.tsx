@@ -33,7 +33,7 @@ export const NavBar = () => {
                 break;
         };
 
-        return (<Image style={{width: 32, height: 32, tintColor: focused? colors.accent: colors.black}} source={source}/>);
+        return (<Image style={{width: 30, height: 30, tintColor: focused? colors.accent: colors.black}} source={source}/>);
     };
 
     return (
@@ -42,7 +42,7 @@ export const NavBar = () => {
                 screenOptions={{ headerShown: false }}
                 height={64}
                 circleWidth={56}
-                bgColor="white"
+                bgColor={colors.fill}
                 initialRouteName="trending"
                 borderTopLeftRight={true}
                 renderCircle={() => (
@@ -54,7 +54,7 @@ export const NavBar = () => {
                 )}
                 tabBar = {({routeName, selectedTab, navigate}) => {
                     return (
-                        <TouchableOpacity
+                        <TouchableOpacity 
                             onPress={() => navigate(routeName)}
                             style={styles.icon}>
                             {renderIcon(routeName, selectedTab)}
