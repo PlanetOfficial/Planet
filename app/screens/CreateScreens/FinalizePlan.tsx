@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -13,10 +13,12 @@ import {
 import images from '../../constants/Images';
 import strings from '../../constants/strings';
 import DatePicker from 'react-native-date-picker';
+import MapView, { Marker } from 'react-native-maps';
 
 import DestinationSimplified from '../../components/DestinationSimplified';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {sendEvent} from '../../utils/api/CreateCalls/sendEvent';
+import { getRegionForCoordinates } from '../../utils/functions/Misc';
 
 const SelectDestinations = ({navigation, route}) => {
   const [selectedDestinations, setSelectedDestinations] = useState(
@@ -25,8 +27,6 @@ const SelectDestinations = ({navigation, route}) => {
   const [eventTitle, setEventTitle] = useState(
     strings.createTabStack.untitledEvent,
   );
-
-  // date picker useStates
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
 
@@ -87,7 +87,11 @@ const SelectDestinations = ({navigation, route}) => {
       </View>
       <View>
         <ScrollView style={styles.scrollView}>
-          {selectedDestinations &&
+          <View>
+            {/* Map View goes here */}
+          </View>
+          <Text>Events</Text>
+          {selectedDestinations ?
             selectedDestinations.map((destination: Object) => (
               <View key={destination.id}>
                 <DestinationSimplified
@@ -95,7 +99,7 @@ const SelectDestinations = ({navigation, route}) => {
                   image={getImage(destination.images)}
                 />
               </View>
-            ))}
+            )) : null}
         </ScrollView>
       </View>
       <View>

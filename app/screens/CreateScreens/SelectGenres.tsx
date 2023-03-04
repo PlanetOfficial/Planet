@@ -155,7 +155,7 @@ const SelectGenres = ({navigation, route}) => {
             </View>
             <ScrollView>
               <View>
-                {allCategories &&
+                {allCategories ?
                   allCategories.map(selected => (
                     <View key={selected.id}>
                       <TouchableOpacity
@@ -183,7 +183,7 @@ const SelectGenres = ({navigation, route}) => {
                         <Text>{selected.name}</Text>
                       </TouchableOpacity>
                     </View>
-                  ))}
+                  )) : null}
               </View>
             </ScrollView>
           </View>

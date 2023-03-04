@@ -17,7 +17,7 @@ import DestinationCard from '../../components/Destination';
 
 import {requestLocations} from '../../utils/api/CreateCalls/requestLocations';
 
-import {Category} from '../../utils/api/interfaces/Category';
+import {Category} from '../../utils/interfaces/category';
 
 const SelectDestinations = ({navigation, route}) => {
   const [latitude, setLatitude] = useState(route?.params?.latitude);
@@ -82,12 +82,12 @@ const SelectDestinations = ({navigation, route}) => {
       </View>
       <View>
         <ScrollView style={styles.destinationScrollView}>
-          {categories &&
+          {categories ?
             categories.map((category: Category) => (
               <View key={category.id}>
                 <Text style={styles.categoryTitle}>{category.name}</Text>
                 <ScrollView horizontal={true}>
-                  {locations[category.id] &&
+                  {locations[category.id] ?
                     locations[category.id].map((destination: Object) => (
                       <View key={destination.id}>
                         <TouchableOpacity
@@ -113,10 +113,10 @@ const SelectDestinations = ({navigation, route}) => {
                           />
                         </TouchableOpacity>
                       </View>
-                    ))}
+                    )) : null}
                 </ScrollView>
               </View>
-            ))}
+            )) : null}
         </ScrollView>
       </View>
       <View>
