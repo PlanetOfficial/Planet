@@ -10,7 +10,7 @@ import icons from "../../constants/icons";
 import {colors} from "../../constants/colors";
 import { CurvedBottomBar } from 'react-native-curved-bottom-bar';
 
-export const NavBar = () => {
+export const NavBar = ({navigation}) => {
     const renderIcon = (routeName: string, selectedTab: string) => {
         let source: number;
         let focused: boolean = routeName == selectedTab;
@@ -47,7 +47,7 @@ export const NavBar = () => {
                 borderTopLeftRight={true}
                 renderCircle={() => (
                     <Animated.View style={styles.circle}>
-                    <TouchableOpacity onPress={() => Alert.alert("Create")}>
+                    <TouchableOpacity onPress={() => navigation.navigate('CreateStack')}>
                         <Image style={styles.plus} source={icons.create}/>
                     </TouchableOpacity>
                     </Animated.View>
@@ -100,4 +100,4 @@ export const styles = StyleSheet.create({
     }
 });
 
-export default NavBar();
+export default NavBar;
