@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 
 import images from '../../constants/Images';
-import { ScrollView } from 'react-native';
+import {ScrollView} from 'react-native';
 import misc from '../../constants/misc';
 
 const DestinationDetails = ({navigation, route}) => {
@@ -18,7 +18,7 @@ const DestinationDetails = ({navigation, route}) => {
 
   const getImageURL = (prefix: String, suffix: String) => {
     return prefix + misc.imageSize + suffix;
-  }
+  };
 
   return (
     <SafeAreaView>
@@ -34,37 +34,49 @@ const DestinationDetails = ({navigation, route}) => {
         </View>
         <View style={styles.infoContainer}>
           <Text>{destination?.address?.formatted_address}</Text>
-          {destination?.hours?.display ? (<Text>Hours</Text>) : null}
+          {destination?.hours?.display ? <Text>Hours</Text> : null}
           <Text>{destination?.hours?.display}</Text>
-          {(destination?.price && destination?.price !== 0) ? (<Text>Price: {destination?.price}</Text>) : null}
-          {destination?.rating ? (<Text>Rating</Text>) : null}
+          {destination?.price && destination?.price !== 0 ? (
+            <Text>Price: {destination?.price}</Text>
+          ) : null}
+          {destination?.rating ? <Text>Rating</Text> : null}
           <Text>{destination?.rating}</Text>
-          {destination?.amenities?.wheelchair_accessible ? (<Text>Wheelchair Accessible</Text>) : null}
-          {destination?.details?.payment?.credit_cards?.accepts_credit_cards ? (<Text>Accepts credit card</Text>) : null}
-          {destination?.parking?.street_parking ? (<Text>Street Parking</Text>) : null}
+          {destination?.amenities?.wheelchair_accessible ? (
+            <Text>Wheelchair Accessible</Text>
+          ) : null}
+          {destination?.details?.payment?.credit_cards?.accepts_credit_cards ? (
+            <Text>Accepts credit card</Text>
+          ) : null}
+          {destination?.parking?.street_parking ? (
+            <Text>Street Parking</Text>
+          ) : null}
         </View>
         <View>
           <Text>Images</Text>
           <ScrollView horizontal={true}>
-              {destination?.images?.length > 0 ? destination?.images?.map((image: any) => (
-                <View key={image?.id}>
-                  <Image
-                    source={{ uri: getImageURL(image.prefix, image.suffix)}}
-                    style={styles.destinationImages}
-                  />
-                </View>
-              )) : null}
+            {destination?.images?.length > 0
+              ? destination?.images?.map((image: any) => (
+                  <View key={image?.id}>
+                    <Image
+                      source={{uri: getImageURL(image.prefix, image.suffix)}}
+                      style={styles.destinationImages}
+                    />
+                  </View>
+                ))
+              : null}
           </ScrollView>
         </View>
         <View>
-          {destination?.reviews?.length > 0 ? (<Text>Reviews</Text>) : null}
+          {destination?.reviews?.length > 0 ? <Text>Reviews</Text> : null}
           <View>
             <ScrollView horizontal={true}>
-                {destination?.reviews ? destination?.reviews.map((review: any, index: number) => (
-                  <View key={index}>
-                    <Text>{review.text}</Text>
-                  </View>
-                )) : null}
+              {destination?.reviews
+                ? destination?.reviews.map((review: any, index: number) => (
+                    <View key={index}>
+                      <Text>{review.text}</Text>
+                    </View>
+                  ))
+                : null}
             </ScrollView>
           </View>
         </View>

@@ -2,7 +2,7 @@ import React from 'react';
 import {Text, TextInput, TouchableOpacity, ScrollView} from 'react-native';
 import strings from '../../constants/strings';
 import EncryptedStorage from 'react-native-encrypted-storage';
-import { colors } from '../../constants/theme';
+import {colors} from '../../constants/theme';
 
 const ProfileScreen = ({navigation}) => {
   const handleLogout = async () => {

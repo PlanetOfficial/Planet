@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -13,13 +13,13 @@ import {
 import images from '../../constants/Images';
 import strings from '../../constants/strings';
 import DatePicker from 'react-native-date-picker';
-import MapView, { Marker } from 'react-native-maps';
+import MapView, {Marker} from 'react-native-maps';
 
 import DestinationSimplified from '../../components/DestinationSimplified';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {sendEvent} from '../../utils/api/CreateCalls/sendEvent';
-import { getRegionForCoordinates } from '../../utils/functions/Misc';
-import { MarkerObject } from '../../utils/interfaces/MarkerObject';
+import {getRegionForCoordinates} from '../../utils/functions/Misc';
+import {MarkerObject} from '../../utils/interfaces/MarkerObject';
 
 const SelectDestinations = ({navigation, route}) => {
   const [selectedDestinations, setSelectedDestinations] = useState(
@@ -58,7 +58,7 @@ const SelectDestinations = ({navigation, route}) => {
     }
   };
 
-  return (   
+  return (
     <SafeAreaView style={styles.safeAreaView}>
       <View style={styles.header}>
         <TouchableOpacity
@@ -92,23 +92,31 @@ const SelectDestinations = ({navigation, route}) => {
           <ScrollView style={styles.scrollView}>
             <MapView
               style={styles.map}
-              initialRegion={getRegionForCoordinates(markers)}
-            >
-              {markers?.length > 0 ? markers?.map((marker: MarkerObject) => (
-                <Marker coordinate={{latitude: marker.latitude, longitude: marker.longitude}} title={marker.name}/>
-              )) : null}
-              
+              initialRegion={getRegionForCoordinates(markers)}>
+              {markers?.length > 0
+                ? markers?.map((marker: MarkerObject, index: number) => (
+                    <Marker
+                      key={index}
+                      coordinate={{
+                        latitude: marker.latitude,
+                        longitude: marker.longitude,
+                      }}
+                      title={marker.name}
+                    />
+                  ))
+                : null}
             </MapView>
             <Text>Events</Text>
-            {selectedDestinations ?
-              selectedDestinations.map((destination: Object) => (
-                <View key={destination.id}>
-                  <DestinationSimplified
-                    name={destination.name}
-                    image={getImage(destination.images)}
-                  />
-                </View>
-              )) : null}
+            {selectedDestinations
+              ? selectedDestinations.map((destination: Object) => (
+                  <View key={destination.id}>
+                    <DestinationSimplified
+                      name={destination.name}
+                      image={getImage(destination.images)}
+                    />
+                  </View>
+                ))
+              : null}
           </ScrollView>
         </View>
         <View>

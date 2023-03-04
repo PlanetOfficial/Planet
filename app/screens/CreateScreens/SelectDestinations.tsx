@@ -18,7 +18,7 @@ import DestinationCard from '../../components/Destination';
 import {requestLocations} from '../../utils/api/CreateCalls/requestLocations';
 
 import {Category} from '../../utils/interfaces/Category';
-import { MarkerObject } from '../../utils/interfaces/MarkerObject';
+import {MarkerObject} from '../../utils/interfaces/MarkerObject';
 
 const SelectDestinations = ({navigation, route}) => {
   const [latitude, setLatitude] = useState(route?.params?.latitude);
@@ -29,7 +29,7 @@ const SelectDestinations = ({navigation, route}) => {
   );
 
   // gets all locations from selectedCategories
-  const [locations, setLocations] = useState({}); 
+  const [locations, setLocations] = useState({});
 
   const [selectedDestinations, setSelectedDestinations] = useState([]);
 
@@ -78,17 +78,17 @@ const SelectDestinations = ({navigation, route}) => {
           name: destination?.name,
           latitude: destination?.latitude,
           longitude: destination?.longitude,
-        }
+        };
 
         markers.push(markerObject);
-      })
+      });
 
       navigation.navigate('FinalizePlan', {
         selectedDestinations,
         markers,
       });
     }
-  }
+  };
 
   return (
     <SafeAreaView>
@@ -104,48 +104,49 @@ const SelectDestinations = ({navigation, route}) => {
       </View>
       <View>
         <ScrollView style={styles.destinationScrollView}>
-          {categories ?
-            categories.map((category: Category) => (
-              <View key={category.id}>
-                <Text style={styles.categoryTitle}>{category.name}</Text>
-                <ScrollView horizontal={true}>
-                  {locations[category.id] ?
-                    locations[category.id].map((destination: Object) => (
-                      <View key={destination.id}>
-                        <TouchableOpacity
-                          onPress={() => handleDestinationSelect(destination)}
-                          onLongPress={() =>
-                            navigation.navigate('DestinationDetails', {
-                              destination: destination,
-                              category: category.name,
-                            })
-                          }
-                          style={{
-                            backgroundColor: selectedDestinations.some(
-                              item => item.id === destination.id,
-                            )
-                              ? colors.lightBlue
-                              : colors.white,
-                          }}>
-                          <DestinationCard
-                            name={destination.name}
-                            rating={destination.rating}
-                            price={destination.price}
-                            image={getImage(destination.images)}
-                          />
-                        </TouchableOpacity>
-                      </View>
-                    )) : null}
-                </ScrollView>
-              </View>
-            )) : null}
+          {categories
+            ? categories.map((category: Category) => (
+                <View key={category.id}>
+                  <Text style={styles.categoryTitle}>{category.name}</Text>
+                  <ScrollView horizontal={true}>
+                    {locations[category.id]
+                      ? locations[category.id].map((destination: Object) => (
+                          <View key={destination.id}>
+                            <TouchableOpacity
+                              onPress={() =>
+                                handleDestinationSelect(destination)
+                              }
+                              onLongPress={() =>
+                                navigation.navigate('DestinationDetails', {
+                                  destination: destination,
+                                  category: category.name,
+                                })
+                              }
+                              style={{
+                                backgroundColor: selectedDestinations.some(
+                                  item => item.id === destination.id,
+                                )
+                                  ? colors.lightBlue
+                                  : colors.white,
+                              }}>
+                              <DestinationCard
+                                name={destination.name}
+                                rating={destination.rating}
+                                price={destination.price}
+                                image={getImage(destination.images)}
+                              />
+                            </TouchableOpacity>
+                          </View>
+                        ))
+                      : null}
+                  </ScrollView>
+                </View>
+              ))
+            : null}
         </ScrollView>
       </View>
       <View>
-        <Button
-          title={strings.main.done}
-          onPress={handleDone}
-        />
+        <Button title={strings.main.done} onPress={handleDone} />
       </View>
     </SafeAreaView>
   );

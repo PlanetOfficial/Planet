@@ -12,7 +12,7 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 import strings from '../../constants/strings';
 
 import {login} from '../../utils/api/auth/login';
-import { colors } from '../../constants/theme';
+import {colors} from '../../constants/theme';
 
 const LoginScreen = ({navigation}) => {
   const [email, setEmail] = useState('');

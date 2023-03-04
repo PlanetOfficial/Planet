@@ -7,6 +7,4 @@ export const colors = {
   blackTint: 'rgba(0,0,0,0.5)',
 };
 
-export const darkMode = {
-
-}
+export const darkMode = {};
