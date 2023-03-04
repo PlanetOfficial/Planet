@@ -1,14 +1,12 @@
 import React from 'react';
 import {View, Text, StyleSheet, Dimensions, Image} from 'react-native';
 import {colors} from "../../constants/colors";
-import Hat from "../../assets/vectors/hat.svg";
+import Shape1 from "../../assets/vectors/shape1.svg";
 
 const Library = () => {
   return (
     <View style={styles.container}>
-      <View style={{ width: "100%", aspectRatio: 1, position: "absolute", top: 0}} >
-        <Hat width="100%" height="100%" fill={colors.fill}/>
-      </View>
+      <View style={styles.shape1}><Shape1 fill={colors.fill}/></View>
       <Text style={styles.title}>Library</Text>
     </View>
   );
@@ -23,6 +21,12 @@ const styles = StyleSheet.create({
     height: Dimensions.get('window').height,
     backgroundColor: colors.white,
   },
+  shape1: {
+    width: "100%",
+    aspectRatio: 1,
+    position: "absolute",
+    top: 0
+  },
   title: {
     position: "absolute",
     top: 60,
@@ -31,7 +35,7 @@ const styles = StyleSheet.create({
     // font-family: 'Lato;,
     fontSize: 32,
     fontWeight: 'bold',
-    
+
     color: colors.black,
   },
 });
