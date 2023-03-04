@@ -10,7 +10,7 @@ import {
 import strings from '../../constants/strings';
 
 import {signup} from '../../utils/api/auth/signup';
-import { colors } from '../../constants/colors';
+import {colors} from '../../constants/colors';
 
 const SignUp = ({navigation}) => {
   const [name, setName] = useState('');

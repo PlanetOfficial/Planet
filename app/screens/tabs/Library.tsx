@@ -1,13 +1,13 @@
 import React from 'react';
-import {View, Text, StyleSheet, Dimensions, Image} from 'react-native';
-import {colors} from "../../constants/colors";
-import Hat from "../../assets/vectors/hat.svg";
+import {View, Text, StyleSheet, Dimensions} from 'react-native';
+import {colors} from '../../constants/colors';
+import Hat from '../../assets/vectors/hat.svg';
 
 const Library = () => {
   return (
     <View style={styles.container}>
-      <View style={{ width: "100%", aspectRatio: 1, position: "absolute", top: 0}} >
-        <Hat width="100%" height="100%" fill={colors.fill}/>
+      <View style={styles.hat}>
+        <Hat width="100%" height="100%" fill={colors.fill} />
       </View>
       <Text style={styles.title}>Library</Text>
     </View>
@@ -24,15 +24,18 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
   },
   title: {
-    position: "absolute",
+    position: 'absolute',
     top: 60,
     left: 35,
-
-    // font-family: 'Lato;,
     fontSize: 32,
     fontWeight: 'bold',
-    
     color: colors.black,
+  },
+  hat: {
+    width: '100%',
+    aspectRatio: 1,
+    position: 'absolute',
+    top: 0,
   },
 });
 

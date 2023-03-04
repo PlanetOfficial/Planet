@@ -14,7 +14,7 @@ import images from '../../constants/icons';
 import strings from '../../constants/strings';
 import integers from '../../constants/integers';
 import {getCategories} from '../../utils/api/CreateCalls/getCategories';
-import { colors } from '../../constants/colors';
+import {colors} from '../../constants/colors';
 
 // TODO: remove this and make it dynamic once images are settled
 const genres = [
