@@ -19,11 +19,13 @@ import DestinationSimplified from '../../components/DestinationSimplified';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {sendEvent} from '../../utils/api/CreateCalls/sendEvent';
 import { getRegionForCoordinates } from '../../utils/functions/Misc';
+import { MarkerObject } from '../../utils/interfaces/MarkerObject';
 
 const SelectDestinations = ({navigation, route}) => {
   const [selectedDestinations, setSelectedDestinations] = useState(
     route?.params?.selectedDestinations,
   );
+  const [markers, setMarkers] = useState(route?.params?.markers);
   const [eventTitle, setEventTitle] = useState(
     strings.createTabStack.untitledEvent,
   );
@@ -56,60 +58,71 @@ const SelectDestinations = ({navigation, route}) => {
     }
   };
 
-  return (
-    <SafeAreaView>
-      <View>
-        <View style={styles.header}>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('SelectDestinations')}>
-            <Image source={images.BackArrow} />
-          </TouchableOpacity>
-          <TextInput style={styles.headerTitle} onChangeText={setEventTitle}>
-            {eventTitle}
-          </TextInput>
-          <View />
-        </View>
-        <TouchableOpacity onPress={() => setOpen(true)}>
-          <Text>{date.toLocaleDateString()}</Text>
+  return (   
+    <SafeAreaView style={styles.safeAreaView}>
+      <View style={styles.header}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('SelectDestinations')}>
+          <Image source={images.BackArrow} />
         </TouchableOpacity>
-        <DatePicker
-          modal
-          open={open}
-          date={date}
-          onConfirm={newDate => {
-            setOpen(false);
-            setDate(newDate);
-          }}
-          onCancel={() => {
-            setOpen(false);
-          }}
-        />
+        <TextInput style={styles.headerTitle} onChangeText={setEventTitle}>
+          {eventTitle}
+        </TextInput>
+        <View />
       </View>
-      <View>
-        <ScrollView style={styles.scrollView}>
-          <View>
-            {/* Map View goes here */}
-          </View>
-          <Text>Events</Text>
-          {selectedDestinations ?
-            selectedDestinations.map((destination: Object) => (
-              <View key={destination.id}>
-                <DestinationSimplified
-                  name={destination.name}
-                  image={getImage(destination.images)}
-                />
-              </View>
-            )) : null}
-        </ScrollView>
-      </View>
-      <View>
-        <Button title={strings.main.save} onPress={() => handleSave()} />
+      <View style={styles.container}>
+        <View>
+          <TouchableOpacity onPress={() => setOpen(true)}>
+            <Text>{date.toLocaleDateString()}</Text>
+          </TouchableOpacity>
+          <DatePicker
+            modal
+            open={open}
+            date={date}
+            onConfirm={newDate => {
+              setOpen(false);
+              setDate(newDate);
+            }}
+            onCancel={() => {
+              setOpen(false);
+            }}
+          />
+        </View>
+        <View>
+          <ScrollView style={styles.scrollView}>
+            <MapView
+              style={styles.map}
+              initialRegion={getRegionForCoordinates(markers)}
+            >
+              {markers?.length > 0 ? markers?.map((marker: MarkerObject) => (
+                <Marker coordinate={{latitude: marker.latitude, longitude: marker.longitude}} title={marker.name}/>
+              )) : null}
+              
+            </MapView>
+            <Text>Events</Text>
+            {selectedDestinations ?
+              selectedDestinations.map((destination: Object) => (
+                <View key={destination.id}>
+                  <DestinationSimplified
+                    name={destination.name}
+                    image={getImage(destination.images)}
+                  />
+                </View>
+              )) : null}
+          </ScrollView>
+        </View>
+        <View>
+          <Button title={strings.main.save} onPress={() => handleSave()} />
+        </View>
       </View>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  safeAreaView: {
+    flex: 1,
+  },
   header: {
     height: 60,
     flexDirection: 'row',
@@ -120,8 +133,17 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 20,
   },
+  container: {
+    padding: 10,
+    flex: 1,
+  },
   scrollView: {
     height: '86%',
+  },
+  map: {
+    marginTop: 10,
+    height: 450,
+    flex: 1,
   },
 });
 

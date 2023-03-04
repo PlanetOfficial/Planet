@@ -17,7 +17,8 @@ import DestinationCard from '../../components/Destination';
 
 import {requestLocations} from '../../utils/api/CreateCalls/requestLocations';
 
-import {Category} from '../../utils/interfaces/category';
+import {Category} from '../../utils/interfaces/Category';
+import { MarkerObject } from '../../utils/interfaces/MarkerObject';
 
 const SelectDestinations = ({navigation, route}) => {
   const [latitude, setLatitude] = useState(route?.params?.latitude);
@@ -27,7 +28,8 @@ const SelectDestinations = ({navigation, route}) => {
     route?.params?.selectedCategories,
   );
 
-  const [locations, setLocations] = useState({});
+  // gets all locations from selectedCategories
+  const [locations, setLocations] = useState({}); 
 
   const [selectedDestinations, setSelectedDestinations] = useState([]);
 
@@ -67,6 +69,26 @@ const SelectDestinations = ({navigation, route}) => {
       );
     }
   };
+
+  const handleDone = () => {
+    if (selectedDestinations?.length > 0) {
+      let markers: Array<MarkerObject> = [];
+      selectedDestinations.forEach(destination => {
+        const markerObject = {
+          name: destination?.name,
+          latitude: destination?.latitude,
+          longitude: destination?.longitude,
+        }
+
+        markers.push(markerObject);
+      })
+
+      navigation.navigate('FinalizePlan', {
+        selectedDestinations,
+        markers,
+      });
+    }
+  }
 
   return (
     <SafeAreaView>
@@ -122,13 +144,7 @@ const SelectDestinations = ({navigation, route}) => {
       <View>
         <Button
           title={strings.main.done}
-          onPress={() => {
-            if (selectedDestinations?.length > 0) {
-              navigation.navigate('FinalizePlan', {
-                selectedDestinations: selectedDestinations,
-              });
-            }
-          }}
+          onPress={handleDone}
         />
       </View>
     </SafeAreaView>
