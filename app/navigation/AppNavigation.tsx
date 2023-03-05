@@ -45,7 +45,6 @@ function CreatePlanStack() {
   );
 }
 
-// const Tab = createBottomTabNavigator();
 function TabStack({navigation}) {
   return <NavBar navigation={navigation} />;
 }
