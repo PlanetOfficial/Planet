@@ -2,9 +2,9 @@ import React from 'react';
 import {Text, TextInput, TouchableOpacity, ScrollView} from 'react-native';
 import strings from '../../constants/strings';
 import EncryptedStorage from 'react-native-encrypted-storage';
-import { colors } from '../../constants/theme';
+import {colors} from '../../constants/colors';
 
-const ProfileScreen = ({navigation}) => {
+const Settings = ({navigation}) => {
   const handleLogout = async () => {
     try {
       await EncryptedStorage.removeItem('auth_token');
@@ -65,7 +65,7 @@ const styles = {
     marginBottom: 10,
   },
   button: {
-    backgroundColor: colors.lightBlue,
+    backgroundColor: colors.accent,
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
@@ -80,7 +80,7 @@ const styles = {
     marginTop: 20,
   },
   forgotButtonText: {
-    color: colors.lightBlue,
+    color: colors.accent,
     fontSize: 14,
   },
   upgradeButton: {
@@ -90,7 +90,7 @@ const styles = {
     color: colors.white,
     fontSize: 16,
     fontWeight: 'bold',
-    backgroundColor: colors.lightBlue,
+    backgroundColor: colors.accent,
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
@@ -99,10 +99,10 @@ const styles = {
     marginTop: 20,
   },
   logoutButtonText: {
-    color: colors.lightBlue,
+    color: colors.accent,
     fontSize: 16,
     fontWeight: 'bold',
   },
 };
 
-export default ProfileScreen;
+export default Settings;
