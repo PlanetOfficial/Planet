@@ -26,7 +26,7 @@ const Place = () => {
             <View style={styles.infoLeft}>
                 <View style={styles.hoursContainer}>
                     <Text style={styles.hours}>Hours:</Text>
-                    <Text style={styles.hoursText}>Mon-Fri: 1:00 PM - 11:00 PM Sat-Sun: 1:00 PM - 5:00 PM </Text>
+                    <Text style={styles.hoursText}>Mon-Fri: 1:00 PM - 11:00 PM{'\n'}Sat-Sun: 1:00 PM - 5:00 PM </Text>
                 </View>
                 <Svg>
                     <Line x1={0} y1={67.5} x2={(W - 60) / 2} y2={67.5} stroke={colors.accent} strokeWidth={1.5}/>

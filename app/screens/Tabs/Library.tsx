@@ -1,13 +1,15 @@
 import React from 'react';
-import {View, Text, StyleSheet, Dimensions, Image} from 'react-native';
+import {View, Text, StyleSheet, Dimensions} from 'react-native';
 import {colors} from "../../constants/colors";
 import Shape1 from "../../assets/vectors/shape1.svg";
+import SegmentedControl from '@react-native-segmented-control/segmented-control';
 
 const Library = () => {
   return (
     <View style={styles.container}>
       <View style={styles.shape1}><Shape1 fill={colors.fill}/></View>
       <Text style={styles.title}>Library</Text>
+
     </View>
   );
 };
