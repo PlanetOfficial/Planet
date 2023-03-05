@@ -10,7 +10,7 @@ import {
 import strings from '../../constants/strings';
 
 import {signup} from '../../utils/api/auth/signup';
-import {colors} from '../../constants/theme';
+import {colors} from '../../constants/colors';
 
 const SignUp = ({navigation}) => {
   const [name, setName] = useState('');
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     height: 20,
   },
   button: {
-    backgroundColor: colors.lightBlue,
+    backgroundColor: colors.accent,
     padding: 10,
     alignItems: 'center',
   },

@@ -8,9 +8,9 @@ import {
   Image,
 } from 'react-native';
 
-import images from '../../constants/Images';
 import {ScrollView} from 'react-native';
 import misc from '../../constants/misc';
+import images from '../../constants/icons';
 
 const DestinationDetails = ({navigation, route}) => {
   const [destination, setDestination] = useState(route?.params?.destination);

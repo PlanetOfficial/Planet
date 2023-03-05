@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Text, Image, StyleSheet} from 'react-native';
-import {colors} from '../constants/theme';
+import {colors} from '../constants/colors';
 
 interface Props {
   name: string;

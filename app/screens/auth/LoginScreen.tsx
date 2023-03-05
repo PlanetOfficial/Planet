@@ -12,7 +12,7 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 import strings from '../../constants/strings';
 
 import {login} from '../../utils/api/auth/login';
-import {colors} from '../../constants/theme';
+import {colors} from '../../constants/colors';
 
 const LoginScreen = ({navigation}) => {
   const [email, setEmail] = useState('');
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
   forgotPassword: {
     marginTop: 8,
     fontSize: 14,
-    color: colors.lightBlue,
+    color: colors.accent,
     textAlign: 'right',
     width: '80%',
   },
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     marginTop: 24,
   },
   bottomTextLink: {
-    color: colors.lightBlue,
+    color: colors.accent,
     marginLeft: 8,
     fontWeight: 'bold',
   },

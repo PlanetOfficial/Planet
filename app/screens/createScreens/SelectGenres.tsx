@@ -10,11 +10,11 @@ import {
   Button,
   Modal,
 } from 'react-native';
-import images from '../../constants/Images';
+import images from '../../constants/icons';
 import strings from '../../constants/strings';
 import integers from '../../constants/integers';
 import {getCategories} from '../../utils/api/CreateCalls/getCategories';
-import {colors} from '../../constants/theme';
+import {colors} from '../../constants/colors';
 
 // TODO: remove this and make it dynamic once images are settled
 const genres = [
@@ -256,7 +256,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   doneButton: {
-    backgroundColor: colors.lightBlue,
+    backgroundColor: colors.accent,
     paddingVertical: 10,
     paddingHorizontal: 30,
     borderRadius: 5,
@@ -270,7 +270,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colors.blackTint,
+    backgroundColor: colors.fill,
   },
   modalHeader: {
     flexDirection: 'row',
@@ -285,7 +285,7 @@ const styles = StyleSheet.create({
     width: 70,
     height: 70,
     borderRadius: 50,
-    backgroundColor: colors.lightBlue,
+    backgroundColor: colors.accent,
     margin: 10,
     alignItems: 'center',
     justifyContent: 'center',
