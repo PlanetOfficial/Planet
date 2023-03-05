@@ -34,8 +34,8 @@ Check for hard coded constants, try to put them in a separate file.
 do ?. instead of . when appropriate
 
 Naming Scheme:
--Folder names are camelCase
--File names are PascalCase
+-TSX files are PascalCase
+-Everything else camelCase
 
 UPDATE LIBRARIES OFTEN!!
 
