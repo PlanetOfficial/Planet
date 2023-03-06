@@ -19,6 +19,7 @@ const icons = {
   trendingInactive: require('../assets/icons/trending-inactive.png'),
   create: require('../assets/icons/create.png'),
   share: require('../assets/icons/share.png'),
+  share: require('../assets/icons/search.png'),
 };
 
 export default icons;
