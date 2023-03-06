@@ -3,51 +3,100 @@ import {View, Text, StyleSheet, Dimensions, Image, FlatList, SafeAreaView} from 
 import {colors} from "../../constants/colors";
 import Shape1 from "../../assets/vectors/shape1.svg";
 import SegmentedControlTab from "react-native-segmented-control-tab";
-import { Svg, Circle } from 'react-native-svg';
+import { Svg, Circle, Line } from 'react-native-svg';
 import icons from "../../constants/icons";
 
 const W = Dimensions.get('window').width;
 const H = Dimensions.get('window').height;
 
-const DATA = [
+const PLACE_DATA = [
   {
     id: '1',
     name: 'Share Tea',
     category: 'Bubble Tea Shop',
+    image: require('../../assets/sharetea.jpeg'),
   },
   {
     id: '2',
-    name: 'Share Tea',
-    category: 'Bubble Tea Shop',
+    name: 'Bellevue Art Museum',
+    category: 'Art Exhibit',
+    image: require('../../assets/sharetea.jpeg'),
   },
   {
     id: '3',
-    name: 'Share Tea',
-    category: 'Bubble Tea Shop',
+    name: 'Mama\'s kitchen',
+    category: 'Korean Restaurant',
+    image: require('../../assets/sharetea.jpeg'),
   },
   {
     id: '4',
     name: 'Share Tea',
     category: 'Bubble Tea Shop',
-  },
-  {
-    id: '5',
-    name: 'Share Tea',
-    category: 'Bubble Tea Shop',
-  },
-  {
-    id: '6',
-    name: 'Share Tea',
-    category: 'Bubble Tea Shop',
+    image: require('../../assets/sharetea.jpeg'),
   },
 ];
 
-type ItemProps = {name: string, category: string};
+const EVENT_DATA = [
+  {
+    id: '1',
+    name: 'Leo\'s Nasty 19th Birthday',
+    date: 'June 14th, 2023',
+    images: [
+      require('../../assets/sharetea.jpeg'), 
+      require('../../assets/sharetea.jpeg'), 
+      require('../../assets/sharetea.jpeg'),
+    ]
+  },
+  {
+    id: '2',
+    name: 'Donutter First Run',
+    date: 'November 19th, 2022',
+    images: [
+      require('../../assets/sharetea.jpeg'), 
+      require('../../assets/sharetea.jpeg'), 
+      require('../../assets/sharetea.jpeg'),
+    ]
+  },
+  {
+    id: '3',
+    name: 'Anniversary Night Out',
+    date: 'Feburary 2nd, 2024',
+    images: [
+      require('../../assets/sharetea.jpeg'), 
+      require('../../assets/sharetea.jpeg'), 
+      require('../../assets/sharetea.jpeg'),
+    ]
+  },
+  {
+    id: '4',
+    name: 'Saturdays are for the Boys',
+    date: 'December 18th, 2026',
+    images: [
+      require('../../assets/sharetea.jpeg'), 
+      require('../../assets/sharetea.jpeg'), 
+      require('../../assets/sharetea.jpeg'),
+    ]
+  },
+];
 
-const Item = ({name, category}: ItemProps) => (
-  <View style={styles.itemContainer}>
+type PlaceProps = {name: string, category: string, image: any};
+
+const Place = ({name, category, image}: PlaceProps) => (
+  <View style={styles.itemPlaceContainer}>
     <Text style={styles.nameTitle}>{name}</Text>
     <Text style={styles.categoryTitle}>{category}</Text>
+    <Image style={styles.image} source={image}/>
+  </View>
+);
+
+type EventProps = {name: string, date: string, images: any[]};
+const Event = ({name, date, images}: EventProps) => (
+  <View style={styles.itemEventContainer}>
+    <Text style={styles.nameTitle}>{name}</Text>
+    <Text style={styles.categoryTitle}>{date}</Text>
+    <Image style={styles.image} source={images[0]} />
+    <Image style={styles.secondImage} source={images[1]} />
+    <Image style={styles.thirdImage} source={images[2]} />
   </View>
 );
 
@@ -61,7 +110,7 @@ const Library = () => {
         <Svg width={40} height={40}>
           <Circle fill={colors.grey} cx={20} cy={20} r={20}/>
         </Svg>
-        <Image style={styles.search} source={icons.share}/>
+        <Image  style={styles.search} source={icons.share}/>
       </View>
       <View style={styles.segmentedControlTab}>
         <SegmentedControlTab
@@ -71,19 +120,32 @@ const Library = () => {
           tabTextStyle={styles.tabText}
           activeTabTextStyle={styles.activeTabText}
           borderRadius={25}
-          values={["Events", "Places"]}
+          values={["Places", "Events"]}
           selectedIndex={selectedIndex}
           onTabPress={(index) => setIndex(index)}
         />
       </View>
-      <Text style={styles.sortBy}>Sort by: Date Saved</Text>
-      <SafeAreaView style={styles.placeContainer}>
-        <FlatList
-          data={DATA}
-          renderItem={({item}) => <Item name={item.name} category={item.category}/>}
-          keyExtractor={item => item.id}
-        />
-      </SafeAreaView>
+      {selectedIndex == 0?
+      <>
+        <Text style={styles.sortBy}>Sort by: Date Saved</Text>
+        <SafeAreaView style={styles.placeContainer}>
+          <FlatList
+            data={PLACE_DATA}
+            renderItem={({item}) => <Place name={item.name} category={item.category} image={item.image}/>}
+            keyExtractor={item => item.id}
+          />
+        </SafeAreaView>
+      </>:<>
+        <Text style={styles.sortBy}>Sort by: Date Planned</Text>
+        <SafeAreaView style={styles.placeContainer}>
+          <FlatList
+            data={EVENT_DATA}
+            renderItem={({item}) => <Event name={item.name} date={item.date} images = {item.images}/>}
+            keyExtractor={item => item.id}
+          />
+        </SafeAreaView>
+      </>
+      }
     </View>
   );
 };
@@ -174,9 +236,15 @@ const styles = StyleSheet.create({
     height: H - 240,
     width: W - 70,
   },
-  itemContainer: {
+  itemPlaceContainer: {
     width: 320,
     height: 200,
+    marginBottom: 20,
+  },
+  itemEventContainer: {
+    width: 320,
+    height: 210,
+    marginBottom: 20,
   },
   nameTitle: {
     position: "relative",
@@ -188,6 +256,28 @@ const styles = StyleSheet.create({
     marginTop: 2,
     fontSize: 12,
     color: colors.accent,
+    marginBottom: 2,
+  },
+  image: {
+    width: W - 70,
+    height: 164,
+    borderRadius: 10,
+  },
+  secondImage: {
+    width: W - 80,
+    height: 164,
+    left: 5,
+    bottom: 159,
+    borderRadius: 10,
+    zIndex: -1,
+  },
+  thirdImage: {
+    width: W - 90,
+    height: 164,
+    left: 10,
+    bottom: 318,
+    borderRadius: 10,
+    zIndex: -2,
   },
 });
 
