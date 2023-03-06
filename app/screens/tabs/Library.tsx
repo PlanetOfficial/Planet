@@ -166,11 +166,9 @@ const styles = StyleSheet.create({
     top: 0
   },
   title: {
-    position: "absolute",
+    position: 'absolute',
     top: 60,
     left: 35,
-
-    // font-family: 'Lato;,
     fontSize: 32,
     fontWeight: 'bold',
 

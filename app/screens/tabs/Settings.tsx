@@ -2,7 +2,7 @@ import React from 'react';
 import {Text, TextInput, TouchableOpacity, ScrollView} from 'react-native';
 import strings from '../../constants/strings';
 import EncryptedStorage from 'react-native-encrypted-storage';
-import { colors } from '../../constants/colors';
+import {colors} from '../../constants/colors';
 
 const Settings = ({navigation}) => {
   const handleLogout = async () => {

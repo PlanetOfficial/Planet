@@ -30,6 +30,13 @@ npm run lint -- --fix
 
 Test on android and iOS for functionality.
 
+Check for hard coded constants, try to put them in a separate file.
+do ?. instead of . when appropriate
+
+Naming Scheme:
+-TSX files are PascalCase
+-Everything else camelCase
+
 UPDATE LIBRARIES OFTEN!!
 
 <h1>Deployment</h1>

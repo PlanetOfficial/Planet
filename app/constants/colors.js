@@ -6,6 +6,4 @@ export const colors = {
   fill: '#ffd496',
 };
 
-export const darkMode = {
-  
-}
+export const darkMode = {};

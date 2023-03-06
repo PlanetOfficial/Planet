@@ -1,7 +1,6 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import NavBar from '../screens/tabs/NavBar';
 import LoginScreen from '../screens/auth/LoginScreen';
@@ -46,11 +45,8 @@ function CreatePlanStack() {
   );
 }
 
-// const Tab = createBottomTabNavigator();
-function TabStack({}) {
-  return (
-    NavBar
-  );
+function TabStack({navigation}) {
+  return <NavBar navigation={navigation} />;
 }
 
 const MainStack = createStackNavigator();

@@ -8,7 +8,7 @@ const icons = {
   outdoors: require('../assets/park.png'),
   restaurant: require('../assets/restaurant.png'),
   dessert: require('../assets/dessert.png'),
-  
+
   friendsActive: require('../assets/icons/friends-active.png'),
   friendsInactive: require('../assets/icons/friends-inactive.png'),
   libraryActive: require('../assets/icons/library-active.png'),
