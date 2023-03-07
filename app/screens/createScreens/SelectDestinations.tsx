@@ -9,7 +9,7 @@ import {
   Button,
   ScrollView,
 } from 'react-native';
-import images from '../../constants/icons';
+import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
 import {colors} from '../../constants/colors';
 
@@ -54,7 +54,7 @@ const SelectDestinations = ({navigation, route}) => {
   const getImage = (imagesData: Array<number>) => {
     // TODO: if there are images provided by API, then return one of those images instead
 
-    return images.experience;
+    return icons.experience;
   };
 
   const handleDestinationSelect = (destination: Object) => {
@@ -95,7 +95,7 @@ const SelectDestinations = ({navigation, route}) => {
       <View>
         <View style={styles.header}>
           <TouchableOpacity onPress={() => navigation.navigate('SelectGenres')}>
-            <Image source={images.BackArrow} />
+            <Image source={icons.BackArrow} />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>
             {strings.createTabStack.selectDestinations}

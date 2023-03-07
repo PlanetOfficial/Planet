@@ -10,7 +10,7 @@ import {
   ScrollView,
   TextInput,
 } from 'react-native';
-import images from '../../constants/icons';
+import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
 import DatePicker from 'react-native-date-picker';
 import MapView, {Marker} from 'react-native-maps';
@@ -35,7 +35,7 @@ const SelectDestinations = ({navigation, route}) => {
   const getImage = (imagesData: Array<number>) => {
     // TODO: if there are images provided by API, then return one of those images instead
 
-    return images.experience;
+    return icons.experience;
   };
 
   const handleSave = async () => {
@@ -63,7 +63,7 @@ const SelectDestinations = ({navigation, route}) => {
       <View style={styles.header}>
         <TouchableOpacity
           onPress={() => navigation.navigate('SelectDestinations')}>
-          <Image source={images.BackArrow} />
+          <Image source={icons.BackArrow} />
         </TouchableOpacity>
         <TextInput style={styles.headerTitle} onChangeText={setEventTitle}>
           {eventTitle}

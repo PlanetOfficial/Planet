@@ -5,5 +5,3 @@ export const colors = {
   accent: '#f36f3f',
   fill: '#ffd496',
 };
-
-export const darkMode = {};

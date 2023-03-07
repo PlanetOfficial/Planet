@@ -2,7 +2,7 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
-import NavBar from '../screens/tabs/NavBar';
+import NavBar from '../screens/components/NavBar';
 import LoginScreen from '../screens/auth/LoginScreen';
 import SignUp from '../screens/auth/SignUp';
 import ForgotPassword from '../screens/auth/ForgotPassword';
@@ -11,6 +11,7 @@ import SelectGenres from '../screens/createScreens/SelectGenres';
 import SelectDestinations from '../screens/createScreens/SelectDestinations';
 import FinalizePlan from '../screens/createScreens/FinalizePlan';
 import DestinationDetails from '../screens/createScreens/DestinationDetails';
+import Place from '../screens/components/Place';
 
 const PlanCreationStack = createStackNavigator();
 function CreatePlanStack() {
@@ -69,6 +70,11 @@ function AppNavigation() {
         <MainStack.Screen
           name="CreateStack"
           component={CreatePlanStack}
+          options={{headerShown: false}}
+        />
+        <MainStack.Screen
+          name="Place"
+          component={Place}
           options={{headerShown: false}}
         />
       </MainStack.Navigator>

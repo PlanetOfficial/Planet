@@ -8,15 +8,15 @@ import {
   FlatList,
   SafeAreaView,
 } from 'react-native';
-import {colors} from '../../constants/colors';
-import Shape1 from '../../assets/vectors/shape1.svg';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
-import {Svg, Circle, Line} from 'react-native-svg';
-import icons from '../../constants/icons';
+
+import {colors} from '../../constants/colors';
+import {miscIcons, vectors} from '../../constants/images';
 
 const W = Dimensions.get('window').width;
 const H = Dimensions.get('window').height;
 
+// temporary
 const PLACE_DATA = [
   {
     id: '1',
@@ -87,215 +87,169 @@ const EVENT_DATA = [
   },
 ];
 
-type PlaceProps = {name: string; category: string; image: any};
-
-const Place = ({name, category, image}: PlaceProps) => (
-  <View style={styles.itemPlaceContainer}>
-    <Text style={styles.nameTitle}>{name}</Text>
-    <Text style={styles.categoryTitle}>{category}</Text>
-    <Image style={styles.image} source={image} />
-  </View>
-);
-
-type EventProps = {name: string; date: string; images: any[]};
-const Event = ({name, date, images}: EventProps) => (
-  <View style={styles.itemEventContainer}>
-    <Text style={styles.nameTitle}>{name}</Text>
-    <Text style={styles.categoryTitle}>{date}</Text>
-    <Image style={styles.image} source={images[0]} />
-    <Image style={styles.secondImage} source={images[1]} />
-    <Image style={styles.thirdImage} source={images[2]} />
-  </View>
-);
-
 const Library = () => {
   const [selectedIndex, setIndex] = useState(0);
   return (
     <View style={styles.container}>
-      <View style={styles.shape1}>
-        <Shape1 fill={colors.fill} />
-      </View>
+      <Image style={styles.background} source={vectors.shape1} />
       <Text style={styles.title}>Library</Text>
-      <View style={styles.searchButton}>
-        <Svg width={40} height={40}>
-          <Circle fill={colors.grey} cx={20} cy={20} r={20} />
-        </Svg>
-        <Image style={styles.search} source={icons.share} />
-      </View>
-      <View style={styles.segmentedControlTab}>
-        <SegmentedControlTab
-          tabsContainerStyle={styles.tabsContainer}
-          tabStyle={styles.tabs}
-          activeTabStyle={styles.activeTab}
-          tabTextStyle={styles.tabText}
-          activeTabTextStyle={styles.activeTabText}
-          borderRadius={25}
-          values={['Places', 'Events']}
-          selectedIndex={selectedIndex}
-          onTabPress={index => setIndex(index)}
-        />
-      </View>
-      {selectedIndex == 0 ? (
-        <>
-          <Text style={styles.sortBy}>Sort by: Date Saved</Text>
-          <SafeAreaView style={styles.placeContainer}>
-            <FlatList
-              data={PLACE_DATA}
-              renderItem={({item}) => (
-                <Place
-                  name={item.name}
-                  category={item.category}
-                  image={item.image}
-                />
-              )}
-              keyExtractor={item => item.id}
-            />
-          </SafeAreaView>
-        </>
-      ) : (
-        <>
-          <Text style={styles.sortBy}>Sort by: Date Planned</Text>
-          <SafeAreaView style={styles.placeContainer}>
-            <FlatList
-              data={EVENT_DATA}
-              renderItem={({item}) => (
-                <Event name={item.name} date={item.date} images={item.images} />
-              )}
-              keyExtractor={item => item.id}
-            />
-          </SafeAreaView>
-        </>
-      )}
+      <Image style={styles.search} source={miscIcons.search} />
+      {SegmentedControl(selectedIndex, setIndex)}
+      {selectedIndex === 0 ? Places() : Events()}
     </View>
   );
 };
 
+const SegmentedControl = (
+  selectedIndex: number,
+  setIndex: React.Dispatch<React.SetStateAction<number>>,
+) => (
+  <View style={styles.sctContainer}>
+    <SegmentedControlTab
+      tabsContainerStyle={sctStyles.container}
+      tabStyle={sctStyles.tab}
+      activeTabStyle={sctStyles.activeTab}
+      tabTextStyle={sctStyles.text}
+      activeTabTextStyle={sctStyles.activeText}
+      borderRadius={25}
+      values={['Places', 'Events']}
+      selectedIndex={selectedIndex}
+      onTabPress={index => setIndex(index)}
+    />
+  </View>
+);
+
+const Places = () => (
+  <SafeAreaView style={styles.cardsContainer}>
+    <FlatList
+      data={PLACE_DATA}
+      renderItem={({item}) => Place(item.name, item.category, item.image)}
+      keyExtractor={item => item.id}
+    />
+  </SafeAreaView>
+);
+
+const Place = (name: string, category: string, image: any) => (
+  <View style={cardStyles.container}>
+    <Text style={cardStyles.name}>{name}</Text>
+    <Text style={cardStyles.category}>{category}</Text>
+    <Image style={cardStyles.image} source={image} />
+  </View>
+);
+
+const Events = () => (
+  <SafeAreaView style={styles.cardsContainer}>
+    <FlatList
+      data={EVENT_DATA}
+      renderItem={({item}) => Event(item.name, item.date, item.images)}
+      keyExtractor={item => item.id}
+    />
+  </SafeAreaView>
+);
+
+const Event = (name: string, date: string, images: any[]) => (
+  <View style={cardStyles.container}>
+    <Text style={cardStyles.name}>{name}</Text>
+    <Text style={cardStyles.category}>{date}</Text>
+    <Image style={cardStyles.image} source={images[0]} />
+    <Image style={cardStyles.imageOverlap} source={images[1]} />
+  </View>
+);
+
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
+    width: W,
+    height: H,
     backgroundColor: colors.white,
   },
-  shape1: {
-    width: '100%',
-    aspectRatio: 1,
-    position: 'absolute',
-    top: 0,
+  background: {
+    width: W,
+    height: 240,
+    tintColor: colors.fill,
   },
   title: {
     position: 'absolute',
     top: 60,
-    left: 35,
+    left: 30,
     fontSize: 32,
     fontWeight: 'bold',
-
     color: colors.black,
   },
   search: {
     position: 'absolute',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 20,
-    height: 20,
-    top: 9,
-    left: 9,
+    top: 64,
+    right: 30,
+    width: 24,
+    height: 24,
     tintColor: colors.black,
   },
-  searchButton: {
-    width: '100%',
-    aspectRatio: 1,
+  sctContainer: {
     position: 'absolute',
-    top: 60,
-    left: W - 75,
+    top: 120,
   },
-  segmentedControlTab: {
+  cardsContainer: {
     position: 'absolute',
-    top: 125,
+    top: 240,
+    width: W - 60,
+    height: H - 240,
   },
-  tabsContainer: {
-    width: 320,
+});
+
+const sctStyles = StyleSheet.create({
+  container: {
+    width: W - 60,
     height: 50,
     borderRadius: 25,
     backgroundColor: colors.grey,
   },
-  tabs: {
-    borderRadius: 25,
-    width: 155,
-    height: 40,
+  tab: {
     margin: 5,
-    borderWidth: 0,
+    borderRadius: 20,
     borderColor: colors.grey,
     backgroundColor: colors.grey,
   },
   activeTab: {
     backgroundColor: colors.white,
   },
-  tabText: {
+  text: {
     fontSize: 16,
     fontWeight: 'bold',
     color: colors.black,
   },
-  activeTabText: {
+  activeText: {
     color: colors.accent,
   },
-  sortBy: {
-    position: 'absolute',
-    fontSize: 14,
-    color: colors.accent,
-    top: 210,
-    right: 40,
-  },
-  placeContainer: {
-    position: 'absolute',
-    top: 240,
-    height: H - 240,
-    width: W - 70,
-  },
-  itemPlaceContainer: {
-    width: 320,
+});
+
+const cardStyles = StyleSheet.create({
+  container: {
+    width: W - 60,
     height: 200,
-    marginBottom: 20,
+    marginBottom: 25,
   },
-  itemEventContainer: {
-    width: 320,
-    height: 210,
-    marginBottom: 20,
-  },
-  nameTitle: {
-    position: 'relative',
-    fontWeight: 'bold',
+  name: {
     fontSize: 20,
+    fontWeight: 'bold',
     color: colors.black,
   },
-  categoryTitle: {
-    marginTop: 2,
+  category: {
+    marginVertical: 2,
     fontSize: 12,
     color: colors.accent,
-    marginBottom: 2,
   },
   image: {
+    width: W - 60,
+    height: 164,
+    borderRadius: 10,
+  },
+  imageOverlap: {
+    bottom: 159,
+    left: 5,
     width: W - 70,
     height: 164,
     borderRadius: 10,
-  },
-  secondImage: {
-    width: W - 80,
-    height: 164,
-    left: 5,
-    bottom: 159,
-    borderRadius: 10,
     zIndex: -1,
-  },
-  thirdImage: {
-    width: W - 90,
-    height: 164,
-    left: 10,
-    bottom: 318,
-    borderRadius: 10,
-    zIndex: -2,
   },
 });
 

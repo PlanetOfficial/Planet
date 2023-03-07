@@ -10,7 +10,7 @@ import {
   Button,
   Modal,
 } from 'react-native';
-import images from '../../constants/icons';
+import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
 import integers from '../../constants/integers';
 import {getCategories} from '../../utils/api/CreateCalls/getCategories';
@@ -21,32 +21,32 @@ const genres = [
   {
     id: 1,
     name: strings.createTabStack.adventure,
-    image: images.adventure,
+    image: icons.adventure,
   },
   {
     id: 2,
     name: strings.createTabStack.experience,
-    image: images.experience,
+    image: icons.experience,
   },
   {
     id: 3,
     name: strings.createTabStack.shopping,
-    image: images.shopping,
+    image: icons.shopping,
   },
   {
     id: 4,
     name: strings.createTabStack.outdoors,
-    image: images.outdoors,
+    image: icons.outdoors,
   },
   {
     id: 6,
     name: strings.createTabStack.restaurants,
-    image: images.restaurant,
+    image: icons.restaurant,
   },
   {
     id: 5,
     name: strings.createTabStack.drinksAndDessert,
-    image: images.dessert,
+    image: icons.dessert,
   },
 ];
 
@@ -97,7 +97,7 @@ const SelectGenres = ({navigation, route}) => {
       <View>
         <View style={styles.header}>
           <TouchableOpacity onPress={() => navigation.navigate('MapSelection')}>
-            <Image source={images.BackArrow} />
+            <Image source={icons.BackArrow} />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>
             {strings.createTabStack.selectCategories}
@@ -147,7 +147,7 @@ const SelectGenres = ({navigation, route}) => {
                   setModalVisible(false);
                   setSelectedGenre('');
                 }}>
-                <Image source={images.BackArrow} />
+                <Image source={icons.BackArrow} />
               </TouchableOpacity>
               <View style={styles.genreHeader}>
                 <Text style={styles.genreText}>{selectedGenre}</Text>
@@ -179,7 +179,7 @@ const SelectGenres = ({navigation, route}) => {
                           }}>
                           <View style={styles.circle}>
                             <Image
-                              source={images.XButton}
+                              source={icons.XButton}
                               style={styles.image}
                             />
                           </View>
