@@ -35,7 +35,7 @@ const SelectDestinations = ({navigation, route}) => {
   const getImage = (imagesData: Array<number>) => {
     // TODO: if there are images provided by API, then return one of those images instead
 
-    return images.experience;
+    return icons.experience;
   };
 
   const handleSave = async () => {

@@ -179,7 +179,7 @@ const SelectGenres = ({navigation, route}) => {
                           }}>
                           <View style={styles.circle}>
                             <Image
-                              source={images.XButton}
+                              source={icons.XButton}
                               style={styles.image}
                             />
                           </View>
