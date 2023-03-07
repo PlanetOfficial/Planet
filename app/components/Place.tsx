@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, StyleSheet, Dimensions, Image} from 'react-native';
-import {colors} from '../../constants/colors';
-import icons from '../../constants/icons';
+import {colors} from '../constants/colors';
+import {miscIcons} from '../constants/images';
 import Back from '../../assets/vectors/back.svg';
 import Shape2 from '../../assets/vectors/shape2.svg';
 import {Svg, Line, Circle} from 'react-native-svg';
@@ -31,7 +31,7 @@ const Place = () => {
             r={29}
           />
         </Svg>
-        <Image style={styles.share} source={icons.share} />
+        <Image style={styles.share} source={miscIcons.share} />
       </View>
       <View style={styles.infoLeft}>
         <View style={styles.hoursContainer}>

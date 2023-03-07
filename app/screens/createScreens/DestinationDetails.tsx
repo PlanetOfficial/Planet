@@ -10,7 +10,7 @@ import {
 
 import {ScrollView} from 'react-native';
 import misc from '../../constants/misc';
-import images from '../../constants/icons';
+import {icons} from '../../constants/images';
 
 const DestinationDetails = ({navigation, route}) => {
   const [destination, setDestination] = useState(route?.params?.destination);
@@ -24,7 +24,7 @@ const DestinationDetails = ({navigation, route}) => {
     <SafeAreaView>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Image source={images.BackArrow} />
+          <Image source={icons.BackArrow} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>{destination?.name}</Text>
       </View>

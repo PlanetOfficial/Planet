@@ -11,7 +11,7 @@ import Trending from './Trending';
 import Friends from './Friends';
 import Library from './Library';
 import Settings from './Settings';
-import icons from '../../constants/icons';
+import {tabIcons} from '../../constants/images';
 import {colors} from '../../constants/colors';
 import {CurvedBottomBar} from 'react-native-curved-bottom-bar';
 
@@ -22,16 +22,16 @@ export const NavBar = ({navigation}) => {
 
     switch (routeName) {
       case 'Trending':
-        source = focused ? icons.trendingActive : icons.trendingInactive;
+        source = focused ? tabIcons.trendingActive : tabIcons.trendingInactive;
         break;
       case 'Friends':
-        source = focused ? icons.friendsActive : icons.friendsInactive;
+        source = focused ? tabIcons.friendsActive : tabIcons.friendsInactive;
         break;
       case 'Library':
-        source = focused ? icons.libraryActive : icons.libraryInactive;
+        source = focused ? tabIcons.libraryActive : tabIcons.libraryInactive;
         break;
       case 'Settings':
-        source = focused ? icons.settingsActive : icons.settingsInactive;
+        source = focused ? tabIcons.settingsActive : tabIcons.settingsInactive;
         break;
       default:
         source = -1;
@@ -63,7 +63,7 @@ export const NavBar = ({navigation}) => {
           <Animated.View style={styles.circle}>
             <TouchableOpacity
               onPress={() => navigation.navigate('CreateStack')}>
-              <Image style={styles.plus} source={icons.create} />
+              <Image style={styles.plus} source={tabIcons.create} />
             </TouchableOpacity>
           </Animated.View>
         )}

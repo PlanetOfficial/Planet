@@ -9,7 +9,7 @@ import {
   Button,
   ScrollView,
 } from 'react-native';
-import images from '../../constants/icons';
+import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
 import {colors} from '../../constants/colors';
 
@@ -95,7 +95,7 @@ const SelectDestinations = ({navigation, route}) => {
       <View>
         <View style={styles.header}>
           <TouchableOpacity onPress={() => navigation.navigate('SelectGenres')}>
-            <Image source={images.BackArrow} />
+            <Image source={icons.BackArrow} />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>
             {strings.createTabStack.selectDestinations}

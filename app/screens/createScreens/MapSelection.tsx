@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import MapView, {Circle} from 'react-native-maps';
 
-import images from '../../constants/icons';
+import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
 import integers from '../../constants/integers';
 import {colors} from '../../constants/colors';
@@ -38,7 +38,7 @@ const MapScreen = ({navigation}) => {
     <SafeAreaView style={styles.safeAreaView}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.navigate('TabStack')}>
-          <Image source={images.XButton} />
+          <Image source={icons.XButton} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>
           {strings.createTabStack.planEvent}
@@ -53,7 +53,7 @@ const MapScreen = ({navigation}) => {
               });
             }
           }}>
-          <Image source={images.NextArrow} />
+          <Image source={icons.NextArrow} />
         </TouchableOpacity>
       </View>
       <View style={styles.container}>
