@@ -6,16 +6,17 @@ import {
   View,
   TouchableOpacity,
 } from 'react-native';
-// TODO: index.js to clean up imports
-import Trending from './Trending';
-import Friends from './Friends';
-import Library from './Library';
-import Settings from './Settings';
-import {tabIcons} from '../../constants/images';
-import {colors} from '../../constants/colors';
 import {CurvedBottomBar} from 'react-native-curved-bottom-bar';
 
-export const NavBar = ({navigation}) => {
+import {colors} from '../../constants/colors';
+import {tabIcons} from '../../constants/images';
+
+import Trending from '../tabs/Trending';
+import Friends from '../tabs/Friends';
+import Library from '../tabs/Library';
+import Settings from '../tabs/Settings';
+
+export const NavBar = ({navigation}: {navigation: any}) => {
   const renderIcon = (routeName: string, selectedTab: string) => {
     let source: number;
     let focused: boolean = routeName === selectedTab;
@@ -51,7 +52,7 @@ export const NavBar = ({navigation}) => {
   };
 
   return (
-    <View style={styles.tabView}>
+    <View style={{flex: 1}}>
       <CurvedBottomBar.Navigator
         screenOptions={{headerShown: false}}
         height={64}
@@ -103,11 +104,12 @@ export const NavBar = ({navigation}) => {
 
 export const styles = StyleSheet.create({
   circle: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    bottom: 25,
     width: 60,
     height: 60,
     borderRadius: 30,
-    alignItems: 'center',
-    justifyContent: 'center',
     backgroundColor: colors.white,
     shadowColor: colors.black,
     shadowOffset: {
@@ -116,7 +118,6 @@ export const styles = StyleSheet.create({
     },
     shadowOpacity: 0.2,
     shadowRadius: 2,
-    bottom: 25,
   },
   plus: {
     width: 62,
@@ -128,9 +129,6 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingBottom: 10,
     marginHorizontal: 20,
-  },
-  tabView: {
-    flex: 1,
   },
 });
 

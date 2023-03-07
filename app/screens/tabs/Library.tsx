@@ -11,7 +11,7 @@ import {
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 
 import {colors} from '../../constants/colors';
-import {vectors, miscIcons} from '../../constants/images';
+import {miscIcons, vectors} from '../../constants/images';
 
 const W = Dimensions.get('window').width;
 const H = Dimensions.get('window').height;
@@ -91,19 +91,19 @@ const Library = () => {
   const [selectedIndex, setIndex] = useState(0);
   return (
     <View style={styles.container}>
-      <Image style={styles.background} source={vectors.shape1}/>
+      <Image style={styles.background} source={vectors.shape1} />
       <Text style={styles.title}>Library</Text>
       <Image style={styles.search} source={miscIcons.search} />
       {SegmentedControl(selectedIndex, setIndex)}
-      {selectedIndex == 0 ? Places() : Events()}
+      {selectedIndex === 0 ? Places() : Events()}
     </View>
   );
 };
 
 const SegmentedControl = (
-  selectedIndex: number, 
-  setIndex: React.Dispatch<React.SetStateAction<number>>
-  ) => (
+  selectedIndex: number,
+  setIndex: React.Dispatch<React.SetStateAction<number>>,
+) => (
   <View style={styles.sctContainer}>
     <SegmentedControlTab
       tabsContainerStyle={sctStyles.container}
@@ -117,15 +117,13 @@ const SegmentedControl = (
       onTabPress={index => setIndex(index)}
     />
   </View>
-)
+);
 
 const Places = () => (
   <SafeAreaView style={styles.cardsContainer}>
     <FlatList
       data={PLACE_DATA}
-      renderItem={({item}) => (
-        Place(item.name, item.category, item.image)
-      )}
+      renderItem={({item}) => Place(item.name, item.category, item.image)}
       keyExtractor={item => item.id}
     />
   </SafeAreaView>
@@ -143,9 +141,7 @@ const Events = () => (
   <SafeAreaView style={styles.cardsContainer}>
     <FlatList
       data={EVENT_DATA}
-      renderItem={({item}) => (
-        Event(item.name, item.date, item.images)
-      )}
+      renderItem={({item}) => Event(item.name, item.date, item.images)}
       keyExtractor={item => item.id}
     />
   </SafeAreaView>
@@ -170,7 +166,7 @@ const styles = StyleSheet.create({
   background: {
     width: W,
     height: 240,
-    tintColor: colors.fill, 
+    tintColor: colors.fill,
   },
   title: {
     position: 'absolute',
@@ -186,7 +182,7 @@ const styles = StyleSheet.create({
     right: 30,
     width: 24,
     height: 24,
-    tintColor: colors.black
+    tintColor: colors.black,
   },
   sctContainer: {
     position: 'absolute',

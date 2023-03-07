@@ -8,7 +8,7 @@ export const icons = {
   outdoors: require('../assets/park.png'),
   restaurant: require('../assets/restaurant.png'),
   dessert: require('../assets/dessert.png'),
-}
+};
 
 export const tabIcons = {
   create: require('../assets/tabIcons/create.png'),
@@ -20,13 +20,15 @@ export const tabIcons = {
   settingsInactive: require('../assets/tabIcons/settings-inactive.png'),
   trendingActive: require('../assets/tabIcons/trending-active.png'),
   trendingInactive: require('../assets/tabIcons/trending-inactive.png'),
-}
+};
 
 export const miscIcons = {
   share: require('../assets/miscIcons/share.png'),
   search: require('../assets/miscIcons/search.png'),
-}
+  back: require('../assets/miscIcons/back.png'),
+};
 
 export const vectors = {
-  shape1: require('../assets/vectors/shape1.png')
-}
+  shape1: require('../assets/vectors/shape1.png'),
+  shape2: require('../assets/vectors/shape2.png'),
+};
