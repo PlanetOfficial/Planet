@@ -1,10 +1,8 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import {View, StyleSheet} from 'react-native';
 
 const SplashScreen = () => {
-  return (
-    <View style={styles.background}></View>
-  );
+  return <View style={styles.background} />;
 };
 
 const styles = StyleSheet.create({
@@ -12,6 +10,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'black',
   },
-})
+});
 
 export default SplashScreen;
