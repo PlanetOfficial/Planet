@@ -54,7 +54,7 @@ const SelectDestinations = ({navigation, route}) => {
       navigation.navigate('Library');
       // TODO: show successful save
     } else {
-      // TODO: error, make sure connected to internet and logged in
+      // TODO: error, make sure connected to internet and logged in, if error persists, log out and log back in
     }
   };
 
