@@ -2,8 +2,9 @@
 
 1. Install React Native (ios or android)
 2. Clone this repository
-3. npm install or yarn install
-4. Run!
+3. Install yarn globally if you haven't already (npm install yarn --global)
+4. yarn install
+5. Run!
 
 To run on android, run
 ```
