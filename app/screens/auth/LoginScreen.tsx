@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -17,6 +17,8 @@ import {colors} from '../../constants/colors';
 const LoginScreen = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  // TODO: make sure encrypted storage is cleared if we end up on this screen
 
   const handleLogin = async () => {
     // Perform login logic, e.g. send login request to API
