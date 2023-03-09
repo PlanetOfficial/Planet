@@ -51,17 +51,10 @@ function TabStack({navigation}) {
 }
 
 const MainStack = createStackNavigator();
-function AppNavigation() {
+function LoggedNavigation() {
   return (
     <NavigationContainer>
       <MainStack.Navigator initialRouteName="Main">
-        <MainStack.Screen
-          name="Login"
-          component={LoginScreen}
-          options={{headerShown: false}}
-        />
-        <MainStack.Screen name="SignUp" component={SignUp} />
-        <MainStack.Screen name="ForgotPassword" component={ForgotPassword} />
         <MainStack.Screen
           name="TabStack"
           component={TabStack}
@@ -77,9 +70,16 @@ function AppNavigation() {
           component={Place}
           options={{headerShown: false}}
         />
+        <MainStack.Screen
+          name="Login"
+          component={LoginScreen}
+          options={{headerShown: false}}
+        />
+        <MainStack.Screen name="SignUp" component={SignUp} />
+        <MainStack.Screen name="ForgotPassword" component={ForgotPassword} />
       </MainStack.Navigator>
     </NavigationContainer>
   );
 }
 
-export default AppNavigation;
+export default LoggedNavigation;
