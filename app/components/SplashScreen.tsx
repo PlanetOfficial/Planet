@@ -1,10 +1,17 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 
 const SplashScreen = () => {
   return (
-    <View style={{ flex: 1, backgroundColor: 'black' }}></View>
+    <View style={styles.background}></View>
   );
 };
+
+const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    backgroundColor: 'black',
+  },
+})
 
 export default SplashScreen;
