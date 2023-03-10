@@ -12,7 +12,6 @@ import SelectDestinations from '../screens/createScreens/SelectDestinations';
 import FinalizePlan from '../screens/createScreens/FinalizePlan';
 import DestinationDetails from '../screens/createScreens/DestinationDetails';
 import Place from '../screens/components/Place';
-import Settings from '../screens/components/Settings';
 
 const PlanCreationStack = createStackNavigator();
 function CreatePlanStack() {
@@ -52,7 +51,7 @@ function TabStack({navigation}) {
 }
 
 const MainStack = createStackNavigator();
-function AppNavigation() {
+function UnloggedNavigation() {
   return (
     <NavigationContainer>
       <MainStack.Navigator initialRouteName="Main">
@@ -78,14 +77,9 @@ function AppNavigation() {
           component={Place}
           options={{headerShown: false}}
         />
-        <MainStack.Screen
-          name="Settings"
-          component={Settings}
-          options={{headerShown: false}}
-        />
       </MainStack.Navigator>
     </NavigationContainer>
   );
 }
 
-export default AppNavigation;
+export default UnloggedNavigation;

@@ -18,6 +18,8 @@ const LoginScreen = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  // TODO: make sure encrypted storage is cleared if we end up on this screen
+
   const handleLogin = async () => {
     // Perform login logic, e.g. send login request to API
 
@@ -25,6 +27,8 @@ const LoginScreen = ({navigation}) => {
     if (response?.authToken) {
       // successful login
       await EncryptedStorage.setItem('auth_token', response?.authToken);
+      setEmail('');
+      setPassword('');
       navigation.navigate('TabStack');
     } else {
       console.log('Failed login, error: ' + response?.message);

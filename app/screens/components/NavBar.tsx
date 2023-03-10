@@ -54,7 +54,7 @@ export const NavBar = ({navigation}: {navigation: any}) => {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <View style={styles.mainView}>
       <CurvedBottomBar.Navigator
         screenOptions={{headerShown: false}}
         height={64}
@@ -105,6 +105,9 @@ export const NavBar = ({navigation}: {navigation: any}) => {
 };
 
 export const styles = StyleSheet.create({
+  mainView: {
+    flex: 1,
+  },
   circle: {
     alignItems: 'center',
     justifyContent: 'center',
