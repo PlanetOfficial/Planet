@@ -14,7 +14,7 @@ import {tabIcons} from '../../constants/images';
 import Trending from '../tabs/Trending';
 import Friends from '../tabs/Friends';
 import Library from '../tabs/Library';
-import Settings from '../tabs/Settings';
+import Profile from '../tabs/Profile';
 
 export const NavBar = ({navigation}: {navigation: any}) => {
   const renderIcon = (routeName: string, selectedTab: string) => {
@@ -31,8 +31,8 @@ export const NavBar = ({navigation}: {navigation: any}) => {
       case 'Library':
         source = focused ? tabIcons.libraryActive : tabIcons.libraryInactive;
         break;
-      case 'Settings':
-        source = focused ? tabIcons.settingsActive : tabIcons.settingsInactive;
+      case 'Profile':
+        source = focused ? tabIcons.profileActive : tabIcons.profileInactive;
         break;
       default:
         source = -1;
@@ -42,6 +42,8 @@ export const NavBar = ({navigation}: {navigation: any}) => {
     return (
       <Image
         style={{
+          marginLeft: (routeName == 'Trending' || routeName == 'Library')? 10: 0,
+          marginRight: (routeName == 'Trending' || routeName == 'Library')? 0: 10,
           width: 30,
           height: 30,
           tintColor: focused ? colors.accent : colors.black,
@@ -93,9 +95,9 @@ export const NavBar = ({navigation}: {navigation: any}) => {
           component={Library}
         />
         <CurvedBottomBar.Screen
-          name="Settings"
+          name="Profile"
           position={'RIGHT'}
-          component={Settings}
+          component={Profile}
         />
       </CurvedBottomBar.Navigator>
     </View>

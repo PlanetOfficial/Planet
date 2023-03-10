@@ -12,6 +12,7 @@ import SelectDestinations from '../screens/createScreens/SelectDestinations';
 import FinalizePlan from '../screens/createScreens/FinalizePlan';
 import DestinationDetails from '../screens/createScreens/DestinationDetails';
 import Place from '../screens/components/Place';
+import Settings from '../screens/components/Settings';
 
 const PlanCreationStack = createStackNavigator();
 function CreatePlanStack() {
@@ -75,6 +76,11 @@ function AppNavigation() {
         <MainStack.Screen
           name="Place"
           component={Place}
+          options={{headerShown: false}}
+        />
+        <MainStack.Screen
+          name="Settings"
+          component={Settings}
           options={{headerShown: false}}
         />
       </MainStack.Navigator>

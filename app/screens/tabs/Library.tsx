@@ -7,9 +7,11 @@ import {
   Image,
   FlatList,
   SafeAreaView,
+  TouchableOpacity
 } from 'react-native';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 
+import strings from '../../constants/strings';
 import {colors} from '../../constants/colors';
 import {miscIcons, vectors} from '../../constants/images';
 
@@ -87,13 +89,15 @@ const EVENT_DATA = [
   },
 ];
 
-const Library = () => {
+const Library = ({navigation}: {navigation: any}) => {
   const [selectedIndex, setIndex] = useState(0);
   return (
     <View style={styles.container}>
       <Image style={styles.background} source={vectors.shape1} />
-      <Text style={styles.title}>Library</Text>
+      <Text style={styles.title}>{strings.title.library}</Text>
+      <TouchableOpacity style={styles.searchButton} onPress={() => navigation.navigate()}>
       <Image style={styles.search} source={miscIcons.search} />
+      </TouchableOpacity>
       {SegmentedControl(selectedIndex, setIndex)}
       {selectedIndex === 0 ? Places() : Events()}
     </View>
@@ -112,7 +116,7 @@ const SegmentedControl = (
       tabTextStyle={sctStyles.text}
       activeTabTextStyle={sctStyles.activeText}
       borderRadius={25}
-      values={['Places', 'Events']}
+      values={[strings.library.saved, strings.library.events]}
       selectedIndex={selectedIndex}
       onTabPress={index => setIndex(index)}
     />
@@ -125,6 +129,7 @@ const Places = () => (
       data={PLACE_DATA}
       renderItem={({item}) => Place(item.name, item.category, item.image)}
       keyExtractor={item => item.id}
+      showsVerticalScrollIndicator={false}
     />
   </SafeAreaView>
 );
@@ -143,6 +148,7 @@ const Events = () => (
       data={EVENT_DATA}
       renderItem={({item}) => Event(item.name, item.date, item.images)}
       keyExtractor={item => item.id}
+      showsVerticalScrollIndicator={false}
     />
   </SafeAreaView>
 );
@@ -176,12 +182,16 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: colors.black,
   },
-  search: {
+  searchButton: {
     position: 'absolute',
-    top: 64,
+    top: 69,
     right: 30,
     width: 24,
     height: 24,
+  },
+  search: {
+    width: '100%',
+    height: '100%',
     tintColor: colors.black,
   },
   sctContainer: {

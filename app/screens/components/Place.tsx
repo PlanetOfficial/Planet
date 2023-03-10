@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet, Dimensions, Image} from 'react-native';
+import {View, Text, StyleSheet, Dimensions, Image, TouchableOpacity} from 'react-native';
 
 import {colors} from '../../constants/colors';
 import {miscIcons, vectors} from '../../constants/images';
@@ -9,10 +9,12 @@ import {Svg, Line, Circle} from 'react-native-svg';
 const W = Dimensions.get('window').width;
 const H = Dimensions.get('window').height;
 
-const Place = () => {
+const Place = ({navigation}: {navigation: any}) => {
   return (
     <View style={styles.container}>
-      <Image style={styles.back} source={miscIcons.back} />
+      <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate("Library")}>
+        <Image style={styles.back} source={miscIcons.back} />
+      </TouchableOpacity>
       <Text style={styles.name}>Share Tea but better</Text>
       <Text style={styles.category}>Bubble Tea Shop</Text>
       <Image style={styles.background} source={vectors.shape2} />
@@ -93,17 +95,22 @@ const styles = StyleSheet.create({
     height: H,
     backgroundColor: colors.white,
   },
-  back: {
+  backButton: {
     position: 'absolute',
     top: 75,
     left: 20,
     width: 20,
     height: 30,
+  },
+  back: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
     tintColor: colors.black,
   },
   name: {
     position: 'absolute',
-    top: 75,
+    top: 70,
     left: 60,
     fontSize: 24,
     fontWeight: 'bold',
@@ -111,13 +118,13 @@ const styles = StyleSheet.create({
   },
   category: {
     position: 'absolute',
-    top: 112,
+    top: 105,
     left: 60,
     fontSize: 16,
     color: colors.accent,
   },
   background: {
-    top: 140,
+    top: 130,
     width: W,
     height: 215,
     tintColor: colors.fill,
@@ -131,7 +138,7 @@ const shareStyles = StyleSheet.create({
     alignItems: 'center',
     width: 50,
     height: 50,
-    top: 120,
+    top: 110,
     right: 30,
     aspectRatio: 1,
   },
@@ -147,7 +154,7 @@ const detailsStyles = StyleSheet.create({
   container: {
     position: 'absolute',
     alignItems: 'center',
-    top: 170,
+    top: 160,
     width: W,
     height: 185,
   },

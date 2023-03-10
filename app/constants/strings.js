@@ -44,6 +44,21 @@ const strings = {
     upgrade: 'Upgrade to Premium',
     logout: 'Log out',
   },
+  title: {
+    trending: 'Trending',
+    friends: 'Friends',
+    library: 'Library',
+    profile: 'Profile',
+    settings: 'Settings',
+  },
+  library: {
+    saved: 'Saved',
+    events: 'Events',
+  },
+  profile: {
+    followers: 'followers',
+    following: 'following',
+  }
 };
 
 export default strings;
