@@ -66,7 +66,8 @@ export const NavBar = ({navigation}: {navigation: any}) => {
         borderTopLeftRight={true}
         renderCircle={() => (
           <Animated.View style={styles.circle}>
-            <TouchableOpacity onPress={() => navigation.navigate('CreateStack')}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('CreateStack')}>
               <Image style={styles.plus} source={tabIcons.create} />
             </TouchableOpacity>
           </Animated.View>

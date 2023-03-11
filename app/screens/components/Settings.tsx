@@ -58,14 +58,12 @@ const Account = (navigation: any) => {
       <TouchableOpacity style={styles.upgradeButton}>
         <Text style={styles.upgradeButtonText}>{strings.settings.upgrade}</Text>
       </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.logoutButton}
-        onPress={handleLogout}>
+      <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
         <Text style={styles.logoutButtonText}>{strings.settings.logout}</Text>
       </TouchableOpacity>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
