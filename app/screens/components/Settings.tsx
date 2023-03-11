@@ -1,10 +1,37 @@
 import React from 'react';
-import {Text, TextInput, TouchableOpacity, ScrollView} from 'react-native';
-import strings from '../../constants/strings';
+import {
+  View,
+  Image,
+  Text,
+  Dimensions,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+} from 'react-native';
 import EncryptedStorage from 'react-native-encrypted-storage';
-import {colors} from '../../constants/colors';
 
-const Settings = ({navigation}) => {
+import strings from '../../constants/strings';
+import {colors} from '../../constants/colors';
+import {miscIcons} from '../../constants/images';
+
+const W = Dimensions.get('window').width;
+const H = Dimensions.get('window').height;
+
+const Settings = ({navigation}: {navigation: any}) => {
+  return (
+    <View style={styles.container}>
+      <TouchableOpacity
+        style={styles.backButton}
+        onPress={() => navigation.navigate('Profile')}>
+        <Image style={styles.back} source={miscIcons.back} />
+      </TouchableOpacity>
+      <Text style={styles.title}>{strings.title.settings}</Text>
+      {Account(navigation)}
+    </View>
+  );
+};
+
+const Account = (navigation: any) => {
   const handleLogout = async () => {
     try {
       await EncryptedStorage.removeItem('auth_token');
@@ -17,21 +44,12 @@ const Settings = ({navigation}) => {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <TextInput
-        placeholder={strings.settings.firstName}
-        style={styles.input}
-      />
-      <TextInput placeholder={strings.settings.lastName} style={styles.input} />
+    <View style={accountStyles.container}>
+      <TextInput placeholder={strings.settings.name} style={styles.input} />
       <TextInput placeholder={strings.login.email} style={styles.input} />
-      <TextInput
-        placeholder={strings.login.password}
-        secureTextEntry
-        style={styles.input}
-      />
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>{strings.main.save}</Text>
-      </TouchableOpacity>
+
+      <TextInput placeholder={strings.settings.username} style={styles.input} />
+
       <TouchableOpacity style={styles.forgotButton}>
         <Text style={styles.forgotButtonText}>
           {strings.settings.resetPassword}
@@ -40,21 +58,40 @@ const Settings = ({navigation}) => {
       <TouchableOpacity style={styles.upgradeButton}>
         <Text style={styles.upgradeButtonText}>{strings.settings.upgrade}</Text>
       </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.logoutButton}
-        onPress={() => handleLogout()}>
+      <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
         <Text style={styles.logoutButtonText}>{strings.settings.logout}</Text>
       </TouchableOpacity>
-    </ScrollView>
+    </View>
   );
 };
 
-const styles = {
+const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
     alignItems: 'center',
-    paddingTop: 50,
-    paddingBottom: 20,
+    width: W,
+    height: H,
+    backgroundColor: colors.white,
+  },
+  backButton: {
+    position: 'absolute',
+    top: 65,
+    left: 20,
+    width: 20,
+    height: 30,
+  },
+  back: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    tintColor: colors.black,
+  },
+  title: {
+    position: 'absolute',
+    top: 60,
+    left: 60,
+    fontSize: 32,
+    fontWeight: 'bold',
+    color: colors.black,
   },
   input: {
     height: 40,
@@ -103,6 +140,16 @@ const styles = {
     fontSize: 16,
     fontWeight: 'bold',
   },
-};
+});
+
+const accountStyles = StyleSheet.create({
+  container: {
+    position: 'absolute',
+    alignItems: 'center',
+    width: W - 60,
+    height: H - 120,
+    top: 120,
+  },
+});
 
 export default Settings;

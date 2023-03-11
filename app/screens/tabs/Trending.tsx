@@ -1,5 +1,6 @@
 import React from 'react';
 import {View, Text, StyleSheet, Dimensions} from 'react-native';
+import {colors} from '../../constants/colors';
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
@@ -19,6 +20,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: screenWidth,
     height: screenHeight,
+    backgroundColor: colors.white,
   },
   text: {
     fontSize: 20,
