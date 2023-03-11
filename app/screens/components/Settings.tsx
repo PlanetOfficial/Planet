@@ -18,6 +18,20 @@ const W = Dimensions.get('window').width;
 const H = Dimensions.get('window').height;
 
 const Settings = ({navigation}: {navigation: any}) => {
+  return (
+    <View style={styles.container}>
+      <TouchableOpacity
+        style={styles.backButton}
+        onPress={() => navigation.navigate('Profile')}>
+        <Image style={styles.back} source={miscIcons.back} />
+      </TouchableOpacity>
+      <Text style={styles.title}>{strings.title.settings}</Text>
+      {Account(navigation)}
+    </View>
+  );
+};
+
+const Account = (navigation: any) => {
   const handleLogout = async () => {
     try {
       await EncryptedStorage.removeItem('auth_token');
@@ -30,40 +44,28 @@ const Settings = ({navigation}: {navigation: any}) => {
   };
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity
-        style={styles.backButton}
-        onPress={() => navigation.navigate('Profile')}>
-        <Image style={styles.back} source={miscIcons.back} />
+    <View style={accountStyles.container}>
+      <TextInput placeholder={strings.settings.name} style={styles.input} />
+      <TextInput placeholder={strings.login.email} style={styles.input} />
+
+      <TextInput placeholder={strings.settings.username} style={styles.input} />
+
+      <TouchableOpacity style={styles.forgotButton}>
+        <Text style={styles.forgotButtonText}>
+          {strings.settings.resetPassword}
+        </Text>
       </TouchableOpacity>
-      <Text style={styles.title}>{strings.title.settings}</Text>
-      {Account()}
+      <TouchableOpacity style={styles.upgradeButton}>
+        <Text style={styles.upgradeButtonText}>{strings.settings.upgrade}</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.logoutButton}
+        onPress={handleLogout}>
+        <Text style={styles.logoutButtonText}>{strings.settings.logout}</Text>
+      </TouchableOpacity>
     </View>
-  );
-};
-
-const Account = () => (
-  <View style={accountStyles.container}>
-    <TextInput placeholder={strings.settings.name} style={styles.input} />
-    <TextInput placeholder={strings.login.email} style={styles.input} />
-
-    <TextInput placeholder={strings.settings.username} style={styles.input} />
-
-    <TouchableOpacity style={styles.forgotButton}>
-      <Text style={styles.forgotButtonText}>
-        {strings.settings.resetPassword}
-      </Text>
-    </TouchableOpacity>
-    <TouchableOpacity style={styles.upgradeButton}>
-      <Text style={styles.upgradeButtonText}>{strings.settings.upgrade}</Text>
-    </TouchableOpacity>
-    <TouchableOpacity
-      style={styles.logoutButton}
-      onPress={() => console.log('hi')}>
-      <Text style={styles.logoutButtonText}>{strings.settings.logout}</Text>
-    </TouchableOpacity>
-  </View>
-);
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
