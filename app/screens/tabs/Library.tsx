@@ -7,7 +7,7 @@ import {
   Image,
   FlatList,
   SafeAreaView,
-  TouchableOpacity
+  TouchableOpacity,
 } from 'react-native';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 
@@ -95,8 +95,10 @@ const Library = ({navigation}: {navigation: any}) => {
     <View style={styles.container}>
       <Image style={styles.background} source={vectors.shape1} />
       <Text style={styles.title}>{strings.title.library}</Text>
-      <TouchableOpacity style={styles.searchButton} onPress={() => navigation.navigate()}>
-      <Image style={styles.search} source={miscIcons.search} />
+      <TouchableOpacity
+        style={styles.searchButton}
+        onPress={() => navigation.navigate()}>
+        <Image style={styles.search} source={miscIcons.search} />
       </TouchableOpacity>
       {SegmentedControl(selectedIndex, setIndex)}
       {selectedIndex === 0 ? Places() : Events()}

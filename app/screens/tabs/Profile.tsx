@@ -1,5 +1,12 @@
 import React from 'react';
-import {View, Image, Text, Dimensions, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Image,
+  Text,
+  Dimensions,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 
 import strings from '../../constants/strings';
 import {colors} from '../../constants/colors';
@@ -12,18 +19,26 @@ const Profile = ({navigation}: {navigation: any}) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{strings.title.profile}</Text>
-      <TouchableOpacity style={styles.settingsButton} onPress={() => navigation.navigate("Settings")}>
+      <TouchableOpacity
+        style={styles.settingsButton}
+        onPress={() => navigation.navigate('Settings')}>
         <Image style={styles.settings} source={miscIcons.settings} />
       </TouchableOpacity>
       {Info()}
-      <Text style={styles.description}>Upgrade to Premium for Feed??{'\n'}I'm not sure where we want to go with this feature</Text>
+      <Text style={styles.description}>
+        Upgrade to Premium for Feed??{'\n'}I'm not sure where we want to go with
+        this feature
+      </Text>
     </View>
   );
 };
 
 const Info = () => (
   <View style={infoStyles.container}>
-    <Image style={infoStyles.profilePic} source={require("../../assets/amusement-park.png")}/>
+    <Image
+      style={infoStyles.profilePic}
+      source={require('../../assets/amusement-park.png')}
+    />
     <View style={infoStyles.nameContainer}>
       <Text style={infoStyles.name}>Naoto Uemura</Text>
     </View>
@@ -108,14 +123,14 @@ const infoStyles = StyleSheet.create({
     position: 'absolute',
     alignItems: 'center',
     left: 0,
-    width: "50%",
+    width: '50%',
     height: '100%',
   },
   following: {
     position: 'absolute',
     alignItems: 'center',
     right: 0,
-    width: "50%",
+    width: '50%',
     height: '100%',
   },
   text: {
@@ -127,7 +142,7 @@ const infoStyles = StyleSheet.create({
     marginTop: 5,
     fontWeight: 'bold',
     color: colors.accent,
-  }
+  },
 });
 
 export default Profile;

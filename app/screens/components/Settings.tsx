@@ -1,5 +1,13 @@
 import React from 'react';
-import {View, Image, Text, Dimensions, StyleSheet, TextInput, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Image,
+  Text,
+  Dimensions,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+} from 'react-native';
 import EncryptedStorage from 'react-native-encrypted-storage';
 
 import strings from '../../constants/strings';
@@ -23,7 +31,9 @@ const Settings = ({navigation}: {navigation: any}) => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate("Profile")}>
+      <TouchableOpacity
+        style={styles.backButton}
+        onPress={() => navigation.navigate('Profile')}>
         <Image style={styles.back} source={miscIcons.back} />
       </TouchableOpacity>
       <Text style={styles.title}>{strings.title.settings}</Text>
@@ -34,12 +44,10 @@ const Settings = ({navigation}: {navigation: any}) => {
 
 const Account = () => (
   <View style={accountStyles.container}>
-    <TextInput
-      placeholder={strings.settings.firstName}
-      style={styles.input}
-    />
-    <TextInput placeholder={strings.settings.lastName} style={styles.input} />
+    <TextInput placeholder={strings.settings.name} style={styles.input} />
     <TextInput placeholder={strings.login.email} style={styles.input} />
+
+    <TextInput placeholder={strings.settings.username} style={styles.input} />
 
     <TouchableOpacity style={styles.forgotButton}>
       <Text style={styles.forgotButtonText}>
@@ -51,7 +59,7 @@ const Account = () => (
     </TouchableOpacity>
     <TouchableOpacity
       style={styles.logoutButton}
-      onPress={() => console.log("hi")}>
+      onPress={() => console.log('hi')}>
       <Text style={styles.logoutButtonText}>{strings.settings.logout}</Text>
     </TouchableOpacity>
   </View>
@@ -141,7 +149,7 @@ const accountStyles = StyleSheet.create({
     width: W - 60,
     height: H - 120,
     top: 120,
-  }
-})
+  },
+});
 
 export default Settings;

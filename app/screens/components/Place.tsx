@@ -1,5 +1,12 @@
 import React from 'react';
-import {View, Text, StyleSheet, Dimensions, Image, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Dimensions,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 
 import {colors} from '../../constants/colors';
 import {miscIcons, vectors} from '../../constants/images';
@@ -12,7 +19,9 @@ const H = Dimensions.get('window').height;
 const Place = ({navigation}: {navigation: any}) => {
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate("Library")}>
+      <TouchableOpacity
+        style={styles.backButton}
+        onPress={() => navigation.navigate('Library')}>
         <Image style={styles.back} source={miscIcons.back} />
       </TouchableOpacity>
       <Text style={styles.name}>Share Tea but better</Text>

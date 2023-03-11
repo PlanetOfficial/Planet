@@ -42,8 +42,10 @@ export const NavBar = ({navigation}: {navigation: any}) => {
     return (
       <Image
         style={{
-          marginLeft: (routeName == 'Trending' || routeName == 'Library')? 10: 0,
-          marginRight: (routeName == 'Trending' || routeName == 'Library')? 0: 10,
+          marginLeft:
+            routeName == 'Trending' || routeName == 'Library' ? 10 : 0,
+          marginRight:
+            routeName == 'Trending' || routeName == 'Library' ? 0 : 10,
           width: 30,
           height: 30,
           tintColor: focused ? colors.accent : colors.black,
@@ -64,8 +66,7 @@ export const NavBar = ({navigation}: {navigation: any}) => {
         borderTopLeftRight={true}
         renderCircle={() => (
           <Animated.View style={styles.circle}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('CreateStack')}>
+            <TouchableOpacity onPress={() => navigation.navigate('CreateStack')}>
               <Image style={styles.plus} source={tabIcons.create} />
             </TouchableOpacity>
           </Animated.View>
