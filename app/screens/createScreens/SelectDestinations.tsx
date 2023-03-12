@@ -9,6 +9,7 @@ import {
   Button,
   ScrollView,
 } from 'react-native';
+import EncryptedStorage from 'react-native-encrypted-storage';
 import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
 import {colors} from '../../constants/colors';
@@ -19,6 +20,7 @@ import {requestLocations} from '../../utils/api/CreateCalls/requestLocations';
 
 import {Category} from '../../utils/interfaces/Category';
 import {MarkerObject} from '../../utils/interfaces/MarkerObject';
+import {getBookmarks} from '../../utils/api/shared/getBookmarks';
 
 const SelectDestinations = ({navigation, route}) => {
   const [latitude, setLatitude] = useState(route?.params?.latitude);
@@ -33,6 +35,8 @@ const SelectDestinations = ({navigation, route}) => {
 
   const [selectedDestinations, setSelectedDestinations] = useState([]);
 
+  const [bookmarks, setBookmarks] = useState([]);
+
   const loadDestinations = async (categoryIds: Array<number>) => {
     const response = await requestLocations(
       categoryIds,
@@ -45,10 +49,23 @@ const SelectDestinations = ({navigation, route}) => {
     setLocations(response);
   };
 
+  const loadBookmarks = async () => {
+    const authToken = await EncryptedStorage.getItem('auth_token');
+    const response = await getBookmarks(authToken);
+
+    let bookmarksLoaded: Array<number> = [];
+    response.forEach((bookmark: any) => {
+      bookmarksLoaded.push(bookmark?.id);
+    });
+
+    setBookmarks(bookmarksLoaded);
+  };
+
   useEffect(() => {
     const filteredCategories = categories.map(item => item.id);
-
     loadDestinations(filteredCategories);
+
+    loadBookmarks();
   }, []);
 
   const getImage = (imagesData: Array<number>) => {
@@ -130,10 +147,12 @@ const SelectDestinations = ({navigation, route}) => {
                                   : colors.white,
                               }}>
                               <DestinationCard
+                                id={destination?.id}
                                 name={destination.name}
                                 rating={destination.rating}
                                 price={destination.price}
                                 image={getImage(destination.images)}
+                                marked={bookmarks.includes(destination?.id)}
                               />
                             </TouchableOpacity>
                           </View>

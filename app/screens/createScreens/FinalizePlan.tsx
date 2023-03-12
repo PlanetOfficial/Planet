@@ -38,6 +38,8 @@ const SelectDestinations = ({navigation, route}) => {
     return icons.experience;
   };
 
+  EncryptedStorage.getItem('auth_token').then(item => console.log(item));
+
   const handleSave = async () => {
     // send destinations to backend
     const placeIds = selectedDestinations.map(item => item.id);

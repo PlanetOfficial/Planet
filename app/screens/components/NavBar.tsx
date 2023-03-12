@@ -43,9 +43,9 @@ export const NavBar = ({navigation}: {navigation: any}) => {
       <Image
         style={{
           marginLeft:
-            routeName == 'Trending' || routeName == 'Library' ? 10 : 0,
+            routeName === 'Trending' || routeName === 'Library' ? 10 : 0,
           marginRight:
-            routeName == 'Trending' || routeName == 'Library' ? 0 : 10,
+            routeName === 'Trending' || routeName === 'Library' ? 0 : 10,
           width: 30,
           height: 30,
           tintColor: focused ? colors.accent : colors.black,
