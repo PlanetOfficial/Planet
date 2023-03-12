@@ -20,7 +20,7 @@ import {requestLocations} from '../../utils/api/CreateCalls/requestLocations';
 
 import {Category} from '../../utils/interfaces/Category';
 import {MarkerObject} from '../../utils/interfaces/MarkerObject';
-import { getBookmarks } from '../../utils/api/shared/getBookmarks';
+import {getBookmarks} from '../../utils/api/shared/getBookmarks';
 
 const SelectDestinations = ({navigation, route}) => {
   const [latitude, setLatitude] = useState(route?.params?.latitude);
@@ -56,10 +56,10 @@ const SelectDestinations = ({navigation, route}) => {
     let bookmarksLoaded: Array<number> = [];
     response.forEach((bookmark: any) => {
       bookmarksLoaded.push(bookmark?.id);
-    })
+    });
 
     setBookmarks(bookmarksLoaded);
-  }
+  };
 
   useEffect(() => {
     const filteredCategories = categories.map(item => item.id);

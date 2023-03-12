@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 
 import {colors} from '../constants/colors';
-import { icons } from '../constants/images';
-import { setBookmark } from '../utils/api/shared/setBookmark';
+import {icons} from '../constants/images';
+import {setBookmark} from '../utils/api/shared/setBookmark';
 import EncryptedStorage from 'react-native-encrypted-storage';
-import { unbookmark } from '../utils/api/shared/unbookmark';
+import {unbookmark} from '../utils/api/shared/unbookmark';
 
 interface Props {
-  id: number,
+  id: number;
   name: string;
   rating: number;
   price: number;
@@ -16,27 +16,36 @@ interface Props {
   marked: boolean;
 }
 
-const DestinationCard: React.FC<Props> = ({id, name, rating, price, image, marked}) => {
+const DestinationCard: React.FC<Props> = ({
+  id,
+  name,
+  rating,
+  price,
+  image,
+  marked,
+}) => {
   const [bookmarked, setBookmarked] = useState(marked);
 
   const handleBookmark = async () => {
     const authToken = await EncryptedStorage.getItem('auth_token');
     let response;
 
-    if (!bookmarked) { // switch to bookmarked, so call /bookmark
+    if (!bookmarked) {
+      // switch to bookmarked, so call /bookmark
       response = await setBookmark(authToken, id);
-    } else { // switch to not bookmarked, so call /unbookmark
+    } else {
+      // switch to not bookmarked, so call /unbookmark
       response = await unbookmark(authToken, id);
     }
 
     if (response === 200) {
       setBookmarked(!bookmarked);
-      
+
       // TODO: success
     } else {
       // failed
     }
-  }
+  };
 
   return (
     <View style={styles.container}>
@@ -47,7 +56,10 @@ const DestinationCard: React.FC<Props> = ({id, name, rating, price, image, marke
         </View>
         <Text style={styles.price}>{price}</Text>
         <TouchableOpacity onPress={handleBookmark}>
-          <Image source={bookmarked ? icons.bookmarkActive : icons.bookmarkInactive} style={styles.bookmarkActive}/>
+          <Image
+            source={bookmarked ? icons.bookmarkActive : icons.bookmarkInactive}
+            style={styles.bookmarkActive}
+          />
         </TouchableOpacity>
       </View>
       <Image source={image} style={styles.image} />
