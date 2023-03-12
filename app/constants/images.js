@@ -8,6 +8,8 @@ export const icons = {
   outdoors: require('../assets/park.png'),
   restaurant: require('../assets/restaurant.png'),
   dessert: require('../assets/dessert.png'),
+  bookmarkActive: require('../assets/save-active.png'),
+  bookmarkInactive: require('../assets/save-inactive.png'),
 };
 
 export const tabIcons = {
