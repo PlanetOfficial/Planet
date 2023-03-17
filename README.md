@@ -20,6 +20,10 @@ npx react-native run-ios
 
 5. Copy environment variables (if there are any)
 
+<h1>Commits</h1>
+
+Before making a commit, go to the version control tab of git and double check changed files.
+
 <h1>Testing/Cleaning (**required before merging pull requests**)</h1>
 
 ```
