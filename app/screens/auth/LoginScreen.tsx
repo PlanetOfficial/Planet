@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: W,
     height: H,
-    tintColor: colors.accent,
+    tintColor: colors.fill,
   },
   title: {
     marginTop: 175,
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: colors.black,
+    backgroundColor: colors.accent,
   },
   buttonText: {
     color: colors.white,
