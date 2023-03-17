@@ -5,6 +5,8 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  Image,
+  Dimensions,
 } from 'react-native';
 
 import EncryptedStorage from 'react-native-encrypted-storage';
@@ -13,8 +15,12 @@ import strings from '../../constants/strings';
 
 import {login} from '../../utils/api/auth/login';
 import {colors} from '../../constants/colors';
+import {vectors} from '../../constants/images';
 
-const LoginScreen = ({navigation}) => {
+const W = Dimensions.get('window').width;
+const H = Dimensions.get('window').height;
+
+const LoginScreen = ({navigation}: {navigation: any}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -37,6 +43,7 @@ const LoginScreen = ({navigation}) => {
 
   return (
     <View style={styles.container}>
+      <Image style={styles.background} source={vectors.shape3} />
       <Text style={styles.title}>{strings.main.rivalet}</Text>
       <TextInput
         style={styles.input}
@@ -56,14 +63,14 @@ const LoginScreen = ({navigation}) => {
         secureTextEntry={true}
         textContentType="password"
       />
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>{strings.login.login}</Text>
-      </TouchableOpacity>
       <Text
         style={styles.forgotPassword}
         onPress={() => navigation.navigate('ForgotPassword')}>
         {strings.login.forgotPassword}
       </Text>
+      <TouchableOpacity style={styles.button} onPress={handleLogin}>
+        <Text style={styles.buttonText}>{strings.login.login}</Text>
+      </TouchableOpacity>
       <View style={styles.bottomContainer}>
         <Text style={styles.bottomText}>{strings.login.noAccount}</Text>
         <Text
@@ -78,42 +85,52 @@ const LoginScreen = ({navigation}) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center',
+    width: W,
+    height: H,
     backgroundColor: colors.white,
   },
+  background: {
+    position: 'absolute',
+    width: W,
+    height: H,
+    tintColor: colors.accent,
+  },
   title: {
-    fontSize: 32,
+    marginTop: 175,
+    marginBottom: 30,
+    fontSize: 75,
     fontWeight: 'bold',
-    marginBottom: 48,
+    color: colors.black,
   },
   input: {
+    paddingHorizontal: 25,
+    marginTop: 30,
     width: '80%',
-    height: 40,
-    paddingHorizontal: 8,
-    borderWidth: 1,
-    borderColor: colors.grey,
-    marginVertical: 8,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: colors.grey,
+  },
+  forgotPassword: {
+    marginTop: 5,
+    paddingLeft: 15,
+    width: '80%',
+    fontSize: 14,
+    color: colors.accent,
   },
   button: {
-    width: '80%',
-    height: 40,
-    backgroundColor: colors.black,
+    marginTop: 40,
+    width: '50%',
+    height: 50,
+    borderRadius: 25,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 24,
+    backgroundColor: colors.black,
   },
   buttonText: {
     color: colors.white,
     fontWeight: 'bold',
-  },
-  forgotPassword: {
-    marginTop: 8,
-    fontSize: 14,
-    color: colors.accent,
-    textAlign: 'right',
-    width: '80%',
   },
   bottomText: {
     fontSize: 14,
