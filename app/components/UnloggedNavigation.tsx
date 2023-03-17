@@ -13,6 +13,7 @@ import FinalizePlan from '../screens/createScreens/FinalizePlan';
 import DestinationDetails from '../screens/createScreens/DestinationDetails';
 import Place from '../screens/components/Place';
 import Event from '../screens/components/Event';
+import Settings from '../screens/components/Event';
 
 const PlanCreationStack = createStackNavigator();
 function CreatePlanStack() {
@@ -81,6 +82,11 @@ function UnloggedNavigation() {
         <MainStack.Screen
           name="Event"
           component={Event}
+          options={{headerShown: false}}
+        />
+        <MainStack.Screen
+          name="Settings"
+          component={Settings}
           options={{headerShown: false}}
         />
       </MainStack.Navigator>
