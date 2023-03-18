@@ -18,7 +18,7 @@ export default function App() {
   }, []);
 
   const getCorrectStack = () => {
-    return <AppNavigation isLoggedIn={isLoggedIn}/> // TODO: what if token expires
+    return <AppNavigation isLoggedIn={isLoggedIn} />; // TODO: what if token expires
   };
 
   return isLoading ? <SplashScreen /> : getCorrectStack();

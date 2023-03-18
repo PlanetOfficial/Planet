@@ -16,7 +16,7 @@ import Event from '../screens/components/Event';
 import Settings from '../screens/components/Settings';
 
 interface AppNavigationProps {
-	isLoggedIn: boolean;
+  isLoggedIn: boolean;
 }
 
 const PlanCreationStack = createStackNavigator();
@@ -58,23 +58,21 @@ function TabStack({navigation}) {
 
 const MainStack = createStackNavigator();
 const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
-  return isLoggedIn ? 
- 	(
-		<NavigationContainer>
+  return isLoggedIn ? (
+    <NavigationContainer>
       <MainStack.Navigator initialRouteName="Main">
         {tabStack()}
         {createStack()}
         {placeStackScreen()}
         {eventStackScreen()}
         {settingsStackScreen()}
-				{loginStackScreen()}
+        {loginStackScreen()}
         {signUpStackScreen()}
         {forgetPassStackScreen()}
       </MainStack.Navigator>
     </NavigationContainer>
-  ) :
-	(
-		<NavigationContainer>
+  ) : (
+    <NavigationContainer>
       <MainStack.Navigator initialRouteName="Main">
         {loginStackScreen()}
         {signUpStackScreen()}
@@ -86,83 +84,79 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
         {settingsStackScreen()}
       </MainStack.Navigator>
     </NavigationContainer>
-	);
-}
+  );
+};
 
-/* Below are stack screens so they don't have to be 
+/* Below are stack screens so they don't have to be
    defined multiple times
 */
 
 const loginStackScreen = () => {
-	return (
-		<MainStack.Screen
-			name="Login"
-			component={LoginScreen}
-			options={{headerShown: false}}
-		/>
-	);
-}
+  return (
+    <MainStack.Screen
+      name="Login"
+      component={LoginScreen}
+      options={{headerShown: false}}
+    />
+  );
+};
 
 const signUpStackScreen = () => {
-	return (
-		<MainStack.Screen name="SignUp" component={SignUp} />
-	);
-}
+  return <MainStack.Screen name="SignUp" component={SignUp} />;
+};
 
 const forgetPassStackScreen = () => {
-	return (
-		<MainStack.Screen name="ForgotPassword" component={ForgotPassword} />
-	);
-}
+  return <MainStack.Screen name="ForgotPassword" component={ForgotPassword} />;
+};
 
 const tabStack = () => {
-	return (
-		<MainStack.Screen
-			name="TabStack"
-			component={TabStack}
-			options={{headerShown: false}}
-		/>
-	);
-}
+  return (
+    <MainStack.Screen
+      name="TabStack"
+      component={TabStack}
+      options={{headerShown: false}}
+    />
+  );
+};
 
 const createStack = () => {
-	return (
-		<MainStack.Screen
-			name="CreateStack"
-			component={CreatePlanStack}
-			options={{headerShown: false}}
-		/>
-	);
-}
+  return (
+    <MainStack.Screen
+      name="CreateStack"
+      component={CreatePlanStack}
+      options={{headerShown: false}}
+    />
+  );
+};
 
 const placeStackScreen = () => {
-	return (
-		<MainStack.Screen
-			name="Place"
-			component={Place}
-			options={{headerShown: false}}
-		/>
-	);
-}
+  return (
+    <MainStack.Screen
+      name="Place"
+      component={Place}
+      options={{headerShown: false}}
+    />
+  );
+};
 
 const eventStackScreen = () => {
-	return (
-		<MainStack.Screen
-			name="Event"
-			component={Event}
-			options={{headerShown: false}}
-		/>
-	)
-}
+  return (
+    <MainStack.Screen
+      name="Event"
+      component={Event}
+      options={{headerShown: false}}
+    />
+  );
+};
 
 const settingsStackScreen = () => {
-	return (
-		<MainStack.Screen
-			name="Settings"
-			component={Settings}
-			options={{headerShown: false}}
-		/>
-	);
-}
+  return (
+    <MainStack.Screen
+      name="Settings"
+      component={Settings}
+      options={{headerShown: false}}
+    />
+  );
+};
 
 export default AppNavigation;
