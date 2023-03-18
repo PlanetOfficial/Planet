@@ -7,9 +7,10 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
+import { s } from 'react-native-size-matters';
 
 import strings from '../../constants/strings';
-import {colors, fontSizes, numbers} from '../../constants/theme';
+import {colors} from '../../constants/theme';
 import {miscIcons} from '../../constants/images';
 
 const W = Dimensions.get('window').width;
@@ -18,12 +19,14 @@ const H = Dimensions.get('window').height;
 const Profile = ({navigation}: {navigation: any}) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{strings.title.profile}</Text>
-      <TouchableOpacity
-        style={styles.settingsButton}
-        onPress={() => navigation.navigate('Settings')}>
-        <Image style={styles.settings} source={miscIcons.settings} />
-      </TouchableOpacity>
+      <View style={styles.header}>
+        <Text style={styles.title}>{strings.title.profile}</Text>
+        <TouchableOpacity
+          style={styles.settingsButton}
+          onPress={() => navigation.navigate('Settings')}>
+          <Image style={styles.settings} source={miscIcons.settings} />
+        </TouchableOpacity>
+      </View>
       {Info()}
     </View>
   );
@@ -35,15 +38,15 @@ const Info = () => (
       style={infoStyles.profilePic}
       source={require('../../assets/amusement-park.png')}
     />
-    <View style={infoStyles.nameContainer}>
+    {/* <View style={infoStyles.nameContainer}> */}
       <Text style={infoStyles.name}>Naoto Uemura</Text>
-    </View>
+    {/* </View> */}
     <View style={infoStyles.countContainer}>
-      <View style={infoStyles.followers}>
+      <View style={infoStyles.count}>
         <Text style={infoStyles.number}>559</Text>
         <Text style={infoStyles.text}>{strings.profile.followers}</Text>
       </View>
-      <View style={infoStyles.following}>
+      <View style={infoStyles.count}>
         <Text style={infoStyles.number}>620</Text>
         <Text style={infoStyles.text}>{strings.profile.following}</Text>
       </View>
@@ -58,20 +61,23 @@ const styles = StyleSheet.create({
     height: '100%',
     backgroundColor: colors.white,
   },
-  title: {
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
     position: 'absolute',
-    top: 60,
-    left: '10%',
-    color: colors.black,
-    fontSize: fontSizes.bigTitle,
+    top: s(50),
+    width: s(300),
+  },
+  title: {
+    fontSize: s(28),
     fontWeight: 'bold',
+    color: colors.black,
   },
   settingsButton: {
     position: 'absolute',
-    top: 67,
-    right: '10%',
-    width: numbers.iconSize,
-    height: numbers.iconSize,
+    right: 0,
+    width: s(20),
+    height: s(20),
   },
   settings: {
     width: '100%',
@@ -82,55 +88,45 @@ const styles = StyleSheet.create({
 
 const infoStyles = StyleSheet.create({
   container: {
-    width: '80%',
-    height: 100,
-    top: 120,
+    width: s(300),
+    height: s(100),
+    top: s(100),
   },
   profilePic: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-  },
-  nameContainer: {
-    position: 'absolute',
-    alignItems: 'center',
-    top: 5,
-    left: 100,
-    width: W * 0.8 - 100,
+    width: s(100),
+    height: s(100),
+    borderRadius: s(50),
   },
   name: {
-    fontSize: 24,
+    position: 'absolute',
+    top: s(10),
+    right: 0,
+    width: s(200),
+    textAlign: 'center',
+    fontSize: s(20),
     fontWeight: 'bold',
     color: colors.black,
   },
   countContainer: {
     position: 'absolute',
+    flexDirection: 'row',
     bottom: 0,
-    right: 30,
-    width: W * 0.8 - 160,
-    height: 50,
-  },
-  followers: {
-    position: 'absolute',
-    alignItems: 'center',
-    left: 0,
-    width: '50%',
-    height: '100%',
-  },
-  following: {
-    position: 'absolute',
-    alignItems: 'center',
     right: 0,
+    width: s(200),
+    height: s(50),
+    paddingHorizontal: s(25),
+  },
+  count: {
+    alignItems: 'center',
     width: '50%',
     height: '100%',
   },
   text: {
-    fontSize: 12,
+    fontSize: s(10),
     color: colors.black,
   },
   number: {
-    fontSize: 16,
-    marginTop: 5,
+    fontSize: s(15),
     fontWeight: 'bold',
     color: colors.accent,
   },

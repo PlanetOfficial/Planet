@@ -9,10 +9,10 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
-import { s, vs } from 'react-native-size-matters';
+import { s } from 'react-native-size-matters';
 
 import strings from '../../constants/strings';
-import {colors, fontSizes, numbers} from '../../constants/theme';
+import {colors} from '../../constants/theme';
 import {miscIcons, vectors} from '../../constants/images';
 
 // temporary
@@ -239,13 +239,13 @@ const cardStyles = StyleSheet.create({
     marginBottom: 25,
   },
   name: {
-    fontSize: fontSizes.smallTitle,
+    fontSize: s(18),
     fontWeight: 'bold',
     color: colors.black,
   },
   category: {
     marginVertical: 2,
-    fontSize: fontSizes.smallText,
+    fontSize: s(12),
     color: colors.accent,
   },
   image: {

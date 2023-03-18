@@ -13,7 +13,7 @@ import FinalizePlan from '../screens/createScreens/FinalizePlan';
 import DestinationDetails from '../screens/createScreens/DestinationDetails';
 import Place from '../screens/components/Place';
 import Event from '../screens/components/Event';
-import Settings from '../screens/components/Event';
+import Settings from '../screens/components/Settings';
 
 const PlanCreationStack = createStackNavigator();
 function CreatePlanStack() {

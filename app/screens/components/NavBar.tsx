@@ -8,6 +8,7 @@ import {
   Dimensions,
 } from 'react-native';
 import {CurvedBottomBar} from 'react-native-curved-bottom-bar';
+import { s } from 'react-native-size-matters';
 
 import {colors} from '../../constants/theme';
 import {tabIcons} from '../../constants/images';
@@ -70,7 +71,7 @@ export const NavBar = ({navigation}: {navigation: any}) => {
         renderCircle={() => (
           <Animated.View style={styles.circle}>
             <TouchableOpacity
-              onPress={() => navigation.navigate('CreateStack')}>
+              onPress={() => navigation.navigate('Event')}>
               <Image style={styles.plus} source={tabIcons.create} />
             </TouchableOpacity>
           </Animated.View>

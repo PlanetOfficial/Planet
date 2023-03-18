@@ -6,8 +6,8 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
-  Dimensions,
 } from 'react-native';
+import { s, vs } from 'react-native-size-matters';
 
 import EncryptedStorage from 'react-native-encrypted-storage';
 
@@ -16,9 +16,6 @@ import strings from '../../constants/strings';
 import {login} from '../../utils/api/auth/login';
 import {colors} from '../../constants/theme';
 import {vectors} from '../../constants/images';
-
-const W = Dimensions.get('window').width;
-const H = Dimensions.get('window').height;
 
 const LoginScreen = ({navigation}: {navigation: any}) => {
   const [email, setEmail] = useState('');
@@ -87,58 +84,59 @@ const styles = StyleSheet.create({
   container: {
     display: 'flex',
     alignItems: 'center',
-    width: W,
-    height: H,
+    width: '100%',
+    height: '100%',
     backgroundColor: colors.white,
   },
   background: {
     position: 'absolute',
-    width: W,
-    height: H,
+    width: '100%',
+    height: '100%',
     tintColor: colors.fill,
   },
   title: {
-    marginTop: 175,
-    marginBottom: 30,
-    fontSize: 75,
+    marginTop: vs(140),
+    marginBottom: vs(30),
+    fontSize: s(70),
     fontWeight: 'bold',
     color: colors.black,
   },
   input: {
-    paddingHorizontal: 25,
-    marginTop: 30,
-    width: '80%',
-    height: 50,
-    borderRadius: 25,
+    paddingHorizontal: s(25),
+    marginTop: vs(30),
+    width: s(300),
+    height: s(50),
+    borderRadius: s(25),
     backgroundColor: colors.grey,
   },
   forgotPassword: {
-    marginTop: 5,
-    paddingLeft: 15,
-    width: '80%',
-    fontSize: 14,
+    marginTop: vs(7),
+    paddingLeft: s(22),
+    width: s(300),
+    fontSize: s(12),
     color: colors.accent,
   },
   button: {
-    marginTop: 40,
-    width: '50%',
-    height: 50,
-    borderRadius: 25,
+    marginTop: vs(40),
+    width: s(175),
+    height: s(50),
+    borderRadius: s(25),
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: colors.accent,
   },
   buttonText: {
     color: colors.white,
+    fontSize: s(16),
     fontWeight: 'bold',
   },
   bottomText: {
-    fontSize: 14,
+    fontSize: s(12),
     textAlign: 'center',
   },
   bottomContainer: {
     flexDirection: 'row',
-    marginTop: 24,
+    marginTop: vs(20),
   },
   bottomTextLink: {
     color: colors.accent,
