@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 
 import strings from '../../constants/strings';
-import {colors} from '../../constants/colors';
+import {colors, fontSizes, numbers} from '../../constants/theme';
 import {miscIcons} from '../../constants/images';
 
 const W = Dimensions.get('window').width;
@@ -25,10 +25,6 @@ const Profile = ({navigation}: {navigation: any}) => {
         <Image style={styles.settings} source={miscIcons.settings} />
       </TouchableOpacity>
       {Info()}
-      <Text style={styles.description}>
-        Upgrade to Premium for Feed??{'\n'}I'm not sure where we want to go with
-        this feature
-      </Text>
     </View>
   );
 };
@@ -58,40 +54,35 @@ const Info = () => (
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    width: W,
-    height: H,
+    width: '100%',
+    height: '100%',
     backgroundColor: colors.white,
   },
   title: {
     position: 'absolute',
     top: 60,
-    left: 30,
-    fontSize: 32,
-    fontWeight: 'bold',
+    left: '10%',
     color: colors.black,
+    fontSize: fontSizes.bigTitle,
+    fontWeight: 'bold',
   },
   settingsButton: {
     position: 'absolute',
-    top: 68,
-    right: 30,
-    width: 24,
-    height: 24,
+    top: 67,
+    right: '10%',
+    width: numbers.iconSize,
+    height: numbers.iconSize,
   },
   settings: {
     width: '100%',
     height: '100%',
     tintColor: colors.black,
   },
-  description: {
-    position: 'absolute',
-    top: 400,
-    color: colors.black,
-  },
 });
 
 const infoStyles = StyleSheet.create({
   container: {
-    width: W - 60,
+    width: '80%',
     height: 100,
     top: 120,
   },
@@ -105,7 +96,7 @@ const infoStyles = StyleSheet.create({
     alignItems: 'center',
     top: 5,
     left: 100,
-    width: W - 160,
+    width: W * 0.8 - 100,
   },
   name: {
     fontSize: 24,
@@ -116,7 +107,7 @@ const infoStyles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     right: 30,
-    width: W - 220,
+    width: W * 0.8 - 160,
     height: 50,
   },
   followers: {

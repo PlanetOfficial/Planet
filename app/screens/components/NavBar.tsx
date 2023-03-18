@@ -5,16 +5,19 @@ import {
   Animated,
   View,
   TouchableOpacity,
+  Dimensions,
 } from 'react-native';
 import {CurvedBottomBar} from 'react-native-curved-bottom-bar';
 
-import {colors} from '../../constants/colors';
+import {colors} from '../../constants/theme';
 import {tabIcons} from '../../constants/images';
 
 import Trending from '../tabs/Trending';
 import Friends from '../tabs/Friends';
 import Library from '../tabs/Library';
 import Profile from '../tabs/Profile';
+
+const W = Dimensions.get('window').width;
 
 export const NavBar = ({navigation}: {navigation: any}) => {
   const renderIcon = (routeName: string, selectedTab: string) => {

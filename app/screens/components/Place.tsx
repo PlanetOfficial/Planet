@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import {colors} from '../../constants/colors';
+import {colors} from '../../constants/theme';
 import {miscIcons, vectors} from '../../constants/images';
 
 import {Svg, Line, Circle} from 'react-native-svg';

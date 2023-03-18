@@ -3,20 +3,17 @@ import {
   View,
   Text,
   StyleSheet,
-  Dimensions,
   Image,
   FlatList,
   SafeAreaView,
   TouchableOpacity,
 } from 'react-native';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
+import { s, vs } from 'react-native-size-matters';
 
 import strings from '../../constants/strings';
-import {colors} from '../../constants/colors';
+import {colors, fontSizes, numbers} from '../../constants/theme';
 import {miscIcons, vectors} from '../../constants/images';
-
-const W = Dimensions.get('window').width;
-const H = Dimensions.get('window').height;
 
 // temporary
 const PLACE_DATA = [
@@ -94,12 +91,14 @@ const Library = ({navigation}: {navigation: any}) => {
   return (
     <View style={styles.container}>
       <Image style={styles.background} source={vectors.shape1} />
-      <Text style={styles.title}>{strings.title.library}</Text>
-      <TouchableOpacity
-        style={styles.searchButton}
-        onPress={() => navigation.navigate()}>
-        <Image style={styles.search} source={miscIcons.search} />
-      </TouchableOpacity>
+      <View style={styles.header}>
+        <Text style={styles.title}>{strings.title.library}</Text>
+        <TouchableOpacity
+          style={styles.searchButton}
+          onPress={() => navigation.navigate()}>
+          <Image style={styles.search} source={miscIcons.search} />
+        </TouchableOpacity>
+      </View>
       {SegmentedControl(selectedIndex, setIndex)}
       {selectedIndex === 0 ? Places() : Events()}
     </View>
@@ -110,19 +109,17 @@ const SegmentedControl = (
   selectedIndex: number,
   setIndex: React.Dispatch<React.SetStateAction<number>>,
 ) => (
-  <View style={styles.sctContainer}>
-    <SegmentedControlTab
-      tabsContainerStyle={sctStyles.container}
-      tabStyle={sctStyles.tab}
-      activeTabStyle={sctStyles.activeTab}
-      tabTextStyle={sctStyles.text}
-      activeTabTextStyle={sctStyles.activeText}
-      borderRadius={25}
-      values={[strings.library.saved, strings.library.events]}
-      selectedIndex={selectedIndex}
-      onTabPress={index => setIndex(index)}
-    />
-  </View>
+  <SegmentedControlTab
+    tabsContainerStyle={sctStyles.container}
+    tabStyle={sctStyles.tab}
+    activeTabStyle={sctStyles.activeTab}
+    tabTextStyle={sctStyles.text}
+    activeTabTextStyle={sctStyles.activeText}
+    borderRadius={25}
+    values={[strings.library.saved, strings.library.events]}
+    selectedIndex={selectedIndex}
+    onTabPress={index => setIndex(index)}
+  />
 );
 
 const Places = () => (
@@ -167,57 +164,59 @@ const Event = (name: string, date: string, images: any[]) => (
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    width: W,
-    height: H,
+    width: '100%',
+    height: '100%',
     backgroundColor: colors.white,
   },
   background: {
-    width: W,
-    height: 240,
+    resizeMode: 'stretch',
+    width: '100%',
+    height: s(200),
     tintColor: colors.fill,
   },
-  title: {
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
     position: 'absolute',
-    top: 60,
-    left: 30,
-    fontSize: 32,
+    top: s(50),
+    width: s(300),
+  },
+  title: {
+    fontSize: s(28),
     fontWeight: 'bold',
     color: colors.black,
   },
   searchButton: {
     position: 'absolute',
-    top: 69,
-    right: 30,
-    width: 24,
-    height: 24,
+    right: 0,
+    width: s(20),
+    height: s(20),
   },
   search: {
     width: '100%',
     height: '100%',
     tintColor: colors.black,
   },
-  sctContainer: {
-    position: 'absolute',
-    top: 120,
-  },
   cardsContainer: {
+    // TODO: make scrolling more natural (doesn't get cut off)
     position: 'absolute',
-    top: 240,
-    width: W - 60,
-    height: H - 240,
+    top: s(200),
+    width: s(300),
   },
 });
 
 const sctStyles = StyleSheet.create({
   container: {
-    width: W - 60,
-    height: 50,
-    borderRadius: 25,
+    position: 'absolute',
+    top: s(100),
+    width: s(300),
+    height: s(40),
+    borderRadius: s(20),
     backgroundColor: colors.grey,
   },
   tab: {
-    margin: 5,
-    borderRadius: 20,
+    margin: s(4),
+    borderRadius: s(16),
     borderColor: colors.grey,
     backgroundColor: colors.grey,
   },
@@ -225,9 +224,9 @@ const sctStyles = StyleSheet.create({
     backgroundColor: colors.white,
   },
   text: {
-    fontSize: 16,
-    fontWeight: 'bold',
     color: colors.black,
+    fontSize: s(14),
+    fontWeight: 'bold'
   },
   activeText: {
     color: colors.accent,
@@ -236,31 +235,30 @@ const sctStyles = StyleSheet.create({
 
 const cardStyles = StyleSheet.create({
   container: {
-    width: W - 60,
-    height: 200,
+    height: s(200),
     marginBottom: 25,
   },
   name: {
-    fontSize: 20,
+    fontSize: fontSizes.smallTitle,
     fontWeight: 'bold',
     color: colors.black,
   },
   category: {
     marginVertical: 2,
-    fontSize: 12,
+    fontSize: fontSizes.smallText,
     color: colors.accent,
   },
   image: {
-    width: W - 60,
-    height: 164,
-    borderRadius: 10,
+    width: '100%',
+    height: s(164),
+    borderRadius: s(10),
   },
   imageOverlap: {
-    bottom: 159,
-    left: 5,
-    width: W - 70,
-    height: 164,
-    borderRadius: 10,
+    bottom: s(159),
+    left: s(5),
+    width: s(290),
+    height: s(164),
+    borderRadius: s(10),
     zIndex: -1,
   },
 });

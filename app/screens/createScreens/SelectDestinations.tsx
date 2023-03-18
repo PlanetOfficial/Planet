@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
-import {colors} from '../../constants/colors';
+import {colors} from '../../constants/theme';
 
 import DestinationCard from '../../components/Destination';
 

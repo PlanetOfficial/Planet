@@ -14,7 +14,7 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 import strings from '../../constants/strings';
 
 import {login} from '../../utils/api/auth/login';
-import {colors} from '../../constants/colors';
+import {colors} from '../../constants/theme';
 import {vectors} from '../../constants/images';
 
 const W = Dimensions.get('window').width;
