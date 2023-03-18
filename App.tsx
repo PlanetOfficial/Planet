@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import SplashScreen from './app/components/SplashScreen';
 import EncryptedStorage from 'react-native-encrypted-storage';
-import AppNavigation from './app/components/AppNavigation';
+import AppNavigation from './app/navigation/AppNavigation';
 
 export default function App() {
   const [isLoading, setLoading] = useState(true);
