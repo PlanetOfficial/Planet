@@ -7,7 +7,7 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import { s } from 'react-native-size-matters';
+import {s} from 'react-native-size-matters';
 
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
@@ -39,7 +39,7 @@ const Info = () => (
       source={require('../../assets/amusement-park.png')}
     />
     {/* <View style={infoStyles.nameContainer}> */}
-      <Text style={infoStyles.name}>Naoto Uemura</Text>
+    <Text style={infoStyles.name}>Naoto Uemura</Text>
     {/* </View> */}
     <View style={infoStyles.countContainer}>
       <View style={infoStyles.count}>

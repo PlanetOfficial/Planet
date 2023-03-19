@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
-import { s } from 'react-native-size-matters';
+import {s} from 'react-native-size-matters';
 
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
@@ -91,19 +91,23 @@ const Library = ({navigation}: {navigation: any}) => {
   return (
     <View style={styles.container}>
       <Image style={styles.background} source={vectors.shape1} />
-      <View style={styles.header}>
-        <Text style={styles.title}>{strings.title.library}</Text>
-        <TouchableOpacity
-          style={styles.searchButton}
-          onPress={() => navigation.navigate()}>
-          <Image style={styles.search} source={miscIcons.search} />
-        </TouchableOpacity>
-      </View>
+      {Header(navigation)}
       {SegmentedControl(selectedIndex, setIndex)}
       {selectedIndex === 0 ? Places() : Events()}
     </View>
   );
 };
+
+const Header = ({navigation}: {navigation: any}) => (
+  <View style={headerStyles.container}>
+    <Text style={headerStyles.title}>{strings.title.library}</Text>
+    <TouchableOpacity
+      style={headerStyles.searchButton}
+      onPress={() => navigation.navigate()}>
+      <Image style={headerStyles.search} source={miscIcons.search} />
+    </TouchableOpacity>
+  </View>
+);
 
 const SegmentedControl = (
   selectedIndex: number,
@@ -174,7 +178,16 @@ const styles = StyleSheet.create({
     height: s(200),
     tintColor: colors.fill,
   },
-  header: {
+  cardsContainer: {
+    // TODO: make scrolling more natural (doesn't get cut off)
+    position: 'absolute',
+    top: s(200),
+    width: s(300),
+  },
+});
+
+const headerStyles = StyleSheet.create({
+  container: {
     flexDirection: 'row',
     alignItems: 'center',
     position: 'absolute',
@@ -196,12 +209,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     tintColor: colors.black,
-  },
-  cardsContainer: {
-    // TODO: make scrolling more natural (doesn't get cut off)
-    position: 'absolute',
-    top: s(200),
-    width: s(300),
   },
 });
 
@@ -226,7 +233,7 @@ const sctStyles = StyleSheet.create({
   text: {
     color: colors.black,
     fontSize: s(14),
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   activeText: {
     color: colors.accent,

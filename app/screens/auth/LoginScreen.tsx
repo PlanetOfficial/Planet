@@ -7,7 +7,7 @@ import {
   StyleSheet,
   Image,
 } from 'react-native';
-import { s, vs } from 'react-native-size-matters';
+import {s, vs} from 'react-native-size-matters';
 
 import EncryptedStorage from 'react-native-encrypted-storage';
 
