@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import UnloggedNavigation from './app/components/UnloggedNavigation';
-import LoggedNavigation from './app/components/LoggedNavigation';
 import SplashScreen from './app/components/SplashScreen';
 import EncryptedStorage from 'react-native-encrypted-storage';
+import AppNavigation from './app/navigation/AppNavigation';
 
 export default function App() {
   const [isLoading, setLoading] = useState(true);
@@ -11,15 +10,15 @@ export default function App() {
   useEffect(() => {
     const initialize = async () => {
       const token = await EncryptedStorage.getItem('auth_token');
-      setLoading(false);
       token ? setLoggedIn(true) : setLoggedIn(false);
+      setLoading(false);
     };
 
     initialize();
   }, []);
 
   const getCorrectStack = () => {
-    return isLoggedIn ? <LoggedNavigation /> : <UnloggedNavigation />; // TODO: what if token expires
+    return <AppNavigation isLoggedIn={isLoggedIn} />; // TODO: what if token expires
   };
 
   return isLoading ? <SplashScreen /> : getCorrectStack();

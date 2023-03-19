@@ -34,4 +34,5 @@ export const miscIcons = {
 export const vectors = {
   shape1: require('../assets/vectors/shape1.png'),
   shape2: require('../assets/vectors/shape2.png'),
+  shape3: require('../assets/vectors/shape3.png'),
 };
