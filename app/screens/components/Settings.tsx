@@ -3,33 +3,36 @@ import {
   View,
   Image,
   Text,
-  Dimensions,
   StyleSheet,
   TextInput,
   TouchableOpacity,
 } from 'react-native';
 import EncryptedStorage from 'react-native-encrypted-storage';
+import {s, vs} from 'react-native-size-matters';
 
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 import {miscIcons} from '../../constants/images';
 
-const W = Dimensions.get('window').width;
-const H = Dimensions.get('window').height;
-
 const Settings = ({navigation}: {navigation: any}) => {
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        style={styles.backButton}
-        onPress={() => navigation.navigate('Profile')}>
-        <Image style={styles.back} source={miscIcons.back} />
-      </TouchableOpacity>
-      <Text style={styles.title}>{strings.title.settings}</Text>
+      {Header(navigation)}
       {Account(navigation)}
     </View>
   );
 };
+
+const Header = (navigation: any) => (
+  <View style={headerStyles.container}>
+    <TouchableOpacity
+      style={headerStyles.button}
+      onPress={() => navigation.navigate('Profile')}>
+      <Image style={headerStyles.icon} source={miscIcons.back} />
+    </TouchableOpacity>
+    <Text style={headerStyles.title}>{strings.title.settings}</Text>
+  </View>
+);
 
 const Account = (navigation: any) => {
   const handleLogout = async () => {
@@ -45,21 +48,29 @@ const Account = (navigation: any) => {
 
   return (
     <View style={accountStyles.container}>
-      <TextInput placeholder={strings.settings.name} style={styles.input} />
-      <TextInput placeholder={strings.login.email} style={styles.input} />
+      <View style={accountStyles.input}>
+        <Text style={accountStyles.prompt}>{strings.settings.name}:</Text>
+      <TextInput placeholder={strings.settings.name} style={accountStyles.inputText} />
+      </View>
+      <View style={accountStyles.input}>
+        <Text style={accountStyles.prompt}>{strings.login.email}:</Text>
+      <TextInput placeholder={strings.login.email} style={accountStyles.inputText} />
+      </View>
+      <View style={accountStyles.input}>
+        <Text style={accountStyles.prompt}>{strings.settings.username}:</Text>
+      <TextInput placeholder={strings.settings.username} style={accountStyles.inputText} />
+      </View>
 
-      <TextInput placeholder={strings.settings.username} style={styles.input} />
-
-      <TouchableOpacity style={styles.forgotButton}>
-        <Text style={styles.forgotButtonText}>
+      <TouchableOpacity>
+        <Text style={accountStyles.resetPwd}>
           {strings.settings.resetPassword}
         </Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.upgradeButton}>
-        <Text style={styles.upgradeButtonText}>{strings.settings.upgrade}</Text>
+      <TouchableOpacity>
+        <Text style={accountStyles.upgrade}>{strings.settings.upgrade}</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-        <Text style={styles.logoutButtonText}>{strings.settings.logout}</Text>
+      <TouchableOpacity onPress={handleLogout}>
+        <Text style={accountStyles.logoutButtonText}>{strings.settings.logout}</Text>
       </TouchableOpacity>
     </View>
   );
@@ -68,75 +79,81 @@ const Account = (navigation: any) => {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    width: W,
-    height: H,
-    backgroundColor: colors.white,
-  },
-  backButton: {
-    position: 'absolute',
-    top: 65,
-    left: 20,
-    width: 20,
-    height: 30,
-  },
-  back: {
-    position: 'absolute',
     width: '100%',
     height: '100%',
-    tintColor: colors.black,
+    backgroundColor: colors.white,
+  },
+});
+
+const headerStyles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: vs(50),
+    width: s(300),
   },
   title: {
-    position: 'absolute',
-    top: 60,
-    left: 60,
-    fontSize: 32,
+    marginLeft: s(10),
+    fontSize: s(28),
     fontWeight: 'bold',
     color: colors.black,
   },
-  input: {
-    paddingHorizontal: 25,
-    marginTop: 30,
-    width: '80%',
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: colors.grey,
+  button: {
+    width: s(14),
+    height: s(21),
   },
-  forgotButton: {
-    marginTop: 20,
-  },
-  forgotButtonText: {
-    color: colors.accent,
-    fontSize: 14,
-  },
-  upgradeButton: {
-    marginTop: 20,
-  },
-  upgradeButtonText: {
-    color: colors.white,
-    fontSize: 16,
-    fontWeight: 'bold',
-    backgroundColor: colors.accent,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
-  },
-  logoutButton: {
-    marginTop: 20,
-  },
-  logoutButtonText: {
-    color: colors.accent,
-    fontSize: 16,
-    fontWeight: 'bold',
+  icon: {
+    width: '100%',
+    height: '100%',
+    tintColor: colors.black,
   },
 });
 
 const accountStyles = StyleSheet.create({
   container: {
-    position: 'absolute',
+    marginTop: vs(40),
     alignItems: 'center',
-    width: W - 60,
-    height: H - 120,
-    top: 120,
+  },
+  input: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: s(40),
+    paddingLeft: s(5),
+    width: s(300),
+    height: s(30),
+  },
+  prompt: {
+    fontSize: s(12),
+    fontWeight: '500',
+    color: colors.black,
+  },
+  inputText: {
+    flex: 1,
+    marginLeft: s(10),
+    paddingHorizontal: s(10),
+    height: s(30),
+    borderBottomWidth: 1,
+    borderBottomColor: colors.darkgrey
+  },
+  resetPwd: {
+    marginBottom: vs(25),
+    color: colors.accent,
+    fontSize: s(12),
+    fontWeight: '500',
+  },
+  upgrade: {
+    marginBottom: vs(25),
+    fontSize: s(16),
+    fontWeight: '800',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    color: colors.white,
+    backgroundColor: colors.accent,
+  },
+  logoutButtonText: {
+    fontSize: s(14),
+    fontWeight: '500',
+    color: colors.black,
   },
 });
 
