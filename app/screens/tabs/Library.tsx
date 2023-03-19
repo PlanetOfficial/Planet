@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -12,6 +12,10 @@ import SegmentedControlTab from 'react-native-segmented-control-tab';
 
 import {colors} from '../../constants/colors';
 import {miscIcons, vectors} from '../../constants/images';
+
+import EncryptedStorage from 'react-native-encrypted-storage';
+import { getEvents } from '../../utils/api/libraryCalls/getEvents';
+import { getPlaces } from '../../utils/api/libraryCalls/getPlaces';
 
 const W = Dimensions.get('window').width;
 const H = Dimensions.get('window').height;
@@ -89,13 +93,32 @@ const EVENT_DATA = [
 
 const Library = () => {
   const [selectedIndex, setIndex] = useState(0);
+  const [savedPlaces, setSavedPlaces] = useState([]);
+  const [events, setEvents] = useState([]);
+
+  useEffect(() => {
+    const initializeData = async() => {
+      const authToken = await EncryptedStorage.getItem('auth_token');
+
+      const events = await getEvents(authToken);
+      setEvents(events);
+
+      const bookmarks = await getPlaces(authToken);
+      setSavedPlaces(bookmarks);
+
+      console.log(JSON.stringify(bookmarks))
+    }
+
+    initializeData();
+  }, [])
+
   return (
     <View style={styles.container}>
       <Image style={styles.background} source={vectors.shape1} />
       <Text style={styles.title}>Library</Text>
       <Image style={styles.search} source={miscIcons.search} />
       {SegmentedControl(selectedIndex, setIndex)}
-      {selectedIndex === 0 ? Places() : Events()}
+      {selectedIndex === 0 ? Places() : Events(events)}
     </View>
   );
 };
@@ -137,11 +160,12 @@ const Place = (name: string, category: string, image: any) => (
   </View>
 );
 
-const Events = () => (
+const Events = (events: Array<any>) => (
   <SafeAreaView style={styles.cardsContainer}>
     <FlatList
-      data={EVENT_DATA}
-      renderItem={({item}) => Event(item.name, item.date, item.images)}
+      data={events}
+      // renderItem={({item}) => Event(item.name, item.date, item.images)}
+      renderItem={({item}) => Event(item.name, item.date, [])}
       keyExtractor={item => item.id}
     />
   </SafeAreaView>
@@ -151,8 +175,8 @@ const Event = (name: string, date: string, images: any[]) => (
   <View style={cardStyles.container}>
     <Text style={cardStyles.name}>{name}</Text>
     <Text style={cardStyles.category}>{date}</Text>
-    <Image style={cardStyles.image} source={images[0]} />
-    <Image style={cardStyles.imageOverlap} source={images[1]} />
+    {/* <Image style={cardStyles.image} source={images[0]} />
+    <Image style={cardStyles.imageOverlap} source={images[1]} /> */}
   </View>
 );
 
