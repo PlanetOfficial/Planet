@@ -61,7 +61,7 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
         textContentType="password"
       />
       <Text
-        style={styles.forgotPassword}
+        style={styles.forgotPwd}
         onPress={() => navigation.navigate('ForgotPassword')}>
         {strings.login.forgotPassword}
       </Text>
@@ -92,29 +92,32 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: '100%',
     height: '100%',
-    tintColor: colors.fill,
+    tintColor: colors.accent,
   },
   title: {
     marginTop: vs(140),
     marginBottom: vs(30),
     fontSize: s(70),
     fontWeight: 'bold',
-    color: colors.black,
+    color: colors.accent,
   },
   input: {
     paddingHorizontal: s(25),
     marginTop: vs(30),
-    width: s(300),
+    width: s(250),
     height: s(50),
     borderRadius: s(25),
-    backgroundColor: colors.grey,
+    borderWidth: 1,
+    borderColor: colors.darkgrey,
+    backgroundColor: colors.white,
   },
-  forgotPassword: {
+  forgotPwd: {
     marginTop: vs(7),
-    paddingLeft: s(22),
-    width: s(300),
+    paddingHorizontal: s(20),
+    width: s(250),
     fontSize: s(12),
-    color: colors.accent,
+    textAlign: 'right',
+    color: colors.darkgrey,
   },
   button: {
     marginTop: vs(40),
@@ -123,7 +126,7 @@ const styles = StyleSheet.create({
     borderRadius: s(25),
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: colors.accent,
+    backgroundColor: colors.black,
   },
   buttonText: {
     color: colors.white,
