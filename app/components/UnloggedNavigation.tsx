@@ -62,7 +62,8 @@ function UnloggedNavigation() {
           component={LoginScreen}
           options={{headerShown: false}}
         />
-        <MainStack.Screen name="SignUp" component={SignUp} />
+        <MainStack.Screen name="SignUp" component={SignUp} 
+          options={{headerShown: false}}/>
         <MainStack.Screen name="ForgotPassword" component={ForgotPassword} />
         <MainStack.Screen
           name="TabStack"

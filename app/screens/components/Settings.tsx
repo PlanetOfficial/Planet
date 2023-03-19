@@ -123,12 +123,13 @@ const accountStyles = StyleSheet.create({
     height: s(30),
   },
   prompt: {
+    flex: 1,
     fontSize: s(12),
     fontWeight: '500',
     color: colors.black,
   },
   inputText: {
-    flex: 1,
+    flex: 3,
     marginLeft: s(10),
     paddingHorizontal: s(10),
     height: s(30),
