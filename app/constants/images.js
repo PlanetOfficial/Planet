@@ -8,6 +8,8 @@ export const icons = {
   outdoors: require('../assets/park.png'),
   restaurant: require('../assets/restaurant.png'),
   dessert: require('../assets/dessert.png'),
+  bookmarkActive: require('../assets/save-active.png'),
+  bookmarkInactive: require('../assets/save-inactive.png'),
 };
 
 export const tabIcons = {
@@ -16,8 +18,8 @@ export const tabIcons = {
   friendsInactive: require('../assets/tabIcons/friends-inactive.png'),
   libraryActive: require('../assets/tabIcons/library-active.png'),
   libraryInactive: require('../assets/tabIcons/library-inactive.png'),
-  settingsActive: require('../assets/tabIcons/settings-active.png'),
-  settingsInactive: require('../assets/tabIcons/settings-inactive.png'),
+  profileActive: require('../assets/tabIcons/profile-active.png'),
+  profileInactive: require('../assets/tabIcons/profile-inactive.png'),
   trendingActive: require('../assets/tabIcons/trending-active.png'),
   trendingInactive: require('../assets/tabIcons/trending-inactive.png'),
 };
@@ -26,6 +28,7 @@ export const miscIcons = {
   share: require('../assets/miscIcons/share.png'),
   search: require('../assets/miscIcons/search.png'),
   back: require('../assets/miscIcons/back.png'),
+  settings: require('../assets/miscIcons/settings.png'),
 };
 
 export const vectors = {

@@ -38,11 +38,26 @@ const strings = {
     pickDate: 'Pick a date',
   },
   settings: {
-    firstName: 'First Name',
-    lastName: 'Last Name',
+    name: 'Name',
+    username: 'UserName',
     resetPassword: 'Reset Password',
     upgrade: 'Upgrade to Premium',
     logout: 'Log out',
+  },
+  title: {
+    trending: 'Trending',
+    friends: 'Friends',
+    library: 'Library',
+    profile: 'Profile',
+    settings: 'Settings',
+  },
+  library: {
+    saved: 'Saved',
+    events: 'Events',
+  },
+  profile: {
+    followers: 'followers',
+    following: 'following',
   },
 };
 
