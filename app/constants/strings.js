@@ -13,7 +13,7 @@ const strings = {
     password: 'Password',
   },
   signUp: {
-    nameAndUsername: 'Name/Username',
+    name: 'Name',
     confirmPassword: 'Confirm Password',
     phoneNumber: 'Phone Number',
     age: 'Age (optional)',

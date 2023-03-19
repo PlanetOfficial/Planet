@@ -10,7 +10,7 @@ import {
   FlatList,
 } from 'react-native';
 
-import {colors} from '../../constants/colors';
+import {colors} from '../../constants/theme';
 import {miscIcons} from '../../constants/images';
 
 const W = Dimensions.get('window').width;

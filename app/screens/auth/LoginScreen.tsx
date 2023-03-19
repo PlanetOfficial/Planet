@@ -6,19 +6,16 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
-  Dimensions,
 } from 'react-native';
+import {s, vs} from 'react-native-size-matters';
 
 import EncryptedStorage from 'react-native-encrypted-storage';
 
 import strings from '../../constants/strings';
 
 import {login} from '../../utils/api/auth/login';
-import {colors} from '../../constants/colors';
+import {colors} from '../../constants/theme';
 import {vectors} from '../../constants/images';
-
-const W = Dimensions.get('window').width;
-const H = Dimensions.get('window').height;
 
 const LoginScreen = ({navigation}: {navigation: any}) => {
   const [email, setEmail] = useState('');
@@ -64,7 +61,7 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
         textContentType="password"
       />
       <Text
-        style={styles.forgotPassword}
+        style={styles.forgotPwd}
         onPress={() => navigation.navigate('ForgotPassword')}>
         {strings.login.forgotPassword}
       </Text>
@@ -87,62 +84,66 @@ const styles = StyleSheet.create({
   container: {
     display: 'flex',
     alignItems: 'center',
-    width: W,
-    height: H,
+    width: '100%',
+    height: '100%',
     backgroundColor: colors.white,
   },
   background: {
     position: 'absolute',
-    width: W,
-    height: H,
-    tintColor: colors.fill,
+    width: '100%',
+    height: '100%',
+    tintColor: colors.accent,
   },
   title: {
-    marginTop: 175,
-    marginBottom: 30,
-    fontSize: 75,
+    marginTop: vs(140),
+    marginBottom: vs(30),
+    fontSize: s(70),
     fontWeight: 'bold',
-    color: colors.black,
-  },
-  input: {
-    paddingHorizontal: 25,
-    marginTop: 30,
-    width: '80%',
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: colors.grey,
-  },
-  forgotPassword: {
-    marginTop: 5,
-    paddingLeft: 15,
-    width: '80%',
-    fontSize: 14,
     color: colors.accent,
   },
+  input: {
+    paddingHorizontal: s(25),
+    marginTop: vs(30),
+    width: s(250),
+    height: s(50),
+    borderRadius: s(25),
+    borderWidth: 1,
+    borderColor: colors.darkgrey,
+    backgroundColor: colors.white,
+  },
+  forgotPwd: {
+    marginTop: vs(7),
+    paddingHorizontal: s(20),
+    width: s(250),
+    fontSize: s(12),
+    textAlign: 'right',
+    color: colors.darkgrey,
+  },
   button: {
-    marginTop: 40,
-    width: '50%',
-    height: 50,
-    borderRadius: 25,
+    marginTop: vs(40),
+    width: s(150),
+    height: s(50),
+    borderRadius: s(25),
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: colors.accent,
+    backgroundColor: colors.black,
   },
   buttonText: {
     color: colors.white,
+    fontSize: s(16),
     fontWeight: 'bold',
   },
   bottomText: {
-    fontSize: 14,
+    fontSize: s(12),
     textAlign: 'center',
   },
   bottomContainer: {
     flexDirection: 'row',
-    marginTop: 24,
+    marginTop: vs(20),
   },
   bottomTextLink: {
     color: colors.accent,
-    marginLeft: 8,
+    marginLeft: s(8),
     fontWeight: 'bold',
   },
 });

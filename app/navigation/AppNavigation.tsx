@@ -52,8 +52,8 @@ function CreatePlanStack() {
   );
 }
 
-function TabStack({navigation}) {
-  return <NavBar navigation={navigation} />;
+function TabStack() {
+  return <NavBar />;
 }
 
 const MainStack = createStackNavigator();
@@ -102,7 +102,13 @@ const loginStackScreen = () => {
 };
 
 const signUpStackScreen = () => {
-  return <MainStack.Screen name="SignUp" component={SignUp} />;
+  return (
+    <MainStack.Screen
+      name="SignUp"
+      component={SignUp}
+      options={{headerShown: false}}
+    />
+  );
 };
 
 const forgetPassStackScreen = () => {
