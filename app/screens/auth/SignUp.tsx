@@ -103,7 +103,7 @@ const Header = (navigation: any) => (
       onPress={() => navigation.navigate('Login')}>
       <Image style={headerStyles.icon} source={miscIcons.back} />
     </TouchableOpacity>
-    <Text style={headerStyles.title}>{strings.login.login}</Text>
+    <Text style={headerStyles.title}>{strings.login.signUp}</Text>
   </View>
 );
 
