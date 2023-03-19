@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, View} from 'react-native';
+import {Image, View, TouchableOpacity} from 'react-native';
 import {s} from 'react-native-size-matters';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Svg, Circle, Line} from 'react-native-svg';
@@ -80,6 +80,8 @@ export const NavBar = () => {
     );
   };
 
+  const ButtonScreen = () => null;
+
   return (
     <View style={{flex: 1}}>
       <Tab.Navigator
@@ -97,7 +99,10 @@ export const NavBar = () => {
         })}>
         <Tab.Screen name="Trending" component={Trending} />
         <Tab.Screen name="Friends" component={Friends} />
-        <Tab.Screen name="Create" component={Create} />
+        <Tab.Screen name="Create" component={ButtonScreen}
+         options={({navigation})=> ({
+           tabBarButton:props => <TouchableOpacity {...props} onPress={()=>navigation.navigate('CreateStack')}/>
+        })}/>
         <Tab.Screen name="Library" component={Library} />
         <Tab.Screen name="Profile" component={Profile} />
       </Tab.Navigator>
