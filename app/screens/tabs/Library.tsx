@@ -236,7 +236,7 @@ const sctStyles = StyleSheet.create({
 const cardStyles = StyleSheet.create({
   container: {
     height: s(200),
-    marginBottom: 25,
+    marginBottom: s(25),
   },
   name: {
     fontSize: s(18),
@@ -244,7 +244,7 @@ const cardStyles = StyleSheet.create({
     color: colors.black,
   },
   category: {
-    marginVertical: 2,
+    marginVertical: s(2),
     fontSize: s(12),
     color: colors.accent,
   },

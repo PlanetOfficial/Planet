@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
   },
   bottomTextLink: {
     color: colors.accent,
-    marginLeft: 8,
+    marginLeft: s(8),
     fontWeight: 'bold',
   },
 });

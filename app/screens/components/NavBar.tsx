@@ -8,7 +8,7 @@ import {
   Dimensions,
 } from 'react-native';
 import {CurvedBottomBar} from 'react-native-curved-bottom-bar';
-import { s } from 'react-native-size-matters';
+import { s, vs } from 'react-native-size-matters';
 
 import {colors} from '../../constants/theme';
 import {tabIcons} from '../../constants/images';
