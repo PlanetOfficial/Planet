@@ -98,10 +98,18 @@ export const NavBar = () => {
         })}>
         <Tab.Screen name="Trending" component={Trending} />
         <Tab.Screen name="Friends" component={Friends} />
-        <Tab.Screen name="Create" component={ButtonScreen}
-         options={({navigation})=> ({
-           tabBarButton:props => <TouchableOpacity {...props} onPress={()=>navigation.navigate('CreateStack')}/>
-        })}/>
+        <Tab.Screen
+          name="Create"
+          component={ButtonScreen}
+          options={({navigation}) => ({
+            tabBarButton: props => (
+              <TouchableOpacity
+                {...props}
+                onPress={() => navigation.navigate('CreateStack')}
+              />
+            ),
+          })}
+        />
         <Tab.Screen name="Library" component={Library} />
         <Tab.Screen name="Profile" component={Profile} />
       </Tab.Navigator>

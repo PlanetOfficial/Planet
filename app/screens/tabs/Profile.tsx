@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Image,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
+import {View, Image, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {s, vs} from 'react-native-size-matters';
 
 import strings from '../../constants/strings';
@@ -30,9 +24,10 @@ const Header = (navigation: any) => (
       <Image style={headerStyles.icon} source={miscIcons.settings} />
     </TouchableOpacity>
   </View>
-)
+);
 
-const Info = () => ( // TEMP
+const Info = () => (
+  // TEMP
   <View style={infoStyles.container}>
     <Image
       style={infoStyles.profilePic}

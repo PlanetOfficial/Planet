@@ -87,7 +87,11 @@ function LoggedNavigation() {
           component={LoginScreen}
           options={{headerShown: false}}
         />
-        <MainStack.Screen name="SignUp" component={SignUp} options={{headerShown: false}}/>
+        <MainStack.Screen
+          name="SignUp"
+          component={SignUp}
+          options={{headerShown: false}}
+        />
         <MainStack.Screen name="ForgotPassword" component={ForgotPassword} />
       </MainStack.Navigator>
     </NavigationContainer>

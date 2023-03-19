@@ -50,15 +50,24 @@ const Account = (navigation: any) => {
     <View style={accountStyles.container}>
       <View style={accountStyles.input}>
         <Text style={accountStyles.prompt}>{strings.settings.name}:</Text>
-      <TextInput placeholder={strings.settings.name} style={accountStyles.inputText} />
+        <TextInput
+          placeholder={strings.settings.name}
+          style={accountStyles.inputText}
+        />
       </View>
       <View style={accountStyles.input}>
         <Text style={accountStyles.prompt}>{strings.login.email}:</Text>
-      <TextInput placeholder={strings.login.email} style={accountStyles.inputText} />
+        <TextInput
+          placeholder={strings.login.email}
+          style={accountStyles.inputText}
+        />
       </View>
       <View style={accountStyles.input}>
         <Text style={accountStyles.prompt}>{strings.settings.username}:</Text>
-      <TextInput placeholder={strings.settings.username} style={accountStyles.inputText} />
+        <TextInput
+          placeholder={strings.settings.username}
+          style={accountStyles.inputText}
+        />
       </View>
 
       <TouchableOpacity>
@@ -70,7 +79,9 @@ const Account = (navigation: any) => {
         <Text style={accountStyles.upgrade}>{strings.settings.upgrade}</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={handleLogout}>
-        <Text style={accountStyles.logoutButtonText}>{strings.settings.logout}</Text>
+        <Text style={accountStyles.logoutButtonText}>
+          {strings.settings.logout}
+        </Text>
       </TouchableOpacity>
     </View>
   );
@@ -134,7 +145,7 @@ const accountStyles = StyleSheet.create({
     paddingHorizontal: s(10),
     height: s(30),
     borderBottomWidth: 1,
-    borderBottomColor: colors.darkgrey
+    borderBottomColor: colors.darkgrey,
   },
   resetPwd: {
     marginBottom: vs(25),

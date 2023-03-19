@@ -13,7 +13,7 @@ import strings from '../../constants/strings';
 
 import {signup} from '../../utils/api/auth/signup';
 import {colors} from '../../constants/theme';
-import { miscIcons } from '../../constants/images';
+import {miscIcons} from '../../constants/images';
 
 const SignUp = ({navigation}: {navigation: any}) => {
   const [name, setName] = useState('');
@@ -39,9 +39,7 @@ const SignUp = ({navigation}: {navigation: any}) => {
       {Header(navigation)}
       <View style={accountStyles.container}>
         <View style={accountStyles.input}>
-          <Text style={accountStyles.prompt}>
-            {strings.signUp.name}:
-          </Text>
+          <Text style={accountStyles.prompt}>{strings.signUp.name}:</Text>
           <TextInput
             style={accountStyles.inputText}
             placeholder={strings.signUp.name}
@@ -50,9 +48,7 @@ const SignUp = ({navigation}: {navigation: any}) => {
           />
         </View>
         <View style={accountStyles.input}>
-          <Text style={accountStyles.prompt}>
-            {strings.login.email}:
-          </Text>
+          <Text style={accountStyles.prompt}>{strings.login.email}:</Text>
           <TextInput
             style={accountStyles.inputText}
             placeholder={strings.login.email}
@@ -61,9 +57,7 @@ const SignUp = ({navigation}: {navigation: any}) => {
           />
         </View>
         <View style={accountStyles.input}>
-          <Text style={accountStyles.prompt}>
-            {strings.login.password}:
-          </Text>
+          <Text style={accountStyles.prompt}>{strings.login.password}:</Text>
           <TextInput
             style={accountStyles.inputText}
             placeholder={strings.login.password}
@@ -176,7 +170,7 @@ const accountStyles = StyleSheet.create({
     paddingHorizontal: s(10),
     height: s(30),
     borderBottomWidth: 1,
-    borderBottomColor: colors.darkgrey
+    borderBottomColor: colors.darkgrey,
   },
   signup: {
     marginBottom: vs(25),

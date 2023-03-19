@@ -238,7 +238,7 @@ const cardStyles = StyleSheet.create({
     height: s(210),
     backgroundColor: colors.white,
     borderBottomWidth: 1,
-    borderBottomColor: colors.grey
+    borderBottomColor: colors.grey,
   },
   name: {
     marginHorizontal: s(5),
