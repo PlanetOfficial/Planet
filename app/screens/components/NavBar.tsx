@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, View, TouchableOpacity} from 'react-native';
+import {Image, View, TouchableOpacity, StyleSheet} from 'react-native';
 import {Svg, Circle, Line} from 'react-native-svg';
 import {s} from 'react-native-size-matters';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -82,7 +82,7 @@ export const NavBar = () => {
   const ButtonScreen = () => null;
 
   return (
-    <View style={{flex: 1}}>
+    <View style={styles.tabView}>
       <Tab.Navigator
         initialRouteName="Trending"
         screenOptions={({route}: {route: any}) => ({
@@ -116,5 +116,11 @@ export const NavBar = () => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  tabView: {
+    flex: 1,
+  },
+});
 
 export default NavBar;
