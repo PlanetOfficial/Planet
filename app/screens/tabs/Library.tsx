@@ -8,12 +8,12 @@ import {
   SafeAreaView,
   TouchableOpacity,
 } from 'react-native';
+import {s, vs} from 'react-native-size-matters';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
-import {s} from 'react-native-size-matters';
 
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
-import {miscIcons, vectors} from '../../constants/images';
+import {miscIcons} from '../../constants/images';
 
 // temporary
 const PLACE_DATA = [
@@ -90,7 +90,6 @@ const Library = ({navigation}: {navigation: any}) => {
   const [selectedIndex, setIndex] = useState(0);
   return (
     <View style={styles.container}>
-      <Image style={styles.background} source={vectors.shape1} />
       {Header(navigation)}
       {SegmentedControl(selectedIndex, setIndex)}
       {selectedIndex === 0 ? Places() : Events()}
@@ -118,8 +117,9 @@ const SegmentedControl = (
     tabStyle={sctStyles.tab}
     activeTabStyle={sctStyles.activeTab}
     tabTextStyle={sctStyles.text}
+    firstTabStyle={sctStyles.firstTab}
     activeTabTextStyle={sctStyles.activeText}
-    borderRadius={25}
+    borderRadius={0}
     values={[strings.library.saved, strings.library.events]}
     selectedIndex={selectedIndex}
     onTabPress={index => setIndex(index)}
@@ -140,7 +140,7 @@ const Places = () => (
 const Place = (name: string, category: string, image: any) => (
   <View style={cardStyles.container}>
     <Text style={cardStyles.name}>{name}</Text>
-    <Text style={cardStyles.category}>{category}</Text>
+    <Text style={cardStyles.info}>{category}</Text>
     <Image style={cardStyles.image} source={image} />
   </View>
 );
@@ -159,7 +159,7 @@ const Events = () => (
 const Event = (name: string, date: string, images: any[]) => (
   <View style={cardStyles.container}>
     <Text style={cardStyles.name}>{name}</Text>
-    <Text style={cardStyles.category}>{date}</Text>
+    <Text style={cardStyles.info}>{date}</Text>
     <Image style={cardStyles.image} source={images[0]} />
     <Image style={cardStyles.imageOverlap} source={images[1]} />
   </View>
@@ -179,10 +179,7 @@ const styles = StyleSheet.create({
     tintColor: colors.fill,
   },
   cardsContainer: {
-    // TODO: make scrolling more natural (doesn't get cut off)
-    position: 'absolute',
-    top: s(200),
-    width: s(300),
+    flex: 1,
   },
 });
 
@@ -190,8 +187,7 @@ const headerStyles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    position: 'absolute',
-    top: s(50),
+    marginTop: vs(50),
     width: s(300),
   },
   title: {
@@ -214,26 +210,28 @@ const headerStyles = StyleSheet.create({
 
 const sctStyles = StyleSheet.create({
   container: {
-    position: 'absolute',
-    top: s(100),
+    marginTop: vs(20),
     width: s(300),
-    height: s(40),
-    borderRadius: s(20),
-    backgroundColor: colors.grey,
+    height: s(30),
   },
   tab: {
-    margin: s(4),
-    borderRadius: s(16),
-    borderColor: colors.grey,
-    backgroundColor: colors.grey,
+    borderWidth: 0,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.grey,
   },
   activeTab: {
     backgroundColor: colors.white,
+    borderBottomWidth: 3,
+    borderBottomColor: colors.accent,
+  },
+  firstTab: {
+    borderRightWidth: 0,
   },
   text: {
-    color: colors.black,
+    marginBottom: 2,
     fontSize: s(14),
     fontWeight: 'bold',
+    color: colors.black,
   },
   activeText: {
     color: colors.accent,
@@ -242,29 +240,36 @@ const sctStyles = StyleSheet.create({
 
 const cardStyles = StyleSheet.create({
   container: {
-    height: s(200),
-    marginBottom: s(25),
+    marginTop: s(10),
+    height: s(210),
+    backgroundColor: colors.white,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.grey
   },
   name: {
+    marginHorizontal: s(5),
     fontSize: s(18),
-    fontWeight: 'bold',
+    fontWeight: '700',
     color: colors.black,
   },
-  category: {
-    marginVertical: s(2),
+  info: {
+    marginHorizontal: s(5),
     fontSize: s(12),
+    fontWeight: '500',
     color: colors.accent,
   },
   image: {
-    width: '100%',
-    height: s(164),
+    marginTop: s(3),
+    width: s(300),
+    height: s(160),
     borderRadius: s(10),
   },
   imageOverlap: {
-    bottom: s(159),
+    position: 'absolute',
+    bottom: s(4),
     left: s(5),
     width: s(290),
-    height: s(164),
+    height: s(160),
     borderRadius: s(10),
     zIndex: -1,
   },

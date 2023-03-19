@@ -1,15 +1,14 @@
 import React from 'react';
 import {Image, View, TouchableOpacity} from 'react-native';
+import {Svg, Circle, Line} from 'react-native-svg';
 import {s} from 'react-native-size-matters';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {Svg, Circle, Line} from 'react-native-svg';
 
 import {colors} from '../../constants/theme';
 import {tabIcons} from '../../constants/images';
 
 import Trending from '../tabs/Trending';
 import Friends from '../tabs/Friends';
-import Create from '../createScreens/MapSelection';
 import Library from '../tabs/Library';
 import Profile from '../tabs/Profile';
 
@@ -60,17 +59,17 @@ export const NavBar = () => {
         <Circle cx={s(24)} cy={s(24)} r={s(24)} fill={colors.accent} />
         <Line
           x1={s(24)}
-          y1={s(13)}
+          y1={s(16)}
           x2={s(24)}
-          y2={s(35)}
+          y2={s(32)}
           stroke={colors.white}
           strokeWidth={3}
           strokeLinecap={'round'}
         />
         <Line
-          x1={s(13)}
+          x1={s(16)}
           y1={s(24)}
-          x2={s(35)}
+          x2={s(32)}
           y2={s(24)}
           stroke={colors.white}
           strokeWidth={3}
