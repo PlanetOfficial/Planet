@@ -15,7 +15,7 @@ import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 import {miscIcons} from '../../constants/images';
 
-// temporary
+// TEMP
 const PLACE_DATA = [
   {
     id: '1',
@@ -97,13 +97,13 @@ const Library = ({navigation}: {navigation: any}) => {
   );
 };
 
-const Header = ({navigation}: {navigation: any}) => (
+const Header = (navigation: any) => (
   <View style={headerStyles.container}>
     <Text style={headerStyles.title}>{strings.title.library}</Text>
     <TouchableOpacity
-      style={headerStyles.searchButton}
-      onPress={() => navigation.navigate()}>
-      <Image style={headerStyles.search} source={miscIcons.search} />
+      style={headerStyles.button}
+      onPress={() => navigation.navigate('SearchLibrary')}>
+      <Image style={headerStyles.icon} source={miscIcons.search} />
     </TouchableOpacity>
   </View>
 );
@@ -172,12 +172,6 @@ const styles = StyleSheet.create({
     height: '100%',
     backgroundColor: colors.white,
   },
-  background: {
-    resizeMode: 'stretch',
-    width: '100%',
-    height: s(200),
-    tintColor: colors.fill,
-  },
   cardsContainer: {
     flex: 1,
   },
@@ -195,13 +189,13 @@ const headerStyles = StyleSheet.create({
     fontWeight: 'bold',
     color: colors.black,
   },
-  searchButton: {
+  button: {
     position: 'absolute',
     right: 0,
     width: s(20),
     height: s(20),
   },
-  search: {
+  icon: {
     width: '100%',
     height: '100%',
     tintColor: colors.black,

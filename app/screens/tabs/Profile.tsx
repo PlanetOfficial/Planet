@@ -3,44 +3,42 @@ import {
   View,
   Image,
   Text,
-  Dimensions,
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import {s} from 'react-native-size-matters';
+import {s, vs} from 'react-native-size-matters';
 
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 import {miscIcons} from '../../constants/images';
 
-const W = Dimensions.get('window').width;
-const H = Dimensions.get('window').height;
-
 const Profile = ({navigation}: {navigation: any}) => {
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>{strings.title.profile}</Text>
-        <TouchableOpacity
-          style={styles.settingsButton}
-          onPress={() => navigation.navigate('Settings')}>
-          <Image style={styles.settings} source={miscIcons.settings} />
-        </TouchableOpacity>
-      </View>
+      {Header(navigation)}
       {Info()}
     </View>
   );
 };
 
-const Info = () => (
+const Header = (navigation: any) => (
+  <View style={headerStyles.container}>
+    <Text style={headerStyles.title}>{strings.title.profile}</Text>
+    <TouchableOpacity
+      style={headerStyles.button}
+      onPress={() => navigation.navigate('Settings')}>
+      <Image style={headerStyles.icon} source={miscIcons.settings} />
+    </TouchableOpacity>
+  </View>
+)
+
+const Info = () => ( // TEMP
   <View style={infoStyles.container}>
     <Image
       style={infoStyles.profilePic}
       source={require('../../assets/amusement-park.png')}
     />
-    {/* <View style={infoStyles.nameContainer}> */}
     <Text style={infoStyles.name}>Naoto Uemura</Text>
-    {/* </View> */}
     <View style={infoStyles.countContainer}>
       <View style={infoStyles.count}>
         <Text style={infoStyles.number}>559</Text>
@@ -61,11 +59,13 @@ const styles = StyleSheet.create({
     height: '100%',
     backgroundColor: colors.white,
   },
-  header: {
+});
+
+const headerStyles = StyleSheet.create({
+  container: {
     flexDirection: 'row',
     alignItems: 'center',
-    position: 'absolute',
-    top: s(50),
+    marginTop: vs(50),
     width: s(300),
   },
   title: {
@@ -73,13 +73,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: colors.black,
   },
-  settingsButton: {
+  button: {
     position: 'absolute',
     right: 0,
     width: s(20),
     height: s(20),
   },
-  settings: {
+  icon: {
     width: '100%',
     height: '100%',
     tintColor: colors.black,
@@ -88,9 +88,9 @@ const styles = StyleSheet.create({
 
 const infoStyles = StyleSheet.create({
   container: {
+    marginTop: vs(20),
     width: s(300),
     height: s(100),
-    top: s(100),
   },
   profilePic: {
     width: s(100),
