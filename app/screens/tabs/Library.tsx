@@ -97,7 +97,7 @@ const Places = (savedPlaces: Array<any>) => (
         });
       }
     }}
-    keyExtractor={item => item.id}
+    keyExtractor={item => item?.id}
     showsVerticalScrollIndicator={false}
   />
 );
@@ -106,7 +106,7 @@ const Events = (events: Array<any>) => (
   <FlatList
     data={events}
     renderItem={({item}) => Event(item.name, item.date)}
-    keyExtractor={item => item.id}
+    keyExtractor={item => item?.id}
     showsVerticalScrollIndicator={false}
   />
 );
