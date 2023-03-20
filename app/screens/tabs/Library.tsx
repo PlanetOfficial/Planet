@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -11,88 +11,44 @@ import {
 import {s, vs} from 'react-native-size-matters';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 
+import Place from '../../components/Place';
+
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
-import {miscIcons} from '../../constants/images';
+import {icons, miscIcons} from '../../constants/images';
 
-// TEMP
-const PLACE_DATA = [
-  {
-    id: '1',
-    name: 'Share Tea',
-    category: 'Bubble Tea Shop',
-    image: require('../../assets/sharetea.jpeg'),
-  },
-  {
-    id: '2',
-    name: 'Bellevue Art Museum',
-    category: 'Art Exhibit',
-    image: require('../../assets/sharetea.jpeg'),
-  },
-  {
-    id: '3',
-    name: "Mama's kitchen",
-    category: 'Korean Restaurant',
-    image: require('../../assets/sharetea.jpeg'),
-  },
-  {
-    id: '4',
-    name: 'Share Tea',
-    category: 'Bubble Tea Shop',
-    image: require('../../assets/sharetea.jpeg'),
-  },
-];
-
-const EVENT_DATA = [
-  {
-    id: '1',
-    name: "Leo's Nasty 19th Birthday",
-    date: 'June 14th, 2023',
-    images: [
-      require('../../assets/sharetea.jpeg'),
-      require('../../assets/sharetea.jpeg'),
-      require('../../assets/sharetea.jpeg'),
-    ],
-  },
-  {
-    id: '2',
-    name: 'Donutter First Run',
-    date: 'November 19th, 2022',
-    images: [
-      require('../../assets/sharetea.jpeg'),
-      require('../../assets/sharetea.jpeg'),
-      require('../../assets/sharetea.jpeg'),
-    ],
-  },
-  {
-    id: '3',
-    name: 'Anniversary Night Out',
-    date: 'Feburary 2nd, 2024',
-    images: [
-      require('../../assets/sharetea.jpeg'),
-      require('../../assets/sharetea.jpeg'),
-      require('../../assets/sharetea.jpeg'),
-    ],
-  },
-  {
-    id: '4',
-    name: 'Saturdays are for the Boys',
-    date: 'December 18th, 2026',
-    images: [
-      require('../../assets/sharetea.jpeg'),
-      require('../../assets/sharetea.jpeg'),
-      require('../../assets/sharetea.jpeg'),
-    ],
-  },
-];
+import EncryptedStorage from 'react-native-encrypted-storage';
+import {getEvents} from '../../utils/api/libraryCalls/getEvents';
+import {getPlaces} from '../../utils/api/libraryCalls/getPlaces';
+import misc from '../../constants/misc';
+import {filterToUniqueIds, getImagesFromURLs} from '../../utils/functions/Misc';
 
 const Library = ({navigation}: {navigation: any}) => {
   const [selectedIndex, setIndex] = useState(0);
+  const [savedPlaces, setSavedPlaces] = useState([]);
+  const [events, setEvents] = useState([]);
+
+  useEffect(() => {
+    const initializeData = async () => {
+      const authToken = await EncryptedStorage.getItem('auth_token');
+
+      const eventsRaw = await getEvents(authToken);
+      setEvents(filterToUniqueIds(eventsRaw));
+
+      const bookmarks = await getPlaces(authToken);
+      setSavedPlaces(bookmarks);
+    };
+
+    initializeData();
+  }, []);
+
   return (
     <View style={styles.container}>
       {Header(navigation)}
       {SegmentedControl(selectedIndex, setIndex)}
-      {selectedIndex === 0 ? Places() : Events()}
+      <SafeAreaView style={styles.cardsContainer}>
+        {selectedIndex === 0 ? Places(savedPlaces) : Events(events)}
+      </SafeAreaView>
     </View>
   );
 };
@@ -126,42 +82,52 @@ const SegmentedControl = (
   />
 );
 
-const Places = () => (
-  <SafeAreaView style={styles.cardsContainer}>
-    <FlatList
-      data={PLACE_DATA}
-      renderItem={({item}) => Place(item.name, item.category, item.image)}
-      keyExtractor={item => item.id}
-      showsVerticalScrollIndicator={false}
-    />
-  </SafeAreaView>
+const Places = (savedPlaces: Array<any>) => (
+  <FlatList
+    data={savedPlaces}
+    renderItem={({item}) => {
+      if (item?.images === undefined || item?.images?.length === 0) {
+        return Place(item?.name, item?.category?.name, icons.defaultImage);
+      } else {
+        return Place(item?.name, item?.category?.name, {
+          uri:
+            item?.images[0]?.prefix + misc.imageSize + item?.images[0]?.suffix,
+        });
+      }
+    }}
+    keyExtractor={item => item?.id}
+    showsVerticalScrollIndicator={false}
+  />
 );
 
-const Place = (name: string, category: string, image: any) => (
-  <View style={cardStyles.container}>
-    <Text style={cardStyles.name}>{name}</Text>
-    <Text style={cardStyles.info}>{category}</Text>
-    <Image style={cardStyles.image} source={image} />
-  </View>
+const Events = (events: Array<any>) => (
+  <FlatList
+    data={events}
+    renderItem={({item}) => {
+      const images = getImagesFromURLs(item?.places);
+      if (images?.length === 1) {
+        return Event(item.name, item.date, {uri: images[0]}, null);
+      } else if (images?.length === 2) {
+        return Event(item.name, item.date, {uri: images[0]}, {uri: images[1]});
+      } else {
+        return Event(item.name, item.date, null, null);
+      }
+    }}
+    keyExtractor={item => item?.id}
+    showsVerticalScrollIndicator={false}
+  />
 );
 
-const Events = () => (
-  <SafeAreaView style={styles.cardsContainer}>
-    <FlatList
-      data={EVENT_DATA}
-      renderItem={({item}) => Event(item.name, item.date, item.images)}
-      keyExtractor={item => item.id}
-      showsVerticalScrollIndicator={false}
-    />
-  </SafeAreaView>
-);
-
-const Event = (name: string, date: string, images: any[]) => (
+const Event = (name: string, date: string, image1: any, image2: any) => (
   <View style={cardStyles.container}>
     <Text style={cardStyles.name}>{name}</Text>
     <Text style={cardStyles.info}>{date}</Text>
-    <Image style={cardStyles.image} source={images[0]} />
-    <Image style={cardStyles.imageOverlap} source={images[1]} />
+    {image1 ? (
+      <Image style={cardStyles.image} source={image1} />
+    ) : (
+      <Image style={cardStyles.image} source={icons.defaultImage} />
+    )}
+    {/* {image2 ? <Image style={cardStyles.imageOverlap} source={image2} /> : null} */}
   </View>
 );
 
@@ -236,6 +202,7 @@ const cardStyles = StyleSheet.create({
   container: {
     marginTop: s(10),
     height: s(210),
+    width: s(300),
     backgroundColor: colors.white,
     borderBottomWidth: 1,
     borderBottomColor: colors.grey,
@@ -258,15 +225,15 @@ const cardStyles = StyleSheet.create({
     height: s(160),
     borderRadius: s(10),
   },
-  imageOverlap: {
-    position: 'absolute',
-    bottom: s(4),
-    left: s(5),
-    width: s(290),
-    height: s(160),
-    borderRadius: s(10),
-    zIndex: -1,
-  },
+  // imageOverlap: {
+  //   position: 'absolute',
+  //   left: s(5),
+  //   bottom: s(4),
+  //   width: s(290),
+  //   height: s(160),
+  //   borderRadius: s(10),
+  //   zIndex: -1,
+  // },
 });
 
 export default Library;

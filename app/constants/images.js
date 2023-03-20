@@ -10,6 +10,7 @@ export const icons = {
   dessert: require('../assets/dessert.png'),
   bookmarkActive: require('../assets/save-active.png'),
   bookmarkInactive: require('../assets/save-inactive.png'),
+  defaultImage: require('../assets/concert.png'), // TODO: change the image to logo eventually
 };
 
 export const tabIcons = {

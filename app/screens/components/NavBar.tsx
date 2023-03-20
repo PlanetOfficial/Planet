@@ -105,7 +105,12 @@ export const NavBar = () => {
             tabBarButton: props => (
               <TouchableOpacity
                 {...props}
-                onPress={() => navigation.navigate('CreateStack')}
+                onPress={() => {
+                  navigation.reset({
+                    index: 0,
+                    routes: [{name: 'CreateStack'}],
+                  });
+                }}
               />
             ),
           })}

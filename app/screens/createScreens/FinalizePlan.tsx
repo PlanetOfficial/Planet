@@ -35,10 +35,8 @@ const SelectDestinations = ({navigation, route}) => {
   const getImage = (imagesData: Array<number>) => {
     // TODO: if there are images provided by API, then return one of those images instead
 
-    return icons.experience;
+    return icons.defaultImage;
   };
-
-  EncryptedStorage.getItem('auth_token').then(item => console.log(item));
 
   const handleSave = async () => {
     // send destinations to backend
@@ -53,7 +51,7 @@ const SelectDestinations = ({navigation, route}) => {
     );
 
     if (responseStatus === 200) {
-      navigation.navigate('Library');
+      navigation.navigate('TabStack', {screen: 'Library'});
       // TODO: show successful save
     } else {
       // TODO: error, make sure connected to internet and logged in, if error persists, log out and log back in
