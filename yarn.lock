@@ -6212,6 +6212,11 @@ react-native-segmented-control-tab@^4.0.0:
   resolved "https://registry.yarnpkg.com/react-native-segmented-control-tab/-/react-native-segmented-control-tab-4.0.0.tgz#e52a5638dda1a217e1f2308dcb8a935a7812edc2"
   integrity sha512-Iyxabn5T7HGFGjLAvOWUL6K/o0r+UglAUDDQzMgqlHcz3tCnK9C6QUgZaAkzMTSgB/2JO9yLgk3XROPmb8064A==
 
+react-native-size-matters@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/react-native-size-matters/-/react-native-size-matters-0.4.0.tgz#01bfd0d59454318f4e0b13fe9c1eb0523d70f2e0"
+  integrity sha512-8/C0htHrFWeUm9N8JegmadovUfgTWkGBkDPZ1N3YkXtDWb+98Ya2gThiKcu445r8c7YhcrBfnHz/mYsXIusaOQ==
+
 react-native-size-scaling@^0.5.1:
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/react-native-size-scaling/-/react-native-size-scaling-0.5.1.tgz#a1a7f91905e11fc6bba0a5178dc308aca7a76ec8"

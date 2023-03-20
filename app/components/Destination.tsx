@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 
-import {colors} from '../constants/colors';
+import {colors} from '../constants/theme';
 import {icons} from '../constants/images';
 import {setBookmark} from '../utils/api/shared/setBookmark';
 import EncryptedStorage from 'react-native-encrypted-storage';

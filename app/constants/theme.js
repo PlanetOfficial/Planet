@@ -1,7 +1,8 @@
 export const colors = {
   white: '#ffffff',
   black: '#333333',
-  grey: '#eeeeee',
+  grey: '#dddddd',
+  darkgrey: '#aaaaaa',
   accent: '#f36f3f',
   fill: '#ffd496',
 };

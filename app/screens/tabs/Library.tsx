@@ -9,12 +9,13 @@ import {
   SafeAreaView,
   TouchableOpacity,
 } from 'react-native';
+import {s, vs} from 'react-native-size-matters';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 
 import Place from '../../components/Place';
 
 import strings from '../../constants/strings';
-import {colors} from '../../constants/colors';
+import {colors} from '../../constants/theme';
 import {icons, miscIcons, vectors} from '../../constants/images';
 
 import EncryptedStorage from 'react-native-encrypted-storage';
@@ -47,36 +48,40 @@ const Library = ({navigation}: {navigation: any}) => {
 
   return (
     <View style={styles.container}>
-      <Image style={styles.background} source={vectors.shape1} />
-      <Text style={styles.title}>{strings.title.library}</Text>
-      <TouchableOpacity
-        style={styles.searchButton}
-        onPress={() => navigation.navigate()}>
-        <Image style={styles.search} source={miscIcons.search} />
-      </TouchableOpacity>
+      {Header(navigation)}
       {SegmentedControl(selectedIndex, setIndex)}
       {selectedIndex === 0 ? Places(savedPlaces) : Events(events)}
     </View>
   );
 };
 
+const Header = (navigation: any) => (
+  <View style={headerStyles.container}>
+    <Text style={headerStyles.title}>{strings.title.library}</Text>
+    <TouchableOpacity
+      style={headerStyles.button}
+      onPress={() => navigation.navigate('SearchLibrary')}>
+      <Image style={headerStyles.icon} source={miscIcons.search} />
+    </TouchableOpacity>
+  </View>
+);
+
 const SegmentedControl = (
   selectedIndex: number,
   setIndex: React.Dispatch<React.SetStateAction<number>>,
 ) => (
-  <View style={styles.sctContainer}>
-    <SegmentedControlTab
-      tabsContainerStyle={sctStyles.container}
-      tabStyle={sctStyles.tab}
-      activeTabStyle={sctStyles.activeTab}
-      tabTextStyle={sctStyles.text}
-      activeTabTextStyle={sctStyles.activeText}
-      borderRadius={25}
-      values={[strings.library.saved, strings.library.events]}
-      selectedIndex={selectedIndex}
-      onTabPress={index => setIndex(index)}
-    />
-  </View>
+  <SegmentedControlTab
+    tabsContainerStyle={sctStyles.container}
+    tabStyle={sctStyles.tab}
+    activeTabStyle={sctStyles.activeTab}
+    tabTextStyle={sctStyles.text}
+    firstTabStyle={sctStyles.firstTab}
+    activeTabTextStyle={sctStyles.activeText}
+    borderRadius={0}
+    values={[strings.library.saved, strings.library.events]}
+    selectedIndex={selectedIndex}
+    onTabPress={index => setIndex(index)}
+  />
 );
 
 const Places = (savedPlaces: Array<any>) => (
@@ -110,72 +115,69 @@ const Events = (events: Array<any>) => (
 const Event = (name: string, date: string) => (
   <View style={cardStyles.container}>
     <Text style={cardStyles.name}>{name}</Text>
-    <Text style={cardStyles.category}>{date}</Text>
+    <Text style={cardStyles.info}>{date}</Text>
   </View>
 );
 
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    width: W,
-    height: H,
+    width: '100%',
+    height: '100%',
     backgroundColor: colors.white,
   },
-  background: {
-    width: W,
-    height: 240,
-    tintColor: colors.fill,
+  cardsContainer: {
+    flex: 1,
+  },
+});
+
+const headerStyles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: vs(50),
+    width: s(300),
   },
   title: {
-    position: 'absolute',
-    top: 60,
-    left: 30,
-    fontSize: 32,
+    fontSize: s(28),
     fontWeight: 'bold',
     color: colors.black,
   },
-  searchButton: {
+  button: {
     position: 'absolute',
-    top: 69,
-    right: 30,
-    width: 24,
-    height: 24,
+    right: 0,
+    width: s(20),
+    height: s(20),
   },
-  search: {
+  icon: {
     width: '100%',
     height: '100%',
     tintColor: colors.black,
-  },
-  sctContainer: {
-    position: 'absolute',
-    top: 120,
-  },
-  cardsContainer: {
-    position: 'absolute',
-    top: 240,
-    width: W - 60,
-    height: H - 240,
   },
 });
 
 const sctStyles = StyleSheet.create({
   container: {
-    width: W - 60,
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: colors.grey,
+    marginTop: vs(20),
+    width: s(300),
+    height: s(30),
   },
   tab: {
-    margin: 5,
-    borderRadius: 20,
-    borderColor: colors.grey,
-    backgroundColor: colors.grey,
+    borderWidth: 0,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.grey,
   },
   activeTab: {
     backgroundColor: colors.white,
+    borderBottomWidth: 3,
+    borderBottomColor: colors.accent,
+  },
+  firstTab: {
+    borderRightWidth: 0,
   },
   text: {
-    fontSize: 16,
+    marginBottom: 2,
+    fontSize: s(14),
     fontWeight: 'bold',
     color: colors.black,
   },
@@ -186,31 +188,37 @@ const sctStyles = StyleSheet.create({
 
 const cardStyles = StyleSheet.create({
   container: {
-    width: W - 60,
-    height: 200,
-    marginBottom: 25,
+    marginTop: s(10),
+    height: s(210),
+    backgroundColor: colors.white,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.grey,
   },
   name: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    marginHorizontal: s(5),
+    fontSize: s(18),
+    fontWeight: '700',
     color: colors.black,
   },
-  category: {
-    marginVertical: 2,
-    fontSize: 12,
+  info: {
+    marginHorizontal: s(5),
+    fontSize: s(12),
+    fontWeight: '500',
     color: colors.accent,
   },
   image: {
-    width: W - 60,
-    height: 164,
-    borderRadius: 10,
+    marginTop: s(3),
+    width: s(300),
+    height: s(160),
+    borderRadius: s(10),
   },
   imageOverlap: {
-    bottom: 159,
-    left: 5,
-    width: W - 70,
-    height: 164,
-    borderRadius: 10,
+    position: 'absolute',
+    bottom: s(4),
+    left: s(5),
+    width: s(290),
+    height: s(160),
+    borderRadius: s(10),
     zIndex: -1,
   },
 });

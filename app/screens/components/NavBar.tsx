@@ -1,14 +1,10 @@
 import React from 'react';
-import {
-  Image,
-  StyleSheet,
-  Animated,
-  View,
-  TouchableOpacity,
-} from 'react-native';
-import {CurvedBottomBar} from 'react-native-curved-bottom-bar';
+import {Image, View, TouchableOpacity, StyleSheet} from 'react-native';
+import {Svg, Circle, Line} from 'react-native-svg';
+import {s} from 'react-native-size-matters';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
-import {colors} from '../../constants/colors';
+import {colors} from '../../constants/theme';
 import {tabIcons} from '../../constants/images';
 
 import Trending from '../tabs/Trending';
@@ -16,12 +12,12 @@ import Friends from '../tabs/Friends';
 import Library from '../tabs/Library';
 import Profile from '../tabs/Profile';
 
-export const NavBar = ({navigation}: {navigation: any}) => {
-  const renderIcon = (routeName: string, selectedTab: string) => {
-    let source: number;
-    let focused: boolean = routeName === selectedTab;
+const Tab = createBottomTabNavigator();
 
-    switch (routeName) {
+export const NavBar = () => {
+  const getIcon = (route: any, focused: boolean) => {
+    let source: number;
+    switch (route.name) {
       case 'Trending':
         source = focused ? tabIcons.trendingActive : tabIcons.trendingInactive;
         break;
@@ -39,103 +35,91 @@ export const NavBar = ({navigation}: {navigation: any}) => {
         break;
     }
 
+    if (source !== -1) {
+      return (
+        <Image
+          style={{
+            width: s(24),
+            height: s(24),
+            tintColor: focused ? colors.accent : colors.darkgrey,
+          }}
+          source={source}
+        />
+      );
+    }
+
     return (
-      <Image
+      <Svg
         style={{
-          marginLeft:
-            routeName === 'Trending' || routeName === 'Library' ? 10 : 0,
-          marginRight:
-            routeName === 'Trending' || routeName === 'Library' ? 0 : 10,
-          width: 30,
-          height: 30,
-          tintColor: focused ? colors.accent : colors.black,
-        }}
-        source={source}
-      />
+          position: 'absolute',
+          width: s(49),
+          height: s(49),
+          top: -s(12),
+        }}>
+        <Circle cx={s(24)} cy={s(24)} r={s(24)} fill={colors.accent} />
+        <Line
+          x1={s(24)}
+          y1={s(16)}
+          x2={s(24)}
+          y2={s(32)}
+          stroke={colors.white}
+          strokeWidth={3}
+          strokeLinecap={'round'}
+        />
+        <Line
+          x1={s(16)}
+          y1={s(24)}
+          x2={s(32)}
+          y2={s(24)}
+          stroke={colors.white}
+          strokeWidth={3}
+          strokeLinecap={'round'}
+        />
+      </Svg>
     );
   };
 
+  const ButtonScreen = () => null;
+
   return (
-    <View style={styles.mainView}>
-      <CurvedBottomBar.Navigator
-        screenOptions={{headerShown: false}}
-        height={64}
-        circleWidth={56}
-        bgColor={colors.fill}
-        initialRouteName="trending"
-        borderTopLeftRight={true}
-        renderCircle={() => (
-          <Animated.View style={styles.circle}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('CreateStack')}>
-              <Image style={styles.plus} source={tabIcons.create} />
-            </TouchableOpacity>
-          </Animated.View>
-        )}
-        tabBar={({routeName, selectedTab, navigate}) => {
-          return (
-            <TouchableOpacity
-              onPress={() => navigate(routeName)}
-              style={styles.icon}>
-              {renderIcon(routeName, selectedTab)}
-            </TouchableOpacity>
-          );
-        }}>
-        <CurvedBottomBar.Screen
-          name="Trending"
-          position={'LEFT'}
-          component={Trending}
+    <View style={styles.tabView}>
+      <Tab.Navigator
+        initialRouteName="Trending"
+        screenOptions={({route}: {route: any}) => ({
+          tabBarShowLabel: false,
+          headerShown: false,
+          tabBarStyle: {
+            borderTopWidth: 1,
+            borderTopColor: colors.grey,
+          },
+          tabBarIcon: ({focused}): any => {
+            return getIcon(route, focused);
+          },
+        })}>
+        <Tab.Screen name="Trending" component={Trending} />
+        <Tab.Screen name="Friends" component={Friends} />
+        <Tab.Screen
+          name="Create"
+          component={ButtonScreen}
+          options={({navigation}) => ({
+            tabBarButton: props => (
+              <TouchableOpacity
+                {...props}
+                onPress={() => navigation.navigate('CreateStack')}
+              />
+            ),
+          })}
         />
-        <CurvedBottomBar.Screen
-          name="Friends"
-          position={'LEFT'}
-          component={Friends}
-        />
-        <CurvedBottomBar.Screen
-          name="Library"
-          position={'RIGHT'}
-          component={Library}
-        />
-        <CurvedBottomBar.Screen
-          name="Profile"
-          position={'RIGHT'}
-          component={Profile}
-        />
-      </CurvedBottomBar.Navigator>
+        <Tab.Screen name="Library" component={Library} />
+        <Tab.Screen name="Profile" component={Profile} />
+      </Tab.Navigator>
     </View>
   );
 };
 
-export const styles = StyleSheet.create({
-  mainView: {
+const styles = StyleSheet.create({
+  tabView: {
     flex: 1,
-  },
-  circle: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    bottom: 25,
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: colors.white,
-    shadowColor: colors.black,
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
-  },
-  plus: {
-    width: 62,
-    height: 62,
-    tintColor: colors.accent,
-  },
-  icon: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingBottom: 10,
-    marginHorizontal: 20,
   },
 });
 

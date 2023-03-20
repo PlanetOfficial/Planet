@@ -7,7 +7,7 @@ import {
   Image,
 } from 'react-native';
 
-import {colors} from '../constants/colors';
+import {colors} from '../constants/theme';
 
 
 const W = Dimensions.get('window').width;
