@@ -71,7 +71,7 @@ const SelectDestinations = ({navigation, route}) => {
   const getImage = (imagesData: Array<number>) => {
     // TODO: if there are images provided by API, then return one of those images instead
 
-    return icons.experience;
+    return icons.defaultImage;
   };
 
   const handleDestinationSelect = (destination: Object) => {

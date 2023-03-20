@@ -11,87 +11,20 @@ import {
 } from 'react-native';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 
+import Place from '../../components/Place';
+
 import strings from '../../constants/strings';
 import {colors} from '../../constants/colors';
-import {miscIcons, vectors} from '../../constants/images';
+import {icons, miscIcons, vectors} from '../../constants/images';
 
 import EncryptedStorage from 'react-native-encrypted-storage';
 import { getEvents } from '../../utils/api/libraryCalls/getEvents';
 import { getPlaces } from '../../utils/api/libraryCalls/getPlaces';
+import misc from '../../constants/misc';
+import { filterToUniqueIds } from '../../utils/functions/Misc';
 
 const W = Dimensions.get('window').width;
 const H = Dimensions.get('window').height;
-
-// temporary
-const PLACE_DATA = [
-  {
-    id: '1',
-    name: 'Share Tea',
-    category: 'Bubble Tea Shop',
-    image: require('../../assets/sharetea.jpeg'),
-  },
-  {
-    id: '2',
-    name: 'Bellevue Art Museum',
-    category: 'Art Exhibit',
-    image: require('../../assets/sharetea.jpeg'),
-  },
-  {
-    id: '3',
-    name: "Mama's kitchen",
-    category: 'Korean Restaurant',
-    image: require('../../assets/sharetea.jpeg'),
-  },
-  {
-    id: '4',
-    name: 'Share Tea',
-    category: 'Bubble Tea Shop',
-    image: require('../../assets/sharetea.jpeg'),
-  },
-];
-
-const EVENT_DATA = [
-  {
-    id: '1',
-    name: "Leo's Nasty 19th Birthday",
-    date: 'June 14th, 2023',
-    images: [
-      require('../../assets/sharetea.jpeg'),
-      require('../../assets/sharetea.jpeg'),
-      require('../../assets/sharetea.jpeg'),
-    ],
-  },
-  {
-    id: '2',
-    name: 'Donutter First Run',
-    date: 'November 19th, 2022',
-    images: [
-      require('../../assets/sharetea.jpeg'),
-      require('../../assets/sharetea.jpeg'),
-      require('../../assets/sharetea.jpeg'),
-    ],
-  },
-  {
-    id: '3',
-    name: 'Anniversary Night Out',
-    date: 'Feburary 2nd, 2024',
-    images: [
-      require('../../assets/sharetea.jpeg'),
-      require('../../assets/sharetea.jpeg'),
-      require('../../assets/sharetea.jpeg'),
-    ],
-  },
-  {
-    id: '4',
-    name: 'Saturdays are for the Boys',
-    date: 'December 18th, 2026',
-    images: [
-      require('../../assets/sharetea.jpeg'),
-      require('../../assets/sharetea.jpeg'),
-      require('../../assets/sharetea.jpeg'),
-    ],
-  },
-];
 
 const Library = ({navigation}: {navigation: any}) => {
   const [selectedIndex, setIndex] = useState(0);
@@ -103,12 +36,10 @@ const Library = ({navigation}: {navigation: any}) => {
       const authToken = await EncryptedStorage.getItem('auth_token');
 
       const events = await getEvents(authToken);
-      setEvents(events);
+      setEvents(filterToUniqueIds(events));
 
       const bookmarks = await getPlaces(authToken);
       setSavedPlaces(bookmarks);
-
-      console.log(JSON.stringify(bookmarks))
     }
 
     initializeData();
@@ -124,7 +55,7 @@ const Library = ({navigation}: {navigation: any}) => {
         <Image style={styles.search} source={miscIcons.search} />
       </TouchableOpacity>
       {SegmentedControl(selectedIndex, setIndex)}
-      {selectedIndex === 0 ? Places() : Events(events)}
+      {selectedIndex === 0 ? Places(savedPlaces) : Events(events)}
     </View>
   );
 };
@@ -148,43 +79,38 @@ const SegmentedControl = (
   </View>
 );
 
-const Places = () => (
+const Places = (savedPlaces: Array<any>) => (
   <SafeAreaView style={styles.cardsContainer}>
     <FlatList
-      data={PLACE_DATA}
-      renderItem={({item}) => Place(item.name, item.category, item.image)}
+      data={savedPlaces}
+      renderItem={({item}) => {
+        if (item?.images === undefined || item?.images?.length === 0) {
+          return Place(item?.name, item?.category?.name, icons.defaultImage);
+        } else {
+          return Place(item?.name, item?.category?.name, {uri: item?.images[0]?.prefix + misc.imageSize + item?.images[0]?.suffix});
+        }
+      }}
       keyExtractor={item => item.id}
       showsVerticalScrollIndicator={false}
     />
   </SafeAreaView>
-);
-
-const Place = (name: string, category: string, image: any) => (
-  <View style={cardStyles.container}>
-    <Text style={cardStyles.name}>{name}</Text>
-    <Text style={cardStyles.category}>{category}</Text>
-    <Image style={cardStyles.image} source={image} />
-  </View>
 );
 
 const Events = (events: Array<any>) => (
   <SafeAreaView style={styles.cardsContainer}>
     <FlatList
       data={events}
-      // renderItem={({item}) => Event(item.name, item.date, item.images)}
-      renderItem={({item}) => Event(item.name, item.date, [])}
+      renderItem={({item}) => Event(item.name, item.date)}
       keyExtractor={item => item.id}
       showsVerticalScrollIndicator={false}
     />
   </SafeAreaView>
 );
 
-const Event = (name: string, date: string, images: any[]) => (
+const Event = (name: string, date: string) => (
   <View style={cardStyles.container}>
     <Text style={cardStyles.name}>{name}</Text>
     <Text style={cardStyles.category}>{date}</Text>
-    {/* <Image style={cardStyles.image} source={images[0]} />
-    <Image style={cardStyles.imageOverlap} source={images[1]} /> */}
   </View>
 );
 
