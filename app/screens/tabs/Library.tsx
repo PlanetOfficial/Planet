@@ -21,7 +21,7 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 import {getEvents} from '../../utils/api/libraryCalls/getEvents';
 import {getPlaces} from '../../utils/api/libraryCalls/getPlaces';
 import misc from '../../constants/misc';
-import {filterToUniqueIds} from '../../utils/functions/Misc';
+import {filterToUniqueIds, getImagesFromURLs} from '../../utils/functions/Misc';
 
 const Library = ({navigation}: {navigation: any}) => {
   const [selectedIndex, setIndex] = useState(0);
@@ -105,16 +105,34 @@ const Places = (savedPlaces: Array<any>) => (
 const Events = (events: Array<any>) => (
   <FlatList
     data={events}
-    renderItem={({item}) => Event(item.name, item.date)}
+    renderItem={({item}) => {
+      const images = getImagesFromURLs(item?.places);
+      if (images?.length === 1) {
+        return Event(item.name, item.date, {uri: images[0]}, null);
+      } else if (images?.length === 2) {
+        return Event(item.name, item.date, {uri: images[0]}, {uri: images[1]});
+      } else {
+        return Event(item.name, item.date, null, null);
+      }
+    }}
     keyExtractor={item => item?.id}
     showsVerticalScrollIndicator={false}
   />
 );
 
-const Event = (name: string, date: string) => (
+const Event = (name: string, date: string, image1: any, image2: any) => (
   <View style={cardStyles.container}>
     <Text style={cardStyles.name}>{name}</Text>
     <Text style={cardStyles.info}>{date}</Text>
+    {image1 ? (
+      <Image style={cardStyles.image} source={image1}/>
+      ) : (
+      <Image style={cardStyles.image} source={icons.defaultImage}/>
+      )
+    }
+    {image2 ? (
+      <Image style={cardStyles.imageOverlap} source={image2}/>
+    ) : null}
   </View>
 );
 
