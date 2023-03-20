@@ -88,7 +88,7 @@ const DestinationDetails = ({navigation, route}) => {
 const styles = StyleSheet.create({
   text: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: '700',
   },
   header: {
     height: 60,

@@ -194,7 +194,7 @@ const headerStyles = StyleSheet.create({
   },
   title: {
     fontSize: s(28),
-    fontWeight: 'bold',
+    fontWeight: '700',
     color: colors.black,
   },
   button: {
@@ -232,7 +232,7 @@ const sctStyles = StyleSheet.create({
   text: {
     marginBottom: 2,
     fontSize: s(14),
-    fontWeight: 'bold',
+    fontWeight: '700',
     color: colors.black,
   },
   activeText: {

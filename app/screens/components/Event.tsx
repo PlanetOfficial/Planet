@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     top: 70,
     left: 60,
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: '700',
     color: colors.black,
   },
   date: {
@@ -130,7 +130,7 @@ const cardStyles = StyleSheet.create({
   },
   name: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: '700',
     color: colors.black,
   },
   category: {

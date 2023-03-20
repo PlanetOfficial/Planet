@@ -28,6 +28,7 @@ export const miscIcons = {
   search: require('../assets/miscIcons/search.png'),
   back: require('../assets/miscIcons/back.png'),
   settings: require('../assets/miscIcons/settings.png'),
+  x: require('../assets/miscIcons/x.png'),
 };
 
 export const vectors = {

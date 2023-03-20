@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: '700',
     marginRight: 10,
   },
   image: {

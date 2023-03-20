@@ -65,7 +65,7 @@ const headerStyles = StyleSheet.create({
   },
   title: {
     fontSize: s(28),
-    fontWeight: 'bold',
+    fontWeight: '700',
     color: colors.black,
   },
   button: {
@@ -99,7 +99,7 @@ const infoStyles = StyleSheet.create({
     width: s(200),
     textAlign: 'center',
     fontSize: s(20),
-    fontWeight: 'bold',
+    fontWeight: '700',
     color: colors.black,
   },
   countContainer: {
@@ -122,7 +122,7 @@ const infoStyles = StyleSheet.create({
   },
   number: {
     fontSize: s(15),
-    fontWeight: 'bold',
+    fontWeight: '700',
     color: colors.accent,
   },
 });

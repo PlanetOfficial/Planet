@@ -5,127 +5,183 @@ import {
   TouchableOpacity,
   TextInput,
   StyleSheet,
-  SafeAreaView,
   Image,
 } from 'react-native';
-import MapView, {Circle} from 'react-native-maps';
+import {s, vs} from 'react-native-size-matters';
+import MapView, { Details, Region} from 'react-native-maps';
+import { Svg, Circle } from 'react-native-svg';
 
-import {icons} from '../../constants/images';
+import {miscIcons} from '../../constants/images';
 import strings from '../../constants/strings';
 import integers from '../../constants/integers';
 import {colors} from '../../constants/theme';
 
 const MapScreen = ({navigation}: {navigation: any}) => {
   const [search, setSearch] = useState('');
-  const [radius, setRadius] = useState('');
+  const [radius, setRadius] = useState(2 * integers.milesToMeters);
   const [latitude, setLatitude] = useState(37.78825);
   const [longitude, setLongitude] = useState(-122.4324);
 
-  const getRadius = () => {
-    if (!Number.isNaN(parseFloat(radius))) {
-      return parseFloat(radius) * integers.milesToMeters;
-    }
-
-    return 0;
-  };
-
-  const onRegionChange = reg => {
+  const onRegionChange = (reg: any) => {
     setLatitude(reg.latitude);
     setLongitude(reg.longitude);
+    setRadius(reg.radius);
   };
 
   return (
-    <SafeAreaView style={styles.safeAreaView}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.navigate('TabStack')}>
-          <Image source={icons.XButton} />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>
-          {strings.createTabStack.planEvent}
-        </Text>
-        <TouchableOpacity
-          onPress={() => {
-            if (getRadius() !== 0) {
-              navigation.navigate('SelectGenres', {
-                latitude: latitude,
-                longitude: longitude,
-                radius: radius,
-              });
-            }
-          }}>
-          <Image source={icons.NextArrow} />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.container}>
-        <View style={styles.searchContainer}>
-          <TextInput
-            value={search}
-            onChangeText={text => setSearch(text)}
-            placeholder={strings.createTabStack.search}
-            style={styles.searchBar}
-          />
-        </View>
-        <View style={styles.searchContainer}>
-          <TextInput
-            value={radius}
-            onChangeText={text => setRadius(text)}
-            placeholder={strings.createTabStack.radius}
-            style={styles.searchBar}
-          />
-        </View>
-        <MapView
-          style={styles.map}
-          initialRegion={{
-            latitude: latitude,
-            longitude: longitude,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          }}
-          onRegionChange={onRegionChange}>
-          <Circle
-            center={{latitude: latitude, longitude: longitude}}
-            radius={getRadius()}
-          />
-        </MapView>
-      </View>
-    </SafeAreaView>
+    <View style={styles.container}>
+      {Header(latitude, longitude, radius, navigation)}
+      {Map(latitude, longitude, radius, search, setSearch, onRegionChange)} 
+    </View>
   );
 };
 
+const Header = (
+  latitude: number,
+  longitude: number,
+  radius: number,
+  navigation: any,
+) => (
+  <View style={headerStyles.container}>
+    <TouchableOpacity
+      style={headerStyles.x}
+      onPress={() => navigation.navigate('TabStack')}>
+      <Image style={headerStyles.icon} source={miscIcons.x} />
+    </TouchableOpacity>
+    <Text style={headerStyles.title}>{strings.createTabStack.planEvent}</Text>
+    <TouchableOpacity
+      style={headerStyles.next}
+      onPress={() => {
+        navigation.navigate('SelectGenres', {
+          latitude: latitude,
+          longitude: longitude,
+          radius: radius,
+        });
+      }}>
+      <Image style={headerStyles.icon} source={miscIcons.back} />
+    </TouchableOpacity>
+  </View>
+);
+
+const Map = (latitude: number, longitude: number, radius: number, search: string, setSearch: ((arg0: string) => void), onRegionChange: ((region: Region, details: Details) => void)) => (
+  <View style={mapStyles.container}>
+    <MapView
+    style={mapStyles.map}
+    initialRegion={{
+      latitude: latitude,
+      longitude: longitude,
+      latitudeDelta: 0.0922,
+      longitudeDelta: 0.0421,
+    }}
+    showsScale={false}
+    showsCompass={false}
+    onRegionChange={onRegionChange}>
+    </MapView>
+    <View style={searchStyles.container}>
+      <Image style={searchStyles.icon} source={miscIcons.search}/>
+      <TextInput
+        value={search}
+        onChangeText={text => setSearch(text)}
+        placeholder={strings.createTabStack.search}
+        style={searchStyles.text}
+        placeholderTextColor={colors.darkgrey}
+      />
+    </View>
+    <View pointerEvents={"none"} style={mapStyles.circle}>
+      <Svg style={mapStyles.circle}>
+        <Circle
+          cx={s(150)}
+          cy={s(150)}
+          r={s(148)}
+          stroke={colors.accent}
+          strokeWidth={4}
+          fill={colors.accent}
+          fillOpacity={0.2}
+        />
+      </Svg>
+    </View>
+  </View>
+);
+
 const styles = StyleSheet.create({
-  safeAreaView: {
-    flex: 1,
+  container: {
+    alignItems: 'center',
+    width: '100%',
+    height: '100%',
+    backgroundColor: colors.white,
   },
-  header: {
-    height: 60,
-    padding: 10,
+});
+
+const headerStyles = StyleSheet.create({
+  container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: colors.white,
+    marginTop: vs(50),
+    width: s(300),
   },
-  headerTitle: {
-    fontSize: 20,
-    textAlign: 'center',
-    paddingRight: 15,
+  title: {
+    fontSize: s(18),
+    fontWeight: '600',
+    color: colors.black,
   },
+  x: {
+    width: vs(18),
+    height: vs(18),
+  },
+  next: {
+    width: vs(12),
+    height: vs(18),
+    transform: [{rotate: '180deg'}],
+  },
+  icon: {
+    width: '100%',
+    height: '100%',
+    tintColor: colors.black,
+  },
+});
+
+const mapStyles = StyleSheet.create({
   container: {
-    flex: 1,
-    padding: 10,
-  },
-  searchContainer: {
-    marginVertical: 10,
-  },
-  searchBar: {
-    height: 40,
-    borderRadius: 17.5,
-    borderWidth: 1,
-    paddingHorizontal: 10,
-    fontSize: 16,
+    position: 'absolute',
+    top: vs(85),
+    width: '100%',
+    height: vs(595),
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   map: {
+    width: '100%',
+    height: '100%',
+  },
+  circle: {
+    position: 'absolute',
+    width: s(300),
+    height: s(300),
+  }
+});
+
+const searchStyles = StyleSheet.create({
+  container: {
+    position: 'absolute',
+    flexDirection: 'row',
+    alignItems: 'center',
+    top: vs(10),
+    width: s(300),
+    height: s(30),
+    borderRadius: s(10),
+    backgroundColor: colors.white,
+  },
+  icon: {
+    marginLeft: s(10),
+    width: s(16),
+    height: s(16),
+    tintColor: colors.black,
+  },
+  text: {
     flex: 1,
-    marginTop: 10,
+    marginLeft: s(10),
+    color: colors.black,
   },
 });
 

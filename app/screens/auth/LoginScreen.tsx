@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     marginTop: vs(140),
     marginBottom: vs(30),
     fontSize: s(70),
-    fontWeight: 'bold',
+    fontWeight: '700',
     color: colors.accent,
   },
   input: {
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: colors.white,
     fontSize: s(16),
-    fontWeight: 'bold',
+    fontWeight: '700',
   },
   bottomText: {
     fontSize: s(12),
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
   bottomTextLink: {
     color: colors.accent,
     marginLeft: s(8),
-    fontWeight: 'bold',
+    fontWeight: '700',
   },
 });
 

@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: '700',
     marginRight: 10,
   },
   ratingContainer: {
@@ -103,11 +103,11 @@ const styles = StyleSheet.create({
   rating: {
     color: colors.white,
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: '700',
   },
   price: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: '700',
   },
   image: {
     width: '100%',
