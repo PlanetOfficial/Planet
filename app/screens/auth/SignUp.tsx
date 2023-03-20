@@ -30,7 +30,7 @@ const SignUp = ({navigation}: {navigation: any}) => {
       // successful login
       navigation.reset({
         index: 0,
-        routes: [{name: 'TabStack'}]
+        routes: [{name: 'TabStack'}],
       });
     } else {
       console.log('Failed login, error: ' + response?.message);

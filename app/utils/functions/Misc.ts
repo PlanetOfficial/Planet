@@ -53,12 +53,14 @@ export const filterToUniqueIds = (arr: Array<any>) => {
 export const getImagesFromURLs = (places: Array<any>) => {
   let images: any = [];
   if (places && places.length !== 0) {
-    places.forEach((item) => {
+    places.forEach(item => {
       if (item?.images && item?.images?.length !== 0) {
-        images.push(item?.images[0]?.prefix + misc.imageSize + item?.images[0]?.suffix);
+        images.push(
+          item?.images[0]?.prefix + misc.imageSize + item?.images[0]?.suffix,
+        );
       }
-    })
+    });
   }
 
   return images;
-}
+};

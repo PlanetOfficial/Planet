@@ -108,7 +108,7 @@ export const NavBar = () => {
                 onPress={() => {
                   navigation.reset({
                     index: 0,
-                    routes: [{name: 'CreateStack'}]
+                    routes: [{name: 'CreateStack'}],
                   });
                 }}
               />

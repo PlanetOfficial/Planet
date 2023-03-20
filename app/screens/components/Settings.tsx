@@ -44,7 +44,7 @@ const Account = (navigation: any) => {
     } finally {
       navigation.reset({
         index: 0,
-        routes: [{name: 'Login'}]
+        routes: [{name: 'Login'}],
       });
     }
   };

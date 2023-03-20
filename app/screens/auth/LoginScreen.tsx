@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -34,7 +34,7 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
       setPassword('');
       navigation.reset({
         index: 0,
-        routes: [{name: 'TabStack'}]
+        routes: [{name: 'TabStack'}],
       });
     } else {
       console.log('Failed login, error: ' + response?.message);

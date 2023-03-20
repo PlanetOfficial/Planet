@@ -91,9 +91,7 @@ const Places = (savedPlaces: Array<any>) => (
       } else {
         return Place(item?.name, item?.category?.name, {
           uri:
-            item?.images[0]?.prefix +
-            misc.imageSize +
-            item?.images[0]?.suffix,
+            item?.images[0]?.prefix + misc.imageSize + item?.images[0]?.suffix,
         });
       }
     }}
@@ -125,14 +123,11 @@ const Event = (name: string, date: string, image1: any, image2: any) => (
     <Text style={cardStyles.name}>{name}</Text>
     <Text style={cardStyles.info}>{date}</Text>
     {image1 ? (
-      <Image style={cardStyles.image} source={image1}/>
-      ) : (
-      <Image style={cardStyles.image} source={icons.defaultImage}/>
-      )
-    }
-    {image2 ? (
-      <Image style={cardStyles.imageOverlap} source={image2}/>
-    ) : null}
+      <Image style={cardStyles.image} source={image1} />
+    ) : (
+      <Image style={cardStyles.image} source={icons.defaultImage} />
+    )}
+    {image2 ? <Image style={cardStyles.imageOverlap} source={image2} /> : null}
   </View>
 );
 
