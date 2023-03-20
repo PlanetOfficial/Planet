@@ -3,7 +3,6 @@ import {
   View,
   Text,
   StyleSheet,
-  Dimensions,
   Image,
   FlatList,
   SafeAreaView,
@@ -16,16 +15,13 @@ import Place from '../../components/Place';
 
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
-import {icons, miscIcons, vectors} from '../../constants/images';
+import {icons, miscIcons} from '../../constants/images';
 
 import EncryptedStorage from 'react-native-encrypted-storage';
-import { getEvents } from '../../utils/api/libraryCalls/getEvents';
-import { getPlaces } from '../../utils/api/libraryCalls/getPlaces';
+import {getEvents} from '../../utils/api/libraryCalls/getEvents';
+import {getPlaces} from '../../utils/api/libraryCalls/getPlaces';
 import misc from '../../constants/misc';
-import { filterToUniqueIds } from '../../utils/functions/Misc';
-
-const W = Dimensions.get('window').width;
-const H = Dimensions.get('window').height;
+import {filterToUniqueIds} from '../../utils/functions/Misc';
 
 const Library = ({navigation}: {navigation: any}) => {
   const [selectedIndex, setIndex] = useState(0);
@@ -33,18 +29,18 @@ const Library = ({navigation}: {navigation: any}) => {
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
-    const initializeData = async() => {
+    const initializeData = async () => {
       const authToken = await EncryptedStorage.getItem('auth_token');
 
-      const events = await getEvents(authToken);
-      setEvents(filterToUniqueIds(events));
+      const eventsRaw = await getEvents(authToken);
+      setEvents(filterToUniqueIds(eventsRaw));
 
       const bookmarks = await getPlaces(authToken);
       setSavedPlaces(bookmarks);
-    }
+    };
 
     initializeData();
-  }, [])
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -92,7 +88,12 @@ const Places = (savedPlaces: Array<any>) => (
         if (item?.images === undefined || item?.images?.length === 0) {
           return Place(item?.name, item?.category?.name, icons.defaultImage);
         } else {
-          return Place(item?.name, item?.category?.name, {uri: item?.images[0]?.prefix + misc.imageSize + item?.images[0]?.suffix});
+          return Place(item?.name, item?.category?.name, {
+            uri:
+              item?.images[0]?.prefix +
+              misc.imageSize +
+              item?.images[0]?.suffix,
+          });
         }
       }}
       keyExtractor={item => item.id}
