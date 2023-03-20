@@ -127,7 +127,7 @@ const Event = (name: string, date: string, image1: any, image2: any) => (
     ) : (
       <Image style={cardStyles.image} source={icons.defaultImage} />
     )}
-    {image2 ? <Image style={cardStyles.imageOverlap} source={image2} /> : null}
+    {/* {image2 ? <Image style={cardStyles.imageOverlap} source={image2} /> : null} */}
   </View>
 );
 
@@ -224,15 +224,16 @@ const cardStyles = StyleSheet.create({
     width: s(300),
     height: s(160),
     borderRadius: s(10),
-    zIndex: -1,
   },
-  imageOverlap: {
-    position: 'absolute',
-    bottom: s(4),
-    width: s(280),
-    height: s(160),
-    borderRadius: s(10),
-  },
+  // imageOverlap: {
+  //   position: 'absolute',
+  //   left: s(5),
+  //   bottom: s(4),
+  //   width: s(290),
+  //   height: s(160),
+  //   borderRadius: s(10),
+  //   zIndex: -1,
+  // },
 });
 
 export default Library;
