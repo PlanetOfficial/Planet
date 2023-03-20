@@ -17,15 +17,14 @@ import integers from '../../constants/integers';
 import {colors} from '../../constants/theme';
 
 const MapScreen = ({navigation}: {navigation: any}) => {
-  const [search, setSearch] = useState('');
-  const [radius, setRadius] = useState(2 * integers.milesToMeters);
+  const [radius, setRadius] = useState(10);
   const [latitude, setLatitude] = useState(37.78825);
   const [longitude, setLongitude] = useState(-122.4324);
 
   const onRegionChange = (reg: any) => {
     setLatitude(reg.latitude);
     setLongitude(reg.longitude);
-    setRadius(reg.radius);
+    // setRadius();
   };
 
   return (
@@ -33,7 +32,7 @@ const MapScreen = ({navigation}: {navigation: any}) => {
       <View style={styles.top}/>
       {Header(latitude, longitude, radius, navigation)}
       {Search()}
-      {Map(latitude, longitude, radius, search, setSearch, onRegionChange)} 
+      {Map(latitude, longitude, radius, onRegionChange)} 
     </View>
   );
 };
@@ -89,7 +88,7 @@ const Search = () => (
   </View>
 );
 
-const Map = (latitude: number, longitude: number, radius: number, search: string, setSearch: ((arg0: string) => void), onRegionChange: ((region: Region, details: Details) => void)) => (
+const Map = (latitude: number, longitude: number, radius: number, onRegionChange: ((region: Region, details: Details) => void)) => (
   <View style={mapStyles.container}>
     <MapView
       style={mapStyles.map}
