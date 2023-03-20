@@ -3,13 +3,13 @@ import {
   View,
   Text,
   TouchableOpacity,
-  TextInput,
   StyleSheet,
   Image,
 } from 'react-native';
 import {s, vs} from 'react-native-size-matters';
 import MapView, { Details, Region} from 'react-native-maps';
 import { Svg, Circle } from 'react-native-svg';
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 import {miscIcons} from '../../constants/images';
 import strings from '../../constants/strings';
@@ -30,7 +30,9 @@ const MapScreen = ({navigation}: {navigation: any}) => {
 
   return (
     <View style={styles.container}>
+      <View style={styles.top}/>
       {Header(latitude, longitude, radius, navigation)}
+      {Search()}
       {Map(latitude, longitude, radius, search, setSearch, onRegionChange)} 
     </View>
   );
@@ -63,30 +65,44 @@ const Header = (
   </View>
 );
 
+const Search = () => (
+  <View>
+    <GooglePlacesAutocomplete
+      placeholder='Search'
+      onPress={(data, details = null) => {
+        // 'details' is provided when fetchDetails = true
+        console.log(data, details);
+      }}
+      query={{ // TODO: Use ENV obviously
+        key: 'AIzaSyDu8hIYf0tLRW5Ux0O_x8GHjPw6jyJr59Y',
+        language: 'en',
+      }}
+      enablePoweredByContainer={false}
+      styles={{
+        container: searchStyles.container,
+        textInput: searchStyles.textInput,
+        row: searchStyles.row,
+        separator: searchStyles.separator,
+      }}
+    />
+    <Image style={searchStyles.icon} source={miscIcons.search}/>
+  </View>
+);
+
 const Map = (latitude: number, longitude: number, radius: number, search: string, setSearch: ((arg0: string) => void), onRegionChange: ((region: Region, details: Details) => void)) => (
   <View style={mapStyles.container}>
     <MapView
-    style={mapStyles.map}
-    initialRegion={{
-      latitude: latitude,
-      longitude: longitude,
-      latitudeDelta: 0.0922,
-      longitudeDelta: 0.0421,
-    }}
-    showsScale={false}
-    showsCompass={false}
-    onRegionChange={onRegionChange}>
-    </MapView>
-    <View style={searchStyles.container}>
-      <Image style={searchStyles.icon} source={miscIcons.search}/>
-      <TextInput
-        value={search}
-        onChangeText={text => setSearch(text)}
-        placeholder={strings.createTabStack.search}
-        style={searchStyles.text}
-        placeholderTextColor={colors.darkgrey}
-      />
-    </View>
+      style={mapStyles.map}
+      initialRegion={{
+        latitude: latitude,
+        longitude: longitude,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+      }}
+      showsScale={false}
+      showsCompass={false}
+      onRegionChange={onRegionChange}
+    />
     <View pointerEvents={"none"} style={mapStyles.circle}>
       <Svg style={mapStyles.circle}>
         <Circle
@@ -110,6 +126,13 @@ const styles = StyleSheet.create({
     height: '100%',
     backgroundColor: colors.white,
   },
+  top: {
+    position: 'absolute',
+    width: '100%',
+    height: vs(95),
+    backgroundColor: colors.white,
+    opacity: 0.8,
+  }
 });
 
 const headerStyles = StyleSheet.create({
@@ -119,6 +142,7 @@ const headerStyles = StyleSheet.create({
     alignItems: 'center',
     marginTop: vs(50),
     width: s(300),
+    height: vs(20),
   },
   title: {
     fontSize: s(18),
@@ -141,14 +165,62 @@ const headerStyles = StyleSheet.create({
   },
 });
 
+const searchStyles = StyleSheet.create({
+  container: {
+    flex: 0,
+    marginTop: vs(10),
+    width: s(300),
+    backgroundColor: colors.white,
+    borderRadius: vs(10),
+    shadowColor: colors.black,
+    shadowOpacity: 0.5,
+    shadowOffset: {
+      width: 1,
+      height: 1,
+    }
+  },
+  textInput: {
+    paddingVertical: 0,
+    marginLeft: vs(20),
+    paddingLeft: vs(10),
+    marginBottom: 0,
+    height: vs(30),
+    fontSize: s(13),
+    backgroundColor: 'transparent',
+    color: colors.black,
+  },
+  row: {
+    height: vs(35),
+    width: s(300),
+    paddingLeft: s(15),
+    color: colors.black,
+    borderTopColor: colors.darkgrey,
+    borderRadius: 20,
+    backgroundColor: colors.white,
+  },
+  separator: {
+    marginHorizontal: s(13),
+    height: 0.5,
+    backgroundColor: colors.darkgrey,
+  },
+  icon: {
+    position: 'absolute',
+    top: vs(18),
+    left: vs(8),
+    width: vs(14),
+    height: vs(14),
+    tintColor: colors.darkgrey,
+  }
+});
+
 const mapStyles = StyleSheet.create({
   container: {
     position: 'absolute',
-    top: vs(85),
     width: '100%',
-    height: vs(595),
+    height: '100%',
     alignItems: 'center',
     justifyContent: 'center',
+    zIndex: -1,
   },
   map: {
     width: '100%',
@@ -156,33 +228,10 @@ const mapStyles = StyleSheet.create({
   },
   circle: {
     position: 'absolute',
+    marginTop: vs(30),
     width: s(300),
     height: s(300),
   }
-});
-
-const searchStyles = StyleSheet.create({
-  container: {
-    position: 'absolute',
-    flexDirection: 'row',
-    alignItems: 'center',
-    top: vs(10),
-    width: s(300),
-    height: s(30),
-    borderRadius: s(10),
-    backgroundColor: colors.white,
-  },
-  icon: {
-    marginLeft: s(10),
-    width: s(16),
-    height: s(16),
-    tintColor: colors.black,
-  },
-  text: {
-    flex: 1,
-    marginLeft: s(10),
-    color: colors.black,
-  },
 });
 
 export default MapScreen;
