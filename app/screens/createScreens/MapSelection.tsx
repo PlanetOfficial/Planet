@@ -15,7 +15,7 @@ import strings from '../../constants/strings';
 import integers from '../../constants/integers';
 import {colors} from '../../constants/theme';
 
-const MapScreen = ({navigation}) => {
+const MapScreen = ({navigation}: {navigation: any}) => {
   const [search, setSearch] = useState('');
   const [radius, setRadius] = useState('');
   const [latitude, setLatitude] = useState(37.78825);

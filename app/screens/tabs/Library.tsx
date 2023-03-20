@@ -45,7 +45,7 @@ const PLACE_DATA = [
 
 const EVENT_DATA = [
   {
-    id: '1',
+    id: '5',
     name: "Leo's Nasty 19th Birthday",
     date: 'June 14th, 2023',
     images: [
@@ -55,7 +55,7 @@ const EVENT_DATA = [
     ],
   },
   {
-    id: '2',
+    id: '6',
     name: 'Donutter First Run',
     date: 'November 19th, 2022',
     images: [
@@ -65,7 +65,7 @@ const EVENT_DATA = [
     ],
   },
   {
-    id: '3',
+    id: '7',
     name: 'Anniversary Night Out',
     date: 'Feburary 2nd, 2024',
     images: [
@@ -75,7 +75,17 @@ const EVENT_DATA = [
     ],
   },
   {
-    id: '4',
+    id: '8',
+    name: 'Saturdays are for the Boys',
+    date: 'December 18th, 2026',
+    images: [
+      require('../../assets/sharetea.jpeg'),
+      require('../../assets/sharetea.jpeg'),
+      require('../../assets/sharetea.jpeg'),
+    ],
+  },
+  {
+    id: '9',
     name: 'Saturdays are for the Boys',
     date: 'December 18th, 2026',
     images: [
@@ -92,7 +102,9 @@ const Library = ({navigation}: {navigation: any}) => {
     <View style={styles.container}>
       {Header(navigation)}
       {SegmentedControl(selectedIndex, setIndex)}
-      {selectedIndex === 0 ? Places() : Events()}
+      <SafeAreaView style={styles.cardsContainer}>
+        {selectedIndex === 0 ? Places() : Events()}
+      </SafeAreaView>
     </View>
   );
 };
@@ -127,14 +139,12 @@ const SegmentedControl = (
 );
 
 const Places = () => (
-  <SafeAreaView style={styles.cardsContainer}>
-    <FlatList
-      data={PLACE_DATA}
-      renderItem={({item}) => Place(item.name, item.category, item.image)}
-      keyExtractor={item => item.id}
-      showsVerticalScrollIndicator={false}
-    />
-  </SafeAreaView>
+  <FlatList
+    data={PLACE_DATA}
+    renderItem={({item}) => Place(item.name, item.category, item.image)}
+    keyExtractor={item => item.id}
+    showsVerticalScrollIndicator={false}
+  />
 );
 
 const Place = (name: string, category: string, image: any) => (
@@ -146,14 +156,12 @@ const Place = (name: string, category: string, image: any) => (
 );
 
 const Events = () => (
-  <SafeAreaView style={styles.cardsContainer}>
-    <FlatList
-      data={EVENT_DATA}
-      renderItem={({item}) => Event(item.name, item.date, item.images)}
-      keyExtractor={item => item.id}
-      showsVerticalScrollIndicator={false}
-    />
-  </SafeAreaView>
+  <FlatList
+    data={EVENT_DATA}
+    renderItem={({item}) => Event(item.name, item.date, item.images)}
+    keyExtractor={item => item.id}
+    showsVerticalScrollIndicator={false}
+  />
 );
 
 const Event = (name: string, date: string, images: any[]) => (
@@ -228,6 +236,7 @@ const sctStyles = StyleSheet.create({
     color: colors.black,
   },
   activeText: {
+    marginBottom: 0,
     color: colors.accent,
   },
 });

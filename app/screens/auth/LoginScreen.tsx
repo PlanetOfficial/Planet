@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     width: s(250),
     fontSize: s(12),
     textAlign: 'right',
-    color: colors.darkgrey,
+    color: colors.black,
   },
   button: {
     marginTop: vs(40),

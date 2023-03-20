@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, View, TouchableOpacity, StyleSheet} from 'react-native';
+import {Image, View, Pressable, StyleSheet} from 'react-native';
 import {Svg, Circle, Line} from 'react-native-svg';
 import {s} from 'react-native-size-matters';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -103,7 +103,7 @@ export const NavBar = () => {
           component={ButtonScreen}
           options={({navigation}) => ({
             tabBarButton: props => (
-              <TouchableOpacity
+              <Pressable
                 {...props}
                 onPress={() => navigation.navigate('CreateStack')}
               />
