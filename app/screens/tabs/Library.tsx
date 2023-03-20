@@ -229,15 +229,14 @@ const cardStyles = StyleSheet.create({
     width: s(300),
     height: s(160),
     borderRadius: s(10),
+    zIndex: -1,
   },
   imageOverlap: {
     position: 'absolute',
     bottom: s(4),
-    left: s(5),
-    width: s(290),
+    width: s(280),
     height: s(160),
     borderRadius: s(10),
-    zIndex: -1,
   },
 });
 
