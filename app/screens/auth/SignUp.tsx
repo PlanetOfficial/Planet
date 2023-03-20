@@ -23,12 +23,15 @@ const SignUp = ({navigation}: {navigation: any}) => {
   const [phoneNumber, setPhoneNumber] = useState('');
 
   const handleSignUp = async () => {
-    // Perform login logic, e.g. send login request to API
+    // TODO: confirm passwords
 
     const response = await signup(name, email, password);
     if (response?.authToken) {
       // successful login
-      navigation.navigate('TabStack');
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'TabStack'}],
+      });
     } else {
       console.log('Failed login, error: ' + response?.message);
     }
