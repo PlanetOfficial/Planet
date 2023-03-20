@@ -46,7 +46,9 @@ const Library = ({navigation}: {navigation: any}) => {
     <View style={styles.container}>
       {Header(navigation)}
       {SegmentedControl(selectedIndex, setIndex)}
-      {selectedIndex === 0 ? Places(savedPlaces) : Events(events)}
+      <SafeAreaView style={styles.cardsContainer}>
+        {selectedIndex === 0 ? Places(savedPlaces) : Events(events)}
+      </SafeAreaView>
     </View>
   );
 };
@@ -81,36 +83,32 @@ const SegmentedControl = (
 );
 
 const Places = (savedPlaces: Array<any>) => (
-  <SafeAreaView style={styles.cardsContainer}>
-    <FlatList
-      data={savedPlaces}
-      renderItem={({item}) => {
-        if (item?.images === undefined || item?.images?.length === 0) {
-          return Place(item?.name, item?.category?.name, icons.defaultImage);
-        } else {
-          return Place(item?.name, item?.category?.name, {
-            uri:
-              item?.images[0]?.prefix +
-              misc.imageSize +
-              item?.images[0]?.suffix,
-          });
-        }
-      }}
-      keyExtractor={item => item.id}
-      showsVerticalScrollIndicator={false}
-    />
-  </SafeAreaView>
+  <FlatList
+    data={savedPlaces}
+    renderItem={({item}) => {
+      if (item?.images === undefined || item?.images?.length === 0) {
+        return Place(item?.name, item?.category?.name, icons.defaultImage);
+      } else {
+        return Place(item?.name, item?.category?.name, {
+          uri:
+            item?.images[0]?.prefix +
+            misc.imageSize +
+            item?.images[0]?.suffix,
+        });
+      }
+    }}
+    keyExtractor={item => item.id}
+    showsVerticalScrollIndicator={false}
+  />
 );
 
 const Events = (events: Array<any>) => (
-  <SafeAreaView style={styles.cardsContainer}>
-    <FlatList
-      data={events}
-      renderItem={({item}) => Event(item.name, item.date)}
-      keyExtractor={item => item.id}
-      showsVerticalScrollIndicator={false}
-    />
-  </SafeAreaView>
+  <FlatList
+    data={events}
+    renderItem={({item}) => Event(item.name, item.date)}
+    keyExtractor={item => item.id}
+    showsVerticalScrollIndicator={false}
+  />
 );
 
 const Event = (name: string, date: string) => (
@@ -191,6 +189,7 @@ const cardStyles = StyleSheet.create({
   container: {
     marginTop: s(10),
     height: s(210),
+    width: s(300),
     backgroundColor: colors.white,
     borderBottomWidth: 1,
     borderBottomColor: colors.grey,

@@ -1,38 +1,52 @@
 import React from 'react';
-import {View, Text, StyleSheet, Dimensions, Image} from 'react-native';
+import {View, Text, StyleSheet, Image} from 'react-native';
+import {s} from 'react-native-size-matters';
 
 import {colors} from '../constants/theme';
 
-const W = Dimensions.get('window').width;
-
 const Place = (name: string, category: string, image: any) => (
-  <View style={cardStyles.container}>
-    <Text style={cardStyles.name}>{name}</Text>
-    <Text style={cardStyles.category}>{category}</Text>
-    <Image style={cardStyles.image} source={image} />
+  <View style={styles.container}>
+    <Text style={styles.name}>{name}</Text>
+    <Text style={styles.info}>{category}</Text>
+    <Image style={styles.image} source={image} />
   </View>
 );
 
-const cardStyles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
-    width: W - 60,
-    height: 200,
-    marginBottom: 25,
+    marginTop: s(10),
+    height: s(210),
+    width: s(300),
+    backgroundColor: colors.white,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.grey,
   },
   name: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    marginHorizontal: s(5),
+    fontSize: s(18),
+    fontWeight: '700',
     color: colors.black,
   },
-  category: {
-    marginVertical: 2,
-    fontSize: 12,
+  info: {
+    marginHorizontal: s(5),
+    fontSize: s(12),
+    fontWeight: '500',
     color: colors.accent,
   },
   image: {
-    width: W - 60,
-    height: 164,
-    borderRadius: 10,
+    marginTop: s(3),
+    width: s(300),
+    height: s(160),
+    borderRadius: s(10),
+  },
+  imageOverlap: {
+    position: 'absolute',
+    bottom: s(4),
+    left: s(5),
+    width: s(290),
+    height: s(160),
+    borderRadius: s(10),
+    zIndex: -1,
   },
 });
 
