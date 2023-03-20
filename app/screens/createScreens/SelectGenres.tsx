@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
   },
   categoriesTitle: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: '700',
     marginBottom: 20,
   },
   categoriesGrid: {
@@ -243,7 +243,7 @@ const styles = StyleSheet.create({
   },
   selectedCategoriesTitle: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: '700',
     marginBottom: 20,
   },
   selectedCategoriesList: {
@@ -264,7 +264,7 @@ const styles = StyleSheet.create({
   doneButtonText: {
     color: colors.white,
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: '700',
   },
   modalContainer: {
     flex: 1,
