@@ -51,7 +51,7 @@ const SelectDestinations = ({navigation, route}) => {
     );
 
     if (responseStatus === 200) {
-      navigation.navigate('Library');
+      navigation.navigate('TabStack', {screen: 'Library'});
       // TODO: show successful save
     } else {
       // TODO: error, make sure connected to internet and logged in, if error persists, log out and log back in

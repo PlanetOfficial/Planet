@@ -36,11 +36,11 @@ export const getRegionForCoordinates = (points: Array<MarkerObject>) => {
 */
 export const filterToUniqueIds = (arr: Array<any>) => {
   const uniqueObj: any = {};
-  arr.forEach(item => {
+  arr?.forEach(item => {
     if (item?.id && !uniqueObj[item.id]) {
       uniqueObj[item.id] = item;
     }
   });
 
-  return Object.values(uniqueObj);
+  return Object.values(uniqueObj).reverse();
 };

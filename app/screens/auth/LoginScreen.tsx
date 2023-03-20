@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -32,7 +32,10 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
       await EncryptedStorage.setItem('auth_token', response?.authToken);
       setEmail('');
       setPassword('');
-      navigation.navigate('TabStack');
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'TabStack'}]
+      });
     } else {
       console.log('Failed login, error: ' + response?.message);
     }

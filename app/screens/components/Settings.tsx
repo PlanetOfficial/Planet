@@ -42,7 +42,10 @@ const Account = (navigation: any) => {
       // TODO: display error
       console.log(error);
     } finally {
-      navigation.navigate('Login');
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'Login'}]
+      });
     }
   };
 
