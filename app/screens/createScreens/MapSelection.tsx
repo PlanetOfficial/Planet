@@ -57,7 +57,7 @@ const MapScreen = ({navigation}: {navigation: any}) => {
 
         <View>
           <GooglePlacesAutocomplete
-            placeholder='Search'
+            placeholder={strings.createTabStack.search}
             onPress={(data, details = null) => {
               if (details?.geometry?.location?.lat && details?.geometry?.location?.lng) {
                 setRegion({
