@@ -14,6 +14,8 @@ import strings from '../../constants/strings';
 import {signup} from '../../utils/api/auth/signup';
 import {colors} from '../../constants/theme';
 import {miscIcons} from '../../constants/images';
+import EncryptedStorage from 'react-native-encrypted-storage';
+import { cacheUserInfo } from '../../utils/functions/CacheHelpers';
 
 const SignUp = ({navigation}: {navigation: any}) => {
   const [name, setName] = useState('');
@@ -28,6 +30,7 @@ const SignUp = ({navigation}: {navigation: any}) => {
     const response = await signup(name, email, password);
     if (response?.authToken) {
       // successful login
+      await cacheUserInfo(response?.authToken)
       navigation.reset({
         index: 0,
         routes: [{name: 'TabStack'}],
