@@ -11,6 +11,7 @@ import {
 import {ScrollView} from 'react-native';
 import misc from '../../constants/misc';
 import {icons} from '../../constants/images';
+import strings from '../../constants/strings';
 
 const DestinationDetails = ({navigation, route}) => {
   const [destination, setDestination] = useState(route?.params?.destination);
@@ -34,25 +35,25 @@ const DestinationDetails = ({navigation, route}) => {
         </View>
         <View style={styles.infoContainer}>
           <Text>{destination?.address?.formatted_address}</Text>
-          {destination?.hours?.display ? <Text>Hours</Text> : null}
+          {destination?.hours?.display ? <Text>{strings.createTabStack.hours}</Text> : null}
           <Text>{destination?.hours?.display}</Text>
           {destination?.price && destination?.price !== 0 ? (
-            <Text>Price: {destination?.price}</Text>
+            <Text>{strings.createTabStack.price}: {destination?.price}</Text>
           ) : null}
-          {destination?.rating ? <Text>Rating</Text> : null}
+          {destination?.rating ? <Text>{strings.createTabStack.rating}</Text> : null}
           <Text>{destination?.rating}</Text>
           {destination?.amenities?.wheelchair_accessible ? (
-            <Text>Wheelchair Accessible</Text>
+            <Text>{strings.createTabStack.wheelchair}</Text>
           ) : null}
           {destination?.details?.payment?.credit_cards?.accepts_credit_cards ? (
-            <Text>Accepts credit card</Text>
+            <Text>{strings.createTabStack.creditCard}</Text>
           ) : null}
           {destination?.parking?.street_parking ? (
-            <Text>Street Parking</Text>
+            <Text>{strings.createTabStack.streetParking}</Text>
           ) : null}
         </View>
         <View>
-          <Text>Images</Text>
+          <Text>{strings.main.images}</Text>
           <ScrollView horizontal={true}>
             {destination?.images?.length > 0
               ? destination?.images?.map((image: any) => (
@@ -67,7 +68,7 @@ const DestinationDetails = ({navigation, route}) => {
           </ScrollView>
         </View>
         <View>
-          {destination?.reviews?.length > 0 ? <Text>Reviews</Text> : null}
+          {destination?.reviews?.length > 0 ? <Text>{strings.createTabStack.reviews}</Text> : null}
           <View>
             <ScrollView horizontal={true}>
               {destination?.reviews

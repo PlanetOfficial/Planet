@@ -106,7 +106,7 @@ const SelectDestinations = ({navigation, route}) => {
                   ))
                 : null}
             </MapView>
-            <Text>Events</Text>
+            <Text>{strings.createTabStack.events}</Text>
             {selectedDestinations
               ? selectedDestinations?.map((destination: Object) => (
                   <View key={destination?.id}>

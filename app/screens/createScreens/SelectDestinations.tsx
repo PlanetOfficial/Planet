@@ -32,9 +32,7 @@ const SelectDestinations = ({navigation, route}) => {
 
   // gets all locations from selectedCategories
   const [locations, setLocations] = useState({});
-
   const [selectedDestinations, setSelectedDestinations] = useState([]);
-
   const [bookmarks, setBookmarks] = useState([]);
 
   const loadDestinations = async (categoryIds: Array<number>) => {

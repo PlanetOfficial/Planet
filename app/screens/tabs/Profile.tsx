@@ -4,7 +4,7 @@ import {s, vs} from 'react-native-size-matters';
 
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
-import {miscIcons} from '../../constants/images';
+import {icons, miscIcons} from '../../constants/images';
 
 const Profile = ({navigation}: {navigation: any}) => {
   return (
@@ -31,16 +31,16 @@ const Info = () => (
   <View style={infoStyles.container}>
     <Image
       style={infoStyles.profilePic}
-      source={require('../../assets/amusement-park.png')}
+      source={icons.defaultImage}
     />
     <Text style={infoStyles.name}>Naoto Uemura</Text>
     <View style={infoStyles.countContainer}>
       <View style={infoStyles.count}>
-        <Text style={infoStyles.number}>559</Text>
+        <Text style={infoStyles.number}>{strings.main.dash}</Text>
         <Text style={infoStyles.text}>{strings.profile.followers}</Text>
       </View>
       <View style={infoStyles.count}>
-        <Text style={infoStyles.number}>620</Text>
+        <Text style={infoStyles.number}>{strings.main.dash}</Text>
         <Text style={infoStyles.text}>{strings.profile.following}</Text>
       </View>
     </View>
