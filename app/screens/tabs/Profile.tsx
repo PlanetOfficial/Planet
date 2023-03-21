@@ -1,16 +1,31 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Image, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {s, vs} from 'react-native-size-matters';
 
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 import {icons, miscIcons} from '../../constants/images';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Profile = ({navigation}: {navigation: any}) => {
+  const [name, setName] = useState('');
+
+  useEffect(() => {
+    const initializeData = async () => {
+      // TODO: make sure name updates if info gets updated
+      const _name = await AsyncStorage.getItem('name');
+      if (_name) {
+        setName(_name);
+      }
+    };
+
+    initializeData();
+  }, []);
+
   return (
     <View style={styles.container}>
       {Header(navigation)}
-      {Info()}
+      {Info(name)}
     </View>
   );
 };
@@ -26,7 +41,7 @@ const Header = (navigation: any) => (
   </View>
 );
 
-const Info = () => (
+const Info = (name: String) => (
   // TEMP
   <View style={infoStyles.container}>
     <Image style={infoStyles.profilePic} source={icons.defaultImage} />
