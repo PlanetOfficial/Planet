@@ -3,6 +3,8 @@ const strings = {
     rivalet: 'Rivalet',
     done: 'Done',
     save: 'Save',
+    images: 'Images',
+    dash: '-',
   },
   login: {
     login: 'Login',
@@ -36,6 +38,14 @@ const strings = {
     selectedCategories: 'Selected Categories',
     untitledEvent: 'Untitled Event',
     pickDate: 'Pick a date',
+    hours: 'Hours',
+    rating: 'Rating',
+    wheelchair: 'Wheelchair Accessible',
+    creditCard: 'Accepts credit card',
+    streetParking: 'Street Parking',
+    price: 'Price',
+    reviews: 'Reviews',
+    events: 'Events',
   },
   settings: {
     name: 'Name',

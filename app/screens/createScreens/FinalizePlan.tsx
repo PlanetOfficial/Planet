@@ -40,7 +40,7 @@ const SelectDestinations = ({navigation, route}) => {
 
   const handleSave = async () => {
     // send destinations to backend
-    const placeIds = selectedDestinations.map(item => item.id);
+    const placeIds = selectedDestinations?.map((item: any) => item?.id);
     const authToken = await EncryptedStorage.getItem('auth_token');
 
     const responseStatus = await sendEvent(
@@ -98,21 +98,21 @@ const SelectDestinations = ({navigation, route}) => {
                     <Marker
                       key={index}
                       coordinate={{
-                        latitude: marker.latitude,
-                        longitude: marker.longitude,
+                        latitude: marker?.latitude,
+                        longitude: marker?.longitude,
                       }}
-                      title={marker.name}
+                      title={marker?.name}
                     />
                   ))
                 : null}
             </MapView>
-            <Text>Events</Text>
+            <Text>{strings.createTabStack.events}</Text>
             {selectedDestinations
-              ? selectedDestinations.map((destination: Object) => (
-                  <View key={destination.id}>
+              ? selectedDestinations?.map((destination: Object) => (
+                  <View key={destination?.id}>
                     <DestinationSimplified
-                      name={destination.name}
-                      image={getImage(destination.images)}
+                      name={destination?.name}
+                      image={getImage(destination?.images)}
                     />
                   </View>
                 ))

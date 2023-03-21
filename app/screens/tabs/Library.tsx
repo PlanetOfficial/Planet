@@ -86,7 +86,7 @@ const Places = (savedPlaces: Array<any>) => (
   <FlatList
     data={savedPlaces}
     renderItem={({item}) => {
-      if (item?.images === undefined || item?.images?.length === 0) {
+      if (!item?.images || item?.images?.length === 0) {
         return Place(item?.name, item?.category?.name, icons.defaultImage);
       } else {
         return Place(item?.name, item?.category?.name, {
