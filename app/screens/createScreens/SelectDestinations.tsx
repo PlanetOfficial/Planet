@@ -54,15 +54,15 @@ const SelectDestinations = ({navigation, route}) => {
     const response = await getBookmarks(authToken);
 
     let bookmarksLoaded: Array<number> = [];
-    response.forEach((bookmark: any) => {
-      bookmarksLoaded.push(bookmark?.id);
+    response?.forEach((bookmark: any) => {
+      bookmarksLoaded?.push(bookmark?.id);
     });
 
     setBookmarks(bookmarksLoaded);
   };
 
   useEffect(() => {
-    const filteredCategories = categories.map(item => item.id);
+    const filteredCategories = categories?.map((item: any) => item?.id);
     loadDestinations(filteredCategories);
 
     loadBookmarks();
@@ -75,14 +75,14 @@ const SelectDestinations = ({navigation, route}) => {
   };
 
   const handleDestinationSelect = (destination: Object) => {
-    if (!selectedDestinations.find(item => item.id === destination.id)) {
+    if (!selectedDestinations?.find(item => item?.id === destination?.id)) {
       setSelectedDestinations(prevDestinations => [
         ...prevDestinations,
         destination,
       ]);
     } else {
       setSelectedDestinations(
-        selectedDestinations.filter(item => item.id !== destination.id),
+        selectedDestinations?.filter(item => item?.id !== destination?.id),
       );
     }
   };
@@ -90,7 +90,7 @@ const SelectDestinations = ({navigation, route}) => {
   const handleDone = () => {
     if (selectedDestinations?.length > 0) {
       let markers: Array<MarkerObject> = [];
-      selectedDestinations.forEach(destination => {
+      selectedDestinations?.forEach(destination => {
         const markerObject = {
           name: destination?.name,
           latitude: destination?.latitude,
@@ -122,13 +122,13 @@ const SelectDestinations = ({navigation, route}) => {
       <View>
         <ScrollView style={styles.destinationScrollView}>
           {categories
-            ? categories.map((category: Category) => (
-                <View key={category.id}>
-                  <Text style={styles.categoryTitle}>{category.name}</Text>
+            ? categories?.map((category: Category) => (
+                <View key={category?.id}>
+                  <Text style={styles.categoryTitle}>{category?.name}</Text>
                   <ScrollView horizontal={true}>
-                    {locations[category.id]
-                      ? locations[category.id].map((destination: Object) => (
-                          <View key={destination.id}>
+                    {locations[category?.id]
+                      ? locations[category?.id]?.map((destination: Object) => (
+                          <View key={destination?.id}>
                             <TouchableOpacity
                               onPress={() =>
                                 handleDestinationSelect(destination)
@@ -136,23 +136,23 @@ const SelectDestinations = ({navigation, route}) => {
                               onLongPress={() =>
                                 navigation.navigate('DestinationDetails', {
                                   destination: destination,
-                                  category: category.name,
+                                  category: category?.name,
                                 })
                               }
                               style={{
-                                backgroundColor: selectedDestinations.some(
-                                  item => item.id === destination.id,
+                                backgroundColor: selectedDestinations?.some(
+                                  item => item?.id === destination?.id,
                                 )
                                   ? colors.accent
                                   : colors.white,
                               }}>
                               <DestinationCard
                                 id={destination?.id}
-                                name={destination.name}
-                                rating={destination.rating}
-                                price={destination.price}
-                                image={getImage(destination.images)}
-                                marked={bookmarks.includes(destination?.id)}
+                                name={destination?.name}
+                                rating={destination?.rating}
+                                price={destination?.price}
+                                image={getImage(destination?.images)}
+                                marked={bookmarks?.includes(destination?.id)}
                               />
                             </TouchableOpacity>
                           </View>

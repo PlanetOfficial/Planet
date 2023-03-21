@@ -58,7 +58,7 @@ const DestinationDetails = ({navigation, route}) => {
               ? destination?.images?.map((image: any) => (
                   <View key={image?.id}>
                     <Image
-                      source={{uri: getImageURL(image.prefix, image.suffix)}}
+                      source={{uri: getImageURL(image?.prefix, image?.suffix)}}
                       style={styles.destinationImages}
                     />
                   </View>
@@ -71,9 +71,9 @@ const DestinationDetails = ({navigation, route}) => {
           <View>
             <ScrollView horizontal={true}>
               {destination?.reviews
-                ? destination?.reviews.map((review: any, index: number) => (
+                ? destination?.reviews?.map((review: any, index: number) => (
                     <View key={index}>
-                      <Text>{review.text}</Text>
+                      <Text>{review?.text}</Text>
                     </View>
                   ))
                 : null}
