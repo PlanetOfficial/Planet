@@ -59,7 +59,6 @@ const MapScreen = ({navigation}: {navigation: any}) => {
           <GooglePlacesAutocomplete
             placeholder='Search'
             onPress={(data, details = null) => {
-              // 'details' is provided when fetchDetails = true
               if (details?.geometry?.location?.lat && details?.geometry?.location?.lng) {
                 setRegion({
                   latitude: details.geometry.location.lat,
