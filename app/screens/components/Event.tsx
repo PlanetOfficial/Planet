@@ -16,7 +16,7 @@ import {miscIcons} from '../../constants/images';
 const W = Dimensions.get('window').width;
 const H = Dimensions.get('window').height;
 
-// temporary
+// TODO: temporary, screen not implemented yet
 const PLACE_DATA = [
   {
     id: '1',

@@ -16,6 +16,8 @@ import {Svg, Line, Circle} from 'react-native-svg';
 const W = Dimensions.get('window').width;
 const H = Dimensions.get('window').height;
 
+// TODO: screen not implemented yet
+
 const Place = ({navigation}: {navigation: any}) => {
   return (
     <View style={styles.container}>
