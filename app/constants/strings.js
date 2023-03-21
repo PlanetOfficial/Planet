@@ -22,7 +22,7 @@ const strings = {
       "By signing up, you agree to Rivalet's Terms and Conditions and Privacy Policy.",
   },
   createTabStack: {
-    planEvent: 'Choose Location',
+    planEvent: 'Choose a Location',
     search: 'Search',
     selectCategories: 'Select Categories',
     selectDestinations: 'Select Destinations',
