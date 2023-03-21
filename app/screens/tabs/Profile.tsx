@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Image, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {s, vs} from 'react-native-size-matters';
 
@@ -11,14 +11,16 @@ const Profile = ({navigation}: {navigation: any}) => {
   const [name, setName] = useState('');
 
   useEffect(() => {
-    const initializeData = async() => {
+    const initializeData = async () => {
       // TODO: make sure name updates if info gets updated
       const _name = await AsyncStorage.getItem('name');
-      if (_name) setName(_name);
-    }
+      if (_name) {
+        setName(_name);
+      }
+    };
 
     initializeData();
-  }, [])
+  }, []);
 
   return (
     <View style={styles.container}>

@@ -7,13 +7,12 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import EncryptedStorage from 'react-native-encrypted-storage';
 import {s, vs} from 'react-native-size-matters';
 
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 import {miscIcons} from '../../constants/images';
-import { clearCaches } from '../../utils/functions/CacheHelpers';
+import {clearCaches} from '../../utils/functions/CacheHelpers';
 
 const Settings = ({navigation}: {navigation: any}) => {
   return (

@@ -9,14 +9,12 @@ import {
 } from 'react-native';
 import {s, vs} from 'react-native-size-matters';
 
-import EncryptedStorage from 'react-native-encrypted-storage';
-
 import strings from '../../constants/strings';
 
 import {login} from '../../utils/api/auth/login';
 import {colors} from '../../constants/theme';
 import {vectors} from '../../constants/images';
-import { cacheUserInfo } from '../../utils/functions/CacheHelpers';
+import {cacheUserInfo} from '../../utils/functions/CacheHelpers';
 
 const LoginScreen = ({navigation}: {navigation: any}) => {
   const [email, setEmail] = useState('');
