@@ -29,10 +29,7 @@ const Header = (navigation: any) => (
 const Info = () => (
   // TEMP
   <View style={infoStyles.container}>
-    <Image
-      style={infoStyles.profilePic}
-      source={icons.defaultImage}
-    />
+    <Image style={infoStyles.profilePic} source={icons.defaultImage} />
     <Text style={infoStyles.name}>Naoto Uemura</Text>
     <View style={infoStyles.countContainer}>
       <View style={infoStyles.count}>

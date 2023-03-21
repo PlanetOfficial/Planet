@@ -35,12 +35,18 @@ const DestinationDetails = ({navigation, route}) => {
         </View>
         <View style={styles.infoContainer}>
           <Text>{destination?.address?.formatted_address}</Text>
-          {destination?.hours?.display ? <Text>{strings.createTabStack.hours}</Text> : null}
+          {destination?.hours?.display ? (
+            <Text>{strings.createTabStack.hours}</Text>
+          ) : null}
           <Text>{destination?.hours?.display}</Text>
           {destination?.price && destination?.price !== 0 ? (
-            <Text>{strings.createTabStack.price}: {destination?.price}</Text>
+            <Text>
+              {strings.createTabStack.price}: {destination?.price}
+            </Text>
           ) : null}
-          {destination?.rating ? <Text>{strings.createTabStack.rating}</Text> : null}
+          {destination?.rating ? (
+            <Text>{strings.createTabStack.rating}</Text>
+          ) : null}
           <Text>{destination?.rating}</Text>
           {destination?.amenities?.wheelchair_accessible ? (
             <Text>{strings.createTabStack.wheelchair}</Text>
@@ -68,7 +74,9 @@ const DestinationDetails = ({navigation, route}) => {
           </ScrollView>
         </View>
         <View>
-          {destination?.reviews?.length > 0 ? <Text>{strings.createTabStack.reviews}</Text> : null}
+          {destination?.reviews?.length > 0 ? (
+            <Text>{strings.createTabStack.reviews}</Text>
+          ) : null}
           <View>
             <ScrollView horizontal={true}>
               {destination?.reviews
