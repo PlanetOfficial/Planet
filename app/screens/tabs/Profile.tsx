@@ -31,7 +31,7 @@ const Info = () => (
   <View style={infoStyles.container}>
     <Image
       style={infoStyles.profilePic}
-      source={require('../../assets/amusement-park.png')}
+      source={require('../../assets/backArrow.png')}
     />
     <Text style={infoStyles.name}>Naoto Uemura</Text>
     <View style={infoStyles.countContainer}>

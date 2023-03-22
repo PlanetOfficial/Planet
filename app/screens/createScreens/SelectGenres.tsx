@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import {s, vs} from 'react-native-size-matters';
 
-import {icons, miscIcons} from '../../constants/images';
+import {vectors, miscIcons, genreIcons} from '../../constants/images';
 import strings from '../../constants/strings';
 import integers from '../../constants/integers';
 import {getCategories} from '../../utils/api/CreateCalls/getCategories';
@@ -22,33 +22,33 @@ import {colors} from '../../constants/theme';
 const genres = [
   {
     id: 1,
-    name: strings.createTabStack.adventure,
-    image: icons.adventure,
+    name: strings.createTabStack.recreation,
+    image: genreIcons.recreation,
   },
   {
     id: 2,
     name: strings.createTabStack.experience,
-    image: icons.experience,
+    image: genreIcons.experience,
   },
   {
     id: 3,
     name: strings.createTabStack.shopping,
-    image: icons.shopping,
+    image: genreIcons.shopping,
   },
   {
     id: 4,
     name: strings.createTabStack.outdoors,
-    image: icons.outdoors,
+    image: genreIcons.outdoors,
   },
   {
     id: 6,
     name: strings.createTabStack.restaurants,
-    image: icons.restaurant,
+    image: genreIcons.restaurants,
   },
   {
     id: 5,
-    name: strings.createTabStack.drinksAndDessert,
-    image: icons.dessert,
+    name: strings.createTabStack.sweets,
+    image: genreIcons.sweets,
   },
 ];
 
@@ -96,7 +96,25 @@ const SelectGenres = ({navigation, route}: {navigation: any, route: any}) => {
 
   return (
     <View style={styles.container}>
-      {Header(navigation)}
+      <View style={headerStyles.container}>
+        <TouchableOpacity
+          style={headerStyles.back}
+          onPress={() => navigation.navigate('MapSelection')}>
+          <Image style={headerStyles.icon} source={miscIcons.back} />
+        </TouchableOpacity>
+        <Text style={headerStyles.title}>{strings.createTabStack.selectCategories}</Text>
+      </View>
+      <View style={genreStyles.container}>
+        {genres.map(genre => (
+          <TouchableOpacity
+            key={genre.id}
+            onPress={() => handleGenrePress(genre)}>
+            <Image style={genreStyles.image} source={genre.image} />
+            <Text style={genreStyles.text}>{genre.name}</Text>
+            <Image style={genreStyles.blur} source={vectors.shape1} />
+          </TouchableOpacity>
+        ))}
+      </View>
     </View>
     // <SafeAreaView>
     //   <View>
@@ -193,17 +211,6 @@ const SelectGenres = ({navigation, route}: {navigation: any, route: any}) => {
     // </SafeAreaView>
   );
 };
-
-const Header = (navigation: any) => (
-  <View style={headerStyles.container}>
-    <TouchableOpacity
-      style={headerStyles.back}
-      onPress={() => navigation.navigate('MapSelection')}>
-      <Image style={headerStyles.icon} source={miscIcons.back} />
-    </TouchableOpacity>
-    <Text style={headerStyles.title}>{strings.createTabStack.selectCategories}</Text>
-  </View>
-);
 
 const styles = StyleSheet.create({
   container: {
@@ -358,5 +365,44 @@ const headerStyles = StyleSheet.create({
     tintColor: colors.black,
   },
 });
+
+const genreStyles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    marginTop: vs(30),
+    height: vs(400),
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  image: {
+    margin: s(15),
+    width: s(130),
+    height: s(130),
+    borderRadius: s(15),
+    borderWidth: 2,
+    borderColor: colors.white,
+  },
+  text: {
+    position: 'absolute',
+    margin: s(15),
+    width: s(130),
+    top: s(56),
+    fontSize: s(15),
+    fontWeight: '700',
+    textAlign: 'center',
+    color: colors.white,
+  },
+  blur: {
+
+  }
+})
 
 export default SelectGenres;

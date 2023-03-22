@@ -15,7 +15,7 @@ import Place from '../../components/Place';
 
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
-import {icons, miscIcons} from '../../constants/images';
+import {miscIcons} from '../../constants/images';
 
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {getEvents} from '../../utils/api/libraryCalls/getEvents';
@@ -87,7 +87,7 @@ const Places = (savedPlaces: Array<any>) => (
     data={savedPlaces}
     renderItem={({item}) => {
       if (item?.images === undefined || item?.images?.length === 0) {
-        return Place(item?.name, item?.category?.name, icons.defaultImage);
+        return Place(item?.name, item?.category?.name, miscIcons.x);
       } else {
         return Place(item?.name, item?.category?.name, {
           uri:
@@ -125,7 +125,7 @@ const Event = (name: string, date: string, image1: any, image2: any) => (
     {image1 ? (
       <Image style={cardStyles.image} source={image1} />
     ) : (
-      <Image style={cardStyles.image} source={icons.defaultImage} />
+      <Image style={cardStyles.image} source={miscIcons.x} />
     )}
     {/* {image2 ? <Image style={cardStyles.imageOverlap} source={image2} /> : null} */}
   </View>
