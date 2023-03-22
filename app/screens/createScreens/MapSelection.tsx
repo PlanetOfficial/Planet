@@ -7,7 +7,7 @@ import {
   Image,
 } from 'react-native';
 import {s, vs} from 'react-native-size-matters';
-import MapView, { Details, Region } from 'react-native-maps';
+import MapView from 'react-native-maps';
 import { Svg, Circle } from 'react-native-svg';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
@@ -15,7 +15,6 @@ import {miscIcons} from '../../constants/images';
 import strings from '../../constants/strings';
 import { integers, floats } from '../../constants/numbers';
 import {colors} from '../../constants/theme';
-import { AnimatedRegion } from 'react-native-maps';
 import { calculateRadius } from '../../utils/functions/Misc';
 
 const MapScreen = ({navigation}: {navigation: any}) => {
@@ -44,21 +43,17 @@ const MapScreen = ({navigation}: {navigation: any}) => {
           <Text style={headerStyles.title}>{strings.createTabStack.planEvent}</Text>
           <TouchableOpacity
             style={headerStyles.next}
+            disabled={radius > integers.maxRadiusInMeters} // TODO: make this connected to the server in case this param changes
             onPress={() => {
-              if (radius <= integers.maxRadiusInMeters) { // TODO: make this connected to the server in case this param changes
-                navigation.navigate('SelectGenres', {
-                  latitude: region.latitude,
-                  longitude: region.longitude,
-                  radius: radius,
-                });
-              } else {
-                // TODO: display error
-              }
+              navigation.navigate('SelectGenres', {
+                latitude: region.latitude,
+                longitude: region.longitude,
+                radius: radius,
+              })
             }}>
-            <Image style={headerStyles.icon} source={miscIcons.back} />
+            <Image style={radius <= integers.maxRadiusInMeters ? headerStyles.icon : headerStyles.disabledIcon} source={miscIcons.back} />
           </TouchableOpacity>
         </View>
-
         <View>
           <GooglePlacesAutocomplete
             placeholder={strings.createTabStack.search}
@@ -112,6 +107,9 @@ const MapScreen = ({navigation}: {navigation: any}) => {
               />
             </Svg>
           </View>
+          <Text style={mapStyles.radiusIndicator}> {/*TODO: Allow unit conversion + ft etc */}
+            {strings.createTabStack.radius}: <Text style={radius <= integers.maxRadiusInMeters ? mapStyles.radius: mapStyles.radiusInvalid}>{Math.floor(radius / integers.milesToMeters)}</Text> mi
+          </Text>
         </View>
     </View>
   );
@@ -161,6 +159,11 @@ const headerStyles = StyleSheet.create({
     height: '100%',
     tintColor: colors.black,
   },
+  disabledIcon: {
+    width: '100%',
+    height: '100%',
+    tintColor: colors.darkgrey,
+  }
 });
 
 const searchStyles = StyleSheet.create({
@@ -229,7 +232,29 @@ const mapStyles = StyleSheet.create({
     marginTop: vs(30),
     width: s(300),
     height: s(300),
-  }
+  },
+  radiusIndicator: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    margin: s(20),
+    padding: s(10),
+    fontSize: s(14),
+    fontWeight: '600',
+    color: colors.black,
+  },
+  radius: {
+    margin: s(30),
+    fontSize: s(16),
+    fontWeight: '700',
+    color: colors.accent,
+  },
+  radiusInvalid: {
+    margin: s(30),
+    fontSize: s(16),
+    fontWeight: '700',
+    color: 'red', // TODO: IMPORT THEME
+  },
 });
 
 export default MapScreen;
