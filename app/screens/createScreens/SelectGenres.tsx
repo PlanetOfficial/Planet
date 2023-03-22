@@ -75,12 +75,12 @@ const SelectGenres = ({navigation, route}: {navigation: any, route: any}) => {
     setRadiusParam();
   }, []);
 
-  const handleGenrePress = async genre => {
+  const handleGenrePress = async (genre: any) => {
     setSelectedGenre(genre.name);
     setModalVisible(true);
 
     // display categories from genre logic
-    if (!cachedGenres[genre.id]) {
+    if (!cachedGenres[genre.id as keyof {}]) {
       // call API and add to cache if not in cache
       const response = await getCategories(genre.id);
 
@@ -90,7 +90,7 @@ const SelectGenres = ({navigation, route}: {navigation: any, route: any}) => {
 
       setAllCategories(response);
     } else {
-      setAllCategories(cachedGenres[genre.id]);
+      setAllCategories(cachedGenres[genre.id as keyof {}]);
     }
   };
 
@@ -103,55 +103,48 @@ const SelectGenres = ({navigation, route}: {navigation: any, route: any}) => {
           <Image style={headerStyles.icon} source={miscIcons.back} />
         </TouchableOpacity>
         <Text style={headerStyles.title}>{strings.createTabStack.selectCategories}</Text>
+        <TouchableOpacity
+          style={headerStyles.confirm}
+          onPress={() =>
+            navigation.navigate('SelectDestinations', {
+              selectedCategories: selectedCategories,
+              radius: radius,
+              latitude: latitude,
+              longitude: longitude,
+            })}
+          >
+          <Image style={headerStyles.icon} source={miscIcons.confirm} />
+        </TouchableOpacity>
       </View>
       <View style={genreStyles.container}>
         {genres.map(genre => (
           <TouchableOpacity
             key={genre.id}
             onPress={() => handleGenrePress(genre)}>
-            <Image style={genreStyles.image} source={genre.image} />
-            <Text style={genreStyles.text}>{genre.name}</Text>
+            <View style={genreStyles.imageContainer}>
+              <Image style={genreStyles.image} source={genre.image} />
+            </View>
             <Image style={genreStyles.blur} source={vectors.shape1} />
+            <Text style={genreStyles.text}>{genre.name}</Text>
           </TouchableOpacity>
         ))}
       </View>
+      <Modal animationType="fade" transparent={true} visible={modalVisible}>
+        <View style={modalStyles.container}>
+
+        </View>
+      </Modal>
+      <View style={selectionStyles.container}>
+        {/* <ScrollView contentContainerStyle={selectionStyles.selectedCategoriesList}>
+            {selectedCategories.map((selected: any) => (
+            <Text key={selected.id} style={selectionStyles.selectedCategoryText}>
+              {selected.name}
+            </Text>
+          ))}
+        </ScrollView> */}
+      </View>
     </View>
     // <SafeAreaView>
-    //   <View>
-    //     <View style={styles.categoriesGrid}>
-    //       {genres.map(genre => (
-    //         <TouchableOpacity
-    //           key={genre.id}
-    //           onPress={() => handleGenrePress(genre)}>
-    //           <Image style={styles.genreImage} source={genre.image} />
-    //           <Text>{genre.name}</Text>
-    //         </TouchableOpacity>
-    //       ))}
-    //     </View>
-    //     <View style={styles.selectedCategoriesContainer}>
-    //       <Text style={styles.selectedCategoriesTitle}>
-    //         {strings.createTabStack.selectedCategories}
-    //       </Text>
-    //       <ScrollView contentContainerStyle={styles.selectedCategoriesList}>
-    //         {selectedCategories.map(selected => (
-    //           <Text key={selected.id} style={styles.selectedCategoryText}>
-    //             {selected.name}
-    //           </Text>
-    //         ))}
-    //       </ScrollView>
-    //       <Button
-    //         title={strings.main.done}
-    //         onPress={() =>
-    //           navigation.navigate('SelectDestinations', {
-    //             selectedCategories: selectedCategories,
-    //             radius: radius,
-    //             latitude: latitude,
-    //             longitude: longitude,
-    //           })
-    //         }
-    //       />
-    //     </View>
-    //   </View>
     //   <Modal animationType="slide" transparent={true} visible={modalVisible}>
     //     <View style={styles.modalContainer}>
     //       <View style={styles.modalView}>
@@ -221,6 +214,132 @@ const styles = StyleSheet.create({
   },
 });
 
+const headerStyles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: vs(50),
+    width: s(300),
+    height: vs(20),
+  },
+  title: {
+    position: 'absolute',
+    left: s(25),
+    width: s(250),
+    fontSize: s(18),
+    fontWeight: '600',
+    color: colors.black,
+    textAlign: 'center'
+  },
+  back: {
+    left: 0,
+    width: vs(12),
+    height: vs(18),
+  },
+  confirm: {
+    position: 'absolute',
+    right: 0,
+    width: vs(18),
+    height: vs(18),
+  },
+  icon: {
+    width: '100%',
+    height: '100%',
+    tintColor: colors.black,
+  },
+});
+
+const genreStyles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    marginTop: (vs(610) - s(580)) / 2,
+  },
+  imageContainer: {
+    margin: s(15),
+    width: s(130),
+    height: s(130),
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    borderRadius: s(15),
+    backgroundColor: colors.white,
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+    borderRadius: s(15),
+    borderWidth: 2,
+    borderColor: colors.white,
+  },
+  text: {
+    position: 'absolute',
+    margin: s(15),
+    width: s(130),
+    top: s(56),
+    fontSize: s(15),
+    fontWeight: '700',
+    textAlign: 'center',
+    color: colors.white,
+  },
+  blur: {
+    position: 'absolute',
+    marginTop: s(55),
+    width: s(160),
+    height: s(50),
+    resizeMode: 'stretch',
+    tintColor: colors.black,
+    opacity: 0.6,
+  }
+});
+
+const modalStyles = StyleSheet.create({
+  container: {
+    position: 'absolute',
+    top: (vs(750) - s(580)) / 2,
+    left: s(15),
+    width: s(320),
+    height: s(480),
+    borderRadius: s(20),
+    backgroundColor: 'black',
+  },
+});
+
+const selectionStyles = StyleSheet.create({
+  container: {
+    position: 'absolute',
+    height: s(100),
+    bottom: 0,
+    width: '100%',
+    borderWidth: 1,
+  },  
+  selectedCategoriesContainer: {
+    borderTopWidth: 1,
+    borderTopColor: colors.grey,
+    borderWidth: 1,
+  },
+  selectedCategoriesTitle: {
+    fontSize: 20,
+    fontWeight: '700',
+    marginBottom: 20,
+  },
+  selectedCategoriesList: {
+    alignItems: 'flex-start',
+    flexGrow: 1,
+    paddingBottom: 20,
+  },
+  selectedCategoryText: {
+    fontSize: 16,
+    marginBottom: 10,
+  },
+});
+
+
 // const styles = StyleSheet.create({
 //   header: {
 //     height: 60,
@@ -258,26 +377,26 @@ const styles = StyleSheet.create({
 //     borderRadius: 50,
 //     marginBottom: 20,
 //   },
-//   selectedCategoriesContainer: {
-//     borderTopWidth: 1,
-//     borderTopColor: colors.grey,
-//     paddingTop: 20,
-//     paddingHorizontal: 20,
-//     paddingBottom: 40,
-//   },
-//   selectedCategoriesTitle: {
-//     fontSize: 20,
-//     fontWeight: '700',
-//     marginBottom: 20,
-//   },
-//   selectedCategoriesList: {
-//     alignItems: 'flex-start',
-//     flexGrow: 1,
-//     paddingBottom: 20,
-//   },
-//   selectedCategoryText: {
-//     fontSize: 16,
-//     marginBottom: 10,
+  // selectedCategoriesContainer: {
+  //   borderTopWidth: 1,
+  //   borderTopColor: colors.grey,
+  //   paddingTop: 20,
+  //   paddingHorizontal: 20,
+  //   paddingBottom: 40,
+  // },
+  // selectedCategoriesTitle: {
+  //   fontSize: 20,
+  //   fontWeight: '700',
+  //   marginBottom: 20,
+  // },
+  // selectedCategoriesList: {
+  //   alignItems: 'flex-start',
+  //   flexGrow: 1,
+  //   paddingBottom: 20,
+  // },
+  // selectedCategoryText: {
+  //   fontSize: 16,
+  //   marginBottom: 10,
 //   },
 //   doneButton: {
 //     backgroundColor: colors.accent,
@@ -336,73 +455,4 @@ const styles = StyleSheet.create({
 //     fontSize: 20,
 //   },
 // });
-
-const headerStyles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: vs(50),
-    width: s(300),
-    height: vs(20),
-  },
-  title: {
-    position: 'absolute',
-    left: s(25),
-    width: s(250),
-    fontSize: s(18),
-    fontWeight: '600',
-    color: colors.black,
-    textAlign: 'center'
-  },
-  back: {
-    left: 0,
-    width: vs(12),
-    height: vs(18),
-  },
-  icon: {
-    width: '100%',
-    height: '100%',
-    tintColor: colors.black,
-  },
-});
-
-const genreStyles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    marginTop: vs(30),
-    height: vs(400),
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-  },
-  image: {
-    margin: s(15),
-    width: s(130),
-    height: s(130),
-    borderRadius: s(15),
-    borderWidth: 2,
-    borderColor: colors.white,
-  },
-  text: {
-    position: 'absolute',
-    margin: s(15),
-    width: s(130),
-    top: s(56),
-    fontSize: s(15),
-    fontWeight: '700',
-    textAlign: 'center',
-    color: colors.white,
-  },
-  blur: {
-
-  }
-})
-
 export default SelectGenres;

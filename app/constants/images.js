@@ -24,6 +24,7 @@ export const miscIcons = {
   back: require('../assets/miscIcons/back.png'),
   settings: require('../assets/miscIcons/settings.png'),
   x: require('../assets/miscIcons/x.png'),
+  confirm: require('../assets/miscIcons/confirm.png'),
 };
 
 export const genreIcons = {

@@ -224,17 +224,8 @@ const cardStyles = StyleSheet.create({
     marginTop: s(3),
     width: s(300),
     height: s(160),
-    borderRadius: s(10),
+    borderRadius: s(15),
   },
-  // imageOverlap: {
-  //   position: 'absolute',
-  //   left: s(5),
-  //   bottom: s(4),
-  //   width: s(290),
-  //   height: s(160),
-  //   borderRadius: s(10),
-  //   zIndex: -1,
-  // },
 });
 
 export default Library;
