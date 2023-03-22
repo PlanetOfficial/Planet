@@ -13,24 +13,24 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 
 import {miscIcons} from '../../constants/images';
 import strings from '../../constants/strings';
-import integers from '../../constants/integers';
+import { integers, floats } from '../../constants/numbers';
 import {colors} from '../../constants/theme';
 import { AnimatedRegion } from 'react-native-maps';
+import { calculateRadius } from '../../utils/functions/Misc';
 
 const MapScreen = ({navigation}: {navigation: any}) => {
-  const [radius, setRadius] = useState(10); // TODO: set radius based on deltas, refactor to only deal with meters
-
-  const defaultLatitude = 37.78825; // TODO: store these constants somewhere
-  const defaultLongitude = -122.4324;
-  const defaultLatitudeDelta = 0.0922;
-  const defaultLongitudeDelta = 0.0421;
-
   const [region, setRegion] = useState({
-    latitude: defaultLatitude,
-    longitude: defaultLongitude,
-    latitudeDelta: defaultLatitudeDelta,
-    longitudeDelta: defaultLongitudeDelta,
+    latitude: floats.defaultLatitude,
+    longitude: floats.defaultLongitude,
+    latitudeDelta: floats.defaultLatitudeDelta,
+    longitudeDelta: floats.defaultLongitudeDelta,
   });
+
+  const [radius, setRadius] = useState(calculateRadius({latitude: floats.defaultLatitude, longitude: floats.defaultLongitude}, floats.defaultLongitudeDelta));
+
+  const updateRadius = (reg: any) => {
+    setRadius(calculateRadius({latitude: reg.latitude, longitude: reg.longitude}, reg.longitudeDelta));
+  }
 
   return (
     <View style={styles.container}>
@@ -45,11 +45,15 @@ const MapScreen = ({navigation}: {navigation: any}) => {
           <TouchableOpacity
             style={headerStyles.next}
             onPress={() => {
-              navigation.navigate('SelectGenres', {
-                latitude: region.latitude,
-                longitude: region.longitude,
-                radius: radius,
-              });
+              if (radius <= integers.maxRadiusInMeters) { // TODO: make this connected to the server in case this param changes
+                navigation.navigate('SelectGenres', {
+                  latitude: region.latitude,
+                  longitude: region.longitude,
+                  radius: radius,
+                });
+              } else {
+                // TODO: display error
+              }
             }}>
             <Image style={headerStyles.icon} source={miscIcons.back} />
           </TouchableOpacity>
@@ -63,8 +67,8 @@ const MapScreen = ({navigation}: {navigation: any}) => {
                 setRegion({
                   latitude: details.geometry.location.lat,
                   longitude: details.geometry.location.lng,
-                  latitudeDelta: defaultLatitudeDelta,
-                  longitudeDelta: defaultLongitudeDelta,
+                  latitudeDelta: floats.defaultLatitudeDelta,
+                  longitudeDelta: floats.defaultLongitudeDelta,
                 });
               }
             }}
@@ -90,6 +94,8 @@ const MapScreen = ({navigation}: {navigation: any}) => {
             initialRegion={region}
             showsScale={false}
             showsCompass={false}
+            rotateEnabled={false}
+            onRegionChange={updateRadius}
             onRegionChangeComplete={setRegion}
             region={region}
           />

@@ -18,7 +18,7 @@ import DestinationCard from '../../components/Destination';
 
 import {requestLocations} from '../../utils/api/CreateCalls/requestLocations';
 
-import {Category} from '../../utils/interfaces/Category';
+import {Category} from '../../utils/interfaces/category';
 import {MarkerObject} from '../../utils/interfaces/MarkerObject';
 import {getBookmarks} from '../../utils/api/shared/getBookmarks';
 
