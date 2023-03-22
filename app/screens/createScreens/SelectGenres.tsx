@@ -8,6 +8,7 @@ import {
   SafeAreaView,
   Image,
   Button,
+  Pressable,
   Modal,
 } from 'react-native';
 import {s, vs} from 'react-native-size-matters';
@@ -16,7 +17,7 @@ import {vectors, miscIcons, genreIcons} from '../../constants/images';
 import strings from '../../constants/strings';
 import integers from '../../constants/integers';
 import {getCategories} from '../../utils/api/CreateCalls/getCategories';
-import {colors} from '../../constants/theme';
+import {colors, genreColors} from '../../constants/theme';
 
 // TODO: remove this and make it dynamic once images are settled
 const genres = [
@@ -131,7 +132,18 @@ const SelectGenres = ({navigation, route}: {navigation: any, route: any}) => {
       </View>
       <Modal animationType="fade" transparent={true} visible={modalVisible}>
         <View style={modalStyles.container}>
-
+          <View style={modalStyles.header}>
+            <Pressable
+              onPress={() => {
+                  setModalVisible(false);
+                  setSelectedGenre('');
+              }}
+              style={modalStyles.x}
+              >
+              <Image style={modalStyles.icon} source={miscIcons.x} />
+            </Pressable>
+            <Text style={modalStyles.title}>{selectedGenre}</Text>
+          </View>
         </View>
       </Modal>
       <View style={selectionStyles.container}>
@@ -151,10 +163,10 @@ const SelectGenres = ({navigation, route}: {navigation: any, route: any}) => {
     //         <View style={styles.modalHeader}>
     //           <TouchableOpacity
     //             style={styles.back}
-    //             onPress={() => {
-    //               setModalVisible(false);
-    //               setSelectedGenre('');
-    //             }}>
+                // onPress={() => {
+                //   setModalVisible(false);
+                //   setSelectedGenre('');
+                // }}>
     //             <Image source={icons.BackArrow} />
     //           </TouchableOpacity>
     //           <View style={styles.genreHeader}>
@@ -301,12 +313,55 @@ const genreStyles = StyleSheet.create({
 const modalStyles = StyleSheet.create({
   container: {
     position: 'absolute',
-    top: (vs(750) - s(580)) / 2,
+    top: (vs(750) - s(600)) / 2,
     left: s(15),
     width: s(320),
-    height: s(480),
-    borderRadius: s(20),
-    backgroundColor: 'black',
+    height: s(500),
+    borderRadius: s(15),
+    borderWidth: 2,
+    borderColor: colors.white,
+    shadowOffset: {
+      width: 0,
+      height: 7,
+    },
+    shadowOpacity: 0.41,
+    shadowRadius: 9.11,
+    elevation: 14,
+    backgroundColor: genreColors.experienceLight,
+  },
+  header: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    height: s(50),
+    backgroundColor: genreColors.experience,
+    borderTopLeftRadius: s(15),
+    borderTopRightRadius: s(15),
+  },
+  title: {
+    width: s(250),
+    fontSize: s(20),
+    fontWeight: '700',
+    color: colors.white,
+    textAlign: 'center',
+    textAlignVertical: 'center',
+  },
+  x: {
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+    top: -s(13),
+    right: -s(13),
+    padding: s(13),
+    width: s(18),
+    height: s(18),
+    backgroundColor: colors.grey,
+    borderRadius: s(13),
+  },
+  icon: {
+    width: s(14),
+    height: s(14),
+    tintColor: colors.black,
   },
 });
 
