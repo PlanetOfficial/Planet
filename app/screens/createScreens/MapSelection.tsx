@@ -20,6 +20,8 @@ import {integers, floats} from '../../constants/numbers';
 import {colors} from '../../constants/theme';
 import {calculateRadius} from '../../utils/functions/Misc';
 
+import { GoogleMapsAPIKey } from '../../utils/api/APIConstants';
+
 const MapScreen = ({navigation}: {navigation: any}) => {
   const [region, setRegion] = useState({
     latitude: floats.defaultLatitude,
@@ -139,7 +141,7 @@ const MapScreen = ({navigation}: {navigation: any}) => {
           }}
           query={{
             // TODO: Use ENV obviously
-            key: 'AIzaSyDu8hIYf0tLRW5Ux0O_x8GHjPw6jyJr59Y',
+            key: GoogleMapsAPIKey,
             language: 'en',
           }}
           enablePoweredByContainer={false}
