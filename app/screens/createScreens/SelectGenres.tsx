@@ -15,7 +15,7 @@ import {vectors, miscIcons, genreIcons} from '../../constants/images';
 import strings from '../../constants/strings';
 import integers from '../../constants/integers';
 import {getCategories} from '../../utils/api/CreateCalls/getCategories';
-import {colors, genreColors} from '../../constants/theme';
+import {colors} from '../../constants/theme';
 
 // TODO: remove this and make it dynamic once images are settled
 const genres = [
@@ -177,15 +177,19 @@ const SelectGenres = ({navigation, route}: {navigation: any; route: any}) => {
           </ScrollView>
         </View>
       </Modal>
+      {/* TODO: should be able to scroll even if modal is on */}
+      {/* TODO: should scroll to the right most element added */}
       <View style={selectionStyles.container}>
-        <ScrollView
-          contentContainerStyle={selectionStyles.selectedCategoriesList}>
+        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
           {selectedCategories.map((selected: any) => (
-            <Text
-              key={selected.id}
-              style={selectionStyles.selectedCategoryText}>
-              {selected.name}
-            </Text>
+            <View style={selectionStyles.category}>
+              <Image style={selectionStyles.icon} source={miscIcons.settings}/> 
+              <Text
+                key={selected.id}
+                style={selectionStyles.name}>
+                {selected.name}
+              </Text>
+            </View>
           ))}
         </ScrollView>
       </View>
@@ -303,14 +307,14 @@ const modalStyles = StyleSheet.create({
     shadowOpacity: 0.41,
     shadowRadius: 9.11,
     elevation: 14,
-    backgroundColor: genreColors.experienceLight,
+    backgroundColor: colors.white,
   },
   header: {
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
     height: s(50),
-    backgroundColor: genreColors.experience,
+    backgroundColor: colors.accent,
     borderTopLeftRadius: s(15),
     borderTopRightRadius: s(15),
   },
@@ -358,9 +362,9 @@ const categoryStyles = StyleSheet.create({
     marginLeft: s(10),
     borderRadius: s(20),
     borderWidth: 2,
-    tintColor: colors.white,
-    borderColor: genreColors.experience,
-    backgroundColor: genreColors.experienceLight,
+    tintColor: colors.black,
+    borderColor: colors.accent,
+    backgroundColor: colors.white,
   },
   name: {
     marginLeft: s(60),
@@ -377,27 +381,32 @@ const selectionStyles = StyleSheet.create({
     height: s(100),
     bottom: 0,
     width: '100%',
-    borderWidth: 1,
+    borderTopWidth: 2,
+    borderColor: colors.accent,
   },
-  selectedCategoriesContainer: {
-    borderTopWidth: 1,
-    borderTopColor: colors.grey,
-    borderWidth: 1,
+  category: {
+    alignItems: 'center',
+    marginLeft: s(5),
+    width: s(80),
   },
-  selectedCategoriesTitle: {
-    fontSize: 20,
-    fontWeight: '700',
-    marginBottom: 20,
+  icon: {
+    position: 'absolute',
+    width: s(40),
+    height: s(40),
+    top: s(5),
+    borderRadius: s(20),
+    borderWidth: 2,
+    tintColor: colors.black,
+    borderColor: colors.accent,
+    backgroundColor: colors.white,
   },
-  selectedCategoriesList: {
-    alignItems: 'flex-start',
-    flexGrow: 1,
-    paddingBottom: 20,
-  },
-  selectedCategoryText: {
-    fontSize: 16,
-    marginBottom: 10,
-  },
+  name: {
+    top: s(50),
+    fontSize: s(14),
+    fontWeight: '500',
+    color: colors.black,
+    textAlign: 'center',
+  }
 });
 
 export default SelectGenres;
