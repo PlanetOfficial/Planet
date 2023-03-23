@@ -6,7 +6,7 @@ import {
   StyleSheet,
   Image,
   PermissionsAndroid,
-  Platform
+  Platform,
 } from 'react-native';
 import {s, vs} from 'react-native-size-matters';
 import MapView from 'react-native-maps';
@@ -36,9 +36,14 @@ const MapScreen = ({navigation}: {navigation: any}) => {
   );
 
   const setCoordinates = (latitude: number, longitude: number) => {
-    const newRegion = {latitude: latitude, longitude: longitude, latitudeDelta: region.latitudeDelta, longitudeDelta: region.longitudeDelta}
+    const newRegion = {
+      latitude: latitude,
+      longitude: longitude,
+      latitudeDelta: region.latitudeDelta,
+      longitudeDelta: region.longitudeDelta,
+    };
     setRegion(newRegion);
-  }
+  };
 
   const updateRadius = (reg: any) => {
     setRadius(
@@ -50,13 +55,13 @@ const MapScreen = ({navigation}: {navigation: any}) => {
   };
 
   useEffect(() => {
-    const setCurrentLocation = async() => {
+    const setCurrentLocation = async () => {
       if (Platform.OS === 'ios') {
         Geolocation.requestAuthorization();
       } else if (Platform.OS === 'android') {
         try {
           const granted = await PermissionsAndroid.request(
-            PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
+            PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
           );
           if (granted === PermissionsAndroid.RESULTS.GRANTED) {
             console.log('Location permission granted.');
@@ -69,17 +74,20 @@ const MapScreen = ({navigation}: {navigation: any}) => {
       }
 
       Geolocation.getCurrentPosition(
-        (position) => {
-          setCoordinates(position?.coords?.latitude, position?.coords?.longitude);
+        position => {
+          setCoordinates(
+            position?.coords?.latitude,
+            position?.coords?.longitude,
+          );
         },
         (error: any) => {
-          console.log(error)
-        }
+          console.log(error);
+        },
       );
-    }
+    };
 
     setCurrentLocation();
-  }, [])
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -146,34 +154,30 @@ const MapScreen = ({navigation}: {navigation: any}) => {
         <Image style={searchStyles.icon} source={miscIcons.search} />
       </View>
 
-        <View style={mapStyles.container}>
-          <MapView
-            style={mapStyles.map}
-            initialRegion={region}
-            showsUserLocation={true}
-            showsScale={false}
-            showsCompass={false}
-            rotateEnabled={false}
-            onRegionChange={updateRadius}
-            onRegionChangeComplete={setRegion}
-            region={region}
-          />
-          <View pointerEvents={"none"} style={mapStyles.circle}>
-            <Svg style={mapStyles.circle}>
-              <Circle
-                cx={s(150)}
-                cy={s(150)}
-                r={s(148)}
-                stroke={colors.accent}
-                strokeWidth={4}
-                fill={colors.accent}
-                fillOpacity={0.2}
-              />
-            </Svg>
-          </View>
-          <Text style={mapStyles.radiusIndicator}> {/*TODO: Allow unit conversion + ft etc */}
-            {strings.createTabStack.radius}: <Text style={radius <= integers.maxRadiusInMeters ? mapStyles.radius: mapStyles.radiusInvalid}>{(radius / integers.milesToMeters).toFixed(2)}</Text> {strings.createTabStack.milesAbbrev}
-          </Text>
+      <View style={mapStyles.container}>
+        <MapView
+          style={mapStyles.map}
+          initialRegion={region}
+          showsUserLocation={true}
+          showsScale={false}
+          showsCompass={false}
+          rotateEnabled={false}
+          onRegionChange={updateRadius}
+          onRegionChangeComplete={setRegion}
+          region={region}
+        />
+        <View pointerEvents={'none'} style={mapStyles.circle}>
+          <Svg style={mapStyles.circle}>
+            <Circle
+              cx={s(150)}
+              cy={s(150)}
+              r={s(148)}
+              stroke={colors.accent}
+              strokeWidth={4}
+              fill={colors.accent}
+              fillOpacity={0.2}
+            />
+          </Svg>
         </View>
         <Text style={mapStyles.radiusIndicator}>
           {' '}
@@ -185,11 +189,25 @@ const MapScreen = ({navigation}: {navigation: any}) => {
                 ? mapStyles.radius
                 : mapStyles.radiusInvalid
             }>
-            {Math.floor(radius / integers.milesToMeters)}
+            {(radius / integers.milesToMeters).toFixed(2)}
           </Text>{' '}
-          mi
+          {strings.createTabStack.milesAbbrev}
         </Text>
       </View>
+      <Text style={mapStyles.radiusIndicator}>
+        {' '}
+        {/*TODO: Allow unit conversion + ft etc */}
+        {strings.createTabStack.radius}:{' '}
+        <Text
+          style={
+            radius <= integers.maxRadiusInMeters
+              ? mapStyles.radius
+              : mapStyles.radiusInvalid
+          }>
+          {Math.floor(radius / integers.milesToMeters)}
+        </Text>{' '}
+        mi
+      </Text>
     </View>
   );
 };
