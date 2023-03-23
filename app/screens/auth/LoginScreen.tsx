@@ -9,19 +9,16 @@ import {
 } from 'react-native';
 import {s, vs} from 'react-native-size-matters';
 
-import EncryptedStorage from 'react-native-encrypted-storage';
-
 import strings from '../../constants/strings';
 
 import {login} from '../../utils/api/auth/login';
 import {colors} from '../../constants/theme';
 import {vectors} from '../../constants/images';
+import {cacheUserInfo} from '../../utils/functions/CacheHelpers';
 
 const LoginScreen = ({navigation}: {navigation: any}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
-  // TODO: make sure encrypted storage is cleared if we end up on this screen
 
   const handleLogin = async () => {
     // Perform login logic, e.g. send login request to API
@@ -29,9 +26,7 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
     const response = await login(email, password);
     if (response?.authToken) {
       // successful login
-      await EncryptedStorage.setItem('auth_token', response?.authToken);
-      setEmail('');
-      setPassword('');
+      await cacheUserInfo(response?.authToken);
       navigation.reset({
         index: 0,
         routes: [{name: 'TabStack'}],

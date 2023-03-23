@@ -80,7 +80,7 @@ export const filterToUniqueIds = (arr: Array<any>) => {
 */
 export const getImagesFromURLs = (places: Array<any>) => {
   let images: any = [];
-  if (places && places.length !== 0) {
+  if (places && places?.length !== 0) {
     places.forEach(item => {
       if (item?.images && item?.images?.length !== 0) {
         images.push(
