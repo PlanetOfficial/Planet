@@ -13,7 +13,7 @@ import {s, vs} from 'react-native-size-matters';
 
 import {vectors, miscIcons, genreIcons} from '../../constants/images';
 import strings from '../../constants/strings';
-import { integers } from '../../constants/numbers';
+import {integers} from '../../constants/numbers';
 import {getCategories} from '../../utils/api/CreateCalls/getCategories';
 import {colors} from '../../constants/theme';
 
@@ -165,10 +165,13 @@ const SelectGenres = ({navigation, route}: {navigation: any; route: any}) => {
                         ),
                       );
                     }
-                }}>
+                  }}>
                   <View style={categoryStyles.container}>
                     {/* TODO: CONNECT TO BACKEND */}
-                    <Image style={categoryStyles.image} source={miscIcons.settings}/> 
+                    <Image
+                      style={categoryStyles.image}
+                      source={miscIcons.settings}
+                    />
                     <Text style={categoryStyles.name}>{category.name}</Text>
                   </View>
                 </TouchableOpacity>
@@ -182,13 +185,9 @@ const SelectGenres = ({navigation, route}: {navigation: any; route: any}) => {
       <View style={selectionStyles.container}>
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
           {selectedCategories.map((selected: any) => (
-            <View style={selectionStyles.category}>
-              <Image style={selectionStyles.icon} source={miscIcons.settings}/> 
-              <Text
-                key={selected.id}
-                style={selectionStyles.name}>
-                {selected.name}
-              </Text>
+            <View key={selected.id} style={selectionStyles.category}>
+              <Image style={selectionStyles.icon} source={miscIcons.settings} />
+              <Text style={selectionStyles.name}>{selected.name}</Text>
             </View>
           ))}
         </ScrollView>
@@ -346,7 +345,7 @@ const modalStyles = StyleSheet.create({
   categories: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-  }
+  },
 });
 
 const categoryStyles = StyleSheet.create({
@@ -372,7 +371,7 @@ const categoryStyles = StyleSheet.create({
     fontSize: s(14),
     fontWeight: '700',
     color: colors.black,
-  }
+  },
 });
 
 const selectionStyles = StyleSheet.create({
@@ -406,7 +405,7 @@ const selectionStyles = StyleSheet.create({
     fontWeight: '500',
     color: colors.black,
     textAlign: 'center',
-  }
+  },
 });
 
 export default SelectGenres;
