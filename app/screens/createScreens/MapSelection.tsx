@@ -180,9 +180,8 @@ const MapScreen = ({navigation}: {navigation: any}) => {
           </Svg>
         </View>
         <Text style={mapStyles.radiusIndicator}>
-          {' '}
           {/*TODO: Allow unit conversion + ft etc */}
-          {strings.createTabStack.radius}:{' '}
+          {strings.createTabStack.radius}{': '}
           <Text
             style={
               radius <= integers.maxRadiusInMeters
@@ -194,20 +193,6 @@ const MapScreen = ({navigation}: {navigation: any}) => {
           {strings.createTabStack.milesAbbrev}
         </Text>
       </View>
-      <Text style={mapStyles.radiusIndicator}>
-        {' '}
-        {/*TODO: Allow unit conversion + ft etc */}
-        {strings.createTabStack.radius}:{' '}
-        <Text
-          style={
-            radius <= integers.maxRadiusInMeters
-              ? mapStyles.radius
-              : mapStyles.radiusInvalid
-          }>
-          {Math.floor(radius / integers.milesToMeters)}
-        </Text>{' '}
-        mi
-      </Text>
     </View>
   );
 };
