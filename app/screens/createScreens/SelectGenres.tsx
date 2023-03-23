@@ -5,14 +5,15 @@ import {
   ScrollView,
   TouchableOpacity,
   StyleSheet,
-  SafeAreaView,
   Image,
-  Button,
+  Pressable,
   Modal,
 } from 'react-native';
-import {icons} from '../../constants/images';
+import {s, vs} from 'react-native-size-matters';
+
+import {vectors, miscIcons, genreIcons} from '../../constants/images';
 import strings from '../../constants/strings';
-import { integers } from '../../constants/numbers';
+import {integers} from '../../constants/numbers';
 import {getCategories} from '../../utils/api/CreateCalls/getCategories';
 import {colors} from '../../constants/theme';
 
@@ -20,37 +21,37 @@ import {colors} from '../../constants/theme';
 const genres = [
   {
     id: 1,
-    name: strings.createTabStack.adventure,
-    image: icons.adventure,
+    name: strings.createTabStack.recreation,
+    image: genreIcons.recreation,
   },
   {
     id: 2,
     name: strings.createTabStack.experience,
-    image: icons.experience,
+    image: genreIcons.experience,
   },
   {
     id: 3,
     name: strings.createTabStack.shopping,
-    image: icons.shopping,
+    image: genreIcons.shopping,
   },
   {
     id: 4,
     name: strings.createTabStack.outdoors,
-    image: icons.outdoors,
+    image: genreIcons.outdoors,
   },
   {
     id: 6,
     name: strings.createTabStack.restaurants,
-    image: icons.restaurant,
+    image: genreIcons.restaurants,
   },
   {
     id: 5,
-    name: strings.createTabStack.drinksAndDessert,
-    image: icons.dessert,
+    name: strings.createTabStack.sweets,
+    image: genreIcons.sweets,
   },
 ];
 
-const SelectGenres = ({navigation, route}) => {
+const SelectGenres = ({navigation, route}: {navigation: any; route: any}) => {
   const [latitude, setLatitude] = useState(route?.params?.latitude);
   const [longitude, setLongitude] = useState(route?.params?.longitude);
   const [radius, setRadius] = useState(0); // in meters
@@ -73,12 +74,12 @@ const SelectGenres = ({navigation, route}) => {
     setRadiusParam();
   }, []);
 
-  const handleGenrePress = async genre => {
+  const handleGenrePress = async (genre: any) => {
     setSelectedGenre(genre.name);
     setModalVisible(true);
 
     // display categories from genre logic
-    if (!cachedGenres[genre.id]) {
+    if (!cachedGenres[genre.id as keyof {}]) {
       // call API and add to cache if not in cache
       const response = await getCategories(genre.id);
 
@@ -88,228 +89,322 @@ const SelectGenres = ({navigation, route}) => {
 
       setAllCategories(response);
     } else {
-      setAllCategories(cachedGenres[genre.id]);
+      setAllCategories(cachedGenres[genre.id as keyof {}]);
     }
   };
 
   return (
-    <SafeAreaView>
-      <View>
-        <View style={styles.header}>
-          <TouchableOpacity onPress={() => navigation.navigate('MapSelection')}>
-            <Image source={icons.BackArrow} />
-          </TouchableOpacity>
-          <Text style={styles.headerTitle}>
-            {strings.createTabStack.selectCategories}
-          </Text>
-        </View>
-        <View style={styles.categoriesGrid}>
-          {genres.map(genre => (
-            <TouchableOpacity
-              key={genre.id}
-              onPress={() => handleGenrePress(genre)}>
-              <Image style={styles.genreImage} source={genre.image} />
-              <Text>{genre.name}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-        <View style={styles.selectedCategoriesContainer}>
-          <Text style={styles.selectedCategoriesTitle}>
-            {strings.createTabStack.selectedCategories}
-          </Text>
-          <ScrollView contentContainerStyle={styles.selectedCategoriesList}>
-            {selectedCategories.map(selected => (
-              <Text key={selected.id} style={styles.selectedCategoryText}>
-                {selected.name}
-              </Text>
-            ))}
-          </ScrollView>
-          <Button
-            title={strings.main.done}
-            onPress={() =>
-              navigation.navigate('SelectDestinations', {
-                selectedCategories: selectedCategories,
-                radius: radius,
-                latitude: latitude,
-                longitude: longitude,
-              })
-            }
-          />
-        </View>
+    <View style={styles.container}>
+      <View style={headerStyles.container}>
+        <TouchableOpacity
+          style={headerStyles.back}
+          onPress={() => navigation.navigate('MapSelection')}>
+          <Image style={headerStyles.icon} source={miscIcons.back} />
+        </TouchableOpacity>
+        <Text style={headerStyles.title}>
+          {strings.createTabStack.selectCategories}
+        </Text>
+        <TouchableOpacity
+          style={headerStyles.confirm}
+          onPress={() =>
+            navigation.navigate('SelectDestinations', {
+              selectedCategories: selectedCategories,
+              radius: radius,
+              latitude: latitude,
+              longitude: longitude,
+            })
+          }>
+          <Image style={headerStyles.icon} source={miscIcons.confirm} />
+        </TouchableOpacity>
       </View>
-      <Modal animationType="slide" transparent={true} visible={modalVisible}>
-        <View style={styles.modalContainer}>
-          <View style={styles.modalView}>
-            <View style={styles.modalHeader}>
-              <TouchableOpacity
-                style={styles.back}
-                onPress={() => {
-                  setModalVisible(false);
-                  setSelectedGenre('');
-                }}>
-                <Image source={icons.BackArrow} />
-              </TouchableOpacity>
-              <View style={styles.genreHeader}>
-                <Text style={styles.genreText}>{selectedGenre}</Text>
-              </View>
+      <View style={genreStyles.container}>
+        {genres.map(genre => (
+          <TouchableOpacity
+            key={genre.id}
+            onPress={() => handleGenrePress(genre)}>
+            <View style={genreStyles.imageContainer}>
+              <Image style={genreStyles.image} source={genre.image} />
             </View>
-            <ScrollView>
-              <View>
-                {allCategories
-                  ? allCategories.map(selected => (
-                      <View key={selected.id}>
-                        <TouchableOpacity
-                          onPress={() => {
-                            if (
-                              !selectedCategories.find(
-                                item => item.id === selected.id,
-                              )
-                            ) {
-                              setSelectedCategories(prevCategories => [
-                                ...prevCategories,
-                                {id: selected.id, name: selected.name},
-                              ]);
-                            } else {
-                              setSelectedCategories(
-                                selectedCategories.filter(
-                                  item => item.id !== selected.id,
-                                ),
-                              );
-                            }
-                          }}>
-                          <View style={styles.circle}>
-                            <Image
-                              source={icons.XButton}
-                              style={styles.image}
-                            />
-                          </View>
-                          <Text>{selected.name}</Text>
-                        </TouchableOpacity>
-                      </View>
-                    ))
-                  : null}
-              </View>
-            </ScrollView>
+            <Image style={genreStyles.blur} source={vectors.shape1} />
+            <Text style={genreStyles.text}>{genre.name}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+      <Modal animationType="fade" transparent={true} visible={modalVisible}>
+        <View style={modalStyles.container}>
+          <View style={modalStyles.header}>
+            <Pressable
+              onPress={() => {
+                setModalVisible(false);
+                setSelectedGenre('');
+              }}
+              style={modalStyles.x}>
+              <Image style={modalStyles.icon} source={miscIcons.x} />
+            </Pressable>
+            <Text style={modalStyles.title}>{selectedGenre}</Text>
           </View>
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <View style={modalStyles.categories}>
+              {allCategories.map((category: any) => (
+                <TouchableOpacity
+                  key={category.id}
+                  onPress={() => {
+                    if (
+                      !selectedCategories.find(
+                        (item: any) => item.id === category.id,
+                      )
+                    ) {
+                      setSelectedCategories(prevCategories => [
+                        ...prevCategories,
+                        {id: category.id, name: category.name},
+                      ]);
+                    } else {
+                      setSelectedCategories(
+                        selectedCategories.filter(
+                          (item: any) => item.id !== category.id,
+                        ),
+                      );
+                    }
+                  }}>
+                  <View style={categoryStyles.container}>
+                    {/* TODO: CONNECT TO BACKEND */}
+                    <Image
+                      style={categoryStyles.image}
+                      source={miscIcons.settings}
+                    />
+                    <Text style={categoryStyles.name}>{category.name}</Text>
+                  </View>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </ScrollView>
         </View>
       </Modal>
-    </SafeAreaView>
+      {/* TODO: should be able to scroll even if modal is on */}
+      {/* TODO: should scroll to the right most element added */}
+      <View style={selectionStyles.container}>
+        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+          {selectedCategories.map((selected: any) => (
+            <View key={selected.id} style={selectionStyles.category}>
+              <Image style={selectionStyles.icon} source={miscIcons.settings} />
+              <Text style={selectionStyles.name}>{selected.name}</Text>
+            </View>
+          ))}
+        </ScrollView>
+      </View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  header: {
-    height: 60,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-  },
-  headerTitle: {
-    fontSize: 20,
-  },
   container: {
-    flex: 1,
-    backgroundColor: colors.white,
-  },
-  categoriesContainer: {
-    flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
-  },
-  categoriesTitle: {
-    fontSize: 20,
-    fontWeight: '700',
-    marginBottom: 20,
-  },
-  categoriesGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    paddingHorizontal: 30,
-  },
-  genreImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    marginBottom: 20,
-  },
-  selectedCategoriesContainer: {
-    borderTopWidth: 1,
-    borderTopColor: colors.grey,
-    paddingTop: 20,
-    paddingHorizontal: 20,
-    paddingBottom: 40,
-  },
-  selectedCategoriesTitle: {
-    fontSize: 20,
-    fontWeight: '700',
-    marginBottom: 20,
-  },
-  selectedCategoriesList: {
-    alignItems: 'flex-start',
-    flexGrow: 1,
-    paddingBottom: 20,
-  },
-  selectedCategoryText: {
-    fontSize: 16,
-    marginBottom: 10,
-  },
-  doneButton: {
-    backgroundColor: colors.accent,
-    paddingVertical: 10,
-    paddingHorizontal: 30,
-    borderRadius: 5,
-  },
-  doneButtonText: {
-    color: colors.white,
-    fontSize: 18,
-    fontWeight: '700',
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: colors.fill,
-  },
-  modalHeader: {
-    flexDirection: 'row',
-  },
-  modalView: {
-    backgroundColor: colors.white,
     width: '100%',
-    height: '80%',
-    borderRadius: 10,
+    height: '100%',
+    backgroundColor: colors.white,
   },
-  circle: {
-    width: 70,
-    height: 70,
-    borderRadius: 50,
-    backgroundColor: colors.accent,
-    margin: 10,
+});
+
+const headerStyles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    marginTop: vs(50),
+    width: s(300),
+    height: vs(20),
   },
-  image: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
+  title: {
+    position: 'absolute',
+    left: s(25),
+    width: s(250),
+    fontSize: s(18),
+    fontWeight: '600',
+    color: colors.black,
+    textAlign: 'center',
   },
   back: {
-    margin: 10,
+    left: 0,
+    width: vs(12),
+    height: vs(18),
   },
-  SelectGenre: {
-    alignItems: 'center',
+  confirm: {
+    position: 'absolute',
+    right: 0,
+    width: vs(18),
+    height: vs(18),
   },
-  genreHeader: {
-    flex: 1,
+  icon: {
+    width: '100%',
+    height: '100%',
+    tintColor: colors.black,
+  },
+});
+
+const genreStyles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     justifyContent: 'center',
-    alignItems: 'center',
+    marginTop: (vs(610) - s(580)) / 2,
   },
-  genreText: {
+  imageContainer: {
+    margin: s(15),
+    width: s(130),
+    height: s(130),
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    borderRadius: s(15),
+    backgroundColor: colors.white,
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+    borderRadius: s(15),
+    borderWidth: 2,
+    borderColor: colors.white,
+  },
+  text: {
+    position: 'absolute',
+    margin: s(15),
+    width: s(130),
+    top: s(56),
+    fontSize: s(15),
+    fontWeight: '700',
+    textAlign: 'center',
+    color: colors.white,
+  },
+  blur: {
+    position: 'absolute',
+    marginTop: s(55),
+    width: s(160),
+    height: s(50),
+    resizeMode: 'stretch',
+    tintColor: colors.black,
+    opacity: 0.6,
+  },
+});
+
+const modalStyles = StyleSheet.create({
+  container: {
+    position: 'absolute',
+    top: (vs(750) - s(600)) / 2,
+    left: s(15),
+    width: s(320),
+    height: s(500),
+    borderRadius: s(15),
+    borderWidth: 2,
+    borderColor: colors.white,
+    shadowOffset: {
+      width: 0,
+      height: 7,
+    },
+    shadowOpacity: 0.41,
+    shadowRadius: 9.11,
+    elevation: 14,
+    backgroundColor: colors.white,
+  },
+  header: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    height: s(50),
+    backgroundColor: colors.accent,
+    borderTopLeftRadius: s(15),
+    borderTopRightRadius: s(15),
+  },
+  title: {
+    width: s(250),
+    fontSize: s(20),
+    fontWeight: '700',
+    color: colors.white,
     textAlign: 'center',
     textAlignVertical: 'center',
-    fontSize: 20,
+  },
+  x: {
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+    top: -s(13),
+    right: -s(13),
+    padding: s(13),
+    width: s(18),
+    height: s(18),
+    backgroundColor: colors.grey,
+    borderRadius: s(13),
+  },
+  icon: {
+    width: s(14),
+    height: s(14),
+    tintColor: colors.black,
+  },
+  categories: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+});
+
+const categoryStyles = StyleSheet.create({
+  container: {
+    justifyContent: 'center',
+    width: s(158),
+    height: s(60),
+  },
+  image: {
+    position: 'absolute',
+    width: s(40),
+    height: s(40),
+    marginLeft: s(10),
+    borderRadius: s(20),
+    borderWidth: 2,
+    tintColor: colors.black,
+    borderColor: colors.accent,
+    backgroundColor: colors.white,
+  },
+  name: {
+    marginLeft: s(60),
+    width: s(95),
+    fontSize: s(14),
+    fontWeight: '700',
+    color: colors.black,
+  },
+});
+
+const selectionStyles = StyleSheet.create({
+  container: {
+    position: 'absolute',
+    height: s(100),
+    bottom: 0,
+    width: '100%',
+    borderTopWidth: 2,
+    borderColor: colors.accent,
+  },
+  category: {
+    alignItems: 'center',
+    marginLeft: s(5),
+    width: s(80),
+  },
+  icon: {
+    position: 'absolute',
+    width: s(40),
+    height: s(40),
+    top: s(5),
+    borderRadius: s(20),
+    borderWidth: 2,
+    tintColor: colors.black,
+    borderColor: colors.accent,
+    backgroundColor: colors.white,
+  },
+  name: {
+    top: s(50),
+    fontSize: s(14),
+    fontWeight: '500',
+    color: colors.black,
+    textAlign: 'center',
   },
 });
 

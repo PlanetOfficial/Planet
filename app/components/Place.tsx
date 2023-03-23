@@ -37,16 +37,7 @@ const styles = StyleSheet.create({
     marginTop: s(3),
     width: s(300),
     height: s(160),
-    borderRadius: s(10),
-  },
-  imageOverlap: {
-    position: 'absolute',
-    bottom: s(4),
-    left: s(5),
-    width: s(290),
-    height: s(160),
-    borderRadius: s(10),
-    zIndex: -1,
+    borderRadius: s(15),
   },
 });
 

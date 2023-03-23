@@ -91,6 +91,7 @@ export const NavBar = () => {
           tabBarStyle: {
             borderTopWidth: 1,
             borderTopColor: colors.grey,
+            backgroundColor: colors.white,
           },
           tabBarIcon: ({focused}): any => {
             return getIcon(route, focused);

@@ -9,4 +9,4 @@ export const floats = {
   defaultLongitude: -122.3032,
   defaultLatitudeDelta: 0.0922,
   defaultLongitudeDelta: 0.0421,
-}
+};
