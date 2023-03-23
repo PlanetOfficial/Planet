@@ -26,8 +26,10 @@ Before making a commit, go to the version control tab of git and double check ch
 
 <h1>Testing/Cleaning (**required before merging pull requests**)</h1>
 
+Make E2E tests for new features (see below for Detox setup)
+
 ```
-npm run test (this command is a optional, sometimes node modules can give issues)
+npm run test
 
 npm run lint
 npm run lint -- --fix
@@ -44,7 +46,7 @@ Naming Scheme:
 
 UPDATE LIBRARIES OFTEN!!
 
-<h1>Deployment</h1>
+<h1>Deployment (checklist is incomplete, see official RN guide)</h1>
 Android:
 ```yarn android-release
 ```
@@ -58,6 +60,17 @@ Upgrade RN library with npx react-native upgrade
 
 ------------
 
-When merging pull requests, go through the following checklist:
--Run Testing/Cleaning code procedure
--Test on android and iOS
+Detox setup:
+
+Run this in your terminal (for macs)
+```
+brew tap wix/brew
+brew install applesimutils
+```
+--> make sure to run the commands above every so often to update to latest version
+
+Run necessary build commands:
+*see link below for build commands to test .detocrc.js file (step 5 in Project Setup tab),
+remember to use npx in front of the detox command
+
+https://wix.github.io/Detox/docs/introduction/getting-started/
