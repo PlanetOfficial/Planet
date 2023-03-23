@@ -26,7 +26,7 @@ const strings = {
     search: 'Search',
     selectCategories: 'Select Categories',
     selectDestinations: 'Select Destinations',
-    radius: 'Radius (in miles)',
+    radius: 'Radius',
     recreation: 'Recreation',
     experience: 'Experience',
     shopping: 'Shopping',

@@ -13,7 +13,7 @@ import {s, vs} from 'react-native-size-matters';
 
 import {vectors, miscIcons, genreIcons} from '../../constants/images';
 import strings from '../../constants/strings';
-import integers from '../../constants/integers';
+import { integers } from '../../constants/numbers';
 import {getCategories} from '../../utils/api/CreateCalls/getCategories';
 import {colors} from '../../constants/theme';
 
@@ -66,7 +66,7 @@ const SelectGenres = ({navigation, route}: {navigation: any; route: any}) => {
 
   const setRadiusParam = () => {
     if (route?.params?.radius) {
-      setRadius(parseFloat(route.params.radius) * integers.milesToMeters);
+      setRadius(route.params.radius);
     }
   };
 
