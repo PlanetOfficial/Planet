@@ -5,9 +5,7 @@ import {
   ScrollView,
   TouchableOpacity,
   StyleSheet,
-  SafeAreaView,
   Image,
-  Button,
   Pressable,
   Modal,
 } from 'react-native';
@@ -53,7 +51,7 @@ const genres = [
   },
 ];
 
-const SelectGenres = ({navigation, route}: {navigation: any, route: any}) => {
+const SelectGenres = ({navigation, route}: {navigation: any; route: any}) => {
   const [latitude, setLatitude] = useState(route?.params?.latitude);
   const [longitude, setLongitude] = useState(route?.params?.longitude);
   const [radius, setRadius] = useState(0); // in meters
@@ -103,7 +101,9 @@ const SelectGenres = ({navigation, route}: {navigation: any, route: any}) => {
           onPress={() => navigation.navigate('MapSelection')}>
           <Image style={headerStyles.icon} source={miscIcons.back} />
         </TouchableOpacity>
-        <Text style={headerStyles.title}>{strings.createTabStack.selectCategories}</Text>
+        <Text style={headerStyles.title}>
+          {strings.createTabStack.selectCategories}
+        </Text>
         <TouchableOpacity
           style={headerStyles.confirm}
           onPress={() =>
@@ -112,8 +112,8 @@ const SelectGenres = ({navigation, route}: {navigation: any, route: any}) => {
               radius: radius,
               latitude: latitude,
               longitude: longitude,
-            })}
-          >
+            })
+          }>
           <Image style={headerStyles.icon} source={miscIcons.confirm} />
         </TouchableOpacity>
       </View>
@@ -135,85 +135,61 @@ const SelectGenres = ({navigation, route}: {navigation: any, route: any}) => {
           <View style={modalStyles.header}>
             <Pressable
               onPress={() => {
-                  setModalVisible(false);
-                  setSelectedGenre('');
+                setModalVisible(false);
+                setSelectedGenre('');
               }}
-              style={modalStyles.x}
-              >
+              style={modalStyles.x}>
               <Image style={modalStyles.icon} source={miscIcons.x} />
             </Pressable>
             <Text style={modalStyles.title}>{selectedGenre}</Text>
           </View>
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <View style={modalStyles.categories}>
+              {allCategories.map((category: any) => (
+                <TouchableOpacity
+                  key={category.id}
+                  onPress={() => {
+                    if (
+                      !selectedCategories.find(
+                        (item: any) => item.id === category.id,
+                      )
+                    ) {
+                      setSelectedCategories(prevCategories => [
+                        ...prevCategories,
+                        {id: category.id, name: category.name},
+                      ]);
+                    } else {
+                      setSelectedCategories(
+                        selectedCategories.filter(
+                          (item: any) => item.id !== category.id,
+                        ),
+                      );
+                    }
+                }}>
+                  <View style={categoryStyles.container}>
+                    {/* TODO: CONNECT TO BACKEND */}
+                    <Image style={categoryStyles.image} source={miscIcons.settings}/> 
+                    <Text style={categoryStyles.name}>{category.name}</Text>
+                  </View>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </ScrollView>
         </View>
       </Modal>
       <View style={selectionStyles.container}>
-        {/* <ScrollView contentContainerStyle={selectionStyles.selectedCategoriesList}>
-            {selectedCategories.map((selected: any) => (
-            <Text key={selected.id} style={selectionStyles.selectedCategoryText}>
+        <ScrollView
+          contentContainerStyle={selectionStyles.selectedCategoriesList}>
+          {selectedCategories.map((selected: any) => (
+            <Text
+              key={selected.id}
+              style={selectionStyles.selectedCategoryText}>
               {selected.name}
             </Text>
           ))}
-        </ScrollView> */}
+        </ScrollView>
       </View>
     </View>
-    // <SafeAreaView>
-    //   <Modal animationType="slide" transparent={true} visible={modalVisible}>
-    //     <View style={styles.modalContainer}>
-    //       <View style={styles.modalView}>
-    //         <View style={styles.modalHeader}>
-    //           <TouchableOpacity
-    //             style={styles.back}
-                // onPress={() => {
-                //   setModalVisible(false);
-                //   setSelectedGenre('');
-                // }}>
-    //             <Image source={icons.BackArrow} />
-    //           </TouchableOpacity>
-    //           <View style={styles.genreHeader}>
-    //             <Text style={styles.genreText}>{selectedGenre}</Text>
-    //           </View>
-    //         </View>
-    //         <ScrollView>
-    //           <View>
-    //             {allCategories
-    //               ? allCategories.map(selected => (
-    //                   <View key={selected.id}>
-    //                     <TouchableOpacity
-    //                       onPress={() => {
-    //                         if (
-    //                           !selectedCategories.find(
-    //                             item => item.id === selected.id,
-    //                           )
-    //                         ) {
-    //                           setSelectedCategories(prevCategories => [
-    //                             ...prevCategories,
-    //                             {id: selected.id, name: selected.name},
-    //                           ]);
-    //                         } else {
-    //                           setSelectedCategories(
-    //                             selectedCategories.filter(
-    //                               item => item.id !== selected.id,
-    //                             ),
-    //                           );
-    //                         }
-    //                       }}>
-    //                       <View style={styles.circle}>
-    //                         <Image
-    //                           source={icons.XButton}
-    //                           style={styles.image}
-    //                         />
-    //                       </View>
-    //                       <Text>{selected.name}</Text>
-    //                     </TouchableOpacity>
-    //                   </View>
-    //                 ))
-    //               : null}
-    //           </View>
-    //         </ScrollView>
-    //       </View>
-    //     </View>
-    //   </Modal>
-    // </SafeAreaView>
   );
 };
 
@@ -241,7 +217,7 @@ const headerStyles = StyleSheet.create({
     fontSize: s(18),
     fontWeight: '600',
     color: colors.black,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   back: {
     left: 0,
@@ -307,7 +283,7 @@ const genreStyles = StyleSheet.create({
     resizeMode: 'stretch',
     tintColor: colors.black,
     opacity: 0.6,
-  }
+  },
 });
 
 const modalStyles = StyleSheet.create({
@@ -363,6 +339,36 @@ const modalStyles = StyleSheet.create({
     height: s(14),
     tintColor: colors.black,
   },
+  categories: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  }
+});
+
+const categoryStyles = StyleSheet.create({
+  container: {
+    justifyContent: 'center',
+    width: s(158),
+    height: s(60),
+  },
+  image: {
+    position: 'absolute',
+    width: s(40),
+    height: s(40),
+    marginLeft: s(10),
+    borderRadius: s(20),
+    borderWidth: 2,
+    tintColor: colors.white,
+    borderColor: genreColors.experience,
+    backgroundColor: genreColors.experienceLight,
+  },
+  name: {
+    marginLeft: s(60),
+    width: s(95),
+    fontSize: s(14),
+    fontWeight: '700',
+    color: colors.black,
+  }
 });
 
 const selectionStyles = StyleSheet.create({
@@ -372,7 +378,7 @@ const selectionStyles = StyleSheet.create({
     bottom: 0,
     width: '100%',
     borderWidth: 1,
-  },  
+  },
   selectedCategoriesContainer: {
     borderTopWidth: 1,
     borderTopColor: colors.grey,
@@ -394,120 +400,4 @@ const selectionStyles = StyleSheet.create({
   },
 });
 
-
-// const styles = StyleSheet.create({
-//   header: {
-//     height: 60,
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//     justifyContent: 'space-between',
-//     paddingHorizontal: 20,
-//   },
-//   headerTitle: {
-//     fontSize: 20,
-//   },
-//   container: {
-//     flex: 1,
-//     backgroundColor: colors.white,
-//   },
-//   categoriesContainer: {
-//     flex: 1,
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-//   categoriesTitle: {
-//     fontSize: 20,
-//     fontWeight: '700',
-//     marginBottom: 20,
-//   },
-//   categoriesGrid: {
-//     flexDirection: 'row',
-//     flexWrap: 'wrap',
-//     justifyContent: 'space-between',
-//     paddingHorizontal: 30,
-//   },
-//   genreImage: {
-//     width: 100,
-//     height: 100,
-//     borderRadius: 50,
-//     marginBottom: 20,
-//   },
-  // selectedCategoriesContainer: {
-  //   borderTopWidth: 1,
-  //   borderTopColor: colors.grey,
-  //   paddingTop: 20,
-  //   paddingHorizontal: 20,
-  //   paddingBottom: 40,
-  // },
-  // selectedCategoriesTitle: {
-  //   fontSize: 20,
-  //   fontWeight: '700',
-  //   marginBottom: 20,
-  // },
-  // selectedCategoriesList: {
-  //   alignItems: 'flex-start',
-  //   flexGrow: 1,
-  //   paddingBottom: 20,
-  // },
-  // selectedCategoryText: {
-  //   fontSize: 16,
-  //   marginBottom: 10,
-//   },
-//   doneButton: {
-//     backgroundColor: colors.accent,
-//     paddingVertical: 10,
-//     paddingHorizontal: 30,
-//     borderRadius: 5,
-//   },
-//   doneButtonText: {
-//     color: colors.white,
-//     fontSize: 18,
-//     fontWeight: '700',
-//   },
-//   modalContainer: {
-//     flex: 1,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     backgroundColor: colors.fill,
-//   },
-//   modalHeader: {
-//     flexDirection: 'row',
-//   },
-//   modalView: {
-//     backgroundColor: colors.white,
-//     width: '100%',
-//     height: '80%',
-//     borderRadius: 10,
-//   },
-//   circle: {
-//     width: 70,
-//     height: 70,
-//     borderRadius: 50,
-//     backgroundColor: colors.accent,
-//     margin: 10,
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-//   image: {
-//     width: 80,
-//     height: 80,
-//     borderRadius: 40,
-//   },
-//   back: {
-//     margin: 10,
-//   },
-//   SelectGenre: {
-//     alignItems: 'center',
-//   },
-//   genreHeader: {
-//     flex: 1,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//   },
-//   genreText: {
-//     textAlign: 'center',
-//     textAlignVertical: 'center',
-//     fontSize: 20,
-//   },
-// });
 export default SelectGenres;

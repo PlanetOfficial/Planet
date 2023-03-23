@@ -1,15 +1,9 @@
 import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Image,
-} from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
 import {s, vs} from 'react-native-size-matters';
-import MapView, { Details, Region} from 'react-native-maps';
-import { Svg, Circle } from 'react-native-svg';
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import MapView, {Details, Region} from 'react-native-maps';
+import {Svg, Circle} from 'react-native-svg';
+import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 
 import {miscIcons} from '../../constants/images';
 import strings from '../../constants/strings';
@@ -29,10 +23,10 @@ const MapScreen = ({navigation}: {navigation: any}) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.top}/>
+      <View style={styles.top} />
       {Header(latitude, longitude, radius, navigation)}
       {Search()}
-      {Map(latitude, longitude, radius, onRegionChange)} 
+      {Map(latitude, longitude, radius, onRegionChange)}
     </View>
   );
 };
@@ -67,12 +61,13 @@ const Header = (
 const Search = () => (
   <View>
     <GooglePlacesAutocomplete
-      placeholder='Search'
+      placeholder="Search"
       onPress={(data, details = null) => {
         // 'details' is provided when fetchDetails = true
         console.log(data, details);
       }}
-      query={{ // TODO: Use ENV obviously
+      query={{
+        // TODO: Use ENV obviously
         key: 'AIzaSyDu8hIYf0tLRW5Ux0O_x8GHjPw6jyJr59Y',
         language: 'en',
       }}
@@ -84,11 +79,16 @@ const Search = () => (
         separator: searchStyles.separator,
       }}
     />
-    <Image style={searchStyles.icon} source={miscIcons.search}/>
+    <Image style={searchStyles.icon} source={miscIcons.search} />
   </View>
 );
 
-const Map = (latitude: number, longitude: number, radius: number, onRegionChange: ((region: Region, details: Details) => void)) => (
+const Map = (
+  latitude: number,
+  longitude: number,
+  radius: number,
+  onRegionChange: (region: Region, details: Details) => void,
+) => (
   <View style={mapStyles.container}>
     <MapView
       style={mapStyles.map}
@@ -102,7 +102,7 @@ const Map = (latitude: number, longitude: number, radius: number, onRegionChange
       showsCompass={false}
       onRegionChange={onRegionChange}
     />
-    <View pointerEvents={"none"} style={mapStyles.circle}>
+    <View pointerEvents={'none'} style={mapStyles.circle}>
       <Svg style={mapStyles.circle}>
         <Circle
           cx={s(150)}
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
     height: vs(95),
     backgroundColor: colors.white,
     opacity: 0.8,
-  }
+  },
 });
 
 const headerStyles = StyleSheet.create({
@@ -176,7 +176,7 @@ const searchStyles = StyleSheet.create({
     shadowOffset: {
       width: 1,
       height: 1,
-    }
+    },
   },
   textInput: {
     paddingVertical: 0,
@@ -209,7 +209,7 @@ const searchStyles = StyleSheet.create({
     width: vs(14),
     height: vs(14),
     tintColor: colors.darkgrey,
-  }
+  },
 });
 
 const mapStyles = StyleSheet.create({
@@ -230,7 +230,7 @@ const mapStyles = StyleSheet.create({
     marginTop: vs(30),
     width: s(300),
     height: s(300),
-  }
+  },
 });
 
 export default MapScreen;
