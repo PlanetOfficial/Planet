@@ -1,16 +1,19 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
   TouchableOpacity,
   StyleSheet,
   Image,
+  PermissionsAndroid,
+  Platform
 } from 'react-native';
 import {s, vs} from 'react-native-size-matters';
 import MapView from 'react-native-maps';
 import { Svg, Circle } from 'react-native-svg';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
+import Geolocation from '@react-native-community/geolocation';
 import {miscIcons} from '../../constants/images';
 import strings from '../../constants/strings';
 import { integers, floats } from '../../constants/numbers';
@@ -27,9 +30,46 @@ const MapScreen = ({navigation}: {navigation: any}) => {
 
   const [radius, setRadius] = useState(calculateRadius({latitude: floats.defaultLatitude, longitude: floats.defaultLongitude}, floats.defaultLongitudeDelta));
 
+  const setCoordinates = (latitude: number, longitude: number) => {
+    const newRegion = {latitude: latitude, longitude: longitude, latitudeDelta: region.latitudeDelta, longitudeDelta: region.longitudeDelta}
+    setRegion(newRegion);
+  }
+
   const updateRadius = (reg: any) => {
     setRadius(calculateRadius({latitude: reg.latitude, longitude: reg.longitude}, reg.longitudeDelta));
   }
+
+  useEffect(() => {
+    const setCurrentLocation = async() => {
+      if (Platform.OS === 'ios') {
+        Geolocation.requestAuthorization();
+      } else if (Platform.OS === 'android') {
+        try {
+          const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
+          );
+          if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+            console.log('Location permission granted.');
+          } else {
+            console.log('Location permission denied.');
+          }
+        } catch (err) {
+          console.warn(err);
+        }
+      }
+
+      Geolocation.getCurrentPosition(
+        (position) => {
+          setCoordinates(position?.coords?.latitude, position?.coords?.longitude);
+        },
+        (error: any) => {
+          console.log(error)
+        }
+      );
+    }
+
+    setCurrentLocation();
+  }, [])
 
   return (
     <View style={styles.container}>
@@ -87,6 +127,7 @@ const MapScreen = ({navigation}: {navigation: any}) => {
           <MapView
             style={mapStyles.map}
             initialRegion={region}
+            showsUserLocation={true}
             showsScale={false}
             showsCompass={false}
             rotateEnabled={false}
@@ -108,7 +149,7 @@ const MapScreen = ({navigation}: {navigation: any}) => {
             </Svg>
           </View>
           <Text style={mapStyles.radiusIndicator}> {/*TODO: Allow unit conversion + ft etc */}
-            {strings.createTabStack.radius}: <Text style={radius <= integers.maxRadiusInMeters ? mapStyles.radius: mapStyles.radiusInvalid}>{Math.floor(radius / integers.milesToMeters)}</Text> mi
+            {strings.createTabStack.radius}: <Text style={radius <= integers.maxRadiusInMeters ? mapStyles.radius: mapStyles.radiusInvalid}>{(radius / integers.milesToMeters).toFixed(2)}</Text> {strings.createTabStack.milesAbbrev}
           </Text>
         </View>
     </View>
@@ -229,7 +270,6 @@ const mapStyles = StyleSheet.create({
   },
   circle: {
     position: 'absolute',
-    marginTop: vs(30),
     width: s(300),
     height: s(300),
   },
