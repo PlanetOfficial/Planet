@@ -16,37 +16,6 @@ import {miscIcons} from '../../constants/images';
 const W = Dimensions.get('window').width;
 const H = Dimensions.get('window').height;
 
-<<<<<<< HEAD
-=======
-// TODO: temporary, screen not implemented yet
-const PLACE_DATA = [
-  {
-    id: '1',
-    name: 'Share Tea',
-    category: 'Bubble Tea Shop',
-    image: require('../../assets/sharetea.jpeg'),
-  },
-  {
-    id: '2',
-    name: 'Bellevue Art Museum',
-    category: 'Art Exhibit',
-    image: require('../../assets/sharetea.jpeg'),
-  },
-  {
-    id: '3',
-    name: "Mama's kitchen",
-    category: 'Korean Restaurant',
-    image: require('../../assets/sharetea.jpeg'),
-  },
-  {
-    id: '4',
-    name: 'Share Tea',
-    category: 'Bubble Tea Shop',
-    image: require('../../assets/sharetea.jpeg'),
-  },
-];
-
->>>>>>> main
 const Event = ({navigation}: {navigation: any}) => {
   return (
     <View>

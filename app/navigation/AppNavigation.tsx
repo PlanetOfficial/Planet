@@ -7,7 +7,7 @@ import LoginScreen from '../screens/auth/LoginScreen';
 import SignUp from '../screens/auth/SignUp';
 import ForgotPassword from '../screens/auth/ForgotPassword';
 import MapSelection from '../screens/createScreens/MapSelection';
-import SelectGenres from '../screens/createScreens/SelectGenres';
+import SelectGenres from '../screens/createScreens/SelectCategories';
 import SelectDestinations from '../screens/createScreens/SelectDestinations';
 import FinalizePlan from '../screens/createScreens/FinalizePlan';
 import DestinationDetails from '../screens/createScreens/DestinationDetails';
