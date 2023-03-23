@@ -7,7 +7,7 @@ const screenHeight = Dimensions.get('window').height;
 
 const Trending = () => {
   return (
-    <View testID='trendingScreenView' style={styles.container}>
+    <View testID="trendingScreenView" style={styles.container}>
       <Text style={styles.text}>Coming Soon</Text>
     </View>
   );
