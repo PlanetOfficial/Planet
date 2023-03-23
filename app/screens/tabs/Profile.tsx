@@ -48,7 +48,7 @@ const Info = (name: String) => (
       style={infoStyles.profilePic}
       source={require('../../assets/backArrow.png')}
     />
-    <Text style={infoStyles.name}>Naoto Uemura</Text>
+    <Text style={infoStyles.name}>{name}</Text>
     <View style={infoStyles.countContainer}>
       <View style={infoStyles.count}>
         <Text style={infoStyles.number}>{strings.main.dash}</Text>

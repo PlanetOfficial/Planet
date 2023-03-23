@@ -20,7 +20,7 @@ import {integers, floats} from '../../constants/numbers';
 import {colors} from '../../constants/theme';
 import {calculateRadius} from '../../utils/functions/Misc';
 
-import { GoogleMapsAPIKey } from '../../utils/api/APIConstants';
+import {GoogleMapsAPIKey} from '../../utils/api/APIConstants';
 
 const MapScreen = ({navigation}: {navigation: any}) => {
   const [region, setRegion] = useState({
@@ -183,7 +183,8 @@ const MapScreen = ({navigation}: {navigation: any}) => {
         </View>
         <Text style={mapStyles.radiusIndicator}>
           {/*TODO: Allow unit conversion + ft etc */}
-          {strings.createTabStack.radius}{': '}
+          {strings.createTabStack.radius}
+          {': '}
           <Text
             style={
               radius <= integers.maxRadiusInMeters
