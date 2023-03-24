@@ -47,7 +47,8 @@ UPDATE LIBRARIES OFTEN!!
 
 <h1>Deployment (checklist is incomplete, see official RN guide)</h1>
 Android:
-```yarn android-release
+```
+yarn android-release
 ```
 
 Test on android and iOS constantly!!
@@ -86,4 +87,9 @@ npx detox test --configuration ios.sim.debug
 ```
 *see link for other OS and release versions
 
-add a "-f *.test.js" to test individual test files
+add a flag at the end of the test command like this to test individual files:
+```
+-f *.test.js
+```
+
+replace * with the prefix it's been named
