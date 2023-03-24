@@ -46,7 +46,8 @@ Naming Scheme:
 UPDATE LIBRARIES OFTEN!!
 
 <h1>Deployment (checklist is incomplete, see official RN guide)</h1>
-Android:
+Android: 
+
 ```
 yarn android-release
 ```
