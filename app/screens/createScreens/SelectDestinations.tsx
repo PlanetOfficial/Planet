@@ -10,9 +10,10 @@ import {
   ScrollView,
 } from 'react-native';
 import EncryptedStorage from 'react-native-encrypted-storage';
-import {icons} from '../../constants/images';
+import {icons, miscIcons} from '../../constants/images';
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
+import {s, vs} from 'react-native-size-matters';
 
 import DestinationCard from '../../components/Destination';
 
@@ -22,7 +23,7 @@ import {Category} from '../../utils/interfaces/category';
 import {MarkerObject} from '../../utils/interfaces/MarkerObject';
 import {getBookmarks} from '../../utils/api/shared/getBookmarks';
 
-const SelectDestinations = ({navigation, route}) => {
+const SelectDestinations = ({navigation, route}: {navigation: any, route: any}) => {
   const [latitude, setLatitude] = useState(route?.params?.latitude);
   const [longitude, setLongitude] = useState(route?.params?.longitude);
   const [radius, setRadius] = useState(route?.params?.radius);
@@ -72,8 +73,8 @@ const SelectDestinations = ({navigation, route}) => {
     return icons.defaultImage;
   };
 
-  const handleDestinationSelect = (destination: Object) => {
-    if (!selectedDestinations?.find(item => item?.id === destination?.id)) {
+  const handleDestinationSelect = (destination: any) => {
+    if (!selectedDestinations?.find((item: any) => item?.id === destination?.id)) {
       setSelectedDestinations(prevDestinations => [
         ...prevDestinations,
         destination,
@@ -88,7 +89,7 @@ const SelectDestinations = ({navigation, route}) => {
   const handleDone = () => {
     if (selectedDestinations?.length > 0) {
       let markers: Array<MarkerObject> = [];
-      selectedDestinations?.forEach(destination => {
+      selectedDestinations?.forEach((destination: any) => {
         const markerObject = {
           name: destination?.name,
           latitude: destination?.latitude,
@@ -106,16 +107,16 @@ const SelectDestinations = ({navigation, route}) => {
   };
 
   return (
-    <SafeAreaView>
-      <View>
-        <View style={styles.header}>
-          <TouchableOpacity onPress={() => navigation.navigate('SelectCategories')}>
-            <Image source={icons.BackArrow} />
-          </TouchableOpacity>
-          <Text style={styles.headerTitle}>
-            {strings.createTabStack.selectDestinations}
-          </Text>
-        </View>
+    <View style={styles.container}>
+      <View style={headerStyles.container}>
+        <TouchableOpacity
+          style={headerStyles.back}
+          onPress={() => navigation.navigate('SelectCategories')}>
+          <Image style={headerStyles.icon} source={miscIcons.back} />
+        </TouchableOpacity>
+        <Text style={headerStyles.title}>
+          {strings.createTabStack.selectCategories}
+        </Text>
       </View>
       <View>
         <ScrollView style={styles.destinationScrollView}>
@@ -165,11 +166,17 @@ const SelectDestinations = ({navigation, route}) => {
       <View>
         <Button title={strings.main.done} onPress={handleDone} />
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+  alignItems: 'center',
+  width: '100%',
+  height: '100%',
+  backgroundColor: colors.white,
+  },
   header: {
     height: 60,
     flexDirection: 'row',
@@ -186,6 +193,41 @@ const styles = StyleSheet.create({
   categoryTitle: {
     marginLeft: 10,
     fontSize: 20,
+  },
+});
+
+const headerStyles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: vs(50),
+    width: s(300),
+    height: vs(20),
+  },
+  title: {
+    position: 'absolute',
+    left: s(25),
+    width: s(250),
+    fontSize: s(18),
+    fontWeight: '600',
+    color: colors.black,
+    textAlign: 'center',
+  },
+  back: {
+    left: 0,
+    width: vs(12),
+    height: vs(18),
+  },
+  confirm: {
+    position: 'absolute',
+    right: 0,
+    width: vs(18),
+    height: vs(18),
+  },
+  icon: {
+    width: '100%',
+    height: '100%',
+    tintColor: colors.black,
   },
 });
 
