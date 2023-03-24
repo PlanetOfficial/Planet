@@ -26,7 +26,8 @@ Before making a commit, go to the version control tab of git and double check ch
 
 <h1>Testing/Cleaning (**required before merging pull requests to main**)</h1>
 
-Make E2E tests for new features (see below for Detox instructions) and run them
+Make E2E tests for new features and run them
+(see below for Detox instructions)
 
 ```
 npm run lint
@@ -70,10 +71,19 @@ brew install applesimutils
 --> you might have to restart your computer
 
 Run necessary build commands:
-*see link for build commands to test .detocrc.js file (step 5 in Project Setup tab),
-remember to use npx in front of the detox command
 
+For ios debug mode, run:
+
+```
+npx detox build --configuration ios.sim.debug
+```
+
+For other OS and releases, see link for build commands to test .detocrc.js file (step 5 in Project Setup tab)
+
+```
+npm start
 npx detox test --configuration ios.sim.debug
+```
 *see link for other OS and release versions
 
 add a "-f *.test.js" to test individual test files

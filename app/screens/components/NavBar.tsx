@@ -88,6 +88,7 @@ export const NavBar = () => {
         screenOptions={({route}: {route: any}) => ({
           tabBarShowLabel: false,
           headerShown: false,
+          tabBarTestID: route.name,
           tabBarStyle: {
             borderTopWidth: 1,
             borderTopColor: colors.grey,

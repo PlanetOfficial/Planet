@@ -2,7 +2,7 @@
 // for this test to pass, the app should start on the login screen when detox opens
 describe('Basic Behavior Test', () => {
     beforeEach(async () => {
-        await device.launchApp({ newInstance: true });
+        await device.launchApp({ newInstance: false });
     });
 
     it('initialize page should be login screen', async () => {
@@ -24,4 +24,9 @@ describe('Basic Behavior Test', () => {
 
         await expect(element(by.id('trendingScreenView'))).toBeVisible();
     });
+
+    it ('friend group screen should render when tapped on tab', async () => {
+        await element(by.id('Friends')).tap();
+        await expect(element(by.id('friendsScreenView'))).toBeVisible();
+    })
 });
