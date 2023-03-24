@@ -107,7 +107,7 @@ const MapScreen = ({navigation}: {navigation: any}) => {
           style={headerStyles.next}
           disabled={radius > integers.maxRadiusInMeters} // TODO: make this connected to the server in case this param changes
           onPress={() => {
-            navigation.navigate('SelectGenres', {
+            navigation.navigate('SelectCategories', {
               latitude: region.latitude,
               longitude: region.longitude,
               radius: radius,

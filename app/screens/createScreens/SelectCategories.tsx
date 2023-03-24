@@ -50,7 +50,7 @@ const genres = [
   },
 ];
 
-const SelectGenres = ({navigation, route}: {navigation: any; route: any}) => {
+const SelectCategories = ({navigation, route}: {navigation: any; route: any}) => {
   const [latitude, setLatitude] = useState(route?.params?.latitude);
   const [longitude, setLongitude] = useState(route?.params?.longitude);
   const [radius, setRadius] = useState(0); // in meters
@@ -407,4 +407,4 @@ const selectionStyles = StyleSheet.create({
   },
 });
 
-export default SelectGenres;
+export default SelectCategories;
