@@ -1,131 +1,343 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
   TouchableOpacity,
-  TextInput,
   StyleSheet,
-  SafeAreaView,
   Image,
+  PermissionsAndroid,
+  Platform,
 } from 'react-native';
-import MapView, {Circle} from 'react-native-maps';
+import {s, vs} from 'react-native-size-matters';
+import MapView from 'react-native-maps';
+import {Svg, Circle} from 'react-native-svg';
+import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 
-import {icons} from '../../constants/images';
+import Geolocation from '@react-native-community/geolocation';
+import {miscIcons} from '../../constants/images';
 import strings from '../../constants/strings';
-import integers from '../../constants/integers';
+import {integers, floats} from '../../constants/numbers';
 import {colors} from '../../constants/theme';
+import {calculateRadius} from '../../utils/functions/Misc';
 
-const MapScreen = ({navigation}) => {
-  const [search, setSearch] = useState('');
-  const [radius, setRadius] = useState('');
-  const [latitude, setLatitude] = useState(37.78825);
-  const [longitude, setLongitude] = useState(-122.4324);
+import {GoogleMapsAPIKey} from '../../utils/api/APIConstants';
 
-  const getRadius = () => {
-    if (!Number.isNaN(parseFloat(radius))) {
-      return parseFloat(radius) * integers.milesToMeters;
-    }
+const MapScreen = ({navigation}: {navigation: any}) => {
+  const [region, setRegion] = useState({
+    latitude: floats.defaultLatitude,
+    longitude: floats.defaultLongitude,
+    latitudeDelta: floats.defaultLatitudeDelta,
+    longitudeDelta: floats.defaultLongitudeDelta,
+  });
 
-    return 0;
+  const [radius, setRadius] = useState(
+    calculateRadius(
+      {latitude: floats.defaultLatitude, longitude: floats.defaultLongitude},
+      floats.defaultLongitudeDelta,
+    ),
+  );
+
+  const setCoordinates = (latitude: number, longitude: number) => {
+    const newRegion = {
+      latitude: latitude,
+      longitude: longitude,
+      latitudeDelta: region.latitudeDelta,
+      longitudeDelta: region.longitudeDelta,
+    };
+    setRegion(newRegion);
   };
 
-  const onRegionChange = reg => {
-    setLatitude(reg.latitude);
-    setLongitude(reg.longitude);
+  const updateRadius = (reg: any) => {
+    setRadius(
+      calculateRadius(
+        {latitude: reg.latitude, longitude: reg.longitude},
+        reg.longitudeDelta,
+      ),
+    );
   };
+
+  useEffect(() => {
+    const setCurrentLocation = async () => {
+      if (Platform.OS === 'ios') {
+        Geolocation.requestAuthorization();
+      } else if (Platform.OS === 'android') {
+        try {
+          const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+          );
+          if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+            console.log('Location permission granted.');
+          } else {
+            console.log('Location permission denied.');
+          }
+        } catch (err) {
+          console.warn(err);
+        }
+      }
+
+      Geolocation.getCurrentPosition(
+        position => {
+          setCoordinates(
+            position?.coords?.latitude,
+            position?.coords?.longitude,
+          );
+        },
+        (error: any) => {
+          console.log(error);
+        },
+      );
+    };
+
+    setCurrentLocation();
+  }, []);
 
   return (
-    <SafeAreaView style={styles.safeAreaView}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.navigate('TabStack')}>
-          <Image source={icons.XButton} />
+    <View style={styles.container}>
+      <View style={styles.top} />
+      <View style={headerStyles.container}>
+        <TouchableOpacity
+          style={headerStyles.x}
+          onPress={() => navigation.navigate('TabStack')}>
+          <Image style={headerStyles.icon} source={miscIcons.x} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>
+        <Text style={headerStyles.title}>
           {strings.createTabStack.planEvent}
         </Text>
         <TouchableOpacity
+          style={headerStyles.next}
+          disabled={radius > integers.maxRadiusInMeters} // TODO: make this connected to the server in case this param changes
           onPress={() => {
-            if (getRadius() !== 0) {
-              navigation.navigate('SelectGenres', {
-                latitude: latitude,
-                longitude: longitude,
-                radius: radius,
-              });
-            }
+            navigation.navigate('SelectCategories', {
+              latitude: region.latitude,
+              longitude: region.longitude,
+              radius: radius,
+            });
           }}>
-          <Image source={icons.NextArrow} />
+          <Image
+            style={
+              radius <= integers.maxRadiusInMeters
+                ? headerStyles.icon
+                : headerStyles.disabledIcon
+            }
+            source={miscIcons.back}
+          />
         </TouchableOpacity>
       </View>
-      <View style={styles.container}>
-        <View style={styles.searchContainer}>
-          <TextInput
-            value={search}
-            onChangeText={text => setSearch(text)}
-            placeholder={strings.createTabStack.search}
-            style={styles.searchBar}
-          />
-        </View>
-        <View style={styles.searchContainer}>
-          <TextInput
-            value={radius}
-            onChangeText={text => setRadius(text)}
-            placeholder={strings.createTabStack.radius}
-            style={styles.searchBar}
-          />
-        </View>
-        <MapView
-          style={styles.map}
-          initialRegion={{
-            latitude: latitude,
-            longitude: longitude,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
+      <View>
+        <GooglePlacesAutocomplete
+          placeholder={strings.createTabStack.search}
+          onPress={(data, details = null) => {
+            if (
+              details?.geometry?.location?.lat &&
+              details?.geometry?.location?.lng
+            ) {
+              setRegion({
+                latitude: details.geometry.location.lat,
+                longitude: details.geometry.location.lng,
+                latitudeDelta: floats.defaultLatitudeDelta,
+                longitudeDelta: floats.defaultLongitudeDelta,
+              });
+            }
           }}
-          onRegionChange={onRegionChange}>
-          <Circle
-            center={{latitude: latitude, longitude: longitude}}
-            radius={getRadius()}
-          />
-        </MapView>
+          query={{
+            // TODO: Use ENV obviously
+            key: GoogleMapsAPIKey,
+            language: 'en',
+          }}
+          enablePoweredByContainer={false}
+          fetchDetails={true}
+          styles={{
+            container: searchStyles.container,
+            textInput: searchStyles.textInput,
+            row: searchStyles.row,
+            separator: searchStyles.separator,
+          }}
+        />
+        <Image style={searchStyles.icon} source={miscIcons.search} />
       </View>
-    </SafeAreaView>
+
+      <View style={mapStyles.container}>
+        <MapView
+          style={mapStyles.map}
+          initialRegion={region}
+          showsUserLocation={true}
+          showsScale={false}
+          showsCompass={false}
+          rotateEnabled={false}
+          onRegionChange={updateRadius}
+          onRegionChangeComplete={setRegion}
+          region={region}
+        />
+        <View pointerEvents={'none'} style={mapStyles.circle}>
+          <Svg style={mapStyles.circle}>
+            <Circle
+              cx={s(150)}
+              cy={s(150)}
+              r={s(148)}
+              stroke={colors.accent}
+              strokeWidth={4}
+              fill={colors.accent}
+              fillOpacity={0.2}
+            />
+          </Svg>
+        </View>
+        <Text style={mapStyles.radiusIndicator}>
+          {/*TODO: Allow unit conversion + ft etc */}
+          {strings.createTabStack.radius}
+          {': '}
+          <Text
+            style={
+              radius <= integers.maxRadiusInMeters
+                ? mapStyles.radius
+                : mapStyles.radiusInvalid
+            }>
+            {(radius / integers.milesToMeters).toFixed(2)}
+          </Text>{' '}
+          {strings.createTabStack.milesAbbrev}
+        </Text>
+      </View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  safeAreaView: {
-    flex: 1,
+  container: {
+    alignItems: 'center',
+    width: '100%',
+    height: '100%',
+    backgroundColor: colors.white,
   },
-  header: {
-    height: 60,
-    padding: 10,
+  top: {
+    position: 'absolute',
+    width: '100%',
+    height: vs(95),
+    backgroundColor: colors.white,
+    opacity: 0.8,
+  },
+});
+
+const headerStyles = StyleSheet.create({
+  container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginTop: vs(50),
+    width: s(300),
+    height: vs(20),
+  },
+  title: {
+    fontSize: s(18),
+    fontWeight: '600',
+    color: colors.black,
+  },
+  x: {
+    width: vs(18),
+    height: vs(18),
+  },
+  next: {
+    width: vs(12),
+    height: vs(18),
+    transform: [{rotate: '180deg'}],
+  },
+  icon: {
+    width: '100%',
+    height: '100%',
+    tintColor: colors.black,
+  },
+  disabledIcon: {
+    width: '100%',
+    height: '100%',
+    tintColor: colors.darkgrey,
+  },
+});
+
+const searchStyles = StyleSheet.create({
+  container: {
+    flex: 0,
+    marginTop: vs(10),
+    width: s(300),
+    backgroundColor: colors.white,
+    borderRadius: vs(10),
+    shadowColor: colors.black,
+    shadowOpacity: 0.5,
+    shadowOffset: {
+      width: 1,
+      height: 1,
+    },
+  },
+  textInput: {
+    paddingVertical: 0,
+    marginLeft: vs(20),
+    paddingLeft: vs(10),
+    marginBottom: 0,
+    height: vs(30),
+    fontSize: s(13),
+    backgroundColor: 'transparent',
+    color: colors.black,
+  },
+  row: {
+    height: vs(35),
+    width: s(300),
+    paddingLeft: s(15),
+    color: colors.black,
+    borderTopColor: colors.darkgrey,
+    borderRadius: 20,
     backgroundColor: colors.white,
   },
-  headerTitle: {
-    fontSize: 20,
-    textAlign: 'center',
-    paddingRight: 15,
+  separator: {
+    marginHorizontal: s(13),
+    height: 0.5,
+    backgroundColor: colors.darkgrey,
   },
+  icon: {
+    position: 'absolute',
+    top: vs(18),
+    left: vs(8),
+    width: vs(14),
+    height: vs(14),
+    tintColor: colors.darkgrey,
+  },
+});
+
+const mapStyles = StyleSheet.create({
   container: {
-    flex: 1,
-    padding: 10,
-  },
-  searchContainer: {
-    marginVertical: 10,
-  },
-  searchBar: {
-    height: 40,
-    borderRadius: 17.5,
-    borderWidth: 1,
-    paddingHorizontal: 10,
-    fontSize: 16,
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: -1,
   },
   map: {
-    flex: 1,
-    marginTop: 10,
+    width: '100%',
+    height: '100%',
+  },
+  circle: {
+    position: 'absolute',
+    width: s(300),
+    height: s(300),
+  },
+  radiusIndicator: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    margin: s(20),
+    padding: s(10),
+    fontSize: s(14),
+    fontWeight: '600',
+    color: colors.black,
+  },
+  radius: {
+    margin: s(30),
+    fontSize: s(16),
+    fontWeight: '700',
+    color: colors.accent,
+  },
+  radiusInvalid: {
+    margin: s(30),
+    fontSize: s(16),
+    fontWeight: '700',
+    color: 'red', // TODO: IMPORT THEME
   },
 });
 

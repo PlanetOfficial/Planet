@@ -4,7 +4,7 @@ import {s, vs} from 'react-native-size-matters';
 
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
-import {icons, miscIcons} from '../../constants/images';
+import {miscIcons} from '../../constants/images';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Profile = ({navigation}: {navigation: any}) => {
@@ -25,7 +25,23 @@ const Profile = ({navigation}: {navigation: any}) => {
   return (
     <View style={styles.container}>
       {Header(navigation)}
-      {Info(name)}
+      <View style={infoStyles.container}>
+        <Image
+          style={infoStyles.profilePic}
+          source={require('../../assets/backArrow.png')}
+        />
+        <Text style={infoStyles.name}>{name}</Text>
+        <View style={infoStyles.countContainer}>
+          <View style={infoStyles.count}>
+            <Text style={infoStyles.number}>{strings.main.dash}</Text>
+            <Text style={infoStyles.text}>{strings.profile.followers}</Text>
+          </View>
+          <View style={infoStyles.count}>
+            <Text style={infoStyles.number}>{strings.main.dash}</Text>
+            <Text style={infoStyles.text}>{strings.profile.following}</Text>
+          </View>
+        </View>
+      </View>
     </View>
   );
 };
@@ -38,24 +54,6 @@ const Header = (navigation: any) => (
       onPress={() => navigation.navigate('Settings')}>
       <Image style={headerStyles.icon} source={miscIcons.settings} />
     </TouchableOpacity>
-  </View>
-);
-
-const Info = (name: String) => (
-  // TEMP
-  <View style={infoStyles.container}>
-    <Image style={infoStyles.profilePic} source={icons.defaultImage} />
-    <Text style={infoStyles.name}>Naoto Uemura</Text>
-    <View style={infoStyles.countContainer}>
-      <View style={infoStyles.count}>
-        <Text style={infoStyles.number}>{strings.main.dash}</Text>
-        <Text style={infoStyles.text}>{strings.profile.followers}</Text>
-      </View>
-      <View style={infoStyles.count}>
-        <Text style={infoStyles.number}>{strings.main.dash}</Text>
-        <Text style={infoStyles.text}>{strings.profile.following}</Text>
-      </View>
-    </View>
   </View>
 );
 
@@ -77,7 +75,7 @@ const headerStyles = StyleSheet.create({
   },
   title: {
     fontSize: s(28),
-    fontWeight: 'bold',
+    fontWeight: '700',
     color: colors.black,
   },
   button: {
@@ -111,7 +109,7 @@ const infoStyles = StyleSheet.create({
     width: s(200),
     textAlign: 'center',
     fontSize: s(20),
-    fontWeight: 'bold',
+    fontWeight: '700',
     color: colors.black,
   },
   countContainer: {
@@ -134,7 +132,7 @@ const infoStyles = StyleSheet.create({
   },
   number: {
     fontSize: s(15),
-    fontWeight: 'bold',
+    fontWeight: '700',
     color: colors.accent,
   },
 });

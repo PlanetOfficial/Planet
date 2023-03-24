@@ -2,15 +2,9 @@ export const icons = {
   NextArrow: require('../assets/nextArrow.png'),
   XButton: require('../assets/xButton.png'),
   BackArrow: require('../assets/backArrow.png'),
-  adventure: require('../assets/amusement-park.png'),
-  experience: require('../assets/concert.png'),
-  shopping: require('../assets/bag.png'),
-  outdoors: require('../assets/park.png'),
-  restaurant: require('../assets/restaurant.png'),
-  dessert: require('../assets/dessert.png'),
   bookmarkActive: require('../assets/save-active.png'),
   bookmarkInactive: require('../assets/save-inactive.png'),
-  defaultImage: require('../assets/concert.png'), // TODO: change the image to logo eventually
+  defaultImage: require('../assets/miscIcons/x.png'), // TODO: change the image to logo eventually
 };
 
 export const tabIcons = {
@@ -29,6 +23,17 @@ export const miscIcons = {
   search: require('../assets/miscIcons/search.png'),
   back: require('../assets/miscIcons/back.png'),
   settings: require('../assets/miscIcons/settings.png'),
+  x: require('../assets/miscIcons/x.png'),
+  confirm: require('../assets/miscIcons/confirm.png'),
+};
+
+export const genreIcons = {
+  experience: require('../assets/genres/experience.jpg'),
+  outdoors: require('../assets/genres/outdoors.jpg'),
+  recreation: require('../assets/genres/recreation.jpg'),
+  restaurants: require('../assets/genres/restaurants.jpg'),
+  shopping: require('../assets/genres/shopping.jpg'),
+  sweets: require('../assets/genres/sweets.jpg'),
 };
 
 export const vectors = {

@@ -16,34 +16,6 @@ import {miscIcons} from '../../constants/images';
 const W = Dimensions.get('window').width;
 const H = Dimensions.get('window').height;
 
-// TODO: temporary, screen not implemented yet
-const PLACE_DATA = [
-  {
-    id: '1',
-    name: 'Share Tea',
-    category: 'Bubble Tea Shop',
-    image: require('../../assets/sharetea.jpeg'),
-  },
-  {
-    id: '2',
-    name: 'Bellevue Art Museum',
-    category: 'Art Exhibit',
-    image: require('../../assets/sharetea.jpeg'),
-  },
-  {
-    id: '3',
-    name: "Mama's kitchen",
-    category: 'Korean Restaurant',
-    image: require('../../assets/sharetea.jpeg'),
-  },
-  {
-    id: '4',
-    name: 'Share Tea',
-    category: 'Bubble Tea Shop',
-    image: require('../../assets/sharetea.jpeg'),
-  },
-];
-
 const Event = ({navigation}: {navigation: any}) => {
   return (
     <View>
@@ -61,12 +33,12 @@ const Event = ({navigation}: {navigation: any}) => {
 
 const Places = () => (
   <SafeAreaView style={styles.cardsContainer}>
-    <FlatList
-      data={PLACE_DATA}
+    {/* <FlatList
+      data={}
       renderItem={({item}) => Place(item.name, item.category, item.image)}
       keyExtractor={item => item.id}
       showsVerticalScrollIndicator={false}
-    />
+    /> */}
   </SafeAreaView>
 );
 
@@ -103,7 +75,7 @@ const styles = StyleSheet.create({
     top: 70,
     left: 60,
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: '700',
     color: colors.black,
   },
   date: {
@@ -130,7 +102,7 @@ const cardStyles = StyleSheet.create({
   },
   name: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: '700',
     color: colors.black,
   },
   category: {

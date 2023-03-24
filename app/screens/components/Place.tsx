@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     top: 70,
     left: 60,
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: '700',
     color: colors.black,
   },
   category: {
@@ -189,7 +189,7 @@ const detailsStyles = StyleSheet.create({
   hoursTitle: {
     fontSize: 14,
     marginBottom: 6,
-    fontWeight: 'bold',
+    fontWeight: '700',
     color: colors.black,
   },
   hours: {

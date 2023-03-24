@@ -136,12 +136,12 @@ const headerStyles = StyleSheet.create({
   title: {
     marginLeft: s(10),
     fontSize: s(28),
-    fontWeight: 'bold',
+    fontWeight: '700',
     color: colors.black,
   },
   button: {
-    width: s(14),
-    height: s(21),
+    width: vs(12),
+    height: vs(18),
   },
   icon: {
     width: '100%',

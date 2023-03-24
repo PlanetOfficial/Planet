@@ -18,7 +18,7 @@ import DestinationCard from '../../components/Destination';
 
 import {requestLocations} from '../../utils/api/CreateCalls/requestLocations';
 
-import {Category} from '../../utils/interfaces/Category';
+import {Category} from '../../utils/interfaces/category';
 import {MarkerObject} from '../../utils/interfaces/MarkerObject';
 import {getBookmarks} from '../../utils/api/shared/getBookmarks';
 
@@ -109,7 +109,7 @@ const SelectDestinations = ({navigation, route}) => {
     <SafeAreaView>
       <View>
         <View style={styles.header}>
-          <TouchableOpacity onPress={() => navigation.navigate('SelectGenres')}>
+          <TouchableOpacity onPress={() => navigation.navigate('SelectCategories')}>
             <Image source={icons.BackArrow} />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>

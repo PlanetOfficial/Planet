@@ -1,5 +1,33 @@
+import haversine from 'haversine-distance';
+
 import {MarkerObject} from '../interfaces/MarkerObject';
+import {coordinate} from '../interfaces/coordinate';
 import misc from '../../constants/misc';
+
+/*
+  Given a point and the longitudeDelta, calculate the radius of the circle (the
+  point is the center of the circle)
+*/
+export const calculateRadius = (point1: coordinate, longitudeDelta: number) => {
+  const point2 = {
+    latitude: point1.latitude,
+    longitude: point1.longitude + longitudeDelta / 2,
+  };
+  const distance = getDistanceFromCoordinates(point1, point2);
+
+  return (6 / 7) * distance;
+};
+
+/*
+  Calculates the distance in meters given two points in terms of latitude
+  and longitude.
+*/
+export const getDistanceFromCoordinates = (
+  point1: coordinate,
+  point2: coordinate,
+) => {
+  return haversine(point1, point2);
+};
 
 export const getRegionForCoordinates = (points: Array<MarkerObject>) => {
   // find the minimum and maximum latitude and longitude coordinates
