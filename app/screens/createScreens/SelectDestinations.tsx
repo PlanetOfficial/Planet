@@ -109,7 +109,8 @@ const SelectDestinations = ({navigation, route}) => {
     <SafeAreaView>
       <View>
         <View style={styles.header}>
-          <TouchableOpacity onPress={() => navigation.navigate('SelectCategories')}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('SelectCategories')}>
             <Image source={icons.BackArrow} />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>
