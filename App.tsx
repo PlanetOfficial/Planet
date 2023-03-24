@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import SplashScreen from './app/components/SplashScreen';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import AppNavigation from './app/navigation/AppNavigation';
-import { updateAsyncStorage } from './app/utils/functions/CacheHelpers';
+import {updateAsyncStorage} from './app/utils/functions/CacheHelpers';
 
 export default function App() {
   const [isLoading, setLoading] = useState(true);

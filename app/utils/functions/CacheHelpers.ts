@@ -11,7 +11,7 @@ const cacheAsyncStorage = async (authToken: any) => {
 
   // set name and other info into async storage
   await AsyncStorage.setItem('name', name);
-}
+};
 
 export const cacheUserInfo = async (authToken: any) => {
   // start with clear caches
