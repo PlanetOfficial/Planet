@@ -5,6 +5,7 @@ export const icons = {
   bookmarkActive: require('../assets/save-active.png'),
   bookmarkInactive: require('../assets/save-inactive.png'),
   defaultImage: require('../assets/miscIcons/x.png'), // TODO: change the image to logo eventually
+  defaultPfp: require('../assets/backArrow.png'), // TODO: change eventually
 };
 
 export const tabIcons = {

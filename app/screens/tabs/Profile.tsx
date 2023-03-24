@@ -4,7 +4,7 @@ import {s, vs} from 'react-native-size-matters';
 
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
-import {miscIcons} from '../../constants/images';
+import {icons, miscIcons} from '../../constants/images';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Profile = ({navigation}: {navigation: any}) => {
@@ -28,7 +28,7 @@ const Profile = ({navigation}: {navigation: any}) => {
       <View style={infoStyles.container}>
         <Image
           style={infoStyles.profilePic}
-          source={require('../../assets/backArrow.png')}
+          source={icons.defaultPfp}
         />
         <Text style={infoStyles.name}>{name}</Text>
         <View style={infoStyles.countContainer}>
