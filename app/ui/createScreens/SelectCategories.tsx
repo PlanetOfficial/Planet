@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -59,7 +59,7 @@ const SelectCategories = ({
 }) => {
   const [latitude] = useState(route?.params?.latitude);
   const [longitude] = useState(route?.params?.longitude);
-  const [radius, setRadius] = useState(0); // in meters
+  const [radius] = useState(route?.params?.radius); // in meters
 
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedGenre, setSelectedGenre] = useState('');
@@ -68,16 +68,6 @@ const SelectCategories = ({
   const [selectedCategories, setSelectedCategories] = useState([]);
 
   const [cachedGenres, setCachedGenres] = useState({});
-
-  const setRadiusParam = () => {
-    if (route?.params?.radius) {
-      setRadius(route.params.radius);
-    }
-  };
-
-  useEffect(() => {
-    setRadiusParam();
-  }, []);
 
   const handleGenrePress = async (genre: any) => {
     setSelectedGenre(genre.name);

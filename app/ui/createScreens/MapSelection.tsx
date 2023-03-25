@@ -37,16 +37,6 @@ const MapScreen = ({navigation}: {navigation: any}) => {
     ),
   );
 
-  const setCoordinates = (latitude: number, longitude: number) => {
-    const newRegion = {
-      latitude: latitude,
-      longitude: longitude,
-      latitudeDelta: region.latitudeDelta,
-      longitudeDelta: region.longitudeDelta,
-    };
-    setRegion(newRegion);
-  };
-
   const updateRadius = (reg: any) => {
     setRadius(
       calculateRadius(
@@ -77,10 +67,13 @@ const MapScreen = ({navigation}: {navigation: any}) => {
 
       Geolocation.getCurrentPosition(
         position => {
-          setCoordinates(
-            position?.coords?.latitude,
-            position?.coords?.longitude,
-          );
+          const newRegion = {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            latitudeDelta: floats.defaultLatitudeDelta,
+            longitudeDelta: floats.defaultLongitudeDelta,
+          };
+          setRegion(newRegion);
         },
         (error: any) => {
           console.log(error);
@@ -105,7 +98,7 @@ const MapScreen = ({navigation}: {navigation: any}) => {
         </Text>
         <TouchableOpacity
           style={headerStyles.next}
-          disabled={radius > integers.maxRadiusInMeters} // TODO: make this connected to the server in case this param changes
+          disabled={radius > integers.maxRadiusInMeters}
           onPress={() => {
             navigation.navigate('SelectCategories', {
               latitude: region.latitude,

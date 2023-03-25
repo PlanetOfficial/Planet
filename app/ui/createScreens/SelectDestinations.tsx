@@ -38,36 +38,36 @@ const SelectDestinations = ({
   const [selectedDestinations, setSelectedDestinations] = useState([]);
   const [bookmarks, setBookmarks] = useState([]);
 
-  const loadDestinations = async (categoryIds: Array<number>) => {
-    const response = await requestLocations(
-      categoryIds,
-      radius,
-      latitude,
-      longitude,
-      5,
-    );
-
-    setLocations(response);
-  };
-
-  const loadBookmarks = async () => {
-    const authToken = await EncryptedStorage.getItem('auth_token');
-    const response = await getBookmarks(authToken);
-
-    let bookmarksLoaded: Array<number> = [];
-    response?.forEach((bookmark: any) => {
-      bookmarksLoaded?.push(bookmark?.id);
-    });
-
-    setBookmarks(bookmarksLoaded);
-  };
-
   useEffect(() => {
+    const loadDestinations = async (categoryIds: Array<number>) => {
+      const response = await requestLocations(
+        categoryIds,
+        radius,
+        latitude,
+        longitude,
+        5,
+      );
+
+      setLocations(response);
+    };
+
+    const loadBookmarks = async () => {
+      const authToken = await EncryptedStorage.getItem('auth_token');
+      const response = await getBookmarks(authToken);
+
+      let bookmarksLoaded: Array<number> = [];
+      response?.forEach((bookmark: any) => {
+        bookmarksLoaded?.push(bookmark?.id);
+      });
+
+      setBookmarks(bookmarksLoaded);
+    };
+
     const filteredCategories = categories?.map((item: any) => item?.id);
     loadDestinations(filteredCategories);
 
     loadBookmarks();
-  }, []);
+  }, [latitude, longitude, radius, categories]);
 
   const getImage = (/*imagesData: Array<number>*/) => {
     // TODO: if there are images provided by API, then return one of those images instead
@@ -133,10 +133,7 @@ const SelectDestinations = ({
             ? categories?.map((category: Category) => (
                 <View key={category?.id}>
                   <View style={destStyles.header}>
-                    <Image
-                      style={destStyles.icon}
-                      source={icons.settings}
-                    />
+                    <Image style={destStyles.icon} source={icons.settings} />
                     <Text style={destStyles.name}>{category?.name}</Text>
                   </View>
                   <ScrollView
