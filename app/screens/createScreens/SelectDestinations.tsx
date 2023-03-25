@@ -115,18 +115,26 @@ const SelectDestinations = ({navigation, route}: {navigation: any, route: any}) 
           <Image style={headerStyles.icon} source={miscIcons.back} />
         </TouchableOpacity>
         <Text style={headerStyles.title}>
-          {strings.createTabStack.selectCategories}
+          {strings.createTabStack.selectDestinations}
         </Text>
+        <TouchableOpacity
+          style={headerStyles.confirm}
+          onPress={handleDone}>
+          <Image style={headerStyles.icon} source={miscIcons.confirm} />
+        </TouchableOpacity>
       </View>
-      <View>
-        <ScrollView style={styles.destinationScrollView}>
+      <View style={destStyles.container}>
+        <ScrollView showsVerticalScrollIndicator={false}>
           {categories
             ? categories?.map((category: Category) => (
                 <View key={category?.id}>
-                  <Text style={styles.categoryTitle}>{category?.name}</Text>
-                  <ScrollView horizontal={true}>
+                  <View style={destStyles.header}>
+                    <Image style={destStyles.icon} source={miscIcons.settings}/>
+                    <Text style={destStyles.name}>{category?.name}</Text>
+                  </View>
+                  <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                     {locations[category?.id]
-                      ? locations[category?.id]?.map((destination: Object) => (
+                      ? locations[category?.id]?.map((destination: any) => (
                           <View key={destination?.id}>
                             <TouchableOpacity
                               onPress={() =>
@@ -138,13 +146,7 @@ const SelectDestinations = ({navigation, route}: {navigation: any, route: any}) 
                                   category: category?.name,
                                 })
                               }
-                              style={{
-                                backgroundColor: selectedDestinations?.some(
-                                  item => item?.id === destination?.id,
-                                )
-                                  ? colors.accent
-                                  : colors.white,
-                              }}>
+                              >
                               <DestinationCard
                                 id={destination?.id}
                                 name={destination?.name}
@@ -152,6 +154,9 @@ const SelectDestinations = ({navigation, route}: {navigation: any, route: any}) 
                                 price={destination?.price}
                                 image={getImage(destination?.images)}
                                 marked={bookmarks?.includes(destination?.id)}
+                                selected={selectedDestinations?.some(
+                                  (item: any) => item?.id === destination?.id,
+                                )}
                               />
                             </TouchableOpacity>
                           </View>
@@ -163,9 +168,6 @@ const SelectDestinations = ({navigation, route}: {navigation: any, route: any}) 
             : null}
         </ScrollView>
       </View>
-      <View>
-        <Button title={strings.main.done} onPress={handleDone} />
-      </View>
     </View>
   );
 };
@@ -176,23 +178,6 @@ const styles = StyleSheet.create({
   width: '100%',
   height: '100%',
   backgroundColor: colors.white,
-  },
-  header: {
-    height: 60,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-  },
-  headerTitle: {
-    fontSize: 20,
-  },
-  destinationScrollView: {
-    height: '88%',
-  },
-  categoryTitle: {
-    marginLeft: 10,
-    fontSize: 20,
   },
 });
 
@@ -228,6 +213,37 @@ const headerStyles = StyleSheet.create({
     width: '100%',
     height: '100%',
     tintColor: colors.black,
+  },
+});
+
+const destStyles = StyleSheet.create({
+  container: {
+    marginTop: vs(10),
+    width: '100%',
+    height: vs(590),
+  },
+  header: {
+    marginTop: vs(10),
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    marginHorizontal: s(25),
+    height: s(40),
+  },
+  icon: {
+    width: s(30),
+    height: s(30),
+    borderRadius: s(15),
+    borderWidth: 2,
+    tintColor: colors.black,
+    borderColor: colors.accent,
+    backgroundColor: colors.white,
+  },
+  name: {
+    marginLeft: s(10),
+    fontSize: s(20),
+    fontWeight: '600',
+    color: colors.black,
   },
 });
 
