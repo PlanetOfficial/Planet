@@ -3,7 +3,7 @@ import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import {s} from 'react-native-size-matters';
 
 import {colors} from '../../constants/theme';
-import {miscIcons} from '../../constants/images';
+import {icons} from '../../constants/images';
 import {setBookmark} from '../../utils/api/shared/setBookmark';
 import {unbookmark} from '../../utils/api/shared/unbookmark';
 import EncryptedStorage from 'react-native-encrypted-storage';
@@ -55,7 +55,7 @@ const Place: React.FC<Props> = ({id, name, info, marked, image}) => {
               styles.icon,
               {tintColor: bookmarked ? colors.accent : colors.grey},
             ]}
-            source={miscIcons.bookmark}
+            source={icons.bookmark}
           />
         </TouchableOpacity>
       </View>

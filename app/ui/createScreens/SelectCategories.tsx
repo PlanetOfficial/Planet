@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import {s, vs} from 'react-native-size-matters';
 
-import {vectors, miscIcons, genreIcons} from '../../constants/images';
+import {vectors, icons, genreIcons} from '../../constants/images';
 import strings from '../../constants/strings';
 import {getCategories} from '../../utils/api/CreateCalls/getCategories';
 import {colors} from '../../constants/theme';
@@ -104,7 +104,7 @@ const SelectCategories = ({
         <TouchableOpacity
           style={headerStyles.back}
           onPress={() => navigation.navigate('MapSelection')}>
-          <Image style={headerStyles.icon} source={miscIcons.back} />
+          <Image style={headerStyles.icon} source={icons.back} />
         </TouchableOpacity>
         <Text style={headerStyles.title}>
           {strings.createTabStack.selectCategories}
@@ -119,7 +119,7 @@ const SelectCategories = ({
               longitude: longitude,
             })
           }>
-          <Image style={headerStyles.icon} source={miscIcons.confirm} />
+          <Image style={headerStyles.icon} source={icons.confirm} />
         </TouchableOpacity>
       </View>
       <View style={genreStyles.container}>
@@ -144,7 +144,7 @@ const SelectCategories = ({
                 setSelectedGenre('');
               }}
               style={modalStyles.x}>
-              <Image style={modalStyles.icon} source={miscIcons.x} />
+              <Image style={modalStyles.icon} source={icons.x} />
             </Pressable>
             <Text style={modalStyles.title}>{selectedGenre}</Text>
           </View>
@@ -176,7 +176,7 @@ const SelectCategories = ({
                         {/* TODO: CONNECT TO BACKEND */}
                         <Image
                           style={categoryStyles.image}
-                          source={miscIcons.settings}
+                          source={icons.settings}
                         />
                         <Text style={categoryStyles.name}>{category.name}</Text>
                       </View>
@@ -193,7 +193,7 @@ const SelectCategories = ({
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
           {selectedCategories.map((selected: any) => (
             <View key={selected.id} style={selectionStyles.category}>
-              <Image style={selectionStyles.icon} source={miscIcons.settings} />
+              <Image style={selectionStyles.icon} source={icons.settings} />
               <Text style={selectionStyles.name}>{selected.name}</Text>
             </View>
           ))}

@@ -6,7 +6,7 @@ import Header from '../components/MainHeader';
 
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
-import {miscIcons} from '../../constants/images';
+import {icons} from '../../constants/images';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Profile = ({navigation}: {navigation: any}) => {
@@ -26,11 +26,11 @@ const Profile = ({navigation}: {navigation: any}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {Header(strings.title.profile, miscIcons.settings, () =>
+      {Header(strings.title.profile, icons.settings, () =>
         navigation.navigate('Settings'),
       )}
       <View style={infoStyles.container}>
-        <Image style={infoStyles.profilePic} source={miscIcons.user} />
+        <Image style={infoStyles.profilePic} source={icons.user} />
         <Text style={infoStyles.name}>{name}</Text>
         <View style={infoStyles.countContainer}>
           <View style={infoStyles.count}>

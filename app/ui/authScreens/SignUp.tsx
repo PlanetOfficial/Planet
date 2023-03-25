@@ -14,7 +14,7 @@ import Header from '../components/MainHeader';
 
 import {signup} from '../../utils/api/auth/signup';
 import {colors} from '../../constants/theme';
-import {miscIcons} from '../../constants/images';
+import {icons} from '../../constants/images';
 import {cacheUserInfo} from '../../utils/functions/CacheHelpers';
 
 const SignUp = ({navigation}: {navigation: any}) => {
@@ -42,7 +42,7 @@ const SignUp = ({navigation}: {navigation: any}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {Header(strings.login.signUp, miscIcons.x, () =>
+      {Header(strings.login.signUp, icons.x, () =>
         navigation.navigate('Login'),
       )}
       <View style={accountStyles.container}>

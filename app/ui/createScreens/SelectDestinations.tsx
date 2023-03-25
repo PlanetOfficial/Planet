@@ -8,7 +8,7 @@ import {
   ScrollView,
 } from 'react-native';
 import EncryptedStorage from 'react-native-encrypted-storage';
-import {icons, miscIcons} from '../../constants/images';
+import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 import {s, vs} from 'react-native-size-matters';
@@ -72,7 +72,7 @@ const SelectDestinations = ({
   const getImage = (/*imagesData: Array<number>*/) => {
     // TODO: if there are images provided by API, then return one of those images instead
 
-    return icons.defaultImage;
+    return icons.x;
   };
 
   const handleDestinationSelect = (destination: any) => {
@@ -118,13 +118,13 @@ const SelectDestinations = ({
         <TouchableOpacity
           style={headerStyles.back}
           onPress={() => navigation.navigate('SelectCategories')}>
-          <Image style={headerStyles.icon} source={miscIcons.back} />
+          <Image style={headerStyles.icon} source={icons.back} />
         </TouchableOpacity>
         <Text style={headerStyles.title}>
           {strings.createTabStack.selectDestinations}
         </Text>
         <TouchableOpacity style={headerStyles.confirm} onPress={handleDone}>
-          <Image style={headerStyles.icon} source={miscIcons.confirm} />
+          <Image style={headerStyles.icon} source={icons.confirm} />
         </TouchableOpacity>
       </View>
       <View style={destStyles.container}>
@@ -135,7 +135,7 @@ const SelectDestinations = ({
                   <View style={destStyles.header}>
                     <Image
                       style={destStyles.icon}
-                      source={miscIcons.settings}
+                      source={icons.settings}
                     />
                     <Text style={destStyles.name}>{category?.name}</Text>
                   </View>

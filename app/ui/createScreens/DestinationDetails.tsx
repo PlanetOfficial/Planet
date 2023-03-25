@@ -31,7 +31,7 @@ const DestinationDetails = ({
     <SafeAreaView>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Image source={icons.BackArrow} />
+          <Image source={icons.back} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>{destination?.name}</Text>
       </View>

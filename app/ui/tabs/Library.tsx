@@ -9,7 +9,7 @@ import Event from '../components/Event';
 
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
-import {miscIcons} from '../../constants/images';
+import {icons} from '../../constants/images';
 
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {getEvents} from '../../utils/api/libraryCalls/getEvents';
@@ -38,7 +38,7 @@ const Library = ({navigation}: {navigation: any}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {Header(strings.title.library, miscIcons.search, () =>
+      {Header(strings.title.library, icons.search, () =>
         navigation.navigate('SearchLibrary'),
       )}
       {SegmentedControl(selectedIndex, setIndex)}

@@ -38,7 +38,7 @@ const SelectDestinations = ({
   // const getImage = (imagesData: Array<number>) => {
   //   // TODO: if there are images provided by API, then return one of those images instead
 
-  //   return icons.defaultImage;
+  //   return icons.x;
   // };
 
   const handleSave = async () => {
@@ -66,7 +66,7 @@ const SelectDestinations = ({
       <View style={styles.header}>
         <TouchableOpacity
           onPress={() => navigation.navigate('SelectDestinations')}>
-          <Image source={icons.BackArrow} />
+          <Image source={icons.back} />
         </TouchableOpacity>
         <TextInput style={styles.headerTitle} onChangeText={setEventTitle}>
           {eventTitle}

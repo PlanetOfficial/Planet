@@ -13,13 +13,13 @@ import Header from '../components/MainHeader';
 
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
-import {miscIcons} from '../../constants/images';
+import {icons} from '../../constants/images';
 import {clearCaches} from '../../utils/functions/CacheHelpers';
 
 const Settings = ({navigation}: {navigation: any}) => {
   return (
     <SafeAreaView style={styles.container}>
-      {Header(strings.title.settings, miscIcons.x, () =>
+      {Header(strings.title.settings, icons.x, () =>
         navigation.navigate('Profile'),
       )}
       {Account(navigation)}

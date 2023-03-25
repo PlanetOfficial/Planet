@@ -14,7 +14,7 @@ import {Svg, Circle} from 'react-native-svg';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 
 import Geolocation from '@react-native-community/geolocation';
-import {miscIcons} from '../../constants/images';
+import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
 import {integers, floats} from '../../constants/numbers';
 import {colors} from '../../constants/theme';
@@ -98,7 +98,7 @@ const MapScreen = ({navigation}: {navigation: any}) => {
         <TouchableOpacity
           style={headerStyles.x}
           onPress={() => navigation.navigate('TabStack')}>
-          <Image style={headerStyles.icon} source={miscIcons.x} />
+          <Image style={headerStyles.icon} source={icons.x} />
         </TouchableOpacity>
         <Text style={headerStyles.title}>
           {strings.createTabStack.planEvent}
@@ -119,7 +119,7 @@ const MapScreen = ({navigation}: {navigation: any}) => {
                 ? headerStyles.icon
                 : headerStyles.disabledIcon
             }
-            source={miscIcons.back}
+            source={icons.back}
           />
         </TouchableOpacity>
       </View>
@@ -153,7 +153,7 @@ const MapScreen = ({navigation}: {navigation: any}) => {
             separator: searchStyles.separator,
           }}
         />
-        <Image style={searchStyles.icon} source={miscIcons.search} />
+        <Image style={searchStyles.icon} source={icons.search} />
       </View>
 
       <View style={mapStyles.container}>

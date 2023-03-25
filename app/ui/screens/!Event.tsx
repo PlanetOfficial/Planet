@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 
 import {colors} from '../../constants/theme';
-import {miscIcons} from '../../constants/images';
+import {icons} from '../../constants/images';
 
 const W = Dimensions.get('window').width;
 const H = Dimensions.get('window').height;
@@ -22,7 +22,7 @@ const Event = ({navigation}: {navigation: any}) => {
       <TouchableOpacity
         style={styles.backButton}
         onPress={() => navigation.navigate('Library')}>
-        <Image style={styles.back} source={miscIcons.back} />
+        <Image style={styles.back} source={icons.back} />
       </TouchableOpacity>
       <Text style={styles.name}>Leo's Nasty 19th Birthday</Text>
       <Text style={styles.date}>June 14th, 2023</Text>
