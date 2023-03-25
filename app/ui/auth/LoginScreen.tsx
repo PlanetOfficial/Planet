@@ -37,10 +37,11 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View testID="loginScreenView" style={styles.container}>
       <Image style={styles.background} source={vectors.shape3} />
       <Text style={styles.title}>{strings.main.rivalet}</Text>
       <TextInput
+        testID="emailTextInput"
         style={styles.input}
         placeholder={strings.login.email}
         value={email}
@@ -51,6 +52,7 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
         textContentType="emailAddress"
       />
       <TextInput
+        testID="passwordTextInput"
         style={styles.input}
         placeholder={strings.login.password}
         value={password}
@@ -63,7 +65,10 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
         onPress={() => navigation.navigate('ForgotPassword')}>
         {strings.login.forgotPassword}
       </Text>
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
+      <TouchableOpacity
+        testID="loginButton"
+        style={styles.button}
+        onPress={handleLogin}>
         <Text style={styles.buttonText}>{strings.login.login}</Text>
       </TouchableOpacity>
       <View style={styles.bottomContainer}>

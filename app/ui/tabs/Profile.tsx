@@ -26,10 +26,7 @@ const Profile = ({navigation}: {navigation: any}) => {
     <View style={styles.container}>
       {Header(navigation)}
       <View style={infoStyles.container}>
-        <Image
-          style={infoStyles.profilePic}
-          source={icons.defaultPfp}
-        />
+        <Image style={infoStyles.profilePic} source={icons.defaultPfp} />
         <Text style={infoStyles.name}>{name}</Text>
         <View style={infoStyles.countContainer}>
           <View style={infoStyles.count}>
