@@ -19,7 +19,6 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 import {sendEvent} from '../../utils/api/CreateCalls/sendEvent';
 import {getRegionForCoordinates} from '../../utils/functions/Misc';
 import {MarkerObject} from '../../utils/interfaces/MarkerObject';
-import { colors } from '../../constants/theme';
 
 const SelectDestinations = ({
   navigation,
@@ -156,11 +155,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
     height: 450,
     flex: 1,
-  },
-  icon: {
-    width: '100%',
-    height: '100%',
-    tintColor: colors.black,
   },
 });
 
