@@ -69,7 +69,7 @@ const SelectDestinations = ({
     loadBookmarks();
   }, []);
 
-  const getImage = (imagesData: Array<number>) => {
+  const getImage = (/*imagesData: Array<number>*/) => {
     // TODO: if there are images provided by API, then return one of those images instead
 
     return icons.defaultImage;
@@ -85,7 +85,9 @@ const SelectDestinations = ({
       ]);
     } else {
       setSelectedDestinations(
-        selectedDestinations?.filter(item => item?.id !== destination?.id),
+        selectedDestinations?.filter(
+          (item: any) => item?.id !== destination?.id,
+        ),
       );
     }
   };

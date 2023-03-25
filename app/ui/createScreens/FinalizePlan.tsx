@@ -35,11 +35,11 @@ const SelectDestinations = ({
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
 
-  const getImage = (imagesData: Array<number>) => {
-    // TODO: if there are images provided by API, then return one of those images instead
+  // const getImage = (imagesData: Array<number>) => {
+  //   // TODO: if there are images provided by API, then return one of those images instead
 
-    return icons.defaultImage;
-  };
+  //   return icons.defaultImage;
+  // };
 
   const handleSave = async () => {
     // send destinations to backend

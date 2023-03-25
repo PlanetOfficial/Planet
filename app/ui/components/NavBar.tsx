@@ -96,17 +96,7 @@ export const NavBar = () => {
           name="Create"
           component={ButtonScreen}
           options={({navigation}) => ({
-            tabBarButton: props => (
-              <Pressable
-                {...props}
-                onPress={() => {
-                  navigation.reset({
-                    index: 0,
-                    routes: [{name: 'CreateStack'}],
-                  });
-                }}
-              />
-            ),
+            tabBarButton: props => Button(props, navigation),
           })}
         />
         <Tab.Screen name="Library" component={Library} />
@@ -115,6 +105,18 @@ export const NavBar = () => {
     </View>
   );
 };
+
+const Button = (props: any, navigation: any) => (
+  <Pressable
+    {...props}
+    onPress={() => {
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'CreateStack'}],
+      });
+    }}
+  />
+);
 
 const styles = StyleSheet.create({
   tabView: {

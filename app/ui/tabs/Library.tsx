@@ -71,7 +71,7 @@ const Places = (places: Array<any>) => (
     style={styles.flatlist}
     initialNumToRender={4}
     keyExtractor={item => item?.id}
-    ItemSeparatorComponent={() => <View style={styles.separator} />}
+    ItemSeparatorComponent={Spacer}
     renderItem={({item}) => {
       return (
         <Place
@@ -101,7 +101,7 @@ const Events = (events: Array<any>) => (
     style={styles.flatlist}
     initialNumToRender={4}
     keyExtractor={item => item?.id}
-    ItemSeparatorComponent={() => <View style={styles.separator} />}
+    ItemSeparatorComponent={Spacer}
     renderItem={({item}) => {
       const images = getImagesFromURLs(item?.places); // check with lavy
       return (
@@ -114,6 +114,8 @@ const Events = (events: Array<any>) => (
     }}
   />
 );
+
+const Spacer = () => <View style={styles.separator} />;
 
 const styles = StyleSheet.create({
   container: {
