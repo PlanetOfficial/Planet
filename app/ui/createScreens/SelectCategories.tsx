@@ -150,37 +150,39 @@ const SelectCategories = ({
           </View>
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={modalStyles.categories}>
-              {allCategories? allCategories?.map((category: any) => (
-                <TouchableOpacity
-                  key={category.id}
-                  onPress={() => {
-                    if (
-                      !selectedCategories.find(
-                        (item: any) => item.id === category.id,
-                      )
-                    ) {
-                      setSelectedCategories(prevCategories => [
-                        ...prevCategories,
-                        {id: category.id, name: category.name},
-                      ]);
-                    } else {
-                      setSelectedCategories(
-                        selectedCategories.filter(
-                          (item: any) => item.id !== category.id,
-                        ),
-                      );
-                    }
-                  }}>
-                  <View style={categoryStyles.container}>
-                    {/* TODO: CONNECT TO BACKEND */}
-                    <Image
-                      style={categoryStyles.image}
-                      source={miscIcons.settings}
-                    />
-                    <Text style={categoryStyles.name}>{category.name}</Text>
-                  </View>
-                </TouchableOpacity>
-              )) : null}
+              {allCategories
+                ? allCategories?.map((category: any) => (
+                    <TouchableOpacity
+                      key={category.id}
+                      onPress={() => {
+                        if (
+                          !selectedCategories.find(
+                            (item: any) => item.id === category.id,
+                          )
+                        ) {
+                          setSelectedCategories(prevCategories => [
+                            ...prevCategories,
+                            {id: category.id, name: category.name},
+                          ]);
+                        } else {
+                          setSelectedCategories(
+                            selectedCategories.filter(
+                              (item: any) => item.id !== category.id,
+                            ),
+                          );
+                        }
+                      }}>
+                      <View style={categoryStyles.container}>
+                        {/* TODO: CONNECT TO BACKEND */}
+                        <Image
+                          style={categoryStyles.image}
+                          source={miscIcons.settings}
+                        />
+                        <Text style={categoryStyles.name}>{category.name}</Text>
+                      </View>
+                    </TouchableOpacity>
+                  ))
+                : null}
             </View>
           </ScrollView>
         </View>

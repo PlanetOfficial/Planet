@@ -12,6 +12,7 @@ import SegmentedControlTab from 'react-native-segmented-control-tab';
 
 import Header from '../components/MainHeader';
 import Place from '../components/Place';
+import Event from '../components/Event';
 
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
@@ -71,27 +72,32 @@ const SegmentedControl = (
   />
 );
 
-const Places = (savedPlaces: Array<any>) => (
+const Places = (places: Array<any>) => (
   <FlatList
-    data={savedPlaces}
+    data={places}
     style={styles.flatlist}
     initialNumToRender={4}
     keyExtractor={item => item?.id}
     ItemSeparatorComponent={() => <View style={styles.separator} />}
     renderItem={({item}) => {
-      if (!item?.images || item?.images?.length === 0) {
-        // TODO: currently, bookmark status is hard coded to true and doesn't return anything.
-        return(
-          <Place id={item?.id} name={item?.name} info={item?.category?.name} marked={true} image={null as any}/>
-        )
-      } else {
-        return(
-          <Place id={item?.id} name={item?.name} info={item?.category?.name} marked={true} image={{
-            uri:
-              item?.images[0]?.prefix + misc.imageSize + item?.images[0]?.suffix,
-          }}/>
-        )
-      }
+      return (
+        <Place
+          id={item?.id}
+          name={item?.name}
+          info={item?.category?.name}
+          marked={true}
+          image={
+            item?.images && item?.images?.length !== 0
+              ? {
+                  uri:
+                    item?.images[0]?.prefix +
+                    misc.imageSize +
+                    item?.images[0]?.suffix,
+                }
+              : (null as any)
+          }
+        />
+      );
     }}
   />
 );
@@ -99,32 +105,21 @@ const Places = (savedPlaces: Array<any>) => (
 const Events = (events: Array<any>) => (
   <FlatList
     data={events}
-    renderItem={({item}) => {
-      const images = getImagesFromURLs(item?.places);
-      if (images?.length === 1) {
-        return Event(item.name, item.date, {uri: images[0]}, null);
-      } else if (images?.length === 2) {
-        return Event(item.name, item.date, {uri: images[0]}, {uri: images[1]});
-      } else {
-        return Event(item.name, item.date, null, null);
-      }
-    }}
+    style={styles.flatlist}
+    initialNumToRender={4}
     keyExtractor={item => item?.id}
-    showsVerticalScrollIndicator={false}
+    ItemSeparatorComponent={() => <View style={styles.separator} />}
+    renderItem={({item}) => {
+      const images = getImagesFromURLs(item?.places); // check with lavy
+      return (
+        <Event
+          name={item.name}
+          info={item.date}
+          image={images ? {uri: images[0]} : (null as any)}
+        />
+      );
+    }}
   />
-);
-
-const Event = (name: string, date: string, image1: any, image2: any) => (
-  <View style={cardStyles.container}>
-    <Text style={cardStyles.name}>{name}</Text>
-    <Text style={cardStyles.info}>{date}</Text>
-    {image1 ? (
-      <Image style={cardStyles.image} source={image1} />
-    ) : (
-      <Image style={cardStyles.image} source={miscIcons.x} />
-    )}
-    {/* {image2 ? <Image style={cardStyles.imageOverlap} source={image2} /> : null} */}
-  </View>
 );
 
 const styles = StyleSheet.create({
@@ -175,34 +170,5 @@ const sctStyles = StyleSheet.create({
     color: colors.accent,
   },
 });
-
-// const cardStyles = StyleSheet.create({
-//   container: {
-//     marginTop: s(10),
-//     height: s(210),
-//     width: s(300),
-//     backgroundColor: colors.white,
-//     borderBottomWidth: 1,
-//     borderBottomColor: colors.grey,
-//   },
-//   name: {
-//     marginHorizontal: s(5),
-//     fontSize: s(18),
-//     fontWeight: '700',
-//     color: colors.black,
-//   },
-//   info: {
-//     marginHorizontal: s(5),
-//     fontSize: s(12),
-//     fontWeight: '500',
-//     color: colors.accent,
-//   },
-//   image: {
-//     marginTop: s(3),
-//     width: s(300),
-//     height: s(160),
-//     borderRadius: s(15),
-//   },
-// });
 
 export default Library;
