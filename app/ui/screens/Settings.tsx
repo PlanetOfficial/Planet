@@ -1,13 +1,15 @@
 import React from 'react';
 import {
   View,
-  Image,
   Text,
   StyleSheet,
   TextInput,
+  SafeAreaView,
   TouchableOpacity,
 } from 'react-native';
-import {s, vs} from 'react-native-size-matters';
+import {s} from 'react-native-size-matters';
+
+import Header from '../components/MainHeader';
 
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
@@ -16,23 +18,12 @@ import {clearCaches} from '../../utils/functions/CacheHelpers';
 
 const Settings = ({navigation}: {navigation: any}) => {
   return (
-    <View style={styles.container}>
-      {Header(navigation)}
+    <SafeAreaView style={styles.container}>
+      {Header(strings.title.settings, miscIcons.x, () => navigation.navigate('Profile'))}
       {Account(navigation)}
-    </View>
+    </SafeAreaView>
   );
 };
-
-const Header = (navigation: any) => (
-  <View style={headerStyles.container}>
-    <TouchableOpacity
-      style={headerStyles.button}
-      onPress={() => navigation.navigate('Profile')}>
-      <Image style={headerStyles.icon} source={miscIcons.back} />
-    </TouchableOpacity>
-    <Text style={headerStyles.title}>{strings.title.settings}</Text>
-  </View>
-);
 
 const Account = (navigation: any) => {
   const handleLogout = async () => {
@@ -99,33 +90,9 @@ const styles = StyleSheet.create({
   },
 });
 
-const headerStyles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: vs(50),
-    width: s(300),
-  },
-  title: {
-    marginLeft: s(10),
-    fontSize: s(28),
-    fontWeight: '700',
-    color: colors.black,
-  },
-  button: {
-    width: vs(12),
-    height: vs(18),
-  },
-  icon: {
-    width: '100%',
-    height: '100%',
-    tintColor: colors.black,
-  },
-});
-
 const accountStyles = StyleSheet.create({
   container: {
-    marginTop: vs(40),
+    marginTop: s(15),
     alignItems: 'center',
   },
   input: {
@@ -151,13 +118,13 @@ const accountStyles = StyleSheet.create({
     borderBottomColor: colors.darkgrey,
   },
   resetPwd: {
-    marginBottom: vs(25),
+    marginBottom: s(25),
     color: colors.accent,
     fontSize: s(12),
     fontWeight: '500',
   },
   upgrade: {
-    marginBottom: vs(25),
+    marginBottom: s(25),
     fontSize: s(16),
     fontWeight: '800',
     paddingVertical: 10,

@@ -1,9 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {
   View,
-  Text,
   StyleSheet,
-  Image,
   FlatList,
   SafeAreaView,
 } from 'react-native';

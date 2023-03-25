@@ -4,13 +4,13 @@ import {s} from 'react-native-size-matters';
 
 import {colors} from '../../constants/theme';
 
-const Header = (title: string, image: Object, onPress: any) => {
+const Header = (title: string, icon: Object, onPress: any) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>
-      {image ? (
+      {icon ? (
         <TouchableOpacity onPress={onPress}>
-          <Image style={styles.icon} source={image} />
+          <Image style={styles.icon} source={icon} />
         </TouchableOpacity>
       ) : null}
     </View>
