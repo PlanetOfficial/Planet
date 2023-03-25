@@ -85,7 +85,7 @@ const MapScreen = ({navigation}: {navigation: any}) => {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <View testID='mapSelectionScreenView' style={styles.container}>
       <View style={styles.top} />
       <View style={headerStyles.container}>
         <TouchableOpacity
