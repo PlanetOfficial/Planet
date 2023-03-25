@@ -2,18 +2,18 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
-import NavBar from '../screens/components/NavBar';
-import LoginScreen from '../screens/auth/LoginScreen';
-import SignUp from '../screens/auth/SignUp';
-import ForgotPassword from '../screens/auth/ForgotPassword';
-import MapSelection from '../screens/createScreens/MapSelection';
-import SelectCategories from '../screens/createScreens/SelectCategories';
-import SelectDestinations from '../screens/createScreens/SelectDestinations';
-import FinalizePlan from '../screens/createScreens/FinalizePlan';
-import DestinationDetails from '../screens/createScreens/DestinationDetails';
-import Place from '../screens/components/Place';
-import Event from '../screens/components/Event';
-import Settings from '../screens/components/Settings';
+import NavBar from '../ui/components/NavBar';
+import LoginScreen from '../ui/auth/LoginScreen';
+import SignUp from '../ui/auth/SignUp';
+import ForgotPassword from '../ui/auth/ForgotPassword';
+import MapSelection from '../ui/createScreens/MapSelection';
+import SelectCategories from '../ui/createScreens/SelectCategories';
+import SelectDestinations from '../ui/createScreens/SelectDestinations';
+import FinalizePlan from '../ui/createScreens/FinalizePlan';
+import DestinationDetails from '../ui/createScreens/DestinationDetails';
+import Place from '../ui/components/Place';
+import Event from '../ui/components/Event';
+import Settings from '../ui/components/Settings';
 
 interface AppNavigationProps {
   isLoggedIn: boolean;

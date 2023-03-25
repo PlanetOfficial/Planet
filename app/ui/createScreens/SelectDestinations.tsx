@@ -15,7 +15,7 @@ import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 import {s, vs} from 'react-native-size-matters';
 
-import DestinationCard from '../../components/Destination';
+import DestinationCard from '../elements/Destination';
 
 import {requestLocations} from '../../utils/api/CreateCalls/requestLocations';
 

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import SplashScreen from './app/components/SplashScreen';
+import SplashScreen from './app/ui/components/SplashScreen';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import AppNavigation from './app/navigation/AppNavigation';
 

@@ -11,7 +11,7 @@ import {
 import {s, vs} from 'react-native-size-matters';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 
-import Place from '../../components/Place';
+import Place from '../elements/Place';
 
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';

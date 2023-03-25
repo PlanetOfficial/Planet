@@ -2,7 +2,7 @@ import React from 'react';
 import {View, Text, StyleSheet, Image} from 'react-native';
 import {s} from 'react-native-size-matters';
 
-import {colors} from '../constants/theme';
+import {colors} from '../../constants/theme';
 
 const Place = (name: string, category: string, image: any) => (
   <View style={styles.container}>

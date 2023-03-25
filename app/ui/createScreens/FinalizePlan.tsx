@@ -15,7 +15,7 @@ import strings from '../../constants/strings';
 import DatePicker from 'react-native-date-picker';
 import MapView, {Marker} from 'react-native-maps';
 
-import DestinationSimplified from '../../components/DestinationSimplified';
+import DestinationSimplified from '../elements/DestinationSimplified';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {sendEvent} from '../../utils/api/CreateCalls/sendEvent';
 import {getRegionForCoordinates} from '../../utils/functions/Misc';

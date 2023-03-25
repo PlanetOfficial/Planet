@@ -2,11 +2,11 @@ import React, {useState} from 'react';
 import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import {s, vs} from 'react-native-size-matters';
 
-import {colors} from '../constants/theme';
-import {icons} from '../constants/images';
-import {setBookmark} from '../utils/api/shared/setBookmark';
+import {colors} from '../../constants/theme';
+import {icons} from '../../constants/images';
+import {setBookmark} from '../../utils/api/shared/setBookmark';
 import EncryptedStorage from 'react-native-encrypted-storage';
-import {unbookmark} from '../utils/api/shared/unbookmark';
+import {unbookmark} from '../../utils/api/shared/unbookmark';
 
 interface Props {
   id: number;
