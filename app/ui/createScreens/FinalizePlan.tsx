@@ -15,28 +15,31 @@ import strings from '../../constants/strings';
 import DatePicker from 'react-native-date-picker';
 import MapView, {Marker} from 'react-native-maps';
 
-import DestinationSimplified from '../../components/DestinationSimplified';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {sendEvent} from '../../utils/api/CreateCalls/sendEvent';
 import {getRegionForCoordinates} from '../../utils/functions/Misc';
 import {MarkerObject} from '../../utils/interfaces/MarkerObject';
 
-const SelectDestinations = ({navigation, route}) => {
-  const [selectedDestinations, setSelectedDestinations] = useState(
-    route?.params?.selectedDestinations,
-  );
-  const [markers, setMarkers] = useState(route?.params?.markers);
+const SelectDestinations = ({
+  navigation,
+  route,
+}: {
+  navigation: any;
+  route: any;
+}) => {
+  const [selectedDestinations] = useState(route?.params?.selectedDestinations);
+  const [markers] = useState(route?.params?.markers);
   const [eventTitle, setEventTitle] = useState(
     strings.createTabStack.untitledEvent,
   );
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
 
-  const getImage = (imagesData: Array<number>) => {
-    // TODO: if there are images provided by API, then return one of those images instead
+  // const getImage = (imagesData: Array<number>) => {
+  //   // TODO: if there are images provided by API, then return one of those images instead
 
-    return icons.defaultImage;
-  };
+  //   return icons.x;
+  // };
 
   const handleSave = async () => {
     // send destinations to backend
@@ -63,7 +66,7 @@ const SelectDestinations = ({navigation, route}) => {
       <View style={styles.header}>
         <TouchableOpacity
           onPress={() => navigation.navigate('SelectDestinations')}>
-          <Image source={icons.BackArrow} />
+          <Image source={icons.back} />
         </TouchableOpacity>
         <TextInput style={styles.headerTitle} onChangeText={setEventTitle}>
           {eventTitle}
@@ -110,10 +113,10 @@ const SelectDestinations = ({navigation, route}) => {
             {selectedDestinations
               ? selectedDestinations?.map((destination: Object) => (
                   <View key={destination?.id}>
-                    <DestinationSimplified
+                    {/* <DestinationSimplified
                       name={destination?.name}
                       image={getImage(destination?.images)}
-                    />
+                    /> */}
                   </View>
                 ))
               : null}

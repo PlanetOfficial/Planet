@@ -1,13 +1,3 @@
-export const icons = {
-  NextArrow: require('../assets/nextArrow.png'),
-  XButton: require('../assets/xButton.png'),
-  BackArrow: require('../assets/backArrow.png'),
-  bookmarkActive: require('../assets/save-active.png'),
-  bookmarkInactive: require('../assets/save-inactive.png'),
-  defaultImage: require('../assets/miscIcons/x.png'), // TODO: change the image to logo eventually
-  defaultPfp: require('../assets/backArrow.png'), // TODO: change eventually
-};
-
 export const tabIcons = {
   friendsActive: require('../assets/tabIcons/friends-active.png'),
   friendsInactive: require('../assets/tabIcons/friends-inactive.png'),
@@ -19,13 +9,15 @@ export const tabIcons = {
   trendingInactive: require('../assets/tabIcons/trending-inactive.png'),
 };
 
-export const miscIcons = {
-  share: require('../assets/miscIcons/share.png'),
-  search: require('../assets/miscIcons/search.png'),
-  back: require('../assets/miscIcons/back.png'),
-  settings: require('../assets/miscIcons/settings.png'),
-  x: require('../assets/miscIcons/x.png'),
-  confirm: require('../assets/miscIcons/confirm.png'),
+export const icons = {
+  share: require('../assets/icons/share.png'),
+  search: require('../assets/icons/search.png'),
+  back: require('../assets/icons/back.png'),
+  settings: require('../assets/icons/settings.png'),
+  x: require('../assets/icons/x.png'),
+  confirm: require('../assets/icons/confirm.png'),
+  bookmark: require('../assets/icons/bookmark.png'),
+  user: require('../assets/icons/user.png'),
 };
 
 export const genreIcons = {

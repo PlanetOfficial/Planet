@@ -14,7 +14,7 @@ import {Svg, Circle} from 'react-native-svg';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 
 import Geolocation from '@react-native-community/geolocation';
-import {miscIcons} from '../../constants/images';
+import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
 import {integers, floats} from '../../constants/numbers';
 import {colors} from '../../constants/theme';
@@ -36,16 +36,6 @@ const MapScreen = ({navigation}: {navigation: any}) => {
       floats.defaultLongitudeDelta,
     ),
   );
-
-  const setCoordinates = (latitude: number, longitude: number) => {
-    const newRegion = {
-      latitude: latitude,
-      longitude: longitude,
-      latitudeDelta: region.latitudeDelta,
-      longitudeDelta: region.longitudeDelta,
-    };
-    setRegion(newRegion);
-  };
 
   const updateRadius = (reg: any) => {
     setRadius(
@@ -77,10 +67,13 @@ const MapScreen = ({navigation}: {navigation: any}) => {
 
       Geolocation.getCurrentPosition(
         position => {
-          setCoordinates(
-            position?.coords?.latitude,
-            position?.coords?.longitude,
-          );
+          const newRegion = {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            latitudeDelta: floats.defaultLatitudeDelta,
+            longitudeDelta: floats.defaultLongitudeDelta,
+          };
+          setRegion(newRegion);
         },
         (error: any) => {
           console.log(error);
@@ -98,14 +91,14 @@ const MapScreen = ({navigation}: {navigation: any}) => {
         <TouchableOpacity
           style={headerStyles.x}
           onPress={() => navigation.navigate('TabStack')}>
-          <Image style={headerStyles.icon} source={miscIcons.x} />
+          <Image style={headerStyles.icon} source={icons.x} />
         </TouchableOpacity>
         <Text style={headerStyles.title}>
           {strings.createTabStack.planEvent}
         </Text>
         <TouchableOpacity
           style={headerStyles.next}
-          disabled={radius > integers.maxRadiusInMeters} // TODO: make this connected to the server in case this param changes
+          disabled={radius > integers.maxRadiusInMeters}
           onPress={() => {
             navigation.navigate('SelectCategories', {
               latitude: region.latitude,
@@ -119,7 +112,7 @@ const MapScreen = ({navigation}: {navigation: any}) => {
                 ? headerStyles.icon
                 : headerStyles.disabledIcon
             }
-            source={miscIcons.back}
+            source={icons.back}
           />
         </TouchableOpacity>
       </View>
@@ -153,7 +146,7 @@ const MapScreen = ({navigation}: {navigation: any}) => {
             separator: searchStyles.separator,
           }}
         />
-        <Image style={searchStyles.icon} source={miscIcons.search} />
+        <Image style={searchStyles.icon} source={icons.search} />
       </View>
 
       <View style={mapStyles.container}>

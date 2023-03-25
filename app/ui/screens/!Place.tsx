@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 
 import {colors} from '../../constants/theme';
-import {miscIcons, vectors} from '../../constants/images';
+import {icons, vectors} from '../../constants/images';
 
 import {Svg, Line, Circle} from 'react-native-svg';
 
@@ -24,7 +24,7 @@ const Place = ({navigation}: {navigation: any}) => {
       <TouchableOpacity
         style={styles.backButton}
         onPress={() => navigation.navigate('Library')}>
-        <Image style={styles.back} source={miscIcons.back} />
+        <Image style={styles.back} source={icons.back} />
       </TouchableOpacity>
       <Text style={styles.name}>Share Tea but better</Text>
       <Text style={styles.category}>Bubble Tea Shop</Text>
@@ -47,7 +47,7 @@ const Share = () => (
         strokeWidth={1}
       />
     </Svg>
-    <Image style={shareStyles.share} source={miscIcons.share} />
+    <Image style={shareStyles.share} source={icons.share} />
   </View>
 );
 

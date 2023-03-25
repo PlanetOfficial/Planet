@@ -2,18 +2,19 @@ import React, {useState} from 'react';
 import {
   View,
   Text,
-  Image,
   TextInput,
   StyleSheet,
   TouchableOpacity,
+  SafeAreaView,
 } from 'react-native';
-import {s, vs} from 'react-native-size-matters';
+import {s} from 'react-native-size-matters';
 
 import strings from '../../constants/strings';
+import Header from '../components/MainHeader';
 
 import {signup} from '../../utils/api/auth/signup';
 import {colors} from '../../constants/theme';
-import {miscIcons} from '../../constants/images';
+import {icons} from '../../constants/images';
 import {cacheUserInfo} from '../../utils/functions/CacheHelpers';
 
 const SignUp = ({navigation}: {navigation: any}) => {
@@ -40,8 +41,10 @@ const SignUp = ({navigation}: {navigation: any}) => {
   };
 
   return (
-    <View style={styles.container}>
-      {Header(navigation)}
+    <SafeAreaView style={styles.container}>
+      {Header(strings.login.signUp, icons.x, () =>
+        navigation.navigate('Login'),
+      )}
       <View style={accountStyles.container}>
         <View style={accountStyles.input}>
           <Text style={accountStyles.prompt}>{strings.signUp.name}:</Text>
@@ -97,20 +100,9 @@ const SignUp = ({navigation}: {navigation: any}) => {
         </TouchableOpacity>
         <Text style={styles.footerText}>{strings.signUp.termsAgreement}</Text>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
-
-const Header = (navigation: any) => (
-  <View style={headerStyles.container}>
-    <TouchableOpacity
-      style={headerStyles.button}
-      onPress={() => navigation.navigate('Login')}>
-      <Image style={headerStyles.icon} source={miscIcons.back} />
-    </TouchableOpacity>
-    <Text style={headerStyles.title}>{strings.login.signUp}</Text>
-  </View>
-);
 
 const styles = StyleSheet.create({
   container: {
@@ -126,33 +118,9 @@ const styles = StyleSheet.create({
   },
 });
 
-const headerStyles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: vs(50),
-    width: s(300),
-  },
-  title: {
-    marginLeft: s(10),
-    fontSize: s(28),
-    fontWeight: '700',
-    color: colors.black,
-  },
-  button: {
-    width: vs(12),
-    height: vs(18),
-  },
-  icon: {
-    width: '100%',
-    height: '100%',
-    tintColor: colors.black,
-  },
-});
-
 const accountStyles = StyleSheet.create({
   container: {
-    marginTop: vs(40),
+    marginTop: s(20),
     alignItems: 'center',
   },
   input: {
@@ -178,7 +146,7 @@ const accountStyles = StyleSheet.create({
     borderBottomColor: colors.darkgrey,
   },
   signup: {
-    marginBottom: vs(25),
+    marginBottom: s(25),
     fontSize: s(16),
     fontWeight: '800',
     paddingVertical: 10,

@@ -7,11 +7,10 @@ import {
   StyleSheet,
   TouchableOpacity,
   SafeAreaView,
-  FlatList,
 } from 'react-native';
 
 import {colors} from '../../constants/theme';
-import {miscIcons} from '../../constants/images';
+import {icons} from '../../constants/images';
 
 const W = Dimensions.get('window').width;
 const H = Dimensions.get('window').height;
@@ -22,7 +21,7 @@ const Event = ({navigation}: {navigation: any}) => {
       <TouchableOpacity
         style={styles.backButton}
         onPress={() => navigation.navigate('Library')}>
-        <Image style={styles.back} source={miscIcons.back} />
+        <Image style={styles.back} source={icons.back} />
       </TouchableOpacity>
       <Text style={styles.name}>Leo's Nasty 19th Birthday</Text>
       <Text style={styles.date}>June 14th, 2023</Text>
@@ -42,13 +41,13 @@ const Places = () => (
   </SafeAreaView>
 );
 
-const Place = (name: string, category: string, image: any) => (
-  <View style={cardStyles.container}>
-    <Text style={cardStyles.name}>{name}</Text>
-    <Text style={cardStyles.category}>{category}</Text>
-    <Image style={cardStyles.image} source={image} />
-  </View>
-);
+// const Place = (name: string, category: string, image: any) => (
+//   <View style={cardStyles.container}>
+//     <Text style={cardStyles.name}>{name}</Text>
+//     <Text style={cardStyles.category}>{category}</Text>
+//     <Image style={cardStyles.image} source={image} />
+//   </View>
+// );
 
 const styles = StyleSheet.create({
   container: {
@@ -94,35 +93,35 @@ const styles = StyleSheet.create({
   },
 });
 
-const cardStyles = StyleSheet.create({
-  container: {
-    width: W - 60,
-    height: 200,
-    marginBottom: 25,
-  },
-  name: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: colors.black,
-  },
-  category: {
-    marginVertical: 2,
-    fontSize: 12,
-    color: colors.accent,
-  },
-  image: {
-    width: W - 60,
-    height: 164,
-    borderRadius: 10,
-  },
-  imageOverlap: {
-    bottom: 159,
-    left: 5,
-    width: W - 70,
-    height: 164,
-    borderRadius: 10,
-    zIndex: -1,
-  },
-});
+// const cardStyles = StyleSheet.create({
+//   container: {
+//     width: W - 60,
+//     height: 200,
+//     marginBottom: 25,
+//   },
+//   name: {
+//     fontSize: 20,
+//     fontWeight: '700',
+//     color: colors.black,
+//   },
+//   category: {
+//     marginVertical: 2,
+//     fontSize: 12,
+//     color: colors.accent,
+//   },
+//   image: {
+//     width: W - 60,
+//     height: 164,
+//     borderRadius: 10,
+//   },
+//   imageOverlap: {
+//     bottom: 159,
+//     left: 5,
+//     width: W - 70,
+//     height: 164,
+//     borderRadius: 10,
+//     zIndex: -1,
+//   },
+// });
 
 export default Event;

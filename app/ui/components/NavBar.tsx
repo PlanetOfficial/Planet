@@ -7,8 +7,8 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {colors} from '../../constants/theme';
 import {tabIcons} from '../../constants/images';
 
-import Trending from '../tabs/Trending';
-import Friends from '../tabs/Friends';
+import Trending from '../tabs/!Trending';
+import Friends from '../tabs/!Friends';
 import Library from '../tabs/Library';
 import Profile from '../tabs/Profile';
 
@@ -38,24 +38,17 @@ export const NavBar = () => {
     if (source !== -1) {
       return (
         <Image
-          style={{
-            width: s(24),
-            height: s(24),
-            tintColor: focused ? colors.accent : colors.darkgrey,
-          }}
+          style={[
+            styles.icon,
+            {tintColor: focused ? colors.accent : colors.darkgrey},
+          ]}
           source={source}
         />
       );
     }
 
     return (
-      <Svg
-        style={{
-          position: 'absolute',
-          width: s(49),
-          height: s(49),
-          top: -s(12),
-        }}>
+      <Svg style={styles.button}>
         <Circle cx={s(24)} cy={s(24)} r={s(24)} fill={colors.accent} />
         <Line
           x1={s(24)}
@@ -103,17 +96,7 @@ export const NavBar = () => {
           name="Create"
           component={ButtonScreen}
           options={({navigation}) => ({
-            tabBarButton: props => (
-              <Pressable
-                {...props}
-                onPress={() => {
-                  navigation.reset({
-                    index: 0,
-                    routes: [{name: 'CreateStack'}],
-                  });
-                }}
-              />
-            ),
+            tabBarButton: props => Button(props, navigation),
           })}
         />
         <Tab.Screen name="Library" component={Library} />
@@ -123,9 +106,31 @@ export const NavBar = () => {
   );
 };
 
+const Button = (props: any, navigation: any) => (
+  <Pressable
+    {...props}
+    onPress={() => {
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'CreateStack'}],
+      });
+    }}
+  />
+);
+
 const styles = StyleSheet.create({
   tabView: {
     flex: 1,
+  },
+  icon: {
+    width: s(24),
+    height: s(24),
+  },
+  button: {
+    position: 'absolute',
+    width: s(49),
+    height: s(49),
+    top: -s(12),
   },
 });
 

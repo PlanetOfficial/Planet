@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import {s, vs} from 'react-native-size-matters';
 
-import {vectors, miscIcons, genreIcons} from '../../constants/images';
+import {vectors, icons, genreIcons} from '../../constants/images';
 import strings from '../../constants/strings';
 import {getCategories} from '../../utils/api/CreateCalls/getCategories';
 import {colors} from '../../constants/theme';
@@ -57,9 +57,9 @@ const SelectCategories = ({
   navigation: any;
   route: any;
 }) => {
-  const [latitude, setLatitude] = useState(route?.params?.latitude);
-  const [longitude, setLongitude] = useState(route?.params?.longitude);
-  const [radius, setRadius] = useState(0); // in meters
+  const [latitude] = useState(route?.params?.latitude);
+  const [longitude] = useState(route?.params?.longitude);
+  const [radius] = useState(route?.params?.radius); // in meters
 
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedGenre, setSelectedGenre] = useState('');
@@ -68,16 +68,6 @@ const SelectCategories = ({
   const [selectedCategories, setSelectedCategories] = useState([]);
 
   const [cachedGenres, setCachedGenres] = useState({});
-
-  const setRadiusParam = () => {
-    if (route?.params?.radius) {
-      setRadius(route.params.radius);
-    }
-  };
-
-  useEffect(() => {
-    setRadiusParam();
-  }, []);
 
   const handleGenrePress = async (genre: any) => {
     setSelectedGenre(genre.name);
@@ -104,7 +94,7 @@ const SelectCategories = ({
         <TouchableOpacity
           style={headerStyles.back}
           onPress={() => navigation.navigate('MapSelection')}>
-          <Image style={headerStyles.icon} source={miscIcons.back} />
+          <Image style={headerStyles.icon} source={icons.back} />
         </TouchableOpacity>
         <Text style={headerStyles.title}>
           {strings.createTabStack.selectCategories}
@@ -119,7 +109,7 @@ const SelectCategories = ({
               longitude: longitude,
             })
           }>
-          <Image style={headerStyles.icon} source={miscIcons.confirm} />
+          <Image style={headerStyles.icon} source={icons.confirm} />
         </TouchableOpacity>
       </View>
       <View style={genreStyles.container}>
@@ -144,43 +134,45 @@ const SelectCategories = ({
                 setSelectedGenre('');
               }}
               style={modalStyles.x}>
-              <Image style={modalStyles.icon} source={miscIcons.x} />
+              <Image style={modalStyles.icon} source={icons.x} />
             </Pressable>
             <Text style={modalStyles.title}>{selectedGenre}</Text>
           </View>
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={modalStyles.categories}>
-              {allCategories.map((category: any) => (
-                <TouchableOpacity
-                  key={category.id}
-                  onPress={() => {
-                    if (
-                      !selectedCategories.find(
-                        (item: any) => item.id === category.id,
-                      )
-                    ) {
-                      setSelectedCategories(prevCategories => [
-                        ...prevCategories,
-                        {id: category.id, name: category.name},
-                      ]);
-                    } else {
-                      setSelectedCategories(
-                        selectedCategories.filter(
-                          (item: any) => item.id !== category.id,
-                        ),
-                      );
-                    }
-                  }}>
-                  <View style={categoryStyles.container}>
-                    {/* TODO: CONNECT TO BACKEND */}
-                    <Image
-                      style={categoryStyles.image}
-                      source={miscIcons.settings}
-                    />
-                    <Text style={categoryStyles.name}>{category.name}</Text>
-                  </View>
-                </TouchableOpacity>
-              ))}
+              {allCategories
+                ? allCategories?.map((category: any) => (
+                    <TouchableOpacity
+                      key={category.id}
+                      onPress={() => {
+                        if (
+                          !selectedCategories.find(
+                            (item: any) => item.id === category.id,
+                          )
+                        ) {
+                          setSelectedCategories(prevCategories => [
+                            ...prevCategories,
+                            {id: category.id, name: category.name},
+                          ]);
+                        } else {
+                          setSelectedCategories(
+                            selectedCategories.filter(
+                              (item: any) => item.id !== category.id,
+                            ),
+                          );
+                        }
+                      }}>
+                      <View style={categoryStyles.container}>
+                        {/* TODO: CONNECT TO BACKEND */}
+                        <Image
+                          style={categoryStyles.image}
+                          source={icons.settings}
+                        />
+                        <Text style={categoryStyles.name}>{category.name}</Text>
+                      </View>
+                    </TouchableOpacity>
+                  ))
+                : null}
             </View>
           </ScrollView>
         </View>
@@ -191,7 +183,7 @@ const SelectCategories = ({
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
           {selectedCategories.map((selected: any) => (
             <View key={selected.id} style={selectionStyles.category}>
-              <Image style={selectionStyles.icon} source={miscIcons.settings} />
+              <Image style={selectionStyles.icon} source={icons.settings} />
               <Text style={selectionStyles.name}>{selected.name}</Text>
             </View>
           ))}
