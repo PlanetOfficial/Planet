@@ -2,18 +2,18 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
-import NavBar from '../ui/components/NavBar';
-import LoginScreen from '../ui/auth/LoginScreen';
+import NavBar from '../ui/screens/NavBar';
+import LoginScreen from '../ui/auth/LogIn';
 import SignUp from '../ui/auth/SignUp';
-import ForgotPassword from '../ui/auth/ForgotPassword';
+import ForgotPassword from '../ui/auth/ForgotPwd';
 import MapSelection from '../ui/createScreens/MapSelection';
 import SelectCategories from '../ui/createScreens/SelectCategories';
 import SelectDestinations from '../ui/createScreens/SelectDestinations';
 import FinalizePlan from '../ui/createScreens/FinalizePlan';
 import DestinationDetails from '../ui/createScreens/DestinationDetails';
-import Place from '../ui/components/Place';
-import Event from '../ui/components/Event';
-import Settings from '../ui/components/Settings';
+import Place from '../ui/screens/Place';
+import Event from '../ui/screens/Event';
+import Settings from '../ui/screens/Settings';
 
 interface AppNavigationProps {
   isLoggedIn: boolean;

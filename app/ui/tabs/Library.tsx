@@ -6,12 +6,12 @@ import {
   Image,
   FlatList,
   SafeAreaView,
-  TouchableOpacity,
 } from 'react-native';
-import {s, vs} from 'react-native-size-matters';
+import {s} from 'react-native-size-matters';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 
-import Place from '../elements/Place';
+import Header from '../components/MainHeader';
+import Place from '../components/Place';
 
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
@@ -25,7 +25,7 @@ import {filterToUniqueIds, getImagesFromURLs} from '../../utils/functions/Misc';
 
 const Library = ({navigation}: {navigation: any}) => {
   const [selectedIndex, setIndex] = useState(0);
-  const [savedPlaces, setSavedPlaces] = useState([]);
+  const [places, setPlaces] = useState([]);
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
@@ -36,33 +36,22 @@ const Library = ({navigation}: {navigation: any}) => {
       setEvents(filterToUniqueIds(eventsRaw));
 
       const bookmarks = await getPlaces(authToken);
-      setSavedPlaces(bookmarks);
+      setPlaces(bookmarks);
     };
 
     initializeData();
   }, []);
 
   return (
-    <View style={styles.container}>
-      {Header(navigation)}
+    <SafeAreaView style={styles.container}>
+      {Header(strings.title.library, miscIcons.search, () =>
+        navigation.navigate('SearchLibrary'),
+      )}
       {SegmentedControl(selectedIndex, setIndex)}
-      <SafeAreaView style={styles.cardsContainer}>
-        {selectedIndex === 0 ? Places(savedPlaces) : Events(events)}
-      </SafeAreaView>
-    </View>
+      {selectedIndex === 0 ? Places(places) : Events(events)}
+    </SafeAreaView>
   );
 };
-
-const Header = (navigation: any) => (
-  <View style={headerStyles.container}>
-    <Text style={headerStyles.title}>{strings.title.library}</Text>
-    <TouchableOpacity
-      style={headerStyles.button}
-      onPress={() => navigation.navigate('SearchLibrary')}>
-      <Image style={headerStyles.icon} source={miscIcons.search} />
-    </TouchableOpacity>
-  </View>
-);
 
 const SegmentedControl = (
   selectedIndex: number,
@@ -85,18 +74,21 @@ const SegmentedControl = (
 const Places = (savedPlaces: Array<any>) => (
   <FlatList
     data={savedPlaces}
+    style={styles.flatlist}
+    initialNumToRender={4}
+    keyExtractor={item => item?.id}
+    ItemSeparatorComponent={() => <View style={styles.separator} />}
     renderItem={({item}) => {
       if (!item?.images || item?.images?.length === 0) {
-        return Place(item?.name, item?.category?.name, miscIcons.x);
+        // TODO: currently, bookmark status is hard coded to true and doesn't return anything.
+        return Place(item?.name, item?.category?.name, true, null as any);
       } else {
-        return Place(item?.name, item?.category?.name, {
+        return Place(item?.name, item?.category?.name, true, {
           uri:
             item?.images[0]?.prefix + misc.imageSize + item?.images[0]?.suffix,
         });
       }
     }}
-    keyExtractor={item => item?.id}
-    showsVerticalScrollIndicator={false}
   />
 );
 
@@ -138,51 +130,32 @@ const styles = StyleSheet.create({
     height: '100%',
     backgroundColor: colors.white,
   },
-  cardsContainer: {
-    flex: 1,
+  flatlist: {
+    width: s(350),
   },
-});
-
-const headerStyles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: vs(50),
-    width: s(300),
-  },
-  title: {
-    fontSize: s(28),
-    fontWeight: '700',
-    color: colors.black,
-  },
-  button: {
-    position: 'absolute',
-    right: 0,
-    width: s(20),
-    height: s(20),
-  },
-  icon: {
-    width: '100%',
-    height: '100%',
-    tintColor: colors.black,
+  separator: {
+    borderWidth: 0.5,
+    borderColor: colors.grey,
+    marginVertical: s(10),
+    marginHorizontal: s(20),
   },
 });
 
 const sctStyles = StyleSheet.create({
   container: {
-    marginTop: vs(20),
-    width: s(300),
+    paddingHorizontal: s(20),
     height: s(30),
   },
   tab: {
     borderWidth: 0,
     borderBottomWidth: 1,
     borderBottomColor: colors.grey,
+    backgroundColor: colors.white,
   },
   activeTab: {
-    backgroundColor: colors.white,
     borderBottomWidth: 3,
     borderBottomColor: colors.accent,
+    backgroundColor: colors.white,
   },
   firstTab: {
     borderRightWidth: 0,
@@ -199,33 +172,33 @@ const sctStyles = StyleSheet.create({
   },
 });
 
-const cardStyles = StyleSheet.create({
-  container: {
-    marginTop: s(10),
-    height: s(210),
-    width: s(300),
-    backgroundColor: colors.white,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.grey,
-  },
-  name: {
-    marginHorizontal: s(5),
-    fontSize: s(18),
-    fontWeight: '700',
-    color: colors.black,
-  },
-  info: {
-    marginHorizontal: s(5),
-    fontSize: s(12),
-    fontWeight: '500',
-    color: colors.accent,
-  },
-  image: {
-    marginTop: s(3),
-    width: s(300),
-    height: s(160),
-    borderRadius: s(15),
-  },
-});
+// const cardStyles = StyleSheet.create({
+//   container: {
+//     marginTop: s(10),
+//     height: s(210),
+//     width: s(300),
+//     backgroundColor: colors.white,
+//     borderBottomWidth: 1,
+//     borderBottomColor: colors.grey,
+//   },
+//   name: {
+//     marginHorizontal: s(5),
+//     fontSize: s(18),
+//     fontWeight: '700',
+//     color: colors.black,
+//   },
+//   info: {
+//     marginHorizontal: s(5),
+//     fontSize: s(12),
+//     fontWeight: '500',
+//     color: colors.accent,
+//   },
+//   image: {
+//     marginTop: s(3),
+//     width: s(300),
+//     height: s(160),
+//     borderRadius: s(15),
+//   },
+// });
 
 export default Library;

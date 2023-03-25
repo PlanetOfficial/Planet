@@ -15,7 +15,7 @@ import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 import {s, vs} from 'react-native-size-matters';
 
-import DestinationCard from '../elements/Destination';
+import DestinationCard from '../components/Destination';
 
 import {requestLocations} from '../../utils/api/CreateCalls/requestLocations';
 
@@ -23,7 +23,13 @@ import {Category} from '../../utils/interfaces/category';
 import {MarkerObject} from '../../utils/interfaces/MarkerObject';
 import {getBookmarks} from '../../utils/api/shared/getBookmarks';
 
-const SelectDestinations = ({navigation, route}: {navigation: any, route: any}) => {
+const SelectDestinations = ({
+  navigation,
+  route,
+}: {
+  navigation: any;
+  route: any;
+}) => {
   const [latitude, setLatitude] = useState(route?.params?.latitude);
   const [longitude, setLongitude] = useState(route?.params?.longitude);
   const [radius, setRadius] = useState(route?.params?.radius);
@@ -74,7 +80,9 @@ const SelectDestinations = ({navigation, route}: {navigation: any, route: any}) 
   };
 
   const handleDestinationSelect = (destination: any) => {
-    if (!selectedDestinations?.find((item: any) => item?.id === destination?.id)) {
+    if (
+      !selectedDestinations?.find((item: any) => item?.id === destination?.id)
+    ) {
       setSelectedDestinations(prevDestinations => [
         ...prevDestinations,
         destination,
@@ -117,9 +125,7 @@ const SelectDestinations = ({navigation, route}: {navigation: any, route: any}) 
         <Text style={headerStyles.title}>
           {strings.createTabStack.selectDestinations}
         </Text>
-        <TouchableOpacity
-          style={headerStyles.confirm}
-          onPress={handleDone}>
+        <TouchableOpacity style={headerStyles.confirm} onPress={handleDone}>
           <Image style={headerStyles.icon} source={miscIcons.confirm} />
         </TouchableOpacity>
       </View>
@@ -129,10 +135,15 @@ const SelectDestinations = ({navigation, route}: {navigation: any, route: any}) 
             ? categories?.map((category: Category) => (
                 <View key={category?.id}>
                   <View style={destStyles.header}>
-                    <Image style={destStyles.icon} source={miscIcons.settings}/>
+                    <Image
+                      style={destStyles.icon}
+                      source={miscIcons.settings}
+                    />
                     <Text style={destStyles.name}>{category?.name}</Text>
                   </View>
-                  <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+                  <ScrollView
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}>
                     {locations[category?.id]
                       ? locations[category?.id]?.map((destination: any) => (
                           <View key={destination?.id}>
@@ -145,8 +156,7 @@ const SelectDestinations = ({navigation, route}: {navigation: any, route: any}) 
                                   destination: destination,
                                   category: category?.name,
                                 })
-                              }
-                              >
+                              }>
                               <DestinationCard
                                 id={destination?.id}
                                 name={destination?.name}
@@ -174,10 +184,10 @@ const SelectDestinations = ({navigation, route}: {navigation: any, route: any}) 
 
 const styles = StyleSheet.create({
   container: {
-  alignItems: 'center',
-  width: '100%',
-  height: '100%',
-  backgroundColor: colors.white,
+    alignItems: 'center',
+    width: '100%',
+    height: '100%',
+    backgroundColor: colors.white,
   },
 });
 

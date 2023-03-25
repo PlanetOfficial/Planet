@@ -1,10 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {View, Image, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Image, Text, StyleSheet, SafeAreaView} from 'react-native';
 import {s, vs} from 'react-native-size-matters';
+
+import Header from '../components/MainHeader';
 
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
-import {icons, miscIcons} from '../../constants/images';
+import {miscIcons} from '../../constants/images';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Profile = ({navigation}: {navigation: any}) => {
@@ -23,10 +25,12 @@ const Profile = ({navigation}: {navigation: any}) => {
   }, []);
 
   return (
-    <View style={styles.container}>
-      {Header(navigation)}
+    <SafeAreaView style={styles.container}>
+      {Header(strings.title.profile, miscIcons.settings, () =>
+        navigation.navigate('Settings'),
+      )}
       <View style={infoStyles.container}>
-        <Image style={infoStyles.profilePic} source={icons.defaultPfp} />
+        <Image style={infoStyles.profilePic} source={miscIcons.user} />
         <Text style={infoStyles.name}>{name}</Text>
         <View style={infoStyles.countContainer}>
           <View style={infoStyles.count}>
@@ -39,20 +43,9 @@ const Profile = ({navigation}: {navigation: any}) => {
           </View>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
-
-const Header = (navigation: any) => (
-  <View style={headerStyles.container}>
-    <Text style={headerStyles.title}>{strings.title.profile}</Text>
-    <TouchableOpacity
-      style={headerStyles.button}
-      onPress={() => navigation.navigate('Settings')}>
-      <Image style={headerStyles.icon} source={miscIcons.settings} />
-    </TouchableOpacity>
-  </View>
-);
 
 const styles = StyleSheet.create({
   container: {
@@ -60,31 +53,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     backgroundColor: colors.white,
-  },
-});
-
-const headerStyles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: vs(50),
-    width: s(300),
-  },
-  title: {
-    fontSize: s(28),
-    fontWeight: '700',
-    color: colors.black,
-  },
-  button: {
-    position: 'absolute',
-    right: 0,
-    width: s(20),
-    height: s(20),
-  },
-  icon: {
-    width: '100%',
-    height: '100%',
-    tintColor: colors.black,
   },
 });
 

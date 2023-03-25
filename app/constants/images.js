@@ -2,8 +2,6 @@ export const icons = {
   NextArrow: require('../assets/nextArrow.png'),
   XButton: require('../assets/xButton.png'),
   BackArrow: require('../assets/backArrow.png'),
-  bookmarkActive: require('../assets/save-active.png'),
-  bookmarkInactive: require('../assets/save-inactive.png'),
   defaultImage: require('../assets/miscIcons/x.png'), // TODO: change the image to logo eventually
   defaultPfp: require('../assets/backArrow.png'), // TODO: change eventually
 };
@@ -26,6 +24,8 @@ export const miscIcons = {
   settings: require('../assets/miscIcons/settings.png'),
   x: require('../assets/miscIcons/x.png'),
   confirm: require('../assets/miscIcons/confirm.png'),
+  bookmark: require('../assets/miscIcons/bookmark.png'),
+  user: require('../assets/miscIcons/user.png'),
 };
 
 export const genreIcons = {

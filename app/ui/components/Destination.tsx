@@ -15,7 +15,7 @@ interface Props {
   price: number;
   image: Object;
   marked: boolean;
-  selected: boolean,
+  selected: boolean;
 }
 
 const DestinationCard: React.FC<Props> = ({
@@ -51,7 +51,11 @@ const DestinationCard: React.FC<Props> = ({
   };
 
   return (
-    <View style={[cardStyles.container, {borderColor: selected? colors.accent: colors.white}]}>
+    <View
+      style={[
+        cardStyles.container,
+        {borderColor: selected ? colors.accent : colors.white},
+      ]}>
       <View style={cardStyles.header}>
         <Text style={cardStyles.name}>{name}</Text>
         <TouchableOpacity onPress={handleBookmark} style={cardStyles.bookmark}>
@@ -107,10 +111,10 @@ const cardStyles = StyleSheet.create({
     right: s(10),
   },
   icon: {
-  width: s(24),
+    width: s(24),
     height: s(24),
     tintColor: colors.accent,
-  }
+  },
 });
 
 export default DestinationCard;
