@@ -2,10 +2,10 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
-import NavBar from '../ui/screens/NavBar';
-import LoginScreen from '../ui/auth/LogIn';
-import SignUp from '../ui/auth/SignUp';
-import ForgotPassword from '../ui/auth/!ForgotPwd';
+import NavBar from '../ui/components/NavBar';
+import LoginScreen from '../ui/authScreens/LogIn';
+import SignUp from '../ui/authScreens/SignUp';
+import ForgotPassword from '../ui/authScreens/!ForgotPwd';
 import MapSelection from '../ui/createScreens/MapSelection';
 import SelectCategories from '../ui/createScreens/SelectCategories';
 import SelectDestinations from '../ui/createScreens/SelectDestinations';
