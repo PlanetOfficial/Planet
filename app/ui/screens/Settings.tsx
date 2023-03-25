@@ -19,7 +19,9 @@ import {clearCaches} from '../../utils/functions/CacheHelpers';
 const Settings = ({navigation}: {navigation: any}) => {
   return (
     <SafeAreaView style={styles.container}>
-      {Header(strings.title.settings, miscIcons.x, () => navigation.navigate('Profile'))}
+      {Header(strings.title.settings, miscIcons.x, () =>
+        navigation.navigate('Profile'),
+      )}
       {Account(navigation)}
     </SafeAreaView>
   );

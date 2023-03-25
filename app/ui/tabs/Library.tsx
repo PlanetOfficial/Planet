@@ -1,10 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {
-  View,
-  StyleSheet,
-  FlatList,
-  SafeAreaView,
-} from 'react-native';
+import {View, StyleSheet, FlatList, SafeAreaView} from 'react-native';
 import {s} from 'react-native-size-matters';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 
