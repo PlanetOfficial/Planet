@@ -7,8 +7,8 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {colors} from '../../constants/theme';
 import {tabIcons} from '../../constants/images';
 
-import Trending from '../tabs/Trending';
-import Friends from '../tabs/Friends';
+import Trending from '../tabs/!Trending';
+import Friends from '../tabs/!Friends';
 import Library from '../tabs/Library';
 import Profile from '../tabs/Profile';
 

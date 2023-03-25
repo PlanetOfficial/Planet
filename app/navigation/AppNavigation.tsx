@@ -5,14 +5,14 @@ import {createStackNavigator} from '@react-navigation/stack';
 import NavBar from '../ui/screens/NavBar';
 import LoginScreen from '../ui/auth/LogIn';
 import SignUp from '../ui/auth/SignUp';
-import ForgotPassword from '../ui/auth/ForgotPwd';
+import ForgotPassword from '../ui/auth/!ForgotPwd';
 import MapSelection from '../ui/createScreens/MapSelection';
 import SelectCategories from '../ui/createScreens/SelectCategories';
 import SelectDestinations from '../ui/createScreens/SelectDestinations';
 import FinalizePlan from '../ui/createScreens/FinalizePlan';
 import DestinationDetails from '../ui/createScreens/DestinationDetails';
-import Place from '../ui/screens/Place';
-import Event from '../ui/screens/Event';
+import Place from '../ui/screens/!Place';
+import Event from '../ui/screens/!Event';
 import Settings from '../ui/screens/Settings';
 
 interface AppNavigationProps {
