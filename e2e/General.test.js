@@ -25,8 +25,13 @@ describe('Basic Behavior Test', () => {
         await expect(element(by.id('trendingScreenView'))).toBeVisible();
     });
 
-    it ('friend group screen should render when tapped on tab', async () => {
+    it ('friend group screen should render when tapped on friends tab', async () => {
         await element(by.id('Friends')).tap();
         await expect(element(by.id('friendsScreenView'))).toBeVisible();
+    })
+
+    it ('library screen should render when tapped on library tab', async () => {
+        await element(by.id('Library')).tap();
+        await expect(element(by.id('libraryScreenView'))).toBeVisible();
     })
 });

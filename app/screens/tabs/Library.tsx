@@ -43,7 +43,7 @@ const Library = ({navigation}: {navigation: any}) => {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <View testID='libraryScreenView' style={styles.container}>
       {Header(navigation)}
       {SegmentedControl(selectedIndex, setIndex)}
       <SafeAreaView style={styles.cardsContainer}>
