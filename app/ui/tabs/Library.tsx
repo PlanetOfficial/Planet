@@ -81,12 +81,16 @@ const Places = (savedPlaces: Array<any>) => (
     renderItem={({item}) => {
       if (!item?.images || item?.images?.length === 0) {
         // TODO: currently, bookmark status is hard coded to true and doesn't return anything.
-        return Place(item?.name, item?.category?.name, true, null as any);
+        return(
+          <Place id={item?.id} name={item?.name} info={item?.category?.name} marked={true} image={null as any}/>
+        )
       } else {
-        return Place(item?.name, item?.category?.name, true, {
-          uri:
-            item?.images[0]?.prefix + misc.imageSize + item?.images[0]?.suffix,
-        });
+        return(
+          <Place id={item?.id} name={item?.name} info={item?.category?.name} marked={true} image={{
+            uri:
+              item?.images[0]?.prefix + misc.imageSize + item?.images[0]?.suffix,
+          }}/>
+        )
       }
     }}
   />

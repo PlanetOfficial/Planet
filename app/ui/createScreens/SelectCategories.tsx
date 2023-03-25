@@ -150,7 +150,7 @@ const SelectCategories = ({
           </View>
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={modalStyles.categories}>
-              {allCategories.map((category: any) => (
+              {allCategories? allCategories?.map((category: any) => (
                 <TouchableOpacity
                   key={category.id}
                   onPress={() => {
@@ -180,7 +180,7 @@ const SelectCategories = ({
                     <Text style={categoryStyles.name}>{category.name}</Text>
                   </View>
                 </TouchableOpacity>
-              ))}
+              )) : null}
             </View>
           </ScrollView>
         </View>

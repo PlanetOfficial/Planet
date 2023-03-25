@@ -15,7 +15,7 @@ import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 import {s, vs} from 'react-native-size-matters';
 
-import DestinationCard from '../components/Destination';
+import Place from '../components/Place';
 
 import {requestLocations} from '../../utils/api/CreateCalls/requestLocations';
 
@@ -145,28 +145,22 @@ const SelectDestinations = ({
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}>
                     {locations[category?.id]
-                      ? locations[category?.id]?.map((destination: any) => (
-                          <View key={destination?.id}>
+                      ? locations[category?.id]?.map((dest: any) => (
+                          <View key={dest?.id}>
                             <TouchableOpacity
-                              onPress={() =>
-                                handleDestinationSelect(destination)
-                              }
+                              onPress={() => handleDestinationSelect(dest)}
                               onLongPress={() =>
                                 navigation.navigate('DestinationDetails', {
-                                  destination: destination,
+                                  destination: dest,
                                   category: category?.name,
                                 })
                               }>
-                              <DestinationCard
-                                id={destination?.id}
-                                name={destination?.name}
-                                rating={destination?.rating}
-                                price={destination?.price}
-                                image={getImage(destination?.images)}
-                                marked={bookmarks?.includes(destination?.id)}
-                                selected={selectedDestinations?.some(
-                                  (item: any) => item?.id === destination?.id,
-                                )}
+                              <Place
+                                id={dest?.id}
+                                name={dest?.name}
+                                info={`Rating: ${dest?.rating}/10  Price: ${dest?.price}/5`}
+                                marked={bookmarks?.includes(dest?.id)}
+                                image={getImage(dest?.images)}
                               />
                             </TouchableOpacity>
                           </View>

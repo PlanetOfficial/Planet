@@ -1,37 +1,68 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import {s} from 'react-native-size-matters';
 
 import {colors} from '../../constants/theme';
 import {miscIcons} from '../../constants/images';
+import {setBookmark} from '../../utils/api/shared/setBookmark';
+import {unbookmark} from '../../utils/api/shared/unbookmark';
+import EncryptedStorage from 'react-native-encrypted-storage';
 
-const Place = (
-  name: string,
-  info: string,
-  bookmarked: boolean,
-  image: Object,
-) => (
-  <View style={styles.container}>
-    <View style={styles.header}>
-      <View>
-        <Text numberOfLines={1} style={styles.name}>
-          {name}
-        </Text>
-        <Text style={styles.info}>{info}</Text>
+interface Props {
+  id: number;
+  name: string;
+  info: string;
+  marked: boolean;
+  image: Object;
+}
+
+const Place: React.FC<Props> = ({id, name, info, marked, image}) => {
+  const [bookmarked, setBookmarked] = useState(marked);
+
+  const handleBookmark = async () => {
+    const authToken = await EncryptedStorage.getItem('auth_token');
+    let response;
+
+    if (!bookmarked) {
+      // switch to bookmarked, so call /bookmark
+      response = await setBookmark(authToken, id);
+    } else {
+      // switch to not bookmarked, so call /unbookmark
+      response = await unbookmark(authToken, id);
+    }
+
+    if (response === 200) {
+      setBookmarked(!bookmarked);
+
+      // TODO: success
+    } else {
+      // failed
+    }
+  };
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <View>
+          <Text numberOfLines={1} style={styles.name}>
+            {name}
+          </Text>
+          <Text style={styles.info}>{info}</Text>
+        </View>
+        <TouchableOpacity onPress={handleBookmark}>
+          <Image
+            style={[
+              styles.icon,
+              {tintColor: bookmarked ? colors.accent : colors.grey},
+            ]}
+            source={miscIcons.bookmark}
+          />
+        </TouchableOpacity>
       </View>
-      <TouchableOpacity>
-        <Image
-          style={[
-            styles.icon,
-            {tintColor: bookmarked ? colors.accent : colors.grey},
-          ]}
-          source={miscIcons.bookmark}
-        />
-      </TouchableOpacity>
+      <Image style={styles.image} source={image} />
     </View>
-    <Image style={styles.image} source={image} />
-  </View>
-);
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
