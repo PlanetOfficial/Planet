@@ -38,24 +38,17 @@ export const NavBar = () => {
     if (source !== -1) {
       return (
         <Image
-          style={{
-            width: s(24),
-            height: s(24),
-            tintColor: focused ? colors.accent : colors.darkgrey,
-          }}
+          style={[
+            styles.icon,
+            {tintColor: focused ? colors.accent : colors.darkgrey},
+          ]}
           source={source}
         />
       );
     }
 
     return (
-      <Svg
-        style={{
-          position: 'absolute',
-          width: s(49),
-          height: s(49),
-          top: -s(12),
-        }}>
+      <Svg style={styles.button}>
         <Circle cx={s(24)} cy={s(24)} r={s(24)} fill={colors.accent} />
         <Line
           x1={s(24)}
@@ -126,6 +119,16 @@ export const NavBar = () => {
 const styles = StyleSheet.create({
   tabView: {
     flex: 1,
+  },
+  icon: {
+    width: s(24),
+    height: s(24),
+  },
+  button: {
+    position: 'absolute',
+    width: s(49),
+    height: s(49),
+    top: -s(12),
   },
 });
 

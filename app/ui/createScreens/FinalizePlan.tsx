@@ -20,11 +20,15 @@ import {sendEvent} from '../../utils/api/CreateCalls/sendEvent';
 import {getRegionForCoordinates} from '../../utils/functions/Misc';
 import {MarkerObject} from '../../utils/interfaces/MarkerObject';
 
-const SelectDestinations = ({navigation, route}) => {
-  const [selectedDestinations, setSelectedDestinations] = useState(
-    route?.params?.selectedDestinations,
-  );
-  const [markers, setMarkers] = useState(route?.params?.markers);
+const SelectDestinations = ({
+  navigation,
+  route,
+}: {
+  navigation: any;
+  route: any;
+}) => {
+  const [selectedDestinations] = useState(route?.params?.selectedDestinations);
+  const [markers] = useState(route?.params?.markers);
   const [eventTitle, setEventTitle] = useState(
     strings.createTabStack.untitledEvent,
   );

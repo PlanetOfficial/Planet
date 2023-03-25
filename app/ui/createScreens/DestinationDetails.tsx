@@ -13,9 +13,15 @@ import misc from '../../constants/misc';
 import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
 
-const DestinationDetails = ({navigation, route}) => {
-  const [destination, setDestination] = useState(route?.params?.destination);
-  const [category, setCategory] = useState(route?.params?.category);
+const DestinationDetails = ({
+  navigation,
+  route,
+}: {
+  navigation: any;
+  route: any;
+}) => {
+  const [destination] = useState(route?.params?.destination);
+  const [category] = useState(route?.params?.category);
 
   const getImageURL = (prefix: String, suffix: String) => {
     return prefix + misc.imageSize + suffix;

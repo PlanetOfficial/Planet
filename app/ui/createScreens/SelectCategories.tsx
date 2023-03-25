@@ -57,8 +57,8 @@ const SelectCategories = ({
   navigation: any;
   route: any;
 }) => {
-  const [latitude, setLatitude] = useState(route?.params?.latitude);
-  const [longitude, setLongitude] = useState(route?.params?.longitude);
+  const [latitude] = useState(route?.params?.latitude);
+  const [longitude] = useState(route?.params?.longitude);
   const [radius, setRadius] = useState(0); // in meters
 
   const [modalVisible, setModalVisible] = useState(false);

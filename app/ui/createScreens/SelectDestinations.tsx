@@ -4,9 +4,7 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
-  SafeAreaView,
   Image,
-  Button,
   ScrollView,
 } from 'react-native';
 import EncryptedStorage from 'react-native-encrypted-storage';
@@ -30,12 +28,10 @@ const SelectDestinations = ({
   navigation: any;
   route: any;
 }) => {
-  const [latitude, setLatitude] = useState(route?.params?.latitude);
-  const [longitude, setLongitude] = useState(route?.params?.longitude);
-  const [radius, setRadius] = useState(route?.params?.radius);
-  const [categories, setCategories] = useState(
-    route?.params?.selectedCategories,
-  );
+  const [latitude] = useState(route?.params?.latitude);
+  const [longitude] = useState(route?.params?.longitude);
+  const [radius] = useState(route?.params?.radius);
+  const [categories] = useState(route?.params?.selectedCategories);
 
   // gets all locations from selectedCategories
   const [locations, setLocations] = useState({});
