@@ -232,6 +232,7 @@ const headerStyles = StyleSheet.create({
     height: s(20),
   },
   next: {
+    marginLeft: s(20/3),
     width: s(40/3),
     height: s(20),
     transform: [{rotate: '180deg'}],

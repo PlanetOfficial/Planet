@@ -212,10 +212,11 @@ const styles = StyleSheet.create({
 const headerStyles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    width: '100%',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: s(20),
+    width: '100%',
+    paddingHorizontal: s(20),
+    paddingVertical: s(10),
     paddingBottom: 0,
   },
   title: {

@@ -89,6 +89,7 @@ const Places = (places: Array<any>) => (
                 }
               : (null as any)
           }
+          selected={false}
         />
       );
     }}
