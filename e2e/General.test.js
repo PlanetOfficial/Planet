@@ -25,13 +25,53 @@ describe('Basic Behavior Test', () => {
         await expect(element(by.id('trendingScreenView'))).toBeVisible();
     });
 
-    it ('friend group screen should render when tapped on friends tab', async () => {
+    it('friend group screen should render when tapped on friends tab', async () => {
         await element(by.id('Friends')).tap();
         await expect(element(by.id('friendsScreenView'))).toBeVisible();
     })
 
-    it ('library screen should render when tapped on library tab', async () => {
+    it('library screen should render when tapped on library tab', async () => {
         await element(by.id('Library')).tap();
         await expect(element(by.id('libraryScreenView'))).toBeVisible();
+    })
+});
+
+describe('Behavior test through the create event screens', () => {
+    beforeAll(async () => {
+        await device.launchApp({
+            permissions: {
+                location: 'always',
+            },
+            newInstance: false,
+        });
+    });
+
+    it('render map screen after clicking create button', async () => {
+        await element(by.id('Create')).tap();
+        await expect(element(by.id('mapSelectionScreenView'))).toBeVisible();
+    })
+
+    it('search for location', async () => {
+        await element(by.id('searchLocationInput')).typeText('Seattle');
+        await element(by.label('Seattle, WA, USA')).tap();
+    })
+
+    it('go to select categories after map selection', async () => {
+        await element(by.id('mapSelectionNext')).tap();
+        await expect(element(by.id('selectCategoriesScreenView'))).toBeVisible();
+    })
+
+    it('Select some categories from genres', async () => { // TODO: change number of selected categories
+        await element(by.id('genre.1')).tap();
+        await expect(element(by.id('categoryModalView'))).toBeVisible();
+
+        await element(by.id('category.1')).tap();
+        await element(by.id('category.2')).tap();
+        await element(by.id('category.3')).tap();
+
+        await element(by.id('closeModalView')).tap();
+        await element(by.id('confirmCategories')).tap();
+
+        await element(by.id('destination.1.490')).tap();
     })
 });
