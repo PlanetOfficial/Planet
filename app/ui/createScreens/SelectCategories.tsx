@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {
   View,
+  SafeAreaView,
   Text,
   ScrollView,
   TouchableOpacity,
@@ -9,7 +10,7 @@ import {
   Pressable,
   Modal,
 } from 'react-native';
-import {s, vs} from 'react-native-size-matters';
+import {s} from 'react-native-size-matters';
 
 import {vectors, icons, genreIcons} from '../../constants/images';
 import strings from '../../constants/strings';
@@ -89,7 +90,7 @@ const SelectCategories = ({
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={headerStyles.container}>
         <TouchableOpacity
           style={headerStyles.back}
@@ -179,23 +180,29 @@ const SelectCategories = ({
       </Modal>
       {/* TODO: should be able to scroll even if modal is on */}
       {/* TODO: should scroll to the right most element added */}
+      {/* TODO: should remove category when x is clicked */}
+      {/* TODO: should not remove category a category is clicked twice in modal */}
       <View style={selectionStyles.container}>
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
           {selectedCategories.map((selected: any) => (
             <View key={selected.id} style={selectionStyles.category}>
               <Image style={selectionStyles.icon} source={icons.settings} />
+              <TouchableOpacity style={selectionStyles.xButton}>
+                <Image style={selectionStyles.x} source={icons.x}/>
+              </TouchableOpacity>
               <Text style={selectionStyles.name}>{selected.name}</Text>
             </View>
           ))}
         </ScrollView>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
+    justifyContent: 'space-between',
     width: '100%',
     height: '100%',
     backgroundColor: colors.white,
@@ -205,30 +212,25 @@ const styles = StyleSheet.create({
 const headerStyles = StyleSheet.create({
   container: {
     flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: vs(50),
-    width: s(300),
-    height: vs(20),
+    padding: s(20),
+    paddingBottom: 0,
   },
   title: {
-    position: 'absolute',
-    left: s(25),
-    width: s(250),
     fontSize: s(18),
     fontWeight: '600',
     color: colors.black,
-    textAlign: 'center',
   },
   back: {
-    left: 0,
-    width: vs(12),
-    height: vs(18),
+    marginRight: s(20/3),
+    width: s(40/3),
+    height: s(20),
   },
   confirm: {
-    position: 'absolute',
-    right: 0,
-    width: vs(18),
-    height: vs(18),
+    width: s(20),
+    height: s(20),
   },
   icon: {
     width: '100%',
@@ -242,7 +244,6 @@ const genreStyles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    marginTop: (vs(610) - s(580)) / 2,
   },
   imageContainer: {
     margin: s(15),
@@ -289,7 +290,7 @@ const genreStyles = StyleSheet.create({
 const modalStyles = StyleSheet.create({
   container: {
     position: 'absolute',
-    top: (vs(750) - s(600)) / 2,
+    top: s(120), // TODO: CENTER THIS
     left: s(15),
     width: s(320),
     height: s(500),
@@ -373,8 +374,7 @@ const categoryStyles = StyleSheet.create({
 
 const selectionStyles = StyleSheet.create({
   container: {
-    position: 'absolute',
-    height: s(100),
+    height: s(70),
     bottom: 0,
     width: '100%',
     borderTopWidth: 2,
@@ -382,22 +382,37 @@ const selectionStyles = StyleSheet.create({
   },
   category: {
     alignItems: 'center',
-    marginLeft: s(5),
     width: s(80),
   },
   icon: {
     position: 'absolute',
     width: s(40),
     height: s(40),
-    top: s(5),
+    top: s(10),
     borderRadius: s(20),
     borderWidth: 2,
     tintColor: colors.black,
     borderColor: colors.accent,
     backgroundColor: colors.white,
   },
+  xButton: {
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+    left: s(46),
+    top: s(4),
+    width: s(20),
+    height: s(20),
+    backgroundColor: colors.grey,
+    borderRadius: s(10),
+  },
+  x: {
+    width: '60%',
+    height: '60%',
+    tintColor: colors.black,
+  },
   name: {
-    top: s(50),
+    top: s(53),
     fontSize: s(14),
     fontWeight: '500',
     color: colors.black,
