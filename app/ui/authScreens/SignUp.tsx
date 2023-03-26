@@ -62,6 +62,10 @@ const SignUp = ({navigation}: {navigation: any}) => {
             placeholder={strings.login.email}
             value={email}
             onChangeText={text => setEmail(text)}
+            autoCapitalize="none"
+            autoCorrect={false}
+            keyboardType="email-address"
+            textContentType="emailAddress"
           />
         </View>
         <View style={accountStyles.input}>

@@ -88,9 +88,9 @@ npx detox test --configuration ios.sim.debug
 ```
 *see link for other OS and release versions
 
-add a flag at the end of the test command like this to test individual files:
+how to test individual files:
 ```
--f *.test.js
+npx detox test /e2e/*.test.js --configuration ios.sim.debug
 ```
 
 replace * with the prefix it's been named

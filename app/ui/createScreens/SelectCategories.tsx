@@ -89,7 +89,7 @@ const SelectCategories = ({
   };
 
   return (
-    <View style={styles.container}>
+    <View testID='selectCategoriesScreenView' style={styles.container}>
       <View style={headerStyles.container}>
         <TouchableOpacity
           style={headerStyles.back}
@@ -100,6 +100,7 @@ const SelectCategories = ({
           {strings.createTabStack.selectCategories}
         </Text>
         <TouchableOpacity
+          testID='confirmCategories'
           style={headerStyles.confirm}
           onPress={() =>
             navigation.navigate('SelectDestinations', {
@@ -115,6 +116,7 @@ const SelectCategories = ({
       <View style={genreStyles.container}>
         {genres.map(genre => (
           <TouchableOpacity
+            testID={'genre.' + genre.id}
             key={genre.id}
             onPress={() => handleGenrePress(genre)}>
             <View style={genreStyles.imageContainer}>
@@ -126,9 +128,10 @@ const SelectCategories = ({
         ))}
       </View>
       <Modal animationType="fade" transparent={true} visible={modalVisible}>
-        <View style={modalStyles.container}>
+        <View testID='categoryModalView' style={modalStyles.container}>
           <View style={modalStyles.header}>
             <Pressable
+              testID='closeModalView'
               onPress={() => {
                 setModalVisible(false);
                 setSelectedGenre('');
@@ -143,6 +146,7 @@ const SelectCategories = ({
               {allCategories
                 ? allCategories?.map((category: any) => (
                     <TouchableOpacity
+                      testID={'category.' + category.id}
                       key={category.id}
                       onPress={() => {
                         if (
