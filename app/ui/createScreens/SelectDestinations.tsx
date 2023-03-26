@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {
   View,
+  SafeAreaView,
   Text,
   TouchableOpacity,
   StyleSheet,
@@ -113,7 +114,7 @@ const SelectDestinations = ({
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={headerStyles.container}>
         <TouchableOpacity
           style={headerStyles.back}
@@ -129,6 +130,7 @@ const SelectDestinations = ({
       </View>
       <View style={destStyles.container}>
         <ScrollView showsVerticalScrollIndicator={false}>
+          {/* TODO: Need to display something when no results are found */}
           {categories
             ? categories?.map((category: Category) => (
                 <View key={category?.id}>
@@ -156,6 +158,9 @@ const SelectDestinations = ({
                                 info={`Rating: ${dest?.rating}/10  Price: ${dest?.price}/5`}
                                 marked={bookmarks?.includes(dest?.id)}
                                 image={getImage(dest?.images)}
+                                selected={selectedDestinations?.some(
+                                  item => item?.id === dest?.id,
+                                )}
                               />
                             </TouchableOpacity>
                           </View>
@@ -167,7 +172,7 @@ const SelectDestinations = ({
             : null}
         </ScrollView>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -183,30 +188,25 @@ const styles = StyleSheet.create({
 const headerStyles = StyleSheet.create({
   container: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: vs(50),
-    width: s(300),
-    height: vs(20),
+    width: '100%',
+    paddingHorizontal: s(20),
+    paddingVertical: s(10),
   },
   title: {
-    position: 'absolute',
-    left: s(25),
-    width: s(250),
     fontSize: s(18),
     fontWeight: '600',
     color: colors.black,
-    textAlign: 'center',
   },
   back: {
-    left: 0,
-    width: vs(12),
-    height: vs(18),
+    marginRight: s(20 / 3),
+    width: s(40 / 3),
+    height: s(20),
   },
   confirm: {
-    position: 'absolute',
-    right: 0,
-    width: vs(18),
-    height: vs(18),
+    width: s(20),
+    height: s(20),
   },
   icon: {
     width: '100%',

@@ -3,7 +3,7 @@ import {View, StyleSheet, FlatList, SafeAreaView} from 'react-native';
 import {s} from 'react-native-size-matters';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 
-import Header from '../components/MainHeader';
+import Header from '../components/Header';
 import Place from '../components/Place';
 import Event from '../components/Event';
 
@@ -89,6 +89,7 @@ const Places = (places: Array<any>) => (
                 }
               : (null as any)
           }
+          selected={false}
         />
       );
     }}

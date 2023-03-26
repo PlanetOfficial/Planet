@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {
   View,
+  SafeAreaView,
   Text,
   TouchableOpacity,
   StyleSheet,
@@ -8,10 +9,11 @@ import {
   PermissionsAndroid,
   Platform,
 } from 'react-native';
-import {s, vs} from 'react-native-size-matters';
+import {s} from 'react-native-size-matters';
 import MapView from 'react-native-maps';
 import {Svg, Circle} from 'react-native-svg';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 import Geolocation from '@react-native-community/geolocation';
 import {icons} from '../../constants/images';
@@ -45,6 +47,8 @@ const MapScreen = ({navigation}: {navigation: any}) => {
       ),
     );
   };
+
+  const insets = useSafeAreaInsets();
 
   useEffect(() => {
     const setCurrentLocation = async () => {
@@ -86,69 +90,6 @@ const MapScreen = ({navigation}: {navigation: any}) => {
 
   return (
     <View testID="mapSelectionScreenView" style={styles.container}>
-      <View style={styles.top} />
-      <View style={headerStyles.container}>
-        <TouchableOpacity
-          style={headerStyles.x}
-          onPress={() => navigation.navigate('TabStack')}>
-          <Image style={headerStyles.icon} source={icons.x} />
-        </TouchableOpacity>
-        <Text style={headerStyles.title}>
-          {strings.createTabStack.planEvent}
-        </Text>
-        <TouchableOpacity
-          style={headerStyles.next}
-          disabled={radius > integers.maxRadiusInMeters}
-          onPress={() => {
-            navigation.navigate('SelectCategories', {
-              latitude: region.latitude,
-              longitude: region.longitude,
-              radius: radius,
-            });
-          }}>
-          <Image
-            style={
-              radius <= integers.maxRadiusInMeters
-                ? headerStyles.icon
-                : headerStyles.disabledIcon
-            }
-            source={icons.back}
-          />
-        </TouchableOpacity>
-      </View>
-      <View>
-        <GooglePlacesAutocomplete
-          placeholder={strings.createTabStack.search}
-          onPress={(data, details = null) => {
-            if (
-              details?.geometry?.location?.lat &&
-              details?.geometry?.location?.lng
-            ) {
-              setRegion({
-                latitude: details.geometry.location.lat,
-                longitude: details.geometry.location.lng,
-                latitudeDelta: floats.defaultLatitudeDelta,
-                longitudeDelta: floats.defaultLongitudeDelta,
-              });
-            }
-          }}
-          query={{
-            // TODO: Use ENV obviously
-            key: GoogleMapsAPIKey,
-            language: 'en',
-          }}
-          enablePoweredByContainer={false}
-          fetchDetails={true}
-          styles={{
-            container: searchStyles.container,
-            textInput: searchStyles.textInput,
-            row: searchStyles.row,
-            separator: searchStyles.separator,
-          }}
-        />
-        <Image style={searchStyles.icon} source={icons.search} />
-      </View>
-
       <View style={mapStyles.container}>
         <MapView
           style={mapStyles.map}
@@ -167,45 +108,110 @@ const MapScreen = ({navigation}: {navigation: any}) => {
               cx={s(150)}
               cy={s(150)}
               r={s(148)}
-              stroke={colors.accent}
+              stroke={colors.white}
               strokeWidth={4}
               fill={colors.accent}
-              fillOpacity={0.2}
+              fillOpacity={0.3}
             />
           </Svg>
         </View>
-        <Text style={mapStyles.radiusIndicator}>
-          {/*TODO: Allow unit conversion + ft etc */}
-          {strings.createTabStack.radius}
-          {': '}
-          <Text
-            style={
-              radius <= integers.maxRadiusInMeters
-                ? mapStyles.radius
-                : mapStyles.radiusInvalid
-            }>
-            {(radius / integers.milesToMeters).toFixed(2)}
-          </Text>{' '}
-          {strings.createTabStack.milesAbbrev}
-        </Text>
+        <View style={mapStyles.rIndContainer}>
+          <View style={mapStyles.rIndBackground} />
+          <Text style={[mapStyles.radiusIndicator, {color: colors.black}]}>
+            {strings.createTabStack.radius}
+            {': '}
+            <Text style={mapStyles.radius}>
+              {(radius / integers.milesToMeters).toFixed(1)}
+            </Text>{' '}
+            {strings.createTabStack.milesAbbrev}
+          </Text>
+        </View>
       </View>
+
+      <View style={[styles.top, {height: insets.top + s(54.5)}]} />
+      <SafeAreaView style={styles.headerContainer}>
+        <View style={headerStyles.container}>
+          <TouchableOpacity
+            style={headerStyles.x}
+            onPress={() => navigation.navigate('TabStack')}>
+            <Image style={headerStyles.icon} source={icons.x} />
+          </TouchableOpacity>
+          <Text style={headerStyles.title}>
+            {strings.createTabStack.planEvent}
+          </Text>
+          <TouchableOpacity
+            style={headerStyles.next}
+            disabled={radius > integers.maxRadiusInMeters}
+            onPress={() => {
+              navigation.navigate('SelectCategories', {
+                latitude: region.latitude,
+                longitude: region.longitude,
+                radius: radius,
+              });
+            }}>
+            <Image
+              style={
+                radius <= integers.maxRadiusInMeters
+                  ? headerStyles.icon
+                  : headerStyles.disabledIcon
+              }
+              source={icons.back}
+            />
+          </TouchableOpacity>
+        </View>
+        <View>
+          <GooglePlacesAutocomplete
+            placeholder={strings.createTabStack.search}
+            onPress={(data, details = null) => {
+              if (
+                details?.geometry?.location?.lat &&
+                details?.geometry?.location?.lng
+              ) {
+                setRegion({
+                  latitude: details.geometry.location.lat,
+                  longitude: details.geometry.location.lng,
+                  latitudeDelta: floats.defaultLatitudeDelta,
+                  longitudeDelta: floats.defaultLongitudeDelta,
+                });
+              }
+            }}
+            query={{
+              // TODO: Use ENV obviously
+              key: GoogleMapsAPIKey,
+              language: 'en',
+            }}
+            enablePoweredByContainer={false}
+            fetchDetails={true}
+            styles={{
+              container: searchStyles.container,
+              textInput: searchStyles.textInput,
+              row: searchStyles.row,
+              separator: searchStyles.separator,
+            }}
+          />
+          <Image style={searchStyles.icon} source={icons.search} />
+        </View>
+      </SafeAreaView>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
     width: '100%',
     height: '100%',
-    backgroundColor: colors.white,
+    alignItems: 'center',
+  },
+  headerContainer: {
+    width: '100%',
+    alignItems: 'center',
   },
   top: {
     position: 'absolute',
+    top: 0,
     width: '100%',
-    height: vs(95),
     backgroundColor: colors.white,
-    opacity: 0.8,
+    opacity: 0.85,
   },
 });
 
@@ -214,9 +220,9 @@ const headerStyles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: vs(50),
-    width: s(300),
-    height: vs(20),
+    width: '100%',
+    paddingHorizontal: s(20),
+    paddingVertical: s(10),
   },
   title: {
     fontSize: s(18),
@@ -224,12 +230,13 @@ const headerStyles = StyleSheet.create({
     color: colors.black,
   },
   x: {
-    width: vs(18),
-    height: vs(18),
+    width: s(20),
+    height: s(20),
   },
   next: {
-    width: vs(12),
-    height: vs(18),
+    marginLeft: s(20 / 3),
+    width: s(40 / 3),
+    height: s(20),
     transform: [{rotate: '180deg'}],
   },
   icon: {
@@ -247,10 +254,9 @@ const headerStyles = StyleSheet.create({
 const searchStyles = StyleSheet.create({
   container: {
     flex: 0,
-    marginTop: vs(10),
-    width: s(300),
+    width: s(310),
     backgroundColor: colors.white,
-    borderRadius: vs(10),
+    borderRadius: s(10),
     shadowColor: colors.black,
     shadowOpacity: 0.5,
     shadowOffset: {
@@ -260,16 +266,16 @@ const searchStyles = StyleSheet.create({
   },
   textInput: {
     paddingVertical: 0,
-    marginLeft: vs(20),
-    paddingLeft: vs(10),
+    marginLeft: s(20),
+    paddingLeft: s(10),
     marginBottom: 0,
-    height: vs(30),
+    height: s(30),
     fontSize: s(13),
     backgroundColor: 'transparent',
     color: colors.black,
   },
   row: {
-    height: vs(35),
+    height: s(35),
     width: s(300),
     paddingLeft: s(15),
     color: colors.black,
@@ -284,10 +290,10 @@ const searchStyles = StyleSheet.create({
   },
   icon: {
     position: 'absolute',
-    top: vs(18),
-    left: vs(8),
-    width: vs(14),
-    height: vs(14),
+    top: s(8),
+    left: s(8),
+    width: s(14),
+    height: s(14),
     tintColor: colors.darkgrey,
   },
 });
@@ -310,27 +316,30 @@ const mapStyles = StyleSheet.create({
     width: s(300),
     height: s(300),
   },
-  radiusIndicator: {
+  rIndContainer: {
     position: 'absolute',
     bottom: 0,
     right: 0,
     margin: s(20),
+  },
+  rIndBackground: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    backgroundColor: colors.white,
+    opacity: 0.85,
+    borderRadius: s(15),
+  },
+  radiusIndicator: {
     padding: s(10),
     fontSize: s(14),
     fontWeight: '600',
-    color: colors.black,
   },
   radius: {
     margin: s(30),
     fontSize: s(16),
-    fontWeight: '700',
+    fontWeight: '800',
     color: colors.accent,
-  },
-  radiusInvalid: {
-    margin: s(30),
-    fontSize: s(16),
-    fontWeight: '700',
-    color: 'red', // TODO: IMPORT THEME
   },
 });
 

@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 
-import Header from '../components/MainHeader';
+import Header from '../components/Header';
 
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';

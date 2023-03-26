@@ -14,9 +14,10 @@ interface Props {
   info: string;
   marked: boolean;
   image: Object;
+  selected: boolean;
 }
 
-const Place: React.FC<Props> = ({id, name, info, marked, image}) => {
+const Place: React.FC<Props> = ({id, name, info, marked, image, selected}) => {
   const [bookmarked, setBookmarked] = useState(marked);
 
   const handleBookmark = async () => {
@@ -41,8 +42,13 @@ const Place: React.FC<Props> = ({id, name, info, marked, image}) => {
   };
 
   return (
+    // TODO: selection UI is obviously temporary
     <View style={styles.container}>
-      <View style={styles.header}>
+      <View
+        style={[
+          styles.header,
+          {backgroundColor: selected ? colors.accent : colors.white},
+        ]}>
         <View>
           <Text numberOfLines={1} style={styles.name}>
             {name}

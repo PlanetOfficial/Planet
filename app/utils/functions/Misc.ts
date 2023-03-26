@@ -63,7 +63,7 @@ export const getRegionForCoordinates = (points: Array<MarkerObject>) => {
 /* O(n) algorithm to filter objects and return objects in the array with
    unique IDs
 */
-export const filterToUniqueIds = (arr: Array<any>) => {
+export const filterToUniqueIds = (arr: Array<any>): any => {
   const uniqueObj: any = {};
   arr?.forEach(item => {
     if (item?.id && !uniqueObj[item.id]) {
