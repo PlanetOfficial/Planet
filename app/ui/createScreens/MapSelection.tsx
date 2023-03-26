@@ -90,7 +90,7 @@ const MapScreen = ({navigation}: {navigation: any}) => {
   }, []);
 
   return (
-    <>
+    <View testID="mapSelectionScreenView" style={styles.container}>
       <View style={mapStyles.container}>
         <MapView
           style={mapStyles.map}
@@ -195,12 +195,14 @@ const MapScreen = ({navigation}: {navigation: any}) => {
           <Image style={searchStyles.icon} source={icons.search} />
         </View>
       </SafeAreaView>
-    </>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    width: '100%',
+    height: '100%',
     alignItems: 'center',
   },
   top: {

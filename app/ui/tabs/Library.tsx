@@ -37,7 +37,7 @@ const Library = ({navigation}: {navigation: any}) => {
   }, []);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView testID="libraryScreenView" style={styles.container}>
       {Header(strings.title.library, icons.search, () =>
         navigation.navigate('SearchLibrary'),
       )}

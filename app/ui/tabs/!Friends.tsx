@@ -7,7 +7,7 @@ import {colors} from '../../constants/theme';
 
 const Friends = () => {
   return (
-    <View style={styles.container}>
+    <View testID="friendsScreenView" style={styles.container}>
       <Text style={styles.text}>Coming Soon</Text>
     </View>
   );
