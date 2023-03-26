@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {View, Image, Text, StyleSheet, SafeAreaView} from 'react-native';
 import {s, vs} from 'react-native-size-matters';
 
-import Header from '../components/MainHeader';
+import Header from '../components/Header';
 
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';

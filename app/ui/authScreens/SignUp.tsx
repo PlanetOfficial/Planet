@@ -10,7 +10,7 @@ import {
 import {s} from 'react-native-size-matters';
 
 import strings from '../../constants/strings';
-import Header from '../components/MainHeader';
+import Header from '../components/Header';
 
 import {signup} from '../../utils/api/auth/signup';
 import {colors} from '../../constants/theme';
