@@ -143,7 +143,7 @@ const SelectDestinations = ({
                     showsHorizontalScrollIndicator={false}>
                     {locations[category?.id]
                       ? locations[category?.id]?.map((dest: any) => (
-                          <View key={dest?.id}>
+                          <View testID={`destination.${category?.id}.${dest?.id}`} key={dest?.id}>
                             <TouchableOpacity
                               onPress={() => handleDestinationSelect(dest)}
                               onLongPress={() =>

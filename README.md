@@ -87,10 +87,3 @@ npm start
 npx detox test --configuration ios.sim.debug
 ```
 *see link for other OS and release versions
-
-how to test individual files:
-```
-npx detox test /e2e/*.test.js --configuration ios.sim.debug
-```
-
-replace * with the prefix it's been named

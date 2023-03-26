@@ -71,5 +71,7 @@ describe('Behavior test through the create event screens', () => {
 
         await element(by.id('closeModalView')).tap();
         await element(by.id('confirmCategories')).tap();
+
+        await element(by.id('destination.1.490')).tap();
     })
 });
