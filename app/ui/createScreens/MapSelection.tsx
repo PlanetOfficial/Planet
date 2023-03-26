@@ -132,7 +132,7 @@ const MapScreen = ({navigation}: {navigation: any}) => {
       </View>
 
       <View style={[styles.top, {height: insets.top + s(54.5)}]}/>
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={styles.headerContainer}>
         <View style={headerStyles.container}>
           <TouchableOpacity
             style={headerStyles.x}
@@ -203,6 +203,10 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     height: '100%',
+    alignItems: 'center',
+  },
+  headerContainer: {
+    width: '100%',
     alignItems: 'center',
   },
   top: {
