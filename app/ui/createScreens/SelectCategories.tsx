@@ -188,7 +188,7 @@ const SelectCategories = ({
             <View key={selected.id} style={selectionStyles.category}>
               <Image style={selectionStyles.icon} source={icons.settings} />
               <TouchableOpacity style={selectionStyles.xButton}>
-                <Image style={selectionStyles.x} source={icons.x}/>
+                <Image style={selectionStyles.x} source={icons.x} />
               </TouchableOpacity>
               <Text style={selectionStyles.name}>{selected.name}</Text>
             </View>
@@ -225,8 +225,8 @@ const headerStyles = StyleSheet.create({
     color: colors.black,
   },
   back: {
-    marginRight: s(20/3),
-    width: s(40/3),
+    marginRight: s(20 / 3),
+    width: s(40 / 3),
     height: s(20),
   },
   confirm: {

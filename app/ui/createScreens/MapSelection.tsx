@@ -8,13 +8,12 @@ import {
   Image,
   PermissionsAndroid,
   Platform,
-  
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 import MapView from 'react-native-maps';
 import {Svg, Circle} from 'react-native-svg';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 import Geolocation from '@react-native-community/geolocation';
 import {icons} from '../../constants/images';
@@ -117,13 +116,11 @@ const MapScreen = ({navigation}: {navigation: any}) => {
           </Svg>
         </View>
         <View style={mapStyles.rIndContainer}>
-          <View style={mapStyles.rIndBackground}/>
+          <View style={mapStyles.rIndBackground} />
           <Text style={[mapStyles.radiusIndicator, {color: colors.black}]}>
             {strings.createTabStack.radius}
             {': '}
-            <Text
-              style={mapStyles.radius
-              }>
+            <Text style={mapStyles.radius}>
               {(radius / integers.milesToMeters).toFixed(1)}
             </Text>{' '}
             {strings.createTabStack.milesAbbrev}
@@ -131,7 +128,7 @@ const MapScreen = ({navigation}: {navigation: any}) => {
         </View>
       </View>
 
-      <View style={[styles.top, {height: insets.top + s(54.5)}]}/>
+      <View style={[styles.top, {height: insets.top + s(54.5)}]} />
       <SafeAreaView style={styles.headerContainer}>
         <View style={headerStyles.container}>
           <TouchableOpacity
@@ -231,15 +228,14 @@ const headerStyles = StyleSheet.create({
     fontSize: s(18),
     fontWeight: '600',
     color: colors.black,
-
   },
   x: {
     width: s(20),
     height: s(20),
   },
   next: {
-    marginLeft: s(20/3),
-    width: s(40/3),
+    marginLeft: s(20 / 3),
+    width: s(40 / 3),
     height: s(20),
     transform: [{rotate: '180deg'}],
   },

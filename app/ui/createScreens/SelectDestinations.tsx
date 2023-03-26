@@ -200,8 +200,8 @@ const headerStyles = StyleSheet.create({
     color: colors.black,
   },
   back: {
-    marginRight: s(20/3),
-    width: s(40/3),
+    marginRight: s(20 / 3),
+    width: s(40 / 3),
     height: s(20),
   },
   confirm: {
