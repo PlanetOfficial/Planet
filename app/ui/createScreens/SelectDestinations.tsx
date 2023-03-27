@@ -141,7 +141,7 @@ const SelectDestinations = ({
                   <ScrollView
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}>
-                    {locations[category?.id]
+                    {locations && locations[category?.id]
                       ? locations[category?.id]?.map((dest: any) => (
                           <View testID={`destination.${category?.id}.${dest?.id}`} key={dest?.id}>
                             <TouchableOpacity

@@ -15,9 +15,10 @@ interface Props {
   marked: boolean;
   image: Object;
   selected: boolean;
+  onUnBookmark?: (placeId: number) => void;
 }
 
-const Place: React.FC<Props> = ({id, name, info, marked, image, selected}) => {
+const Place: React.FC<Props> = ({id, name, info, marked, image, selected, onUnBookmark}) => {
   const [bookmarked, setBookmarked] = useState(marked);
 
   const handleBookmark = async () => {
@@ -30,6 +31,10 @@ const Place: React.FC<Props> = ({id, name, info, marked, image, selected}) => {
     } else {
       // switch to not bookmarked, so call /unbookmark
       response = await unbookmark(authToken, id);
+
+      if (onUnBookmark) {
+        onUnBookmark(id);
+      }
     }
 
     if (response === 200) {
