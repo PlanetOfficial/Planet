@@ -22,6 +22,10 @@ const Library = ({navigation}: {navigation: any}) => {
   const [places, setPlaces] = useState([]);
   const [events, setEvents] = useState([]);
 
+  const removePlace = (placeId: number) => {
+    setPlaces(places.filter((item: any) => item?.id !== placeId));
+  };
+
   useEffect(() => {
     const initializeData = async () => {
       const authToken = await EncryptedStorage.getItem('auth_token');
@@ -42,7 +46,7 @@ const Library = ({navigation}: {navigation: any}) => {
         navigation.navigate('SearchLibrary'),
       )}
       {SegmentedControl(selectedIndex, setIndex)}
-      {selectedIndex === 0 ? Places(places) : Events(events)}
+      {selectedIndex === 0 ? Places(places, removePlace) : Events(events)}
     </SafeAreaView>
   );
 };
@@ -65,7 +69,7 @@ const SegmentedControl = (
   />
 );
 
-const Places = (places: Array<any>) => (
+const Places = (places: Array<any>, removePlace: (placeId: number) => void) => (
   <FlatList
     data={places}
     style={styles.flatlist}
@@ -90,6 +94,7 @@ const Places = (places: Array<any>) => (
               : (null as any)
           }
           selected={false}
+          onUnBookmark={removePlace}
         />
       );
     }}
