@@ -18,7 +18,15 @@ interface Props {
   onUnBookmark?: (placeId: number) => void;
 }
 
-const Place: React.FC<Props> = ({id, name, info, marked, image, selected, onUnBookmark}) => {
+const Place: React.FC<Props> = ({
+  id,
+  name,
+  info,
+  marked,
+  image,
+  selected,
+  onUnBookmark,
+}) => {
   const [bookmarked, setBookmarked] = useState(marked);
 
   const handleBookmark = async () => {

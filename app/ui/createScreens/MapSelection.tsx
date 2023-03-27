@@ -140,7 +140,7 @@ const MapScreen = ({navigation}: {navigation: any}) => {
             {strings.createTabStack.planEvent}
           </Text>
           <TouchableOpacity
-            testID='mapSelectionNext'
+            testID="mapSelectionNext"
             style={headerStyles.next}
             disabled={radius > integers.maxRadiusInMeters}
             onPress={() => {
@@ -160,7 +160,7 @@ const MapScreen = ({navigation}: {navigation: any}) => {
             />
           </TouchableOpacity>
         </View>
-        <View testID='searchLocationInput'>
+        <View testID="searchLocationInput">
           <GooglePlacesAutocomplete
             placeholder={strings.createTabStack.search}
             onPress={(data, details = null) => {

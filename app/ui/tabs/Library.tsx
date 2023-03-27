@@ -23,8 +23,8 @@ const Library = ({navigation}: {navigation: any}) => {
   const [events, setEvents] = useState([]);
 
   const removePlace = (placeId: number) => {
-    setPlaces(places.filter((item: any) => item?.id !== placeId))
-  }
+    setPlaces(places.filter((item: any) => item?.id !== placeId));
+  };
 
   useEffect(() => {
     const initializeData = async () => {

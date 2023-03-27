@@ -90,7 +90,7 @@ const SelectCategories = ({
   };
 
   return (
-    <SafeAreaView testID='selectCategoriesScreenView' style={styles.container}>
+    <SafeAreaView testID="selectCategoriesScreenView" style={styles.container}>
       <View style={headerStyles.container}>
         <TouchableOpacity
           style={headerStyles.back}
@@ -101,7 +101,7 @@ const SelectCategories = ({
           {strings.createTabStack.selectCategories}
         </Text>
         <TouchableOpacity
-          testID='confirmCategories'
+          testID="confirmCategories"
           style={headerStyles.confirm}
           onPress={() =>
             navigation.navigate('SelectDestinations', {
@@ -129,10 +129,10 @@ const SelectCategories = ({
         ))}
       </View>
       <Modal animationType="fade" transparent={true} visible={modalVisible}>
-        <View testID='categoryModalView' style={modalStyles.container}>
+        <View testID="categoryModalView" style={modalStyles.container}>
           <View style={modalStyles.header}>
             <Pressable
-              testID='closeModalView'
+              testID="closeModalView"
               onPress={() => {
                 setModalVisible(false);
                 setSelectedGenre('');
