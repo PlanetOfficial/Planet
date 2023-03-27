@@ -138,7 +138,9 @@ const SelectDestinations = ({
                     showsHorizontalScrollIndicator={false}>
                     {locations[category?.id]
                       ? locations[category?.id]?.map((dest: any) => (
-                          <View testID={`destination.${category?.id}.${dest?.id}`} key={dest?.id}>
+                          <View
+                            testID={`destination.${category?.id}.${dest?.id}`}
+                            key={dest?.id}>
                             <TouchableOpacity
                               onPress={() => handleDestinationSelect(dest)}
                               onLongPress={() =>
@@ -152,14 +154,16 @@ const SelectDestinations = ({
                                 name={dest?.name}
                                 info={`Rating: ${dest?.rating}/10  Price: ${dest?.price}/5`}
                                 marked={bookmarks?.includes(dest?.id)}
-                                image={dest?.images && dest?.images?.length !== 0
-                                  ? {
-                                      uri:
-                                        dest?.images[0]?.prefix +
-                                        misc.imageSize +
-                                        dest?.images[0]?.suffix,
-                                    }
-                                  : (null as any)}
+                                image={
+                                  dest?.images && dest?.images?.length !== 0
+                                    ? {
+                                        uri:
+                                          dest?.images[0]?.prefix +
+                                          misc.imageSize +
+                                          dest?.images[0]?.suffix,
+                                      }
+                                    : (null as any)
+                                }
                                 selected={selectedDestinations?.some(
                                   item => item?.id === dest?.id,
                                 )}
