@@ -35,8 +35,9 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
         </TouchableOpacity>
         <View style={headerStyles.texts}>
           <Text style={headerStyles.title}>{destination?.name}</Text>
-          <Text style={headerStyles.info}>{category}
-          {(destination?.price) ? '・' + '$'.repeat(destination?.price) : null}
+          <Text style={headerStyles.info}>
+            {category}
+            {destination?.price ? '・' + '$'.repeat(destination?.price) : null}
           </Text>
         </View>
       </View>
@@ -123,6 +124,7 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
 
 const styles = StyleSheet.create({
   container: {
+    height: '105%',
     backgroundColor: colors.white,
   },
   images: {
