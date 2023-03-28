@@ -41,7 +41,7 @@ const DestinationDetails = ({
         </TouchableOpacity>
         <View style={headerStyles.texts}>
           <Text style={headerStyles.title}>{destination?.name}</Text>
-          <Text style={headerStyles.info}>{category}・$$$$</Text> {/*TEMP*/}
+          <Text style={headerStyles.info}>{category}・$$$$</Text>
         </View>
       </View>
       <ScrollView>

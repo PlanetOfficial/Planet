@@ -10,7 +10,7 @@ import MapSelection from '../ui/createScreens/MapSelection';
 import SelectCategories from '../ui/createScreens/SelectCategories';
 import SelectDestinations from '../ui/createScreens/SelectDestinations';
 import FinalizePlan from '../ui/createScreens/FinalizePlan';
-import DestinationDetails from '../ui/screens/Place';
+import DestinationDetails from '../ui/screens/DestinationDetails';
 import Event from '../ui/screens/Event';
 import Settings from '../ui/screens/Settings';
 
@@ -38,11 +38,6 @@ function CreatePlanStack() {
         options={{headerShown: false}}
       />
       <PlanCreationStack.Screen
-        name="DestinationDetails"
-        component={DestinationDetails}
-        options={{headerShown: false}}
-      />
-      <PlanCreationStack.Screen
         name="FinalizePlan"
         component={FinalizePlan}
         options={{headerShown: false}}
@@ -62,6 +57,7 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
       <MainStack.Navigator initialRouteName="Main">
         {tabStack()}
         {createStack()}
+        {destinationDetailsStackScreen()}
         {eventStackScreen()}
         {settingsStackScreen()}
         {loginStackScreen()}
@@ -77,6 +73,7 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
         {forgetPassStackScreen()}
         {tabStack()}
         {createStack()}
+        {destinationDetailsStackScreen()}
         {eventStackScreen()}
         {settingsStackScreen()}
       </MainStack.Navigator>
@@ -131,6 +128,16 @@ const createStack = () => {
     />
   );
 };
+
+const destinationDetailsStackScreen = () => {
+  return (
+    <MainStack.Screen
+      name="DestinationDetails"
+      component={DestinationDetails}
+      options={{headerShown: false}}
+    />
+  );
+}
 
 const eventStackScreen = () => {
   return (
