@@ -121,12 +121,17 @@ const SelectDestinations = ({
         <Text style={headerStyles.title}>
           {strings.createTabStack.selectDestinations}
         </Text>
-        <TouchableOpacity testID="confirmDestinations" style={headerStyles.confirm} onPress={handleDone}>
+        <TouchableOpacity
+          testID="confirmDestinations"
+          style={headerStyles.confirm}
+          onPress={handleDone}>
           <Image style={headerStyles.icon} source={icons.confirm} />
         </TouchableOpacity>
       </View>
       <View style={destStyles.container}>
-        <ScrollView testID="selectDestinationsMainScroll" showsVerticalScrollIndicator={false}>
+        <ScrollView
+          testID="selectDestinationsMainScroll"
+          showsVerticalScrollIndicator={false}>
           {/* TODO: Need to display something when no results are found */}
           {categories
             ? categories?.map((category: Category) => (

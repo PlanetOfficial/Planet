@@ -11,7 +11,6 @@ import SelectCategories from '../ui/createScreens/SelectCategories';
 import SelectDestinations from '../ui/createScreens/SelectDestinations';
 import FinalizePlan from '../ui/createScreens/FinalizePlan';
 import DestinationDetails from '../ui/createScreens/!DestinationDetails';
-import Place from '../ui/screens/!Place';
 import Event from '../ui/screens/!Event';
 import Settings from '../ui/screens/Settings';
 
@@ -63,7 +62,6 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
       <MainStack.Navigator initialRouteName="Main">
         {tabStack()}
         {createStack()}
-        {placeStackScreen()}
         {eventStackScreen()}
         {settingsStackScreen()}
         {loginStackScreen()}
@@ -130,16 +128,6 @@ const createStack = () => {
     <MainStack.Screen
       name="CreateStack"
       component={CreatePlanStack}
-      options={{headerShown: false}}
-    />
-  );
-};
-
-const placeStackScreen = () => {
-  return (
-    <MainStack.Screen
-      name="Place"
-      component={Place}
       options={{headerShown: false}}
     />
   );

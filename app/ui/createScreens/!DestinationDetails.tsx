@@ -6,12 +6,15 @@ import {
   SafeAreaView,
   TouchableOpacity,
   Image,
+  ScrollView,
 } from 'react-native';
-
-import {ScrollView} from 'react-native';
+import MapView, {Marker} from 'react-native-maps';
 import misc from '../../constants/misc';
 import {icons} from '../../constants/images';
+import {colors} from '../../constants/theme';
 import strings from '../../constants/strings';
+import {floats} from '../../constants/numbers';
+import {s} from 'react-native-size-matters';
 
 const DestinationDetails = ({
   navigation,
@@ -28,71 +31,76 @@ const DestinationDetails = ({
   };
 
   return (
-    <SafeAreaView>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Image source={icons.back} />
+    <SafeAreaView style={styles.container}>
+      <View style={headerStyles.container}>
+        <TouchableOpacity
+          style={headerStyles.back}
+          onPress={() => navigation.goBack()}>
+          <Image style={headerStyles.icon} source={icons.back} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>{destination?.name}</Text>
+        <View style={headerStyles.texts}>
+          <Text style={headerStyles.title}>{destination?.name}</Text>
+          <Text style={headerStyles.info}>{category}・$$$$</Text>
+        </View>
       </View>
       <ScrollView>
-        <View>
-          <Text style={styles.category}>{category}</Text>
-        </View>
-        <View style={styles.infoContainer}>
-          <Text>{destination?.address?.formatted_address}</Text>
-          {destination?.hours?.display ? (
-            <Text>{strings.createTabStack.hours}</Text>
-          ) : null}
-          <Text>{destination?.hours?.display}</Text>
-          {destination?.price && destination?.price !== 0 ? (
-            <Text>
-              {strings.createTabStack.price}: {destination?.price}
+        <MapView
+          style={styles.map}
+          initialRegion={{
+            latitude: destination?.latitude,
+            longitude: destination?.longitude,
+            latitudeDelta: floats.defaultLatitudeDelta,
+            longitudeDelta: floats.defaultLongitudeDelta,
+          }}>
+          <Marker
+            coordinate={{
+              latitude: destination?.latitude,
+              longitude: destination?.longitude,
+            }}
+          />
+        </MapView>
+        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+          {destination?.images?.length > 0
+            ? destination?.images?.map((image: any) => (
+                <View key={image?.id}>
+                  <Image
+                    source={{uri: getImageURL(image?.prefix, image?.suffix)}}
+                    style={styles.image}
+                  />
+                </View>
+              ))
+            : null}
+        </ScrollView>
+        <View style={rnrStyles.container}>
+          <Text style={rnrStyles.title}>
+            {strings.createTabStack.rnr}:
+            <Text style={rnrStyles.rating}>
+            {destination?.rating >= 0
+              ? ' (' + destination?.rating + '/10)'
+              : null}
             </Text>
-          ) : null}
-          {destination?.rating ? (
-            <Text>{strings.createTabStack.rating}</Text>
-          ) : null}
-          <Text>{destination?.rating}</Text>
-          {destination?.amenities?.wheelchair_accessible ? (
-            <Text>{strings.createTabStack.wheelchair}</Text>
-          ) : null}
-          {destination?.details?.payment?.credit_cards?.accepts_credit_cards ? (
-            <Text>{strings.createTabStack.creditCard}</Text>
-          ) : null}
-          {destination?.parking?.street_parking ? (
-            <Text>{strings.createTabStack.streetParking}</Text>
-          ) : null}
-        </View>
-        <View>
-          <Text>{strings.main.images}</Text>
-          <ScrollView horizontal={true}>
-            {destination?.images?.length > 0
-              ? destination?.images?.map((image: any) => (
-                  <View key={image?.id}>
-                    <Image
-                      source={{uri: getImageURL(image?.prefix, image?.suffix)}}
-                      style={styles.destinationImages}
-                    />
+          </Text>
+          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+            {destination?.reviews
+              ? destination?.reviews?.map((review: any, index: number) => (
+                  <View key={index} style={rnrStyles.review}>
+                    <Text style={rnrStyles.text}>{review?.text}</Text>
                   </View>
                 ))
               : null}
           </ScrollView>
         </View>
-        <View>
-          {destination?.reviews?.length > 0 ? (
-            <Text>{strings.createTabStack.reviews}</Text>
-          ) : null}
-          <View>
-            <ScrollView horizontal={true}>
-              {destination?.reviews
-                ? destination?.reviews?.map((review: any, index: number) => (
-                    <View key={index}>
-                      <Text>{review?.text}</Text>
-                    </View>
-                  ))
-                : null}
-            </ScrollView>
+        <View style={detailStyles.container}>
+          <Text style={detailStyles.title}>{strings.createTabStack.details}:</Text>
+          <View style={detailStyles.infoContainer}>
+            {destination?.hours?.display ? (
+              <Text style={detailStyles.infoTitle}>{strings.createTabStack.hours}:</Text>
+            ) : null}
+            <Text style={detailStyles.info}>{destination?.hours?.display}</Text>
+          </View>
+          <View style={detailStyles.infoContainer}>
+            <Text style={detailStyles.infoTitle}>{strings.createTabStack.address}:</Text>
+            <Text style={detailStyles.info}>{destination?.address?.formatted_address}</Text>
           </View>
         </View>
       </ScrollView>
@@ -101,34 +109,116 @@ const DestinationDetails = ({
 };
 
 const styles = StyleSheet.create({
-  text: {
-    fontSize: 20,
-    fontWeight: '700',
+  container: {
+    flex: 1,
+    backgroundColor: colors.white,
   },
-  header: {
-    height: 60,
+  image: {
+    marginLeft: s(20),
+    width: s(160),
+    height: s(200),
+    borderRadius: s(15),
+  },
+  map: {
+    height: s(200),
+    margin: s(20),
+    borderRadius: s(15),
+  },
+});
+
+const headerStyles = StyleSheet.create({
+  container: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 20,
+    width: '100%',
+    paddingHorizontal: s(20),
+    paddingTop: s(10),
   },
-  headerTitle: {
-    marginLeft: 15,
-    fontSize: 20,
+  texts: {
+    marginLeft: s(10),
+  },
+  title: {
+    fontSize: s(18),
+    fontWeight: '600',
+    color: colors.black,
+  },
+  info: {
+    marginTop: s(5),
+    fontSize: s(14),
+    fontWeight: '600',
+    color: colors.accent,
+  },
+  back: {
+    marginRight: s(20 / 3),
+    width: s(40 / 3),
+    height: s(20),
+  },
+  icon: {
+    width: '100%',
+    height: '100%',
+    tintColor: colors.black,
+  },
+});
+
+const rnrStyles = StyleSheet.create({
+  container: {
+    marginTop: s(20),
+  },
+  title: {
+    marginLeft: s(20),
+    fontSize: s(16),
+    fontWeight: '600',
+    color: colors.black,
+  },
+  rating: {
+    fontWeight: '700',
+    color: colors.accent,
+  },
+  review: {
+    width: s(160),
+    height: s(90),
+    padding: s(10),
+    borderRadius: s(15),
+    backgroundColor: colors.grey,
+    marginLeft: s(20),
+    marginTop: s(5),
+  },
+  text: {
+    fontSize: s(12),
+    fontWeight: '500',
+    color: colors.black,
+  },
+});
+
+const detailStyles = StyleSheet.create({
+  container: {
+    marginTop: s(20),
+  },
+  title: {
+    marginLeft: s(20),
+    fontSize: s(16),
+    fontWeight: '600',
+    color: colors.black,
   },
   infoContainer: {
-    marginTop: 10,
+    marginHorizontal: s(20),
+    marginTop: s(5),
+    marginBottom: s(10),
+    padding: s(15),
+    borderRadius: s(15),
+    backgroundColor: colors.grey,
   },
-  images: {
-    marginTop: 10,
+  infoTitle: {
+    fontSize: s(13),
+    fontWeight: '600',
+    color: colors.accent,
   },
-  destinationImages: {
-    marginLeft: 10,
-    width: 300,
-    height: 200,
-  },
-  ratings: {
-    marginTop: 10,
-  },
+  info: {
+    marginTop: s(5),
+    fontSize: s(13),
+    fontWeight: '500',
+    color: colors.black,
+  }
 });
 
 export default DestinationDetails;
