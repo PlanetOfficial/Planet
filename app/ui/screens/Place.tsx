@@ -31,6 +31,7 @@ const DestinationDetails = ({
   };
 
   return (
+    // TODO: add share button
     <SafeAreaView style={styles.container}>
       <View style={headerStyles.container}>
         <TouchableOpacity
