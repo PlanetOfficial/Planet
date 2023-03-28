@@ -104,6 +104,8 @@ const SelectDestinations = ({
       navigation.navigate('FinalizePlan', {
         selectedDestinations,
         markers,
+        bookmarks,
+        categories,
       });
     }
   };

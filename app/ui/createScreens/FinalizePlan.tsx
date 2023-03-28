@@ -32,6 +32,8 @@ const SelectDestinations = ({
 }) => {
   const [selectedDestinations] = useState(route?.params?.selectedDestinations);
   const [markers] = useState(route?.params?.markers);
+  const [bookmarks] = useState(route?.params?.bookmarks)
+  const [categories] = useState(route?.params?.categories)
   const [eventTitle, setEventTitle] = useState(
     strings.createTabStack.untitledEvent,
   );
@@ -57,6 +59,16 @@ const SelectDestinations = ({
       // TODO: error, make sure connected to internet and logged in, if error persists, log out and log back in
     }
   };
+
+  const getCategoryName = (id: number) => {
+    const category = categories.find((item: any) => id === item.id);
+
+    if (category) {
+      return category.name;
+    }
+  
+    return strings.main.notApplicable;
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -121,8 +133,8 @@ const SelectDestinations = ({
             <Place
               id={item?.id}
               name={item?.name}
-              info={'TODO: idk how to display category'}
-              marked={false} // TODO: display correct marked information
+              info={getCategoryName(item?.category)}
+              marked={bookmarks?.includes(item?.id)}
               image={
                 item?.images && item?.images?.length !== 0
                   ? {
