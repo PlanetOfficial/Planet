@@ -5,6 +5,7 @@ const strings = {
     save: 'Save',
     images: 'Images',
     dash: '-',
+    notApplicable: 'N/A',
   },
   login: {
     login: 'Login',

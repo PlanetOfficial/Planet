@@ -6,19 +6,22 @@ import {
   StyleSheet,
   SafeAreaView,
   Image,
-  Button,
-  ScrollView,
+  FlatList,
   TextInput,
 } from 'react-native';
 import {icons} from '../../constants/images';
+import misc from '../../constants/misc';
 import strings from '../../constants/strings';
 import DatePicker from 'react-native-date-picker';
 import MapView, {Marker} from 'react-native-maps';
+import {s} from 'react-native-size-matters';
+import {colors} from '../../constants/theme';
 
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {sendEvent} from '../../utils/api/CreateCalls/sendEvent';
 import {getRegionForCoordinates} from '../../utils/functions/Misc';
 import {MarkerObject} from '../../utils/interfaces/MarkerObject';
+import Place from '../components/Place';
 
 const SelectDestinations = ({
   navigation,
@@ -29,17 +32,13 @@ const SelectDestinations = ({
 }) => {
   const [selectedDestinations] = useState(route?.params?.selectedDestinations);
   const [markers] = useState(route?.params?.markers);
+  const [bookmarks] = useState(route?.params?.bookmarks);
+  const [categories] = useState(route?.params?.categories);
   const [eventTitle, setEventTitle] = useState(
     strings.createTabStack.untitledEvent,
   );
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
-
-  // const getImage = (imagesData: Array<number>) => {
-  //   // TODO: if there are images provided by API, then return one of those images instead
-
-  //   return icons.x;
-  // };
 
   const handleSave = async () => {
     // send destinations to backend
@@ -61,100 +60,159 @@ const SelectDestinations = ({
     }
   };
 
+  const getCategoryName = (id: number) => {
+    const category = categories.find((item: any) => id === item.id);
+
+    if (category) {
+      return category.name;
+    }
+
+    return strings.main.notApplicable;
+  };
+
   return (
-    <SafeAreaView style={styles.safeAreaView}>
-      <View style={styles.header}>
+    <SafeAreaView style={styles.container}>
+      <View style={headerStyles.container}>
         <TouchableOpacity
+          style={headerStyles.back}
           onPress={() => navigation.navigate('SelectDestinations')}>
-          <Image source={icons.back} />
+          <Image style={headerStyles.icon} source={icons.back} />
         </TouchableOpacity>
-        <TextInput style={styles.headerTitle} onChangeText={setEventTitle}>
-          {eventTitle}
-        </TextInput>
-        <View />
+        <View style={headerStyles.texts}>
+          <TextInput style={headerStyles.title} onChangeText={setEventTitle}>
+            {eventTitle}
+          </TextInput>
+          <View>
+            <TouchableOpacity onPress={() => setOpen(true)}>
+              <Text style={headerStyles.date}>{date.toLocaleDateString()}</Text>
+            </TouchableOpacity>
+            <DatePicker
+              modal
+              open={open}
+              date={date}
+              onConfirm={newDate => {
+                setOpen(false);
+                setDate(newDate);
+              }}
+              onCancel={() => {
+                setOpen(false);
+              }}
+            />
+          </View>
+        </View>
+        <TouchableOpacity
+          style={headerStyles.confirm}
+          onPress={() => {
+            handleSave();
+          }}>
+          <Image style={headerStyles.icon} source={icons.confirm} />
+        </TouchableOpacity>
       </View>
-      <View style={styles.container}>
-        <View>
-          <TouchableOpacity onPress={() => setOpen(true)}>
-            <Text>{date.toLocaleDateString()}</Text>
-          </TouchableOpacity>
-          <DatePicker
-            modal
-            open={open}
-            date={date}
-            onConfirm={newDate => {
-              setOpen(false);
-              setDate(newDate);
-            }}
-            onCancel={() => {
-              setOpen(false);
-            }}
-          />
-        </View>
-        <View>
-          <ScrollView style={styles.scrollView}>
-            <MapView
-              style={styles.map}
-              initialRegion={getRegionForCoordinates(markers)}>
-              {markers?.length > 0
-                ? markers?.map((marker: MarkerObject, index: number) => (
-                    <Marker
-                      key={index}
-                      coordinate={{
-                        latitude: marker?.latitude,
-                        longitude: marker?.longitude,
-                      }}
-                      title={marker?.name}
-                    />
-                  ))
-                : null}
-            </MapView>
-            <Text>{strings.createTabStack.events}</Text>
-            {selectedDestinations
-              ? selectedDestinations?.map((destination: Object) => (
-                  <View key={destination?.id}>
-                    {/* <DestinationSimplified
-                      name={destination?.name}
-                      image={getImage(destination?.images)}
-                    /> */}
-                  </View>
-                ))
-              : null}
-          </ScrollView>
-        </View>
-        <View>
-          <Button title={strings.main.save} onPress={() => handleSave()} />
-        </View>
-      </View>
+      <MapView
+        style={styles.map}
+        initialRegion={getRegionForCoordinates(markers)}>
+        {markers?.length > 0
+          ? markers?.map((marker: MarkerObject, index: number) => (
+              <Marker
+                key={index}
+                coordinate={{
+                  latitude: marker?.latitude,
+                  longitude: marker?.longitude,
+                }}
+                title={marker?.name}
+              />
+            ))
+          : null}
+      </MapView>
+      <FlatList
+        data={selectedDestinations}
+        keyExtractor={item => item?.id}
+        ItemSeparatorComponent={Spacer}
+        renderItem={({item}) => {
+          return (
+            <Place
+              id={item?.id}
+              name={item?.name}
+              info={getCategoryName(item?.category)}
+              marked={bookmarks?.includes(item?.id)}
+              image={
+                item?.images && item?.images?.length !== 0
+                  ? {
+                      uri:
+                        item?.images[0]?.prefix +
+                        misc.imageSize +
+                        item?.images[0]?.suffix,
+                    }
+                  : (null as any)
+              }
+              selected={false}
+            />
+          );
+        }}
+      />
     </SafeAreaView>
   );
 };
 
+const Spacer = () => <View style={styles.separator} />;
+
 const styles = StyleSheet.create({
-  safeAreaView: {
-    flex: 1,
-  },
-  header: {
-    height: 60,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-  },
-  headerTitle: {
-    fontSize: 20,
-  },
   container: {
-    padding: 10,
-    flex: 1,
-  },
-  scrollView: {
-    height: '86%',
+    width: '100%',
+    height: '100%',
+    backgroundColor: colors.white,
   },
   map: {
-    marginTop: 10,
-    height: 450,
-    flex: 1,
+    height: s(200),
+    borderRadius: s(20),
+    margin: s(20),
+    marginTop: 0,
+  },
+  separator: {
+    borderWidth: 0.5,
+    borderColor: colors.grey,
+    marginVertical: s(10),
+    marginHorizontal: s(20),
+  },
+});
+
+const headerStyles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '100%',
+    paddingHorizontal: s(20),
+    paddingVertical: s(10),
+  },
+  texts: {
+    marginLeft: s(10),
+  },
+  title: {
+    fontSize: s(18),
+    fontWeight: '600',
+    color: colors.black,
+  },
+  date: {
+    marginTop: s(5),
+    fontSize: s(14),
+    fontWeight: '700',
+    color: colors.accent,
+  },
+  back: {
+    marginRight: s(20 / 3),
+    width: s(40 / 3),
+    height: s(20),
+  },
+  confirm: {
+    position: 'absolute',
+    right: s(20),
+    width: s(20),
+    height: s(20),
+  },
+  icon: {
+    width: '100%',
+    height: '100%',
+    tintColor: colors.black,
   },
 });
 

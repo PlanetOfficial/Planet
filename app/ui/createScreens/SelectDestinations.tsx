@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {icons} from '../../constants/images';
+import misc from '../../constants/misc';
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 import {s, vs} from 'react-native-size-matters';
@@ -70,12 +71,6 @@ const SelectDestinations = ({
     loadBookmarks();
   }, [latitude, longitude, radius, categories]);
 
-  const getImage = (/*imagesData: Array<number>*/) => {
-    // TODO: if there are images provided by API, then return one of those images instead
-
-    return icons.x;
-  };
-
   const handleDestinationSelect = (destination: any) => {
     if (
       !selectedDestinations?.find((item: any) => item?.id === destination?.id)
@@ -109,6 +104,8 @@ const SelectDestinations = ({
       navigation.navigate('FinalizePlan', {
         selectedDestinations,
         markers,
+        bookmarks,
+        categories,
       });
     }
   };
@@ -159,7 +156,16 @@ const SelectDestinations = ({
                                 name={dest?.name}
                                 info={`Rating: ${dest?.rating}/10  Price: ${dest?.price}/5`}
                                 marked={bookmarks?.includes(dest?.id)}
-                                image={getImage(dest?.images)}
+                                image={
+                                  dest?.images && dest?.images?.length !== 0
+                                    ? {
+                                        uri:
+                                          dest?.images[0]?.prefix +
+                                          misc.imageSize +
+                                          dest?.images[0]?.suffix,
+                                      }
+                                    : (null as any)
+                                }
                                 selected={selectedDestinations?.some(
                                   item => item?.id === dest?.id,
                                 )}

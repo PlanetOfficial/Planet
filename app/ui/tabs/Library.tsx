@@ -109,7 +109,7 @@ const Events = (events: Array<any>) => (
     keyExtractor={item => item?.id}
     ItemSeparatorComponent={Spacer}
     renderItem={({item}) => {
-      const images = getImagesFromURLs(item?.places); // check with lavy
+      const images = getImagesFromURLs(item?.places);
       return (
         <Event
           name={item.name}
