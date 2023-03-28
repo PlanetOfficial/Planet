@@ -1,5 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, FlatList, SafeAreaView, TouchableOpacity} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  SafeAreaView,
+  TouchableOpacity,
+} from 'react-native';
 import {s} from 'react-native-size-matters';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 
@@ -46,7 +52,9 @@ const Library = ({navigation}: {navigation: any}) => {
         navigation.navigate('SearchLibrary'),
       )}
       {SegmentedControl(selectedIndex, setIndex)}
-      {selectedIndex === 0 ? Places(navigation, places, removePlace) : Events(navigation, events)}
+      {selectedIndex === 0
+        ? Places(navigation, places, removePlace)
+        : Events(navigation, events)}
     </SafeAreaView>
   );
 };
@@ -69,7 +77,11 @@ const SegmentedControl = (
   />
 );
 
-const Places = (navigation: any, places: Array<any>, removePlace: (placeId: number) => void) => (
+const Places = (
+  navigation: any,
+  places: Array<any>,
+  removePlace: (placeId: number) => void,
+) => (
   <FlatList
     data={places}
     style={styles.flatlist}
@@ -78,12 +90,13 @@ const Places = (navigation: any, places: Array<any>, removePlace: (placeId: numb
     ItemSeparatorComponent={Spacer}
     renderItem={({item}) => {
       return (
-        <TouchableOpacity onPress={() => {
-          navigation.navigate('Place', {
-            destination: item,
-            category: item?.category?.name,
-          })
-        }}>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('Place', {
+              destination: item,
+              category: item?.category?.name,
+            });
+          }}>
           <Place
             id={item?.id}
             name={item?.name}

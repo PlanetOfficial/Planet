@@ -137,7 +137,7 @@ const destinationDetailsStackScreen = () => {
       options={{headerShown: false}}
     />
   );
-}
+};
 
 const eventStackScreen = () => {
   return (

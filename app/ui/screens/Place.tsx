@@ -16,13 +16,7 @@ import strings from '../../constants/strings';
 import {floats} from '../../constants/numbers';
 import {s} from 'react-native-size-matters';
 
-const Place = ({
-  navigation,
-  route,
-}: {
-  navigation: any;
-  route: any;
-}) => {
+const Place = ({navigation, route}: {navigation: any; route: any}) => {
   const [destination] = useState(route?.params?.destination);
   const [category] = useState(route?.params?.category);
 
@@ -41,10 +35,12 @@ const Place = ({
         </TouchableOpacity>
         <View style={headerStyles.texts}>
           <Text style={headerStyles.title}>{destination?.name}</Text>
-          <Text style={headerStyles.info}>{category}・$$$$</Text>
+          <Text style={headerStyles.info}>{category}
+          {(destination?.price) ? '・' + '$'.repeat(destination?.price) : null}
+          </Text>
         </View>
       </View>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <MapView
           style={styles.map}
           initialRegion={{
@@ -60,7 +56,10 @@ const Place = ({
             }}
           />
         </MapView>
-        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+        <ScrollView
+          style={styles.images}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}>
           {destination?.images?.length > 0
             ? destination?.images?.map((image: any) => (
                 <View key={image?.id}>
@@ -74,12 +73,15 @@ const Place = ({
         </ScrollView>
         <View style={rnrStyles.container}>
           <Text style={rnrStyles.title}>
-            {strings.createTabStack.rnr}:
-            <Text style={rnrStyles.rating}>
-              {destination?.rating >= 0
-                ? ' (' + destination?.rating + '/10)'
-                : null}
-            </Text>
+            {strings.createTabStack.rnr}
+            {':'}
+            {destination?.rating >= 0 ? (
+              <>
+                {' ('}
+                <Text style={rnrStyles.rating}>{destination?.rating}</Text>
+                {'/10)'}
+              </>
+            ) : null}
           </Text>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
             {destination?.reviews
@@ -95,14 +97,16 @@ const Place = ({
           <Text style={detailStyles.title}>
             {strings.createTabStack.details}:
           </Text>
-          <View style={detailStyles.infoContainer}>
-            {destination?.hours?.display ? (
+          {destination?.hours?.display ? (
+            <View style={detailStyles.infoContainer}>
               <Text style={detailStyles.infoTitle}>
                 {strings.createTabStack.hours}:
               </Text>
-            ) : null}
-            <Text style={detailStyles.info}>{destination?.hours?.display}</Text>
-          </View>
+              <Text style={detailStyles.info}>
+                {destination?.hours?.display}
+              </Text>
+            </View>
+          ) : null}
           <View style={detailStyles.infoContainer}>
             <Text style={detailStyles.infoTitle}>
               {strings.createTabStack.address}:
@@ -119,8 +123,14 @@ const Place = ({
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: colors.white,
+  },
+  images: {
+    marginTop: s(10),
+    paddingVertical: s(10),
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderColor: colors.grey,
   },
   image: {
     marginLeft: s(20),
@@ -130,7 +140,8 @@ const styles = StyleSheet.create({
   },
   map: {
     height: s(200),
-    margin: s(20),
+    marginHorizontal: s(20),
+    marginTop: s(10),
     borderRadius: s(15),
   },
 });
@@ -142,6 +153,7 @@ const headerStyles = StyleSheet.create({
     width: '100%',
     paddingHorizontal: s(20),
     paddingTop: s(10),
+    paddingBottom: s(5),
   },
   texts: {
     marginLeft: s(10),
@@ -171,7 +183,10 @@ const headerStyles = StyleSheet.create({
 
 const rnrStyles = StyleSheet.create({
   container: {
-    marginTop: s(20),
+    marginTop: s(10),
+    paddingBottom: s(10),
+    borderBottomWidth: 1,
+    borderBottomColor: colors.grey,
   },
   title: {
     marginLeft: s(20),
@@ -180,12 +195,12 @@ const rnrStyles = StyleSheet.create({
     color: colors.black,
   },
   rating: {
-    fontWeight: '700',
+    fontSize: s(18),
+    fontWeight: '800',
     color: colors.accent,
   },
   review: {
     width: s(160),
-    height: s(90),
     padding: s(10),
     borderRadius: s(15),
     backgroundColor: colors.grey,
@@ -201,7 +216,8 @@ const rnrStyles = StyleSheet.create({
 
 const detailStyles = StyleSheet.create({
   container: {
-    marginTop: s(20),
+    marginTop: s(10),
+    marginBottom: s(50),
   },
   title: {
     marginLeft: s(20),
