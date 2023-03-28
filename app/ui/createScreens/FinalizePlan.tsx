@@ -32,8 +32,8 @@ const SelectDestinations = ({
 }) => {
   const [selectedDestinations] = useState(route?.params?.selectedDestinations);
   const [markers] = useState(route?.params?.markers);
-  const [bookmarks] = useState(route?.params?.bookmarks)
-  const [categories] = useState(route?.params?.categories)
+  const [bookmarks] = useState(route?.params?.bookmarks);
+  const [categories] = useState(route?.params?.categories);
   const [eventTitle, setEventTitle] = useState(
     strings.createTabStack.untitledEvent,
   );
@@ -66,9 +66,9 @@ const SelectDestinations = ({
     if (category) {
       return category.name;
     }
-  
+
     return strings.main.notApplicable;
-  }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
