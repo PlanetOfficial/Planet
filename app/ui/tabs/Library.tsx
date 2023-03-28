@@ -4,8 +4,8 @@ import {s} from 'react-native-size-matters';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 
 import Header from '../components/Header';
-import Place from '../components/Place';
-import Event from '../components/Event';
+import Place from '../components/PlaceCard';
+import Event from '../components/EventCard';
 
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
@@ -79,7 +79,7 @@ const Places = (navigation: any, places: Array<any>, removePlace: (placeId: numb
     renderItem={({item}) => {
       return (
         <TouchableOpacity onPress={() => {
-          navigation.navigate('DestinationDetails', {
+          navigation.navigate('Place', {
             destination: item,
             category: item?.category?.name,
           })

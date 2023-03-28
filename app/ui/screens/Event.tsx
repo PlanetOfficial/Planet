@@ -17,7 +17,7 @@ import {colors} from '../../constants/theme';
 
 import {getRegionForCoordinates} from '../../utils/functions/Misc';
 import {MarkerObject} from '../../utils/interfaces/MarkerObject';
-import Place from '../components/Place';
+import Place from '../components/PlaceCard';
 
 const Event = ({navigation, route}: {navigation: any; route: any}) => {
   const [selectedDestinations] = useState(route?.params?.selectedDestinations);

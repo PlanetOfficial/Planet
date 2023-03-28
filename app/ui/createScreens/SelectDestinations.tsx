@@ -15,7 +15,7 @@ import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 import {s, vs} from 'react-native-size-matters';
 
-import Place from '../components/Place';
+import Place from '../components/PlaceCard';
 
 import {requestLocations} from '../../utils/api/CreateCalls/requestLocations';
 
@@ -152,7 +152,7 @@ const SelectDestinations = ({
                             <TouchableOpacity
                               onPress={() => handleDestinationSelect(dest)}
                               onLongPress={() =>
-                                navigation.navigate('DestinationDetails', {
+                                navigation.navigate('Place', {
                                   destination: dest,
                                   category: category?.name,
                                 })

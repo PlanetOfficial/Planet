@@ -21,7 +21,7 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 import {sendEvent} from '../../utils/api/CreateCalls/sendEvent';
 import {getRegionForCoordinates} from '../../utils/functions/Misc';
 import {MarkerObject} from '../../utils/interfaces/MarkerObject';
-import Place from '../components/Place';
+import Place from '../components/PlaceCard';
 
 const SelectDestinations = ({
   navigation,

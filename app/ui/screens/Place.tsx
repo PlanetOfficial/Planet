@@ -16,7 +16,7 @@ import strings from '../../constants/strings';
 import {floats} from '../../constants/numbers';
 import {s} from 'react-native-size-matters';
 
-const DestinationDetails = ({
+const Place = ({
   navigation,
   route,
 }: {
@@ -230,4 +230,4 @@ const detailStyles = StyleSheet.create({
   },
 });
 
-export default DestinationDetails;
+export default Place;

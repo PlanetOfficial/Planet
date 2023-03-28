@@ -10,7 +10,7 @@ import MapSelection from '../ui/createScreens/MapSelection';
 import SelectCategories from '../ui/createScreens/SelectCategories';
 import SelectDestinations from '../ui/createScreens/SelectDestinations';
 import FinalizePlan from '../ui/createScreens/FinalizePlan';
-import DestinationDetails from '../ui/screens/DestinationDetails';
+import Place from '../ui/screens/Place';
 import Event from '../ui/screens/Event';
 import Settings from '../ui/screens/Settings';
 
@@ -132,8 +132,8 @@ const createStack = () => {
 const destinationDetailsStackScreen = () => {
   return (
     <MainStack.Screen
-      name="DestinationDetails"
-      component={DestinationDetails}
+      name="Place"
+      component={Place}
       options={{headerShown: false}}
     />
   );
