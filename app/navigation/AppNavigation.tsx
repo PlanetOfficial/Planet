@@ -77,7 +77,6 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
         {forgetPassStackScreen()}
         {tabStack()}
         {createStack()}
-        {placeStackScreen()}
         {eventStackScreen()}
         {settingsStackScreen()}
       </MainStack.Navigator>

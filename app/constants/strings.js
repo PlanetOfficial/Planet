@@ -49,7 +49,7 @@ const strings = {
     price: 'Price',
     rnr: 'Ratings & Reviews',
     events: 'Events',
-    details: 'Details'
+    details: 'Details',
   },
   settings: {
     name: 'Name',

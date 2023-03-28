@@ -19,20 +19,12 @@ import {getRegionForCoordinates} from '../../utils/functions/Misc';
 import {MarkerObject} from '../../utils/interfaces/MarkerObject';
 import Place from '../components/Place';
 
-const Event = ({
-  navigation,
-  route,
-}: {
-  navigation: any;
-  route: any;
-}) => {
+const Event = ({navigation, route}: {navigation: any; route: any}) => {
   const [selectedDestinations] = useState(route?.params?.selectedDestinations);
   const [markers] = useState(route?.params?.markers);
   const [bookmarks] = useState(route?.params?.bookmarks);
   const [categories] = useState(route?.params?.categories);
-  const [eventTitle] = useState(
-    strings.createTabStack.untitledEvent,
-  );
+  const [eventTitle] = useState(strings.createTabStack.untitledEvent);
   const [date] = useState(new Date());
 
   const getCategoryName = (id: number) => {
@@ -50,7 +42,9 @@ const Event = ({
       <View style={headerStyles.container}>
         <TouchableOpacity
           style={headerStyles.back}
-          onPress={() => navigation.navigate('SelectDestinations')}>
+          onPress={() => navigation.navigate('Library')}>
+          {' '}
+          {/* NOT back to library all the time tho*/}
           <Image style={headerStyles.icon} source={icons.back} />
         </TouchableOpacity>
         <View style={headerStyles.texts}>

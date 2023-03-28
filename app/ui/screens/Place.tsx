@@ -41,7 +41,7 @@ const DestinationDetails = ({
         </TouchableOpacity>
         <View style={headerStyles.texts}>
           <Text style={headerStyles.title}>{destination?.name}</Text>
-          <Text style={headerStyles.info}>{category}・$$$$</Text>
+          <Text style={headerStyles.info}>{category}・$$$$</Text> {/*TEMP*/}
         </View>
       </View>
       <ScrollView>
@@ -76,9 +76,9 @@ const DestinationDetails = ({
           <Text style={rnrStyles.title}>
             {strings.createTabStack.rnr}:
             <Text style={rnrStyles.rating}>
-            {destination?.rating >= 0
-              ? ' (' + destination?.rating + '/10)'
-              : null}
+              {destination?.rating >= 0
+                ? ' (' + destination?.rating + '/10)'
+                : null}
             </Text>
           </Text>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
@@ -92,16 +92,24 @@ const DestinationDetails = ({
           </ScrollView>
         </View>
         <View style={detailStyles.container}>
-          <Text style={detailStyles.title}>{strings.createTabStack.details}:</Text>
+          <Text style={detailStyles.title}>
+            {strings.createTabStack.details}:
+          </Text>
           <View style={detailStyles.infoContainer}>
             {destination?.hours?.display ? (
-              <Text style={detailStyles.infoTitle}>{strings.createTabStack.hours}:</Text>
+              <Text style={detailStyles.infoTitle}>
+                {strings.createTabStack.hours}:
+              </Text>
             ) : null}
             <Text style={detailStyles.info}>{destination?.hours?.display}</Text>
           </View>
           <View style={detailStyles.infoContainer}>
-            <Text style={detailStyles.infoTitle}>{strings.createTabStack.address}:</Text>
-            <Text style={detailStyles.info}>{destination?.address?.formatted_address}</Text>
+            <Text style={detailStyles.infoTitle}>
+              {strings.createTabStack.address}:
+            </Text>
+            <Text style={detailStyles.info}>
+              {destination?.address?.formatted_address}
+            </Text>
           </View>
         </View>
       </ScrollView>
@@ -219,7 +227,7 @@ const detailStyles = StyleSheet.create({
     fontSize: s(13),
     fontWeight: '500',
     color: colors.black,
-  }
+  },
 });
 
 export default DestinationDetails;
