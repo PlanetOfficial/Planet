@@ -61,8 +61,7 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
         <ScrollView
           horizontal={true}
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.imagesContainer}
-          >
+          contentContainerStyle={styles.imagesContainer}>
           {destination?.images?.length > 0
             ? destination?.images?.map((image: any) => (
                 <View key={image?.id}>
@@ -87,7 +86,10 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
               </>
             ) : null}
           </Text>
-          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={rnrStyles.contentContainer}>
+          <ScrollView
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={rnrStyles.contentContainer}>
             {destination?.reviews
               ? destination?.reviews?.map((review: any, index: number) => (
                   <View key={index} style={rnrStyles.review}>
@@ -190,12 +192,6 @@ const headerStyles = StyleSheet.create({
 });
 
 const rnrStyles = StyleSheet.create({
-  container: {
-    marginTop: s(10),
-    paddingBottom: s(10),
-    borderBottomWidth: 1,
-    borderBottomColor: colors.grey,
-  },
   contentContainer: {
     marginLeft: s(20),
   },

@@ -102,7 +102,6 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
                       }
                     : icons.defaultIcon
                 }
-                selected={false}
               />
             </TouchableOpacity>
           );
@@ -122,20 +121,17 @@ const styles = StyleSheet.create({
   },
   flatlist: {
     paddingHorizontal: s(20),
+    marginTop: s(10),
   },
   map: {
     height: s(200),
-    borderRadius: s(20),
+    borderRadius: s(15),
     marginHorizontal: s(20),
-  },
-  flatlist: {
-    marginTop: s(10),
   },
   separator: {
     borderWidth: 0.5,
     borderColor: colors.grey,
     marginVertical: s(10),
-    marginHorizontal: s(20),
   },
   contentContainer: {
     paddingVertical: s(10),

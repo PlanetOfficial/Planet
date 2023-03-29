@@ -138,12 +138,12 @@ const SelectDestinations = ({
                     showsHorizontalScrollIndicator={false}
                     decelerationRate={'fast'}
                     snapToInterval={s(325)}
-                    snapToAlignment={"start"}
-                    pagingEnabled
-                    >
+                    snapToAlignment={'start'}
+                    pagingEnabled>
                     {locations && locations[category?.id]
                       ? locations[category?.id]?.map((dest: any) => (
-                          <View style={styles.card}
+                          <View
+                            style={styles.card}
                             testID={`destination.${category?.id}.${dest?.id}`}
                             key={dest?.id}>
                             <TouchableOpacity
@@ -169,9 +169,9 @@ const SelectDestinations = ({
                                       }
                                     : icons.defaultIcon
                                 }
-                                selected={selectedDestinations?.some(
-                                  item => item?.id === dest?.id,
-                                )}
+                                // selected={selectedDestinations?.some(
+                                //   item => item?.id === dest?.id,
+                                // )}
                               />
                             </TouchableOpacity>
                           </View>

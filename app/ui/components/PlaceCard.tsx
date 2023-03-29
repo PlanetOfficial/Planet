@@ -14,7 +14,6 @@ interface Props {
   info: string;
   marked: boolean;
   image: Object;
-  selected: boolean;
   onUnBookmark?: (placeId: number) => void;
 }
 
@@ -24,7 +23,6 @@ const Place: React.FC<Props> = ({
   info,
   marked,
   image,
-  selected,
   onUnBookmark,
 }) => {
   const [bookmarked, setBookmarked] = useState(marked);
@@ -57,9 +55,7 @@ const Place: React.FC<Props> = ({
   return (
     // TODO: selection UI is obviously temporary
     <View style={styles.container}>
-      <View
-        style={
-          styles.header}>
+      <View style={styles.header}>
         <View style={styles.headerBG} />
         <View>
           <Text numberOfLines={1} style={styles.name}>

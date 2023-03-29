@@ -281,7 +281,7 @@ const searchStyles = StyleSheet.create({
     paddingLeft: s(15),
     color: colors.black,
     borderTopColor: colors.darkgrey,
-    borderRadius: 20,
+    borderRadius: s(15),
     backgroundColor: colors.white,
   },
   separator: {

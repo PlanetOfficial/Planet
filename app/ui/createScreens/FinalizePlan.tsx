@@ -154,7 +154,6 @@ const SelectDestinations = ({
                       }
                     : icons.defaultIcon
                 }
-                selected={false}
               />
             </TouchableOpacity>
           );
@@ -178,7 +177,7 @@ const styles = StyleSheet.create({
   },
   map: {
     height: s(200),
-    borderRadius: s(20),
+    borderRadius: s(15),
     marginHorizontal: s(20),
   },
   separator: {
