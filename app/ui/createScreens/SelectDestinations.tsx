@@ -123,7 +123,7 @@ const SelectDestinations = ({
         <ScrollView
           testID="selectDestinationsMainScroll"
           showsVerticalScrollIndicator={false}>
-          {/* TODO: Need to display something when no results are found */}
+          {/* TODO-NAOTO: Need to display something when no results are found */}
           {categories
             ? categories?.map((category: Category) => (
                 <View key={category?.id}>
