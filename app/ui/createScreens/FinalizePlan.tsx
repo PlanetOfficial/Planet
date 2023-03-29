@@ -130,23 +130,31 @@ const SelectDestinations = ({
         ItemSeparatorComponent={Spacer}
         renderItem={({item}) => {
           return (
-            <Place
-              id={item?.id}
-              name={item?.name}
-              info={getCategoryName(item?.category)}
-              marked={bookmarks?.includes(item?.id)}
-              image={
-                item?.images && item?.images?.length !== 0
-                  ? {
-                      uri:
-                        item?.images[0]?.prefix +
-                        misc.imageSize +
-                        item?.images[0]?.suffix,
-                    }
-                  : icons.defaultIcon
-              }
-              selected={false}
-            />
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('Place', {
+                  destination: item,
+                  category: getCategoryName(item?.category),
+                });
+              }}>
+              <Place
+                id={item?.id}
+                name={item?.name}
+                info={getCategoryName(item?.category)}
+                marked={bookmarks?.includes(item?.id)}
+                image={
+                  item?.images && item?.images?.length !== 0
+                    ? {
+                        uri:
+                          item?.images[0]?.prefix +
+                          misc.imageSize +
+                          item?.images[0]?.suffix,
+                      }
+                    : icons.defaultIcon
+                }
+                selected={false}
+              />
+            </TouchableOpacity>
           );
         }}
       />
