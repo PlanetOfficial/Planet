@@ -57,7 +57,7 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
       <MainStack.Navigator initialRouteName="Main">
         {tabStack()}
         {createStack()}
-        {destinationDetailsStackScreen()}
+        {placeStackScreen()}
         {eventStackScreen()}
         {settingsStackScreen()}
         {loginStackScreen()}
@@ -73,7 +73,7 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
         {forgetPassStackScreen()}
         {tabStack()}
         {createStack()}
-        {destinationDetailsStackScreen()}
+        {placeStackScreen()}
         {eventStackScreen()}
         {settingsStackScreen()}
       </MainStack.Navigator>
@@ -129,7 +129,7 @@ const createStack = () => {
   );
 };
 
-const destinationDetailsStackScreen = () => {
+const placeStackScreen = () => {
   return (
     <MainStack.Screen
       name="Place"
