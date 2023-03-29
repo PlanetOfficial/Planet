@@ -13,7 +13,7 @@ import {icons} from '../../constants/images';
 import misc from '../../constants/misc';
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
-import {s, vs} from 'react-native-size-matters';
+import {s} from 'react-native-size-matters';
 
 import Place from '../components/PlaceCard';
 
@@ -178,6 +178,7 @@ const SelectDestinations = ({
                         ))
                       : null}
                   </ScrollView>
+                  <View style={styles.separator} />
                 </View>
               ))
             : null}
@@ -201,6 +202,12 @@ const styles = StyleSheet.create({
   card: {
     width: s(310),
     marginRight: s(15),
+  },
+  separator: {
+    borderWidth: 0.5,
+    borderColor: colors.grey,
+    marginVertical: s(10),
+    marginHorizontal: s(20),
   },
 });
 
@@ -236,17 +243,17 @@ const headerStyles = StyleSheet.create({
 
 const destStyles = StyleSheet.create({
   container: {
-    marginTop: vs(10),
+    marginTop: s(10),
     width: '100%',
-    height: vs(590),
+    flex: 1,
   },
   header: {
-    marginTop: vs(10),
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    marginHorizontal: s(25),
-    height: s(40),
+    marginHorizontal: s(20),
+    paddingHorizontal: s(5),
+    marginBottom: s(10),
   },
   icon: {
     width: s(30),

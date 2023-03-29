@@ -57,6 +57,7 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
             }}
           />
         </MapView>
+        <View style={styles.separator} />
         <ScrollView
           style={styles.images}
           horizontal={true}
@@ -74,7 +75,8 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
               ))
             : null}
         </ScrollView>
-        <View style={rnrStyles.container}>
+        <View style={styles.separator} />
+        <View>
           <Text style={rnrStyles.title}>
             {strings.createTabStack.rnr}
             {':'}
@@ -96,6 +98,7 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
               : null}
           </ScrollView>
         </View>
+        <View style={styles.separator} />
         <View style={detailStyles.container}>
           <Text style={detailStyles.title}>
             {strings.createTabStack.details}:
@@ -150,6 +153,12 @@ const styles = StyleSheet.create({
     marginHorizontal: s(20),
     marginTop: s(10),
     borderRadius: s(15),
+  },
+  separator: {
+    borderWidth: 0.5,
+    borderColor: colors.grey,
+    marginVertical: s(10),
+    marginHorizontal: s(20),
   },
 });
 
@@ -226,7 +235,6 @@ const rnrStyles = StyleSheet.create({
 
 const detailStyles = StyleSheet.create({
   container: {
-    marginTop: s(10),
     marginBottom: s(50),
   },
   title: {
