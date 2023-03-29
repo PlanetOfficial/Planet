@@ -73,9 +73,11 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
           : null}
       </MapView>
       <FlatList
+        style={styles.flatlist}
         data={fullEventData?.places}
         keyExtractor={item => item?.id}
         ItemSeparatorComponent={Spacer}
+        contentContainerStyle={styles.contentContainer}
         renderItem={({item}) => {
           return (
             <TouchableOpacity
@@ -121,14 +123,19 @@ const styles = StyleSheet.create({
   map: {
     height: s(200),
     borderRadius: s(20),
-    margin: s(20),
-    marginTop: 0,
+    marginHorizontal: s(20),
+  },
+  flatlist: {
+    marginTop: s(10),
   },
   separator: {
     borderWidth: 0.5,
     borderColor: colors.grey,
     marginVertical: s(10),
     marginHorizontal: s(20),
+  },
+  contentContainer: {
+    paddingVertical: s(10)
   },
 });
 

@@ -57,8 +57,8 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
             }}
           />
         </MapView>
+        <View style={styles.separator}/>
         <ScrollView
-          style={styles.images}
           horizontal={true}
           showsHorizontalScrollIndicator={false}>
           {destination?.images?.length > 0
@@ -72,7 +72,8 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
               ))
             : null}
         </ScrollView>
-        <View style={rnrStyles.container}>
+        <View style={styles.separator}/>
+        <View>
           <Text style={rnrStyles.title}>
             {strings.createTabStack.rnr}
             {':'}
@@ -94,6 +95,7 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
               : null}
           </ScrollView>
         </View>
+        <View style={styles.separator}/>
         <View style={detailStyles.container}>
           <Text style={detailStyles.title}>
             {strings.createTabStack.details}:
@@ -127,13 +129,6 @@ const styles = StyleSheet.create({
     height: '105%',
     backgroundColor: colors.white,
   },
-  images: {
-    marginTop: s(10),
-    paddingVertical: s(10),
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    borderColor: colors.grey,
-  },
   image: {
     marginLeft: s(20),
     width: s(160),
@@ -145,6 +140,12 @@ const styles = StyleSheet.create({
     marginHorizontal: s(20),
     marginTop: s(10),
     borderRadius: s(15),
+  },
+  separator: {
+    borderWidth: 0.5,
+    borderColor: colors.grey,
+    marginVertical: s(10),
+    marginHorizontal: s(20),
   },
 });
 
@@ -184,12 +185,6 @@ const headerStyles = StyleSheet.create({
 });
 
 const rnrStyles = StyleSheet.create({
-  container: {
-    marginTop: s(10),
-    paddingBottom: s(10),
-    borderBottomWidth: 1,
-    borderBottomColor: colors.grey,
-  },
   title: {
     marginLeft: s(20),
     fontSize: s(16),
@@ -218,7 +213,6 @@ const rnrStyles = StyleSheet.create({
 
 const detailStyles = StyleSheet.create({
   container: {
-    marginTop: s(10),
     marginBottom: s(50),
   },
   title: {

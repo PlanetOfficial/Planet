@@ -55,13 +55,10 @@ const Place: React.FC<Props> = ({
   };
 
   return (
-    // TODO: selection UI is obviously temporary
     <View style={styles.container}>
       <View
-        style={[
-          styles.header,
-          {backgroundColor: selected ? colors.accent : colors.white},
-        ]}>
+        style={styles.header}>
+        <View style={styles.headerBG}/>
         <View>
           <Text numberOfLines={1} style={styles.name}>
             {name}
@@ -85,32 +82,46 @@ const Place: React.FC<Props> = ({
 
 const styles = StyleSheet.create({
   container: {
+    height: s(200),
     marginHorizontal: s(20),
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: s(5),
+    height: s(50),
+  },
+  headerBG: {
+    position: 'absolute',
+    backgroundColor: colors.white,
+    opacity: 0.85,
+    width: '101%',
+    height: '100%',
+    borderTopLeftRadius: s(15),
+    borderTopRightRadius: s(15),
   },
   name: {
+    marginLeft: s(10),
     width: s(260),
     fontSize: s(18),
     fontWeight: '700',
     color: colors.black,
   },
   info: {
+    marginLeft: s(10),
     fontSize: s(12),
     fontWeight: '500',
     color: colors.accent,
   },
   image: {
+    position: 'absolute',
     width: '100%',
-    height: s(150),
-    borderBottomLeftRadius: s(15),
-    borderBottomRightRadius: s(15),
+    height: s(200),
+    borderRadius: s(15),
+    zIndex: -1,
   },
   icon: {
+    marginRight: s(10),
     width: s(27),
     height: s(27),
   },

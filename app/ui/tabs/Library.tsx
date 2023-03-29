@@ -88,6 +88,7 @@ const Places = (
     initialNumToRender={4}
     keyExtractor={item => item?.id}
     ItemSeparatorComponent={Spacer}
+    contentContainerStyle={styles.contentContainer}
     renderItem={({item}) => {
       return (
         <TouchableOpacity
@@ -128,6 +129,7 @@ const Events = (navigation: any, events: Array<any>, places: Array<any>) => (
     initialNumToRender={4}
     keyExtractor={item => item?.id}
     ItemSeparatorComponent={Spacer}
+    contentContainerStyle={styles.contentContainer}
     renderItem={({item}) => {
       const images = getImagesFromURLs(item?.places);
       return (
@@ -160,6 +162,9 @@ const styles = StyleSheet.create({
   },
   flatlist: {
     width: s(350),
+  },
+  contentContainer: {
+    paddingVertical: s(10)
   },
   separator: {
     borderWidth: 0.5,
