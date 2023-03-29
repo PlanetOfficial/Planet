@@ -123,7 +123,7 @@ const SelectCategories = ({
             <View style={genreStyles.imageContainer}>
               <Image style={genreStyles.image} source={genre.image} />
             </View>
-            <Image style={genreStyles.blur} source={vectors.shape1} />
+            <Image style={genreStyles.blur} source={vectors.blur} />
             <Text style={genreStyles.text}>{genre.name}</Text>
           </TouchableOpacity>
         ))}

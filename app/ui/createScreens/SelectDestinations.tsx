@@ -15,13 +15,13 @@ import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 import {s, vs} from 'react-native-size-matters';
 
-import Place from '../components/Place';
+import Place from '../components/PlaceCard';
 
 import {requestLocations} from '../../utils/api/CreateCalls/requestLocations';
 
 import {Category} from '../../utils/interfaces/category';
-import {MarkerObject} from '../../utils/interfaces/MarkerObject';
 import {getBookmarks} from '../../utils/api/shared/getBookmarks';
+import {getMarkerArray} from '../../utils/functions/Misc';
 
 const SelectDestinations = ({
   navigation,
@@ -90,16 +90,7 @@ const SelectDestinations = ({
 
   const handleDone = () => {
     if (selectedDestinations?.length > 0) {
-      let markers: Array<MarkerObject> = [];
-      selectedDestinations?.forEach((destination: any) => {
-        const markerObject = {
-          name: destination?.name,
-          latitude: destination?.latitude,
-          longitude: destination?.longitude,
-        };
-
-        markers.push(markerObject);
-      });
+      let markers = getMarkerArray(selectedDestinations);
 
       navigation.navigate('FinalizePlan', {
         selectedDestinations,
@@ -121,12 +112,17 @@ const SelectDestinations = ({
         <Text style={headerStyles.title}>
           {strings.createTabStack.selectDestinations}
         </Text>
-        <TouchableOpacity testID="confirmDestinations" style={headerStyles.confirm} onPress={handleDone}>
+        <TouchableOpacity
+          testID="confirmDestinations"
+          style={headerStyles.confirm}
+          onPress={handleDone}>
           <Image style={headerStyles.icon} source={icons.confirm} />
         </TouchableOpacity>
       </View>
       <View style={destStyles.container}>
-        <ScrollView testID="selectDestinationsMainScroll" showsVerticalScrollIndicator={false}>
+        <ScrollView
+          testID="selectDestinationsMainScroll"
+          showsVerticalScrollIndicator={false}>
           {/* TODO: Need to display something when no results are found */}
           {categories
             ? categories?.map((category: Category) => (
@@ -147,7 +143,7 @@ const SelectDestinations = ({
                             <TouchableOpacity
                               onPress={() => handleDestinationSelect(dest)}
                               onLongPress={() =>
-                                navigation.navigate('DestinationDetails', {
+                                navigation.navigate('Place', {
                                   destination: dest,
                                   category: category?.name,
                                 })
@@ -165,7 +161,7 @@ const SelectDestinations = ({
                                           misc.imageSize +
                                           dest?.images[0]?.suffix,
                                       }
-                                    : (null as any)
+                                    : icons.defaultIcon
                                 }
                                 selected={selectedDestinations?.some(
                                   item => item?.id === dest?.id,

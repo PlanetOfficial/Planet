@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -7,110 +7,58 @@ import {
   SafeAreaView,
   Image,
   FlatList,
-  TextInput,
 } from 'react-native';
 import {icons} from '../../constants/images';
 import misc from '../../constants/misc';
-import strings from '../../constants/strings';
-import DatePicker from 'react-native-date-picker';
 import MapView, {Marker} from 'react-native-maps';
 import {s} from 'react-native-size-matters';
 import {colors} from '../../constants/theme';
 
-import EncryptedStorage from 'react-native-encrypted-storage';
-import {sendEvent} from '../../utils/api/CreateCalls/sendEvent';
-import {getRegionForCoordinates} from '../../utils/functions/Misc';
+import {
+  getMarkerArray,
+  getRegionForCoordinates,
+} from '../../utils/functions/Misc';
 import {MarkerObject} from '../../utils/interfaces/MarkerObject';
 import Place from '../components/PlaceCard';
+import {getEventPlaces} from '../../utils/api/libraryCalls/getEventPlaces';
 
-const SelectDestinations = ({
-  navigation,
-  route,
-}: {
-  navigation: any;
-  route: any;
-}) => {
-  const [selectedDestinations] = useState(route?.params?.selectedDestinations);
-  const [markers] = useState(route?.params?.markers);
+const Event = ({navigation, route}: {navigation: any; route: any}) => {
+  const [eventId] = useState(route?.params?.eventData?.id);
+  const [eventTitle] = useState(route?.params?.eventData?.name);
+  const [date] = useState(route?.params?.eventData?.date);
   const [bookmarks] = useState(route?.params?.bookmarks);
-  const [categories] = useState(route?.params?.categories);
-  const [eventTitle, setEventTitle] = useState(
-    strings.createTabStack.untitledEvent,
-  );
-  const [date, setDate] = useState(new Date());
-  const [open, setOpen] = useState(false);
 
-  const handleSave = async () => {
-    // send destinations to backend
-    const placeIds = selectedDestinations?.map((item: any) => item?.id);
-    const authToken = await EncryptedStorage.getItem('auth_token');
+  const [fullEventData, setFullEventData] = useState({});
+  const [markers, setMarkers] = useState([]);
 
-    const responseStatus = await sendEvent(
-      eventTitle,
-      placeIds,
-      authToken,
-      date.toLocaleDateString(),
-    );
+  useEffect(() => {
+    const getEventData = async () => {
+      const data = await getEventPlaces(eventId);
+      setFullEventData(data);
 
-    if (responseStatus === 200) {
-      navigation.navigate('TabStack', {screen: 'Library'});
-      // TODO: show successful save
-    } else {
-      // TODO: error, make sure connected to internet and logged in, if error persists, log out and log back in
-    }
-  };
+      const markerArray = getMarkerArray(data?.places);
+      setMarkers(markerArray);
+    };
 
-  const getCategoryName = (id: number) => {
-    const category = categories.find((item: any) => id === item.id);
-
-    if (category) {
-      return category.name;
-    }
-
-    return strings.main.notApplicable;
-  };
+    getEventData();
+  }, [eventId]);
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={headerStyles.container}>
         <TouchableOpacity
           style={headerStyles.back}
-          onPress={() => navigation.navigate('SelectDestinations')}>
+          onPress={() => navigation.navigate('Library')}>
           <Image style={headerStyles.icon} source={icons.back} />
         </TouchableOpacity>
         <View style={headerStyles.texts}>
-          <TextInput style={headerStyles.title} onChangeText={setEventTitle}>
-            {eventTitle}
-          </TextInput>
+          <Text style={headerStyles.title}>{eventTitle}</Text>
           <View>
-            <TouchableOpacity onPress={() => setOpen(true)}>
-              <Text style={headerStyles.date}>{date.toLocaleDateString()}</Text>
-            </TouchableOpacity>
-            <DatePicker
-              modal
-              open={open}
-              date={date}
-              onConfirm={newDate => {
-                setOpen(false);
-                setDate(newDate);
-              }}
-              onCancel={() => {
-                setOpen(false);
-              }}
-            />
+            <Text style={headerStyles.date}>{date}</Text>
           </View>
         </View>
-        <TouchableOpacity
-          style={headerStyles.confirm}
-          onPress={() => {
-            handleSave();
-          }}>
-          <Image style={headerStyles.icon} source={icons.confirm} />
-        </TouchableOpacity>
       </View>
-      <MapView
-        style={styles.map}
-        initialRegion={getRegionForCoordinates(markers)}>
+      <MapView style={styles.map} region={getRegionForCoordinates(markers)}>
         {markers?.length > 0
           ? markers?.map((marker: MarkerObject, index: number) => (
               <Marker
@@ -125,7 +73,7 @@ const SelectDestinations = ({
           : null}
       </MapView>
       <FlatList
-        data={selectedDestinations}
+        data={fullEventData?.places}
         keyExtractor={item => item?.id}
         ItemSeparatorComponent={Spacer}
         renderItem={({item}) => {
@@ -134,13 +82,13 @@ const SelectDestinations = ({
               onPress={() => {
                 navigation.navigate('Place', {
                   destination: item,
-                  category: getCategoryName(item?.category),
+                  category: item?.category?.name,
                 });
               }}>
               <Place
                 id={item?.id}
                 name={item?.name}
-                info={getCategoryName(item?.category)}
+                info={item?.category?.name}
                 marked={bookmarks?.includes(item?.id)}
                 image={
                   item?.images && item?.images?.length !== 0
@@ -224,4 +172,4 @@ const headerStyles = StyleSheet.create({
   },
 });
 
-export default SelectDestinations;
+export default Event;
