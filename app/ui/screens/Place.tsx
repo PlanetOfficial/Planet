@@ -58,48 +58,54 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
           />
         </MapView>
         <View style={styles.separator} />
-        <ScrollView
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.imagesContainer}>
-          {destination?.images?.length > 0
-            ? destination?.images?.map((image: any) => (
+        {destination?.images?.length > 0 ? (
+          <>
+            <ScrollView
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.imagesContainer}>
+              {destination?.images?.map((image: any) => (
                 <View key={image?.id}>
                   <Image
                     source={{uri: getImageURL(image?.prefix, image?.suffix)}}
                     style={styles.image}
                   />
                 </View>
-              ))
-            : null}
-        </ScrollView>
-        <View style={styles.separator} />
+              ))}
+            </ScrollView>
+            <View style={styles.separator} />
+          </>
+        ) : null}
         <View>
-          <Text style={rnrStyles.title}>
-            {strings.createTabStack.rnr}
-            {':'}
-            {destination?.rating >= 0 ? (
-              <>
-                {' ('}
-                <Text style={rnrStyles.rating}>{destination?.rating}</Text>
-                {'/10)'}
-              </>
-            ) : null}
-          </Text>
-          <ScrollView
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={rnrStyles.contentContainer}>
-            {destination?.reviews
-              ? destination?.reviews?.map((review: any, index: number) => (
-                  <View key={index} style={rnrStyles.review}>
-                    <Text style={rnrStyles.text}>{review?.text}</Text>
-                  </View>
-                ))
-              : null}
-          </ScrollView>
+          {destination?.rating >= 0 || destination?.reviews.length > 0 ? (
+            <>
+              <Text style={rnrStyles.title}>
+                {strings.createTabStack.rnr}
+                {':'}
+                {destination?.rating >= 0 ? (
+                  <>
+                    {' ('}
+                    <Text style={rnrStyles.rating}>{destination?.rating}</Text>
+                    {'/10)'}
+                  </>
+                ) : null}
+              </Text>
+              <ScrollView
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={rnrStyles.contentContainer}>
+                {destination?.reviews
+                  ? destination?.reviews?.map((review: any, index: number) => (
+                      <View key={index} style={rnrStyles.review}>
+                        <Text style={rnrStyles.text}>{review?.text}</Text>
+                      </View>
+                    ))
+                  : null}
+              </ScrollView>
+              <View style={styles.separator} />
+            </>
+          ) : null}
         </View>
-        <View style={styles.separator} />
         <View style={detailStyles.container}>
           <Text style={detailStyles.title}>
             {strings.createTabStack.details}:
