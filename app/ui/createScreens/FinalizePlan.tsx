@@ -125,6 +125,7 @@ const SelectDestinations = ({
           : null}
       </MapView>
       <FlatList
+        style={styles.flatlist}
         data={selectedDestinations}
         keyExtractor={item => item?.id}
         ItemSeparatorComponent={Spacer}
@@ -169,6 +170,9 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     backgroundColor: colors.white,
+  },
+  flatlist: {
+    paddingHorizontal: s(20),
   },
   map: {
     height: s(200),

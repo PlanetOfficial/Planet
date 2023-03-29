@@ -56,7 +56,7 @@ const Place: React.FC<Props> = ({
 
   return (
     // TODO: selection UI is obviously temporary
-    <View style={styles.container}>
+    <View>
       <View
         style={[
           styles.header,
@@ -84,9 +84,6 @@ const Place: React.FC<Props> = ({
 };
 
 const styles = StyleSheet.create({
-  container: {
-    marginHorizontal: s(20),
-  },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',

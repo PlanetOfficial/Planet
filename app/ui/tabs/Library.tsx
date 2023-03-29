@@ -160,6 +160,8 @@ const styles = StyleSheet.create({
   },
   flatlist: {
     width: s(350),
+    paddingHorizontal: s(20),
+
   },
   separator: {
     borderWidth: 0.5,

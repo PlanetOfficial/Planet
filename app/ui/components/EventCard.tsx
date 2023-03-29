@@ -12,7 +12,7 @@ interface Props {
 
 const Event: React.FC<Props> = ({name, info, image}) => {
   return (
-    <View style={styles.container}>
+    <View>
       <View style={styles.header}>
         <Text numberOfLines={1} style={styles.name}>
           {name}
@@ -25,9 +25,6 @@ const Event: React.FC<Props> = ({name, info, image}) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    marginHorizontal: s(20),
-  },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
