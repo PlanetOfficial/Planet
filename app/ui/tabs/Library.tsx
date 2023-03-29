@@ -131,12 +131,13 @@ const Events = (navigation: any, events: Array<any>, places: Array<any>) => (
     renderItem={({item}) => {
       const images = getImagesFromURLs(item?.places);
       return (
-        <TouchableOpacity onPress={() => {
-          navigation.navigate('Event', {
-            eventData: item,
-            bookmarks: places,
-          })
-        }}>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('Event', {
+              eventData: item,
+              bookmarks: places,
+            });
+          }}>
           <Event
             name={item?.name}
             info={item?.date}

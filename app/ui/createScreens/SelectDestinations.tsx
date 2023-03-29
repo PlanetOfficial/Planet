@@ -21,7 +21,7 @@ import {requestLocations} from '../../utils/api/CreateCalls/requestLocations';
 
 import {Category} from '../../utils/interfaces/category';
 import {getBookmarks} from '../../utils/api/shared/getBookmarks';
-import { getMarkerArray } from '../../utils/functions/Misc';
+import {getMarkerArray} from '../../utils/functions/Misc';
 
 const SelectDestinations = ({
   navigation,

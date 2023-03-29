@@ -10,17 +10,20 @@ import {
 } from 'react-native';
 import {icons} from '../../constants/images';
 import misc from '../../constants/misc';
-import strings from '../../constants/strings';
 import MapView, {Marker} from 'react-native-maps';
 import {s} from 'react-native-size-matters';
 import {colors} from '../../constants/theme';
 
-import {getMarkerArray, getRegionForCoordinates} from '../../utils/functions/Misc';
+import {
+  getMarkerArray,
+  getRegionForCoordinates,
+} from '../../utils/functions/Misc';
 import {MarkerObject} from '../../utils/interfaces/MarkerObject';
 import Place from '../components/PlaceCard';
-import { getEventPlaces } from '../../utils/api/libraryCalls/getEventPlaces';
+import {getEventPlaces} from '../../utils/api/libraryCalls/getEventPlaces';
 
 const Event = ({navigation, route}: {navigation: any; route: any}) => {
+  const [eventId] = useState(route?.params?.eventData?.id);
   const [eventTitle] = useState(route?.params?.eventData?.name);
   const [date] = useState(route?.params?.eventData?.date);
   const [bookmarks] = useState(route?.params?.bookmarks);
@@ -30,15 +33,15 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
 
   useEffect(() => {
     const getEventData = async () => {
-      const data = await getEventPlaces(route?.params?.eventData?.id);
+      const data = await getEventPlaces(eventId);
       setFullEventData(data);
 
       const markerArray = getMarkerArray(data?.places);
       setMarkers(markerArray);
-    }
+    };
 
     getEventData();
-  }, [])
+  }, [eventId]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -55,9 +58,7 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
           </View>
         </View>
       </View>
-      <MapView
-        style={styles.map}
-        region={getRegionForCoordinates(markers)}>
+      <MapView style={styles.map} region={getRegionForCoordinates(markers)}>
         {markers?.length > 0
           ? markers?.map((marker: MarkerObject, index: number) => (
               <Marker
@@ -77,12 +78,13 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
         ItemSeparatorComponent={Spacer}
         renderItem={({item}) => {
           return (
-            <TouchableOpacity onPress={() => {
-              navigation.navigate('Place', {
-                destination: item,
-                category: item?.category?.name,
-              });
-            }}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('Place', {
+                  destination: item,
+                  category: item?.category?.name,
+                });
+              }}>
               <Place
                 id={item?.id}
                 name={item?.name}

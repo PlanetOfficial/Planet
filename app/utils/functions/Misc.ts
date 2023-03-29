@@ -3,7 +3,7 @@ import haversine from 'haversine-distance';
 import {MarkerObject} from '../interfaces/MarkerObject';
 import {coordinate} from '../interfaces/coordinate';
 import misc from '../../constants/misc';
-import { floats } from '../../constants/numbers';
+import {floats} from '../../constants/numbers';
 
 /*
   Given a point and the longitudeDelta, calculate the radius of the circle (the
@@ -120,4 +120,4 @@ export const getMarkerArray = (places: Array<any>) => {
   });
 
   return markers;
-}
+};
