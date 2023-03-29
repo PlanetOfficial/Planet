@@ -56,7 +56,7 @@ const Place: React.FC<Props> = ({
 
   return (
     // TODO: selection UI is obviously temporary
-    <View>
+    <View style={styles.container}>
       <View
         style={
           styles.header}>

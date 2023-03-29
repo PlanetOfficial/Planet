@@ -59,7 +59,6 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
         </MapView>
         <View style={styles.separator} />
         <ScrollView
-          style={styles.images}
           horizontal={true}
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.imagesContainer}
@@ -134,13 +133,6 @@ const styles = StyleSheet.create({
   },
   imagesContainer: {
     paddingLeft: s(20),
-  },
-  images: {
-    marginTop: s(10),
-    paddingVertical: s(10),
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    borderColor: colors.grey,
   },
   image: {
     marginRight: s(10),
