@@ -120,6 +120,9 @@ const styles = StyleSheet.create({
     height: '100%',
     backgroundColor: colors.white,
   },
+  flatlist: {
+    paddingHorizontal: s(20),
+  },
   map: {
     height: s(200),
     borderRadius: s(20),

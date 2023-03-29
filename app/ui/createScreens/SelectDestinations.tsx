@@ -132,12 +132,18 @@ const SelectDestinations = ({
                     <Text style={destStyles.name}>{category?.name}</Text>
                   </View>
                   <ScrollView
+                    contentContainerStyle={styles.contentContainer}
                     testID={`category.${category?.id}.scrollView`}
                     horizontal={true}
-                    showsHorizontalScrollIndicator={false}>
+                    showsHorizontalScrollIndicator={false}
+                    decelerationRate={'fast'}
+                    snapToInterval={s(325)}
+                    snapToAlignment={"start"}
+                    pagingEnabled
+                    >
                     {locations && locations[category?.id]
                       ? locations[category?.id]?.map((dest: any) => (
-                          <View
+                          <View style={styles.card}
                             testID={`destination.${category?.id}.${dest?.id}`}
                             key={dest?.id}>
                             <TouchableOpacity
@@ -188,6 +194,14 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     backgroundColor: colors.white,
+  },
+  contentContainer: {
+    paddingLeft: s(20),
+    paddingRight: s(5),
+  },
+  card: {
+    width: s(310),
+    marginRight: s(15),
   },
   separator: {
     borderWidth: 0.5,

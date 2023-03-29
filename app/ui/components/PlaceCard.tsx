@@ -55,8 +55,11 @@ const Place: React.FC<Props> = ({
   };
 
   return (
+    // TODO: selection UI is obviously temporary
     <View style={styles.container}>
-      <View style={styles.header}>
+      <View
+        style={
+          styles.header}>
         <View style={styles.headerBG} />
         <View>
           <Text numberOfLines={1} style={styles.name}>
@@ -82,7 +85,6 @@ const Place: React.FC<Props> = ({
 const styles = StyleSheet.create({
   container: {
     height: s(200),
-    marginHorizontal: s(20),
   },
   header: {
     flexDirection: 'row',

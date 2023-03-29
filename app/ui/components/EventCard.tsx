@@ -29,7 +29,6 @@ const Event: React.FC<Props> = ({name, info, image}) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: s(20),
     height: s(200),
   },
   header: {

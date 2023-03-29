@@ -162,6 +162,7 @@ const styles = StyleSheet.create({
   },
   flatlist: {
     width: s(350),
+    paddingHorizontal: s(20),
   },
   contentContainer: {
     paddingVertical: s(10),
@@ -170,7 +171,6 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     borderColor: colors.grey,
     marginVertical: s(10),
-    marginHorizontal: s(20),
   },
 });
 

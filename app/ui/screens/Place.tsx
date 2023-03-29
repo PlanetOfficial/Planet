@@ -58,7 +58,11 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
           />
         </MapView>
         <View style={styles.separator} />
-        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+        <ScrollView
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.imagesContainer}
+          >
           {destination?.images?.length > 0
             ? destination?.images?.map((image: any) => (
                 <View key={image?.id}>
@@ -83,7 +87,7 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
               </>
             ) : null}
           </Text>
-          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={rnrStyles.contentContainer}>
             {destination?.reviews
               ? destination?.reviews?.map((review: any, index: number) => (
                   <View key={index} style={rnrStyles.review}>
@@ -127,8 +131,11 @@ const styles = StyleSheet.create({
     height: '105%',
     backgroundColor: colors.white,
   },
+  imagesContainer: {
+    paddingLeft: s(20),
+  },
   image: {
-    marginLeft: s(20),
+    marginRight: s(10),
     width: s(160),
     height: s(200),
     borderRadius: s(15),
@@ -183,6 +190,15 @@ const headerStyles = StyleSheet.create({
 });
 
 const rnrStyles = StyleSheet.create({
+  container: {
+    marginTop: s(10),
+    paddingBottom: s(10),
+    borderBottomWidth: 1,
+    borderBottomColor: colors.grey,
+  },
+  contentContainer: {
+    marginLeft: s(20),
+  },
   title: {
     marginLeft: s(20),
     fontSize: s(16),
@@ -199,7 +215,7 @@ const rnrStyles = StyleSheet.create({
     padding: s(10),
     borderRadius: s(15),
     backgroundColor: colors.grey,
-    marginLeft: s(20),
+    marginRight: s(10),
     marginTop: s(5),
   },
   text: {

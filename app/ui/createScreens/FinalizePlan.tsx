@@ -172,19 +172,19 @@ const styles = StyleSheet.create({
     height: '100%',
     backgroundColor: colors.white,
   },
+  flatlist: {
+    marginTop: s(10),
+    paddingHorizontal: s(20),
+  },
   map: {
     height: s(200),
     borderRadius: s(20),
     marginHorizontal: s(20),
   },
-  flatlist: {
-    marginTop: s(10),
-  },
   separator: {
     borderWidth: 0.5,
     borderColor: colors.grey,
     marginVertical: s(10),
-    marginHorizontal: s(20),
   },
   contentContainer: {
     paddingVertical: s(10),
