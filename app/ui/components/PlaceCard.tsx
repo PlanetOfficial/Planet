@@ -56,9 +56,8 @@ const Place: React.FC<Props> = ({
 
   return (
     <View style={styles.container}>
-      <View
-        style={styles.header}>
-        <View style={styles.headerBG}/>
+      <View style={styles.header}>
+        <View style={styles.headerBG} />
         <View>
           <Text numberOfLines={1} style={styles.name}>
             {name}

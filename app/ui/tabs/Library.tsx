@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
     width: s(350),
   },
   contentContainer: {
-    paddingVertical: s(10)
+    paddingVertical: s(10),
   },
   separator: {
     borderWidth: 0.5,

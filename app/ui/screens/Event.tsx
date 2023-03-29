@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
     marginHorizontal: s(20),
   },
   contentContainer: {
-    paddingVertical: s(10)
+    paddingVertical: s(10),
   },
 });
 

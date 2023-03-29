@@ -57,10 +57,8 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
             }}
           />
         </MapView>
-        <View style={styles.separator}/>
-        <ScrollView
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}>
+        <View style={styles.separator} />
+        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
           {destination?.images?.length > 0
             ? destination?.images?.map((image: any) => (
                 <View key={image?.id}>
@@ -72,7 +70,7 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
               ))
             : null}
         </ScrollView>
-        <View style={styles.separator}/>
+        <View style={styles.separator} />
         <View>
           <Text style={rnrStyles.title}>
             {strings.createTabStack.rnr}
@@ -95,7 +93,7 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
               : null}
           </ScrollView>
         </View>
-        <View style={styles.separator}/>
+        <View style={styles.separator} />
         <View style={detailStyles.container}>
           <Text style={detailStyles.title}>
             {strings.createTabStack.details}:
