@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -15,27 +15,30 @@ import MapView, {Marker} from 'react-native-maps';
 import {s} from 'react-native-size-matters';
 import {colors} from '../../constants/theme';
 
-import {getRegionForCoordinates} from '../../utils/functions/Misc';
+import {getMarkerArray, getRegionForCoordinates} from '../../utils/functions/Misc';
 import {MarkerObject} from '../../utils/interfaces/MarkerObject';
 import Place from '../components/PlaceCard';
+import { getEventPlaces } from '../../utils/api/libraryCalls/getEventPlaces';
 
 const Event = ({navigation, route}: {navigation: any; route: any}) => {
-  const [selectedDestinations] = useState(route?.params?.selectedDestinations);
-  const [markers] = useState(route?.params?.markers);
+  const [eventTitle] = useState(route?.params?.eventData?.name);
+  const [date] = useState(route?.params?.eventData?.date);
   const [bookmarks] = useState(route?.params?.bookmarks);
-  const [categories] = useState(route?.params?.categories);
-  const [eventTitle] = useState(strings.createTabStack.untitledEvent);
-  const [date] = useState(new Date());
 
-  const getCategoryName = (id: number) => {
-    const category = categories.find((item: any) => id === item.id);
+  const [fullEventData, setFullEventData] = useState({});
+  const [markers, setMarkers] = useState([]);
 
-    if (category) {
-      return category.name;
+  useEffect(() => {
+    const getEventData = async () => {
+      const data = await getEventPlaces(route?.params?.eventData?.id);
+      setFullEventData(data);
+
+      const markerArray = getMarkerArray(data?.places);
+      setMarkers(markerArray);
     }
 
-    return strings.main.notApplicable;
-  };
+    getEventData();
+  }, [])
 
   return (
     <SafeAreaView style={styles.container}>
@@ -43,20 +46,18 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
         <TouchableOpacity
           style={headerStyles.back}
           onPress={() => navigation.navigate('Library')}>
-          {' '}
-          {/* NOT back to library all the time tho*/}
           <Image style={headerStyles.icon} source={icons.back} />
         </TouchableOpacity>
         <View style={headerStyles.texts}>
           <Text style={headerStyles.title}>{eventTitle}</Text>
           <View>
-            <Text style={headerStyles.date}>{date.toLocaleDateString()}</Text>
+            <Text style={headerStyles.date}>{date}</Text>
           </View>
         </View>
       </View>
       <MapView
         style={styles.map}
-        initialRegion={getRegionForCoordinates(markers)}>
+        region={getRegionForCoordinates(markers)}>
         {markers?.length > 0
           ? markers?.map((marker: MarkerObject, index: number) => (
               <Marker
@@ -71,28 +72,35 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
           : null}
       </MapView>
       <FlatList
-        data={selectedDestinations}
+        data={fullEventData?.places}
         keyExtractor={item => item?.id}
         ItemSeparatorComponent={Spacer}
         renderItem={({item}) => {
           return (
-            <Place
-              id={item?.id}
-              name={item?.name}
-              info={getCategoryName(item?.category)}
-              marked={bookmarks?.includes(item?.id)}
-              image={
-                item?.images && item?.images?.length !== 0
-                  ? {
-                      uri:
-                        item?.images[0]?.prefix +
-                        misc.imageSize +
-                        item?.images[0]?.suffix,
-                    }
-                  : (null as any)
-              }
-              selected={false}
-            />
+            <TouchableOpacity onPress={() => {
+              navigation.navigate('Place', {
+                destination: item,
+                category: item?.category?.name,
+              });
+            }}>
+              <Place
+                id={item?.id}
+                name={item?.name}
+                info={item?.category?.name}
+                marked={bookmarks?.includes(item?.id)}
+                image={
+                  item?.images && item?.images?.length !== 0
+                    ? {
+                        uri:
+                          item?.images[0]?.prefix +
+                          misc.imageSize +
+                          item?.images[0]?.suffix,
+                      }
+                    : (null as any)
+                }
+                selected={false}
+              />
+            </TouchableOpacity>
           );
         }}
       />

@@ -3,6 +3,7 @@ import haversine from 'haversine-distance';
 import {MarkerObject} from '../interfaces/MarkerObject';
 import {coordinate} from '../interfaces/coordinate';
 import misc from '../../constants/misc';
+import { floats } from '../../constants/numbers';
 
 /*
   Given a point and the longitudeDelta, calculate the radius of the circle (the
@@ -30,6 +31,15 @@ export const getDistanceFromCoordinates = (
 };
 
 export const getRegionForCoordinates = (points: Array<MarkerObject>) => {
+  if (!points || points?.length === 0) {
+    return {
+      latitude: floats.defaultLatitude,
+      longitude: floats.defaultLongitude,
+      latitudeDelta: floats.defaultLatitudeDelta,
+      longitudeDelta: floats.defaultLongitudeDelta,
+    };
+  }
+
   // find the minimum and maximum latitude and longitude coordinates
   const latitudes = points.map(point => point.latitude);
   const longitudes = points.map(point => point.longitude);
@@ -92,3 +102,22 @@ export const getImagesFromURLs = (places: Array<any>) => {
 
   return images;
 };
+
+/*
+  Given an array of destinations, filter that array into an array of
+  MarkerObjects.
+*/
+export const getMarkerArray = (places: Array<any>) => {
+  let markers: Array<MarkerObject> = [];
+  places?.forEach((destination: any) => {
+    const markerObject = {
+      name: destination?.name,
+      latitude: destination?.latitude,
+      longitude: destination?.longitude,
+    };
+
+    markers.push(markerObject);
+  });
+
+  return markers;
+}

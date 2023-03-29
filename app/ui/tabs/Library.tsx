@@ -54,7 +54,7 @@ const Library = ({navigation}: {navigation: any}) => {
       {SegmentedControl(selectedIndex, setIndex)}
       {selectedIndex === 0
         ? Places(navigation, places, removePlace)
-        : Events(navigation, events)}
+        : Events(navigation, events, places)}
     </SafeAreaView>
   );
 };
@@ -121,7 +121,7 @@ const Places = (
   />
 );
 
-const Events = (navigation: any, events: Array<any>) => (
+const Events = (navigation: any, events: Array<any>, places: Array<any>) => (
   <FlatList
     data={events}
     style={styles.flatlist}
@@ -131,11 +131,18 @@ const Events = (navigation: any, events: Array<any>) => (
     renderItem={({item}) => {
       const images = getImagesFromURLs(item?.places);
       return (
-        <Event
-          name={item.name}
-          info={item.date}
-          image={images ? {uri: images[0]} : (null as any)}
-        />
+        <TouchableOpacity onPress={() => {
+          navigation.navigate('Event', {
+            eventData: item,
+            bookmarks: places,
+          })
+        }}>
+          <Event
+            name={item?.name}
+            info={item?.date}
+            image={images ? {uri: images[0]} : (null as any)}
+          />
+        </TouchableOpacity>
       );
     }}
   />
