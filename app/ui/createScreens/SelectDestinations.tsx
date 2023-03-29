@@ -161,7 +161,7 @@ const SelectDestinations = ({
                                           misc.imageSize +
                                           dest?.images[0]?.suffix,
                                       }
-                                    : (null as any)
+                                    : icons.defaultIcon
                                 }
                                 selected={selectedDestinations?.some(
                                   item => item?.id === dest?.id,

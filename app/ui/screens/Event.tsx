@@ -98,7 +98,7 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
                           misc.imageSize +
                           item?.images[0]?.suffix,
                       }
-                    : (null as any)
+                    : icons.defaultIcon
                 }
                 selected={false}
               />

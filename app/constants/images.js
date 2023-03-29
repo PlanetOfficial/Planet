@@ -18,6 +18,7 @@ export const icons = {
   confirm: require('../assets/icons/confirm.png'),
   bookmark: require('../assets/icons/bookmark.png'),
   user: require('../assets/icons/user.png'),
+  defaultIcon: require('../assets/icons/x.png'),
 };
 
 export const genreIcons = {

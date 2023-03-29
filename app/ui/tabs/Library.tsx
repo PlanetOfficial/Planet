@@ -110,7 +110,7 @@ const Places = (
                       misc.imageSize +
                       item?.images[0]?.suffix,
                   }
-                : (null as any)
+                : icons.defaultIcon
             }
             selected={false}
             onUnBookmark={removePlace}
@@ -141,7 +141,7 @@ const Events = (navigation: any, events: Array<any>, places: Array<any>) => (
           <Event
             name={item?.name}
             info={item?.date}
-            image={images ? {uri: images[0]} : (null as any)}
+            image={images ? {uri: images[0]} : icons.defaultIcon}
           />
         </TouchableOpacity>
       );

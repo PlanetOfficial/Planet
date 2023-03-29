@@ -143,7 +143,7 @@ const SelectDestinations = ({
                         misc.imageSize +
                         item?.images[0]?.suffix,
                     }
-                  : (null as any)
+                  : icons.defaultIcon
               }
               selected={false}
             />
