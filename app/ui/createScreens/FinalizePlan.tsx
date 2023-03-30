@@ -71,15 +71,19 @@ const SelectDestinations = ({
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView testID="finalizeScreenView" style={styles.container}>
       <View style={headerStyles.container}>
         <TouchableOpacity
+          testID="finalizeScreenBack"
           style={headerStyles.back}
           onPress={() => navigation.navigate('SelectDestinations')}>
           <Image style={headerStyles.icon} source={icons.back} />
         </TouchableOpacity>
         <View style={headerStyles.texts}>
-          <TextInput style={headerStyles.title} onChangeText={setEventTitle}>
+          <TextInput
+            testID="eventTitleText"
+            style={headerStyles.title}
+            onChangeText={setEventTitle}>
             {eventTitle}
           </TextInput>
           <View>
@@ -101,6 +105,7 @@ const SelectDestinations = ({
           </View>
         </View>
         <TouchableOpacity
+          testID="saveEventButton"
           style={headerStyles.confirm}
           onPress={() => {
             handleSave();

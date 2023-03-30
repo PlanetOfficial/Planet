@@ -132,6 +132,7 @@ const MapScreen = ({navigation}: {navigation: any}) => {
       <SafeAreaView style={styles.headerContainer}>
         <View style={headerStyles.container}>
           <TouchableOpacity
+            testID="mapSelectionScreenBack"
             style={headerStyles.x}
             onPress={() => navigation.navigate('TabStack')}>
             <Image style={headerStyles.icon} source={icons.x} />

@@ -9,7 +9,7 @@ const Header = (title: string, icon: Object, onPress: any) => {
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>
       {icon ? (
-        <TouchableOpacity onPress={onPress}>
+        <TouchableOpacity testID="headerRightButton" onPress={onPress}>
           <Image style={styles.icon} source={icon} />
         </TouchableOpacity>
       ) : null}

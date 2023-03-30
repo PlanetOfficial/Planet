@@ -43,7 +43,7 @@ const Account = (navigation: any) => {
   };
 
   return (
-    <View style={accountStyles.container}>
+    <View testID="settingsScreenView" style={accountStyles.container}>
       <View style={accountStyles.input}>
         <Text style={accountStyles.prompt}>{strings.settings.name}:</Text>
         <TextInput
@@ -75,7 +75,7 @@ const Account = (navigation: any) => {
         <Text style={accountStyles.upgrade}>{strings.settings.upgrade}</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={handleLogout}>
-        <Text style={accountStyles.logoutButtonText}>
+        <Text testID="logoutButton" style={accountStyles.logoutButtonText}>
           {strings.settings.logout}
         </Text>
       </TouchableOpacity>

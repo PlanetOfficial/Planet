@@ -64,6 +64,7 @@ const SegmentedControl = (
   setIndex: React.Dispatch<React.SetStateAction<number>>,
 ) => (
   <SegmentedControlTab
+    testIDs={['saved', 'events']}
     tabsContainerStyle={sctStyles.container}
     tabStyle={sctStyles.tab}
     activeTabStyle={sctStyles.activeTab}
@@ -83,6 +84,7 @@ const Places = (
   removePlace: (placeId: number) => void,
 ) => (
   <FlatList
+    testID="bookmarksList"
     data={places}
     style={styles.flatlist}
     initialNumToRender={4}
@@ -123,6 +125,7 @@ const Places = (
 
 const Events = (navigation: any, events: Array<any>, places: Array<any>) => (
   <FlatList
+    testID="eventHistoryList"
     data={events}
     style={styles.flatlist}
     initialNumToRender={4}
