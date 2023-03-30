@@ -177,7 +177,6 @@ const MapScreen = ({navigation}: {navigation: any}) => {
               }
             }}
             query={{
-              // TODO: Use ENV obviously
               key: GoogleMapsAPIKey,
               language: 'en',
             }}

@@ -17,7 +17,7 @@ import strings from '../../constants/strings';
 import {getCategories} from '../../utils/api/CreateCalls/getCategories';
 import {colors} from '../../constants/theme';
 
-// TODO: remove this and make it dynamic once images are settled
+// TODO: retrieve genres data from the database instead.
 const genres = [
   {
     id: 1,
@@ -133,6 +133,7 @@ const SelectCategories = ({
           {selectedCategories.map((selected: any) => (
             <View key={selected.id} style={selectionStyles.category}>
               <Image style={selectionStyles.icon} source={icons.settings} />
+              {/* TODO: remove categories when pressed. */}
               <TouchableOpacity style={selectionStyles.xButton}>
                 <Image style={selectionStyles.x} source={icons.x} />
               </TouchableOpacity>
@@ -182,7 +183,7 @@ const SelectCategories = ({
                         }
                       }}>
                       <View style={categoryStyles.container}>
-                        {/* TODO: CONNECT TO BACKEND */}
+                        {/* TODO: display correct category icon. */}
                         <Image
                           style={categoryStyles.image}
                           source={icons.settings}
@@ -299,10 +300,10 @@ const genreStyles = StyleSheet.create({
 const modalStyles = StyleSheet.create({
   container: {
     position: 'absolute',
-    top: s(120), // TODO-NAOTO: CENTER THIS
     left: s(15),
+    top: '15%',
     width: s(320),
-    height: s(500),
+    height: '65%',
     borderRadius: s(15),
     borderWidth: 2,
     borderColor: colors.white,

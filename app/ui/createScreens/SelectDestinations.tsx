@@ -36,9 +36,11 @@ const SelectDestinations = ({
   const [categories] = useState(route?.params?.selectedCategories);
 
   // gets all locations from selectedCategories
-  const [locations, setLocations] = useState({});
-  const [selectedDestinations, setSelectedDestinations] = useState([]);
-  const [bookmarks, setBookmarks] = useState([]);
+  const [locations, setLocations]: [any, any] = useState({});
+  const [selectedDestinations, setSelectedDestinations]: [any, any] = useState(
+    [],
+  );
+  const [bookmarks, setBookmarks]: [any, any] = useState([]);
 
   useEffect(() => {
     const loadDestinations = async (categoryIds: Array<number>) => {
@@ -57,7 +59,7 @@ const SelectDestinations = ({
       const authToken = await EncryptedStorage.getItem('auth_token');
       const response = await getBookmarks(authToken);
 
-      let bookmarksLoaded: Array<number> = [];
+      let bookmarksLoaded: any = [];
       response?.forEach((bookmark: any) => {
         bookmarksLoaded?.push(bookmark?.id);
       });
@@ -75,7 +77,7 @@ const SelectDestinations = ({
     if (
       !selectedDestinations?.find((item: any) => item?.id === destination?.id)
     ) {
-      setSelectedDestinations(prevDestinations => [
+      setSelectedDestinations((prevDestinations: any) => [
         ...prevDestinations,
         destination,
       ]);
@@ -123,7 +125,6 @@ const SelectDestinations = ({
         <ScrollView
           testID="selectDestinationsMainScroll"
           showsVerticalScrollIndicator={false}>
-          {/* TODO-NAOTO: Need to display something when no results are found */}
           {categories
             ? categories?.map((category: Category) => (
                 <View key={category?.id}>
