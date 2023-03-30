@@ -93,7 +93,7 @@ const SelectCategories = ({
     <SafeAreaView testID="selectCategoriesScreenView" style={styles.container}>
       <View style={headerStyles.container}>
         <TouchableOpacity
-          testID='selectCategoriesScreenBack'
+          testID="selectCategoriesScreenBack"
           style={headerStyles.back}
           onPress={() => navigation.navigate('MapSelection')}>
           <Image style={headerStyles.icon} source={icons.back} />

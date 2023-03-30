@@ -102,10 +102,12 @@ const SelectDestinations = ({
   };
 
   return (
-    <SafeAreaView testID='selectDestinationsScreenView' style={styles.container}>
+    <SafeAreaView
+      testID="selectDestinationsScreenView"
+      style={styles.container}>
       <View style={headerStyles.container}>
         <TouchableOpacity
-          testID='selectDestinationsScreenBack'
+          testID="selectDestinationsScreenBack"
           style={headerStyles.back}
           onPress={() => navigation.navigate('SelectCategories')}>
           <Image style={headerStyles.icon} source={icons.back} />

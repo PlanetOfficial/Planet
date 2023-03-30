@@ -25,7 +25,7 @@ const Profile = ({navigation}: {navigation: any}) => {
   }, []);
 
   return (
-    <SafeAreaView testID='profileScreenView' style={styles.container}>
+    <SafeAreaView testID="profileScreenView" style={styles.container}>
       {Header(strings.title.profile, icons.settings, () =>
         navigation.navigate('Settings'),
       )}
