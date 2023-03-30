@@ -14,6 +14,7 @@ interface Props {
   info: string;
   marked: boolean;
   image: Object;
+  selected: boolean;
   onUnBookmark?: (placeId: number) => void;
 }
 
@@ -23,6 +24,7 @@ const Place: React.FC<Props> = ({
   info,
   marked,
   image,
+  selected,
   onUnBookmark,
 }) => {
   const [bookmarked, setBookmarked] = useState(marked);
@@ -55,7 +57,12 @@ const Place: React.FC<Props> = ({
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <View style={styles.headerBG} />
+        <View
+          style={[
+            styles.headerBG,
+            {backgroundColor: selected ? colors.accent : colors.white},
+          ]}
+        />
         <View>
           <Text numberOfLines={1} style={styles.name}>
             {name}
@@ -89,9 +96,8 @@ const styles = StyleSheet.create({
   },
   headerBG: {
     position: 'absolute',
-    backgroundColor: colors.white,
     opacity: 0.85,
-    width: '101%',
+    width: '100%',
     height: '100%',
     borderTopLeftRadius: s(15),
     borderTopRightRadius: s(15),

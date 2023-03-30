@@ -115,6 +115,7 @@ const Places = (
                   }
                 : icons.defaultIcon
             }
+            selected={false}
             onUnBookmark={removePlace}
           />
         </TouchableOpacity>
