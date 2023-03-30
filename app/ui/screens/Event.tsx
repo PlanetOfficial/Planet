@@ -28,7 +28,7 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
   const [date] = useState(route?.params?.eventData?.date);
   const [bookmarks] = useState(route?.params?.bookmarks);
 
-  const [fullEventData, setFullEventData] : [any, any] = useState({});
+  const [fullEventData, setFullEventData]: [any, any] = useState({});
   const [markers, setMarkers] = useState([]);
 
   useEffect(() => {
@@ -36,7 +36,7 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
       const data = await getEventPlaces(eventId);
       setFullEventData(data);
 
-      const markerArray : any = getMarkerArray(data?.places);
+      const markerArray: any = getMarkerArray(data?.places);
       setMarkers(markerArray);
     };
 
