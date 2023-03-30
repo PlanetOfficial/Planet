@@ -128,7 +128,27 @@ const SelectCategories = ({
           </TouchableOpacity>
         ))}
       </View>
+      <View style={selectionStyles.container}>
+        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+          {selectedCategories.map((selected: any) => (
+            <View key={selected.id} style={selectionStyles.category}>
+              <Image style={selectionStyles.icon} source={icons.settings} />
+              <TouchableOpacity style={selectionStyles.xButton}>
+                <Image style={selectionStyles.x} source={icons.x} />
+              </TouchableOpacity>
+              <Text style={selectionStyles.name}>{selected.name}</Text>
+            </View>
+          ))}
+        </ScrollView>
+      </View>
       <Modal animationType="fade" transparent={true} visible={modalVisible}>
+        <Pressable
+          style={styles.dim}
+          onPress={() => {
+            setModalVisible(false);
+            setSelectedGenre('');
+          }}
+        />
         <View testID="categoryModalView" style={modalStyles.container}>
           <View style={modalStyles.header}>
             <Pressable
@@ -159,12 +179,6 @@ const SelectCategories = ({
                             ...prevCategories,
                             {id: category.id, name: category.name},
                           ]);
-                        } else {
-                          setSelectedCategories(
-                            selectedCategories.filter(
-                              (item: any) => item.id !== category.id,
-                            ),
-                          );
                         }
                       }}>
                       <View style={categoryStyles.container}>
@@ -182,23 +196,6 @@ const SelectCategories = ({
           </ScrollView>
         </View>
       </Modal>
-      {/* TODO-NAOTO: darken outside of modal*/}
-      {/* TODO-NAOTO: should scroll to the right most element added */}
-      {/* TODO-NAOTO: should remove category when x is clicked */}
-      {/* TODO-NAOTO: should not remove category a category is clicked twice in modal?? */}
-      <View style={selectionStyles.container}>
-        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-          {selectedCategories.map((selected: any) => (
-            <View key={selected.id} style={selectionStyles.category}>
-              <Image style={selectionStyles.icon} source={icons.settings} />
-              <TouchableOpacity style={selectionStyles.xButton}>
-                <Image style={selectionStyles.x} source={icons.x} />
-              </TouchableOpacity>
-              <Text style={selectionStyles.name}>{selected.name}</Text>
-            </View>
-          ))}
-        </ScrollView>
-      </View>
     </SafeAreaView>
   );
 };
@@ -210,6 +207,13 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     backgroundColor: colors.white,
+  },
+  dim: {
+    width: '100%',
+    height: '200%',
+    position: 'absolute',
+    backgroundColor: colors.black,
+    opacity: 0.5,
   },
 });
 
