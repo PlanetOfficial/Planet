@@ -57,42 +57,54 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
             }}
           />
         </MapView>
-        <ScrollView
-          style={styles.images}
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}>
-          {destination?.images?.length > 0
-            ? destination?.images?.map((image: any) => (
+        <View style={styles.separator} />
+        {destination?.images?.length > 0 ? (
+          <>
+            <ScrollView
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.imagesContainer}>
+              {destination?.images?.map((image: any) => (
                 <View key={image?.id}>
                   <Image
                     source={{uri: getImageURL(image?.prefix, image?.suffix)}}
                     style={styles.image}
                   />
                 </View>
-              ))
-            : null}
-        </ScrollView>
-        <View style={rnrStyles.container}>
-          <Text style={rnrStyles.title}>
-            {strings.createTabStack.rnr}
-            {':'}
-            {destination?.rating >= 0 ? (
-              <>
-                {' ('}
-                <Text style={rnrStyles.rating}>{destination?.rating}</Text>
-                {'/10)'}
-              </>
-            ) : null}
-          </Text>
-          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-            {destination?.reviews
-              ? destination?.reviews?.map((review: any, index: number) => (
-                  <View key={index} style={rnrStyles.review}>
-                    <Text style={rnrStyles.text}>{review?.text}</Text>
-                  </View>
-                ))
-              : null}
-          </ScrollView>
+              ))}
+            </ScrollView>
+            <View style={styles.separator} />
+          </>
+        ) : null}
+        <View>
+          {destination?.rating >= 0 || destination?.reviews.length > 0 ? (
+            <>
+              <Text style={rnrStyles.title}>
+                {strings.createTabStack.rnr}
+                {':'}
+                {destination?.rating >= 0 ? (
+                  <>
+                    {' ('}
+                    <Text style={rnrStyles.rating}>{destination?.rating}</Text>
+                    {'/10)'}
+                  </>
+                ) : null}
+              </Text>
+              <ScrollView
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={rnrStyles.contentContainer}>
+                {destination?.reviews
+                  ? destination?.reviews?.map((review: any, index: number) => (
+                      <View key={index} style={rnrStyles.review}>
+                        <Text style={rnrStyles.text}>{review?.text}</Text>
+                      </View>
+                    ))
+                  : null}
+              </ScrollView>
+              <View style={styles.separator} />
+            </>
+          ) : null}
         </View>
         <View style={detailStyles.container}>
           <Text style={detailStyles.title}>
@@ -127,15 +139,11 @@ const styles = StyleSheet.create({
     height: '105%',
     backgroundColor: colors.white,
   },
-  images: {
-    marginTop: s(10),
-    paddingVertical: s(10),
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    borderColor: colors.grey,
+  imagesContainer: {
+    paddingLeft: s(20),
   },
   image: {
-    marginLeft: s(20),
+    marginRight: s(10),
     width: s(160),
     height: s(200),
     borderRadius: s(15),
@@ -145,6 +153,12 @@ const styles = StyleSheet.create({
     marginHorizontal: s(20),
     marginTop: s(10),
     borderRadius: s(15),
+  },
+  separator: {
+    borderWidth: 0.5,
+    borderColor: colors.grey,
+    marginVertical: s(10),
+    marginHorizontal: s(20),
   },
 });
 
@@ -184,11 +198,8 @@ const headerStyles = StyleSheet.create({
 });
 
 const rnrStyles = StyleSheet.create({
-  container: {
-    marginTop: s(10),
-    paddingBottom: s(10),
-    borderBottomWidth: 1,
-    borderBottomColor: colors.grey,
+  contentContainer: {
+    marginLeft: s(20),
   },
   title: {
     marginLeft: s(20),
@@ -206,7 +217,7 @@ const rnrStyles = StyleSheet.create({
     padding: s(10),
     borderRadius: s(15),
     backgroundColor: colors.grey,
-    marginLeft: s(20),
+    marginRight: s(10),
     marginTop: s(5),
   },
   text: {
@@ -218,7 +229,6 @@ const rnrStyles = StyleSheet.create({
 
 const detailStyles = StyleSheet.create({
   container: {
-    marginTop: s(10),
     marginBottom: s(50),
   },
   title: {

@@ -182,10 +182,10 @@ const SelectCategories = ({
           </ScrollView>
         </View>
       </Modal>
-      {/* TODO: should be able to scroll even if modal is on */}
-      {/* TODO: should scroll to the right most element added */}
-      {/* TODO: should remove category when x is clicked */}
-      {/* TODO: should not remove category a category is clicked twice in modal */}
+      {/* TODO-NAOTO: darken outside of modal*/}
+      {/* TODO-NAOTO: should scroll to the right most element added */}
+      {/* TODO-NAOTO: should remove category when x is clicked */}
+      {/* TODO-NAOTO: should not remove category a category is clicked twice in modal?? */}
       <View style={selectionStyles.container}>
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
           {selectedCategories.map((selected: any) => (
@@ -295,7 +295,7 @@ const genreStyles = StyleSheet.create({
 const modalStyles = StyleSheet.create({
   container: {
     position: 'absolute',
-    top: s(120), // TODO: CENTER THIS
+    top: s(120), // TODO-NAOTO: CENTER THIS
     left: s(15),
     width: s(320),
     height: s(500),

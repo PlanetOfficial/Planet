@@ -13,7 +13,7 @@ import {icons} from '../../constants/images';
 import misc from '../../constants/misc';
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
-import {s, vs} from 'react-native-size-matters';
+import {s} from 'react-native-size-matters';
 
 import Place from '../components/PlaceCard';
 
@@ -123,7 +123,7 @@ const SelectDestinations = ({
         <ScrollView
           testID="selectDestinationsMainScroll"
           showsVerticalScrollIndicator={false}>
-          {/* TODO: Need to display something when no results are found */}
+          {/* TODO-NAOTO: Need to display something when no results are found */}
           {categories
             ? categories?.map((category: Category) => (
                 <View key={category?.id}>
@@ -132,12 +132,18 @@ const SelectDestinations = ({
                     <Text style={destStyles.name}>{category?.name}</Text>
                   </View>
                   <ScrollView
+                    contentContainerStyle={styles.contentContainer}
                     testID={`category.${category?.id}.scrollView`}
                     horizontal={true}
-                    showsHorizontalScrollIndicator={false}>
+                    showsHorizontalScrollIndicator={false}
+                    decelerationRate={'fast'}
+                    snapToInterval={s(325)}
+                    snapToAlignment={'start'}
+                    pagingEnabled>
                     {locations && locations[category?.id]
                       ? locations[category?.id]?.map((dest: any) => (
                           <View
+                            style={styles.card}
                             testID={`destination.${category?.id}.${dest?.id}`}
                             key={dest?.id}>
                             <TouchableOpacity
@@ -163,15 +169,16 @@ const SelectDestinations = ({
                                       }
                                     : icons.defaultIcon
                                 }
-                                selected={selectedDestinations?.some(
-                                  item => item?.id === dest?.id,
-                                )}
+                                // selected={selectedDestinations?.some(
+                                //   item => item?.id === dest?.id,
+                                // )}
                               />
                             </TouchableOpacity>
                           </View>
                         ))
                       : null}
                   </ScrollView>
+                  <View style={styles.separator} />
                 </View>
               ))
             : null}
@@ -187,6 +194,20 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     backgroundColor: colors.white,
+  },
+  contentContainer: {
+    paddingLeft: s(20),
+    paddingRight: s(5),
+  },
+  card: {
+    width: s(310),
+    marginRight: s(15),
+  },
+  separator: {
+    borderWidth: 0.5,
+    borderColor: colors.grey,
+    marginVertical: s(10),
+    marginHorizontal: s(20),
   },
 });
 
@@ -222,17 +243,17 @@ const headerStyles = StyleSheet.create({
 
 const destStyles = StyleSheet.create({
   container: {
-    marginTop: vs(10),
+    marginTop: s(10),
     width: '100%',
-    height: vs(590),
+    flex: 1,
   },
   header: {
-    marginTop: vs(10),
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    marginHorizontal: s(25),
-    height: s(40),
+    marginHorizontal: s(20),
+    paddingHorizontal: s(5),
+    marginBottom: s(10),
   },
   icon: {
     width: s(30),
