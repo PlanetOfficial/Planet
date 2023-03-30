@@ -160,7 +160,7 @@ const SelectDestinations = ({
                             <Place
                               id={dest?.id}
                               name={dest?.name}
-                              info={`Rating: ${dest?.rating}/10  Price: ${dest?.price}/5`}
+                              info={`${strings.createTabStack.rating}: ${dest?.rating}/10  ${strings.createTabStack.price}: ${dest?.price}/5`}
                               marked={bookmarks?.includes(dest?.id)}
                               image={
                                 dest?.images && dest?.images?.length !== 0
