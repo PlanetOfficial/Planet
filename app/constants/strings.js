@@ -50,6 +50,7 @@ const strings = {
     rnr: 'Ratings & Reviews',
     events: 'Events',
     details: 'Details',
+    noDestinations: 'No Destinations Found',
   },
   settings: {
     name: 'Name',

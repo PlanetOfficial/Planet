@@ -140,43 +140,51 @@ const SelectDestinations = ({
                     snapToInterval={s(325)}
                     snapToAlignment={'start'}
                     pagingEnabled>
-                    {locations && locations[category?.id]
-                      ? locations[category?.id]?.map((dest: any) => (
-                          <View
-                            style={styles.card}
-                            testID={`destination.${category?.id}.${dest?.id}`}
-                            key={dest?.id}>
-                            <TouchableOpacity
-                              onPress={() => handleDestinationSelect(dest)}
-                              onLongPress={() =>
-                                navigation.navigate('Place', {
-                                  destination: dest,
-                                  category: category?.name,
-                                })
-                              }>
-                              <Place
-                                id={dest?.id}
-                                name={dest?.name}
-                                info={`Rating: ${dest?.rating}/10  Price: ${dest?.price}/5`}
-                                marked={bookmarks?.includes(dest?.id)}
-                                image={
-                                  dest?.images && dest?.images?.length !== 0
-                                    ? {
-                                        uri:
-                                          dest?.images[0]?.prefix +
-                                          misc.imageSize +
-                                          dest?.images[0]?.suffix,
-                                      }
-                                    : icons.defaultIcon
-                                }
-                                // selected={selectedDestinations?.some(
-                                //   item => item?.id === dest?.id,
-                                // )}
-                              />
-                            </TouchableOpacity>
-                          </View>
-                        ))
-                      : null}
+                    {locations &&
+                    locations[category?.id] &&
+                    locations[category?.id].length > 0 ? (
+                      locations[category?.id]?.map((dest: any) => (
+                        <View
+                          style={styles.card}
+                          testID={`destination.${category?.id}.${dest?.id}`}
+                          key={dest?.id}>
+                          <TouchableOpacity
+                            onPress={() => handleDestinationSelect(dest)}
+                            onLongPress={() =>
+                              navigation.navigate('Place', {
+                                destination: dest,
+                                category: category?.name,
+                              })
+                            }>
+                            <Place
+                              id={dest?.id}
+                              name={dest?.name}
+                              info={`Rating: ${dest?.rating}/10  Price: ${dest?.price}/5`}
+                              marked={bookmarks?.includes(dest?.id)}
+                              image={
+                                dest?.images && dest?.images?.length !== 0
+                                  ? {
+                                      uri:
+                                        dest?.images[0]?.prefix +
+                                        misc.imageSize +
+                                        dest?.images[0]?.suffix,
+                                    }
+                                  : icons.defaultIcon
+                              }
+                              // selected={selectedDestinations?.some(
+                              //   item => item?.id === dest?.id,
+                              // )}
+                            />
+                          </TouchableOpacity>
+                        </View>
+                      ))
+                    ) : (
+                      <View style={styles.placeHolder}>
+                        <Text style={styles.placeHolderText}>
+                          {strings.createTabStack.noDestinations}
+                        </Text>
+                      </View>
+                    )}
                   </ScrollView>
                   <View style={styles.separator} />
                 </View>
@@ -208,6 +216,17 @@ const styles = StyleSheet.create({
     borderColor: colors.grey,
     marginVertical: s(10),
     marginHorizontal: s(20),
+  },
+  placeHolder: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: s(310),
+    marginVertical: s(20),
+  },
+  placeHolderText: {
+    fontSize: s(18),
+    fontWeight: '600',
+    color: colors.black,
   },
 });
 
@@ -245,7 +264,6 @@ const destStyles = StyleSheet.create({
   container: {
     marginTop: s(10),
     width: '100%',
-    flex: 1,
   },
   header: {
     flexDirection: 'row',

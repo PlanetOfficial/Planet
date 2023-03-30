@@ -66,7 +66,7 @@ const Place: React.FC<Props> = ({
           <Image
             style={[
               styles.icon,
-              {tintColor: bookmarked ? colors.accent : colors.grey},
+              {tintColor: bookmarked ? colors.accent : colors.darkgrey},
             ]}
             source={icons.bookmark}
           />
