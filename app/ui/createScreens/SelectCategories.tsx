@@ -17,7 +17,7 @@ import strings from '../../constants/strings';
 import {getCategories} from '../../utils/api/CreateCalls/getCategories';
 import {colors} from '../../constants/theme';
 
-// TODO: remove this and make it dynamic once images are settled
+// TODO: retrieve genres data from the database instead.
 const genres = [
   {
     id: 1,
@@ -66,7 +66,7 @@ const SelectCategories = ({
   const [selectedGenre, setSelectedGenre] = useState('');
 
   const [allCategories, setAllCategories] = useState([]);
-  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [selectedCategories, setSelectedCategories]: [any, any] = useState([]);
 
   const [cachedGenres, setCachedGenres] = useState({});
 
@@ -79,7 +79,7 @@ const SelectCategories = ({
       // call API and add to cache if not in cache
       const response = await getCategories(genre.id);
 
-      let updatedCache = {...cachedGenres};
+      let updatedCache: any = {...cachedGenres};
       updatedCache[genre.id] = response;
       setCachedGenres(updatedCache);
 
@@ -128,7 +128,28 @@ const SelectCategories = ({
           </TouchableOpacity>
         ))}
       </View>
+      <View style={selectionStyles.container}>
+        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+          {selectedCategories.map((selected: any) => (
+            <View key={selected.id} style={selectionStyles.category}>
+              <Image style={selectionStyles.icon} source={icons.settings} />
+              {/* TODO: remove categories when pressed. */}
+              <TouchableOpacity style={selectionStyles.xButton}>
+                <Image style={selectionStyles.x} source={icons.x} />
+              </TouchableOpacity>
+              <Text style={selectionStyles.name}>{selected.name}</Text>
+            </View>
+          ))}
+        </ScrollView>
+      </View>
       <Modal animationType="fade" transparent={true} visible={modalVisible}>
+        <Pressable
+          style={styles.dim}
+          onPress={() => {
+            setModalVisible(false);
+            setSelectedGenre('');
+          }}
+        />
         <View testID="categoryModalView" style={modalStyles.container}>
           <View style={modalStyles.header}>
             <Pressable
@@ -155,20 +176,14 @@ const SelectCategories = ({
                             (item: any) => item.id === category.id,
                           )
                         ) {
-                          setSelectedCategories(prevCategories => [
+                          setSelectedCategories((prevCategories: any) => [
                             ...prevCategories,
                             {id: category.id, name: category.name},
                           ]);
-                        } else {
-                          setSelectedCategories(
-                            selectedCategories.filter(
-                              (item: any) => item.id !== category.id,
-                            ),
-                          );
                         }
                       }}>
                       <View style={categoryStyles.container}>
-                        {/* TODO: CONNECT TO BACKEND */}
+                        {/* TODO: display correct category icon. */}
                         <Image
                           style={categoryStyles.image}
                           source={icons.settings}
@@ -182,23 +197,6 @@ const SelectCategories = ({
           </ScrollView>
         </View>
       </Modal>
-      {/* TODO-NAOTO: darken outside of modal*/}
-      {/* TODO-NAOTO: should scroll to the right most element added */}
-      {/* TODO-NAOTO: should remove category when x is clicked */}
-      {/* TODO-NAOTO: should not remove category a category is clicked twice in modal?? */}
-      <View style={selectionStyles.container}>
-        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-          {selectedCategories.map((selected: any) => (
-            <View key={selected.id} style={selectionStyles.category}>
-              <Image style={selectionStyles.icon} source={icons.settings} />
-              <TouchableOpacity style={selectionStyles.xButton}>
-                <Image style={selectionStyles.x} source={icons.x} />
-              </TouchableOpacity>
-              <Text style={selectionStyles.name}>{selected.name}</Text>
-            </View>
-          ))}
-        </ScrollView>
-      </View>
     </SafeAreaView>
   );
 };
@@ -210,6 +208,13 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     backgroundColor: colors.white,
+  },
+  dim: {
+    width: '100%',
+    height: '200%',
+    position: 'absolute',
+    backgroundColor: colors.black,
+    opacity: 0.5,
   },
 });
 
@@ -295,10 +300,10 @@ const genreStyles = StyleSheet.create({
 const modalStyles = StyleSheet.create({
   container: {
     position: 'absolute',
-    top: s(120), // TODO-NAOTO: CENTER THIS
     left: s(15),
+    top: '15%',
     width: s(320),
-    height: s(500),
+    height: '65%',
     borderRadius: s(15),
     borderWidth: 2,
     borderColor: colors.white,

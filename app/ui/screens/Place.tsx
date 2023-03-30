@@ -25,7 +25,6 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
   };
 
   return (
-    // TODO: add share button
     <SafeAreaView style={styles.container}>
       <View style={headerStyles.container}>
         <TouchableOpacity
