@@ -103,6 +103,10 @@ const SelectDestinations = ({
     }
   };
 
+  const handleScroll = (event : any) => {
+    console.log(Math.round(event.nativeEvent.contentOffset.x / s(325)));
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={headerStyles.container}>
@@ -136,6 +140,8 @@ const SelectDestinations = ({
                     contentContainerStyle={styles.contentContainer}
                     testID={`category.${category?.id}.scrollView`}
                     horizontal={true}
+                    onScroll={handleScroll}
+                    scrollEventThrottle={16}
                     showsHorizontalScrollIndicator={false}
                     decelerationRate={'fast'}
                     snapToInterval={s(325)}
