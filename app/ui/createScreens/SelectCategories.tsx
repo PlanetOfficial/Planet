@@ -66,7 +66,7 @@ const SelectCategories = ({
   const [selectedGenre, setSelectedGenre] = useState('');
 
   const [allCategories, setAllCategories] = useState([]);
-  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [selectedCategories, setSelectedCategories] : [any, any] = useState([]);
 
   const [cachedGenres, setCachedGenres] = useState({});
 
@@ -79,7 +79,7 @@ const SelectCategories = ({
       // call API and add to cache if not in cache
       const response = await getCategories(genre.id);
 
-      let updatedCache = {...cachedGenres};
+      let updatedCache : any = {...cachedGenres};
       updatedCache[genre.id] = response;
       setCachedGenres(updatedCache);
 
@@ -175,7 +175,7 @@ const SelectCategories = ({
                             (item: any) => item.id === category.id,
                           )
                         ) {
-                          setSelectedCategories(prevCategories => [
+                          setSelectedCategories((prevCategories: any) => [
                             ...prevCategories,
                             {id: category.id, name: category.name},
                           ]);
