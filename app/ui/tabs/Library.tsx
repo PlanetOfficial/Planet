@@ -146,7 +146,11 @@ const Events = (navigation: any, events: Array<any>, places: Array<any>) => (
           <Event
             name={item?.name}
             info={item?.date}
-            image={images ? {uri: images[0]} : icons.defaultIcon}
+            image={
+              images && images?.length !== 0
+                ? {uri: images[0]}
+                : icons.defaultIcon
+            }
           />
         </TouchableOpacity>
       );
