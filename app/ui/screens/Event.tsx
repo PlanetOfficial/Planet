@@ -102,6 +102,7 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
                       }
                     : icons.defaultIcon
                 }
+                selected={false}
               />
             </TouchableOpacity>
           );

@@ -159,6 +159,7 @@ const SelectDestinations = ({
                       }
                     : icons.defaultIcon
                 }
+                selected={false}
               />
             </TouchableOpacity>
           );

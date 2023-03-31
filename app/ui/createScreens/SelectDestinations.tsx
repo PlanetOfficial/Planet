@@ -103,9 +103,9 @@ const SelectDestinations = ({
     }
   };
 
-  const handleScroll = (event : any) => {
-    console.log(Math.round(event.nativeEvent.contentOffset.x / s(325)));
-  };
+  // const handleScroll = (event: any) => {
+  //   console.log(Math.round(event.nativeEvent.contentOffset.x / s(325)));
+  // };
 
   return (
     <SafeAreaView
@@ -143,7 +143,7 @@ const SelectDestinations = ({
                     contentContainerStyle={styles.contentContainer}
                     testID={`category.${category?.id}.scrollView`}
                     horizontal={true}
-                    onScroll={handleScroll}
+                    // onScroll={handleScroll}
                     scrollEventThrottle={16}
                     showsHorizontalScrollIndicator={false}
                     decelerationRate={'fast'}
@@ -181,9 +181,9 @@ const SelectDestinations = ({
                                     }
                                   : icons.defaultIcon
                               }
-                              // selected={selectedDestinations?.some(
-                              //   item => item?.id === dest?.id,
-                              // )}
+                              selected={selectedDestinations?.some(
+                                (item: {id: any}) => item?.id === dest?.id,
+                              )}
                             />
                           </TouchableOpacity>
                         </View>
