@@ -39,9 +39,9 @@ const SelectDestinations = ({
   // gets all locations from selectedCategories
   const [locations, setLocations]: [any, any] = useState({});
   const [selectedDestinations, setSelectedDestinations]: [any, any] = useState(
-    {},
+    new Map(),
   );
-  const [bookmarks, setBookmarks]: [any, any] = useState([]);  
+  const [bookmarks, setBookmarks]: [any, any] = useState([]);
   const [eventTitle, setEventTitle] = useState(
     strings.createTabStack.untitledEvent,
   );
@@ -57,9 +57,16 @@ const SelectDestinations = ({
         5,
       );
 
+      let map = new Map();
       categories.forEach((item: any) => {
-        selectedDestinations[item?.id] = response[item?.id] && response[item?.id].length > 0 ? response[item?.id][0] : null;
+        map.set(
+          item?.id,
+          response[item?.id] && response[item?.id].length > 0
+            ? response[item?.id][0]
+            : null,
+        );
       });
+      setSelectedDestinations(map);
 
       await setLocations(response);
     };
@@ -81,15 +88,15 @@ const SelectDestinations = ({
 
     loadBookmarks();
   }, [latitude, longitude, radius, categories]);
-  
+
   const handleSave = async () => {
     // send destinations to backend
     const placeIds: number[] = [];
-    Object.entries(selectedDestinations).forEach(([, value]: [any, any]) => {
-      if(value){
-        placeIds.push(value?.id)
+    for (let [, value] of selectedDestinations) {
+      if (value) {
+        placeIds.push(value?.id);
       }
-    });
+    }
     const authToken = await EncryptedStorage.getItem('auth_token');
 
     const responseStatus = await sendEvent(
@@ -143,11 +150,13 @@ const SelectDestinations = ({
                     contentContainerStyle={styles.contentContainer}
                     testID={`category.${category?.id}.scrollView`}
                     horizontal={true}
-                    onScroll={(event) => {
-                      const idx: number = Math.round(event.nativeEvent.contentOffset.x / s(325));
-                      let copy = {...selectedDestinations};
-                      copy[category?.id] = locations[category?.id][idx];
-                      setSelectedDestinations(copy)
+                    onScroll={event => {
+                      const idx: number = Math.round(
+                        event.nativeEvent.contentOffset.x / s(325),
+                      );
+                      let copy = new Map(selectedDestinations);
+                      copy.set(category?.id, locations[category?.id][idx]);
+                      setSelectedDestinations(copy);
                     }}
                     scrollEventThrottle={16}
                     showsHorizontalScrollIndicator={false}
@@ -185,7 +194,6 @@ const SelectDestinations = ({
                                     }
                                   : icons.defaultIcon
                               }
-                              selected={false}
                             />
                           </TouchableOpacity>
                         </View>
