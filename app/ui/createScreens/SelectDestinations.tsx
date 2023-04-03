@@ -3,12 +3,15 @@ import {
   View,
   SafeAreaView,
   Text,
+  Modal,
+  Pressable,
   TextInput,
   TouchableOpacity,
   StyleSheet,
   Image,
   ScrollView,
 } from 'react-native';
+import DatePicker from 'react-native-date-picker';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {icons} from '../../constants/images';
 import misc from '../../constants/misc';
@@ -39,6 +42,7 @@ const SelectDestinations = ({
   const [longitude] = useState(route?.params?.longitude);
   const [radius] = useState(route?.params?.radius);
   const [categories] = useState(route?.params?.selectedCategories);
+  const [modalVisible, setModalVisible] = useState(false);
 
   // gets all locations from selectedCategories
   const [locations, setLocations]: [any, any] = useState({});
@@ -51,7 +55,8 @@ const SelectDestinations = ({
   );
   const [markers, setMarkers]: [Array<MarkerObject>, any] = useState([]);
   //TODO: set date in select categories screen, only display open places
-  const [date] = useState(new Date());
+  const [date, setDate] = useState(new Date());
+  const [open, setOpen] = useState(false);
 
   const [indices, setIndices] = useState(new Map());
 
@@ -105,6 +110,7 @@ const SelectDestinations = ({
   }, [latitude, longitude, radius, categories]);
 
   const handleSave = async () => {
+    setModalVisible(false);
     // send destinations to backend
     const placeIds: number[] = [];
     for (let [, value] of selectedDestinations) {
@@ -143,16 +149,13 @@ const SelectDestinations = ({
           onPress={() => navigation.navigate('SelectCategories')}>
           <Image style={headerStyles.icon} source={icons.back} />
         </TouchableOpacity>
-        <TextInput
-          testID="eventTitleText"
-          style={headerStyles.title}
-          onChangeText={setEventTitle}>
-          {eventTitle}
-        </TextInput>
+        <Text style={headerStyles.title}>
+          {strings.createTabStack.selectDestinations}
+        </Text>
         <TouchableOpacity
           testID="confirmDestinations"
           style={headerStyles.confirm}
-          onPress={handleSave}>
+          onPress={() => setModalVisible(true)}>
           <Image style={headerStyles.icon} source={icons.confirm} />
         </TouchableOpacity>
       </View>
@@ -276,9 +279,122 @@ const SelectDestinations = ({
             : null}
         </ScrollView>
       </View>
+      <Modal animationType="fade" transparent={true} visible={modalVisible}>
+        <Pressable
+          style={modalStyles.dim}
+          onPress={() => {
+            setModalVisible(false);
+          }}
+        />      
+        <View style={modalStyles.container}>
+          <View style={modalStyles.header}>
+            <Pressable
+              onPress={() => {
+                setModalVisible(false);
+              }}
+              style={modalStyles.x}>
+              <Image style={modalStyles.icon} source={icons.x} />
+            </Pressable>
+            <Text style={modalStyles.title}>Save an Event</Text>
+          </View>
+          <View>
+            <Text>
+              Event Name:
+            </Text>
+            <TextInput
+              testID="eventTitleText"
+              style={headerStyles.title}
+              onChangeText={setEventTitle}>
+              {eventTitle}
+            </TextInput>   
+          </View>
+          <View>
+            <TouchableOpacity onPress={() => setOpen(true)}>
+              <Text>{date.toLocaleDateString()}</Text>
+            </TouchableOpacity>
+            <DatePicker
+              modal
+              open={open}
+              date={date}
+              onConfirm={newDate => {
+                setOpen(false);
+                setDate(newDate);
+              }}
+              onCancel={() => {
+                setOpen(false);
+              }}
+            />
+          </View>
+          <Pressable onPress={handleSave}>
+            <Text>Save</Text>
+          </Pressable>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 };
+
+const modalStyles = StyleSheet.create({
+  container: {
+    position: 'absolute',
+    left: s(15),
+    top: '35%',
+    width: s(320),
+    height: '30%',
+    borderRadius: s(15),
+    borderWidth: 2,
+    borderColor: colors.white,
+    shadowOffset: {
+      width: 0,
+      height: 7,
+    },
+    shadowOpacity: 0.41,
+    shadowRadius: 9.11,
+    elevation: 14,
+    backgroundColor: colors.white,
+  },
+  dim: {
+    width: '100%',
+    height: '200%',
+    position: 'absolute',
+    backgroundColor: colors.black,
+    opacity: 0.5,
+  },
+  header: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    height: s(50),
+    backgroundColor: colors.black,
+    borderTopLeftRadius: s(15),
+    borderTopRightRadius: s(15),
+  },
+  title: {
+    width: s(250),
+    fontSize: s(20),
+    fontWeight: '700',
+    color: colors.white,
+    textAlign: 'center',
+    textAlignVertical: 'center',
+  },
+  x: {
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+    top: -s(13),
+    right: -s(13),
+    padding: s(13),
+    width: s(18),
+    height: s(18),
+    backgroundColor: colors.grey,
+    borderRadius: s(13),
+  },
+  icon: {
+    width: s(14),
+    height: s(14),
+    tintColor: colors.black,
+  },
+});
 
 const indStyles = StyleSheet.create({
   container: {
