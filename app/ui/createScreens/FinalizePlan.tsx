@@ -21,7 +21,7 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 import {sendEvent} from '../../utils/api/CreateCalls/sendEvent';
 import {getRegionForCoordinates} from '../../utils/functions/Misc';
 import {MarkerObject} from '../../utils/interfaces/MarkerObject';
-import Place from '../components/PlaceCard';
+import PlaceCard from '../components/PlaceCard';
 
 const SelectDestinations = ({
   navigation,
@@ -144,7 +144,7 @@ const SelectDestinations = ({
                   category: getCategoryName(item?.category),
                 });
               }}>
-              <Place
+              <PlaceCard
                 id={item?.id}
                 name={item?.name}
                 info={getCategoryName(item?.category)}

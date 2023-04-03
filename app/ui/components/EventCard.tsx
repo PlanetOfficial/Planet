@@ -10,7 +10,7 @@ interface Props {
   image: Object;
 }
 
-const Event: React.FC<Props> = ({name, info, image}) => {
+const EventCard: React.FC<Props> = ({name, info, image}) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -66,4 +66,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Event;
+export default EventCard;

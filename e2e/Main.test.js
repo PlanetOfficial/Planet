@@ -16,4 +16,5 @@ logoutTest();
 /*  TODO: test switching accounts and ensure correct functionality
         according to new account.
     TODO: test signup process
+    TODO: can move around in map
 */

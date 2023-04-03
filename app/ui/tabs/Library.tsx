@@ -10,8 +10,8 @@ import {s} from 'react-native-size-matters';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 
 import Header from '../components/Header';
-import Place from '../components/PlaceCard';
-import Event from '../components/EventCard';
+import PlaceCard from '../components/PlaceCard';
+import EventCard from '../components/EventCard';
 
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
@@ -100,7 +100,7 @@ const Places = (
               category: item?.category?.name,
             });
           }}>
-          <Place
+          <PlaceCard
             id={item?.id}
             name={item?.name}
             info={item?.category?.name}
@@ -140,10 +140,10 @@ const Events = (navigation: any, events: Array<any>, places: Array<any>) => (
           onPress={() => {
             navigation.navigate('Event', {
               eventData: item,
-              bookmarks: places,
+              bookmarks: places?.map(place => place?.id),
             });
           }}>
-          <Event
+          <EventCard
             name={item?.name}
             info={item?.date}
             image={

@@ -19,7 +19,7 @@ import {
   getRegionForCoordinates,
 } from '../../utils/functions/Misc';
 import {MarkerObject} from '../../utils/interfaces/MarkerObject';
-import Place from '../components/PlaceCard';
+import PlaceCard from '../components/PlaceCard';
 import {getEventPlaces} from '../../utils/api/libraryCalls/getEventPlaces';
 
 const Event = ({navigation, route}: {navigation: any; route: any}) => {
@@ -87,7 +87,7 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
                   category: item?.category?.name,
                 });
               }}>
-              <Place
+              <PlaceCard
                 id={item?.id}
                 name={item?.name}
                 info={item?.category?.name}

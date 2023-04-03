@@ -89,6 +89,12 @@ const SelectCategories = ({
     }
   };
 
+  const removeCategory = (categoryId: number) => {
+    setSelectedCategories(
+      selectedCategories.filter((item: any) => item.id !== categoryId),
+    );
+  };
+
   return (
     <SafeAreaView testID="selectCategoriesScreenView" style={styles.container}>
       <View style={headerStyles.container}>
@@ -135,7 +141,9 @@ const SelectCategories = ({
             <View key={selected.id} style={selectionStyles.category}>
               <Image style={selectionStyles.icon} source={icons.settings} />
               {/* TODO: remove categories when pressed. */}
-              <TouchableOpacity style={selectionStyles.xButton}>
+              <TouchableOpacity
+                style={selectionStyles.xButton}
+                onPress={() => removeCategory(selected.id)}>
                 <Image style={selectionStyles.x} source={icons.x} />
               </TouchableOpacity>
               <Text style={selectionStyles.name}>{selected.name}</Text>
