@@ -7,6 +7,7 @@ import {icons} from '../../constants/images';
 import {setBookmark} from '../../utils/api/shared/setBookmark';
 import {unbookmark} from '../../utils/api/shared/unbookmark';
 import EncryptedStorage from 'react-native-encrypted-storage';
+import LinearGradient from 'react-native-linear-gradient';
 
 interface Props {
   id: number;
@@ -54,8 +55,9 @@ const Place: React.FC<Props> = ({
 
   return (
     <View style={styles.container}>
+      <View style={styles.shadow}/>
       <View style={styles.header}>
-        <View style={styles.headerBG} />
+        <LinearGradient colors={['rgba(255, 255, 255, 1)', 'rgba(255, 255, 255, 0.8)', 'rgba(255, 255, 255, 0.65)', 'rgba(255, 255, 255, 0)']} locations={[0, 0.7, 0.8, 1]} style={styles.headerBG} />
         <View>
           <Text numberOfLines={1} style={styles.name}>
             {name}
@@ -64,11 +66,10 @@ const Place: React.FC<Props> = ({
         </View>
         <TouchableOpacity onPress={handleBookmark}>
           <Image
-            style={[
-              styles.icon,
-              {tintColor: bookmarked ? colors.accent : colors.darkgrey},
-            ]}
-            source={icons.bookmark}
+            style={
+              styles.icon
+            }
+            source={bookmarked? icons.hearted: icons.heart}
           />
         </TouchableOpacity>
       </View>
@@ -81,30 +82,48 @@ const styles = StyleSheet.create({
   container: {
     height: s(200),
   },
+  shadow: {
+    position: 'absolute',
+    height: '100%',
+    width: '100%',
+    zIndex: -1,
+    backgroundColor: colors.white,
+    borderRadius: s(10),
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
+  },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    height: s(50),
+    height: s(45),
+    margin: 2,
   },
   headerBG: {
     position: 'absolute',
-    opacity: 0.85,
+    top: 0,
     width: '100%',
-    height: '100%',
-    borderTopLeftRadius: s(15),
-    borderTopRightRadius: s(15),
+    height: '115%',
+    borderTopLeftRadius: s(10) - 3,
+    borderTopRightRadius: s(10) - 3,
     backgroundColor: colors.white,
   },
   name: {
-    marginLeft: s(10),
+    marginLeft: s(7),
     width: s(260),
     fontSize: s(18),
     fontWeight: '700',
     color: colors.black,
   },
   info: {
-    marginLeft: s(10),
+    marginLeft: s(7),
     fontSize: s(12),
     fontWeight: '500',
     color: colors.accent,
@@ -113,13 +132,16 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: '100%',
     height: s(200),
-    borderRadius: s(15),
+    borderWidth: 2,
+    borderColor: colors.white,
+    borderRadius: s(10),
     zIndex: -1,
   },
   icon: {
     marginRight: s(10),
-    width: s(27),
-    height: s(27),
+    width: s(18),
+    height: s(18),
+    tintColor: colors.accent,
   },
 });
 

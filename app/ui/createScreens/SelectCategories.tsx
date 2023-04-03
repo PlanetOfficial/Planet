@@ -133,7 +133,7 @@ const SelectCategories = ({
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
           {selectedCategories.map((selected: any) => (
             <View key={selected.id} style={selectionStyles.category}>
-              <Image style={selectionStyles.icon} source={icons.settings} />
+              <Image style={selectionStyles.icon} source={icons.tempCategory} />
               {/* TODO: remove categories when pressed. */}
               <TouchableOpacity style={selectionStyles.xButton}>
                 <Image style={selectionStyles.x} source={icons.x} />
@@ -267,13 +267,13 @@ const genreStyles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-    borderRadius: s(15),
+    borderRadius: s(10),
     backgroundColor: colors.white,
   },
   image: {
     width: '100%',
     height: '100%',
-    borderRadius: s(15),
+    borderRadius: s(10),
     borderWidth: 2,
     borderColor: colors.white,
   },
@@ -305,7 +305,7 @@ const modalStyles = StyleSheet.create({
     top: '15%',
     width: s(320),
     height: '65%',
-    borderRadius: s(15),
+    borderRadius: s(10),
     borderWidth: 2,
     borderColor: colors.white,
     shadowOffset: {
@@ -323,8 +323,8 @@ const modalStyles = StyleSheet.create({
     width: '100%',
     height: s(50),
     backgroundColor: colors.accent,
-    borderTopLeftRadius: s(15),
-    borderTopRightRadius: s(15),
+    borderTopLeftRadius: s(8),
+    borderTopRightRadius: s(8),
   },
   title: {
     width: s(250),

@@ -19,6 +19,9 @@ export const icons = {
   bookmark: require('../assets/icons/bookmark.png'),
   user: require('../assets/icons/user.png'),
   defaultIcon: require('../assets/icons/x.png'),
+  tempCategory: require('../assets/icons/tempCategory.png'),
+  heart: require('../assets/icons/heart.png'),
+  hearted: require('../assets/icons/hearted.png'),
 };
 
 export const genreIcons = {

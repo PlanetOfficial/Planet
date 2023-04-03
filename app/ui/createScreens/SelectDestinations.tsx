@@ -181,11 +181,12 @@ const SelectDestinations = ({
             ? categories?.map((category: Category) => (
                 <View key={category?.id}>
                   <View style={destStyles.header}>
-                    <Image style={destStyles.icon} source={icons.settings} />
+                    <Image style={destStyles.icon} source={icons.tempCategory} />
                     <Text style={destStyles.name}>{category?.name}</Text>
                   </View>
                   <ScrollView
                     contentContainerStyle={styles.contentContainer}
+                    style={styles.scrollView}
                     testID={`category.${category?.id}.scrollView`}
                     horizontal={true}
                     onScroll={event => {
@@ -334,85 +335,6 @@ const SelectDestinations = ({
   );
 };
 
-const modalStyles = StyleSheet.create({
-  container: {
-    position: 'absolute',
-    left: s(15),
-    top: '35%',
-    width: s(320),
-    height: '30%',
-    borderRadius: s(15),
-    borderWidth: 2,
-    borderColor: colors.white,
-    shadowOffset: {
-      width: 0,
-      height: 7,
-    },
-    shadowOpacity: 0.41,
-    shadowRadius: 9.11,
-    elevation: 14,
-    backgroundColor: colors.white,
-  },
-  dim: {
-    width: '100%',
-    height: '200%',
-    position: 'absolute',
-    backgroundColor: colors.black,
-    opacity: 0.5,
-  },
-  header: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-    height: s(50),
-    backgroundColor: colors.black,
-    borderTopLeftRadius: s(15),
-    borderTopRightRadius: s(15),
-  },
-  title: {
-    width: s(250),
-    fontSize: s(20),
-    fontWeight: '700',
-    color: colors.white,
-    textAlign: 'center',
-    textAlignVertical: 'center',
-  },
-  x: {
-    position: 'absolute',
-    alignItems: 'center',
-    justifyContent: 'center',
-    top: -s(13),
-    right: -s(13),
-    padding: s(13),
-    width: s(18),
-    height: s(18),
-    backgroundColor: colors.grey,
-    borderRadius: s(13),
-  },
-  icon: {
-    width: s(14),
-    height: s(14),
-    tintColor: colors.black,
-  },
-});
-
-const indStyles = StyleSheet.create({
-  container: {
-    alignSelf: 'center',
-    flexDirection: 'row',
-    margin: s(10),
-    padding: s(8),
-    borderRadius: s(11.5),
-    backgroundColor: colors.grey,
-  },
-  circle: {
-    marginHorizontal: s(4),
-    width: s(7),
-    height: s(7),
-    borderRadius: s(3.5),
-  },
-});
-
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
@@ -424,6 +346,9 @@ const styles = StyleSheet.create({
     paddingLeft: s(20),
     paddingRight: s(5),
   },
+  scrollView: {
+    overflow: 'visible',
+  },
   card: {
     width: s(310),
     marginRight: s(15),
@@ -431,7 +356,6 @@ const styles = StyleSheet.create({
   separator: {
     borderWidth: 0.5,
     borderColor: colors.grey,
-    marginVertical: s(10),
     marginHorizontal: s(20),
   },
   placeHolder: {
@@ -448,7 +372,7 @@ const styles = StyleSheet.create({
   map: {
     width: s(310),
     height: s(200),
-    borderRadius: s(15),
+    borderRadius: s(10),
     marginHorizontal: s(20),
     marginTop: s(10),
   },
@@ -495,8 +419,9 @@ const destStyles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     marginHorizontal: s(20),
-    paddingHorizontal: s(5),
-    marginBottom: s(10),
+    paddingHorizontal: s(7),
+    marginTop: s(10),
+    marginBottom: s(7),
   },
   icon: {
     width: s(30),
@@ -508,10 +433,89 @@ const destStyles = StyleSheet.create({
     backgroundColor: colors.white,
   },
   name: {
-    marginLeft: s(10),
-    fontSize: s(20),
-    fontWeight: '600',
+    marginLeft: s(7),
+    fontSize: s(17),
+    fontWeight: '700',
     color: colors.black,
+  },
+});
+
+const modalStyles = StyleSheet.create({
+  container: {
+    position: 'absolute',
+    left: s(15),
+    top: '35%',
+    width: s(320),
+    height: '30%',
+    borderRadius: s(10),
+    borderWidth: 2,
+    borderColor: colors.white,
+    shadowOffset: {
+      width: 0,
+      height: 7,
+    },
+    shadowOpacity: 0.41,
+    shadowRadius: 9.11,
+    elevation: 14,
+    backgroundColor: colors.white,
+  },
+  dim: {
+    width: '100%',
+    height: '200%',
+    position: 'absolute',
+    backgroundColor: colors.black,
+    opacity: 0.5,
+  },
+  header: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    height: s(50),
+    backgroundColor: colors.black,
+    borderTopLeftRadius: s(10),
+    borderTopRightRadius: s(10),
+  },
+  title: {
+    width: s(250),
+    fontSize: s(20),
+    fontWeight: '700',
+    color: colors.white,
+    textAlign: 'center',
+    textAlignVertical: 'center',
+  },
+  x: {
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+    top: -s(13),
+    right: -s(13),
+    padding: s(13),
+    width: s(18),
+    height: s(18),
+    backgroundColor: colors.grey,
+    borderRadius: s(13),
+  },
+  icon: {
+    width: s(14),
+    height: s(14),
+    tintColor: colors.black,
+  },
+});
+
+const indStyles = StyleSheet.create({
+  container: {
+    alignSelf: 'center',
+    flexDirection: 'row',
+    margin: s(7),
+    padding: s(7),
+    borderRadius: s(11.5),
+    backgroundColor: colors.grey,
+  },
+  circle: {
+    marginHorizontal: s(3.5),
+    width: s(7),
+    height: s(7),
+    borderRadius: s(3.5),
   },
 });
 

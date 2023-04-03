@@ -281,7 +281,7 @@ const searchStyles = StyleSheet.create({
     paddingLeft: s(15),
     color: colors.black,
     borderTopColor: colors.darkgrey,
-    borderRadius: s(15),
+    borderRadius: s(10),
     backgroundColor: colors.white,
   },
   separator: {
@@ -329,7 +329,7 @@ const mapStyles = StyleSheet.create({
     height: '100%',
     backgroundColor: colors.white,
     opacity: 0.85,
-    borderRadius: s(15),
+    borderRadius: s(10),
   },
   radiusIndicator: {
     padding: s(10),
