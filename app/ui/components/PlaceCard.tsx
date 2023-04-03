@@ -18,7 +18,7 @@ interface Props {
   onUnBookmark?: (placeId: number) => void;
 }
 
-const Place: React.FC<Props> = ({
+const PlaceCard: React.FC<Props> = ({
   id,
   name,
   info,
@@ -129,4 +129,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Place;
+export default PlaceCard;

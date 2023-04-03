@@ -15,7 +15,7 @@ import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 import {s} from 'react-native-size-matters';
 
-import Place from '../components/PlaceCard';
+import PlaceCard from '../components/PlaceCard';
 
 import {requestLocations} from '../../utils/api/CreateCalls/requestLocations';
 
@@ -166,7 +166,7 @@ const SelectDestinations = ({
                                 category: category?.name,
                               })
                             }>
-                            <Place
+                            <PlaceCard
                               id={dest?.id}
                               name={dest?.name}
                               info={`${strings.createTabStack.rating}: ${dest?.rating}/10  ${strings.createTabStack.price}: ${dest?.price}/5`}
