@@ -53,6 +53,8 @@ const SelectDestinations = ({
   //TODO: set date in select categories screen, only display open places
   const [date] = useState(new Date());
 
+  const [indices, setIndices] = useState(new Map());
+
   useEffect(() => {
     const loadDestinations = async (categoryIds: Array<number>) => {
       const response = await requestLocations(
@@ -63,17 +65,23 @@ const SelectDestinations = ({
         5,
       );
 
-      let map = new Map();
+      let cat = new Map();
+      let ind = new Map();
       categories.forEach((item: any) => {
-        map.set(
+        cat.set(
           item?.id,
           response[item?.id] && response[item?.id].length > 0
             ? response[item?.id][0]
             : null,
         );
+        ind.set(
+          item?.id,
+          response[item?.id] && response[item?.id].length > 0 ? 0 : -1,
+        );
       });
-      setSelectedDestinations(map);
-      setMarkers(getMarkerArray(map));
+      setSelectedDestinations(cat);
+      setMarkers(getMarkerArray(cat));
+      setIndices(ind);
 
       await setLocations(response);
     };
@@ -181,10 +189,16 @@ const SelectDestinations = ({
                       const idx: number = Math.round(
                         event.nativeEvent.contentOffset.x / s(325),
                       );
-                      let copy = new Map(selectedDestinations);
-                      copy.set(category?.id, locations[category?.id][idx]);
-                      setSelectedDestinations(copy);
-                      setMarkers(getMarkerArray(copy));
+                      let cat = new Map(selectedDestinations);
+                      cat.set(category?.id, locations[category?.id][idx]);
+                      setSelectedDestinations(cat);
+                      setMarkers(getMarkerArray(cat));
+
+                      let ind = new Map(indices);
+                      if (ind.get(category?.id) !== idx) {
+                        ind.set(category?.id, idx);
+                        setIndices(ind);
+                      }
                     }}
                     scrollEventThrottle={16}
                     showsHorizontalScrollIndicator={false}
@@ -234,6 +248,28 @@ const SelectDestinations = ({
                       </View>
                     )}
                   </ScrollView>
+                  {locations &&
+                  locations[category?.id] &&
+                  locations[category?.id].length > 0 ? (
+                    <View style={indStyles.container}>
+                      {[...Array(locations[category?.id].length)].map(
+                        (e, i) => (
+                          <View
+                            key={i}
+                            style={[
+                              indStyles.circle,
+                              {
+                                backgroundColor:
+                                  i === indices.get(category?.id)
+                                    ? colors.accent
+                                    : colors.darkgrey,
+                              },
+                            ]}
+                          />
+                        ),
+                      )}
+                    </View>
+                  ) : null}
                   <View style={styles.separator} />
                 </View>
               ))
@@ -243,6 +279,23 @@ const SelectDestinations = ({
     </SafeAreaView>
   );
 };
+
+const indStyles = StyleSheet.create({
+  container: {
+    alignSelf: 'center',
+    flexDirection: 'row',
+    margin: s(10),
+    padding: s(8),
+    borderRadius: s(11.5),
+    backgroundColor: colors.grey,
+  },
+  circle: {
+    marginHorizontal: s(4),
+    width: s(7),
+    height: s(7),
+    borderRadius: s(3.5),
+  },
+});
 
 const styles = StyleSheet.create({
   container: {
