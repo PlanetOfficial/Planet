@@ -3,6 +3,7 @@ import {
   View,
   SafeAreaView,
   Text,
+  TextInput,
   TouchableOpacity,
   StyleSheet,
   Image,
@@ -14,6 +15,7 @@ import misc from '../../constants/misc';
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 import {s} from 'react-native-size-matters';
+import MapView, {Marker} from 'react-native-maps';
 
 import Place from '../components/PlaceCard';
 
@@ -21,7 +23,9 @@ import {requestLocations} from '../../utils/api/CreateCalls/requestLocations';
 
 import {Category} from '../../utils/interfaces/category';
 import {getBookmarks} from '../../utils/api/shared/getBookmarks';
+import {getRegionForCoordinates} from '../../utils/functions/Misc';
 import {getMarkerArray} from '../../utils/functions/Misc';
+import {MarkerObject} from '../../utils/interfaces/MarkerObject';
 import {sendEvent} from '../../utils/api/CreateCalls/sendEvent';
 
 const SelectDestinations = ({
@@ -45,7 +49,9 @@ const SelectDestinations = ({
   const [eventTitle, setEventTitle] = useState(
     strings.createTabStack.untitledEvent,
   );
-  const [date, setDate] = useState(new Date());
+  const [markers, setMarkers]: [Array<MarkerObject>, any] = useState([]);
+  //TODO: set date in select categories screen, only display open places
+  const [date] = useState(new Date());
 
   useEffect(() => {
     const loadDestinations = async (categoryIds: Array<number>) => {
@@ -67,6 +73,7 @@ const SelectDestinations = ({
         );
       });
       setSelectedDestinations(map);
+      setMarkers(getMarkerArray(map));
 
       await setLocations(response);
     };
@@ -97,20 +104,23 @@ const SelectDestinations = ({
         placeIds.push(value?.id);
       }
     }
-    const authToken = await EncryptedStorage.getItem('auth_token');
 
-    const responseStatus = await sendEvent(
-      eventTitle,
-      placeIds,
-      authToken,
-      date.toLocaleDateString(),
-    );
+    if (placeIds.length > 0) {
+      const authToken = await EncryptedStorage.getItem('auth_token');
 
-    if (responseStatus === 200) {
-      navigation.navigate('TabStack', {screen: 'Library'});
-      // TODO: show successful save
-    } else {
-      // TODO: error, make sure connected to internet and logged in, if error persists, log out and log back in
+      const responseStatus = await sendEvent(
+        eventTitle,
+        placeIds,
+        authToken,
+        date.toLocaleDateString(),
+      );
+
+      if (responseStatus === 200) {
+        navigation.navigate('TabStack', {screen: 'Library'});
+        // TODO: show successful save
+      } else {
+        // TODO: error, make sure connected to internet and logged in, if error persists, log out and log back in
+      }
     }
   };
 
@@ -125,9 +135,12 @@ const SelectDestinations = ({
           onPress={() => navigation.navigate('SelectCategories')}>
           <Image style={headerStyles.icon} source={icons.back} />
         </TouchableOpacity>
-        <Text style={headerStyles.title}>
-          {strings.createTabStack.selectDestinations}
-        </Text>
+        <TextInput
+          testID="eventTitleText"
+          style={headerStyles.title}
+          onChangeText={setEventTitle}>
+          {eventTitle}
+        </TextInput>
         <TouchableOpacity
           testID="confirmDestinations"
           style={headerStyles.confirm}
@@ -135,6 +148,20 @@ const SelectDestinations = ({
           <Image style={headerStyles.icon} source={icons.confirm} />
         </TouchableOpacity>
       </View>
+      <MapView style={styles.map} region={getRegionForCoordinates(markers)}>
+        {markers?.length > 0
+          ? markers?.map((marker: MarkerObject, index: number) => (
+              <Marker
+                key={index}
+                coordinate={{
+                  latitude: marker?.latitude,
+                  longitude: marker?.longitude,
+                }}
+                title={marker?.name}
+              />
+            ))
+          : null}
+      </MapView>
       <View style={destStyles.container}>
         <ScrollView
           testID="selectDestinationsMainScroll"
@@ -157,6 +184,7 @@ const SelectDestinations = ({
                       let copy = new Map(selectedDestinations);
                       copy.set(category?.id, locations[category?.id][idx]);
                       setSelectedDestinations(copy);
+                      setMarkers(getMarkerArray(copy));
                     }}
                     scrollEventThrottle={16}
                     showsHorizontalScrollIndicator={false}
@@ -248,6 +276,13 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: colors.black,
   },
+  map: {
+    width: s(310),
+    height: s(200),
+    borderRadius: s(15),
+    marginHorizontal: s(20),
+    marginTop: s(10),
+  },
 });
 
 const headerStyles = StyleSheet.create({
@@ -284,6 +319,7 @@ const destStyles = StyleSheet.create({
   container: {
     marginTop: s(10),
     width: '100%',
+    height: '69%',
   },
   header: {
     flexDirection: 'row',

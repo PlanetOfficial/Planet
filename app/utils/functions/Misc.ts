@@ -30,7 +30,7 @@ export const getDistanceFromCoordinates = (
   return haversine(point1, point2);
 };
 
-export const getRegionForCoordinates = (points: Array<MarkerObject>) => {
+export const getRegionForCoordinates = (points: Array<MarkerObject>): any => {
   if (!points || points?.length === 0) {
     return {
       latitude: floats.defaultLatitude,
@@ -107,17 +107,18 @@ export const getImagesFromURLs = (places: Array<any>) => {
   Given an array of destinations, filter that array into an array of
   MarkerObjects.
 */
-export const getMarkerArray = (places: Array<any>) => {
+export const getMarkerArray = (places: any): any => {
   let markers: Array<MarkerObject> = [];
-  places?.forEach((destination: any) => {
-    const markerObject = {
-      name: destination?.name,
-      latitude: destination?.latitude,
-      longitude: destination?.longitude,
-    };
+  for (let [, value] of places) {
+    if (value) {
+      const markerObject = {
+        name: value?.name,
+        latitude: value?.latitude,
+        longitude: value?.longitude,
+      };
 
-    markers.push(markerObject);
-  });
-
+      markers.push(markerObject);
+    }
+  }
   return markers;
 };

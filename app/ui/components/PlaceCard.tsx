@@ -94,6 +94,7 @@ const styles = StyleSheet.create({
     height: '100%',
     borderTopLeftRadius: s(15),
     borderTopRightRadius: s(15),
+    backgroundColor: colors.white,
   },
   name: {
     marginLeft: s(10),
