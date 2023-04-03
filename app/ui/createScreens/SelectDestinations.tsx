@@ -22,6 +22,7 @@ import {requestLocations} from '../../utils/api/CreateCalls/requestLocations';
 import {Category} from '../../utils/interfaces/category';
 import {getBookmarks} from '../../utils/api/shared/getBookmarks';
 import {getMarkerArray} from '../../utils/functions/Misc';
+import {sendEvent} from '../../utils/api/CreateCalls/sendEvent';
 
 const SelectDestinations = ({
   navigation,
@@ -38,9 +39,13 @@ const SelectDestinations = ({
   // gets all locations from selectedCategories
   const [locations, setLocations]: [any, any] = useState({});
   const [selectedDestinations, setSelectedDestinations]: [any, any] = useState(
-    [],
+    {},
   );
-  const [bookmarks, setBookmarks]: [any, any] = useState([]);
+  const [bookmarks, setBookmarks]: [any, any] = useState([]);  
+  const [eventTitle, setEventTitle] = useState(
+    strings.createTabStack.untitledEvent,
+  );
+  const [date, setDate] = useState(new Date());
 
   useEffect(() => {
     const loadDestinations = async (categoryIds: Array<number>) => {
@@ -52,7 +57,11 @@ const SelectDestinations = ({
         5,
       );
 
-      setLocations(response);
+      categories.forEach((item: any) => {
+        selectedDestinations[item?.id] = response[item?.id] && response[item?.id].length > 0 ? response[item?.id][0] : null;
+      });
+
+      await setLocations(response);
     };
 
     const loadBookmarks = async () => {
@@ -72,40 +81,31 @@ const SelectDestinations = ({
 
     loadBookmarks();
   }, [latitude, longitude, radius, categories]);
+  
+  const handleSave = async () => {
+    // send destinations to backend
+    const placeIds: number[] = [];
+    Object.entries(selectedDestinations).forEach(([, value]: [any, any]) => {
+      if(value){
+        placeIds.push(value?.id)
+      }
+    });
+    const authToken = await EncryptedStorage.getItem('auth_token');
 
-  const handleDestinationSelect = (destination: any) => {
-    if (
-      !selectedDestinations?.find((item: any) => item?.id === destination?.id)
-    ) {
-      setSelectedDestinations((prevDestinations: any) => [
-        ...prevDestinations,
-        destination,
-      ]);
+    const responseStatus = await sendEvent(
+      eventTitle,
+      placeIds,
+      authToken,
+      date.toLocaleDateString(),
+    );
+
+    if (responseStatus === 200) {
+      navigation.navigate('TabStack', {screen: 'Library'});
+      // TODO: show successful save
     } else {
-      setSelectedDestinations(
-        selectedDestinations?.filter(
-          (item: any) => item?.id !== destination?.id,
-        ),
-      );
+      // TODO: error, make sure connected to internet and logged in, if error persists, log out and log back in
     }
   };
-
-  const handleDone = () => {
-    if (selectedDestinations?.length > 0) {
-      let markers = getMarkerArray(selectedDestinations);
-
-      navigation.navigate('FinalizePlan', {
-        selectedDestinations,
-        markers,
-        bookmarks,
-        categories,
-      });
-    }
-  };
-
-  // const handleScroll = (event: any) => {
-  //   console.log(Math.round(event.nativeEvent.contentOffset.x / s(325)));
-  // };
 
   return (
     <SafeAreaView
@@ -124,7 +124,7 @@ const SelectDestinations = ({
         <TouchableOpacity
           testID="confirmDestinations"
           style={headerStyles.confirm}
-          onPress={handleDone}>
+          onPress={handleSave}>
           <Image style={headerStyles.icon} source={icons.confirm} />
         </TouchableOpacity>
       </View>
@@ -143,7 +143,12 @@ const SelectDestinations = ({
                     contentContainerStyle={styles.contentContainer}
                     testID={`category.${category?.id}.scrollView`}
                     horizontal={true}
-                    // onScroll={handleScroll}
+                    onScroll={(event) => {
+                      const idx: number = Math.round(event.nativeEvent.contentOffset.x / s(325));
+                      let copy = {...selectedDestinations};
+                      copy[category?.id] = locations[category?.id][idx];
+                      setSelectedDestinations(copy)
+                    }}
                     scrollEventThrottle={16}
                     showsHorizontalScrollIndicator={false}
                     decelerationRate={'fast'}
@@ -159,8 +164,7 @@ const SelectDestinations = ({
                           testID={`destination.${category?.id}.${dest?.id}`}
                           key={dest?.id}>
                           <TouchableOpacity
-                            onPress={() => handleDestinationSelect(dest)}
-                            onLongPress={() =>
+                            onPress={() =>
                               navigation.navigate('Place', {
                                 destination: dest,
                                 category: category?.name,
@@ -181,9 +185,7 @@ const SelectDestinations = ({
                                     }
                                   : icons.defaultIcon
                               }
-                              selected={selectedDestinations?.some(
-                                (item: {id: any}) => item?.id === dest?.id,
-                              )}
+                              selected={false}
                             />
                           </TouchableOpacity>
                         </View>
