@@ -140,7 +140,7 @@ const Events = (navigation: any, events: Array<any>, places: Array<any>) => (
           onPress={() => {
             navigation.navigate('Event', {
               eventData: item,
-              bookmarks: places?.map(item => item?.id),
+              bookmarks: places?.map(place => place?.id),
             });
           }}>
           <EventCard

@@ -91,9 +91,7 @@ const SelectCategories = ({
 
   const removeCategory = (categoryId: number) => {
     setSelectedCategories(
-      selectedCategories.filter(
-        (item: any) => item.id !== categoryId,
-      ),
+      selectedCategories.filter((item: any) => item.id !== categoryId),
     );
   };
 
@@ -143,7 +141,9 @@ const SelectCategories = ({
             <View key={selected.id} style={selectionStyles.category}>
               <Image style={selectionStyles.icon} source={icons.settings} />
               {/* TODO: remove categories when pressed. */}
-              <TouchableOpacity style={selectionStyles.xButton} onPress={() => removeCategory(selected.id)}>
+              <TouchableOpacity
+                style={selectionStyles.xButton}
+                onPress={() => removeCategory(selected.id)}>
                 <Image style={selectionStyles.x} source={icons.x} />
               </TouchableOpacity>
               <Text style={selectionStyles.name}>{selected.name}</Text>
