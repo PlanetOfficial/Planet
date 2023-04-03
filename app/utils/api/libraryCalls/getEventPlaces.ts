@@ -7,6 +7,8 @@ export const getEventPlaces = async (event_id: number) => {
     method: 'GET',
   });
 
+  console.log(response)
+
   const myJson = await response.json(); //extract JSON from the http response
 
   return myJson;
