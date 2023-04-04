@@ -69,8 +69,8 @@ const SelectDestinations = ({
 
       let ind: number[] = [];
       let places: any[] = [];
-      categories.forEach((item: any) => {
-        if (response[item?.id] && response[item?.id].length > 0) {
+      categories?.forEach((item: any) => {
+        if (response[item?.id] && response[item?.id]?.length > 0) {
           ind.push(0);
           places.push(response[item?.id][0]);
         } else {
@@ -104,12 +104,12 @@ const SelectDestinations = ({
 
   const handleSave = async () => {
     setModalVisible(false);
+
     // send destinations to backend
     const placeIds: number[] = [];
-
     for (let i = 0; i < indices.length; i++) {
       if (indices[i] !== -1) {
-        placeIds.push(locations[categories[i]?.id][indices[i]].id);
+        placeIds.push(locations[categories[i]?.id][indices[i]]?.id);
       }
     }
 
@@ -202,19 +202,19 @@ const SelectDestinations = ({
           testID="selectDestinationsMainScroll"
           showsVerticalScrollIndicator={false}>
           {categories
-            ? [...Array(categories.length)].map((el, idx: number) => (
-                <View key={categories[idx]?.id}>
+            ? categories?.map((category: any, idx: number) => (
+                <View key={category?.id}>
                   <View style={destStyles.header}>
                     <Image
                       style={destStyles.icon}
                       source={icons.tempCategory}
                     />
-                    <Text style={destStyles.name}>{categories[idx]?.name}</Text>
+                    <Text style={destStyles.name}>{category?.name}</Text>
                   </View>
                   <ScrollView
                     contentContainerStyle={styles.contentContainer}
                     style={styles.scrollView}
-                    testID={`category.${categories[idx]?.id}.scrollView`}
+                    testID={`category.${category?.id}.scrollView`}
                     horizontal={true}
                     onScroll={event => {
                       const i: number = Math.round(
@@ -233,7 +233,7 @@ const SelectDestinations = ({
                             );
                           }
                         }
-                        -setMarkers(getMarkerArray(places));
+                        setMarkers(getMarkerArray(places));
                       }
                     }}
                     scrollEventThrottle={16}
@@ -243,18 +243,18 @@ const SelectDestinations = ({
                     snapToAlignment={'start'}
                     pagingEnabled>
                     {locations &&
-                    locations[categories[idx]?.id] &&
-                    locations[categories[idx]?.id].length > 0 ? (
-                      locations[categories[idx]?.id]?.map((dest: any) => (
+                    locations[category?.id] &&
+                    locations[category?.id].length > 0 ? (
+                      locations[category?.id]?.map((dest: any) => (
                         <View
                           style={styles.card}
-                          testID={`destination.${categories[idx]?.id}.${dest?.id}`}
+                          testID={`destination.${category?.id}.${dest?.id}`}
                           key={dest?.id}>
                           <TouchableOpacity
                             onPress={() =>
                               navigation.navigate('Place', {
                                 destination: dest,
-                                category: categories[idx]?.name,
+                                category: category?.name,
                               })
                             }>
                             <Place
@@ -285,11 +285,11 @@ const SelectDestinations = ({
                     )}
                   </ScrollView>
                   {locations &&
-                  locations[categories[idx]?.id] &&
-                  locations[categories[idx]?.id].length > 0 ? (
+                  locations[category?.id] &&
+                  locations[category?.id].length > 0 ? (
                     <View style={indStyles.container}>
-                      {[...Array(locations[categories[idx]?.id].length)].map(
-                        (e, i) => (
+                      {locations[category?.id].map(
+                        (e: any, i: number) => (
                           <View
                             key={i}
                             style={[
@@ -320,9 +320,9 @@ const SelectDestinations = ({
           }}
         />
         <View style={modalStyles.container}>
-          <Text style={modalStyles.title}>Save an Event</Text>
+          <Text style={modalStyles.title}>{strings.createTabStack.saveEvent}</Text>
           <View style={modalStyles.option}>
-            <Text style={modalStyles.boldText}>Name:</Text>
+            <Text style={modalStyles.boldText}>{strings.createTabStack.name}:</Text>
             <TextInput
               testID="eventTitleText"
               style={modalStyles.text}
@@ -331,7 +331,7 @@ const SelectDestinations = ({
             </TextInput>
           </View>
           <View style={modalStyles.option}>
-            <Text style={modalStyles.boldText}>Date:</Text>
+            <Text style={modalStyles.boldText}>{strings.createTabStack.date}:</Text>
             <TouchableOpacity onPress={() => setDatePickerOpen(true)}>
               <Text style={modalStyles.text}>{date.toLocaleDateString()}</Text>
             </TouchableOpacity>
@@ -352,12 +352,12 @@ const SelectDestinations = ({
             <Pressable
               onPress={() => setModalVisible(false)}
               style={modalStyles.cancelContainer}>
-              <Text style={modalStyles.cancel}>Cancel</Text>
+              <Text style={modalStyles.cancel}>{strings.createTabStack.cancel}</Text>
             </Pressable>
             <Pressable
               onPress={handleSave}
               style={modalStyles.confirmContainer}>
-              <Text style={modalStyles.confirm}>Confirm</Text>
+              <Text style={modalStyles.confirm}>{strings.createTabStack.confirm}</Text>
             </Pressable>
           </View>
         </View>
