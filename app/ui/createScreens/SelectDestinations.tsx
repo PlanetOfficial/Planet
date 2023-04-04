@@ -54,7 +54,7 @@ const SelectDestinations = ({
   );
   const [markers, setMarkers]: [Array<MarkerObject>, any] = useState([]);
   const [date, setDate] = useState(new Date());
-  const [open, setOpen] = useState(false);
+  const [datePickerOpen, setDatePickerOpen] = useState(false);
   const insets = useSafeAreaInsets();
 
   useEffect(() => {
@@ -332,19 +332,19 @@ const SelectDestinations = ({
           </View>
           <View style={modalStyles.option}>
             <Text style={modalStyles.boldText}>Date:</Text>
-            <TouchableOpacity onPress={() => setOpen(true)}>
+            <TouchableOpacity onPress={() => setDatePickerOpen(true)}>
               <Text style={modalStyles.text}>{date.toLocaleDateString()}</Text>
             </TouchableOpacity>
             <DatePicker
               modal
-              open={open}
+              open={datePickerOpen}
               date={date}
               onConfirm={newDate => {
-                setOpen(false);
+                setDatePickerOpen(false);
                 setDate(newDate);
               }}
               onCancel={() => {
-                setOpen(false);
+                setDatePickerOpen(false);
               }}
             />
           </View>
