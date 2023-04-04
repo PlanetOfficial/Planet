@@ -26,7 +26,6 @@ import Place from '../components/PlaceCard';
 
 import {requestLocations} from '../../utils/api/CreateCalls/requestLocations';
 
-import {Category} from '../../utils/interfaces/category';
 import {getBookmarks} from '../../utils/api/shared/getBookmarks';
 import {getRegionForCoordinates} from '../../utils/functions/Misc';
 import {getMarkerArray} from '../../utils/functions/Misc';
@@ -47,22 +46,15 @@ const SelectDestinations = ({
   const [modalVisible, setModalVisible] = useState(false);
   const [mapExpanded, setMapExpanded] = useState(true);
 
-  // gets all locations from selectedCategories
   const [locations, setLocations]: [any, any] = useState({});
-  const [selectedDestinations, setSelectedDestinations]: [any, any] = useState(
-    new Map(),
-  );
+  const [indices, setIndices]: [number[], any] = useState([]);
   const [bookmarks, setBookmarks]: [any, any] = useState([]);
   const [eventTitle, setEventTitle] = useState(
     strings.createTabStack.untitledEvent,
   );
   const [markers, setMarkers]: [Array<MarkerObject>, any] = useState([]);
-  //TODO: set date in select categories screen, only display open places
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
-
-  const [indices, setIndices] = useState(new Map());
-
   const insets = useSafeAreaInsets();
 
   useEffect(() => {
@@ -75,22 +67,18 @@ const SelectDestinations = ({
         5,
       );
 
-      let cat = new Map();
-      let ind = new Map();
+      let ind: number[] = [];
+      let places: any[] = [];
       categories.forEach((item: any) => {
-        cat.set(
-          item?.id,
-          response[item?.id] && response[item?.id].length > 0
-            ? response[item?.id][0]
-            : null,
-        );
-        ind.set(
-          item?.id,
-          response[item?.id] && response[item?.id].length > 0 ? 0 : -1,
-        );
+        if (response[item?.id] && response[item?.id].length > 0) {
+          ind.push(0);
+          places.push(response[item?.id][0]);
+        } else {
+          ind.push(-1);
+        }
       });
-      setSelectedDestinations(cat);
-      setMarkers(getMarkerArray(cat));
+
+      setMarkers(getMarkerArray(places));
       setIndices(ind);
 
       await setLocations(response);
@@ -118,9 +106,10 @@ const SelectDestinations = ({
     setModalVisible(false);
     // send destinations to backend
     const placeIds: number[] = [];
-    for (let [, value] of selectedDestinations) {
-      if (value) {
-        placeIds.push(value?.id);
+
+    for (let i = 0; i < indices.length; i++) {
+      if (indices[i] !== -1) {
+        placeIds.push(locations[categories[i]?.id][indices[i]].id);
       }
     }
 
@@ -213,33 +202,38 @@ const SelectDestinations = ({
           testID="selectDestinationsMainScroll"
           showsVerticalScrollIndicator={false}>
           {categories
-            ? categories?.map((category: Category) => (
-                <View key={category?.id}>
+            ? [...Array(categories.length)].map((el, idx: number) => (
+                <View key={categories[idx]?.id}>
                   <View style={destStyles.header}>
                     <Image
                       style={destStyles.icon}
                       source={icons.tempCategory}
                     />
-                    <Text style={destStyles.name}>{category?.name}</Text>
+                    <Text style={destStyles.name}>{categories[idx]?.name}</Text>
                   </View>
                   <ScrollView
                     contentContainerStyle={styles.contentContainer}
                     style={styles.scrollView}
-                    testID={`category.${category?.id}.scrollView`}
+                    testID={`category.${categories[idx]?.id}.scrollView`}
                     horizontal={true}
                     onScroll={event => {
-                      const idx: number = Math.round(
+                      const i: number = Math.round(
                         event.nativeEvent.contentOffset.x / s(325),
                       );
-                      let cat = new Map(selectedDestinations);
-                      cat.set(category?.id, locations[category?.id][idx]);
-                      setSelectedDestinations(cat);
-                      setMarkers(getMarkerArray(cat));
 
-                      let ind = new Map(indices);
-                      if (ind.get(category?.id) !== idx) {
-                        ind.set(category?.id, idx);
-                        setIndices(ind);
+                      let _indices = [...indices];
+                      if (_indices[idx] !== i) {
+                        _indices[idx] = i;
+                        setIndices(_indices);
+                        let places: any[] = [];
+                        for (let j = 0; j < _indices.length; j++) {
+                          if (_indices[j] !== -1) {
+                            places.push(
+                              locations[categories[j]?.id][_indices[j]],
+                            );
+                          }
+                        }
+                        -setMarkers(getMarkerArray(places));
                       }
                     }}
                     scrollEventThrottle={16}
@@ -249,18 +243,18 @@ const SelectDestinations = ({
                     snapToAlignment={'start'}
                     pagingEnabled>
                     {locations &&
-                    locations[category?.id] &&
-                    locations[category?.id].length > 0 ? (
-                      locations[category?.id]?.map((dest: any) => (
+                    locations[categories[idx]?.id] &&
+                    locations[categories[idx]?.id].length > 0 ? (
+                      locations[categories[idx]?.id]?.map((dest: any) => (
                         <View
                           style={styles.card}
-                          testID={`destination.${category?.id}.${dest?.id}`}
+                          testID={`destination.${categories[idx]?.id}.${dest?.id}`}
                           key={dest?.id}>
                           <TouchableOpacity
                             onPress={() =>
                               navigation.navigate('Place', {
                                 destination: dest,
-                                category: category?.name,
+                                category: categories[idx]?.name,
                               })
                             }>
                             <Place
@@ -291,10 +285,10 @@ const SelectDestinations = ({
                     )}
                   </ScrollView>
                   {locations &&
-                  locations[category?.id] &&
-                  locations[category?.id].length > 0 ? (
+                  locations[categories[idx]?.id] &&
+                  locations[categories[idx]?.id].length > 0 ? (
                     <View style={indStyles.container}>
-                      {[...Array(locations[category?.id].length)].map(
+                      {[...Array(locations[categories[idx]?.id].length)].map(
                         (e, i) => (
                           <View
                             key={i}
@@ -302,7 +296,7 @@ const SelectDestinations = ({
                               indStyles.circle,
                               {
                                 backgroundColor:
-                                  i === indices.get(category?.id)
+                                  i === indices[idx]
                                     ? colors.accent
                                     : colors.darkgrey,
                               },

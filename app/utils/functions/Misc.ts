@@ -109,16 +109,16 @@ export const getImagesFromURLs = (places: Array<any>) => {
 */
 export const getMarkerArray = (places: any): any => {
   let markers: Array<MarkerObject> = [];
-  for (let [, value] of places) {
-    if (value) {
+  places.forEach((place: any) => {
+    if (place) {
       const markerObject = {
-        name: value?.name,
-        latitude: value?.latitude,
-        longitude: value?.longitude,
+        name: place?.name,
+        latitude: place?.latitude,
+        longitude: place?.longitude,
       };
 
       markers.push(markerObject);
     }
-  }
+  });
   return markers;
 };
