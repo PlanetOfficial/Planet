@@ -19,6 +19,8 @@ import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 import {s} from 'react-native-size-matters';
 import MapView, {Marker} from 'react-native-maps';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import LinearGradient from 'react-native-linear-gradient';
 
 import Place from '../components/PlaceCard';
 
@@ -43,6 +45,7 @@ const SelectDestinations = ({
   const [radius] = useState(route?.params?.radius);
   const [categories] = useState(route?.params?.selectedCategories);
   const [modalVisible, setModalVisible] = useState(false);
+  const [mapExpanded, setMapExpanded] = useState(true);
 
   // gets all locations from selectedCategories
   const [locations, setLocations]: [any, any] = useState({});
@@ -59,6 +62,8 @@ const SelectDestinations = ({
   const [open, setOpen] = useState(false);
 
   const [indices, setIndices] = useState(new Map());
+
+  const insets = useSafeAreaInsets();
 
   useEffect(() => {
     const loadDestinations = async (categoryIds: Array<number>) => {
@@ -139,27 +144,13 @@ const SelectDestinations = ({
   };
 
   return (
-    <SafeAreaView
-      testID="selectDestinationsScreenView"
-      style={styles.container}>
-      <View style={headerStyles.container}>
-        <TouchableOpacity
-          testID="selectDestinationsScreenBack"
-          style={headerStyles.back}
-          onPress={() => navigation.navigate('SelectCategories')}>
-          <Image style={headerStyles.icon} source={icons.back} />
-        </TouchableOpacity>
-        <Text style={headerStyles.title}>
-          {strings.createTabStack.selectDestinations}
-        </Text>
-        <TouchableOpacity
-          testID="confirmDestinations"
-          style={headerStyles.confirm}
-          onPress={() => setModalVisible(true)}>
-          <Image style={headerStyles.icon} source={icons.confirm} />
-        </TouchableOpacity>
-      </View>
-      <MapView style={styles.map} region={getRegionForCoordinates(markers)}>
+    <View testID="selectDestinationsScreenView" style={styles.container}>
+      <MapView
+        style={[
+          styles.map,
+          {height: mapExpanded ? s(420) : insets.top + s(60)},
+        ]}
+        region={getRegionForCoordinates(markers)}>
         {markers?.length > 0
           ? markers?.map((marker: MarkerObject, index: number) => (
               <Marker
@@ -172,8 +163,52 @@ const SelectDestinations = ({
               />
             ))
           : null}
+        <Pressable
+          onPress={() => setMapExpanded(!mapExpanded)}
+          style={styles.bottom}>
+          {/* TODO: add arrow */}
+        </Pressable>
       </MapView>
-      <View style={destStyles.container}>
+      <LinearGradient
+        colors={[
+          'rgba(255, 255, 255, 1)',
+          'rgba(255, 255, 255, 0.8)',
+          'rgba(255, 255, 255, 0.65)',
+          'rgba(255, 255, 255, 0)',
+        ]}
+        locations={[0, 0.8, 0.9, 1]}
+        style={[styles.top, {height: insets.top + s(45)}]}
+      />
+      <SafeAreaView>
+        <View style={headerStyles.container}>
+          <TouchableOpacity
+            testID="selectDestinationsScreenBack"
+            style={headerStyles.back}
+            onPress={() => navigation.navigate('SelectCategories')}>
+            <Image style={headerStyles.icon} source={icons.back} />
+          </TouchableOpacity>
+          <Text style={headerStyles.title}>
+            {strings.createTabStack.selectDestinations}
+          </Text>
+          <TouchableOpacity
+            testID="confirmDestinations"
+            style={headerStyles.confirm}
+            onPress={() => setModalVisible(true)}>
+            <Image style={headerStyles.icon} source={icons.confirm} />
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
+      <View
+        style={[
+          destStyles.container,
+          {
+            marginTop:
+              (mapExpanded ? s(420) : insets.top + s(60)) -
+              s(42) -
+              insets.top +
+              1,
+          },
+        ]}>
         <ScrollView
           testID="selectDestinationsMainScroll"
           showsVerticalScrollIndicator={false}>
@@ -181,7 +216,10 @@ const SelectDestinations = ({
             ? categories?.map((category: Category) => (
                 <View key={category?.id}>
                   <View style={destStyles.header}>
-                    <Image style={destStyles.icon} source={icons.tempCategory} />
+                    <Image
+                      style={destStyles.icon}
+                      source={icons.tempCategory}
+                    />
                     <Text style={destStyles.name}>{category?.name}</Text>
                   </View>
                   <ScrollView
@@ -286,32 +324,22 @@ const SelectDestinations = ({
           onPress={() => {
             setModalVisible(false);
           }}
-        />      
+        />
         <View style={modalStyles.container}>
-          <View style={modalStyles.header}>
-            <Pressable
-              onPress={() => {
-                setModalVisible(false);
-              }}
-              style={modalStyles.x}>
-              <Image style={modalStyles.icon} source={icons.x} />
-            </Pressable>
-            <Text style={modalStyles.title}>Save an Event</Text>
-          </View>
-          <View>
-            <Text>
-              Event Name:
-            </Text>
+          <Text style={modalStyles.title}>Save an Event</Text>
+          <View style={modalStyles.option}>
+            <Text style={modalStyles.boldText}>Name:</Text>
             <TextInput
               testID="eventTitleText"
-              style={headerStyles.title}
+              style={modalStyles.text}
               onChangeText={setEventTitle}>
               {eventTitle}
-            </TextInput>   
+            </TextInput>
           </View>
-          <View>
+          <View style={modalStyles.option}>
+            <Text style={modalStyles.boldText}>Date:</Text>
             <TouchableOpacity onPress={() => setOpen(true)}>
-              <Text>{date.toLocaleDateString()}</Text>
+              <Text style={modalStyles.text}>{date.toLocaleDateString()}</Text>
             </TouchableOpacity>
             <DatePicker
               modal
@@ -326,12 +354,21 @@ const SelectDestinations = ({
               }}
             />
           </View>
-          <Pressable onPress={handleSave}>
-            <Text>Save</Text>
-          </Pressable>
+          <View style={modalStyles.footer}>
+            <Pressable
+              onPress={() => setModalVisible(false)}
+              style={modalStyles.cancelContainer}>
+              <Text style={modalStyles.cancel}>Cancel</Text>
+            </Pressable>
+            <Pressable
+              onPress={handleSave}
+              style={modalStyles.confirmContainer}>
+              <Text style={modalStyles.confirm}>Confirm</Text>
+            </Pressable>
+          </View>
         </View>
       </Modal>
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -341,6 +378,19 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     backgroundColor: colors.white,
+  },
+  top: {
+    position: 'absolute',
+    top: 0,
+    width: '100%',
+  },
+  bottom: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    height: s(15),
+    backgroundColor: colors.darkgrey,
+    opacity: 0.7,
   },
   contentContainer: {
     paddingLeft: s(20),
@@ -370,11 +420,9 @@ const styles = StyleSheet.create({
     color: colors.black,
   },
   map: {
-    width: s(310),
-    height: s(200),
-    borderRadius: s(10),
+    position: 'absolute',
+    width: s(350),
     marginHorizontal: s(20),
-    marginTop: s(10),
   },
 });
 
@@ -383,9 +431,9 @@ const headerStyles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    width: '100%',
-    paddingHorizontal: s(20),
+    width: s(350),
     paddingVertical: s(10),
+    paddingHorizontal: s(20),
   },
   title: {
     fontSize: s(18),
@@ -410,9 +458,7 @@ const headerStyles = StyleSheet.create({
 
 const destStyles = StyleSheet.create({
   container: {
-    marginTop: s(10),
-    width: '100%',
-    height: '69%',
+    flex: 1,
   },
   header: {
     flexDirection: 'row',
@@ -443,9 +489,9 @@ const destStyles = StyleSheet.create({
 const modalStyles = StyleSheet.create({
   container: {
     position: 'absolute',
-    left: s(15),
+    left: s(45),
     top: '35%',
-    width: s(320),
+    width: s(260),
     height: '30%',
     borderRadius: s(10),
     borderWidth: 2,
@@ -466,39 +512,68 @@ const modalStyles = StyleSheet.create({
     backgroundColor: colors.black,
     opacity: 0.5,
   },
-  header: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-    height: s(50),
-    backgroundColor: colors.black,
-    borderTopLeftRadius: s(10),
-    borderTopRightRadius: s(10),
-  },
   title: {
-    width: s(250),
+    marginTop: s(10),
     fontSize: s(20),
+    fontWeight: '700',
+    color: colors.black,
+    textAlign: 'center',
+  },
+  option: {
+    marginTop: s(20),
+    flexDirection: 'row',
+    marginHorizontal: s(30),
+  },
+  boldText: {
+    fontSize: s(16),
+    fontWeight: '700',
+    color: colors.black,
+    textAlign: 'center',
+  },
+  text: {
+    marginLeft: s(20),
+    fontSize: s(16),
+    fontWeight: '600',
+    color: colors.black,
+    textAlign: 'center',
+  },
+  footer: {
+    justifyContent: 'center',
+    position: 'absolute',
+    width: s(260) - 4,
+    bottom: 0,
+  },
+  cancelContainer: {
+    justifyContent: 'center',
+    position: 'absolute',
+    left: 0,
+    bottom: 0,
+    width: s(130) - 3,
+    height: s(40),
+    backgroundColor: colors.darkgrey,
+    borderBottomLeftRadius: s(10) - 2,
+  },
+  cancel: {
+    fontSize: s(16),
+    fontWeight: '700',
+    color: colors.black,
+    textAlign: 'center',
+  },
+  confirmContainer: {
+    justifyContent: 'center',
+    position: 'absolute',
+    right: 0,
+    bottom: 0,
+    width: s(130) - 3,
+    height: s(40),
+    backgroundColor: colors.accent,
+    borderBottomRightRadius: s(10) - 2,
+  },
+  confirm: {
+    fontSize: s(16),
     fontWeight: '700',
     color: colors.white,
     textAlign: 'center',
-    textAlignVertical: 'center',
-  },
-  x: {
-    position: 'absolute',
-    alignItems: 'center',
-    justifyContent: 'center',
-    top: -s(13),
-    right: -s(13),
-    padding: s(13),
-    width: s(18),
-    height: s(18),
-    backgroundColor: colors.grey,
-    borderRadius: s(13),
-  },
-  icon: {
-    width: s(14),
-    height: s(14),
-    tintColor: colors.black,
   },
 });
 

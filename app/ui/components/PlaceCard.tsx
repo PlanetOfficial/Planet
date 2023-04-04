@@ -55,9 +55,18 @@ const Place: React.FC<Props> = ({
 
   return (
     <View style={styles.container}>
-      <View style={styles.shadow}/>
+      <View style={styles.shadow} />
       <View style={styles.header}>
-        <LinearGradient colors={['rgba(255, 255, 255, 1)', 'rgba(255, 255, 255, 0.8)', 'rgba(255, 255, 255, 0.65)', 'rgba(255, 255, 255, 0)']} locations={[0, 0.7, 0.8, 1]} style={styles.headerBG} />
+        <LinearGradient
+          colors={[
+            'rgba(255, 255, 255, 1)',
+            'rgba(255, 255, 255, 0.8)',
+            'rgba(255, 255, 255, 0.65)',
+            'rgba(255, 255, 255, 0)',
+          ]}
+          locations={[0, 0.7, 0.8, 1]}
+          style={styles.headerBG}
+        />
         <View>
           <Text numberOfLines={1} style={styles.name}>
             {name}
@@ -66,10 +75,8 @@ const Place: React.FC<Props> = ({
         </View>
         <TouchableOpacity onPress={handleBookmark}>
           <Image
-            style={
-              styles.icon
-            }
-            source={bookmarked? icons.hearted: icons.heart}
+            style={styles.icon}
+            source={bookmarked ? icons.hearted : icons.heart}
           />
         </TouchableOpacity>
       </View>
@@ -89,7 +96,7 @@ const styles = StyleSheet.create({
     zIndex: -1,
     backgroundColor: colors.white,
     borderRadius: s(10),
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 2,
