@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
   },
   map: {
     height: s(200),
-    borderRadius: s(15),
+    borderRadius: s(10),
     marginHorizontal: s(20),
   },
   separator: {

@@ -41,8 +41,8 @@ const styles = StyleSheet.create({
     opacity: 0.85,
     width: '101%',
     height: '100%',
-    borderTopLeftRadius: s(15),
-    borderTopRightRadius: s(15),
+    borderTopLeftRadius: s(10),
+    borderTopRightRadius: s(10),
   },
   name: {
     marginLeft: s(10),
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: '100%',
     height: s(200),
-    borderRadius: s(15),
+    borderRadius: s(10),
     zIndex: -1,
   },
 });

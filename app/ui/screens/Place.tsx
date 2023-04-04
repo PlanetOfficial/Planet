@@ -145,13 +145,13 @@ const styles = StyleSheet.create({
     marginRight: s(10),
     width: s(160),
     height: s(200),
-    borderRadius: s(15),
+    borderRadius: s(10),
   },
   map: {
     height: s(200),
     marginHorizontal: s(20),
     marginTop: s(10),
-    borderRadius: s(15),
+    borderRadius: s(10),
   },
   separator: {
     borderWidth: 0.5,
@@ -214,7 +214,7 @@ const rnrStyles = StyleSheet.create({
   review: {
     width: s(160),
     padding: s(10),
-    borderRadius: s(15),
+    borderRadius: s(10),
     backgroundColor: colors.grey,
     marginRight: s(10),
     marginTop: s(5),
@@ -241,7 +241,7 @@ const detailStyles = StyleSheet.create({
     marginTop: s(5),
     marginBottom: s(10),
     padding: s(15),
-    borderRadius: s(15),
+    borderRadius: s(10),
     backgroundColor: colors.grey,
   },
   infoTitle: {
