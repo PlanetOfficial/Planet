@@ -288,22 +288,20 @@ const SelectDestinations = ({
                   locations[category?.id] &&
                   locations[category?.id].length > 0 ? (
                     <View style={indStyles.container}>
-                      {locations[category?.id].map(
-                        (e: any, i: number) => (
-                          <View
-                            key={i}
-                            style={[
-                              indStyles.circle,
-                              {
-                                backgroundColor:
-                                  i === indices[idx]
-                                    ? colors.accent
-                                    : colors.darkgrey,
-                              },
-                            ]}
-                          />
-                        ),
-                      )}
+                      {locations[category?.id].map((e: any, i: number) => (
+                        <View
+                          key={i}
+                          style={[
+                            indStyles.circle,
+                            {
+                              backgroundColor:
+                                i === indices[idx]
+                                  ? colors.accent
+                                  : colors.darkgrey,
+                            },
+                          ]}
+                        />
+                      ))}
                     </View>
                   ) : null}
                   <View style={styles.separator} />
@@ -320,9 +318,13 @@ const SelectDestinations = ({
           }}
         />
         <View style={modalStyles.container}>
-          <Text style={modalStyles.title}>{strings.createTabStack.saveEvent}</Text>
+          <Text style={modalStyles.title}>
+            {strings.createTabStack.saveEvent}
+          </Text>
           <View style={modalStyles.option}>
-            <Text style={modalStyles.boldText}>{strings.createTabStack.name}:</Text>
+            <Text style={modalStyles.boldText}>
+              {strings.createTabStack.name}:
+            </Text>
             <TextInput
               testID="eventTitleText"
               style={modalStyles.text}
@@ -331,7 +333,9 @@ const SelectDestinations = ({
             </TextInput>
           </View>
           <View style={modalStyles.option}>
-            <Text style={modalStyles.boldText}>{strings.createTabStack.date}:</Text>
+            <Text style={modalStyles.boldText}>
+              {strings.createTabStack.date}:
+            </Text>
             <TouchableOpacity onPress={() => setDatePickerOpen(true)}>
               <Text style={modalStyles.text}>{date.toLocaleDateString()}</Text>
             </TouchableOpacity>
@@ -352,12 +356,16 @@ const SelectDestinations = ({
             <Pressable
               onPress={() => setModalVisible(false)}
               style={modalStyles.cancelContainer}>
-              <Text style={modalStyles.cancel}>{strings.createTabStack.cancel}</Text>
+              <Text style={modalStyles.cancel}>
+                {strings.createTabStack.cancel}
+              </Text>
             </Pressable>
             <Pressable
               onPress={handleSave}
               style={modalStyles.confirmContainer}>
-              <Text style={modalStyles.confirm}>{strings.createTabStack.confirm}</Text>
+              <Text style={modalStyles.confirm}>
+                {strings.createTabStack.confirm}
+              </Text>
             </Pressable>
           </View>
         </View>
