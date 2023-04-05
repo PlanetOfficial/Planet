@@ -51,6 +51,11 @@ const strings = {
     events: 'Events',
     details: 'Details',
     noDestinations: 'No Destinations Found',
+    saveEvent: 'Save an Event',
+    name: 'Name',
+    date: 'Date',
+    cancel: 'Cancel',
+    confirm: 'Confirm',
   },
   settings: {
     name: 'Name',
