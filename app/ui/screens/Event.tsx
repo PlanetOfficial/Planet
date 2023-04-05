@@ -44,8 +44,8 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
   }, [eventId]);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={headerStyles.container}>
+    <View style={styles.container}>
+      <SafeAreaView style={headerStyles.container}>
         <TouchableOpacity
           style={headerStyles.back}
           onPress={() => navigation.navigate('Library')}>
@@ -57,7 +57,7 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
             <Text style={headerStyles.date}>{date}</Text>
           </View>
         </View>
-      </View>
+      </SafeAreaView>
       <MapView style={styles.map} region={getRegionForCoordinates(markers)}>
         {markers?.length > 0
           ? markers?.map((marker: MarkerObject, index: number) => (
@@ -107,7 +107,7 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
           );
         }}
       />
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -124,6 +124,7 @@ const styles = StyleSheet.create({
     marginTop: s(10),
   },
   map: {
+    marginTop: s(5),
     height: s(200),
     borderRadius: s(10),
     marginHorizontal: s(20),
@@ -143,7 +144,7 @@ const headerStyles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     width: '100%',
-    paddingHorizontal: s(20),
+    marginHorizontal: s(20),
     paddingVertical: s(10),
   },
   texts: {
