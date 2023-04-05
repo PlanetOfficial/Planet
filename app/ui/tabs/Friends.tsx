@@ -1,5 +1,12 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, SafeAreaView, Image} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  SafeAreaView,
+  Image,
+} from 'react-native';
 
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
@@ -15,27 +22,41 @@ const Friends = () => {
   return (
     <SafeAreaView testID="friendsScreenView" style={styles.container}>
       <View style={headerStyles.container}>
-      <Text style={headerStyles.title}>{strings.title.friends}</Text>
-      <TouchableOpacity style={[headerStyles.fgSelector, {borderBottomLeftRadius: fgSelectorOpen? 0 : s(10), borderBottomRightRadius: fgSelectorOpen? 0 : s(10)}]} onPress={() => setFgSelectorOpen(!fgSelectorOpen)}>
-        <Text numberOfLines={1} style={headerStyles.selectedText}>
-          {friendGroups[friendGroup]}
-        </Text>
-        <View style={headerStyles.drop}>
-          <Image style={headerStyles.icon} source={icons.back}/>
-        </View>
-        {fgSelectorOpen?(
-          <View style={dropDownStyles.container}>
-            {friendGroups?.map((fg: any, idx: number) => (
-              <TouchableOpacity key={idx} style={dropDownStyles.rect} onPress={() => {setFriendGroup(idx); setFgSelectorOpen(false)}}>
-                <Text numberOfLines={1} key={idx} style={dropDownStyles.text}>
-                  {fg}
-                </Text>
-              </TouchableOpacity>
-            ))}
+        <Text style={headerStyles.title}>{strings.title.friends}</Text>
+        <TouchableOpacity
+          style={[
+            headerStyles.fgSelector,
+            {
+              borderBottomLeftRadius: fgSelectorOpen ? 0 : s(10),
+              borderBottomRightRadius: fgSelectorOpen ? 0 : s(10),
+            },
+          ]}
+          onPress={() => setFgSelectorOpen(!fgSelectorOpen)}>
+          <Text numberOfLines={1} style={headerStyles.selectedText}>
+            {friendGroups[friendGroup]}
+          </Text>
+          <View style={headerStyles.drop}>
+            <Image style={headerStyles.icon} source={icons.back} />
           </View>
-        ) : null}
-      </TouchableOpacity>
-    </View>
+          {fgSelectorOpen ? (
+            <View style={dropDownStyles.container}>
+              {friendGroups?.map((fg: any, idx: number) => (
+                <TouchableOpacity
+                  key={idx}
+                  style={dropDownStyles.rect}
+                  onPress={() => {
+                    setFriendGroup(idx);
+                    setFgSelectorOpen(false);
+                  }}>
+                  <Text numberOfLines={1} key={idx} style={dropDownStyles.text}>
+                    {fg}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          ) : null}
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 };
@@ -89,7 +110,7 @@ const headerStyles = StyleSheet.create({
     height: s(18),
     tintColor: colors.black,
     transform: [{rotate: '270deg'}],
-  }
+  },
 });
 
 const dropDownStyles = StyleSheet.create({
@@ -113,6 +134,6 @@ const dropDownStyles = StyleSheet.create({
     fontWeight: '600',
     color: colors.black,
   },
-})
+});
 
 export default Friends;
