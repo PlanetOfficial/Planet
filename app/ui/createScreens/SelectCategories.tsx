@@ -120,7 +120,7 @@ const SelectCategories = ({
                 radius: radius,
                 latitude: latitude,
                 longitude: longitude,
-              })
+              });
             }
           }}>
           <Image style={headerStyles.icon} source={icons.confirm} />

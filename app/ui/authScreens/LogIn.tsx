@@ -80,11 +80,11 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
         onPress={() => navigation.navigate('ForgotPassword')}>
         {strings.login.forgotPassword}
       </Text>
+      <View>{error.length !== 0 ? <Text>{error}</Text> : null}</View>
       <View>
-        {error.length !== 0 ? (<Text>{error}</Text>) : null}
-      </View>
-      <View>
-        {loading ? (<ActivityIndicator size="large" color={colors.accent} />) : null}
+        {loading ? (
+          <ActivityIndicator size="large" color={colors.accent} />
+        ) : null}
       </View>
       <TouchableOpacity
         testID="loginButton"

@@ -32,7 +32,12 @@ const SignUp = ({navigation}: {navigation: any}) => {
 
     setError('');
 
-    if (name.length === 0 || email.length === 0 || password.length === 0 || passwordConfirmed.length === 0) {
+    if (
+      name.length === 0 ||
+      email.length === 0 ||
+      password.length === 0 ||
+      passwordConfirmed.length === 0
+    ) {
       setError(strings.signUp.missingFields);
       return;
     }
@@ -114,9 +119,7 @@ const SignUp = ({navigation}: {navigation: any}) => {
             onChangeText={text => setPhoneNumber(text)}
           />
         </View>
-        <View>
-          {error.length !== 0 ? (<Text>{error}</Text>) : null}
-        </View>
+        <View>{error.length !== 0 ? <Text>{error}</Text> : null}</View>
         <TouchableOpacity onPress={() => handleSignUp()}>
           <Text style={accountStyles.signup}>{strings.signUp.signUp}</Text>
         </TouchableOpacity>
