@@ -36,7 +36,13 @@ const Friends = () => {
             {friendGroups[friendGroup]}
           </Text>
           <View style={headerStyles.drop}>
-            <Image style={headerStyles.icon} source={icons.back} />
+            <Image
+              style={[
+                headerStyles.icon,
+                {transform: [{rotate: fgSelectorOpen ? '90deg' : '270deg'}]},
+              ]}
+              source={icons.back}
+            />
           </View>
           {fgSelectorOpen ? (
             <View style={dropDownStyles.container}>
@@ -109,7 +115,6 @@ const headerStyles = StyleSheet.create({
     width: s(12),
     height: s(18),
     tintColor: colors.black,
-    transform: [{rotate: '270deg'}],
   },
 });
 
