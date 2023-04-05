@@ -52,7 +52,7 @@ const SelectDestinations = ({
       date.toLocaleDateString(),
     );
 
-    if (responseStatus === 200) {
+    if (responseStatus) {
       navigation.navigate('TabStack', {screen: 'Library'});
       // TODO: show successful save
     } else {

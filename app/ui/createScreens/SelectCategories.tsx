@@ -73,15 +73,18 @@ const SelectCategories = ({
   const handleGenrePress = async (genre: any) => {
     setSelectedGenre(genre.name);
     setModalVisible(true);
+    setAllCategories([]);
 
     // display categories from genre logic
     if (!cachedGenres[genre.id as keyof {}]) {
       // call API and add to cache if not in cache
       const response = await getCategories(genre.id);
 
-      let updatedCache: any = {...cachedGenres};
-      updatedCache[genre.id] = response;
-      setCachedGenres(updatedCache);
+      if (response?.length > 0) {
+        let updatedCache: any = {...cachedGenres};
+        updatedCache[genre.id] = response;
+        setCachedGenres(updatedCache);
+      }
 
       setAllCategories(response);
     } else {
@@ -110,14 +113,16 @@ const SelectCategories = ({
         <TouchableOpacity
           testID="confirmCategories"
           style={headerStyles.confirm}
-          onPress={() =>
-            navigation.navigate('SelectDestinations', {
-              selectedCategories: selectedCategories,
-              radius: radius,
-              latitude: latitude,
-              longitude: longitude,
-            })
-          }>
+          onPress={() => {
+            if (selectedCategories?.length !== 0) {
+              navigation.navigate('SelectDestinations', {
+                selectedCategories: selectedCategories,
+                radius: radius,
+                latitude: latitude,
+                longitude: longitude,
+              });
+            }
+          }}>
           <Image style={headerStyles.icon} source={icons.confirm} />
         </TouchableOpacity>
       </View>

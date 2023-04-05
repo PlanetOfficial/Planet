@@ -10,5 +10,5 @@ export const setBookmark = async (authToken: any, placeId: number) => {
     },
   );
 
-  return response.status;
+  return response?.ok;
 };

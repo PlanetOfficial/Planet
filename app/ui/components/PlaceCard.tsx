@@ -30,21 +30,21 @@ const PlaceCard: React.FC<Props> = ({
 
   const handleBookmark = async () => {
     const authToken = await EncryptedStorage.getItem('auth_token');
-    let response;
+    let responseStatus;
 
     if (!bookmarked) {
       // switch to bookmarked, so call /bookmark
-      response = await setBookmark(authToken, id);
+      responseStatus = await setBookmark(authToken, id);
     } else {
       // switch to not bookmarked, so call /unbookmark
-      response = await unbookmark(authToken, id);
+      responseStatus = await unbookmark(authToken, id);
 
       if (onUnBookmark) {
         onUnBookmark(id);
       }
     }
 
-    if (response === 200) {
+    if (responseStatus) {
       setBookmarked(!bookmarked);
 
       // TODO: success

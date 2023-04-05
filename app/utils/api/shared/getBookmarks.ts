@@ -7,7 +7,10 @@ export const getBookmarks = async (authToken: any) => {
     method: 'GET',
   });
 
-  const myJson = await response.json(); //extract JSON from the http response
-
-  return myJson;
+  if (response?.ok) {
+    const myJson = await response.json(); //extract JSON from the http response
+    return myJson;
+  } else {
+    return [];
+  }
 };

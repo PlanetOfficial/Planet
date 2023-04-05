@@ -14,6 +14,7 @@ const strings = {
     signUp: 'Sign up',
     email: 'Email',
     password: 'Password',
+    missingInfo: 'Missing email or password',
   },
   signUp: {
     name: 'Name',
@@ -23,6 +24,8 @@ const strings = {
     signUp: 'Sign Up',
     termsAgreement:
       "By signing up, you agree to Rivalet's Terms and Conditions and Privacy Policy.",
+    passwordsMatch: 'Passwords are not the same',
+    missingFields: 'Fields are missing',
   },
   createTabStack: {
     milesAbbrev: 'mi',

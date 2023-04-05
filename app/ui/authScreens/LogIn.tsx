@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {
+  ActivityIndicator,
   View,
   Text,
   TextInput,
@@ -20,10 +21,24 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
   const handleLogin = async () => {
     // Perform login logic, e.g. send login request to API
 
+    setError('');
+
+    // display an error if one of the fields are missing
+    if (email.length === 0 || password.length === 0) {
+      setError(strings.login.missingInfo);
+      return;
+    }
+
+    setLoading(true);
     const response = await login(email, password);
+    setLoading(false);
+
     if (response?.authToken) {
       // successful login
       await cacheUserInfo(response?.authToken);
@@ -32,7 +47,7 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
         routes: [{name: 'TabStack'}],
       });
     } else {
-      console.log('Failed login, error: ' + response?.message);
+      setError(response?.message);
     }
   };
 
@@ -65,6 +80,12 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
         onPress={() => navigation.navigate('ForgotPassword')}>
         {strings.login.forgotPassword}
       </Text>
+      <View>{error.length !== 0 ? <Text>{error}</Text> : null}</View>
+      <View>
+        {loading ? (
+          <ActivityIndicator size="large" color={colors.accent} />
+        ) : null}
+      </View>
       <TouchableOpacity
         testID="loginButton"
         style={styles.button}
