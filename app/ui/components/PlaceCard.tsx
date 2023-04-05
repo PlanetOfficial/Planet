@@ -8,7 +8,7 @@ import {setBookmark} from '../../utils/api/shared/setBookmark';
 import {unbookmark} from '../../utils/api/shared/unbookmark';
 import EncryptedStorage from 'react-native-encrypted-storage';
 
-import { BlurView } from "@react-native-community/blur";
+import {BlurView} from '@react-native-community/blur';
 
 interface Props {
   id: number;
@@ -59,11 +59,7 @@ const PlaceCard: React.FC<Props> = ({
       <View style={styles.shadow} />
       <View style={styles.header}>
         <View style={styles.headerBG}>
-          <BlurView
-            style={styles.blur}
-            blurAmount={3}
-            blurType="xlight"
-          />
+          <BlurView style={styles.blur} blurAmount={3} blurType="xlight" />
         </View>
         <View>
           <Text numberOfLines={1} style={styles.name}>

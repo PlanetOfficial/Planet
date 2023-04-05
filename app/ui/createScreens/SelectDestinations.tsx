@@ -20,7 +20,7 @@ import {colors} from '../../constants/theme';
 import {s} from 'react-native-size-matters';
 import MapView, {Marker} from 'react-native-maps';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import LinearGradient from 'react-native-linear-gradient';
+import {BlurView} from '@react-native-community/blur';
 
 import PlaceCard from '../components/PlaceCard';
 
@@ -158,15 +158,10 @@ const SelectDestinations = ({
           {/* TODO: add arrow */}
         </Pressable>
       </MapView>
-      <LinearGradient
-        colors={[
-          'rgba(255, 255, 255, 1)',
-          'rgba(255, 255, 255, 0.8)',
-          'rgba(255, 255, 255, 0.65)',
-          'rgba(255, 255, 255, 0)',
-        ]}
-        locations={[0, 0.8, 0.9, 1]}
-        style={[styles.top, {height: insets.top + s(45)}]}
+      <BlurView
+        style={[styles.top, {height: insets.top + s(35)}]}
+        blurAmount={3}
+        blurType="xlight"
       />
       <SafeAreaView>
         <View style={headerStyles.container}>
@@ -434,11 +429,12 @@ const headerStyles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     width: s(350),
-    paddingVertical: s(10),
+    height: s(30),
+    marginBottom: s(5),
     paddingHorizontal: s(20),
   },
   title: {
-    fontSize: s(18),
+    fontSize: s(16),
     fontWeight: '600',
     color: colors.black,
   },

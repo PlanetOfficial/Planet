@@ -14,6 +14,7 @@ import MapView from 'react-native-maps';
 import {Svg, Circle} from 'react-native-svg';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {BlurView} from '@react-native-community/blur';
 
 import Geolocation from '@react-native-community/geolocation';
 import {icons} from '../../constants/images';
@@ -128,7 +129,8 @@ const MapScreen = ({navigation}: {navigation: any}) => {
         </View>
       </View>
 
-      <View style={[styles.top, {height: insets.top + s(54.5)}]} />
+      <BlurView blurAmount={3}
+        blurType="xlight" style={[styles.top, {height: insets.top + s(35)}]} />
       <SafeAreaView style={styles.headerContainer}>
         <View style={headerStyles.container}>
           <TouchableOpacity
@@ -211,8 +213,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     width: '100%',
-    backgroundColor: colors.white,
-    opacity: 0.85,
   },
 });
 
@@ -222,11 +222,12 @@ const headerStyles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     width: '100%',
+    height: s(30),
     paddingHorizontal: s(20),
-    paddingVertical: s(10),
+    marginBottom: s(5),
   },
   title: {
-    fontSize: s(18),
+    fontSize: s(16),
     fontWeight: '600',
     color: colors.black,
   },
