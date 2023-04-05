@@ -24,8 +24,23 @@ const SignUp = ({navigation}: {navigation: any}) => {
   const [passwordConfirmed, setPasswordConfirmed] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
 
+  const [error, setError] = useState('');
+
   const handleSignUp = async () => {
-    // TODO: confirm passwords
+    // TODO: set limits on email, passwords, etc. lengths
+    // TODO: do we need phone #
+
+    setError('');
+
+    if (name.length === 0 || email.length === 0 || password.length === 0 || passwordConfirmed.length === 0) {
+      setError(strings.signUp.missingFields);
+      return;
+    }
+
+    if (password !== passwordConfirmed) {
+      setError(strings.signUp.passwordsMatch);
+      return;
+    }
 
     const response = await signup(name, email, password);
     if (response?.authToken) {
@@ -36,7 +51,7 @@ const SignUp = ({navigation}: {navigation: any}) => {
         routes: [{name: 'TabStack'}],
       });
     } else {
-      console.log('Failed login, error: ' + response?.message);
+      setError(response?.message);
     }
   };
 
@@ -98,6 +113,9 @@ const SignUp = ({navigation}: {navigation: any}) => {
             value={phoneNumber}
             onChangeText={text => setPhoneNumber(text)}
           />
+        </View>
+        <View>
+          {error.length !== 0 ? (<Text>{error}</Text>) : null}
         </View>
         <TouchableOpacity onPress={() => handleSignUp()}>
           <Text style={accountStyles.signup}>{strings.signUp.signUp}</Text>

@@ -7,7 +7,11 @@ export const getUserInfo = async (authToken: any) => {
     method: 'GET',
   });
 
-  const myJson = await response.json(); //extract JSON from the http response
+  if (response?.ok) {
+    const myJson = await response.json(); //extract JSON from the http response
 
-  return myJson;
+    return myJson;
+  } else {
+    return {};
+  }
 };

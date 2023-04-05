@@ -23,7 +23,10 @@ export const requestLocations = async (
     },
   );
 
-  const myJson = await response.json(); //extract JSON from the http response
-
-  return myJson?.destinations;
+  if (response?.ok) {
+    const myJson = await response.json(); //extract JSON from the http response
+    return myJson?.destinations;
+  } else {
+    return {};
+  }
 };
