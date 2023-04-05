@@ -7,7 +7,8 @@ import {icons} from '../../constants/images';
 import {setBookmark} from '../../utils/api/shared/setBookmark';
 import {unbookmark} from '../../utils/api/shared/unbookmark';
 import EncryptedStorage from 'react-native-encrypted-storage';
-import LinearGradient from 'react-native-linear-gradient';
+
+import { BlurView } from "@react-native-community/blur";
 
 interface Props {
   id: number;
@@ -57,16 +58,13 @@ const PlaceCard: React.FC<Props> = ({
     <View style={styles.container}>
       <View style={styles.shadow} />
       <View style={styles.header}>
-        <LinearGradient
-          colors={[
-            'rgba(255, 255, 255, 1)',
-            'rgba(255, 255, 255, 0.8)',
-            'rgba(255, 255, 255, 0.65)',
-            'rgba(255, 255, 255, 0)',
-          ]}
-          locations={[0, 0.7, 0.8, 1]}
-          style={styles.headerBG}
-        />
+        <View style={styles.headerBG}>
+          <BlurView
+            style={styles.blur}
+            blurAmount={3}
+            blurType="xlight"
+          />
+        </View>
         <View>
           <Text numberOfLines={1} style={styles.name}>
             {name}
@@ -115,12 +113,15 @@ const styles = StyleSheet.create({
   },
   headerBG: {
     position: 'absolute',
-    top: 0,
     width: '100%',
-    height: '115%',
+    height: '100%',
     borderTopLeftRadius: s(10) - 3,
     borderTopRightRadius: s(10) - 3,
-    backgroundColor: colors.white,
+    overflow: 'hidden',
+  },
+  blur: {
+    width: '100%',
+    height: '100%',
   },
   name: {
     marginLeft: s(7),
