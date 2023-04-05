@@ -26,10 +26,12 @@ const Friends = () => {
         <TouchableOpacity
           style={[
             headerStyles.fgSelector,
-            {
-              borderBottomLeftRadius: fgSelectorOpen ? 0 : s(10),
-              borderBottomRightRadius: fgSelectorOpen ? 0 : s(10),
-            },
+            fgSelectorOpen
+              ? null
+              : {
+                  borderBottomLeftRadius: s(10),
+                  borderBottomRightRadius: s(10),
+                },
           ]}
           onPress={() => setFgSelectorOpen(!fgSelectorOpen)}>
           <Text numberOfLines={1} style={headerStyles.selectedText}>
