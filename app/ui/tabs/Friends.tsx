@@ -41,9 +41,9 @@ const Friends = () => {
             <Image
               style={[
                 headerStyles.icon,
-                {transform: [{rotate: fgSelectorOpen ? '90deg' : '270deg'}]},
+                {transform: [{rotate: fgSelectorOpen ? '270deg' : '90deg'}]},
               ]}
-              source={icons.back}
+              source={icons.next}
             />
           </View>
           {fgSelectorOpen ? (

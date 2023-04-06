@@ -189,7 +189,7 @@ const MapScreen = ({navigation}: {navigation: any}) => {
                   ? headerStyles.icon
                   : headerStyles.disabledIcon
               }
-              source={icons.back}
+              source={icons.next}
             />
           </TouchableOpacity>
         </View>
@@ -278,14 +278,12 @@ const headerStyles = StyleSheet.create({
     color: colors.black,
   },
   x: {
-    width: s(20),
-    height: s(20),
+    width: s(18),
+    height: s(18),
   },
   next: {
-    marginLeft: s(20 / 3),
-    width: s(40 / 3),
-    height: s(20),
-    transform: [{rotate: '180deg'}],
+    width: s(18),
+    height: s(18),
   },
   icon: {
     width: '100%',

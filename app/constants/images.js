@@ -12,7 +12,7 @@ export const tabIcons = {
 export const icons = {
   share: require('../assets/icons/share.png'),
   search: require('../assets/icons/search.png'),
-  back: require('../assets/icons/back.png'),
+  next: require('../assets/icons/next.png'),
   settings: require('../assets/icons/settings.png'),
   x: require('../assets/icons/x.png'),
   confirm: require('../assets/icons/confirm.png'),
