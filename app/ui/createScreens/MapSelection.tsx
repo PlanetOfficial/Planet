@@ -1,4 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import 'react-native-gesture-handler';
+
+import React, {useCallback, useMemo, useRef, useEffect, useState} from 'react';
 import {
   View,
   SafeAreaView,
@@ -9,12 +11,13 @@ import {
   PermissionsAndroid,
   Platform,
 } from 'react-native';
-import {s} from 'react-native-size-matters';
+import {s, vs} from 'react-native-size-matters';
 import MapView from 'react-native-maps';
 import {Svg, Circle} from 'react-native-svg';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {BlurView} from '@react-native-community/blur';
+import BottomSheet from '@gorhom/bottom-sheet';
 
 import Geolocation from '@react-native-community/geolocation';
 import {icons} from '../../constants/images';
@@ -89,6 +92,25 @@ const MapScreen = ({navigation}: {navigation: any}) => {
     setCurrentLocation();
   }, []);
 
+  const bottomSheetRef: any =
+    useRef() as React.MutableRefObject<HTMLInputElement>;
+  const autoCompleteRef: any =
+    useRef() as React.MutableRefObject<HTMLInputElement>;
+  const snapPoints = useMemo(
+    () => [insets.bottom + s(55), vs(680) - (insets.top + s(35))],
+    [insets.bottom, insets.top],
+  );
+  const handleSheetChange = useCallback(
+    (fromIndex: number, toIndex: number) => {
+      if (toIndex === 0) {
+        autoCompleteRef?.current.blur();
+      } else {
+        autoCompleteRef?.current.focus();
+      }
+    },
+    [],
+  );
+
   return (
     <View testID="mapSelectionScreenView" style={styles.container}>
       <View style={mapStyles.container}>
@@ -116,8 +138,13 @@ const MapScreen = ({navigation}: {navigation: any}) => {
             />
           </Svg>
         </View>
-        <View style={mapStyles.rIndContainer}>
-          <View style={mapStyles.rIndBackground} />
+        <View
+          style={[mapStyles.rIndContainer, {bottom: insets.bottom + s(55)}]}>
+          <BlurView
+            blurAmount={3}
+            blurType="xlight"
+            style={mapStyles.rIndBackground}
+          />
           <Text style={[mapStyles.radiusIndicator, {color: colors.black}]}>
             {strings.createTabStack.radius}
             {': '}
@@ -129,8 +156,11 @@ const MapScreen = ({navigation}: {navigation: any}) => {
         </View>
       </View>
 
-      <BlurView blurAmount={3}
-        blurType="xlight" style={[styles.top, {height: insets.top + s(35)}]} />
+      <BlurView
+        blurAmount={3}
+        blurType="xlight"
+        style={[styles.top, {height: insets.top + s(35)}]}
+      />
       <SafeAreaView style={styles.headerContainer}>
         <View style={headerStyles.container}>
           <TouchableOpacity
@@ -163,10 +193,25 @@ const MapScreen = ({navigation}: {navigation: any}) => {
             />
           </TouchableOpacity>
         </View>
-        <View testID="searchLocationInput">
+      </SafeAreaView>
+
+      <BottomSheet
+        ref={bottomSheetRef}
+        index={0}
+        snapPoints={snapPoints}
+        onAnimate={handleSheetChange}
+        backgroundStyle={bottomSheetStyle.background}>
+        <View style={bottomSheetStyle.container} testID="searchLocationInput">
           <GooglePlacesAutocomplete
+            ref={autoCompleteRef}
+            textInputProps={{
+              onFocus: () => {
+                bottomSheetRef?.current.snapToIndex(1);
+              },
+            }}
             placeholder={strings.createTabStack.search}
             onPress={(data, details = null) => {
+              bottomSheetRef?.current.snapToIndex(0);
               if (
                 details?.geometry?.location?.lat &&
                 details?.geometry?.location?.lng
@@ -187,6 +232,7 @@ const MapScreen = ({navigation}: {navigation: any}) => {
             fetchDetails={true}
             styles={{
               container: searchStyles.container,
+              textInputContainer: searchStyles.textInputContainer,
               textInput: searchStyles.textInput,
               row: searchStyles.row,
               separator: searchStyles.separator,
@@ -194,7 +240,7 @@ const MapScreen = ({navigation}: {navigation: any}) => {
           />
           <Image style={searchStyles.icon} source={icons.search} />
         </View>
-      </SafeAreaView>
+      </BottomSheet>
     </View>
   );
 };
@@ -253,49 +299,55 @@ const headerStyles = StyleSheet.create({
   },
 });
 
+const bottomSheetStyle = StyleSheet.create({
+  background: {
+    backgroundColor: colors.white,
+    opacity: 0.9,
+  },
+  container: {
+    marginHorizontal: s(10),
+  },
+});
+
 const searchStyles = StyleSheet.create({
   container: {
     flex: 0,
-    width: s(310),
-    backgroundColor: colors.white,
+    width: s(330),
+    backgroundColor: 'transparent',
+  },
+  textInputContainer: {
+    backgroundColor: colors.grey,
     borderRadius: s(10),
-    shadowColor: colors.black,
-    shadowOpacity: 0.5,
-    shadowOffset: {
-      width: 1,
-      height: 1,
-    },
+    marginBottom: s(10),
   },
   textInput: {
     paddingVertical: 0,
-    marginLeft: s(20),
+    marginLeft: s(15),
     paddingLeft: s(10),
     marginBottom: 0,
-    height: s(30),
-    fontSize: s(13),
-    backgroundColor: 'transparent',
+    height: s(25),
+    fontSize: s(12),
     color: colors.black,
+    backgroundColor: 'transparent',
   },
   row: {
-    height: s(35),
-    width: s(300),
-    paddingLeft: s(15),
+    height: s(40),
+    width: s(320),
+    paddingLeft: s(10),
     color: colors.black,
     borderTopColor: colors.darkgrey,
-    borderRadius: s(10),
-    backgroundColor: colors.white,
+    backgroundColor: 'transparent',
   },
   separator: {
-    marginHorizontal: s(13),
-    height: 0.5,
-    backgroundColor: colors.darkgrey,
+    height: 1,
+    backgroundColor: colors.grey,
   },
   icon: {
     position: 'absolute',
-    top: s(8),
-    left: s(8),
-    width: s(14),
-    height: s(14),
+    top: s(7),
+    left: s(7),
+    width: s(11),
+    height: s(11),
     tintColor: colors.darkgrey,
   },
 });
@@ -320,26 +372,24 @@ const mapStyles = StyleSheet.create({
   },
   rIndContainer: {
     position: 'absolute',
-    bottom: 0,
     right: 0,
-    margin: s(20),
+    margin: s(10),
   },
   rIndBackground: {
     position: 'absolute',
     width: '100%',
     height: '100%',
-    backgroundColor: colors.white,
-    opacity: 0.85,
     borderRadius: s(10),
   },
   radiusIndicator: {
-    padding: s(10),
-    fontSize: s(14),
+    paddingHorizontal: s(10),
+    paddingVertical: s(5),
+    fontSize: s(13),
     fontWeight: '600',
   },
   radius: {
     margin: s(30),
-    fontSize: s(16),
+    fontSize: s(15),
     fontWeight: '800',
     color: colors.accent,
   },
