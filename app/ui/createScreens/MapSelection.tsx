@@ -1,5 +1,4 @@
 import 'react-native-gesture-handler';
-
 import React, {useCallback, useMemo, useRef, useEffect, useState} from 'react';
 import {
   View,

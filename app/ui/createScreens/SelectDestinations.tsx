@@ -1,4 +1,5 @@
-import React, {useEffect, useState} from 'react';
+import 'react-native-gesture-handler';
+import React, {useMemo, useRef, useEffect, useState} from 'react';
 import {
   View,
   SafeAreaView,
@@ -9,7 +10,6 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
-  ScrollView,
 } from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import EncryptedStorage from 'react-native-encrypted-storage';
@@ -17,10 +17,11 @@ import {icons} from '../../constants/images';
 import misc from '../../constants/misc';
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
-import {s} from 'react-native-size-matters';
+import {s, vs} from 'react-native-size-matters';
 import MapView, {Marker} from 'react-native-maps';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {BlurView} from '@react-native-community/blur';
+import BottomSheet, {BottomSheetScrollView} from '@gorhom/bottom-sheet';
 
 import PlaceCard from '../components/PlaceCard';
 
@@ -31,6 +32,7 @@ import {getRegionForCoordinates} from '../../utils/functions/Misc';
 import {getMarkerArray} from '../../utils/functions/Misc';
 import {MarkerObject} from '../../utils/interfaces/MarkerObject';
 import {sendEvent} from '../../utils/api/CreateCalls/sendEvent';
+import {ScrollView} from 'react-native-gesture-handler';
 
 const SelectDestinations = ({
   navigation,
@@ -44,7 +46,6 @@ const SelectDestinations = ({
   const [radius] = useState(route?.params?.radius);
   const [categories] = useState(route?.params?.selectedCategories);
   const [modalVisible, setModalVisible] = useState(false);
-  const [mapExpanded, setMapExpanded] = useState(true);
 
   const [locations, setLocations]: [any, any] = useState({});
   const [indices, setIndices]: [number[], any] = useState([]);
@@ -56,6 +57,15 @@ const SelectDestinations = ({
   const [date, setDate] = useState(new Date());
   const [datePickerOpen, setDatePickerOpen] = useState(false);
   const insets = useSafeAreaInsets();
+
+  const snapPoints = useMemo(
+    () => [
+      '10%',
+      vs(350) - (insets.top + s(35)),
+      vs(680) - (insets.top + s(35)),
+    ],
+    [insets.top],
+  );
 
   useEffect(() => {
     const loadDestinations = async (categoryIds: Array<number>) => {
@@ -132,14 +142,12 @@ const SelectDestinations = ({
     }
   };
 
+  const bottomSheetRef: any =
+    useRef() as React.MutableRefObject<HTMLInputElement>;
+
   return (
     <View testID="selectDestinationsScreenView" style={styles.container}>
-      <MapView
-        style={[
-          styles.map,
-          {height: mapExpanded ? s(420) : insets.top + s(60)},
-        ]}
-        region={getRegionForCoordinates(markers)}>
+      <MapView style={styles.map} region={getRegionForCoordinates(markers)}>
         {markers?.length > 0
           ? markers?.map((marker: MarkerObject, index: number) => (
               <Marker
@@ -152,11 +160,6 @@ const SelectDestinations = ({
               />
             ))
           : null}
-        <Pressable
-          onPress={() => setMapExpanded(!mapExpanded)}
-          style={styles.bottom}>
-          {/* TODO: add arrow */}
-        </Pressable>
       </MapView>
       <BlurView
         style={[styles.top, {height: insets.top + s(35)}]}
@@ -182,18 +185,12 @@ const SelectDestinations = ({
           </TouchableOpacity>
         </View>
       </SafeAreaView>
-      <View
-        style={[
-          destStyles.container,
-          {
-            marginTop:
-              (mapExpanded ? s(420) : insets.top + s(60)) -
-              s(42) -
-              insets.top +
-              1,
-          },
-        ]}>
-        <ScrollView
+      <BottomSheet
+        ref={bottomSheetRef}
+        index={1}
+        snapPoints={snapPoints}
+        backgroundStyle={destStyles.container}>
+        <BottomSheetScrollView
           testID="selectDestinationsMainScroll"
           showsVerticalScrollIndicator={false}>
           {categories
@@ -303,8 +300,8 @@ const SelectDestinations = ({
                 </View>
               ))
             : null}
-        </ScrollView>
-      </View>
+        </BottomSheetScrollView>
+      </BottomSheet>
       <Modal animationType="fade" transparent={true} visible={modalVisible}>
         <Pressable
           style={modalStyles.dim}
@@ -348,20 +345,20 @@ const SelectDestinations = ({
             />
           </View>
           <View style={modalStyles.footer}>
-            <Pressable
+            <TouchableOpacity
               onPress={() => setModalVisible(false)}
               style={modalStyles.cancelContainer}>
               <Text style={modalStyles.cancel}>
                 {strings.createTabStack.cancel}
               </Text>
-            </Pressable>
-            <Pressable
+            </TouchableOpacity>
+            <TouchableOpacity
               onPress={handleSave}
               style={modalStyles.confirmContainer}>
               <Text style={modalStyles.confirm}>
                 {strings.createTabStack.confirm}
               </Text>
-            </Pressable>
+            </TouchableOpacity>
           </View>
         </View>
       </Modal>
@@ -404,6 +401,7 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     borderColor: colors.grey,
     marginHorizontal: s(20),
+    marginBottom: s(5),
   },
   placeHolder: {
     alignItems: 'center',
@@ -419,6 +417,7 @@ const styles = StyleSheet.create({
   map: {
     position: 'absolute',
     width: s(350),
+    height: '100%',
     marginHorizontal: s(20),
   },
 });
@@ -456,7 +455,8 @@ const headerStyles = StyleSheet.create({
 
 const destStyles = StyleSheet.create({
   container: {
-    flex: 1,
+    backgroundColor: colors.white,
+    opacity: 0.9,
   },
   header: {
     flexDirection: 'row',
@@ -464,7 +464,6 @@ const destStyles = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal: s(20),
     paddingHorizontal: s(7),
-    marginTop: s(10),
     marginBottom: s(7),
   },
   icon: {
