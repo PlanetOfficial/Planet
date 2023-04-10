@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
+  Platform,
 } from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import EncryptedStorage from 'react-native-encrypted-storage';
@@ -161,11 +162,23 @@ const SelectDestinations = ({
             ))
           : null}
       </MapView>
-      <BlurView
-        style={[styles.top, {height: insets.top + s(35)}]}
-        blurAmount={3}
-        blurType="xlight"
-      />
+      {Platform.OS === 'ios' ? (
+        <BlurView
+          blurAmount={3}
+          blurType="xlight"
+          style={[styles.top, {height: insets.top + s(35)}]}
+        />
+      ) : (
+        <View
+          style={[
+            styles.top,
+            styles.nonBlur,
+            {
+              height: insets.top + s(35),
+            },
+          ]}
+        />
+      )}
       <SafeAreaView>
         <View style={headerStyles.container}>
           <TouchableOpacity
@@ -420,6 +433,7 @@ const styles = StyleSheet.create({
     height: '100%',
     marginHorizontal: s(20),
   },
+  nonBlur: {backgroundColor: colors.white, opacity: 0.85},
 });
 
 const headerStyles = StyleSheet.create({

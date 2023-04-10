@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet, Image} from 'react-native';
+import {View, Text, StyleSheet, Image, Platform} from 'react-native';
 import {s} from 'react-native-size-matters';
 
 import {colors} from '../../constants/theme';
@@ -17,7 +17,11 @@ const EventCard: React.FC<Props> = ({name, info, image}) => {
       <View style={styles.shadow} />
       <View style={styles.header}>
         <View style={styles.headerBG}>
-          <BlurView style={styles.blur} blurAmount={3} blurType="xlight" />
+          {Platform.OS === 'ios' ? (
+            <BlurView blurAmount={3} blurType="xlight" style={styles.blur} />
+          ) : (
+            <View style={[styles.blur, styles.nonBlur]} />
+          )}
         </View>
         <View>
           <Text numberOfLines={1} style={styles.name}>
@@ -71,6 +75,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
+  nonBlur: {backgroundColor: colors.white, opacity: 0.85},
   name: {
     marginLeft: s(7),
     width: s(260),

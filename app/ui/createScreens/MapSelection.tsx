@@ -1,4 +1,3 @@
-import 'react-native-gesture-handler';
 import React, {useCallback, useMemo, useRef, useEffect, useState} from 'react';
 import {
   View,
@@ -139,11 +138,15 @@ const MapScreen = ({navigation}: {navigation: any}) => {
         </View>
         <View
           style={[mapStyles.rIndContainer, {bottom: insets.bottom + s(55)}]}>
-          <BlurView
-            blurAmount={3}
-            blurType="xlight"
-            style={mapStyles.rIndBackground}
-          />
+          {Platform.OS === 'ios' ? (
+            <BlurView
+              blurAmount={3}
+              blurType="xlight"
+              style={mapStyles.rIndBackground}
+            />
+          ) : (
+            <View style={[mapStyles.rIndBackground, styles.nonBlur]} />
+          )}
           <Text style={[mapStyles.radiusIndicator, {color: colors.black}]}>
             {strings.createTabStack.radius}
             {': '}
@@ -154,12 +157,24 @@ const MapScreen = ({navigation}: {navigation: any}) => {
           </Text>
         </View>
       </View>
+      {Platform.OS === 'ios' ? (
+        <BlurView
+          blurAmount={3}
+          blurType="xlight"
+          style={[styles.top, {height: insets.top + s(35)}]}
+        />
+      ) : (
+        <View
+          style={[
+            styles.top,
+            styles.nonBlur,
+            {
+              height: insets.top + s(35),
+            },
+          ]}
+        />
+      )}
 
-      <BlurView
-        blurAmount={3}
-        blurType="xlight"
-        style={[styles.top, {height: insets.top + s(35)}]}
-      />
       <SafeAreaView style={styles.headerContainer}>
         <View style={headerStyles.container}>
           <TouchableOpacity
@@ -259,6 +274,7 @@ const styles = StyleSheet.create({
     top: 0,
     width: '100%',
   },
+  nonBlur: {backgroundColor: colors.white, opacity: 0.85},
 });
 
 const headerStyles = StyleSheet.create({
