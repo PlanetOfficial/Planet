@@ -51,8 +51,8 @@ export const getRegionForCoordinates = (points: Array<MarkerObject>): any => {
   // calculate the center and delta values for the region
   const centerLat = (maxLat + minLat) / 2;
   const centerLng = (maxLng + minLng) / 2;
-  let latDelta = (maxLat - minLat) * 1.6; // add a bit of padding
-  let lngDelta = (maxLng - minLng) * 1.6;
+  let latDelta = (maxLat - minLat) * 1.9; // add a bit of padding
+  let lngDelta = (maxLng - minLng) * 1.9;
 
   if (latDelta === 0) {
     latDelta = 0.0922; // set a default delta

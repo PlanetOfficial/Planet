@@ -12,7 +12,7 @@ import {
 import {s, vs} from 'react-native-size-matters';
 import MapView from 'react-native-maps';
 import {Svg, Circle} from 'react-native-svg';
-import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
+import {GooglePlacesAutocomplete, GooglePlacesAutocompleteRef} from 'react-native-google-places-autocomplete';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {BlurView} from '@react-native-community/blur';
 import BottomSheet from '@gorhom/bottom-sheet';
@@ -90,10 +90,8 @@ const MapScreen = ({navigation}: {navigation: any}) => {
     setCurrentLocation();
   }, []);
 
-  const bottomSheetRef: any =
-    useRef() as React.MutableRefObject<HTMLInputElement>;
-  const autoCompleteRef: any =
-    useRef() as React.MutableRefObject<HTMLInputElement>;
+  const bottomSheetRef: any = useRef<BottomSheet>(null);
+  const autoCompleteRef: any = useRef<GooglePlacesAutocompleteRef>(null);
   const snapPoints = useMemo(
     () => [insets.bottom + s(55), vs(680) - (insets.top + s(35))],
     [insets.bottom, insets.top],

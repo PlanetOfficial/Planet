@@ -143,8 +143,7 @@ const SelectDestinations = ({
     }
   };
 
-  const bottomSheetRef: any =
-    useRef() as React.MutableRefObject<HTMLInputElement>;
+  const bottomSheetRef: any = useRef<BottomSheet>(null);
 
   return (
     <View testID="selectDestinationsScreenView" style={styles.container}>
@@ -470,7 +469,7 @@ const headerStyles = StyleSheet.create({
 const destStyles = StyleSheet.create({
   container: {
     backgroundColor: colors.white,
-    opacity: 0.9,
+    opacity: 0.83,
   },
   header: {
     flexDirection: 'row',
