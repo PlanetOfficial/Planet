@@ -28,9 +28,9 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
     <SafeAreaView style={styles.container}>
       <View style={headerStyles.container}>
         <TouchableOpacity
-          style={headerStyles.back}
+          style={headerStyles.next}
           onPress={() => navigation.goBack()}>
-          <Image style={headerStyles.icon} source={icons.back} />
+          <Image style={headerStyles.icon} source={icons.next} />
         </TouchableOpacity>
         <View style={headerStyles.texts}>
           <Text style={headerStyles.title}>{destination?.name}</Text>
@@ -184,10 +184,10 @@ const headerStyles = StyleSheet.create({
     fontWeight: '600',
     color: colors.accent,
   },
-  back: {
-    marginRight: s(20 / 3),
-    width: s(40 / 3),
-    height: s(20),
+  next: {
+    width: s(18),
+    height: s(18),
+    transform: [{rotate: '180deg'}],
   },
   icon: {
     width: '100%',

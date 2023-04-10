@@ -77,7 +77,7 @@ const SelectDestinations = ({
           testID="finalizeScreenBack"
           style={headerStyles.back}
           onPress={() => navigation.navigate('SelectDestinations')}>
-          <Image style={headerStyles.icon} source={icons.back} />
+          <Image style={headerStyles.icon} source={icons.next} />
         </TouchableOpacity>
         <View style={headerStyles.texts}>
           <TextInput

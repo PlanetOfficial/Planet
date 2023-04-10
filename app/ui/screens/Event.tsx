@@ -49,7 +49,7 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
         <TouchableOpacity
           style={headerStyles.back}
           onPress={() => navigation.navigate('Library')}>
-          <Image style={headerStyles.icon} source={icons.back} />
+          <Image style={headerStyles.icon} source={icons.next} />
         </TouchableOpacity>
         <View style={headerStyles.texts}>
           <Text style={headerStyles.title}>{eventTitle}</Text>
@@ -176,6 +176,7 @@ const headerStyles = StyleSheet.create({
     width: '100%',
     height: '100%',
     tintColor: colors.black,
+    transform: [{rotate: '180deg'}],
   },
 });
 

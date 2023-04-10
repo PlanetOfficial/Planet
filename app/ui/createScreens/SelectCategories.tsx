@@ -105,7 +105,7 @@ const SelectCategories = ({
           testID="selectCategoriesScreenBack"
           style={headerStyles.back}
           onPress={() => navigation.navigate('MapSelection')}>
-          <Image style={headerStyles.icon} source={icons.back} />
+          <Image style={headerStyles.icon} source={icons.next} />
         </TouchableOpacity>
         <Text style={headerStyles.title}>
           {strings.createTabStack.selectCategories}
@@ -238,23 +238,23 @@ const headerStyles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     width: '100%',
+    height: s(30),
     paddingHorizontal: s(20),
-    paddingVertical: s(10),
-    paddingBottom: 0,
+    marginBottom: s(5),
   },
   title: {
-    fontSize: s(18),
+    fontSize: s(16),
     fontWeight: '600',
     color: colors.black,
   },
   back: {
-    marginRight: s(20 / 3),
-    width: s(40 / 3),
-    height: s(20),
+    width: s(18),
+    height: s(18),
+    transform: [{rotate: '180deg'}],
   },
   confirm: {
-    width: s(20),
-    height: s(20),
+    width: s(18),
+    height: s(18),
   },
   icon: {
     width: '100%',
