@@ -12,7 +12,10 @@ import {
 import {s, vs} from 'react-native-size-matters';
 import MapView from 'react-native-maps';
 import {Svg, Circle} from 'react-native-svg';
-import {GooglePlacesAutocomplete, GooglePlacesAutocompleteRef} from 'react-native-google-places-autocomplete';
+import {
+  GooglePlacesAutocomplete,
+  GooglePlacesAutocompleteRef,
+} from 'react-native-google-places-autocomplete';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {BlurView} from '@react-native-community/blur';
 import BottomSheet from '@gorhom/bottom-sheet';
