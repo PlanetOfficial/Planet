@@ -8,6 +8,7 @@ import {
   Image,
   Pressable,
   Platform,
+  FlatList,
 } from 'react-native';
 import {BottomSheetModal} from '@gorhom/bottom-sheet';
 import {BlurView} from '@react-native-community/blur';
@@ -16,8 +17,44 @@ import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 import {icons} from '../../constants/images';
 import {s} from 'react-native-size-matters';
+import EventCard from '../components/EventCard';
 
+//TEMP
 const friendGroups = ['Poplar Residents', 'The Boys', 'Tennis People'];
+
+//TEMP
+const events = [
+  {
+    id: 1,
+    name: 'Event 1',
+    date: '2021-01-01',
+    location: 'Seattle, WA',
+  },
+  {
+    id: 2,
+    name: 'Event 2',
+    date: '2021-01-01',
+    location: 'Capitol Hill, WA',
+  },
+  {
+    id: 3,
+    name: 'Event 3',
+    date: '2021-01-01',
+    location: 'Seattle, WA',
+  },
+  {
+    id: 4,
+    name: 'Event 4',
+    date: '2021-01-01',
+    location: 'Seattle, WA',
+  },
+  {
+    id: 5,
+    name: 'Event 5',
+    date: '2021-01-01',
+    location: 'Seattle, WA',
+  },
+];
 
 const Friends = ({navigation}: {navigation: any}) => {
   const [friendGroup, setFriendGroup] = useState(0);
@@ -51,6 +88,37 @@ const Friends = ({navigation}: {navigation: any}) => {
             </View>
           </TouchableOpacity>
         </View>
+        <FlatList
+          data={events}
+          style={contentStyles.container}
+          initialNumToRender={4}
+          keyExtractor={(item: any) => item?.id}
+          ItemSeparatorComponent={Spacer}
+          contentContainerStyle={contentStyles.content}
+          renderItem={({item}) => {
+            // const images = getImagesFromURLs(item?.places);
+            return (
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('Event', {
+                    eventData: item,
+                    // bookmarks: places?.map(place => place?.id),
+                  });
+                }}>
+                <EventCard
+                  name={item?.name}
+                  info={item?.date}
+                  image={
+                    // images && images?.length !== 0
+                    //   ? {uri: images[0]} :
+                    icons.defaultIcon
+                  }
+                />
+              </TouchableOpacity>
+            );
+          }}
+        />
+
         {bottomSheetOpen ? (
           <Pressable
             onPress={() => {
@@ -85,7 +153,13 @@ const Friends = ({navigation}: {navigation: any}) => {
               bottomSheetRef?.current.close();
             }}>
             <Image style={bottomSheetStyles.icon} source={icons.user} />
-            <Text numberOfLines={1} key={idx} style={bottomSheetStyles.text}>
+            <Text
+              numberOfLines={1}
+              key={idx}
+              style={[
+                bottomSheetStyles.text,
+                {color: idx === friendGroup ? colors.accent : colors.black},
+              ]}>
               {fg}
             </Text>
           </TouchableOpacity>
@@ -108,10 +182,13 @@ const Friends = ({navigation}: {navigation: any}) => {
   );
 };
 
+const Spacer = () => <View style={contentStyles.separator} />;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
+    backgroundColor: colors.white,
   },
   pressable: {
     position: 'absolute',
@@ -161,6 +238,21 @@ const headerStyles = StyleSheet.create({
   },
 });
 
+const contentStyles = StyleSheet.create({
+  container: {
+    width: s(350),
+    paddingHorizontal: s(20),
+  },
+  content: {
+    paddingVertical: s(10),
+  },
+  separator: {
+    borderWidth: 0.5,
+    borderColor: colors.grey,
+    marginVertical: s(10),
+  },
+});
+
 const bottomSheetStyles = StyleSheet.create({
   container: {
     borderTopLeftRadius: s(10),
@@ -200,7 +292,6 @@ const bottomSheetStyles = StyleSheet.create({
     marginLeft: s(12),
     fontSize: s(15),
     fontWeight: '600',
-    color: colors.black,
   },
 });
 
