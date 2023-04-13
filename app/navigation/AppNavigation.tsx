@@ -1,6 +1,7 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
+import {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 
 import NavBar from '../ui/components/NavBar';
 import LoginScreen from '../ui/authScreens/LogIn';
@@ -54,29 +55,33 @@ const MainStack = createStackNavigator();
 const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
   return isLoggedIn ? (
     <NavigationContainer>
-      <MainStack.Navigator initialRouteName="Main">
-        {tabStack()}
-        {createStack()}
-        {placeStackScreen()}
-        {eventStackScreen()}
-        {settingsStackScreen()}
-        {loginStackScreen()}
-        {signUpStackScreen()}
-        {forgetPassStackScreen()}
-      </MainStack.Navigator>
+      <BottomSheetModalProvider>
+        <MainStack.Navigator initialRouteName="Main">
+          {tabStack()}
+          {createStack()}
+          {placeStackScreen()}
+          {eventStackScreen()}
+          {settingsStackScreen()}
+          {loginStackScreen()}
+          {signUpStackScreen()}
+          {forgetPassStackScreen()}
+        </MainStack.Navigator>
+      </BottomSheetModalProvider>
     </NavigationContainer>
   ) : (
     <NavigationContainer>
-      <MainStack.Navigator initialRouteName="Main">
-        {loginStackScreen()}
-        {signUpStackScreen()}
-        {forgetPassStackScreen()}
-        {tabStack()}
-        {createStack()}
-        {placeStackScreen()}
-        {eventStackScreen()}
-        {settingsStackScreen()}
-      </MainStack.Navigator>
+      <BottomSheetModalProvider>
+        <MainStack.Navigator initialRouteName="Main">
+          {loginStackScreen()}
+          {signUpStackScreen()}
+          {forgetPassStackScreen()}
+          {tabStack()}
+          {createStack()}
+          {placeStackScreen()}
+          {eventStackScreen()}
+          {settingsStackScreen()}
+        </MainStack.Navigator>
+      </BottomSheetModalProvider>
     </NavigationContainer>
   );
 };

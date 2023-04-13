@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useMemo, useRef, useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -6,66 +6,100 @@ import {
   TouchableOpacity,
   SafeAreaView,
   Image,
+  Pressable,
+  Platform,
 } from 'react-native';
+import {BottomSheetModal} from '@gorhom/bottom-sheet';
+import {BlurView} from '@react-native-community/blur';
 
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 import {icons} from '../../constants/images';
 import {s} from 'react-native-size-matters';
 
-const friendGroups = ['The Boys', 'Reanne', 'Tennis People'];
+const friendGroups = ['Poplar Residents', 'The Boys', 'Tennis People'];
 
 const Friends = () => {
   const [friendGroup, setFriendGroup] = useState(0);
-  const [fgSelectorOpen, setFgSelectorOpen] = useState(false);
+  const [bottomSheetOpen, setbottomSheetOpen] = useState(false);
+
+  const bottomSheetRef: any = useRef<BottomSheetModal>(null);
+  const snapPoints = useMemo(() => [s(70) * friendGroups.length + s(120)], []);
+  const handleSheetChange = useCallback(
+    (fromIndex: number, toIndex: number) => {
+      setbottomSheetOpen(toIndex === 0);
+    },
+    [],
+  );
 
   return (
-    <SafeAreaView testID="friendsScreenView" style={styles.container}>
-      <View style={headerStyles.container}>
-        <Text style={headerStyles.title}>{strings.title.friends}</Text>
-        <TouchableOpacity
-          style={[
-            headerStyles.fgSelector,
-            fgSelectorOpen
-              ? null
-              : {
-                  borderBottomLeftRadius: s(10),
-                  borderBottomRightRadius: s(10),
-                },
-          ]}
-          onPress={() => setFgSelectorOpen(!fgSelectorOpen)}>
-          <Text numberOfLines={1} style={headerStyles.selectedText}>
-            {friendGroups[friendGroup]}
-          </Text>
-          <View style={headerStyles.drop}>
-            <Image
-              style={[
-                headerStyles.icon,
-                {transform: [{rotate: fgSelectorOpen ? '270deg' : '90deg'}]},
-              ]}
-              source={icons.next}
-            />
-          </View>
-          {fgSelectorOpen ? (
-            <View style={dropDownStyles.container}>
-              {friendGroups?.map((fg: any, idx: number) => (
-                <TouchableOpacity
-                  key={idx}
-                  style={dropDownStyles.rect}
-                  onPress={() => {
-                    setFriendGroup(idx);
-                    setFgSelectorOpen(false);
-                  }}>
-                  <Text numberOfLines={1} key={idx} style={dropDownStyles.text}>
-                    {fg}
-                  </Text>
-                </TouchableOpacity>
-              ))}
+    <>
+      <SafeAreaView testID="friendsScreenView" style={styles.container}>
+        <View style={headerStyles.container}>
+          <TouchableOpacity
+            style={headerStyles.fgSelector}
+            onPress={() => {
+              bottomSheetRef.current?.present();
+            }}>
+            <Text numberOfLines={1} style={headerStyles.title}>
+              {friendGroup === -1
+                ? strings.title.friends
+                : friendGroups[friendGroup]}
+            </Text>
+            <View style={headerStyles.drop}>
+              <Image style={[headerStyles.icon]} source={icons.next} />
             </View>
-          ) : null}
+          </TouchableOpacity>
+        </View>
+        {bottomSheetOpen ? 
+          <Pressable
+            onPress={() => {
+              bottomSheetRef?.current.close();
+            }}
+            style={styles.pressable}>
+            {Platform.OS === 'ios' ? (
+              <BlurView blurAmount={2} blurType="dark" style={styles.blur} />
+            ) : (
+              <View style={[styles.blur, styles.nonBlur]} />
+            )}
+          </Pressable>
+         : null}
+      </SafeAreaView>
+
+      <BottomSheetModal
+        ref={bottomSheetRef}
+        snapPoints={snapPoints}
+        onAnimate={handleSheetChange}>
+        {friendGroups?.map((fg: any, idx: number) => (
+          <TouchableOpacity
+            key={idx}
+            style={[
+              bottomSheetStyles.row,
+              {
+                backgroundColor:
+                  idx === friendGroup ? colors.grey : colors.white,
+              },
+            ]}
+            onPress={() => {
+              setFriendGroup(idx);
+              bottomSheetRef?.current.close();
+            }}>
+            <Image style={bottomSheetStyles.icon} source={icons.user} />
+            <Text numberOfLines={1} key={idx} style={bottomSheetStyles.text}>
+              {fg}
+            </Text>
+          </TouchableOpacity>
+        ))}
+        <TouchableOpacity style={bottomSheetStyles.row}>
+          <View style={bottomSheetStyles.plus}>
+            <Image style={bottomSheetStyles.plusIcon} source={icons.x} />
+          </View>
+          <Text numberOfLines={1} style={bottomSheetStyles.text}>
+            Create a new friend group
+          </Text>
         </TouchableOpacity>
-      </View>
-    </SafeAreaView>
+      </BottomSheetModal>
+    </>
   );
 };
 
@@ -73,7 +107,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: colors.white,
+  },
+  pressable: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+  },
+  blur: {
+    width: '100%',
+    height: '100%',
+  },
+  nonBlur: {
+    backgroundColor: colors.black,
+    opacity: 0.85,
   },
 });
 
@@ -93,51 +139,61 @@ const headerStyles = StyleSheet.create({
   fgSelector: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    width: s(120),
-    height: s(33),
-    borderTopLeftRadius: s(10),
-    borderTopRightRadius: s(10),
-    backgroundColor: colors.grey,
-    paddingHorizontal: s(10),
-  },
-  selectedText: {
-    flex: 1,
-    fontSize: s(15),
-    fontWeight: '700',
-    color: colors.accent,
   },
   drop: {
     justifyContent: 'center',
     alignItems: 'center',
-    width: s(18),
-    height: s(12),
+    marginLeft: s(7),
+    width: s(15),
+    height: s(10),
   },
   icon: {
-    width: s(12),
-    height: s(18),
+    width: s(10),
+    height: s(15),
     tintColor: colors.black,
+    transform: [{rotate: '90deg'}],
   },
 });
 
-const dropDownStyles = StyleSheet.create({
+const bottomSheetStyles = StyleSheet.create({
   container: {
-    position: 'absolute',
-    top: s(33),
-    borderBottomLeftRadius: s(10),
-    borderBottomRightRadius: s(10),
-    backgroundColor: colors.grey,
+    borderTopLeftRadius: s(10),
+    borderTopRightRadius: s(10),
   },
-  rect: {
+  background: {
+    backgroundColor: colors.white,
+  },
+  row: {
+    flexDirection: 'row',
+    paddingHorizontal: s(20),
+    alignItems: 'center',
+    height: s(70),
+    borderBottomWidth: 1,
+    borderBottomColor: colors.grey,
+  },
+  icon: {
+    width: s(40),
+    height: s(40),
+  },
+
+  plus: {
     justifyContent: 'center',
-    borderTopWidth: 1,
-    borderTopColor: colors.darkgrey,
-    width: s(120),
-    height: s(30),
+    alignItems: 'center',
+    width: s(40),
+    height: s(40),
+    borderRadius: s(20),
+    borderWidth: 1,
+    borderColor: colors.accent
+  },
+  plusIcon: {
+    width: '40%',
+    height: '40%',
+    transform: [{rotate: '45deg'}],
+    tintColor: colors.accent,
   },
   text: {
-    marginHorizontal: s(10),
-    fontSize: s(14),
+    marginLeft: s(12),
+    fontSize: s(15),
     fontWeight: '600',
     color: colors.black,
   },

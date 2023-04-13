@@ -75,7 +75,10 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-  nonBlur: {backgroundColor: colors.white, opacity: 0.85},
+  nonBlur: {
+    backgroundColor: colors.white,
+    opacity: 0.85,
+  },
   name: {
     marginLeft: s(7),
     width: s(260),
