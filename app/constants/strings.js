@@ -74,6 +74,9 @@ const strings = {
     profile: 'Profile',
     settings: 'Settings',
   },
+  friends: {
+    createPrompt: 'Create a Friend Group',
+  },
   library: {
     saved: 'Saved',
     events: 'Events',

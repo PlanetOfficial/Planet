@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useRef, useEffect, useState} from 'react';
+import React, {useCallback, useMemo, useRef, useState} from 'react';
 import {
   View,
   Text,
@@ -19,7 +19,7 @@ import {s} from 'react-native-size-matters';
 
 const friendGroups = ['Poplar Residents', 'The Boys', 'Tennis People'];
 
-const Friends = () => {
+const Friends = ({navigation}: {navigation: any}) => {
   const [friendGroup, setFriendGroup] = useState(0);
   const [bottomSheetOpen, setbottomSheetOpen] = useState(false);
 
@@ -51,7 +51,7 @@ const Friends = () => {
             </View>
           </TouchableOpacity>
         </View>
-        {bottomSheetOpen ? 
+        {bottomSheetOpen ? (
           <Pressable
             onPress={() => {
               bottomSheetRef?.current.close();
@@ -63,7 +63,7 @@ const Friends = () => {
               <View style={[styles.blur, styles.nonBlur]} />
             )}
           </Pressable>
-         : null}
+        ) : null}
       </SafeAreaView>
 
       <BottomSheetModal
@@ -90,12 +90,17 @@ const Friends = () => {
             </Text>
           </TouchableOpacity>
         ))}
-        <TouchableOpacity style={bottomSheetStyles.row}>
+        <TouchableOpacity
+          style={bottomSheetStyles.row}
+          onPress={() => {
+            bottomSheetRef?.current.close();
+            navigation.navigate('CreateFG');
+          }}>
           <View style={bottomSheetStyles.plus}>
             <Image style={bottomSheetStyles.plusIcon} source={icons.x} />
           </View>
           <Text numberOfLines={1} style={bottomSheetStyles.text}>
-            Create a new friend group
+            {strings.friends.createPrompt}
           </Text>
         </TouchableOpacity>
       </BottomSheetModal>
@@ -111,7 +116,7 @@ const styles = StyleSheet.create({
   pressable: {
     position: 'absolute',
     width: '100%',
-    height: '100%',
+    height: '150%',
   },
   blur: {
     width: '100%',
@@ -128,11 +133,12 @@ const headerStyles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: s(20),
+    paddingHorizontal: s(20),
+    paddingVertical: s(15),
     width: '100%',
   },
   title: {
-    fontSize: s(28),
+    fontSize: s(24),
     fontWeight: '700',
     color: colors.black,
   },
@@ -143,7 +149,7 @@ const headerStyles = StyleSheet.create({
   drop: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: s(7),
+    marginLeft: s(10),
     width: s(15),
     height: s(10),
   },
@@ -175,15 +181,14 @@ const bottomSheetStyles = StyleSheet.create({
     width: s(40),
     height: s(40),
   },
-
   plus: {
     justifyContent: 'center',
     alignItems: 'center',
     width: s(40),
     height: s(40),
     borderRadius: s(20),
-    borderWidth: 1,
-    borderColor: colors.accent
+    borderWidth: s(2),
+    borderColor: colors.accent,
   },
   plusIcon: {
     width: '40%',

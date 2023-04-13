@@ -14,6 +14,7 @@ import FinalizePlan from '../ui/createScreens/FinalizePlan';
 import Place from '../ui/screens/Place';
 import Event from '../ui/screens/Event';
 import Settings from '../ui/screens/Settings';
+import CreateFG from '../ui/screens/CreateFriendGroup';
 
 interface AppNavigationProps {
   isLoggedIn: boolean;
@@ -65,6 +66,7 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {loginStackScreen()}
           {signUpStackScreen()}
           {forgetPassStackScreen()}
+          {createFGStackScreen()}
         </MainStack.Navigator>
       </BottomSheetModalProvider>
     </NavigationContainer>
@@ -80,6 +82,7 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {placeStackScreen()}
           {eventStackScreen()}
           {settingsStackScreen()}
+          {createFGStackScreen()}
         </MainStack.Navigator>
       </BottomSheetModalProvider>
     </NavigationContainer>
@@ -159,6 +162,16 @@ const settingsStackScreen = () => {
     <MainStack.Screen
       name="Settings"
       component={Settings}
+      options={{headerShown: false}}
+    />
+  );
+};
+
+const createFGStackScreen = () => {
+  return (
+    <MainStack.Screen
+      name="CreateFG"
+      component={CreateFG}
       options={{headerShown: false}}
     />
   );
