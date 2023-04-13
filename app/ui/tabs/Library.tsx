@@ -87,6 +87,7 @@ const Places = (
     testID="bookmarksList"
     data={places}
     style={styles.flatlist}
+    key={'Places'}
     initialNumToRender={4}
     keyExtractor={item => item?.id}
     ItemSeparatorComponent={Spacer}
@@ -129,6 +130,7 @@ const Events = (navigation: any, events: Array<any>, places: Array<any>) => (
     data={events}
     style={styles.flatlist}
     initialNumToRender={4}
+    key={'Events'}
     keyExtractor={item => item?.id}
     ItemSeparatorComponent={Spacer}
     contentContainerStyle={styles.contentContainer}
