@@ -10,20 +10,433 @@ export const genres = [
         supplier: 'ticketmaster',
         alias: 'KZFzniwnSyZfZ7v7nJ',
         subcategories: [
-            
+          {
+            "id": 1,
+            "alias": "KnvZfZ7vAvd",
+            "title": "Blues"
+          },
+          {
+            "id": 2,
+            "alias": "KnvZfZ7vAeJ",
+            "title": "Classical"
+          },
+          {
+            "id": 3,
+            "alias": "KnvZfZ7vAv6",
+            "title": "Country"
+          },
+          {
+            "id": 4,
+            "alias": "KnvZfZ7vAvF",
+            "title": "Dance/Electronic"
+          },
+          {
+            "id": 5,
+            "alias": "KnvZfZ7vAva",
+            "title": "Folk"
+          },
+          {
+            "id": 6,
+            "alias": "KnvZfZ7vAv1",
+            "title": "Hip-Hop/Rap"
+          },
+          {
+            "id": 7,
+            "alias": "KnvZfZ7vAvJ",
+            "title": "Holiday"
+          },
+          {
+            "id": 8,
+            "alias": "KnvZfZ7vAvE",
+            "title": "Jazz"
+          },
+          {
+            "id": 9,
+            "alias": "KnvZfZ7vAJ6",
+            "title": "Latin"
+          },
+          {
+            "id": 10,
+            "alias": "KnvZfZ7vAvt",
+            "title": "Metal"
+          },
+          {
+            "id": 11,
+            "alias": "KnvZfZ7vAvn",
+            "title": "New Age"
+          },
+          {
+            "id": 12,
+            "alias": "KnvZfZ7vAev",
+            "title": "Pop"
+          },
+          {
+            "id": 13,
+            "alias": "KnvZfZ7vAee",
+            "title": "R&B"
+          },
+          {
+            "id": 14,
+            "alias": "KnvZfZ7vAeA",
+            "title": "Rock"
+          }
         ]
       },
       {
         id: 2,
         name: 'Sports',
         supplier: 'ticketmaster',
-        alias: '',
+        alias: 'KZFzniwnSyZfZ7v7nE',
+        subcategories: [
+          {
+            "id": 1,
+            "alias": "KnvZfZ7vAeI",
+            "title": "Aquatics"
+          },
+          {
+            "id": 2,
+            "alias": "KnvZfZ7vAet",
+            "title": "Athletic Races"
+          },
+          {
+            "id": 3,
+            "alias": "KnvZfZ7vAen",
+            "title": "Badminton"
+          },
+          {
+            "id": 4,
+            "alias": "KnvZfZ7vAel",
+            "title": "Bandy"
+          },
+          {
+            "id": 5,
+            "alias": "KnvZfZ7vAdv",
+            "title": "Baseball"
+          },
+          {
+            "id": 6,
+            "alias": "KnvZfZ7vAde",
+            "title": "Basketball"
+          },
+          {
+            "id": 7,
+            "alias": "KnvZfZ7vAdd",
+            "title": "Biathlon"
+          },
+          {
+            "id": 8,
+            "alias": "KnvZfZ7vAd7",
+            "title": "Body Building"
+          },
+          {
+            "id": 9,
+            "alias": "KnvZfZ7vAdA",
+            "title": "Boxing"
+          },
+          {
+            "id": 10,
+            "alias": "KnvZfZ7vAdk",
+            "title": "Cricket"
+          },
+          {
+            "id": 11,
+            "alias": "KnvZfZ7vAdF",
+            "title": "Curling"
+          },
+          {
+            "id": 12,
+            "alias": "KnvZfZ7vAda",
+            "title": "Cycling"
+          },
+          {
+            "id": 13,
+            "alias": "KnvZfZ7vAd1",
+            "title": "Equestrian"
+          },
+          {
+            "id": 14,
+            "alias": "KnvZfZ7vAJF",
+            "title": "eSports"
+          },
+          {
+            "id": 15,
+            "alias": "KnvZfZ7vAdJ",
+            "title": "Extreme"
+          },
+          {
+            "id": 16,
+            "alias": "KnvZfZ7vAJv",
+            "title": "Field Hockey"
+          },
+          {
+            "id": 17,
+            "alias": "KnvZfZ7vAJ7",
+            "title": "Fitness"
+          },
+          {
+            "id": 18,
+            "alias": "KnvZfZ7vA1l",
+            "title": "Floorball"
+          },
+          {
+            "id": 19,
+            "alias": "KnvZfZ7vAdE",
+            "title": "Football"
+          },
+          {
+            "id": 20,
+            "alias": "KnvZfZ7vAdt",
+            "title": "Golf"
+          },
+          {
+            "id": 21,
+            "alias": "KnvZfZ7vAdn",
+            "title": "Gymnastics"
+          },
+          {
+            "id": 22,
+            "alias": "KnvZfZ7vAdl",
+            "title": "Handball"
+          },
+          {
+            "id": 23,
+            "alias": "KnvZfZ7vAdI",
+            "title": "Hockey"
+          },
+          {
+            "id": 24,
+            "alias": "KnvZfZ7vA7v",
+            "title": "Ice Skating"
+          },
+          {
+            "id": 25,
+            "alias": "KnvZfZ7vA7e",
+            "title": "Indoor Soccer"
+          },
+          {
+            "id": 26,
+            "alias": "KnvZfZ7vA77",
+            "title": "Lacrosse"
+          },
+          {
+            "id": 27,
+            "alias": "KnvZfZ7vA7d",
+            "title": "Martial Arts"
+          },
+          {
+            "id": 28,
+            "alias": "KnvZfZ7vA7A",
+            "title": "Miscellaneous"
+          },
+          {
+            "id": 29,
+            "alias": "KnvZfZ7vA7k",
+            "title": "Motorsports/Racing"
+          },
+          {
+            "id": 30,
+            "alias": "KnvZfZ7vA76",
+            "title": "Netball"
+          },
+          {
+            "id": 31,
+            "alias": "KnvZfZ7vAea",
+            "title": "Rodeo"
+          },
+          {
+            "id": 32,
+            "alias": "KnvZfZ7vAJA",
+            "title": "Roller Derby"
+          },
+          {
+            "id": 33,
+            "alias": "KnvZfZ7vA7a",
+            "title": "Roller Hockey"
+          },
+          {
+            "id": 34,
+            "alias": "KnvZfZ7vA71",
+            "title": "Rugby"
+          },
+          {
+            "id": 35,
+            "alias": "KnvZfZ7vA7J",
+            "title": "Ski Jumping"
+          },
+          {
+            "id": 36,
+            "alias": "KnvZfZ7vAd6",
+            "title": "Skiing"
+          },
+          {
+            "id": 37,
+            "alias": "KnvZfZ7vA7E",
+            "title": "Soccer"
+          },
+          {
+            "id": 38,
+            "alias": "KnvZfZ7vAJd",
+            "title": "Softball"
+          },
+          {
+            "id": 39,
+            "alias": "KnvZfZ7vA7I",
+            "title": "Squash"
+          },
+          {
+            "id": 40,
+            "alias": "KnvZfZ7vA7t",
+            "title": "Surfing"
+          },
+          {
+            "id": 41,
+            "alias": "KnvZfZ7vA7n",
+            "title": "Swimming"
+          },
+          {
+            "id": 42,
+            "alias": "KnvZfZ7vA7l",
+            "title": "Table Tennis"
+          },
+          {
+            "id": 43,
+            "alias": "KnvZfZ7vAAv",
+            "title": "Tennis"
+          },
+          {
+            "id": 44,
+            "alias": "KnvZfZ7vAAe",
+            "title": "Toros"
+          },
+          {
+            "id": 45,
+            "alias": "KnvZfZ7vAAd",
+            "title": "Track & Field"
+          },
+          {
+            "id": 46,
+            "alias": "KnvZfZ7vAA7",
+            "title": "Volleyball"
+          },
+          {
+            "id": 47,
+            "alias": "KnvZfZ7vAAA",
+            "title": "Waterpolo"
+          },
+          {
+            "id": 48,
+            "alias": "KnvZfZ7vAAk",
+            "title": "Wrestling"
+          },
+          {
+            "id": 49,
+            "alias": "KnvZfZ7vAJ1",
+            "title": "Ringuette"
+          },
+          {
+            "id": 50,
+            "alias": "KnvZfZ7vAJJ",
+            "title": "Padel"
+          }
+        ]
       },
       {
         id: 3,
         name: 'Arts & Theater',
         supplier: 'ticketmaster',
         alias: 'KZFzniwnSyZfZ7v7na',
+        subcategories: [
+          {
+            "id": 1,
+            "alias": "KnvZfZ7v7na",
+            "title": "Children's Theatre"
+          },
+          {
+            "id": 2,
+            "alias": "KnvZfZ7v7n1",
+            "title": "Circus & Specialty Acts"
+          },
+          {
+            "id": 3,
+            "alias": "KnvZfZ7v7nJ",
+            "title": "Classical"
+          },
+          {
+            "id": 4,
+            "alias": "KnvZfZ7vAe1",
+            "title": "Comedy"
+          },
+          {
+            "id": 5,
+            "alias": "KnvZfZ7v7nE",
+            "title": "Cultural"
+          },
+          {
+            "id": 6,
+            "alias": "KnvZfZ7v7nI",
+            "title": "Dance"
+          },
+          {
+            "id": 7,
+            "alias": "KnvZfZ7v7nt",
+            "title": "Espectaculo"
+          },
+          {
+            "id": 8,
+            "alias": "KnvZfZ7v7nn",
+            "title": "Fashion"
+          },
+          {
+            "id": 9,
+            "alias": "KnvZfZ7v7nl",
+            "title": "Fine Art"
+          },
+          {
+            "id": 10,
+            "alias": "KnvZfZ7v7lv",
+            "title": "Magic & Illusion"
+          },
+          {
+            "id": 11,
+            "alias": "KnvZfZ7v7le",
+            "title": "Miscellaneous"
+          },
+          {
+            "id": 12,
+            "alias": "KnvZfZ7v7ld",
+            "title": "Miscellaneous Theatre"
+          },
+          {
+            "id": 13,
+            "alias": "KnvZfZ7v7lk",
+            "title": "Opera"
+          },
+          {
+            "id": 14,
+            "alias": "KnvZfZ7v7l6",
+            "title": "Performance Art"
+          },
+          {
+            "id": 15,
+            "alias": "KnvZfZ7v7lF",
+            "title": "Puppetry"
+          },
+          {
+            "id": 16,
+            "alias": "KnvZfZ7v7la",
+            "title": "Spectacular"
+          },
+          {
+            "id": 17,
+            "alias": "KnvZfZ7v7l1",
+            "title": "Theatre"
+          },
+          {
+            "id": 18,
+            "alias": "KnvZfZ7v7lJ",
+            "title": "Variety"
+          }
+        ]
       },
       {
         id: 4,
@@ -769,7 +1182,7 @@ export const genres = [
       },
       {
         id: 8,
-        name: 'Bars & Pubs',
+        name: 'Bars',
         supplier: 'yelp',
         alias: 'bars',
       },
