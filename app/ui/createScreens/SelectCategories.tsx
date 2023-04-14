@@ -12,44 +12,43 @@ import {
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 
-import {vectors, icons, genreIcons} from '../../constants/images';
+import {vectors, icons} from '../../constants/images';
+import { genres } from '../../constants/categories';
 import strings from '../../constants/strings';
 import {getCategories} from '../../utils/api/CreateCalls/getCategories';
 import {colors} from '../../constants/theme';
 
 // TODO: retrieve genres data from the database instead.
-const genres = [
-  {
-    id: 1,
-    name: strings.createTabStack.recreation,
-    image: genreIcons.recreation,
-  },
-  {
-    id: 2,
-    name: strings.createTabStack.experience,
-    image: genreIcons.experience,
-  },
-  {
-    id: 3,
-    name: strings.createTabStack.shopping,
-    image: genreIcons.shopping,
-  },
-  {
-    id: 4,
-    name: strings.createTabStack.outdoors,
-    image: genreIcons.outdoors,
-  },
-  {
-    id: 6,
-    name: strings.createTabStack.restaurants,
-    image: genreIcons.restaurants,
-  },
-  {
-    id: 5,
-    name: strings.createTabStack.sweets,
-    image: genreIcons.sweets,
-  },
-];
+// const genres = [
+//   {
+//     id: 1,
+//     name: strings.createTabStack.recreation,
+//   },
+//   {
+//     id: 2,
+//     name: strings.createTabStack.experience,
+//   },
+//   {
+//     id: 3,
+//     name: strings.createTabStack.shopping,
+//     image: genreIcons.shopping,
+//   },
+//   {
+//     id: 4,
+//     name: strings.createTabStack.outdoors,
+//     image: genreIcons.outdoors,
+//   },
+//   {
+//     id: 6,
+//     name: strings.createTabStack.restaurants,
+//     image: genreIcons.restaurants,
+//   },
+//   {
+//     id: 5,
+//     name: strings.createTabStack.sweets,
+//     image: genreIcons.sweets,
+//   },
+// ];
 
 const SelectCategories = ({
   navigation,

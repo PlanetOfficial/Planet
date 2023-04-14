@@ -1,0 +1,237 @@
+export const genres = [
+  {
+    id: 1,
+    name: 'Live Events',
+    image: require('../assets/genres/events.jpg'),
+    categories: [
+      {
+        id: 1,
+        name: 'Music',
+        supplier: 'ticketmaster',
+        alias: 'KZFzniwnSyZfZ7v7nJ',
+        icon: require('../assets/icons/music.png'),
+      },
+      {
+        id: 2,
+        name: 'Sports',
+        supplier: 'ticketmaster',
+        alias: '',
+      },
+      {
+        id: 3,
+        name: 'Arts & Theater',
+        supplier: 'ticketmaster',
+        alias: 'KZFzniwnSyZfZ7v7na',
+      },
+      {
+        id: 4,
+        name: 'Fairs',
+        supplier: 'ticketmaster',
+        alias: 'KnvZfZ7vAeE',
+      },
+    ],
+  },
+  {
+    id: 2,
+    name: 'Food & Beverages',
+    image: require('../assets/genres/restaurants.jpg'),
+    categories: [
+      {
+        id: 5,
+        name: 'Restaurant',
+        supplier: 'yelp',
+        alias: 'restaurants',
+      },
+      {
+        id: 6,
+        name: 'Dessert',
+        supplier: 'yelp',
+        alias: 'desserts',
+      },
+      {
+        id: 7,
+        name: 'Coffee & Tea',
+        supplier: 'yelp',
+        alias: 'coffee',
+      },
+      {
+        id: 8,
+        name: 'Bars & Pubs',
+        supplier: 'yelp',
+        alias: 'bars',
+      },
+    ],
+  },
+  {
+    id: 3,
+    name: 'Recreational',
+    image: require('../assets/genres/recreational.jpg'),
+    categories: [
+      {
+        id: 9,
+        name: 'Movie Theater',
+        supplier: 'yelp',
+        alias: 'movietheaters',
+      },
+      {
+        id: 10,
+        name: 'Aquarium',
+        supplier: 'yelp',
+        alias: 'aquariums',
+      },
+      {
+        id: 11,
+        name: 'Museum',
+        supplier: 'yelp',
+        alias: 'museums',
+      },
+      {
+        id: 12,
+        name: 'Zoo',
+        supplier: 'yelp',
+        alias: 'zoos',
+      },
+      {
+        id: 13,
+        name: 'Planetarium',
+        supplier: 'yelp',
+        alias: 'planetarium',
+      },
+      {
+        id: 14,
+        name: 'Night Club',
+        supplier: 'yelp',
+        alias: 'danceclubs',
+      },
+      {
+        id: 15,
+        name: 'Casino',
+        supplier: 'yelp',
+        alias: 'casinos',
+      },
+    ],
+  },
+  {
+    id: 4,
+    name: 'Activities',
+    image: require('../assets/genres/activities.jpg'),
+    categories: [
+      {
+        id: 16,
+        name: 'Amusement Park',
+        supplier: 'yelp',
+        alias: 'amusementparks',
+      },
+      {
+        id: 17,
+        name: 'Escape Room',
+        supplier: 'yelp',
+        alias: 'escapegames',
+      },
+      {
+        id: 18,
+        name: 'Bowling Alley',
+        supplier: 'yelp',
+        alias: 'bowling',
+      },
+      {
+        id: 19,
+        name: 'Mini Golf',
+        supplier: 'yelp',
+        alias: 'mini_golf',
+      },
+      {
+        id: 20,
+        name: 'Laser Tag',
+        supplier: 'yelp',
+        alias: 'lasertag',
+      },
+      {
+        id: 21,
+        name: 'Skating Rink',
+        supplier: 'yelp',
+        alias: 'skatingrinks',
+      },
+      {
+        id: 22,
+        name: 'Arcade',
+        supplier: 'yelp',
+        alias: 'arcades',
+      },
+    ],
+  },
+  {
+    id: 5,
+    name: 'Shopping',
+    image: require('../assets/genres/shopping.jpg'),
+    categories: [
+      {
+        id: 23,
+        name: 'Shopping Center',
+        supplier: 'yelp',
+        alias: 'shoppingcenters',
+      },
+      {
+        id: 24,
+        name: 'Outlet Store',
+        supplier: 'yelp',
+        alias: 'outlet_stores',
+      },
+      {
+        id: 25,
+        name: 'Antique Shop',
+        supplier: 'yelp',
+        alias: 'antiques',
+      },
+      {
+        id: 26,
+        name: 'Thrift Store',
+        supplier: 'yelp',
+        alias: 'thrift_stores',
+      },
+    ],
+  },
+  {
+    id: 6,
+    name: 'Outdoors',
+    image: require('../assets/genres/outdoors.jpg'),
+    categories: [
+      {
+        id: 27,
+        name: 'Tourist Attraction',
+        supplier: 'yelp',
+        alias: 'localflavor,landmarks',
+      },
+      {
+        id: 28,
+        name: 'Park',
+        supplier: 'yelp',
+        alias: 'parks',
+      },
+      {
+        id: 29,
+        name: 'Hiking Trail',
+        supplier: 'yelp',
+        alias: 'hiking',
+      },
+      {
+        id: 30,
+        name: 'Beaches & Lakes',
+        supplier: 'yelp',
+        alias: 'lakes,beaches',
+      },
+      {
+        id: 31,
+        name: 'Botanical Gardens',
+        supplier: 'yelp',
+        alias: 'gardens',
+      },
+      {
+        id: 32,
+        name: 'Observatories',
+        supplier: 'yelp',
+        alias: 'observatories',
+      },
+    ],
+  },
+];
