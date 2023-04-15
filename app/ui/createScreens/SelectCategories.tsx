@@ -15,7 +15,6 @@ import {s} from 'react-native-size-matters';
 import {vectors, icons} from '../../constants/images';
 import {genres} from '../../constants/categories';
 import strings from '../../constants/strings';
-import {getCategories} from '../../utils/api/CreateCalls/getCategories';
 import {colors} from '../../constants/theme';
 
 const SelectCategories = ({
@@ -32,30 +31,20 @@ const SelectCategories = ({
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedGenre, setSelectedGenre] = useState('');
 
-  const [allCategories, setAllCategories] = useState([]);
+  const [allCategories, setAllCategories]: [any, any] = useState([]);
   const [selectedCategories, setSelectedCategories]: [any, any] = useState([]);
-
-  const [cachedGenres, setCachedGenres] = useState({});
 
   const handleGenrePress = async (genre: any) => {
     setSelectedGenre(genre.name);
     setModalVisible(true);
     setAllCategories([]);
 
-    // display categories from genre logic
-    if (!cachedGenres[genre.id as keyof {}]) {
-      // call API and add to cache if not in cache
-      const response = await getCategories(genre.id);
+    // display categories from genre
 
-      if (response?.length > 0) {
-        let updatedCache: any = {...cachedGenres};
-        updatedCache[genre.id] = response;
-        setCachedGenres(updatedCache);
-      }
-
-      setAllCategories(response);
-    } else {
-      setAllCategories(cachedGenres[genre.id as keyof {}]);
+    // find index of genre
+    const genreObj = genres.find(item => item.id === genre.id);
+    if (genreObj) {
+      setAllCategories(genreObj.categories);
     }
   };
 
