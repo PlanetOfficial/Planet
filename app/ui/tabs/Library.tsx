@@ -19,7 +19,7 @@ import {icons} from '../../constants/images';
 
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {getEvents} from '../../utils/api/libraryCalls/getEvents';
-import { getBookmarks } from '../../utils/api/shared/getBookmarks';
+import {getBookmarks} from '../../utils/api/shared/getBookmarks';
 import misc from '../../constants/misc';
 import {filterToUniqueIds, getImagesFromURLs} from '../../utils/functions/Misc';
 
