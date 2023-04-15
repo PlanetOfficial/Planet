@@ -134,36 +134,34 @@ const SelectCategories = ({
             <Text style={modalStyles.title}>{selectedGenre}</Text>
           </View>
           <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={modalStyles.categories}>
-              {allCategories
-                ? allCategories?.map((category: any) => (
-                    <TouchableOpacity
-                      testID={'category.' + category.id}
-                      key={category.id}
-                      onPress={() => {
-                        if (
-                          !selectedCategories.find(
-                            (item: any) => item.id === category.id,
-                          )
-                        ) {
-                          setSelectedCategories((prevCategories: any) => [
-                            ...prevCategories,
-                            {id: category.id, name: category.name},
-                          ]);
-                        }
-                      }}>
-                      <View style={categoryStyles.container}>
-                        {/* TODO: display correct category icon. */}
-                        <Image
-                          style={categoryStyles.image}
-                          source={icons.settings}
-                        />
-                        <Text style={categoryStyles.name}>{category.name}</Text>
-                      </View>
-                    </TouchableOpacity>
-                  ))
-                : null}
-            </View>
+            {allCategories
+              ? allCategories?.map((category: any) => (
+                  <TouchableOpacity
+                    testID={'category.' + category.id}
+                    key={category.id}
+                    onPress={() => {
+                      if (
+                        !selectedCategories.find(
+                          (item: any) => item.id === category.id,
+                        )
+                      ) {
+                        setSelectedCategories((prevCategories: any) => [
+                          ...prevCategories,
+                          {id: category.id, name: category.name},
+                        ]);
+                      }
+                    }}>
+                    <View style={categoryStyles.container}>
+                      {/* TODO: display correct category icon. */}
+                      <Image
+                        style={categoryStyles.image}
+                        source={icons.settings}
+                      />
+                      <Text style={categoryStyles.name}>{category.name}</Text>
+                    </View>
+                  </TouchableOpacity>
+                ))
+              : null}
           </ScrollView>
         </View>
       </Modal>
@@ -248,12 +246,13 @@ const genreStyles = StyleSheet.create({
   },
   text: {
     position: 'absolute',
-    margin: s(15),
-    width: s(130),
-    top: s(56),
+    width: s(120),
+    top: s(71),
+    marginHorizontal: s(20),
     fontSize: s(15),
     fontWeight: '700',
     textAlign: 'center',
+    textAlignVertical: 'center',
     color: colors.white,
   },
   blur: {
@@ -271,9 +270,9 @@ const modalStyles = StyleSheet.create({
   container: {
     position: 'absolute',
     left: s(15),
-    top: '15%',
+    top: '20%',
     width: s(320),
-    height: '65%',
+    height: '50%',
     borderRadius: s(10),
     borderWidth: 2,
     borderColor: colors.white,
@@ -320,17 +319,15 @@ const modalStyles = StyleSheet.create({
     height: s(14),
     tintColor: colors.black,
   },
-  categories: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-  },
 });
 
 const categoryStyles = StyleSheet.create({
   container: {
     justifyContent: 'center',
-    width: s(158),
     height: s(60),
+    marginHorizontal: s(5),
+    borderBottomWidth: 1,
+    borderBottomColor: colors.grey,
   },
   image: {
     position: 'absolute',
@@ -345,7 +342,6 @@ const categoryStyles = StyleSheet.create({
   },
   name: {
     marginLeft: s(60),
-    width: s(95),
     fontSize: s(14),
     fontWeight: '700',
     color: colors.black,
