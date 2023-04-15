@@ -100,8 +100,8 @@ const SelectCategories = ({
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
           {selectedCategories.map((selected: any) => (
             <View key={selected.id} style={selectionStyles.category}>
+              {/* TODO: Change to selected icon */}
               <Image style={selectionStyles.icon} source={icons.tempCategory} />
-              {/* TODO: remove categories when pressed. */}
               <TouchableOpacity
                 style={selectionStyles.xButton}
                 onPress={() => removeCategory(selected.id)}>
@@ -152,10 +152,9 @@ const SelectCategories = ({
                       }
                     }}>
                     <View style={categoryStyles.container}>
-                      {/* TODO: display correct category icon. */}
                       <Image
                         style={categoryStyles.image}
-                        source={icons.settings}
+                        source={category.icon}
                       />
                       <Text style={categoryStyles.name}>{category.name}</Text>
                     </View>
@@ -335,7 +334,7 @@ const categoryStyles = StyleSheet.create({
     height: s(40),
     marginLeft: s(10),
     borderRadius: s(20),
-    borderWidth: 2,
+    borderWidth: 1,
     tintColor: colors.black,
     borderColor: colors.accent,
     backgroundColor: colors.white,
@@ -366,9 +365,9 @@ const selectionStyles = StyleSheet.create({
     height: s(40),
     top: s(10),
     borderRadius: s(20),
-    borderWidth: 2,
+    borderWidth: 1,
     tintColor: colors.black,
-    borderColor: colors.accent,
+    borderColor: colors.black,
     backgroundColor: colors.white,
   },
   xButton: {

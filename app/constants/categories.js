@@ -7,6 +7,7 @@ export const genres = [
       {
         id: 1,
         name: 'Music',
+        icon: require('../assets/categories/music.png'),
         subcategories: [
           {
             id: 1,
@@ -82,7 +83,8 @@ export const genres = [
       },
       {
         id: 2,
-        name: 'Sports',
+        name: 'Sport',
+        icon: require('../assets/categories/sport.png'),
         subcategories: [
           {
             id: 1,
@@ -339,6 +341,7 @@ export const genres = [
       {
         id: 3,
         name: 'Arts & Theater',
+        icon: require('../assets/categories/arts-theater.png'),
         subcategories: [
           {
             id: 1,
@@ -434,7 +437,8 @@ export const genres = [
       },
       {
         id: 4,
-        name: 'Fairs',
+        name: 'Fair',
+        icon: require('../assets/categories/fair.png'),
       },
     ],
   },
@@ -446,6 +450,7 @@ export const genres = [
       {
         id: 5,
         name: 'Restaurant',
+        icon: require('../assets/categories/restaurant.png'),
         subcategories: [
           {
             id: 1,
@@ -1072,6 +1077,7 @@ export const genres = [
       {
         id: 6,
         name: 'Dessert',
+        icon: require('../assets/categories/dessert.png'),
         subcategories: [
           {
             id: 1,
@@ -1138,6 +1144,7 @@ export const genres = [
       {
         id: 7,
         name: 'Cafe',
+        icon: require('../assets/categories/cafe.png'),
         subcategories: [
           {
             id: 1,
@@ -1168,7 +1175,8 @@ export const genres = [
       },
       {
         id: 8,
-        name: 'Bars',
+        name: 'Bar',
+        icon: require('../assets/categories/bar.png'),
       },
     ],
   },
@@ -1180,30 +1188,37 @@ export const genres = [
       {
         id: 9,
         name: 'Movie Theater',
+        icon: require('../assets/categories/movie-theater.png'),
       },
       {
         id: 10,
         name: 'Aquarium',
+        icon: require('../assets/categories/aquarium.png'),
       },
       {
         id: 11,
         name: 'Museum',
+        icon: require('../assets/categories/museum.png'),
       },
       {
         id: 12,
         name: 'Zoo',
+        icon: require('../assets/categories/zoo.png'),
       },
       {
         id: 13,
         name: 'Planetarium',
+        icon: require('../assets/categories/planetarium.png'),
       },
       {
         id: 14,
         name: 'Night Club',
+        icon: require('../assets/categories/night-club.png'),
       },
       {
         id: 15,
         name: 'Casino',
+        icon: require('../assets/categories/casino.png'),
       },
     ],
   },
@@ -1215,30 +1230,37 @@ export const genres = [
       {
         id: 16,
         name: 'Amusement Park',
+        icon: require('../assets/categories/amusement-park.png'),
       },
       {
         id: 17,
         name: 'Escape Room',
+        icon: require('../assets/categories/escape-room.png'),
       },
       {
         id: 18,
         name: 'Bowling Alley',
+        icon: require('../assets/categories/bowling-alley.png'),
       },
       {
         id: 19,
         name: 'Mini Golf',
+        icon: require('../assets/categories/mini-golf.png'),
       },
       {
         id: 20,
         name: 'Laser Tag',
+        icon: require('../assets/categories/laser-tag.png'),
       },
       {
         id: 21,
         name: 'Skating Rink',
+        icon: require('../assets/categories/skating-rink.png'),
       },
       {
         id: 22,
         name: 'Arcade',
+        icon: require('../assets/categories/arcade.png'),
       },
     ],
   },
@@ -1250,18 +1272,22 @@ export const genres = [
       {
         id: 23,
         name: 'Shopping Center',
+        icon: require('../assets/categories/shopping-center.png'),
       },
       {
         id: 24,
         name: 'Outlet Store',
+        icon: require('../assets/categories/outlet-store.png'),
       },
       {
         id: 25,
         name: 'Antique Shop',
+        icon: require('../assets/categories/antique-shop.png'),
       },
       {
         id: 26,
         name: 'Thrift Store',
+        icon: require('../assets/categories/thrift-store.png'),
       },
     ],
   },
@@ -1273,26 +1299,32 @@ export const genres = [
       {
         id: 27,
         name: 'Tourist Attraction',
+        icon: require('../assets/categories/tourist-attraction.png'),
       },
       {
         id: 28,
         name: 'Park',
+        icon: require('../assets/categories/park.png'),
       },
       {
         id: 29,
         name: 'Hiking Trail',
+        icon: require('../assets/categories/hiking-trail.png'),
       },
       {
         id: 30,
-        name: 'Beaches & Lakes',
+        name: 'Beach & Lake',
+        icon: require('../assets/categories/beach.png'),
       },
       {
         id: 31,
-        name: 'Botanical Gardens',
+        name: 'Botanical Garden',
+        icon: require('../assets/categories/botanical-garden.png'),
       },
       {
         id: 32,
-        name: 'Observatories',
+        name: 'Observatory',
+        icon: require('../assets/categories/observatory.png'),
       },
     ],
   },
