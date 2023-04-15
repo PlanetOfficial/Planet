@@ -19,7 +19,7 @@ import {icons} from '../../constants/images';
 
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {getEvents} from '../../utils/api/libraryCalls/getEvents';
-import {getPlaces} from '../../utils/api/libraryCalls/getPlaces';
+import { getBookmarks } from '../../utils/api/shared/getBookmarks';
 import misc from '../../constants/misc';
 import {filterToUniqueIds, getImagesFromURLs} from '../../utils/functions/Misc';
 
@@ -39,7 +39,7 @@ const Library = ({navigation}: {navigation: any}) => {
       const eventsRaw = await getEvents(authToken);
       setEvents(filterToUniqueIds(eventsRaw));
 
-      const bookmarks = await getPlaces(authToken);
+      const bookmarks = await getBookmarks(authToken);
       setPlaces(bookmarks);
     };
 
