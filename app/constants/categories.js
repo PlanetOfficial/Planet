@@ -1072,7 +1072,6 @@ export const genres = [
       {
         id: 6,
         name: 'Dessert',
-        supplier: 'yelp',
         subcategories: [
           {
             id: 1,
