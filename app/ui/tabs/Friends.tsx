@@ -103,7 +103,7 @@ const Friends = ({navigation}: {navigation: any}) => {
             return (
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate('Event', {
+                  navigation.navigate('FGEvent', {
                     eventData: item,
                     // bookmarks: places?.map(place => place?.id),
                   });
@@ -246,7 +246,7 @@ const headerStyles = StyleSheet.create({
   bell: {
     width: '100%',
     height: '100%',
-  }
+  },
 });
 
 const contentStyles = StyleSheet.create({

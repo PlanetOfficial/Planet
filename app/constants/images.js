@@ -23,6 +23,9 @@ export const icons = {
   heart: require('../assets/icons/heart.png'),
   hearted: require('../assets/icons/hearted.png'),
   notification: require('../assets/icons/notification.png'),
+  like: require('../assets/icons/like.png'),
+  dislike: require('../assets/icons/dislike.png'),
+  comment: require('../assets/icons/comment.png'),
 };
 
 export const genreIcons = {

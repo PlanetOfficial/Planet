@@ -13,6 +13,7 @@ import SelectDestinations from '../ui/createScreens/SelectDestinations';
 import FinalizePlan from '../ui/createScreens/FinalizePlan';
 import Place from '../ui/screens/Place';
 import Event from '../ui/screens/Event';
+import FGEvent from '../ui/screens/FGEvent';
 import Settings from '../ui/screens/Settings';
 import CreateFG from '../ui/screens/CreateFriendGroup';
 
@@ -62,6 +63,7 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {createStack()}
           {placeStackScreen()}
           {eventStackScreen()}
+          {fgEventStackScreen()}
           {settingsStackScreen()}
           {loginStackScreen()}
           {signUpStackScreen()}
@@ -81,6 +83,7 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {createStack()}
           {placeStackScreen()}
           {eventStackScreen()}
+          {fgEventStackScreen()}
           {settingsStackScreen()}
           {createFGStackScreen()}
         </MainStack.Navigator>
@@ -152,6 +155,16 @@ const eventStackScreen = () => {
     <MainStack.Screen
       name="Event"
       component={Event}
+      options={{headerShown: false}}
+    />
+  );
+};
+
+const fgEventStackScreen = () => {
+  return (
+    <MainStack.Screen
+      name="FGEvent"
+      component={FGEvent}
       options={{headerShown: false}}
     />
   );
