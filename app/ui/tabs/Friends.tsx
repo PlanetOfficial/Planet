@@ -233,7 +233,7 @@ const styles = StyleSheet.create({
     fontSize: s(16),
     fontWeight: '700',
     color: colors.black,
-  }
+  },
 });
 
 const headerStyles = StyleSheet.create({

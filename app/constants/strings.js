@@ -76,6 +76,8 @@ const strings = {
   },
   friends: {
     createPrompt: 'Create a Friend Group',
+    likes: 'Likes',
+    dislikes: 'Dislikes',
   },
   library: {
     saved: 'Saved',
