@@ -91,6 +91,10 @@ const Friends = ({navigation}: {navigation: any}) => {
             <Image style={headerStyles.bell} source={icons.notification} />
           </TouchableOpacity>
         </View>
+        <TouchableOpacity style={styles.addEventContainer}>
+          <Image style={styles.plus} source={icons.x} />
+          <Text style={styles.text}>Add an Event</Text>
+        </TouchableOpacity>
         <FlatList
           data={events}
           style={contentStyles.container}
@@ -206,6 +210,30 @@ const styles = StyleSheet.create({
     backgroundColor: colors.black,
     opacity: 0.85,
   },
+  addEventContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: s(310),
+    height: s(50),
+    marginVertical: s(10),
+    borderWidth: 3,
+    borderColor: colors.accent,
+    borderStyle: 'dashed',
+    borderRadius: s(10),
+  },
+  plus: {
+    width: s(16),
+    height: s(16),
+    marginRight: s(13),
+    tintColor: colors.accent,
+    transform: [{rotate: '45deg'}],
+  },
+  text: {
+    fontSize: s(16),
+    fontWeight: '700',
+    color: colors.black,
+  }
 });
 
 const headerStyles = StyleSheet.create({

@@ -111,28 +111,28 @@ const FGEvent = ({navigation, route}: {navigation: any; route: any}) => {
                   style={[
                     feedbackStyles.iconContainer,
                     feedbackStyles.likeContainer,
-                  ]}>
+                  ]} onPress={() => {console.log("TO BE IMPLEMENTED")}}>
                   <Image style={feedbackStyles.icon} source={icons.like} />
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={[
                     feedbackStyles.iconContainer,
                     feedbackStyles.countContainer,
-                  ]}>
+                  ]} onPress={() => {console.log("TO BE IMPLEMENTED")}}>
                   <Text style={feedbackStyles.count}>+3</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={[
                     feedbackStyles.iconContainer,
                     feedbackStyles.dislikeContainer,
-                  ]}>
+                  ]} onPress={() => {console.log("TO BE IMPLEMENTED")}}>
                   <Image style={feedbackStyles.icon} source={icons.dislike} />
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={[
                     feedbackStyles.iconContainer,
                     feedbackStyles.commentContainer,
-                  ]}>
+                  ]} onPress={() => {console.log("TO BE IMPLEMENTED")}}>
                   <Image style={feedbackStyles.icon} source={icons.comment} />
                   <Text style={feedbackStyles.commentCount}> 2</Text>
                 </TouchableOpacity>
