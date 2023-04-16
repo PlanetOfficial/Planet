@@ -87,6 +87,9 @@ const Friends = ({navigation}: {navigation: any}) => {
               <Image style={[headerStyles.icon]} source={icons.next} />
             </View>
           </TouchableOpacity>
+          <TouchableOpacity style={headerStyles.notification}>
+            <Image style={headerStyles.bell} source={icons.notification} />
+          </TouchableOpacity>
         </View>
         <FlatList
           data={events}
@@ -236,6 +239,14 @@ const headerStyles = StyleSheet.create({
     tintColor: colors.black,
     transform: [{rotate: '90deg'}],
   },
+  notification: {
+    width: s(25),
+    height: s(25),
+  },
+  bell: {
+    width: '100%',
+    height: '100%',
+  }
 });
 
 const contentStyles = StyleSheet.create({

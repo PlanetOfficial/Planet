@@ -22,6 +22,7 @@ export const icons = {
   tempCategory: require('../assets/icons/tempCategory.png'),
   heart: require('../assets/icons/heart.png'),
   hearted: require('../assets/icons/hearted.png'),
+  notification: require('../assets/icons/notification.png'),
 };
 
 export const genreIcons = {
