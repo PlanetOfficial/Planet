@@ -19,10 +19,10 @@ import {icons} from '../../constants/images';
 import {s} from 'react-native-size-matters';
 import EventCard from '../components/EventCard';
 
-//TEMP
+//TODO: Display actual friend groups
 const friendGroups = ['Poplar Residents', 'The Boys', 'Tennis People'];
 
-//TEMP
+//TODO: Display actual events
 const events = [
   {
     id: 1,
@@ -58,13 +58,26 @@ const events = [
 
 const Friends = ({navigation}: {navigation: any}) => {
   const [friendGroup, setFriendGroup] = useState(0);
-  const [bottomSheetOpen, setbottomSheetOpen] = useState(false);
 
-  const bottomSheetRef: any = useRef<BottomSheetModal>(null);
-  const snapPoints = useMemo(() => [s(70) * friendGroups.length + s(120)], []);
-  const handleSheetChange = useCallback(
+  const [fgBottomSheetOpen, setFgBottomSheetOpen] = useState(false);
+  const fgBottomSheetRef: any = useRef<BottomSheetModal>(null);
+  const fgSnapPoints = useMemo(
+    () => [s(70) * friendGroups.length + s(120)],
+    [],
+  );
+  const handleFgSheetChange = useCallback(
     (fromIndex: number, toIndex: number) => {
-      setbottomSheetOpen(toIndex === 0);
+      setFgBottomSheetOpen(toIndex === 0);
+    },
+    [],
+  );
+
+  const [addBottomSheetOpen, setAddBottomSheetOpen] = useState(false);
+  const addBottomSheetRef: any = useRef<BottomSheetModal>(null);
+  const addSnapPoints = useMemo(() => ['80%'], []);
+  const handleAddSheetChange = useCallback(
+    (fromIndex: number, toIndex: number) => {
+      setAddBottomSheetOpen(toIndex === 0);
     },
     [],
   );
@@ -75,9 +88,7 @@ const Friends = ({navigation}: {navigation: any}) => {
         <View style={headerStyles.container}>
           <TouchableOpacity
             style={headerStyles.fgSelector}
-            onPress={() => {
-              bottomSheetRef.current?.present();
-            }}>
+            onPress={() => fgBottomSheetRef.current?.present()}>
             <Text numberOfLines={1} style={headerStyles.title}>
               {friendGroup === -1
                 ? strings.title.friends
@@ -91,9 +102,11 @@ const Friends = ({navigation}: {navigation: any}) => {
             <Image style={headerStyles.bell} source={icons.notification} />
           </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.addEventContainer}>
+        <TouchableOpacity
+          style={styles.addEventContainer}
+          onPress={() => addBottomSheetRef.current?.present()}>
           <Image style={styles.plus} source={icons.x} />
-          <Text style={styles.text}>Add an Event</Text>
+          <Text style={styles.text}>{strings.friends.addPrompt}</Text>
         </TouchableOpacity>
         <FlatList
           data={events}
@@ -103,6 +116,7 @@ const Friends = ({navigation}: {navigation: any}) => {
           ItemSeparatorComponent={Spacer}
           contentContainerStyle={contentStyles.content}
           renderItem={({item}) => {
+            // TODO: Display actual events + user's icons and, if authorized, ability to remove events (LATER)
             // const images = getImagesFromURLs(item?.places);
             return (
               <TouchableOpacity
@@ -126,10 +140,11 @@ const Friends = ({navigation}: {navigation: any}) => {
           }}
         />
 
-        {bottomSheetOpen ? (
+        {fgBottomSheetOpen || addBottomSheetOpen ? (
           <Pressable
             onPress={() => {
-              bottomSheetRef?.current.close();
+              fgBottomSheetRef?.current.close();
+              addBottomSheetRef?.current.close();
             }}
             style={styles.pressable}>
             {Platform.OS === 'ios' ? (
@@ -142,14 +157,14 @@ const Friends = ({navigation}: {navigation: any}) => {
       </SafeAreaView>
 
       <BottomSheetModal
-        ref={bottomSheetRef}
-        snapPoints={snapPoints}
-        onAnimate={handleSheetChange}>
+        ref={fgBottomSheetRef}
+        snapPoints={fgSnapPoints}
+        onAnimate={handleFgSheetChange}>
         {friendGroups?.map((fg: any, idx: number) => (
           <TouchableOpacity
             key={idx}
             style={[
-              bottomSheetStyles.row,
+              fgBottomSheetStyles.row,
               {
                 backgroundColor:
                   idx === friendGroup ? colors.grey : colors.white,
@@ -157,14 +172,14 @@ const Friends = ({navigation}: {navigation: any}) => {
             ]}
             onPress={() => {
               setFriendGroup(idx);
-              bottomSheetRef?.current.close();
+              fgBottomSheetRef?.current.close();
             }}>
-            <Image style={bottomSheetStyles.icon} source={icons.user} />
+            <Image style={fgBottomSheetStyles.icon} source={icons.user} />
             <Text
               numberOfLines={1}
               key={idx}
               style={[
-                bottomSheetStyles.text,
+                fgBottomSheetStyles.text,
                 {color: idx === friendGroup ? colors.accent : colors.black},
               ]}>
               {fg}
@@ -172,18 +187,26 @@ const Friends = ({navigation}: {navigation: any}) => {
           </TouchableOpacity>
         ))}
         <TouchableOpacity
-          style={bottomSheetStyles.row}
+          style={fgBottomSheetStyles.row}
           onPress={() => {
-            bottomSheetRef?.current.close();
+            fgBottomSheetRef?.current.close();
             navigation.navigate('CreateFG');
           }}>
-          <View style={bottomSheetStyles.plus}>
-            <Image style={bottomSheetStyles.plusIcon} source={icons.x} />
+          <View style={fgBottomSheetStyles.plus}>
+            <Image style={fgBottomSheetStyles.plusIcon} source={icons.x} />
           </View>
-          <Text numberOfLines={1} style={bottomSheetStyles.text}>
+          <Text numberOfLines={1} style={fgBottomSheetStyles.text}>
             {strings.friends.createPrompt}
           </Text>
         </TouchableOpacity>
+      </BottomSheetModal>
+
+      <BottomSheetModal
+        ref={addBottomSheetRef}
+        snapPoints={addSnapPoints}
+        onAnimate={handleAddSheetChange}>
+        {/* TODO: Display all events in library, tap on it to add to friend group */}
+        <View />
       </BottomSheetModal>
     </>
   );
@@ -292,11 +315,7 @@ const contentStyles = StyleSheet.create({
   },
 });
 
-const bottomSheetStyles = StyleSheet.create({
-  container: {
-    borderTopLeftRadius: s(10),
-    borderTopRightRadius: s(10),
-  },
+const fgBottomSheetStyles = StyleSheet.create({
   background: {
     backgroundColor: colors.white,
   },
@@ -332,6 +351,9 @@ const bottomSheetStyles = StyleSheet.create({
     fontSize: s(15),
     fontWeight: '600',
   },
+});
+
+const addBottomSheetStyles = StyleSheet.create({
 });
 
 export default Friends;

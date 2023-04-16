@@ -241,10 +241,9 @@ const FGEvent = ({navigation, route}: {navigation: any; route: any}) => {
       <BottomSheetModal
         ref={commentBottomSheetRef}
         snapPoints={commentSnapPoints}
-        onAnimate={handleCommentSheetChange}
-      >
+        onAnimate={handleCommentSheetChange}>
         <View style={commentModalStyles.container}>
-            {/* TODO: Comment section goes here */}
+          {/* TODO: Comment section goes here */}
         </View>
       </BottomSheetModal>
     </View>
@@ -394,11 +393,11 @@ const feedbackModalStyles = StyleSheet.create({
 });
 
 const commentModalStyles = StyleSheet.create({
-    container: {
-        flex: 1,
-        paddingHorizontal: s(20),
-        paddingVertical: s(10),
-    },
+  container: {
+    flex: 1,
+    paddingHorizontal: s(20),
+    paddingVertical: s(10),
+  },
 });
 
 const headerStyles = StyleSheet.create({
