@@ -82,6 +82,9 @@ const strings = {
     followers: 'followers',
     following: 'following',
   },
+  trending: {
+    in: 'in',
+  }
 };
 
 export default strings;
