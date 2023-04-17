@@ -267,12 +267,10 @@ const SelectDestinations = ({
                               info={`${strings.createTabStack.rating}: ${dest?.rating}/10  ${strings.createTabStack.price}: ${dest?.price}/5`}
                               marked={bookmarks?.includes(dest?.id)}
                               image={
-                                dest?.images && dest?.images?.length !== 0
+                                dest?.image_url
                                   ? {
                                       uri:
-                                        dest?.images[0]?.prefix +
-                                        misc.imageSize +
-                                        dest?.images[0]?.suffix,
+                                        dest?.image_url
                                     }
                                   : icons.defaultIcon
                               }
