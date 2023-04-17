@@ -1,11 +1,10 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
   SafeAreaView,
   StyleSheet,
   Image,
-  ScrollView,
   TouchableOpacity,
 } from 'react-native';
 import {colors} from '../../constants/theme';
@@ -14,6 +13,7 @@ import strings from '../../constants/strings';
 import {s} from 'react-native-size-matters';
 import {genres} from '../../constants/genres';
 import PlaceCard from '../components/PlaceCard';
+import {ScrollView} from 'react-native-gesture-handler';
 
 const TEMP_DATA = [
   {
@@ -43,17 +43,63 @@ const TEMP_DATA = [
 ];
 
 const LiveCategory = ({navigation}: {navigation: any}) => {
+  const [radius, setRadius] = useState(50);
+  const [time, setTime] = useState('This Weekend');
+  const [filters, setFilters] = useState(['Blues', 'Classical']);
   return (
     <View style={styles.container}>
       <SafeAreaView style={headerStyles.container}>
         <TouchableOpacity onPress={() => navigation.navigate('Trending')}>
           <Image style={headerStyles.back} source={icons.next} />
         </TouchableOpacity>
-        <Text style={headerStyles.title}>Music</Text>
+        <Text style={headerStyles.title}>Concerts</Text>
         <TouchableOpacity onPress={() => console.log('Customize Screen')}>
           <Image style={headerStyles.settings} source={icons.settings} />
         </TouchableOpacity>
       </SafeAreaView>
+      <View style={filterStyles.container}>
+        <ScrollView
+          horizontal={true}
+          contentContainerStyle={filterStyles.contentContainer}
+          showsHorizontalScrollIndicator={false}>
+          <TouchableOpacity style={filterStyles.chip}>
+            <Text style={filterStyles.text}>
+              {radius + strings.createTabStack.milesAbbrev}
+            </Text>
+            <View style={filterStyles.drop}>
+              <Image style={[filterStyles.icon]} source={icons.next} />
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity style={filterStyles.chip}>
+            <Text style={filterStyles.text}>{time}</Text>
+            <View style={filterStyles.drop}>
+              <Image style={filterStyles.icon} source={icons.next} />
+            </View>
+          </TouchableOpacity>
+          <View style={filterStyles.chip}>
+            <Text style={filterStyles.text}>
+              {filters.length === 0? 'All' : (filters.length > 1? filters[0] + ' +' + (filters.length - 1) : filters[0])}
+            </Text>
+          </View>
+          {/* {filters.map((filter, idx) => (
+            <View key={idx} style={filterStyles.chip}>
+              <Text style={filterStyles.text}>{filter}</Text>
+              <TouchableOpacity
+                onPress={() => {
+                  const newFilters = filters.filter((_, jdx) => jdx !== idx);
+                  setFilters(newFilters);
+                }}>
+                <Image style={filterStyles.x} source={icons.x} />
+              </TouchableOpacity>
+            </View>
+          ))} */}
+        </ScrollView>
+        <View style={filterStyles.filterContainer}>
+          <TouchableOpacity onPress={() => console.log('Filter Screen')}>
+            <Image style={filterStyles.filter} source={icons.filter} />
+          </TouchableOpacity>
+        </View>
+      </View>
       <ScrollView>
         {genres[0].categories[0].subcategories?.map((category, idx) => (
           <View key={idx} style={categoryStyles.container}>
@@ -130,6 +176,68 @@ const headerStyles = StyleSheet.create({
     width: s(18),
     height: s(18),
     tintColor: colors.black,
+  },
+});
+
+const filterStyles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    borderTopWidth: 0.5,
+    borderBottomWidth: 0.5,
+    borderColor: colors.grey,
+  },
+  contentContainer: {
+    paddingLeft: s(20),
+    paddingRight: s(5),
+    paddingVertical: s(7),
+  },
+  chip: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 0.5,
+    borderColor: colors.accent,
+    backgroundColor: colors.grey,
+    borderRadius: s(20),
+    paddingHorizontal: s(12),
+    paddingVertical: s(7),
+    marginRight: s(7),
+  },
+  text: {
+    fontSize: s(11),
+    fontWeight: '600',
+    color: colors.black,
+  },
+  drop: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: s(7),
+    width: s(12),
+    height: s(8),
+  },
+  icon: {
+    width: s(8),
+    height: s(12),
+    tintColor: colors.accent,
+    transform: [{rotate: '90deg'}],
+  },
+  x: {
+    marginLeft: s(5),
+    width: s(10),
+    height: s(10),
+    tintColor: colors.black,
+  },
+  filterContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: s(40),
+    borderLeftWidth: 0.5,
+    borderLeftColor: colors.grey,
+  },
+  filter: {
+    width: s(21),
+    height: s(21),
+    tintColor: colors.accent,
   },
 });
 

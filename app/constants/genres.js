@@ -6,8 +6,8 @@ export const genres = [
     categories: [
       {
         id: 1,
-        name: 'Music',
-        icon: require('../assets/categories/music.png'),
+        name: 'Concerts',
+        icon: require('../assets/categories/concert.png'),
         subcategories: [
           {
             id: 1,
@@ -83,7 +83,7 @@ export const genres = [
       },
       {
         id: 2,
-        name: 'Sport',
+        name: 'Sports',
         icon: require('../assets/categories/sport.png'),
         subcategories: [
           {
@@ -437,7 +437,7 @@ export const genres = [
       },
       {
         id: 4,
-        name: 'Fair',
+        name: 'Fairs',
         icon: require('../assets/categories/fair.png'),
       },
     ],
