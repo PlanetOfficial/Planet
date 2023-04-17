@@ -84,7 +84,8 @@ const strings = {
   },
   trending: {
     in: 'in',
-  }
+    seeAll: 'See All',
+  },
 };
 
 export default strings;
