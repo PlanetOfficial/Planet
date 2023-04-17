@@ -50,7 +50,7 @@ const TEMP_DATA = [
   },
 ];
 
-const Trending = () => {
+const Trending = ({navigation}: {navigation: any}) => {
   return (
     <SafeAreaView testID="trendingScreenView" style={styles.container}>
       <View style={headerStyles.container}>
@@ -59,7 +59,7 @@ const Trending = () => {
           <Text style={headerStyles.in}>{strings.trending.in}</Text>
           <TouchableOpacity
             style={headerStyles.fgSelector}
-            onPress={() => console.log('switch location')}>
+            onPress={() => console.log('Switch location')}>
             <Text numberOfLines={1} style={headerStyles.location}>
               Seattle
             </Text>
@@ -68,7 +68,8 @@ const Trending = () => {
             </View>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity onPress={() => console.log('TO BE IMPLEMENTED')}>
+        <TouchableOpacity
+          onPress={() => console.log("Search doesn't work :DDDD")}>
           <Image style={headerStyles.search} source={icons.search} />
         </TouchableOpacity>
       </View>
@@ -78,7 +79,7 @@ const Trending = () => {
             <View style={categoryStyles.header}>
               <Text style={categoryStyles.title}>{category.name}</Text>
               <TouchableOpacity
-                onPress={() => console.log('TO BE IMPLEMENTED')}>
+                onPress={() => navigation.navigate('LiveCategory')}>
                 <Text style={categoryStyles.seeAll}>
                   {strings.trending.seeAll}
                 </Text>
@@ -93,7 +94,7 @@ const Trending = () => {
                 <TouchableOpacity
                   style={categoryStyles.card}
                   key={jdx}
-                  onPress={() => console.log('TO BE IMPLEMENTED')}>
+                  onPress={() => console.log("Lavy's backend magic")}>
                   <PlaceCard
                     id={item?.id}
                     name={item?.name}
@@ -104,7 +105,11 @@ const Trending = () => {
                 </TouchableOpacity>
               ))}
             </ScrollView>
-            {idx === genres[0].categories.length - 1 ? <View style={styles.bottomPadding}/> : <Spacer />}
+            {idx === genres[0].categories.length - 1 ? (
+              <View style={styles.bottomPadding} />
+            ) : (
+              <Spacer />
+            )}
           </View>
         ))}
       </ScrollView>
@@ -131,7 +136,7 @@ const styles = StyleSheet.create({
   },
   bottomPadding: {
     height: s(20),
-  }
+  },
 });
 
 const headerStyles = StyleSheet.create({

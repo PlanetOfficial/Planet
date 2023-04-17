@@ -12,6 +12,7 @@ import SelectDestinations from '../ui/createScreens/SelectDestinations';
 import Place from '../ui/screens/Place';
 import Event from '../ui/screens/Event';
 import Settings from '../ui/screens/Settings';
+import LiveCategory from '../ui/screens/LiveCategory';
 
 interface AppNavigationProps {
   isLoggedIn: boolean;
@@ -57,6 +58,7 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
         {loginStackScreen()}
         {signUpStackScreen()}
         {forgetPassStackScreen()}
+        {liveCategoryStackScreen()}
       </MainStack.Navigator>
     </NavigationContainer>
   ) : (
@@ -70,6 +72,7 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
         {placeStackScreen()}
         {eventStackScreen()}
         {settingsStackScreen()}
+        {liveCategoryStackScreen()}
       </MainStack.Navigator>
     </NavigationContainer>
   );
@@ -138,6 +141,16 @@ const eventStackScreen = () => {
     <MainStack.Screen
       name="Event"
       component={Event}
+      options={{headerShown: false}}
+    />
+  );
+};
+
+const liveCategoryStackScreen = () => {
+  return (
+    <MainStack.Screen
+      name="LiveCategory"
+      component={LiveCategory}
       options={{headerShown: false}}
     />
   );
