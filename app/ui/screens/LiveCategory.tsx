@@ -47,30 +47,19 @@ const LiveCategory = ({navigation}: {navigation: any}) => {
   const [time, setTime] = useState(0);
   const [sort, setSort] = useState(0);
 
-  const [showRadiusDropdown, setShowRadiusDropdown] = useState(false);
-  const [showTimeDropdown, setShowTimeDropdown] = useState(false);
-  const [showSortDropdown, setShowSortDropdown] = useState(false);
+  const [dropdownStatus, setDropdownStatus]: [any, any] = useState("");
 
-  const handleRadiusDropdownPress = () => {
-    setShowRadiusDropdown(!showRadiusDropdown);
-  };
-  const handleTimeDropdownPress = () => {
-    setShowTimeDropdown(!showTimeDropdown);
-  };
-  const handleSortDropdownPress = () => {
-    setShowSortDropdown(!showSortDropdown);
-  };
   const handleRadiusOptionPress = (option: any) => {
     setRadius(option);
-    setShowRadiusDropdown(false);
+    setDropdownStatus("");
   };
   const handleTimeOptionPress = (option: any) => {
     setTime(option);
-    setShowTimeDropdown(false);
+    setDropdownStatus("");
   };
   const handleSortOptionPress = (option: any) => {
     setSort(option);
-    setShowSortDropdown(false);
+    setDropdownStatus("");
   };
 
   return (
@@ -91,18 +80,24 @@ const LiveCategory = ({navigation}: {navigation: any}) => {
       </SafeAreaView>
       <View style={filterStyles.container}>
         <ScrollView
+          onScrollBeginDrag={() => {
+             setDropdownStatus("")
+          }}
           horizontal={true}
-          contentContainerStyle={filterStyles.contentContainer}
-          style={filterStyles.scrollView}
+          style={[filterStyles.scrollView, {marginBottom: dropdownStatus === "" ? 0: -200}]}
+          contentContainerStyle={[filterStyles.contentContainer, {marginBottom: dropdownStatus === "" ? 0: 200}]}
           showsHorizontalScrollIndicator={false}>
           <View style={filterStyles.chipContainer}>
             <TouchableOpacity
               style={filterStyles.chip}
-              onPress={() => handleRadiusDropdownPress()}>
+              onPress={() => {
+                if (dropdownStatus === "radius") setDropdownStatus("");
+                else setDropdownStatus("radius");
+              }}>
               <Text
                 style={[
                   filterStyles.text,
-                  {color: showRadiusDropdown ? colors.darkgrey : colors.black},
+                  {color: dropdownStatus === "radius" ? colors.darkgrey : colors.black},
                 ]}>
                 {strings.filter.within +
                   ': ' +
@@ -114,7 +109,7 @@ const LiveCategory = ({navigation}: {navigation: any}) => {
                   style={[
                     filterStyles.icon,
                     {
-                      tintColor: showRadiusDropdown
+                      tintColor: dropdownStatus === "radius" 
                         ? colors.darkgrey
                         : colors.black,
                     },
@@ -123,12 +118,11 @@ const LiveCategory = ({navigation}: {navigation: any}) => {
                 />
               </View>
             </TouchableOpacity>
-            {showRadiusDropdown && (
+            {dropdownStatus === 'radius' && (
               <View style={dropdownStyles.content}>
                 {genres[0].filters?.radius.map((option, idx) => (
-                  <>
+                  <View key={idx}>
                     <TouchableOpacity
-                      key={idx}
                       style={dropdownStyles.option}
                       onPress={() => handleRadiusOptionPress(idx)}>
                       <Text style={dropdownStyles.text}>
@@ -139,7 +133,7 @@ const LiveCategory = ({navigation}: {navigation: any}) => {
                       (idx < genres[0]?.filters?.radius?.length - 1 && (
                         <View style={dropdownStyles.separator} />
                       ))}
-                  </>
+                  </View>
                 ))}
               </View>
             )}
@@ -147,11 +141,14 @@ const LiveCategory = ({navigation}: {navigation: any}) => {
           <View style={filterStyles.chipContainer}>
             <TouchableOpacity
               style={filterStyles.chip}
-              onPress={() => handleTimeDropdownPress()}>
+              onPress={() => {
+                if (dropdownStatus === "time" || dropdownStatus === 'closing') setDropdownStatus("");
+                else setDropdownStatus("time");
+              }}>
               <Text
                 style={[
                   filterStyles.text,
-                  {color: showTimeDropdown ? colors.darkgrey : colors.black},
+                  {color: dropdownStatus === 'time' ? colors.darkgrey : colors.black},
                 ]}>
                 {strings.filter.inTheNext +
                   ': ' +
@@ -162,7 +159,7 @@ const LiveCategory = ({navigation}: {navigation: any}) => {
                   style={[
                     filterStyles.icon,
                     {
-                      tintColor: showTimeDropdown
+                      tintColor: dropdownStatus === 'time'
                         ? colors.darkgrey
                         : colors.black,
                     },
@@ -171,12 +168,11 @@ const LiveCategory = ({navigation}: {navigation: any}) => {
                 />
               </View>
             </TouchableOpacity>
-            {showTimeDropdown && (
+            {dropdownStatus === 'time' && (
               <View style={dropdownStyles.content}>
                 {genres[0].filters?.time.map((option, idx) => (
-                  <>
+                  <View key={idx}>
                     <TouchableOpacity
-                      key={idx}
                       style={dropdownStyles.option}
                       onPress={() => handleTimeOptionPress(idx)}>
                       <Text style={dropdownStyles.text}>{option}</Text>
@@ -185,7 +181,7 @@ const LiveCategory = ({navigation}: {navigation: any}) => {
                       (idx < genres[0]?.filters?.time?.length - 1 && (
                         <View style={dropdownStyles.separator} />
                       ))}
-                  </>
+                  </View>
                 ))}
               </View>
             )}
@@ -193,11 +189,14 @@ const LiveCategory = ({navigation}: {navigation: any}) => {
           <View style={filterStyles.chipContainer}>
             <TouchableOpacity
               style={filterStyles.chip}
-              onPress={() => handleSortDropdownPress()}>
+              onPress={() => {
+                if (dropdownStatus === "sort" || dropdownStatus === 'closing') setDropdownStatus("");
+                else setDropdownStatus("sort");
+              }}>
               <Text
                 style={[
                   filterStyles.text,
-                  {color: showSortDropdown ? colors.darkgrey : colors.black},
+                  {color: dropdownStatus === 'sort' ? colors.darkgrey : colors.black},
                 ]}>
                 {strings.filter.sortby + ': ' + genres[0].filters?.sort[sort]}
               </Text>
@@ -206,7 +205,7 @@ const LiveCategory = ({navigation}: {navigation: any}) => {
                   style={[
                     filterStyles.icon,
                     {
-                      tintColor: showSortDropdown
+                      tintColor: dropdownStatus === 'sort'
                         ? colors.darkgrey
                         : colors.black,
                     },
@@ -215,12 +214,11 @@ const LiveCategory = ({navigation}: {navigation: any}) => {
                 />
               </View>
             </TouchableOpacity>
-            {showSortDropdown && (
+            {dropdownStatus === 'sort' && (
               <View style={dropdownStyles.content}>
                 {genres[0].filters?.sort.map((option, idx) => (
-                  <>
+                  <View key={idx}>
                     <TouchableOpacity
-                      key={idx}
                       style={dropdownStyles.option}
                       onPress={() => handleSortOptionPress(idx)}>
                       <Text style={dropdownStyles.text}>{option}</Text>
@@ -229,14 +227,15 @@ const LiveCategory = ({navigation}: {navigation: any}) => {
                       (idx < genres[0]?.filters?.sort?.length - 1 && (
                         <View style={dropdownStyles.separator} />
                       ))}
-                  </>
+                  </View>
                 ))}
               </View>
             )}
           </View>
         </ScrollView>
       </View>
-      <ScrollView>
+      <ScrollView 
+          onTouchStart={() => setDropdownStatus("")}>
         {genres[0].categories[0].subcategories?.map((category, idx) => (
           <View key={idx} style={categoryStyles.container}>
             <View style={categoryStyles.header}>
@@ -330,14 +329,12 @@ const filterStyles = StyleSheet.create({
   },
   scrollView: {
     overflow: 'visible',
-    marginBottom: -200,
   },
   contentContainer: {
     paddingLeft: s(20),
     paddingRight: s(5),
     paddingBottom: s(10),
     overflow: 'visible',
-    marginBottom: 200,
   },
   chipContainer: {
     marginRight: s(5),
