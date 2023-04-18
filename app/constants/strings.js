@@ -90,6 +90,9 @@ const strings = {
     all: 'All Categories',
     within: 'Within',
     sortby: 'Sort By',
+    editView: 'Edit View',
+    visible: 'Visible',
+    hidden: 'Hidden',
   },
 };
 

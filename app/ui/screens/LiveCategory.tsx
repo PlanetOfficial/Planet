@@ -1,12 +1,10 @@
-import React, {useCallback, useMemo, useRef, useState} from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
   SafeAreaView,
   StyleSheet,
   Image,
-  Pressable,
-  Platform,
   TouchableOpacity,
 } from 'react-native';
 import {colors} from '../../constants/theme';
@@ -16,8 +14,6 @@ import {s} from 'react-native-size-matters';
 import {genres} from '../../constants/genres';
 import PlaceCard from '../components/PlaceCard';
 import {ScrollView} from 'react-native-gesture-handler';
-import {BottomSheetModal} from '@gorhom/bottom-sheet';
-import {BlurView} from '@react-native-community/blur';
 
 const TEMP_DATA = [
   {
@@ -52,19 +48,6 @@ const LiveCategory = ({navigation}: {navigation: any}) => {
   const [sort, setSort] = useState(0);
   const [filters, setFilters] = useState([]);
 
-  const [bottomSheetOpen, setBottomSheetOpen] = useState('');
-  const bottomSheetRef: any = useRef<BottomSheetModal>(null);
-  const snapPoints = useMemo(() => ['40%'], []);
-  const handleSheetAnimate = useCallback(
-    (fromIndex: number, toIndex: number) => {
-      console.log(fromIndex, toIndex);
-      if (fromIndex === 0 || toIndex !== 0) {
-        setBottomSheetOpen('');
-      }
-    },
-    [],
-  );
-
   return (
     <View style={styles.container}>
       <SafeAreaView style={headerStyles.container}>
@@ -73,33 +56,20 @@ const LiveCategory = ({navigation}: {navigation: any}) => {
           onPress={() => navigation.navigate('Trending')}>
           <Image style={headerStyles.back} source={icons.next} />
         </TouchableOpacity>
-        <Text style={headerStyles.title}>Concerts</Text>
+        <View style={headerStyles.row}>
+          <Text style={headerStyles.title}>Concerts</Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('LiveCategorySettings')}>
+            <Image style={headerStyles.settings} source={icons.settings} />
+          </TouchableOpacity>
+        </View>
       </SafeAreaView>
       <View style={filterStyles.container}>
         <ScrollView
           horizontal={true}
           contentContainerStyle={filterStyles.contentContainer}
           showsHorizontalScrollIndicator={false}>
-          <TouchableOpacity
-            style={filterStyles.chip}
-            onPress={() => {
-              bottomSheetRef.current?.present();
-              setBottomSheetOpen('filter');
-            }}>
-            <Text style={filterStyles.text}>
-              {filters.length === 0 ? strings.filter.all : filters[0]}
-              {filters.length > 1 ? ' +' + (filters.length - 1) : null}
-            </Text>
-            <View style={filterStyles.drop}>
-              <Image style={filterStyles.icon} source={icons.next} />
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={filterStyles.chip}
-            onPress={() => {
-              bottomSheetRef.current?.present();
-              setBottomSheetOpen('radius');
-            }}>
+          <TouchableOpacity style={filterStyles.chip} onPress={() => {}}>
             <Text style={filterStyles.text}>
               {strings.filter.within +
                 ': ' +
@@ -110,12 +80,7 @@ const LiveCategory = ({navigation}: {navigation: any}) => {
               <Image style={[filterStyles.icon]} source={icons.next} />
             </View>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={filterStyles.chip}
-            onPress={() => {
-              bottomSheetRef.current?.present();
-              setBottomSheetOpen('time');
-            }}>
+          <TouchableOpacity style={filterStyles.chip} onPress={() => {}}>
             <Text style={filterStyles.text}>
               {genres[0].filters?.time[time]}
             </Text>
@@ -123,12 +88,7 @@ const LiveCategory = ({navigation}: {navigation: any}) => {
               <Image style={filterStyles.icon} source={icons.next} />
             </View>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={filterStyles.chip}
-            onPress={() => {
-              bottomSheetRef.current?.present();
-              setBottomSheetOpen('sort');
-            }}>
+          <TouchableOpacity style={filterStyles.chip} onPress={() => {}}>
             <Text style={filterStyles.text}>
               {strings.filter.sortby + ': ' + genres[0].filters?.sort[sort]}
             </Text>
@@ -168,26 +128,6 @@ const LiveCategory = ({navigation}: {navigation: any}) => {
           </View>
         ))}
       </ScrollView>
-      {bottomSheetOpen !== '' ? (
-        <Pressable
-          onPress={() => {
-            bottomSheetRef?.current.close();
-            setBottomSheetOpen('');
-          }}
-          style={styles.pressable}>
-          {Platform.OS === 'ios' ? (
-            <BlurView blurAmount={2} blurType="dark" style={styles.blur} />
-          ) : (
-            <View style={[styles.blur, styles.nonBlur]} />
-          )}
-        </Pressable>
-      ) : null}
-      <BottomSheetModal
-        ref={bottomSheetRef}
-        snapPoints={snapPoints}
-        onAnimate={handleSheetAnimate}>
-        {bottomSheetOpen === 'filter' ? <View /> : <View />}
-      </BottomSheetModal>
     </View>
   );
 };
@@ -208,26 +148,10 @@ const styles = StyleSheet.create({
   bottomPadding: {
     height: s(20),
   },
-  pressable: {
-    position: 'absolute',
-    width: '100%',
-    height: '150%',
-  },
-  blur: {
-    width: '100%',
-    height: '100%',
-  },
-  nonBlur: {
-    backgroundColor: colors.black,
-    opacity: 0.85,
-  },
 });
 
 const headerStyles = StyleSheet.create({
   container: {
-    // flexDirection: 'row',
-    // justifyContent: 'flex-start',
-    // alignItems: 'center',
     marginHorizontal: s(20),
   },
   title: {
@@ -239,6 +163,11 @@ const headerStyles = StyleSheet.create({
   button: {
     width: s(30),
   },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
   back: {
     width: s(12),
     height: s(18),
@@ -246,6 +175,11 @@ const headerStyles = StyleSheet.create({
     marginRight: s(6),
     tintColor: colors.black,
     transform: [{rotate: '180deg'}],
+  },
+  settings: {
+    width: s(16),
+    height: s(16),
+    tintColor: colors.black,
   },
 });
 

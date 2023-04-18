@@ -14,6 +14,7 @@ import Place from '../ui/screens/Place';
 import Event from '../ui/screens/Event';
 import Settings from '../ui/screens/Settings';
 import LiveCategory from '../ui/screens/LiveCategory';
+import LiveCategorySettings from '../ui/screens/LiveCategorySettings';
 
 interface AppNavigationProps {
   isLoggedIn: boolean;
@@ -61,6 +62,7 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {signUpStackScreen()}
           {forgetPassStackScreen()}
           {liveCategoryStackScreen()}
+          {liveCategorySettingsStackScreen()}
         </MainStack.Navigator>
       </BottomSheetModalProvider>
     </NavigationContainer>
@@ -77,6 +79,7 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {eventStackScreen()}
           {settingsStackScreen()}
           {liveCategoryStackScreen()}
+          {liveCategorySettingsStackScreen()}
         </MainStack.Navigator>
       </BottomSheetModalProvider>
     </NavigationContainer>
@@ -156,6 +159,16 @@ const liveCategoryStackScreen = () => {
     <MainStack.Screen
       name="LiveCategory"
       component={LiveCategory}
+      options={{headerShown: false}}
+    />
+  );
+};
+
+const liveCategorySettingsStackScreen = () => {
+  return (
+    <MainStack.Screen
+      name="LiveCategorySettings"
+      component={LiveCategorySettings}
       options={{headerShown: false}}
     />
   );

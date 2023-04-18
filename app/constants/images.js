@@ -23,6 +23,10 @@ export const icons = {
   heart: require('../assets/icons/heart.png'),
   hearted: require('../assets/icons/hearted.png'),
   filter: require('../assets/icons/filter.png'),
+  drag: require('../assets/icons/drag.png'),
+  plus: require('../assets/icons/plus.png'),
+  minus: require('../assets/icons/minus.png'),
+  hide: require('../assets/icons/hide.png'),
 };
 
 export const vectors = {
