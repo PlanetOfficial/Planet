@@ -441,6 +441,11 @@ export const genres = [
         icon: require('../assets/categories/fair.png'),
       },
     ],
+    filters: {
+      radius: [10, 25, 50, 100],
+      time: ['This Week', 'Next Two Weeks', 'This Month'],
+      sort: ['Relevance', 'Distance', 'Rating'],
+    }
   },
   {
     id: 2,

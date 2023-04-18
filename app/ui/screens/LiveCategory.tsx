@@ -43,19 +43,17 @@ const TEMP_DATA = [
 ];
 
 const LiveCategory = ({navigation}: {navigation: any}) => {
-  const [radius, setRadius] = useState(50);
-  const [time, setTime] = useState('This Weekend');
-  const [filters, setFilters] = useState(['Blues', 'Classical']);
+  const [radius, setRadius] = useState(0);
+  const [time, setTime] = useState(0);
+  const [sort, setSort] = useState(0);
+  const [filters, setFilters] = useState([]);
   return (
     <View style={styles.container}>
       <SafeAreaView style={headerStyles.container}>
-        <TouchableOpacity onPress={() => navigation.navigate('Trending')}>
+        <TouchableOpacity style={headerStyles.button} onPress={() => navigation.navigate('Trending')}>
           <Image style={headerStyles.back} source={icons.next} />
         </TouchableOpacity>
         <Text style={headerStyles.title}>Concerts</Text>
-        <TouchableOpacity onPress={() => console.log('Customize Screen')}>
-          <Image style={headerStyles.settings} source={icons.settings} />
-        </TouchableOpacity>
       </SafeAreaView>
       <View style={filterStyles.container}>
         <ScrollView
@@ -64,41 +62,33 @@ const LiveCategory = ({navigation}: {navigation: any}) => {
           showsHorizontalScrollIndicator={false}>
           <TouchableOpacity style={filterStyles.chip}>
             <Text style={filterStyles.text}>
-              {radius + strings.createTabStack.milesAbbrev}
+              {filters.length === 0? strings.filter.all : filters[0]}{filters.length > 1? ' +' + (filters.length - 1) : null}
+            </Text>
+            <View style={filterStyles.drop}>
+              <Image style={filterStyles.icon} source={icons.next} />
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity style={filterStyles.chip}>
+            <Text style={filterStyles.text}>
+              {strings.filter.within + ": " + genres[0].filters?.radius[radius] + strings.createTabStack.milesAbbrev}
             </Text>
             <View style={filterStyles.drop}>
               <Image style={[filterStyles.icon]} source={icons.next} />
             </View>
           </TouchableOpacity>
           <TouchableOpacity style={filterStyles.chip}>
-            <Text style={filterStyles.text}>{time}</Text>
+            <Text style={filterStyles.text}>{genres[0].filters?.time[time]}</Text>
             <View style={filterStyles.drop}>
               <Image style={filterStyles.icon} source={icons.next} />
             </View>
           </TouchableOpacity>
-          <View style={filterStyles.chip}>
-            <Text style={filterStyles.text}>
-              {filters.length === 0? 'All' : (filters.length > 1? filters[0] + ' +' + (filters.length - 1) : filters[0])}
-            </Text>
-          </View>
-          {/* {filters.map((filter, idx) => (
-            <View key={idx} style={filterStyles.chip}>
-              <Text style={filterStyles.text}>{filter}</Text>
-              <TouchableOpacity
-                onPress={() => {
-                  const newFilters = filters.filter((_, jdx) => jdx !== idx);
-                  setFilters(newFilters);
-                }}>
-                <Image style={filterStyles.x} source={icons.x} />
-              </TouchableOpacity>
+          <TouchableOpacity style={filterStyles.chip}>
+            <Text style={filterStyles.text}>{strings.filter.sortby + ': ' + genres[0].filters?.sort[sort]}</Text>
+            <View style={filterStyles.drop}>
+              <Image style={filterStyles.icon} source={icons.next} />
             </View>
-          ))} */}
-        </ScrollView>
-        <View style={filterStyles.filterContainer}>
-          <TouchableOpacity onPress={() => console.log('Filter Screen')}>
-            <Image style={filterStyles.filter} source={icons.filter} />
           </TouchableOpacity>
-        </View>
+        </ScrollView>
       </View>
       <ScrollView>
         {genres[0].categories[0].subcategories?.map((category, idx) => (
@@ -154,90 +144,69 @@ const styles = StyleSheet.create({
 
 const headerStyles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    // flexDirection: 'row',
+    // justifyContent: 'flex-start',
+    // alignItems: 'center',
     marginHorizontal: s(20),
   },
   title: {
-    fontSize: s(18),
+    fontSize: s(24),
     fontWeight: '700',
     color: colors.black,
     marginVertical: s(15),
   },
+  button: {
+    width: s(30),
+  },
   back: {
     width: s(12),
     height: s(18),
+    marginTop: s(10),
     marginRight: s(6),
     tintColor: colors.black,
     transform: [{rotate: '180deg'}],
-  },
-  settings: {
-    width: s(18),
-    height: s(18),
-    tintColor: colors.black,
   },
 });
 
 const filterStyles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    borderTopWidth: 0.5,
     borderBottomWidth: 0.5,
     borderColor: colors.grey,
   },
   contentContainer: {
     paddingLeft: s(20),
     paddingRight: s(5),
-    paddingVertical: s(7),
+    paddingBottom: s(10),
   },
   chip: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 0.5,
-    borderColor: colors.accent,
-    backgroundColor: colors.grey,
-    borderRadius: s(20),
-    paddingHorizontal: s(12),
-    paddingVertical: s(7),
-    marginRight: s(7),
+    borderColor: colors.darkgrey,
+    borderRadius: s(15),
+    paddingHorizontal: s(11),
+    paddingVertical: s(5),
+    marginRight: s(5),
   },
   text: {
     fontSize: s(11),
-    fontWeight: '600',
+    fontWeight: '500',
     color: colors.black,
   },
   drop: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: s(7),
-    width: s(12),
-    height: s(8),
+    marginLeft: s(5),
+    width: s(9),
+    height: s(6),
   },
   icon: {
-    width: s(8),
-    height: s(12),
-    tintColor: colors.accent,
-    transform: [{rotate: '90deg'}],
-  },
-  x: {
-    marginLeft: s(5),
-    width: s(10),
-    height: s(10),
+    width: s(6),
+    height: s(9),
     tintColor: colors.black,
-  },
-  filterContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: s(40),
-    borderLeftWidth: 0.5,
-    borderLeftColor: colors.grey,
-  },
-  filter: {
-    width: s(21),
-    height: s(21),
-    tintColor: colors.accent,
+    transform: [{rotate: '90deg'}],
   },
 });
 

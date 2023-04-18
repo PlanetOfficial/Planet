@@ -86,6 +86,11 @@ const strings = {
     in: 'in',
     seeAll: 'See All',
   },
+  filter: {
+    all: 'All Categories',
+    within: "Within",
+    sortby: 'Sort By',
+  }
 };
 
 export default strings;
