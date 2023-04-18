@@ -27,6 +27,7 @@ export const icons = {
   plus: require('../assets/icons/plus.png'),
   minus: require('../assets/icons/minus.png'),
   hide: require('../assets/icons/hide.png'),
+  tick: require('../assets/icons/tick.png'),
 };
 
 export const vectors = {
