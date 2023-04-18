@@ -16,7 +16,6 @@ import {
   NestableScrollContainer,
   NestableDraggableFlatList,
 } from 'react-native-draggable-flatlist';
-import {ScrollView} from 'react-native-gesture-handler';
 
 const LiveCategorySettings = ({navigation}: {navigation: any}) => {
   const [categories, setCategories]: [any, any] = useState(
@@ -51,45 +50,44 @@ const LiveCategorySettings = ({navigation}: {navigation: any}) => {
             item: any;
             drag: any;
             isActive: boolean;
-          }) => {
-            return (
-              <View
-                style={[
-                  categoryStyles.container,
-                  isActive ? categoryStyles.shadow : null,
-                ]}>
-                <View style={categoryStyles.border} />
-                <TouchableOpacity
-                  onPress={() => {
-                    setCategories(
-                      categories.filter(
-                        (category: any) => category.id !== item.id,
-                      ),
-                    );
-                    setHidden((_hidden: any) => [..._hidden, item]);
-                  }}>
-                  <Image style={categoryStyles.hide} source={icons.hide} />
-                </TouchableOpacity>
-                <Text style={categoryStyles.title}>{item.title}</Text>
-                <TouchableOpacity
-                  delayLongPress={1}
-                  onLongPress={drag}
-                  disabled={isActive}>
-                  <View>
-                    <Image style={categoryStyles.drag} source={icons.drag} />
-                  </View>
-                </TouchableOpacity>
-              </View>
-            );
-          }}
+          }) => (
+            <View
+              style={[
+                categoryStyles.container,
+                isActive ? categoryStyles.shadow : null,
+              ]}>
+              <View style={categoryStyles.border} />
+              <TouchableOpacity
+                onPress={() => {
+                  setCategories(
+                    categories.filter(
+                      (category: any) => category.id !== item.id,
+                    ),
+                  );
+                  setHidden((_hidden: any) => [..._hidden, item]);
+                }}>
+                <Image style={categoryStyles.hide} source={icons.hide} />
+              </TouchableOpacity>
+              <Text style={categoryStyles.title}>{item.title}</Text>
+              <TouchableOpacity
+                delayLongPress={1}
+                onLongPress={drag}
+                disabled={isActive}>
+                <View>
+                  <Image style={categoryStyles.drag} source={icons.drag} />
+                </View>
+              </TouchableOpacity>
+            </View>
+          )}
           keyExtractor={(item: any) => item.id}
           onDragEnd={({data}) => setCategories(data)}
         />
         <View>
           <Text style={styles.header}>{strings.filter.hidden}:</Text>
         </View>
-        <ScrollView>
-          {hidden.map((item: any) => (
+        <NestableDraggableFlatList
+          data={hidden}
+          renderItem={({item}: {item: any}) => (
             <View style={categoryStyles.container}>
               <View style={categoryStyles.border} />
               <TouchableOpacity
@@ -103,8 +101,9 @@ const LiveCategorySettings = ({navigation}: {navigation: any}) => {
               </TouchableOpacity>
               <Text style={categoryStyles.hiddenTitle}>{item.title}</Text>
             </View>
-          ))}
-        </ScrollView>
+          )}
+          keyExtractor={(item: any) => item.id}
+        />
       </NestableScrollContainer>
     </View>
   );
