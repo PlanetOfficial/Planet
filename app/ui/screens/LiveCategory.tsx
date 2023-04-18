@@ -46,7 +46,32 @@ const LiveCategory = ({navigation}: {navigation: any}) => {
   const [radius, setRadius] = useState(0);
   const [time, setTime] = useState(0);
   const [sort, setSort] = useState(0);
-  const [filters, setFilters] = useState([]);
+
+  const [showRadiusDropdown, setShowRadiusDropdown] = useState(false);
+  const [showTimeDropdown, setShowTimeDropdown] = useState(false);
+  const [showSortDropdown, setShowSortDropdown] = useState(false);
+
+  const handleRadiusDropdownPress = () => {
+    setShowRadiusDropdown(!showRadiusDropdown);
+  };
+  const handleTimeDropdownPress = () => {
+    setShowTimeDropdown(!showTimeDropdown);
+  };
+  const handleSortDropdownPress = () => {
+    setShowSortDropdown(!showSortDropdown);
+  };
+  const handleRadiusOptionPress = (option: any) => {
+    setRadius(option);
+    setShowRadiusDropdown(false);
+  };
+  const handleTimeOptionPress = (option: any) => {
+    setTime(option);
+    setShowTimeDropdown(false);
+  };
+  const handleSortOptionPress = (option: any) => {
+    setSort(option);
+    setShowSortDropdown(false);
+  };
 
   return (
     <View style={styles.container}>
@@ -68,34 +93,147 @@ const LiveCategory = ({navigation}: {navigation: any}) => {
         <ScrollView
           horizontal={true}
           contentContainerStyle={filterStyles.contentContainer}
+          style={filterStyles.scrollView}
           showsHorizontalScrollIndicator={false}>
-          <TouchableOpacity style={filterStyles.chip} onPress={() => {}}>
-            <Text style={filterStyles.text}>
-              {strings.filter.within +
-                ': ' +
-                genres[0].filters?.radius[radius] +
-                strings.createTabStack.milesAbbrev}
-            </Text>
-            <View style={filterStyles.drop}>
-              <Image style={[filterStyles.icon]} source={icons.next} />
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity style={filterStyles.chip} onPress={() => {}}>
-            <Text style={filterStyles.text}>
-              {genres[0].filters?.time[time]}
-            </Text>
-            <View style={filterStyles.drop}>
-              <Image style={filterStyles.icon} source={icons.next} />
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity style={filterStyles.chip} onPress={() => {}}>
-            <Text style={filterStyles.text}>
-              {strings.filter.sortby + ': ' + genres[0].filters?.sort[sort]}
-            </Text>
-            <View style={filterStyles.drop}>
-              <Image style={filterStyles.icon} source={icons.next} />
-            </View>
-          </TouchableOpacity>
+          <View style={filterStyles.chipContainer}>
+            <TouchableOpacity
+              style={filterStyles.chip}
+              onPress={() => handleRadiusDropdownPress()}>
+              <Text
+                style={[
+                  filterStyles.text,
+                  {color: showRadiusDropdown ? colors.darkgrey : colors.black},
+                ]}>
+                {strings.filter.within +
+                  ': ' +
+                  genres[0].filters?.radius[radius] +
+                  strings.createTabStack.milesAbbrev}
+              </Text>
+              <View style={filterStyles.drop}>
+                <Image
+                  style={[
+                    filterStyles.icon,
+                    {
+                      tintColor: showRadiusDropdown
+                        ? colors.darkgrey
+                        : colors.black,
+                    },
+                  ]}
+                  source={icons.next}
+                />
+              </View>
+            </TouchableOpacity>
+            {showRadiusDropdown && (
+              <View style={dropdownStyles.content}>
+                {genres[0].filters?.radius.map((option, idx) => (
+                  <>
+                    <TouchableOpacity
+                      key={idx}
+                      style={dropdownStyles.option}
+                      onPress={() => handleRadiusOptionPress(idx)}>
+                      <Text style={dropdownStyles.text}>
+                        {option + ' ' + strings.createTabStack.milesAbbrev}
+                      </Text>
+                    </TouchableOpacity>
+                    {!genres[0]?.filters?.radius?.length ||
+                      (idx < genres[0]?.filters?.radius?.length - 1 && (
+                        <View style={dropdownStyles.separator} />
+                      ))}
+                  </>
+                ))}
+              </View>
+            )}
+          </View>
+          <View style={filterStyles.chipContainer}>
+            <TouchableOpacity
+              style={filterStyles.chip}
+              onPress={() => handleTimeDropdownPress()}>
+              <Text
+                style={[
+                  filterStyles.text,
+                  {color: showTimeDropdown ? colors.darkgrey : colors.black},
+                ]}>
+                {strings.filter.inTheNext +
+                  ': ' +
+                  genres[0].filters?.time[time]}
+              </Text>
+              <View style={filterStyles.drop}>
+                <Image
+                  style={[
+                    filterStyles.icon,
+                    {
+                      tintColor: showTimeDropdown
+                        ? colors.darkgrey
+                        : colors.black,
+                    },
+                  ]}
+                  source={icons.next}
+                />
+              </View>
+            </TouchableOpacity>
+            {showTimeDropdown && (
+              <View style={dropdownStyles.content}>
+                {genres[0].filters?.time.map((option, idx) => (
+                  <>
+                    <TouchableOpacity
+                      key={idx}
+                      style={dropdownStyles.option}
+                      onPress={() => handleTimeOptionPress(idx)}>
+                      <Text style={dropdownStyles.text}>{option}</Text>
+                    </TouchableOpacity>
+                    {!genres[0]?.filters?.radius?.length ||
+                      (idx < genres[0]?.filters?.time?.length - 1 && (
+                        <View style={dropdownStyles.separator} />
+                      ))}
+                  </>
+                ))}
+              </View>
+            )}
+          </View>
+          <View style={filterStyles.chipContainer}>
+            <TouchableOpacity
+              style={filterStyles.chip}
+              onPress={() => handleSortDropdownPress()}>
+              <Text
+                style={[
+                  filterStyles.text,
+                  {color: showSortDropdown ? colors.darkgrey : colors.black},
+                ]}>
+                {strings.filter.sortby + ': ' + genres[0].filters?.sort[sort]}
+              </Text>
+              <View style={filterStyles.drop}>
+                <Image
+                  style={[
+                    filterStyles.icon,
+                    {
+                      tintColor: showSortDropdown
+                        ? colors.darkgrey
+                        : colors.black,
+                    },
+                  ]}
+                  source={icons.next}
+                />
+              </View>
+            </TouchableOpacity>
+            {showSortDropdown && (
+              <View style={dropdownStyles.content}>
+                {genres[0].filters?.sort.map((option, idx) => (
+                  <>
+                    <TouchableOpacity
+                      key={idx}
+                      style={dropdownStyles.option}
+                      onPress={() => handleSortOptionPress(idx)}>
+                      <Text style={dropdownStyles.text}>{option}</Text>
+                    </TouchableOpacity>
+                    {!genres[0]?.filters?.radius?.length ||
+                      (idx < genres[0]?.filters?.sort?.length - 1 && (
+                        <View style={dropdownStyles.separator} />
+                      ))}
+                  </>
+                ))}
+              </View>
+            )}
+          </View>
         </ScrollView>
       </View>
       <ScrollView>
@@ -188,11 +326,21 @@ const filterStyles = StyleSheet.create({
     flexDirection: 'row',
     borderBottomWidth: 0.5,
     borderColor: colors.grey,
+    zIndex: 1,
+  },
+  scrollView: {
+    overflow: 'visible',
+    marginBottom: -200,
   },
   contentContainer: {
     paddingLeft: s(20),
     paddingRight: s(5),
     paddingBottom: s(10),
+    overflow: 'visible',
+    marginBottom: 200,
+  },
+  chipContainer: {
+    marginRight: s(5),
   },
   chip: {
     flexDirection: 'row',
@@ -203,12 +351,11 @@ const filterStyles = StyleSheet.create({
     borderRadius: s(15),
     paddingHorizontal: s(11),
     paddingVertical: s(5),
-    marginRight: s(5),
+    height: s(25),
   },
   text: {
     fontSize: s(11),
     fontWeight: '500',
-    color: colors.black,
   },
   drop: {
     justifyContent: 'center',
@@ -220,8 +367,42 @@ const filterStyles = StyleSheet.create({
   icon: {
     width: s(6),
     height: s(9),
-    tintColor: colors.black,
     transform: [{rotate: '90deg'}],
+  },
+});
+
+const dropdownStyles = StyleSheet.create({
+  content: {
+    position: 'absolute',
+    top: s(25),
+    width: '100%',
+    borderRadius: s(10),
+    backgroundColor: colors.white,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    zIndex: 1,
+  },
+  option: {
+    borderRadius: s(10),
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderBottomColor: '#ccc',
+    backgroundColor: colors.white,
+  },
+  text: {
+    fontSize: s(11),
+    fontWeight: '500',
+    color: colors.black,
+  },
+  separator: {
+    height: 0.5,
+    backgroundColor: colors.grey,
   },
 });
 

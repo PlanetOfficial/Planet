@@ -12,8 +12,11 @@ import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
 import {s} from 'react-native-size-matters';
 import {genres} from '../../constants/genres';
-import { NestableScrollContainer, NestableDraggableFlatList} from 'react-native-draggable-flatlist';
-import { ScrollView } from 'react-native-gesture-handler';
+import {
+  NestableScrollContainer,
+  NestableDraggableFlatList,
+} from 'react-native-draggable-flatlist';
+import {ScrollView} from 'react-native-gesture-handler';
 
 const LiveCategorySettings = ({navigation}: {navigation: any}) => {
   const [categories, setCategories]: [any, any] = useState(
@@ -32,13 +35,14 @@ const LiveCategorySettings = ({navigation}: {navigation: any}) => {
         </TouchableOpacity>
         <Text style={headerStyles.title}>{strings.filter.editView}</Text>
       </SafeAreaView>
-      <NestableScrollContainer showsVerticalScrollIndicator={false} contentContainerStyle={styles.bottomPadding}>
+      <NestableScrollContainer
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.bottomPadding}>
         <View>
           <Text style={styles.header}>{strings.filter.visible}:</Text>
         </View>
         <NestableDraggableFlatList
           data={categories}
-          
           renderItem={({
             item,
             drag,
@@ -49,12 +53,21 @@ const LiveCategorySettings = ({navigation}: {navigation: any}) => {
             isActive: boolean;
           }) => {
             return (
-              <View style={[categoryStyles.container, isActive? categoryStyles.shadow : null]}>
-                <View style={categoryStyles.border}/>
-                <TouchableOpacity onPress={() => {
-                  setCategories(categories.filter((category: any) => category.id !== item.id));
-                  setHidden((hidden: any) => [...hidden, item]);
-                }}>
+              <View
+                style={[
+                  categoryStyles.container,
+                  isActive ? categoryStyles.shadow : null,
+                ]}>
+                <View style={categoryStyles.border} />
+                <TouchableOpacity
+                  onPress={() => {
+                    setCategories(
+                      categories.filter(
+                        (category: any) => category.id !== item.id,
+                      ),
+                    );
+                    setHidden((_hidden: any) => [..._hidden, item]);
+                  }}>
                   <Image style={categoryStyles.hide} source={icons.hide} />
                 </TouchableOpacity>
                 <Text style={categoryStyles.title}>{item.title}</Text>
@@ -73,16 +86,19 @@ const LiveCategorySettings = ({navigation}: {navigation: any}) => {
           onDragEnd={({data}) => setCategories(data)}
         />
         <View>
-            <Text style={styles.header}>{strings.filter.hidden}:</Text>
+          <Text style={styles.header}>{strings.filter.hidden}:</Text>
         </View>
         <ScrollView>
           {hidden.map((item: any) => (
             <View style={categoryStyles.container}>
-              <View style={categoryStyles.border}/>
-              <TouchableOpacity onPress={() => {
-                setHidden(hidden.filter((category: any) => category.id !== item.id));
-                setCategories((categories: any) => [...categories, item]);
-              }}>
+              <View style={categoryStyles.border} />
+              <TouchableOpacity
+                onPress={() => {
+                  setHidden(
+                    hidden.filter((category: any) => category.id !== item.id),
+                  );
+                  setCategories((_categories: any) => [..._categories, item]);
+                }}>
                 <Image style={categoryStyles.show} source={icons.plus} />
               </TouchableOpacity>
               <Text style={categoryStyles.hiddenTitle}>{item.title}</Text>
@@ -109,7 +125,7 @@ const styles = StyleSheet.create({
   },
   bottomPadding: {
     paddingBottom: s(40),
-  }
+  },
 });
 
 const headerStyles = StyleSheet.create({
@@ -158,14 +174,14 @@ const categoryStyles = StyleSheet.create({
     borderColor: colors.grey,
   },
   shadow: {
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    
+
     elevation: 5,
   },
   title: {

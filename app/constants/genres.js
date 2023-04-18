@@ -443,7 +443,7 @@ export const genres = [
     ],
     filters: {
       radius: [10, 25, 50, 100],
-      time: ['This Week', 'Next Two Weeks', 'This Month'],
+      time: ['Week', 'Two Weeks', 'Month'],
       sort: ['Relevance', 'Distance', 'Rating'],
     },
   },

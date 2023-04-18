@@ -89,6 +89,7 @@ const strings = {
   filter: {
     all: 'All Categories',
     within: 'Within',
+    inTheNext: 'In the Next',
     sortby: 'Sort By',
     editView: 'Edit View',
     visible: 'Visible',
