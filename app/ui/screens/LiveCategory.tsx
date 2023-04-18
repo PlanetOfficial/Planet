@@ -1,10 +1,12 @@
-import React, {useState} from 'react';
+import React, {useCallback, useMemo, useRef, useState} from 'react';
 import {
   View,
   Text,
   SafeAreaView,
   StyleSheet,
   Image,
+  Pressable,
+  Platform,
   TouchableOpacity,
 } from 'react-native';
 import {colors} from '../../constants/theme';
@@ -14,6 +16,8 @@ import {s} from 'react-native-size-matters';
 import {genres} from '../../constants/genres';
 import PlaceCard from '../components/PlaceCard';
 import {ScrollView} from 'react-native-gesture-handler';
+import {BottomSheetModal} from '@gorhom/bottom-sheet';
+import {BlurView} from '@react-native-community/blur';
 
 const TEMP_DATA = [
   {
@@ -47,10 +51,26 @@ const LiveCategory = ({navigation}: {navigation: any}) => {
   const [time, setTime] = useState(0);
   const [sort, setSort] = useState(0);
   const [filters, setFilters] = useState([]);
+
+  const [bottomSheetOpen, setBottomSheetOpen] = useState('');
+  const bottomSheetRef: any = useRef<BottomSheetModal>(null);
+  const snapPoints = useMemo(() => ['40%'], []);
+  const handleSheetAnimate = useCallback(
+    (fromIndex: number, toIndex: number) => {
+      console.log(fromIndex, toIndex);
+      if (fromIndex === 0 || toIndex !== 0) {
+        setBottomSheetOpen('');
+      }
+    },
+    [],
+  );
+
   return (
     <View style={styles.container}>
       <SafeAreaView style={headerStyles.container}>
-        <TouchableOpacity style={headerStyles.button} onPress={() => navigation.navigate('Trending')}>
+        <TouchableOpacity
+          style={headerStyles.button}
+          onPress={() => navigation.navigate('Trending')}>
           <Image style={headerStyles.back} source={icons.next} />
         </TouchableOpacity>
         <Text style={headerStyles.title}>Concerts</Text>
@@ -60,30 +80,58 @@ const LiveCategory = ({navigation}: {navigation: any}) => {
           horizontal={true}
           contentContainerStyle={filterStyles.contentContainer}
           showsHorizontalScrollIndicator={false}>
-          <TouchableOpacity style={filterStyles.chip}>
+          <TouchableOpacity
+            style={filterStyles.chip}
+            onPress={() => {
+              bottomSheetRef.current?.present();
+              setBottomSheetOpen('filter');
+            }}>
             <Text style={filterStyles.text}>
-              {filters.length === 0? strings.filter.all : filters[0]}{filters.length > 1? ' +' + (filters.length - 1) : null}
+              {filters.length === 0 ? strings.filter.all : filters[0]}
+              {filters.length > 1 ? ' +' + (filters.length - 1) : null}
             </Text>
             <View style={filterStyles.drop}>
               <Image style={filterStyles.icon} source={icons.next} />
             </View>
           </TouchableOpacity>
-          <TouchableOpacity style={filterStyles.chip}>
+          <TouchableOpacity
+            style={filterStyles.chip}
+            onPress={() => {
+              bottomSheetRef.current?.present();
+              setBottomSheetOpen('radius');
+            }}>
             <Text style={filterStyles.text}>
-              {strings.filter.within + ": " + genres[0].filters?.radius[radius] + strings.createTabStack.milesAbbrev}
+              {strings.filter.within +
+                ': ' +
+                genres[0].filters?.radius[radius] +
+                strings.createTabStack.milesAbbrev}
             </Text>
             <View style={filterStyles.drop}>
               <Image style={[filterStyles.icon]} source={icons.next} />
             </View>
           </TouchableOpacity>
-          <TouchableOpacity style={filterStyles.chip}>
-            <Text style={filterStyles.text}>{genres[0].filters?.time[time]}</Text>
+          <TouchableOpacity
+            style={filterStyles.chip}
+            onPress={() => {
+              bottomSheetRef.current?.present();
+              setBottomSheetOpen('time');
+            }}>
+            <Text style={filterStyles.text}>
+              {genres[0].filters?.time[time]}
+            </Text>
             <View style={filterStyles.drop}>
               <Image style={filterStyles.icon} source={icons.next} />
             </View>
           </TouchableOpacity>
-          <TouchableOpacity style={filterStyles.chip}>
-            <Text style={filterStyles.text}>{strings.filter.sortby + ': ' + genres[0].filters?.sort[sort]}</Text>
+          <TouchableOpacity
+            style={filterStyles.chip}
+            onPress={() => {
+              bottomSheetRef.current?.present();
+              setBottomSheetOpen('sort');
+            }}>
+            <Text style={filterStyles.text}>
+              {strings.filter.sortby + ': ' + genres[0].filters?.sort[sort]}
+            </Text>
             <View style={filterStyles.drop}>
               <Image style={filterStyles.icon} source={icons.next} />
             </View>
@@ -120,6 +168,26 @@ const LiveCategory = ({navigation}: {navigation: any}) => {
           </View>
         ))}
       </ScrollView>
+      {bottomSheetOpen !== '' ? (
+        <Pressable
+          onPress={() => {
+            bottomSheetRef?.current.close();
+            setBottomSheetOpen('');
+          }}
+          style={styles.pressable}>
+          {Platform.OS === 'ios' ? (
+            <BlurView blurAmount={2} blurType="dark" style={styles.blur} />
+          ) : (
+            <View style={[styles.blur, styles.nonBlur]} />
+          )}
+        </Pressable>
+      ) : null}
+      <BottomSheetModal
+        ref={bottomSheetRef}
+        snapPoints={snapPoints}
+        onAnimate={handleSheetAnimate}>
+        {bottomSheetOpen === 'filter' ? <View /> : <View />}
+      </BottomSheetModal>
     </View>
   );
 };
@@ -139,6 +207,19 @@ const styles = StyleSheet.create({
   },
   bottomPadding: {
     height: s(20),
+  },
+  pressable: {
+    position: 'absolute',
+    width: '100%',
+    height: '150%',
+  },
+  blur: {
+    width: '100%',
+    height: '100%',
+  },
+  nonBlur: {
+    backgroundColor: colors.black,
+    opacity: 0.85,
   },
 });
 

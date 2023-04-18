@@ -88,9 +88,9 @@ const strings = {
   },
   filter: {
     all: 'All Categories',
-    within: "Within",
+    within: 'Within',
     sortby: 'Sort By',
-  }
+  },
 };
 
 export default strings;

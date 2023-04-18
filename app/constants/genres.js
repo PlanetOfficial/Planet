@@ -445,7 +445,7 @@ export const genres = [
       radius: [10, 25, 50, 100],
       time: ['This Week', 'Next Two Weeks', 'This Month'],
       sort: ['Relevance', 'Distance', 'Rating'],
-    }
+    },
   },
   {
     id: 2,
