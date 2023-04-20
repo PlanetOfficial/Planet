@@ -7,8 +7,6 @@ export const getPlaceDetails = async (placeId: any) => {
     method: 'GET',
   });
 
-  //console.log(await response.json())
-
   if (response?.ok) {
     const myJson = await response.json(); //extract JSON from the http response
     return myJson;
