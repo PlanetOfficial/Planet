@@ -20,7 +20,7 @@ const CreateFG = ({navigation}: {navigation: any}) => {
         <TouchableOpacity
           onPress={() => navigation.navigate('Friends')}
           style={headerStyles.back}>
-          <Image style={headerStyles.icon} source={icons.next} />
+          <Image style={headerStyles.icon} source={icons.back} />
         </TouchableOpacity>
         <Text style={headerStyles.title}>{strings.friends.createPrompt}</Text>
       </View>
@@ -55,7 +55,6 @@ const headerStyles = StyleSheet.create({
     width: '100%',
     height: '100%',
     tintColor: colors.black,
-    transform: [{rotate: '180deg'}],
   },
   title: {
     fontSize: s(16),

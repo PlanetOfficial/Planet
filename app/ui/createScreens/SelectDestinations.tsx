@@ -183,7 +183,7 @@ const SelectDestinations = ({
             testID="selectDestinationsScreenBack"
             style={headerStyles.back}
             onPress={() => navigation.navigate('SelectCategories')}>
-            <Image style={headerStyles.icon} source={icons.next} />
+            <Image style={headerStyles.icon} source={icons.back} />
           </TouchableOpacity>
           <Text style={headerStyles.title}>
             {strings.createTabStack.selectDestinations}
@@ -449,7 +449,6 @@ const headerStyles = StyleSheet.create({
   back: {
     width: s(18),
     height: s(18),
-    transform: [{rotate: '180deg'}],
   },
   confirm: {
     width: s(18),
