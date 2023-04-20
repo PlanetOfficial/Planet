@@ -59,6 +59,11 @@ const strings = {
     date: 'Date',
     cancel: 'Cancel',
     confirm: 'Confirm',
+    venue: 'Event Venue',
+    eventTime: 'Event Time',
+    eventStatus: 'Event Status',
+    eventSpan: 'Event spans multiple days',
+    eventUrl: 'Tap for more information',
   },
   settings: {
     name: 'Name',
@@ -94,6 +99,9 @@ const strings = {
     editView: 'Edit View',
     visible: 'Visible',
     hidden: 'Hidden',
+  },
+  misc: {
+    maxRating: '5',
   },
 };
 
