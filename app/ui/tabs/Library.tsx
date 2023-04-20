@@ -20,8 +20,7 @@ import {icons} from '../../constants/images';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {getEvents} from '../../utils/api/libraryCalls/getEvents';
 import {getBookmarks} from '../../utils/api/shared/getBookmarks';
-import misc from '../../constants/misc';
-import {filterToUniqueIds, getImagesFromURLs} from '../../utils/functions/Misc';
+import {filterToUniqueIds} from '../../utils/functions/Misc';
 
 const Library = ({navigation}: {navigation: any}) => {
   const [selectedIndex, setIndex] = useState(0);
@@ -107,12 +106,9 @@ const Places = (
             info={item?.category?.name}
             marked={true}
             image={
-              item?.images && item?.images?.length !== 0
+              item?.image_url
                 ? {
-                    uri:
-                      item?.images[0]?.prefix +
-                      misc.imageSize +
-                      item?.images[0]?.suffix,
+                    uri: item?.image_url,
                   }
                 : icons.defaultIcon
             }
@@ -135,7 +131,6 @@ const Events = (navigation: any, events: Array<any>, places: Array<any>) => (
     ItemSeparatorComponent={Spacer}
     contentContainerStyle={styles.contentContainer}
     renderItem={({item}) => {
-      const images = getImagesFromURLs(item?.places);
       return (
         <TouchableOpacity
           onPress={() => {
@@ -148,8 +143,8 @@ const Events = (navigation: any, events: Array<any>, places: Array<any>) => (
             name={item?.name}
             info={item?.date}
             image={
-              images && images?.length !== 0
-                ? {uri: images[0]}
+              item?.places && item?.places?.length !== 0
+                ? {uri: item?.places[0]?.image_url}
                 : icons.defaultIcon
             }
           />

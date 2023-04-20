@@ -15,9 +15,13 @@ export const requestLocations = async (
     categoryString += `categories_ids[]=${item}&`;
   });
 
+  const currentDate = new Date();
+  currentDate.setDate(currentDate.getDate() + 14);
+  const dateString = currentDate.toISOString().slice(0, 10);
+
   const response = await fetch(
     CustomCallsURL +
-      `/location_list?${categoryString}radius=${radius}&ll=${latitude},${longitude}&count=${count}`,
+      `/location_list_v2?${categoryString}radius=${radius}&latitude=${latitude}&longitude=${longitude}&count=${count}&latest_event_date=${dateString}`,
     {
       method: 'GET',
     },
@@ -25,7 +29,7 @@ export const requestLocations = async (
 
   if (response?.ok) {
     const myJson = await response.json(); //extract JSON from the http response
-    return myJson?.destinations;
+    return myJson?.places;
   } else {
     return {};
   }
