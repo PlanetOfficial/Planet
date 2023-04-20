@@ -15,7 +15,6 @@ import {
 import DatePicker from 'react-native-date-picker';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {icons} from '../../constants/images';
-import misc from '../../constants/misc';
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 import {s, vs} from 'react-native-size-matters';
@@ -264,15 +263,12 @@ const SelectDestinations = ({
                             <PlaceCard
                               id={dest?.id}
                               name={dest?.name}
-                              info={`${strings.createTabStack.rating}: ${dest?.rating}/10  ${strings.createTabStack.price}: ${dest?.price}/5`}
+                              info={`${strings.createTabStack.rating}: ${dest?.rating}/${strings.misc.maxRating}  ${strings.createTabStack.price}: ${dest?.price}`}
                               marked={bookmarks?.includes(dest?.id)}
                               image={
-                                dest?.images && dest?.images?.length !== 0
+                                dest?.image_url
                                   ? {
-                                      uri:
-                                        dest?.images[0]?.prefix +
-                                        misc.imageSize +
-                                        dest?.images[0]?.suffix,
+                                      uri: dest?.image_url,
                                     }
                                   : icons.defaultIcon
                               }

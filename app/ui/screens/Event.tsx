@@ -160,24 +160,21 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
               <View style={placesEditStyles.place} key={item.id}>
                 <View style={placesEditStyles.card}>
                   <TouchableOpacity
-                    onPress={() =>
+                    onPress={() => {
                       navigation.navigate('Place', {
                         destination: item,
-                      })
-                    }>
-                    {/* TODO: turn off shadow & make it smaller if not focused */}
+                        category: item?.category?.name,
+                      });
+                    }}>
                     <PlaceCard
                       id={item?.id}
                       name={item?.name}
-                      info={`${strings.createTabStack.rating}: ${item?.rating}/10  ${strings.createTabStack.price}: ${item?.price}/5`}
+                      info={item?.category?.name}
                       marked={bookmarks?.includes(item?.id)}
                       image={
-                        item?.images && item?.images?.length !== 0
+                        item?.image_url
                           ? {
-                              uri:
-                                item?.images[0]?.prefix +
-                                misc.imageSize +
-                                item?.images[0]?.suffix,
+                              uri: item?.image_url,
                             }
                           : icons.defaultIcon
                       }
@@ -275,24 +272,21 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
             {fullEventData?.places?.map((dest: any) => (
               <View style={placesDisplayStyles.card} key={dest.id}>
                 <TouchableOpacity
-                  onPress={() =>
+                  onPress={() => {
                     navigation.navigate('Place', {
                       destination: dest,
-                    })
-                  }>
-                  {/* TODO: turn off shadow & make it smaller if not focused */}
+                      category: dest?.category?.name,
+                    });
+                  }}>
                   <PlaceCard
                     id={dest?.id}
                     name={dest?.name}
-                    info={`${strings.createTabStack.rating}: ${dest?.rating}/10  ${strings.createTabStack.price}: ${dest?.price}/5`}
+                    info={dest?.category?.name}
                     marked={bookmarks?.includes(dest?.id)}
                     image={
-                      dest?.images && dest?.images?.length !== 0
+                      dest?.image_url
                         ? {
-                            uri:
-                              dest?.images[0]?.prefix +
-                              misc.imageSize +
-                              dest?.images[0]?.suffix,
+                            uri: dest?.image_url,
                           }
                         : icons.defaultIcon
                     }
