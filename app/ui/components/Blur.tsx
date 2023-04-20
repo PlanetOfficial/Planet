@@ -23,8 +23,8 @@ const Blur = ({
         {
           height:
             (useInsets ? (bottom ? insets.bottom : insets.top) : 0) + height,
-          bottom: bottom ? 0 : undefined,
         },
+        bottom ? styles.bottom : null,
       ]}
     />
   ) : (
@@ -35,8 +35,8 @@ const Blur = ({
         {
           height:
             (useInsets ? (bottom ? insets.bottom : insets.top) : 0) + height,
-          bottom: bottom ? 0 : undefined,
         },
+        bottom ? styles.bottom : null,
       ]}
     />
   );
@@ -50,6 +50,9 @@ const styles = StyleSheet.create({
   nonBlur: {
     backgroundColor: colors.white,
     opacity: 0.85,
+  },
+  bottom: {
+    bottom: 0,
   },
 });
 

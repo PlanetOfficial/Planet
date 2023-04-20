@@ -9,10 +9,12 @@ import {
   SafeAreaView,
   ScrollView,
   FlatList,
+  Modal,
 } from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
 import {s, vs} from 'react-native-size-matters';
-import { Svg, Line, Circle } from 'react-native-svg';
+import {Svg, Line, Circle} from 'react-native-svg';
+import DatePicker from 'react-native-date-picker';
 
 import {
   getMarkerArray,
@@ -33,7 +35,7 @@ import {colors} from '../../constants/theme';
 const Event = ({navigation, route}: {navigation: any; route: any}) => {
   const [eventId] = useState(route?.params?.eventData?.id);
   const [eventTitle] = useState(route?.params?.eventData?.name);
-  const [date] = useState(route?.params?.eventData?.date);
+  const [date] = useState(new Date(route?.params?.eventData?.date)); // this probably doesn't work but whatever
   const [bookmarks] = useState(route?.params?.bookmarks);
 
   const [fullEventData, setFullEventData]: [any, any] = useState({});
@@ -42,7 +44,10 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
 
   const [editing, setEditing] = useState(false);
   const [tempTitle, setTempTitle] = useState();
+  const [tempDate, setTempDate] = useState(new Date());
   const [tempPlaces, setTempPlaces] = useState([]);
+  const [datePickerOpen, setDatePickerOpen] = useState(false);
+  const [backConfirmationOpen, setBackConfirmationOpen] = useState(false);
 
   useEffect(() => {
     const getEventData = async () => {
@@ -59,6 +64,7 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
   const beginEdits = () => {
     setEditing(true);
     setTempTitle(eventTitle);
+    setTempDate(date);
     setTempPlaces(fullEventData?.places);
   };
 
@@ -66,18 +72,6 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
     setEditing(false);
     // save edits to database
   };
-
-  const AddEventSeparator = () => (
-    <TouchableOpacity onPress={() => console.log("bitch")}>
-      <Svg width={s(350)} height={s(50)}>
-        <Line x1={s(20)} y1={s(25)} x2={s(160)} y2={s(25)} stroke={colors.accent} strokeWidth="1.5"/>
-        <Circle cx={s(175)} cy={s(25)} r={s(15)} stroke={colors.accent}  strokeWidth="1.5" fill='none'/>
-        <Line x1={s(175)} y1={s(17)} x2={s(175)} y2={s(33)} stroke={colors.accent}  strokeWidth="2.5" strokeLinecap='round'/>
-        <Line x1={s(167)} y1={s(25)} x2={s(183)} y2={s(25)} stroke={colors.accent}  strokeWidth="2.5" strokeLinecap='round'/>
-        <Line x1={s(190)} y1={s(25)} x2={s(330)} y2={s(25)} stroke={colors.accent} strokeWidth="1.5"/>
-      </Svg>
-    </TouchableOpacity>
-  );
 
   return (
     <View style={styles.container}>
@@ -107,21 +101,45 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
       )}
 
       <SafeAreaView style={headerStyles.container}>
-        <TouchableOpacity onPress={() => navigation.navigate('Library')}>
+        <TouchableOpacity
+          onPress={() =>
+            editing
+              ? setBackConfirmationOpen(true)
+              : navigation.navigate('Library')
+          }>
           <Image style={headerStyles.back} source={icons.back} />
         </TouchableOpacity>
-        <View style={headerStyles.texts}>
-          {editing ? (
+        {editing ? (
+          <View style={headerStyles.texts}>
             <TextInput
-              style={headerStyles.name}
+              style={[headerStyles.name, headerStyles.underline]}
               value={tempTitle}
               onChangeText={(text: any) => setTempTitle(text)}
             />
-          ) : (
+            <TouchableOpacity onPress={() => setDatePickerOpen(true)}>
+              <Text style={[headerStyles.date, headerStyles.underline]}>
+                {tempDate.toLocaleDateString()}
+              </Text>
+            </TouchableOpacity>
+            <DatePicker
+              modal
+              open={datePickerOpen}
+              date={date}
+              onConfirm={newDate => {
+                setDatePickerOpen(false);
+                setTempDate(newDate);
+              }}
+              onCancel={() => {
+                setDatePickerOpen(false);
+              }}
+            />
+          </View>
+        ) : (
+          <View style={headerStyles.texts}>
             <Text style={headerStyles.name}>{eventTitle}</Text>
-          )}
-          <Text style={headerStyles.date}>{date}</Text>
-        </View>
+            <Text style={headerStyles.date}>{date.toLocaleDateString()}</Text>
+          </View>
+        )}
         <TouchableOpacity
           onPress={() => (editing ? saveEdits() : beginEdits())}>
           <Text style={headerStyles.edit}>
@@ -212,10 +230,7 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
                     />
                   </TouchableOpacity>
                   <TouchableOpacity
-                    style={[
-                      placesEditStyles.button,
-                      placesEditStyles.remove,
-                    ]}
+                    style={[placesEditStyles.button, placesEditStyles.remove]}
                     disabled={tempPlaces?.length === 1}
                     onPress={() => {
                       const temp = [...tempPlaces];
@@ -289,9 +304,90 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
           <ScrollIndicator num={fullEventData?.places?.length} idx={placeIdx} />
         </SafeAreaView>
       )}
+
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={backConfirmationOpen}>
+        <View style={modalStyles.container}>
+          <View style={modalStyles.modal}>
+            <Text style={modalStyles.title}>
+              {strings.library.backConfirmation}
+            </Text>
+            <View style={modalStyles.buttons}>
+              <TouchableOpacity
+                style={modalStyles.discard}
+                onPress={() => {
+                  setBackConfirmationOpen(false);
+                  navigation.goBack();
+                }}>
+                <Text style={modalStyles.discardText}>
+                  {strings.library.discard}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={modalStyles.keepEditing}
+                onPress={() => setBackConfirmationOpen(false)}>
+                <Text style={modalStyles.keepEditingText}>
+                  {strings.library.keepEditing}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
+
+const AddEventSeparator = () => (
+  <TouchableOpacity onPress={() => console.log('bitch')}>
+    <Svg width={s(350)} height={s(50)}>
+      <Line
+        x1={s(20)}
+        y1={s(25)}
+        x2={s(160)}
+        y2={s(25)}
+        stroke={colors.accent}
+        strokeWidth="1.5"
+      />
+      <Circle
+        cx={s(175)}
+        cy={s(25)}
+        r={s(15)}
+        stroke={colors.accent}
+        strokeWidth="1.5"
+        fill="none"
+      />
+      <Line
+        x1={s(175)}
+        y1={s(17)}
+        x2={s(175)}
+        y2={s(33)}
+        stroke={colors.accent}
+        strokeWidth="2.5"
+        strokeLinecap="round"
+      />
+      <Line
+        x1={s(167)}
+        y1={s(25)}
+        x2={s(183)}
+        y2={s(25)}
+        stroke={colors.accent}
+        strokeWidth="2.5"
+        strokeLinecap="round"
+      />
+      <Line
+        x1={s(190)}
+        y1={s(25)}
+        x2={s(330)}
+        y2={s(25)}
+        stroke={colors.accent}
+        strokeWidth="1.5"
+      />
+    </Svg>
+  </TouchableOpacity>
+);
 
 const styles = StyleSheet.create({
   container: {
@@ -338,6 +434,9 @@ const headerStyles = StyleSheet.create({
     fontWeight: '600',
     textAlign: 'right',
     color: colors.accent,
+  },
+  underline: {
+    textDecorationLine: 'underline',
   },
 });
 
@@ -419,6 +518,68 @@ const placesDisplayStyles = StyleSheet.create({
   card: {
     width: s(256), // height: 256 * 5/8 = 160
     marginRight: s(20),
+  },
+});
+
+const modalStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modal: {
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: s(250),
+    height: s(120),
+    borderRadius: s(10),
+    backgroundColor: colors.white,
+  },
+  title: {
+    margin: s(20),
+    paddingHorizontal: s(20),
+    fontSize: s(15),
+    fontWeight: '600',
+    color: colors.black,
+    textAlign: 'center',
+  },
+  buttons: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    height: s(40),
+  },
+  discard: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '50%',
+    height: '100%',
+    backgroundColor: colors.grey,
+    borderBottomLeftRadius: s(10),
+    borderTopWidth: 1,
+    borderRightWidth: 0.5,
+    borderColor: colors.darkgrey,
+  },
+  keepEditing: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '50%',
+    height: '100%',
+    backgroundColor: colors.grey,
+    borderBottomRightRadius: s(10),
+    borderTopWidth: 1,
+    borderLeftWidth: 0.5,
+    borderColor: colors.darkgrey,
+  },
+  discardText: {
+    fontSize: s(14),
+    fontWeight: '700',
+    color: colors.red,
+  },
+  keepEditingText: {
+    fontSize: s(14),
+    fontWeight: '700',
+    color: colors.accent,
   },
 });
 
