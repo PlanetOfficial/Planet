@@ -93,12 +93,10 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
                 info={item?.category?.name}
                 marked={bookmarks?.includes(item?.id)}
                 image={
-                  item?.images && item?.images?.length !== 0
+                  item?.image_url
                     ? {
                         uri:
-                          item?.images[0]?.prefix +
-                          misc.imageSize +
-                          item?.images[0]?.suffix,
+                          item?.image_url
                       }
                     : icons.defaultIcon
                 }

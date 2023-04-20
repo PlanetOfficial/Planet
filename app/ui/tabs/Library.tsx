@@ -107,12 +107,10 @@ const Places = (
             info={item?.category?.name}
             marked={true}
             image={
-              item?.images && item?.images?.length !== 0
+              item?.image_url
                 ? {
                     uri:
-                      item?.images[0]?.prefix +
-                      misc.imageSize +
-                      item?.images[0]?.suffix,
+                      item?.image_url
                   }
                 : icons.defaultIcon
             }
@@ -148,8 +146,8 @@ const Events = (navigation: any, events: Array<any>, places: Array<any>) => (
             name={item?.name}
             info={item?.date}
             image={
-              images && images?.length !== 0
-                ? {uri: images[0]}
+              item?.places && item?.places?.length !== 0
+                ? {uri: item?.places[0]?.image_url}
                 : icons.defaultIcon
             }
           />

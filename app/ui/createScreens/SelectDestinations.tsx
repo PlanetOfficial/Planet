@@ -264,7 +264,7 @@ const SelectDestinations = ({
                             <PlaceCard
                               id={dest?.id}
                               name={dest?.name}
-                              info={`${strings.createTabStack.rating}: ${dest?.rating}/10  ${strings.createTabStack.price}: ${dest?.price}/5`}
+                              info={`${strings.createTabStack.rating}: ${dest?.rating}/${strings.misc.maxRating}  ${strings.createTabStack.price}: ${dest?.price}`}
                               marked={bookmarks?.includes(dest?.id)}
                               image={
                                 dest?.image_url

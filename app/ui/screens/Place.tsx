@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
+  Linking
 } from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
 import misc from '../../constants/misc';
@@ -15,14 +16,39 @@ import {colors} from '../../constants/theme';
 import strings from '../../constants/strings';
 import {floats} from '../../constants/numbers';
 import {s} from 'react-native-size-matters';
+import { getPlaceDetails } from '../../utils/api/shared/getPlaceDetails';
+import { capitalizeFirstLetter, convertDateToMMDDYYYY, convertTimeTo12Hour, displayAddress, displayHours } from '../../utils/functions/Misc';
 
 const Place = ({navigation, route}: {navigation: any; route: any}) => {
   const [destination] = useState(route?.params?.destination);
+  const [destinationDetails, setDestinationDetails]: any = useState({});
   const [category] = useState(route?.params?.category);
 
   const getImageURL = (prefix: String, suffix: String) => {
     return prefix + misc.imageSize + suffix;
   };
+
+  useEffect(() => {
+    const initializeDestinationData = async () => {
+      const id = route?.params?.destination?.id;
+      if (id) {
+        const details = await getPlaceDetails(id);
+        setDestinationDetails(details);
+      }
+    }
+    
+    initializeDestinationData();
+  }, [])
+
+  const handleLinkPress = async () => {
+    if (destinationDetails?.event_url) {
+      const linkingSupported = await Linking.canOpenURL(destinationDetails?.event_url);
+
+      if (linkingSupported) {
+        await Linking.openURL(destinationDetails?.event_url);
+      }
+    }
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -36,7 +62,7 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
           <Text style={headerStyles.title}>{destination?.name}</Text>
           <Text style={headerStyles.info}>
             {category}
-            {destination?.price ? '・' + '$'.repeat(destination?.price) : null}
+            {destination?.price ? '・' + destination?.price : null}
           </Text>
         </View>
       </View>
@@ -57,35 +83,33 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
           />
         </MapView>
         <View style={styles.separator} />
-        {destination?.images?.length > 0 ? (
           <>
-            <ScrollView
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={styles.imagesContainer}>
-              {destination?.images?.map((image: any) => (
-                <View key={image?.id}>
-                  <Image
-                    source={{uri: getImageURL(image?.prefix, image?.suffix)}}
-                    style={styles.image}
-                  />
-                </View>
-              ))}
-            </ScrollView>
-            <View style={styles.separator} />
+          <ScrollView
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.imagesContainer}>
+            {destinationDetails?.images?.length > 0 ? destinationDetails?.images?.map((image: any, index: number) => (
+              <View key={index}>
+                <Image
+                  source={{uri: image}}
+                  style={styles.image}
+                />
+              </View>
+            )) : destination?.image_url ? (<Image source={{uri : destination?.image_url}} style={styles.image}/>) : null}
+          </ScrollView>
+          <View style={styles.separator} />
           </>
-        ) : null}
         <View>
-          {destination?.rating >= 0 || destination?.reviews.length > 0 ? (
+          {destinationDetails?.rating >= 0 || destinationDetails?.reviews?.length > 0 ? (
             <>
               <Text style={rnrStyles.title}>
                 {strings.createTabStack.rnr}
                 {':'}
-                {destination?.rating >= 0 ? (
+                {destinationDetails?.rating >= 0 ? (
                   <>
                     {' ('}
-                    <Text style={rnrStyles.rating}>{destination?.rating}</Text>
-                    {'/10)'}
+                    <Text style={rnrStyles.rating}>{destinationDetails?.rating}</Text>
+                    {'/' + strings.misc.maxRating + ')'}
                   </>
                 ) : null}
               </Text>
@@ -93,8 +117,8 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={rnrStyles.contentContainer}>
-                {destination?.reviews
-                  ? destination?.reviews?.map((review: any, index: number) => (
+                {destinationDetails?.reviews
+                  ? destinationDetails?.reviews?.map((review: any, index: number) => (
                       <View key={index} style={rnrStyles.review}>
                         <Text style={rnrStyles.text}>{review?.text}</Text>
                       </View>
@@ -109,24 +133,73 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
           <Text style={detailStyles.title}>
             {strings.createTabStack.details}:
           </Text>
-          {destination?.hours?.display ? (
+          {destinationDetails?.hours?.length > 0 ? (
             <View style={detailStyles.infoContainer}>
               <Text style={detailStyles.infoTitle}>
                 {strings.createTabStack.hours}:
               </Text>
               <Text style={detailStyles.info}>
-                {destination?.hours?.display}
+                {displayHours(destinationDetails?.hours)}
               </Text>
             </View>
           ) : null}
-          <View style={detailStyles.infoContainer}>
+          {destinationDetails?.event_venue_name ? (
+            <View style={detailStyles.infoContainer}>
+              <Text style={detailStyles.infoTitle}>
+                {strings.createTabStack.venue}:
+              </Text>
+              <Text style={detailStyles.info}>
+                {destinationDetails?.event_venue_name}
+              </Text>
+            </View>
+          ) : null}
+          {destinationDetails?.address ? (
+            <View style={detailStyles.infoContainer}>
             <Text style={detailStyles.infoTitle}>
               {strings.createTabStack.address}:
             </Text>
             <Text style={detailStyles.info}>
-              {destination?.address?.formatted_address}
+              {displayAddress(destinationDetails?.address)}
             </Text>
           </View>
+          ) : null}
+          {destinationDetails?.event_start_info?.localDate && destinationDetails?.event_start_info?.localTime ? (
+            <View style={detailStyles.infoContainer}>
+              <Text style={detailStyles.infoTitle}>
+                {strings.createTabStack.eventTime}:
+              </Text>
+              <Text style={detailStyles.info}>
+                {convertDateToMMDDYYYY(destinationDetails?.event_start_info?.localDate) + '\n'}
+                {convertTimeTo12Hour(destinationDetails?.event_start_info?.localTime)}
+              </Text>
+            </View>
+          ) : null}
+          {destinationDetails?.event_status?.code ? (
+            <View style={detailStyles.infoContainer}>
+              <Text style={detailStyles.infoTitle}>
+                {strings.createTabStack.eventStatus}:
+              </Text>
+              <Text style={detailStyles.info}>
+                {capitalizeFirstLetter(destinationDetails?.event_status?.code)}
+              </Text>
+            </View>
+          ) : null}
+          {destinationDetails?.event_span ? (
+            <View style={detailStyles.infoContainer}>
+              <Text style={detailStyles.info}>
+                {strings.createTabStack.eventSpan}
+              </Text>
+            </View>
+          ) : null}
+          {destinationDetails?.event_url ? (
+            <View style={detailStyles.infoContainer}>
+              <TouchableOpacity onPress={() => handleLinkPress()}>
+                <Text style={detailStyles.infoTitle}>
+                  {strings.createTabStack.eventUrl}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          ) : null}
         </View>
       </ScrollView>
     </SafeAreaView>
