@@ -88,6 +88,11 @@ const strings = {
   library: {
     saved: 'Saved',
     events: 'Events',
+    edit: 'Edit',
+    save: 'Save',
+    backConfirmation: 'Are you sure you want to go back?',
+    discard: 'Discard',
+    keepEditing: 'Keep Editing',
   },
   profile: {
     followers: 'followers',

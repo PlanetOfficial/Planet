@@ -76,7 +76,9 @@ const PlaceCard: React.FC<Props> = ({
           <Text numberOfLines={1} style={styles.name}>
             {name}
           </Text>
-          <Text style={styles.info}>{info}</Text>
+          <Text numberOfLines={1} style={styles.info}>
+            {info}
+          </Text>
         </View>
         <TouchableOpacity onPress={handleBookmark}>
           <Image
@@ -92,7 +94,7 @@ const PlaceCard: React.FC<Props> = ({
 
 const styles = StyleSheet.create({
   container: {
-    aspectRatio: s(310) / s(200),
+    aspectRatio: 8 / 5,
   },
   shadow: {
     position: 'absolute',
@@ -153,7 +155,7 @@ const styles = StyleSheet.create({
   image: {
     position: 'absolute',
     width: '100%',
-    aspectRatio: s(310) / s(200),
+    aspectRatio: 8 / 5,
     borderWidth: 2,
     borderColor: colors.white,
     borderRadius: s(10),
