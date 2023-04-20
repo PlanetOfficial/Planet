@@ -28,15 +28,6 @@ export const icons = {
   comment: require('../assets/icons/comment.png'),
 };
 
-export const genreIcons = {
-  experience: require('../assets/genres/experience.jpg'),
-  outdoors: require('../assets/genres/outdoors.jpg'),
-  recreation: require('../assets/genres/recreation.jpg'),
-  restaurants: require('../assets/genres/restaurants.jpg'),
-  shopping: require('../assets/genres/shopping.jpg'),
-  sweets: require('../assets/genres/sweets.jpg'),
-};
-
 export const vectors = {
   blur: require('../assets/vectors/blur.png'),
   login: require('../assets/vectors/login.png'),

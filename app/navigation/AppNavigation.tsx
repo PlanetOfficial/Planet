@@ -10,7 +10,6 @@ import ForgotPassword from '../ui/authScreens/!ForgotPwd';
 import MapSelection from '../ui/createScreens/MapSelection';
 import SelectCategories from '../ui/createScreens/SelectCategories';
 import SelectDestinations from '../ui/createScreens/SelectDestinations';
-import FinalizePlan from '../ui/createScreens/FinalizePlan';
 import Place from '../ui/screens/Place';
 import Event from '../ui/screens/Event';
 import FGEvent from '../ui/screens/FGEvent';
@@ -38,11 +37,6 @@ function CreatePlanStack() {
       <PlanCreationStack.Screen
         name="SelectDestinations"
         component={SelectDestinations}
-        options={{headerShown: false}}
-      />
-      <PlanCreationStack.Screen
-        name="FinalizePlan"
-        component={FinalizePlan}
         options={{headerShown: false}}
       />
     </PlanCreationStack.Navigator>
