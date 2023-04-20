@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef, useMemo} from 'react';
 import {
   StyleSheet,
   View,
@@ -15,6 +15,8 @@ import MapView, {Marker} from 'react-native-maps';
 import {s, vs} from 'react-native-size-matters';
 import {Svg, Line, Circle} from 'react-native-svg';
 import DatePicker from 'react-native-date-picker';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import BottomSheet from '@gorhom/bottom-sheet';
 
 import {
   getMarkerArray,
@@ -28,7 +30,6 @@ import Blur from '../components/Blur';
 import ScrollIndicator from '../components/ScrollIndicator';
 
 import {icons} from '../../constants/images';
-import misc from '../../constants/misc';
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 
@@ -49,6 +50,13 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
   const [datePickerOpen, setDatePickerOpen] = useState(false);
   const [backConfirmationOpen, setBackConfirmationOpen] = useState(false);
 
+  const insets = useSafeAreaInsets();
+  const bottomSheetRef: any = useRef<BottomSheet>(null);
+  const snapPoints = useMemo(
+    () => [s(220) + insets.bottom, vs(680) - s(60) - insets.top],
+    [insets.top, insets.bottom],
+  );
+
   useEffect(() => {
     const getEventData = async () => {
       const data = await getEventPlaces(eventId);
@@ -62,6 +70,7 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
   }, [eventId]);
 
   const beginEdits = () => {
+    bottomSheetRef.current?.expand();
     setEditing(true);
     setTempTitle(eventTitle);
     setTempDate(date);
@@ -69,6 +78,7 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
   };
 
   const saveEdits = () => {
+    bottomSheetRef.current?.collapse();
     setEditing(false);
     // save edits to database
   };
@@ -90,15 +100,7 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
           : null}
       </MapView>
 
-      {/* TODO: how to do optional parameter */}
-      {editing ? (
-        <Blur height={vs(680)} bottom={false} useInsets={false} />
-      ) : (
-        <>
-          <Blur height={s(50)} bottom={false} useInsets={true} />
-          <Blur height={s(216)} bottom={true} useInsets={true} />
-        </>
-      )}
+      <Blur height={s(50)} />
 
       <SafeAreaView style={headerStyles.container}>
         <TouchableOpacity
@@ -148,8 +150,16 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
         </TouchableOpacity>
       </SafeAreaView>
 
-      {editing ? (
-        <View style={placesEditStyles.container}>
+      <BottomSheet
+        ref={bottomSheetRef}
+        index={0}
+        snapPoints={snapPoints}
+        handleStyle={placesDisplayStyles.handle}
+        handleIndicatorStyle={placesDisplayStyles.handleIndicator}
+        backgroundStyle={placesDisplayStyles.container}
+        enableContentPanningGesture={false}
+        enableHandlePanningGesture={false}>
+        {editing ? (
           <FlatList
             data={tempPlaces}
             keyExtractor={(item: any) => item.id}
@@ -251,53 +261,56 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
               </View>
             )}
           />
-        </View>
-      ) : (
-        <SafeAreaView style={placesDisplayStyles.container}>
-          <ScrollView
-            style={placesDisplayStyles.scrollView}
-            contentContainerStyle={placesDisplayStyles.contentContainer}
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            pagingEnabled={true}
-            scrollEventThrottle={16}
-            snapToInterval={s(276)} // 256 + 20
-            snapToAlignment={'start'}
-            decelerationRate={'fast'}
-            onScroll={event =>
-              setPlaceIdx(
-                Math.round(event.nativeEvent.contentOffset.x / s(276)),
-              )
-            }>
-            {fullEventData?.places?.map((dest: any) => (
-              <View style={placesDisplayStyles.card} key={dest.id}>
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.navigate('Place', {
-                      destination: dest,
-                      category: dest?.category?.name,
-                    });
-                  }}>
-                  <PlaceCard
-                    id={dest?.id}
-                    name={dest?.name}
-                    info={dest?.category?.name}
-                    marked={bookmarks?.includes(dest?.id)}
-                    image={
-                      dest?.image_url
-                        ? {
-                            uri: dest?.image_url,
-                          }
-                        : icons.defaultIcon
-                    }
-                  />
-                </TouchableOpacity>
-              </View>
-            ))}
-          </ScrollView>
-          <ScrollIndicator num={fullEventData?.places?.length} idx={placeIdx} />
-        </SafeAreaView>
-      )}
+        ) : (
+          <SafeAreaView>
+            <ScrollView
+              style={placesDisplayStyles.scrollView}
+              contentContainerStyle={placesDisplayStyles.contentContainer}
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              pagingEnabled={true}
+              scrollEventThrottle={16}
+              snapToInterval={s(276)} // 256 + 20
+              snapToAlignment={'start'}
+              decelerationRate={'fast'}
+              onScroll={event =>
+                setPlaceIdx(
+                  Math.round(event.nativeEvent.contentOffset.x / s(276)),
+                )
+              }>
+              {fullEventData?.places?.map((dest: any) => (
+                <View style={placesDisplayStyles.card} key={dest.id}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate('Place', {
+                        destination: dest,
+                        category: dest?.category?.name,
+                      });
+                    }}>
+                    <PlaceCard
+                      id={dest?.id}
+                      name={dest?.name}
+                      info={dest?.category?.name}
+                      marked={bookmarks?.includes(dest?.id)}
+                      image={
+                        dest?.image_url
+                          ? {
+                              uri: dest?.image_url,
+                            }
+                          : icons.defaultIcon
+                      }
+                    />
+                  </TouchableOpacity>
+                </View>
+              ))}
+            </ScrollView>
+            <ScrollIndicator
+              num={fullEventData?.places?.length}
+              idx={placeIdx}
+            />
+          </SafeAreaView>
+        )}
+      </BottomSheet>
 
       <Modal
         animationType="fade"
@@ -435,10 +448,6 @@ const headerStyles = StyleSheet.create({
 });
 
 const placesEditStyles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginTop: s(10),
-  },
   contentContainer: {
     paddingTop: s(10),
     paddingBottom: s(20),
@@ -500,10 +509,18 @@ const placesEditStyles = StyleSheet.create({
 
 const placesDisplayStyles = StyleSheet.create({
   container: {
-    position: 'absolute',
-    bottom: 0,
+    borderTopLeftRadius: s(10),
+    borderTopRightRadius: s(10),
+    backgroundColor: colors.white,
+  },
+  handle: {
+    paddingTop: 0,
+  },
+  handleIndicator: {
+    height: 0,
   },
   scrollView: {
+    marginVertical: s(10),
     overflow: 'visible', // display shadow
   },
   contentContainer: {

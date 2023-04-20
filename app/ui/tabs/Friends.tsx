@@ -353,7 +353,4 @@ const fgBottomSheetStyles = StyleSheet.create({
   },
 });
 
-const addBottomSheetStyles = StyleSheet.create({
-});
-
 export default Friends;
