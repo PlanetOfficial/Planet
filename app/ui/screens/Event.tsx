@@ -1,15 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import {
+  StyleSheet,
   View,
   Text,
-  TouchableOpacity,
-  StyleSheet,
-  SafeAreaView,
+  TextInput,
   Image,
+  TouchableOpacity,
+  SafeAreaView,
   ScrollView,
 } from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
-import {s} from 'react-native-size-matters';
+import {s, vs} from 'react-native-size-matters';
 
 import {
   getMarkerArray,
@@ -36,6 +37,7 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
   const [fullEventData, setFullEventData]: [any, any] = useState({});
   const [placeIdx, setPlaceIdx] = useState(0);
   const [markers, setMarkers] = useState([]);
+  const [editing, setEditing] = useState(false);
 
   useEffect(() => {
     const getEventData = async () => {
@@ -48,6 +50,13 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
 
     getEventData();
   }, [eventId]);
+
+  const [tempTitle, setTempTitle] = useState(eventTitle);
+
+  const saveEdits = () => {
+    setEditing(false);
+    // save edits to database
+  };
 
   return (
     <View style={styles.container}>
@@ -67,64 +76,172 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
       </MapView>
 
       {/* TODO: how to do optional parameter */}
-      <Blur height={s(50)} bottom={false} />
-      <Blur height={s(206)} bottom={true} />
+      {editing ? (
+        <Blur height={vs(680)} bottom={false} useInsets={false} />
+      ) : (
+        <>
+          <Blur height={s(50)} bottom={false} useInsets={true} />
+          <Blur height={s(216)} bottom={true} useInsets={true} />
+        </>
+      )}
 
       <SafeAreaView style={headerStyles.container}>
         <TouchableOpacity onPress={() => navigation.navigate('Library')}>
           <Image style={headerStyles.back} source={icons.back} />
         </TouchableOpacity>
         <View style={headerStyles.texts}>
-          <Text style={headerStyles.name}>{eventTitle}</Text>
+          {editing ? (
+            <TextInput
+              style={headerStyles.name}
+              value={tempTitle}
+              onChangeText={(text: any) => setTempTitle(text)}
+            />
+          ) : (
+            <Text style={headerStyles.name}>{eventTitle}</Text>
+          )}
           <Text style={headerStyles.date}>{date}</Text>
         </View>
+        <TouchableOpacity
+          onPress={() => (editing ? saveEdits() : setEditing(true))}>
+          <Text style={headerStyles.edit}>
+            {editing ? strings.library.save : strings.library.edit}
+          </Text>
+        </TouchableOpacity>
       </SafeAreaView>
 
-      <SafeAreaView style={placesDisplayStyles.container}>
-        <ScrollView
-          style={placesDisplayStyles.scrollView}
-          contentContainerStyle={placesDisplayStyles.contentContainer}
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-          pagingEnabled={true}
-          scrollEventThrottle={16}
-          snapToInterval={s(276)} // 256 + 20
-          snapToAlignment={'start'}
-          decelerationRate={'fast'}
-          onScroll={event =>
-            setPlaceIdx(Math.round(event.nativeEvent.contentOffset.x / s(276)))
-          }>
-          {fullEventData?.places?.map((dest: any) => (
-            <View style={placesDisplayStyles.card} key={dest.id}>
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate('Place', {
-                    destination: dest,
-                  })
-                }>
-                {/* TODO: turn off shadow & make it smaller if not focused */}
-                <PlaceCard
-                  id={dest?.id}
-                  name={dest?.name}
-                  info={`${strings.createTabStack.rating}: ${dest?.rating}/10  ${strings.createTabStack.price}: ${dest?.price}/5`}
-                  marked={bookmarks?.includes(dest?.id)}
-                  image={
-                    dest?.images && dest?.images?.length !== 0
-                      ? {
-                          uri:
-                            dest?.images[0]?.prefix +
-                            misc.imageSize +
-                            dest?.images[0]?.suffix,
-                        }
-                      : icons.defaultIcon
-                  }
-                />
-              </TouchableOpacity>
-            </View>
-          ))}
-        </ScrollView>
-        <ScrollIndicator num={fullEventData?.places?.length} idx={placeIdx} />
-      </SafeAreaView>
+      {editing ? (
+        <SafeAreaView style={placesEditStyles.container}>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={placesEditStyles.contentContainer}>
+            {fullEventData?.places?.map((dest: any, idx: number) => (
+              <View style={placesEditStyles.place} key={dest.id}>
+                <View style={placesEditStyles.card}>
+                  <TouchableOpacity
+                    onPress={() =>
+                      navigation.navigate('Place', {
+                        destination: dest,
+                      })
+                    }>
+                    {/* TODO: turn off shadow & make it smaller if not focused */}
+                    <PlaceCard
+                      id={dest?.id}
+                      name={dest?.name}
+                      info={`${strings.createTabStack.rating}: ${dest?.rating}/10  ${strings.createTabStack.price}: ${dest?.price}/5`}
+                      marked={bookmarks?.includes(dest?.id)}
+                      image={
+                        dest?.images && dest?.images?.length !== 0
+                          ? {
+                              uri:
+                                dest?.images[0]?.prefix +
+                                misc.imageSize +
+                                dest?.images[0]?.suffix,
+                            }
+                          : icons.defaultIcon
+                      }
+                    />
+                  </TouchableOpacity>
+                </View>
+                <View style={placesEditStyles.buttons}>
+                  <TouchableOpacity
+                    disabled={idx === 0}
+                    style={[placesEditStyles.button, placesEditStyles.up]}
+                    onPress={() => console.log('up')}>
+                    <Image
+                      style={[
+                        placesEditStyles.upDownicon,
+                        {tintColor: idx === 0 ? colors.darkgrey : colors.black},
+                      ]}
+                      source={icons.up}
+                    />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    disabled={idx === fullEventData?.places?.length - 1}
+                    style={[placesEditStyles.button, placesEditStyles.down]}
+                    onPress={() => console.log('down')}>
+                    <Image
+                      style={[
+                        placesEditStyles.upDownicon,
+                        {
+                          tintColor:
+                            idx === fullEventData?.places?.length - 1
+                              ? colors.darkgrey
+                              : colors.black,
+                        },
+                      ]}
+                      source={icons.down}
+                    />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[placesEditStyles.button, placesEditStyles.replace]}
+                    onPress={() => console.log('replace')}>
+                    <Image
+                      style={placesEditStyles.replaceicon}
+                      source={icons.replace}
+                    />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[placesEditStyles.button, placesEditStyles.remove]}
+                    onPress={() => console.log('remove')}>
+                    <Image
+                      style={placesEditStyles.removeIcon}
+                      source={icons.remove}
+                    />
+                  </TouchableOpacity>
+                </View>
+              </View>
+            ))}
+          </ScrollView>
+        </SafeAreaView>
+      ) : (
+        <SafeAreaView style={placesDisplayStyles.container}>
+          <ScrollView
+            style={placesDisplayStyles.scrollView}
+            contentContainerStyle={placesDisplayStyles.contentContainer}
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            pagingEnabled={true}
+            scrollEventThrottle={16}
+            snapToInterval={s(276)} // 256 + 20
+            snapToAlignment={'start'}
+            decelerationRate={'fast'}
+            onScroll={event =>
+              setPlaceIdx(
+                Math.round(event.nativeEvent.contentOffset.x / s(276)),
+              )
+            }>
+            {fullEventData?.places?.map((dest: any) => (
+              <View style={placesDisplayStyles.card} key={dest.id}>
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate('Place', {
+                      destination: dest,
+                    })
+                  }>
+                  {/* TODO: turn off shadow & make it smaller if not focused */}
+                  <PlaceCard
+                    id={dest?.id}
+                    name={dest?.name}
+                    info={`${strings.createTabStack.rating}: ${dest?.rating}/10  ${strings.createTabStack.price}: ${dest?.price}/5`}
+                    marked={bookmarks?.includes(dest?.id)}
+                    image={
+                      dest?.images && dest?.images?.length !== 0
+                        ? {
+                            uri:
+                              dest?.images[0]?.prefix +
+                              misc.imageSize +
+                              dest?.images[0]?.suffix,
+                          }
+                        : icons.defaultIcon
+                    }
+                  />
+                </TouchableOpacity>
+              </View>
+            ))}
+          </ScrollView>
+          <ScrollIndicator num={fullEventData?.places?.length} idx={placeIdx} />
+        </SafeAreaView>
+      )}
     </View>
   );
 };
@@ -147,9 +264,15 @@ const headerStyles = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal: s(20),
   },
+  back: {
+    width: s(12),
+    height: s(18),
+    marginRight: s(20),
+    tintColor: colors.black,
+  },
   texts: {
     justifyContent: 'space-between',
-    marginLeft: s(20),
+    width: s(238),
     height: s(40),
   },
   name: {
@@ -162,10 +285,78 @@ const headerStyles = StyleSheet.create({
     fontWeight: '600',
     color: colors.accent,
   },
-  back: {
-    width: s(12),
+  edit: {
+    width: s(40),
+    fontSize: s(14),
+    fontWeight: '600',
+    textAlign: 'right',
+    color: colors.accent,
+  },
+});
+
+const placesEditStyles = StyleSheet.create({
+  container: {
+    marginTop: s(10),
+  },
+  contentContainer: {
+    paddingVertical: s(10),
+  },
+  place: {
+    flexDirection: 'row',
+    marginHorizontal: s(20),
+    paddingVertical: s(10),
+    borderBottomWidth: 0.5,
+    borderColor: colors.darkgrey,
+  },
+  card: {
+    width: s(256), // height: 256 * 5/8 = 160
+    marginRight: s(10),
+  },
+  buttons: {
+    justifyContent: 'space-between',
+  },
+  button: {
+    width: s(44),
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: colors.white,
+  },
+  up: {
+    marginBottom: -s(4),
+    height: s(33),
+    borderTopLeftRadius: s(10),
+    borderTopRightRadius: s(10),
+    borderBottomLeftRadius: s(5),
+    borderBottomRightRadius: s(5),
+  },
+  down: {
+    height: s(33),
+    borderTopLeftRadius: s(5),
+    borderTopRightRadius: s(5),
+    borderBottomLeftRadius: s(10),
+    borderBottomRightRadius: s(10),
+  },
+  replace: {
+    height: s(36),
+    borderRadius: s(10),
+  },
+  remove: {
+    height: s(36),
+    borderRadius: s(10),
+  },
+  upDownicon: {
+    width: s(18),
     height: s(18),
-    tintColor: colors.black,
+  },
+  replaceicon: {
+    width: s(16),
+    height: s(16),
+    tintColor: colors.accent,
+  },
+  removeIcon: {
+    width: s(20),
+    height: s(20),
+    tintColor: colors.red,
   },
 });
 

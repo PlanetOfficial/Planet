@@ -4,7 +4,15 @@ import {BlurView} from '@react-native-community/blur';
 import {colors} from '../../constants/theme';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
-const Blur = ({height, bottom = false}: {height: number; bottom: boolean}) => {
+const Blur = ({
+  height,
+  bottom = false,
+  useInsets = false,
+}: {
+  height: number;
+  bottom: boolean;
+  useInsets: boolean;
+}) => {
   const insets = useSafeAreaInsets();
   return Platform.OS === 'ios' ? (
     <BlurView
@@ -13,7 +21,8 @@ const Blur = ({height, bottom = false}: {height: number; bottom: boolean}) => {
       style={[
         styles.container,
         {
-          height: (bottom ? insets.bottom : insets.top) + height,
+          height:
+            (useInsets ? (bottom ? insets.bottom : insets.top) : 0) + height,
           bottom: bottom ? 0 : undefined,
         },
       ]}
@@ -24,7 +33,8 @@ const Blur = ({height, bottom = false}: {height: number; bottom: boolean}) => {
         styles.container,
         styles.nonBlur,
         {
-          height: insets.top + height,
+          height:
+            (useInsets ? (bottom ? insets.bottom : insets.top) : 0) + height,
           bottom: bottom ? 0 : undefined,
         },
       ]}

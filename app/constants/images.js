@@ -22,7 +22,10 @@ export const icons = {
   defaultIcon: require('../assets/icons/x.png'),
   tempCategory: require('../assets/icons/tempCategory.png'),
   heart: require('../assets/icons/heart.png'),
-  hearted: require('../assets/icons/hearted.png'),
+  up: require('../assets/icons/up.png'),
+  down: require('../assets/icons/down.png'),
+  replace: require('../assets/icons/replace.png'),
+  remove: require('../assets/icons/remove.png'),
 };
 
 export const vectors = {

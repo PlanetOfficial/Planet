@@ -77,6 +77,8 @@ const strings = {
   library: {
     saved: 'Saved',
     events: 'Events',
+    edit: 'Edit',
+    save: 'Save',
   },
   profile: {
     followers: 'followers',

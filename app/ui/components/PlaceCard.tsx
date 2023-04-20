@@ -76,7 +76,9 @@ const PlaceCard: React.FC<Props> = ({
           <Text numberOfLines={1} style={styles.name}>
             {name}
           </Text>
-          <Text style={styles.info}>{info}</Text>
+          <Text numberOfLines={1} style={styles.info}>
+            {info}
+          </Text>
         </View>
         <TouchableOpacity onPress={handleBookmark}>
           <Image
@@ -133,13 +135,14 @@ const styles = StyleSheet.create({
   nonBlur: {backgroundColor: colors.white, opacity: 0.85},
   name: {
     marginLeft: s(7),
-    width: s(260),
+    width: s(210),
     fontSize: s(18),
     fontWeight: '700',
     color: colors.black,
   },
   info: {
     marginLeft: s(7),
+    width: s(210),
     fontSize: s(12),
     fontWeight: '500',
     color: colors.accent,
