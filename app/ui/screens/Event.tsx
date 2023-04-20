@@ -263,6 +263,7 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
           />
         ) : (
           <SafeAreaView>
+            {/* TODO: Display estimated time and cost for this event */}
             <ScrollView
               style={placesDisplayStyles.scrollView}
               contentContainerStyle={placesDisplayStyles.contentContainer}
@@ -280,6 +281,7 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
               }>
               {fullEventData?.places?.map((dest: any) => (
                 <View style={placesDisplayStyles.card} key={dest.id}>
+                  {/* TODO: Display estimated time and cost for this place */}
                   <TouchableOpacity
                     onPress={() => {
                       navigation.navigate('Place', {
@@ -348,7 +350,10 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
 };
 
 const AddEventSeparator = () => (
-  <TouchableOpacity onPress={() => console.log('bitch')}>
+  <TouchableOpacity
+    onPress={() => {
+      // TODO_NEXT: Add an event
+    }}>
     <Svg width={s(350)} height={s(50)}>
       <Line
         x1={s(20)}

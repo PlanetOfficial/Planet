@@ -102,7 +102,10 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
           <Text style={headerStyles.name}>{eventTitle}</Text>
           <Text style={headerStyles.date}>{date.toLocaleDateString()}</Text>
         </View>
-        <TouchableOpacity onPress={() => console.log('Fork the Event')}>
+        <TouchableOpacity
+          onPress={() => {
+            // TODO: FOrk functionality
+          }}>
           <Text style={headerStyles.fork}>Fork</Text>
         </TouchableOpacity>
       </SafeAreaView>
@@ -117,6 +120,7 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
         enableContentPanningGesture={false}
         enableHandlePanningGesture={false}>
         <SafeAreaView>
+          {/* TODO: Display estimated time and cost for this event */}
           <ScrollView
             style={placesDisplayStyles.scrollView}
             contentContainerStyle={placesDisplayStyles.contentContainer}
@@ -134,6 +138,7 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
             }>
             {fullEventData?.places?.map((dest: any) => (
               <View style={placesDisplayStyles.card} key={dest.id}>
+                {/* TODO: Display estimated time and cost for this place */}
                 <TouchableOpacity
                   onPress={() => {
                     navigation.navigate('Place', {
@@ -162,8 +167,7 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
                       feedbackStyles.likeContainer,
                     ]}
                     onPress={() => {
-                      // TODO: Add user to the list of dislikes
-                      console.log('TO BE IMPLEMENTED');
+                      // TODO: Add user to the list of likes
                     }}>
                     <Image
                       style={[
@@ -191,7 +195,6 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
                     ]}
                     onPress={() => {
                       // TODO: Add user to the list of dislikes
-                      console.log('TO BE IMPLEMENTED');
                     }}>
                     <Image
                       style={[
