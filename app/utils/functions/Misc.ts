@@ -111,11 +111,11 @@ export const getImagesFromURLs = (places: Array<any>) => {
 export const getMarkerArray = (places: any): any => {
   let markers: Array<MarkerObject> = [];
   places?.forEach((place: any) => {
-    if (place) {
+    if (place && place?.name && place?.latitude && place?.longitude) {
       const markerObject = {
         name: place?.name,
-        latitude: place?.latitude,
-        longitude: place?.longitude,
+        latitude: parseFloat(place?.latitude),
+        longitude: parseFloat(place?.longitude),
       };
 
       markers.push(markerObject);

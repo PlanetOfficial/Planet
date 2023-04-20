@@ -43,13 +43,7 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
 
   const handleLinkPress = async () => {
     if (destinationDetails?.event_url) {
-      const linkingSupported = await Linking.canOpenURL(
-        destinationDetails?.event_url,
-      );
-
-      if (linkingSupported) {
-        await Linking.openURL(destinationDetails?.event_url);
-      }
+      await Linking.openURL(destinationDetails?.event_url);
     }
   };
 
