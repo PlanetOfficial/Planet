@@ -1,40 +1,47 @@
-import React, {useCallback, useMemo, useRef, useState, useEffect} from 'react';
+import React, {useEffect, useState, useRef, useMemo, useCallback} from 'react';
 import {
+  StyleSheet,
   View,
   Text,
-  TouchableOpacity,
-  StyleSheet,
-  SafeAreaView,
   Image,
-  FlatList,
+  TouchableOpacity,
+  SafeAreaView,
+  ScrollView,
   Pressable,
-  Platform,
 } from 'react-native';
-import {icons} from '../../constants/images';
-import misc from '../../constants/misc';
 import MapView, {Marker} from 'react-native-maps';
 import {s} from 'react-native-size-matters';
-import {colors} from '../../constants/theme';
-import {BottomSheetModal} from '@gorhom/bottom-sheet';
-import {BlurView} from '@react-native-community/blur';
-import strings from '../../constants/strings';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import BottomSheet, {BottomSheetModal} from '@gorhom/bottom-sheet';
 
 import {
   getMarkerArray,
   getRegionForCoordinates,
 } from '../../utils/functions/Misc';
 import {MarkerObject} from '../../utils/interfaces/MarkerObject';
-import PlaceCard from '../components/PlaceCard';
 import {getEventPlaces} from '../../utils/api/libraryCalls/getEventPlaces';
 
-const FGEvent = ({navigation, route}: {navigation: any; route: any}) => {
+import PlaceCard from '../components/PlaceCard';
+import Blur from '../components/Blur';
+import ScrollIndicator from '../components/ScrollIndicator';
+
+import {icons} from '../../constants/images';
+import strings from '../../constants/strings';
+import {colors} from '../../constants/theme';
+
+const Event = ({navigation, route}: {navigation: any; route: any}) => {
   const [eventId] = useState(route?.params?.eventData?.id);
   const [eventTitle] = useState(route?.params?.eventData?.name);
-  const [date] = useState(route?.params?.eventData?.date);
+  const [date] = useState(new Date(route?.params?.eventData?.date)); // this probably doesn't work but whatever
   const [bookmarks] = useState(route?.params?.bookmarks);
 
   const [fullEventData, setFullEventData]: [any, any] = useState({});
+  const [placeIdx, setPlaceIdx] = useState(0);
   const [markers, setMarkers] = useState([]);
+
+  const insets = useSafeAreaInsets();
+  const bottomSheetRef: any = useRef<BottomSheet>(null);
+  const snapPoints = useMemo(() => [s(265) + insets.bottom], [insets.bottom]);
 
   const [feedbackBottomSheetOpen, setFeedbackBottomSheetOpen] = useState(false);
   const feedbackBottomSheetRef: any = useRef<BottomSheetModal>(null);
@@ -70,19 +77,6 @@ const FGEvent = ({navigation, route}: {navigation: any; route: any}) => {
 
   return (
     <View style={styles.container}>
-      <SafeAreaView style={headerStyles.container}>
-        <TouchableOpacity
-          style={headerStyles.back}
-          onPress={() => navigation.navigate('Friends')}>
-          <Image style={headerStyles.icon} source={icons.next} />
-        </TouchableOpacity>
-        <View style={headerStyles.texts}>
-          <Text style={headerStyles.title}>{eventTitle}</Text>
-          <View>
-            <Text style={headerStyles.date}>{date}</Text>
-          </View>
-        </View>
-      </SafeAreaView>
       <MapView style={styles.map} region={getRegionForCoordinates(markers)}>
         {markers?.length > 0
           ? markers?.map((marker: MarkerObject, index: number) => (
@@ -97,125 +91,154 @@ const FGEvent = ({navigation, route}: {navigation: any; route: any}) => {
             ))
           : null}
       </MapView>
-      <FlatList
-        style={styles.flatlist}
-        data={fullEventData?.places}
-        keyExtractor={item => item?.id}
-        ItemSeparatorComponent={Spacer}
-        contentContainerStyle={styles.contentContainer}
-        renderItem={({item}) => {
-          return (
-            <View style={styles.cardContainer}>
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate('Place', {
-                    destination: item,
-                    category: item?.category?.name,
-                  });
-                }}
-                style={styles.card}>
-                <PlaceCard
-                  id={item?.id}
-                  name={item?.name}
-                  info={item?.category?.name}
-                  marked={bookmarks?.includes(item?.id)}
-                  image={
-                    item?.images && item?.images?.length !== 0
-                      ? {
-                          uri:
-                            item?.images[0]?.prefix +
-                            misc.imageSize +
-                            item?.images[0]?.suffix,
-                        }
-                      : icons.defaultIcon
-                  }
-                />
-              </TouchableOpacity>
-              <View style={feedbackStyles.container}>
+
+      <Blur height={s(50)} />
+
+      <SafeAreaView style={headerStyles.container}>
+        <TouchableOpacity onPress={() => navigation.navigate('Friends')}>
+          <Image style={headerStyles.back} source={icons.back} />
+        </TouchableOpacity>
+        <View style={headerStyles.texts}>
+          <Text style={headerStyles.name}>{eventTitle}</Text>
+          <Text style={headerStyles.date}>{date.toLocaleDateString()}</Text>
+        </View>
+        <TouchableOpacity onPress={() => console.log('Fork the Event')}>
+          <Text style={headerStyles.fork}>Fork</Text>
+        </TouchableOpacity>
+      </SafeAreaView>
+
+      <BottomSheet
+        ref={bottomSheetRef}
+        index={0}
+        snapPoints={snapPoints}
+        handleStyle={placesDisplayStyles.handle}
+        handleIndicatorStyle={placesDisplayStyles.handleIndicator}
+        backgroundStyle={placesDisplayStyles.container}
+        enableContentPanningGesture={false}
+        enableHandlePanningGesture={false}>
+        <SafeAreaView>
+          <ScrollView
+            style={placesDisplayStyles.scrollView}
+            contentContainerStyle={placesDisplayStyles.contentContainer}
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            pagingEnabled={true}
+            scrollEventThrottle={16}
+            snapToInterval={s(276)} // 256 + 20
+            snapToAlignment={'start'}
+            decelerationRate={'fast'}
+            onScroll={event =>
+              setPlaceIdx(
+                Math.round(event.nativeEvent.contentOffset.x / s(276)),
+              )
+            }>
+            {fullEventData?.places?.map((dest: any) => (
+              <View style={placesDisplayStyles.card} key={dest.id}>
                 <TouchableOpacity
-                  style={[
-                    feedbackStyles.iconContainer,
-                    feedbackStyles.likeContainer,
-                  ]}
                   onPress={() => {
-                    // TODO: Add user to the list of dislikes
-                    console.log('TO BE IMPLEMENTED');
+                    navigation.navigate('Place', {
+                      destination: dest,
+                      category: dest?.category?.name,
+                    });
                   }}>
-                  <Image
-                    style={[
-                      feedbackStyles.icon,
-                      {
-                        // TODO: change the tint color based on like status
-                        tintColor: true ? colors.accent : colors.black,
-                      },
-                    ]}
-                    source={icons.like}
+                  <PlaceCard
+                    id={dest?.id}
+                    name={dest?.name}
+                    info={dest?.category?.name}
+                    marked={bookmarks?.includes(dest?.id)}
+                    image={
+                      dest?.image_url
+                        ? {
+                            uri: dest?.image_url,
+                          }
+                        : icons.defaultIcon
+                    }
                   />
                 </TouchableOpacity>
-                <TouchableOpacity
-                  style={[
-                    feedbackStyles.iconContainer,
-                    feedbackStyles.countContainer,
-                  ]}
-                  onPress={() => feedbackBottomSheetRef.current?.present()}>
-                  <Text style={feedbackStyles.count}>+3</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[
-                    feedbackStyles.iconContainer,
-                    feedbackStyles.dislikeContainer,
-                  ]}
-                  onPress={() => {
-                    // TODO: Add user to the list of dislikes
-                    console.log('TO BE IMPLEMENTED');
-                  }}>
-                  <Image
+                <View style={feedbackStyles.container}>
+                  <TouchableOpacity
                     style={[
-                      feedbackStyles.icon,
-                      {
-                        // TODO: change the tint color based on dislike status
-                        tintColor: false ? colors.accent : colors.black,
-                      },
+                      feedbackStyles.iconContainer,
+                      feedbackStyles.likeContainer,
                     ]}
-                    source={icons.dislike}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[
-                    feedbackStyles.iconContainer,
-                    feedbackStyles.commentContainer,
-                  ]}
-                  onPress={() => commentBottomSheetRef.current?.present()}>
-                  <Image
+                    onPress={() => {
+                      // TODO: Add user to the list of dislikes
+                      console.log('TO BE IMPLEMENTED');
+                    }}>
+                    <Image
+                      style={[
+                        feedbackStyles.icon,
+                        {
+                          // TODO: change the tint color based on like status
+                          tintColor: true ? colors.accent : colors.black,
+                        },
+                      ]}
+                      source={icons.like}
+                    />
+                  </TouchableOpacity>
+                  <TouchableOpacity
                     style={[
-                      feedbackStyles.icon,
-                      {
-                        tintColor: colors.black,
-                      },
+                      feedbackStyles.iconContainer,
+                      feedbackStyles.countContainer,
                     ]}
-                    source={icons.comment}
-                  />
-                  <Text style={feedbackStyles.commentCount}> 2</Text>
-                </TouchableOpacity>
+                    onPress={() => feedbackBottomSheetRef.current?.present()}>
+                    <Text style={feedbackStyles.count}>+3</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      feedbackStyles.iconContainer,
+                      feedbackStyles.dislikeContainer,
+                    ]}
+                    onPress={() => {
+                      // TODO: Add user to the list of dislikes
+                      console.log('TO BE IMPLEMENTED');
+                    }}>
+                    <Image
+                      style={[
+                        feedbackStyles.icon,
+                        {
+                          // TODO: change the tint color based on dislike status
+                          tintColor: false ? colors.accent : colors.black,
+                        },
+                      ]}
+                      source={icons.dislike}
+                    />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      feedbackStyles.iconContainer,
+                      feedbackStyles.commentContainer,
+                    ]}
+                    onPress={() => commentBottomSheetRef.current?.present()}>
+                    <Image
+                      style={[
+                        feedbackStyles.icon,
+                        {
+                          tintColor: colors.black,
+                        },
+                      ]}
+                      source={icons.comment}
+                    />
+                    <Text style={feedbackStyles.commentCount}> 2</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
-            </View>
-          );
-        }}
-      />
-      {feedbackBottomSheetOpen || commentBottomSheetOpen ? (
+            ))}
+          </ScrollView>
+          <ScrollIndicator num={fullEventData?.places?.length} idx={placeIdx} />
+        </SafeAreaView>
+      </BottomSheet>
+
+      {(feedbackBottomSheetOpen || commentBottomSheetOpen) && (
         <Pressable
+          style={styles.dark}
           onPress={() => {
             feedbackBottomSheetRef?.current.close();
             commentBottomSheetRef?.current.close();
           }}
-          style={styles.pressable}>
-          {Platform.OS === 'ios' ? (
-            <BlurView blurAmount={2} blurType="dark" style={styles.blur} />
-          ) : (
-            <View style={[styles.blur, styles.nonBlur]} />
-          )}
-        </Pressable>
-      ) : null}
+        />
+      )}
+
       <BottomSheetModal
         ref={feedbackBottomSheetRef}
         snapPoints={feedbackSnapPoints}
@@ -238,6 +261,7 @@ const FGEvent = ({navigation, route}: {navigation: any; route: any}) => {
           </View>
         </View>
       </BottomSheetModal>
+
       <BottomSheetModal
         ref={commentBottomSheetRef}
         snapPoints={commentSnapPoints}
@@ -250,64 +274,98 @@ const FGEvent = ({navigation, route}: {navigation: any; route: any}) => {
   );
 };
 
-const Spacer = () => <View style={styles.separator} />;
-
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
-    height: '100%',
+    flex: 1,
     backgroundColor: colors.white,
   },
-  flatlist: {
-    paddingHorizontal: s(20),
-    marginTop: s(10),
-  },
   map: {
-    marginTop: s(5),
-    height: s(200),
-    borderRadius: s(10),
-    marginHorizontal: s(20),
-  },
-  separator: {
-    borderWidth: 0.5,
-    borderColor: colors.grey,
-    marginVertical: s(10),
-  },
-  contentContainer: {
-    paddingVertical: s(10),
-  },
-  cardContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  card: {
-    width: s(258),
-  },
-  pressable: {
     position: 'absolute',
-    width: '100%',
-    height: '150%',
-  },
-  blur: {
     width: '100%',
     height: '100%',
   },
-  nonBlur: {
-    backgroundColor: colors.black,
-    opacity: 0.85,
+  dark: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+});
+
+const headerStyles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: s(20),
+  },
+  back: {
+    width: s(12),
+    height: s(18),
+    marginRight: s(20),
+    tintColor: colors.black,
+  },
+  texts: {
+    justifyContent: 'space-between',
+    width: s(238),
+    height: s(40),
+  },
+  name: {
+    fontSize: s(18),
+    fontWeight: '700',
+    color: colors.black,
+  },
+  date: {
+    fontSize: s(11),
+    fontWeight: '600',
+    color: colors.accent,
+  },
+  fork: {
+    width: s(40),
+    fontSize: s(14),
+    fontWeight: '600',
+    textAlign: 'right',
+    color: colors.accent,
+  },
+});
+
+const placesDisplayStyles = StyleSheet.create({
+  container: {
+    borderTopLeftRadius: s(10),
+    borderTopRightRadius: s(10),
+    backgroundColor: colors.white,
+  },
+  handle: {
+    paddingTop: 0,
+  },
+  handleIndicator: {
+    height: 0,
+  },
+  scrollView: {
+    marginVertical: s(10),
+    overflow: 'visible', // display shadow
+  },
+  contentContainer: {
+    paddingHorizontal: s(47), // (350 - 256) / 2
+  },
+  card: {
+    width: s(256), // height: 256 * 5/8 = 160
+    marginRight: s(20),
   },
 });
 
 const feedbackStyles = StyleSheet.create({
   container: {
-    width: s(45),
+    flexDirection: 'row',
     justifyContent: 'space-between',
+    marginTop: s(10),
+    marginBottom: -s(5),
+    paddingHorizontal: s(10),
+    height: s(40),
   },
   iconContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    width: '100%',
-    flex: 1,
+    backgroundColor: colors.grey,
 
     shadowColor: '#000',
     shadowOffset: {
@@ -316,32 +374,32 @@ const feedbackStyles = StyleSheet.create({
     },
     shadowOpacity: 0.18,
     shadowRadius: 1.0,
-
     elevation: 1,
-    backgroundColor: colors.grey,
   },
   likeContainer: {
+    width: s(50),
     borderTopLeftRadius: s(10),
-    borderTopRightRadius: s(10),
-    borderBottomLeftRadius: s(3),
-    borderBottomRightRadius: s(3),
-    marginBottom: s(3),
+    borderTopRightRadius: s(5),
+    borderBottomLeftRadius: s(10),
+    borderBottomRightRadius: s(5),
   },
   countContainer: {
-    borderRadius: s(3),
+    marginHorizontal: -s(5),
+    width: s(50),
+    borderRadius: s(5),
   },
   dislikeContainer: {
-    borderTopLeftRadius: s(3),
-    borderTopRightRadius: s(3),
-    borderBottomLeftRadius: s(10),
+    width: s(50),
+    borderTopLeftRadius: s(5),
+    borderTopRightRadius: s(10),
+    borderBottomLeftRadius: s(5),
     borderBottomRightRadius: s(10),
-    marginTop: s(3),
   },
   commentContainer: {
+    width: s(65),
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: s(5),
     borderRadius: s(10),
   },
   icon: {
@@ -400,45 +458,4 @@ const commentModalStyles = StyleSheet.create({
   },
 });
 
-const headerStyles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '100%',
-    marginHorizontal: s(20),
-    paddingVertical: s(10),
-  },
-  texts: {
-    marginLeft: s(10),
-  },
-  title: {
-    fontSize: s(18),
-    fontWeight: '600',
-    color: colors.black,
-  },
-  date: {
-    marginTop: s(5),
-    fontSize: s(14),
-    fontWeight: '700',
-    color: colors.accent,
-  },
-  back: {
-    marginRight: s(20 / 3),
-    width: s(40 / 3),
-    height: s(20),
-  },
-  confirm: {
-    position: 'absolute',
-    right: s(20),
-    width: s(20),
-    height: s(20),
-  },
-  icon: {
-    width: '100%',
-    height: '100%',
-    tintColor: colors.black,
-    transform: [{rotate: '180deg'}],
-  },
-});
-
-export default FGEvent;
+export default Event;

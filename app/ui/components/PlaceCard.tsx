@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
   image: {
     position: 'absolute',
     width: '100%',
-    aspectRatio: 8 / 5,
+    height: '100%',
     borderWidth: 2,
     borderColor: colors.white,
     borderRadius: s(10),
