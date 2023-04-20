@@ -4,6 +4,7 @@ import {MarkerObject} from '../interfaces/MarkerObject';
 import {coordinate} from '../interfaces/coordinate';
 import misc from '../../constants/misc';
 import {floats} from '../../constants/numbers';
+import {WeekDay} from '../interfaces/weekday';
 
 /*
   Given a point and the longitudeDelta, calculate the radius of the circle (the
@@ -125,8 +126,8 @@ export const getMarkerArray = (places: any): any => {
 
 // converts from international time to normal time (1330 => 1:30 PM)
 function convertTime(internationalTime: string): string {
-  const hours = parseInt(internationalTime.slice(0, 2));
-  const minutes = parseInt(internationalTime.slice(2));
+  const hours = parseInt(internationalTime.slice(0, 2), 10);
+  const minutes = parseInt(internationalTime.slice(2), 10);
   let hour = hours;
   const minute = minutes;
   let period = 'AM';
@@ -160,48 +161,54 @@ function convertTime(internationalTime: string): string {
 */
 
 export const displayHours = (hoursArray: Array<any>): string => {
-  const weekMap = [{day: 'Monday', hours: Array<string>()}, {day: 'Tuesday', hours: Array<string>()}, {day: 'Wednesday', hours: Array<string>()},
-                              {day: 'Thursday', hours: Array<string>()}, {day: 'Friday', hours: Array<string>()}, {day: 'Saturday', hours: Array<string>()},
-                                        {day: 'Sunday', hours: Array<string>()}];
+  const weekMap: WeekDay[] = [
+    {day: 'Monday', hours: []},
+    {day: 'Tuesday', hours: []},
+    {day: 'Wednesday', hours: []},
+    {day: 'Thursday', hours: []},
+    {day: 'Friday', hours: []},
+    {day: 'Saturday', hours: []},
+    {day: 'Sunday', hours: []},
+  ];
 
   hoursArray.forEach(item => {
     let timeString = convertTime(item.start) + ' - ' + convertTime(item.end);
     weekMap[item.day].hours.push(timeString);
-  })
+  });
 
   let resultString = '';
   weekMap.forEach(item => {
     let adder = item.day + ': ';
     item.hours.forEach(timeSlot => {
       adder += timeSlot + '  ';
-    })
+    });
 
     resultString += adder;
     resultString += '\n';
-  })
+  });
 
   return resultString;
-}
+};
 
 // given an array of chunks of an address, format to a nice string
 export const displayAddress = (chunks: Array<string>): string => {
   let concatenated = '';
   chunks.forEach(chunk => {
     concatenated += chunk + ' ';
-  })
+  });
 
   return concatenated;
-}
+};
 
 // given a string, capitalize the first letter
 export const capitalizeFirstLetter = (string: string): string => {
   return string.charAt(0).toUpperCase() + string.slice(1);
-}
+};
 
 // given a time in the format like this: 18:45:00, output 6:45 PM
 export const convertTimeTo12Hour = (time: string): string => {
-  let hours = parseInt(time.slice(0, 2));
-  let minutes = parseInt(time.slice(3, 5));
+  let hours = parseInt(time.slice(0, 2), 10);
+  let minutes = parseInt(time.slice(3, 5), 10);
   let period = 'AM';
 
   if (hours === 0) {
@@ -214,13 +221,13 @@ export const convertTimeTo12Hour = (time: string): string => {
   }
 
   return `${hours}:${minutes.toString().padStart(2, '0')} ${period}`;
-}
+};
 
 // given a date in the format like this: 2023-04-20, return 4/20/2023
 export const convertDateToMMDDYYYY = (date: string): string => {
-  let month = parseInt(date.slice(5, 7));
-  let day = parseInt(date.slice(8, 10));
-  let year = parseInt(date.slice(0, 4));
+  let month = parseInt(date.slice(5, 7), 10);
+  let day = parseInt(date.slice(8, 10), 10);
+  let year = parseInt(date.slice(0, 4), 10);
 
   return `${month}/${day}/${year}`;
-}
+};

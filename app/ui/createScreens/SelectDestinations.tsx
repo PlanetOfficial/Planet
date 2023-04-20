@@ -15,7 +15,6 @@ import {
 import DatePicker from 'react-native-date-picker';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {icons} from '../../constants/images';
-import misc from '../../constants/misc';
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 import {s, vs} from 'react-native-size-matters';
@@ -269,8 +268,7 @@ const SelectDestinations = ({
                               image={
                                 dest?.image_url
                                   ? {
-                                      uri:
-                                        dest?.image_url
+                                      uri: dest?.image_url,
                                     }
                                   : icons.defaultIcon
                               }

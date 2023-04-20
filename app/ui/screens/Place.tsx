@@ -7,48 +7,51 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
-  Linking
+  Linking,
 } from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
-import misc from '../../constants/misc';
 import {icons} from '../../constants/images';
 import {colors} from '../../constants/theme';
 import strings from '../../constants/strings';
 import {floats} from '../../constants/numbers';
 import {s} from 'react-native-size-matters';
-import { getPlaceDetails } from '../../utils/api/shared/getPlaceDetails';
-import { capitalizeFirstLetter, convertDateToMMDDYYYY, convertTimeTo12Hour, displayAddress, displayHours } from '../../utils/functions/Misc';
+import {getPlaceDetails} from '../../utils/api/shared/getPlaceDetails';
+import {
+  capitalizeFirstLetter,
+  convertDateToMMDDYYYY,
+  convertTimeTo12Hour,
+  displayAddress,
+  displayHours,
+} from '../../utils/functions/Misc';
 
 const Place = ({navigation, route}: {navigation: any; route: any}) => {
   const [destination] = useState(route?.params?.destination);
   const [destinationDetails, setDestinationDetails]: any = useState({});
   const [category] = useState(route?.params?.category);
 
-  const getImageURL = (prefix: String, suffix: String) => {
-    return prefix + misc.imageSize + suffix;
-  };
-
   useEffect(() => {
     const initializeDestinationData = async () => {
-      const id = route?.params?.destination?.id;
+      const id = destination?.id;
       if (id) {
         const details = await getPlaceDetails(id);
         setDestinationDetails(details);
       }
-    }
-    
+    };
+
     initializeDestinationData();
-  }, [])
+  }, [destination?.id]);
 
   const handleLinkPress = async () => {
     if (destinationDetails?.event_url) {
-      const linkingSupported = await Linking.canOpenURL(destinationDetails?.event_url);
+      const linkingSupported = await Linking.canOpenURL(
+        destinationDetails?.event_url,
+      );
 
       if (linkingSupported) {
         await Linking.openURL(destinationDetails?.event_url);
       }
     }
-  }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -83,24 +86,29 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
           />
         </MapView>
         <View style={styles.separator} />
-          <>
+        <>
           <ScrollView
             horizontal={true}
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={styles.imagesContainer}>
-            {destinationDetails?.images?.length > 0 ? destinationDetails?.images?.map((image: any, index: number) => (
-              <View key={index}>
-                <Image
-                  source={{uri: image}}
-                  style={styles.image}
-                />
-              </View>
-            )) : destination?.image_url ? (<Image source={{uri : destination?.image_url}} style={styles.image}/>) : null}
+            {destinationDetails?.images?.length > 0 ? (
+              destinationDetails?.images?.map((image: any, index: number) => (
+                <View key={index}>
+                  <Image source={{uri: image}} style={styles.image} />
+                </View>
+              ))
+            ) : destination?.image_url ? (
+              <Image
+                source={{uri: destination?.image_url}}
+                style={styles.image}
+              />
+            ) : null}
           </ScrollView>
           <View style={styles.separator} />
-          </>
+        </>
         <View>
-          {destinationDetails?.rating >= 0 || destinationDetails?.reviews?.length > 0 ? (
+          {destinationDetails?.rating >= 0 ||
+          destinationDetails?.reviews?.length > 0 ? (
             <>
               <Text style={rnrStyles.title}>
                 {strings.createTabStack.rnr}
@@ -108,7 +116,9 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
                 {destinationDetails?.rating >= 0 ? (
                   <>
                     {' ('}
-                    <Text style={rnrStyles.rating}>{destinationDetails?.rating}</Text>
+                    <Text style={rnrStyles.rating}>
+                      {destinationDetails?.rating}
+                    </Text>
                     {'/' + strings.misc.maxRating + ')'}
                   </>
                 ) : null}
@@ -118,11 +128,13 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={rnrStyles.contentContainer}>
                 {destinationDetails?.reviews
-                  ? destinationDetails?.reviews?.map((review: any, index: number) => (
-                      <View key={index} style={rnrStyles.review}>
-                        <Text style={rnrStyles.text}>{review?.text}</Text>
-                      </View>
-                    ))
+                  ? destinationDetails?.reviews?.map(
+                      (review: any, index: number) => (
+                        <View key={index} style={rnrStyles.review}>
+                          <Text style={rnrStyles.text}>{review?.text}</Text>
+                        </View>
+                      ),
+                    )
                   : null}
               </ScrollView>
               <View style={styles.separator} />
@@ -155,22 +167,27 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
           ) : null}
           {destinationDetails?.address ? (
             <View style={detailStyles.infoContainer}>
-            <Text style={detailStyles.infoTitle}>
-              {strings.createTabStack.address}:
-            </Text>
-            <Text style={detailStyles.info}>
-              {displayAddress(destinationDetails?.address)}
-            </Text>
-          </View>
+              <Text style={detailStyles.infoTitle}>
+                {strings.createTabStack.address}:
+              </Text>
+              <Text style={detailStyles.info}>
+                {displayAddress(destinationDetails?.address)}
+              </Text>
+            </View>
           ) : null}
-          {destinationDetails?.event_start_info?.localDate && destinationDetails?.event_start_info?.localTime ? (
+          {destinationDetails?.event_start_info?.localDate &&
+          destinationDetails?.event_start_info?.localTime ? (
             <View style={detailStyles.infoContainer}>
               <Text style={detailStyles.infoTitle}>
                 {strings.createTabStack.eventTime}:
               </Text>
               <Text style={detailStyles.info}>
-                {convertDateToMMDDYYYY(destinationDetails?.event_start_info?.localDate) + '\n'}
-                {convertTimeTo12Hour(destinationDetails?.event_start_info?.localTime)}
+                {convertDateToMMDDYYYY(
+                  destinationDetails?.event_start_info?.localDate,
+                ) + '\n'}
+                {convertTimeTo12Hour(
+                  destinationDetails?.event_start_info?.localTime,
+                )}
               </Text>
             </View>
           ) : null}
