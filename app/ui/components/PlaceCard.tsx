@@ -92,7 +92,7 @@ const PlaceCard: React.FC<Props> = ({
 
 const styles = StyleSheet.create({
   container: {
-    height: s(200),
+    height: s(160),
   },
   shadow: {
     position: 'absolute',
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
   image: {
     position: 'absolute',
     width: '100%',
-    height: s(200),
+    height: s(160),
     borderWidth: 2,
     borderColor: colors.white,
     borderRadius: s(10),

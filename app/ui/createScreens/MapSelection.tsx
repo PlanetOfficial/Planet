@@ -275,7 +275,10 @@ const styles = StyleSheet.create({
     top: 0,
     width: '100%',
   },
-  nonBlur: {backgroundColor: colors.white, opacity: 0.85},
+  nonBlur: {
+    backgroundColor: colors.white,
+    opacity: 0.85,
+  },
 });
 
 const headerStyles = StyleSheet.create({

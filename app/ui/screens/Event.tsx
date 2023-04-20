@@ -6,21 +6,26 @@ import {
   StyleSheet,
   SafeAreaView,
   Image,
-  FlatList,
+  ScrollView,
 } from 'react-native';
-import {icons} from '../../constants/images';
-import misc from '../../constants/misc';
 import MapView, {Marker} from 'react-native-maps';
 import {s} from 'react-native-size-matters';
-import {colors} from '../../constants/theme';
 
 import {
   getMarkerArray,
   getRegionForCoordinates,
 } from '../../utils/functions/Misc';
 import {MarkerObject} from '../../utils/interfaces/MarkerObject';
-import PlaceCard from '../components/PlaceCard';
 import {getEventPlaces} from '../../utils/api/libraryCalls/getEventPlaces';
+
+import PlaceCard from '../components/PlaceCard';
+import Blur from '../components/Blur';
+import ScrollIndicator from '../components/ScrollIndicator';
+
+import {icons} from '../../constants/images';
+import misc from '../../constants/misc';
+import strings from '../../constants/strings';
+import {colors} from '../../constants/theme';
 
 const Event = ({navigation, route}: {navigation: any; route: any}) => {
   const [eventId] = useState(route?.params?.eventData?.id);
@@ -29,6 +34,7 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
   const [bookmarks] = useState(route?.params?.bookmarks);
 
   const [fullEventData, setFullEventData]: [any, any] = useState({});
+  const [placeIdx, setPlaceIdx] = useState(0);
   const [markers, setMarkers] = useState([]);
 
   useEffect(() => {
@@ -45,19 +51,6 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
 
   return (
     <View style={styles.container}>
-      <SafeAreaView style={headerStyles.container}>
-        <TouchableOpacity
-          style={headerStyles.back}
-          onPress={() => navigation.navigate('Library')}>
-          <Image style={headerStyles.icon} source={icons.next} />
-        </TouchableOpacity>
-        <View style={headerStyles.texts}>
-          <Text style={headerStyles.title}>{eventTitle}</Text>
-          <View>
-            <Text style={headerStyles.date}>{date}</Text>
-          </View>
-        </View>
-      </SafeAreaView>
       <MapView style={styles.map} region={getRegionForCoordinates(markers)}>
         {markers?.length > 0
           ? markers?.map((marker: MarkerObject, index: number) => (
@@ -72,70 +65,79 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
             ))
           : null}
       </MapView>
-      <FlatList
-        style={styles.flatlist}
-        data={fullEventData?.places}
-        keyExtractor={item => item?.id}
-        ItemSeparatorComponent={Spacer}
-        contentContainerStyle={styles.contentContainer}
-        renderItem={({item}) => {
-          return (
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate('Place', {
-                  destination: item,
-                  category: item?.category?.name,
-                });
-              }}>
-              <PlaceCard
-                id={item?.id}
-                name={item?.name}
-                info={item?.category?.name}
-                marked={bookmarks?.includes(item?.id)}
-                image={
-                  item?.images && item?.images?.length !== 0
-                    ? {
-                        uri:
-                          item?.images[0]?.prefix +
-                          misc.imageSize +
-                          item?.images[0]?.suffix,
-                      }
-                    : icons.defaultIcon
-                }
-              />
-            </TouchableOpacity>
-          );
-        }}
-      />
+
+      {/* TODO: how to do optional parameter */}
+      <Blur height={s(50)} bottom={false} />
+      <Blur height={s(206)} bottom={true} />
+
+      <SafeAreaView style={headerStyles.container}>
+        <TouchableOpacity onPress={() => navigation.navigate('Library')}>
+          <Image style={headerStyles.back} source={icons.back} />
+        </TouchableOpacity>
+        <View style={headerStyles.texts}>
+          <Text style={headerStyles.name}>{eventTitle}</Text>
+          <Text style={headerStyles.date}>{date}</Text>
+        </View>
+      </SafeAreaView>
+
+      <SafeAreaView style={placesDisplayStyles.container}>
+        <ScrollView
+          style={placesDisplayStyles.scrollView}
+          contentContainerStyle={placesDisplayStyles.contentContainer}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          pagingEnabled={true}
+          scrollEventThrottle={16}
+          snapToInterval={s(276)} // 256 + 20
+          snapToAlignment={'start'}
+          decelerationRate={'fast'}
+          onScroll={event =>
+            setPlaceIdx(Math.round(event.nativeEvent.contentOffset.x / s(276)))
+          }>
+          {fullEventData?.places?.map((dest: any) => (
+            <View style={placesDisplayStyles.card} key={dest.id}>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate('Place', {
+                    destination: dest,
+                  })
+                }>
+                {/* TODO: turn off shadow & make it smaller if not focused */}
+                <PlaceCard
+                  id={dest?.id}
+                  name={dest?.name}
+                  info={`${strings.createTabStack.rating}: ${dest?.rating}/10  ${strings.createTabStack.price}: ${dest?.price}/5`}
+                  marked={bookmarks?.includes(dest?.id)}
+                  image={
+                    dest?.images && dest?.images?.length !== 0
+                      ? {
+                          uri:
+                            dest?.images[0]?.prefix +
+                            misc.imageSize +
+                            dest?.images[0]?.suffix,
+                        }
+                      : icons.defaultIcon
+                  }
+                />
+              </TouchableOpacity>
+            </View>
+          ))}
+        </ScrollView>
+        <ScrollIndicator num={fullEventData?.places?.length} idx={placeIdx} />
+      </SafeAreaView>
     </View>
   );
 };
 
-const Spacer = () => <View style={styles.separator} />;
-
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
-    height: '100%',
+    flex: 1,
     backgroundColor: colors.white,
   },
-  flatlist: {
-    paddingHorizontal: s(20),
-    marginTop: s(10),
-  },
   map: {
-    marginTop: s(5),
-    height: s(200),
-    borderRadius: s(10),
-    marginHorizontal: s(20),
-  },
-  separator: {
-    borderWidth: 0.5,
-    borderColor: colors.grey,
-    marginVertical: s(10),
-  },
-  contentContainer: {
-    paddingVertical: s(10),
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
   },
 });
 
@@ -143,40 +145,44 @@ const headerStyles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    width: '100%',
     marginHorizontal: s(20),
-    paddingVertical: s(10),
   },
   texts: {
-    marginLeft: s(10),
+    justifyContent: 'space-between',
+    marginLeft: s(20),
+    height: s(40),
   },
-  title: {
+  name: {
     fontSize: s(18),
-    fontWeight: '600',
+    fontWeight: '700',
     color: colors.black,
   },
   date: {
-    marginTop: s(5),
-    fontSize: s(14),
-    fontWeight: '700',
+    fontSize: s(11),
+    fontWeight: '600',
     color: colors.accent,
   },
   back: {
-    marginRight: s(20 / 3),
-    width: s(40 / 3),
-    height: s(20),
-  },
-  confirm: {
-    position: 'absolute',
-    right: s(20),
-    width: s(20),
-    height: s(20),
-  },
-  icon: {
-    width: '100%',
-    height: '100%',
+    width: s(12),
+    height: s(18),
     tintColor: colors.black,
-    transform: [{rotate: '180deg'}],
+  },
+});
+
+const placesDisplayStyles = StyleSheet.create({
+  container: {
+    position: 'absolute',
+    bottom: 0,
+  },
+  scrollView: {
+    overflow: 'visible', // display shadow
+  },
+  contentContainer: {
+    paddingHorizontal: s(47), // (350 - 256) / 2
+  },
+  card: {
+    width: s(256), // height: 256 * 5/8 = 160
+    marginRight: s(20),
   },
 });
 
