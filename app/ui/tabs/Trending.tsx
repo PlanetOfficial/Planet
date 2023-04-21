@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -7,6 +7,8 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
+  Platform,
+  PermissionsAndroid,
 } from 'react-native';
 import {colors} from '../../constants/theme';
 import {icons} from '../../constants/images';
@@ -14,43 +16,65 @@ import strings from '../../constants/strings';
 import {s} from 'react-native-size-matters';
 import {genres} from '../../constants/genres';
 import PlaceCard from '../components/PlaceCard';
-
-const TEMP_DATA = [
-  {
-    id: '1',
-    name: 'The Witcher',
-    image: 'https://image.tmdb.org/t/p/w500/2W4ZvACURDyhiNnSIaFPHfNbny3.jpg',
-    rating: 8.5,
-    date: '2020-12-25',
-    marked: false,
-  },
-  {
-    id: '2',
-    name: 'The Mandalorian',
-    image: 'https://image.tmdb.org/t/p/w500/sWgBv7LV2PRoQgkxwlibdGXKz1S.jpg',
-    rating: 8.5,
-    date: '2020-12-25',
-    marked: true,
-  },
-  {
-    id: '3',
-    name: 'The Witcher',
-    image: 'https://image.tmdb.org/t/p/w500/2W4ZvACURDyhiNnSIaFPHfNbny3.jpg',
-    rating: 8.5,
-    date: '2020-12-25',
-    marked: true,
-  },
-  {
-    id: '4',
-    name: 'The Mandalorian',
-    image: 'https://image.tmdb.org/t/p/w500/sWgBv7LV2PRoQgkxwlibdGXKz1S.jpg',
-    rating: 8.5,
-    date: '2020-12-25',
-    marked: true,
-  },
-];
+import Geolocation from '@react-native-community/geolocation';
+import { floats, integers } from '../../constants/numbers';
+import { requestLocations } from '../../utils/api/CreateCalls/requestLocations';
 
 const Trending = ({navigation}: {navigation: any}) => {
+  const [latitude, setLatitude] = useState(floats.defaultLatitude);
+  const [longitude, setLongitude] = useState(floats.defaultLongitude);
+  const [radius, setRadius] = useState(floats.defaultRadius);
+  const [eventsData, setEventsData]: [any, any] = useState([]);
+
+  useEffect(() => {
+    const detectLocation = async () => {
+      if (Platform.OS === 'ios') {
+        Geolocation.requestAuthorization();
+      } else if (Platform.OS === 'android') {
+        try {
+          const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+          );
+          if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+            console.log('Location permission granted.');
+          } else {
+            console.log('Location permission denied.');
+          }
+        } catch (err) {
+          console.warn(err);
+        }
+      }
+
+      Geolocation.getCurrentPosition(
+        position => {
+          setLatitude(position.coords.latitude);
+          setLongitude(position.coords.longitude);
+        },
+        (error: any) => {
+          console.log(error);
+        },
+      );
+    };
+
+    const loadTrending = async () => {
+      await detectLocation();
+
+      const categoryIds = genres[0].categories.map(category => category.id);
+
+      const liveEventData = await requestLocations(
+        categoryIds,
+        radius,
+        latitude,
+        longitude,
+        integers.defaultNumPlaces,
+      );
+
+      setEventsData(liveEventData);
+    };
+
+    loadTrending();
+  }, [latitude, longitude]);
+
   return (
     <SafeAreaView testID="trendingScreenView" style={styles.container}>
       <View style={headerStyles.container}>
@@ -74,7 +98,7 @@ const Trending = ({navigation}: {navigation: any}) => {
         </TouchableOpacity>
       </View>
       <ScrollView>
-        {genres[0].categories.map((category, idx) => (
+        {genres[0].categories.map((category, idx: number) => (
           <View key={idx} style={categoryStyles.container}>
             <View style={categoryStyles.header}>
               <Text style={categoryStyles.title}>{category.name}</Text>
@@ -90,20 +114,23 @@ const Trending = ({navigation}: {navigation: any}) => {
               style={categoryStyles.scrollView}
               horizontal={true}
               showsHorizontalScrollIndicator={false}>
-              {TEMP_DATA.map((item: any, jdx) => (
+              {eventsData[category.id] ? eventsData[category.id].map((item: any, jdx: number) => (
                 <TouchableOpacity
                   style={categoryStyles.card}
                   key={jdx}
-                  onPress={() => console.log("Lavy's backend magic")}>
+                  onPress={() => navigation.navigate('Place', {
+                    destination: item,
+                    category: item?.category?.name,
+                  })}>
                   <PlaceCard
                     id={item?.id}
                     name={item?.name}
                     info={item?.date}
                     marked={item?.marked}
-                    image={{uri: item?.image}}
+                    image={{uri: item?.image_url}}
                   />
                 </TouchableOpacity>
-              ))}
+              )) : null}
             </ScrollView>
             {idx === genres[0].categories.length - 1 ? (
               <View style={styles.bottomPadding} />
