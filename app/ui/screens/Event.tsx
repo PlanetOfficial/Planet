@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
   SafeAreaView,
   ScrollView,
-  FlatList,
   Modal,
 } from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
@@ -17,6 +16,7 @@ import {Svg, Line, Circle} from 'react-native-svg';
 import DatePicker from 'react-native-date-picker';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import BottomSheet from '@gorhom/bottom-sheet';
+import DraggableFlatList from 'react-native-draggable-flatlist';
 
 import {
   getMarkerArray,
@@ -44,9 +44,10 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
   const [markers, setMarkers] = useState([]);
 
   const [editing, setEditing] = useState(false);
+  const [dragging, setDragging] = useState(false);
   const [tempTitle, setTempTitle] = useState();
   const [tempDate, setTempDate] = useState(new Date());
-  const [tempPlaces, setTempPlaces] = useState([]);
+  const [tempPlaces, setTempPlaces]: [any, any] = useState([]);
   const [datePickerOpen, setDatePickerOpen] = useState(false);
   const [backConfirmationOpen, setBackConfirmationOpen] = useState(false);
 
@@ -160,106 +161,52 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
         enableContentPanningGesture={false}
         enableHandlePanningGesture={false}>
         {editing ? (
-          <FlatList
+          <DraggableFlatList
             data={tempPlaces}
             keyExtractor={(item: any) => item.id}
             showsVerticalScrollIndicator={false}
+            ItemSeparatorComponent={dragging ? Separator : AddEventSeparator}
             contentContainerStyle={placesEditStyles.contentContainer}
-            ItemSeparatorComponent={AddEventSeparator}
-            renderItem={({item, index}) => (
-              <View style={placesEditStyles.place} key={item.id}>
-                <View style={placesEditStyles.card}>
-                  <TouchableOpacity
-                    onPress={() => {
-                      navigation.navigate('Place', {
-                        destination: item,
-                        category: item?.category?.name,
-                      });
-                    }}>
-                    <PlaceCard
-                      id={item?.id}
-                      name={item?.name}
-                      info={item?.category?.name}
-                      marked={bookmarks?.includes(item?.id)}
-                      image={
-                        item?.image_url
-                          ? {
-                              uri: item?.image_url,
-                            }
-                          : icons.defaultIcon
-                      }
-                    />
-                  </TouchableOpacity>
-                </View>
-                <View style={placesEditStyles.buttons}>
-                  <TouchableOpacity
-                    style={[placesEditStyles.button, placesEditStyles.up]}
-                    disabled={index === 0}
-                    onPress={() => {
-                      const temp = [...tempPlaces];
-                      const temp2 = temp[index];
-                      temp[index] = temp[index - 1];
-                      temp[index - 1] = temp2;
-                      setTempPlaces(temp);
-                    }}>
-                    <Image
-                      style={[
-                        placesEditStyles.icon,
-                        {
-                          tintColor:
-                            index === 0 ? colors.darkgrey : colors.black,
-                        },
-                      ]}
-                      source={icons.up}
-                    />
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={[placesEditStyles.button, placesEditStyles.down]}
-                    disabled={index === tempPlaces?.length - 1}
-                    onPress={() => {
-                      const temp = [...tempPlaces];
-                      const temp2 = temp[index];
-                      temp[index] = temp[index + 1];
-                      temp[index + 1] = temp2;
-                      setTempPlaces(temp);
-                    }}>
-                    <Image
-                      style={[
-                        placesEditStyles.icon,
-                        {
-                          tintColor:
-                            index === tempPlaces?.length - 1
-                              ? colors.darkgrey
-                              : colors.black,
-                        },
-                      ]}
-                      source={icons.down}
-                    />
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={[placesEditStyles.button, placesEditStyles.remove]}
-                    disabled={tempPlaces?.length === 1}
-                    onPress={() => {
-                      const temp = [...tempPlaces];
-                      temp.splice(index, 1);
-                      setTempPlaces(temp);
-                    }}>
-                    <Image
-                      style={[
-                        placesEditStyles.icon,
-                        {
-                          tintColor:
-                            tempPlaces?.length === 1
-                              ? colors.darkgrey
-                              : colors.red,
-                        },
-                      ]}
-                      source={icons.remove}
-                    />
-                  </TouchableOpacity>
-                </View>
+            renderItem={({item, drag, isActive}) => (
+              <View key={item.id}>
+                <TouchableOpacity
+                  style={[
+                    placesEditStyles.card,
+                    dragging && !isActive && placesEditStyles.transparentCard,
+                  ]}
+                  onLongPress={drag}
+                  delayLongPress={400}
+                  disabled={dragging && !isActive}
+                  onPress={() => {
+                    navigation.navigate('Place', {
+                      destination: item,
+                      category: item?.category?.name,
+                    });
+                  }}>
+                  <PlaceCard
+                    id={item?.id}
+                    name={item?.name}
+                    info={item?.category?.name}
+                    marked={bookmarks?.includes(item?.id)}
+                    image={
+                      item?.image_url
+                        ? {
+                            uri: item?.image_url,
+                          }
+                        : icons.defaultIcon
+                    }
+                  />
+                </TouchableOpacity>
+                {item.id === tempPlaces[tempPlaces.length - 1]?.id && (
+                  <Separator />
+                )}
               </View>
             )}
+            onDragBegin={() => setDragging(true)}
+            onDragEnd={({data}) => {
+              setDragging(false);
+              setTempPlaces(data);
+            }}
           />
         ) : (
           <SafeAreaView>
@@ -349,6 +296,8 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
   );
 };
 
+const Separator = () => <View style={styles.separator} />;
+
 const AddEventSeparator = () => (
   <TouchableOpacity
     onPress={() => {
@@ -411,6 +360,10 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
+  separator: {
+    width: s(350),
+    height: s(49),
+  },
 });
 
 const headerStyles = StyleSheet.create({
@@ -457,58 +410,21 @@ const placesEditStyles = StyleSheet.create({
     paddingTop: s(10),
     paddingBottom: s(20),
   },
-  place: {
-    flexDirection: 'row',
-    marginHorizontal: s(20),
-  },
   card: {
-    width: s(256), // height: 256 * 5/8 = 160
+    alignSelf: 'center',
+    width: s(280), // height: 256 * 5/8 = 160
     marginRight: s(10),
   },
-  buttons: {
-    paddingVertical: s(10),
-    justifyContent: 'space-between',
+  transparentCard: {
+    opacity: 0.5,
   },
-  button: {
-    width: s(44),
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: colors.white,
-
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.18,
-    shadowRadius: 1.0,
-
-    elevation: 1,
-  },
-  up: {
-    marginBottom: -s(7),
-    height: s(40),
-    borderRadius: s(10),
-    borderTopLeftRadius: s(10),
-    borderTopRightRadius: s(10),
-    borderBottomLeftRadius: s(5),
-    borderBottomRightRadius: s(5),
-  },
-  down: {
-    height: s(40),
-    borderRadius: s(10),
-    borderTopLeftRadius: s(5),
-    borderTopRightRadius: s(5),
-    borderBottomLeftRadius: s(10),
-    borderBottomRightRadius: s(10),
-  },
-  remove: {
-    height: s(44),
-    borderRadius: s(10),
-  },
-  icon: {
-    width: s(18),
-    height: s(18),
+  deleteContainer: {
+    position: 'absolute',
+    alignSelf: 'center',
+    bottom: s(25),
+    width: s(50),
+    height: s(50),
+    backgroundColor: colors.red,
   },
 });
 
