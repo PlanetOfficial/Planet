@@ -173,6 +173,7 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
             contentContainerStyle={placesEditStyles.contentContainer}
             activationDistance={20}
             renderItem={({item, drag, isActive}) => (
+              <View style={placesEditStyles.container}>
               <SwipeableItem
                 ref={ref => {
                   if (ref && !itemRefs.current.get(item.id)) {
@@ -206,9 +207,6 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
                   style={[
                     placesEditStyles.card,
                     dragging && !isActive && placesEditStyles.transparentCard,
-                    item.id === tempPlaces[tempPlaces.length - 1]?.id && {
-                      marginBottom: s(40),
-                    },
                   ]}
                   onLongPress={drag}
                   delayLongPress={400}
@@ -241,6 +239,10 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
                   />
                 </TouchableOpacity>
               </SwipeableItem>
+              {item.id === tempPlaces[tempPlaces.length - 1]?.id && (
+                dragging? <Separator/> : <AddEventSeparator />
+              )}
+              </View>
             )}
             onDragBegin={() => {
               setDragging(true);
@@ -451,30 +453,25 @@ const headerStyles = StyleSheet.create({
 });
 
 const placesEditStyles = StyleSheet.create({
+  container: {
+    width: s(310),
+    marginHorizontal: s(20),
+  },
   contentContainer: {
     paddingTop: s(10),
     paddingBottom: s(20),
   },
   card: {
     alignSelf: 'center',
-    width: s(280), // height: 256 * 5/8 = 160
+    width: s(280),
   },
   transparentCard: {
     opacity: 0.5,
   },
-  deleteContainer: {
-    position: 'absolute',
-    alignSelf: 'center',
-    bottom: s(25),
-    width: s(50),
-    height: s(50),
-    backgroundColor: colors.red,
-  },
   removeContainer: {
-    alignSelf: 'flex-end',
     justifyContent: 'center',
-    marginRight: s(50),
-    paddingBottom: s(40),
+    marginLeft: s(240),
+    width: '100%',
     height: '100%',
   },
   remove: {
