@@ -174,74 +174,73 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
             activationDistance={20}
             renderItem={({item, drag, isActive}) => (
               <View style={placesEditStyles.container}>
-              <SwipeableItem
-                ref={ref => {
-                  if (ref && !itemRefs.current.get(item.id)) {
-                    itemRefs.current.set(item.id, ref);
-                  }
-                }}
-                overSwipe={s(20)}
-                key={item.id}
-                item={item}
-                renderUnderlayLeft={() => (
-                  <View style={placesEditStyles.removeContainer}>
-                    <TouchableOpacity
-                      onPress={() => {
-                        LayoutAnimation.configureNext(
-                          LayoutAnimation.Presets.easeInEaseOut,
-                        );
-                        setTempPlaces((prev: any) => {
-                          return prev.filter((temp: any) => temp !== item);
-                        });
-                      }}
-                      style={placesEditStyles.remove}>
-                      <Image
-                        style={placesEditStyles.icon}
-                        source={icons.remove}
-                      />
-                    </TouchableOpacity>
-                  </View>
-                )}
-                snapPointsLeft={[s(70)]}>
-                <TouchableOpacity
-                  style={[
-                    placesEditStyles.card,
-                    dragging && !isActive && placesEditStyles.transparentCard,
-                  ]}
-                  onLongPress={drag}
-                  delayLongPress={400}
-                  disabled={dragging && !isActive}
-                  onPressIn={() => {
-                    [...itemRefs.current.entries()].forEach(([key, ref]) => {
-                      if (key !== item.id && ref) {
-                        ref.close();
-                      }
-                    });
-                  }}
-                  onPress={() => {
-                    navigation.navigate('Place', {
-                      destination: item,
-                      category: item?.category?.name,
-                    });
-                  }}>
-                  <PlaceCard
-                    id={item?.id}
-                    name={item?.name}
-                    info={item?.category?.name}
-                    marked={bookmarks?.includes(item?.id)}
-                    image={
-                      item?.image_url
-                        ? {
-                            uri: item?.image_url,
-                          }
-                        : icons.defaultIcon
+                <SwipeableItem
+                  ref={ref => {
+                    if (ref && !itemRefs.current.get(item.id)) {
+                      itemRefs.current.set(item.id, ref);
                     }
-                  />
-                </TouchableOpacity>
-              </SwipeableItem>
-              {item.id === tempPlaces[tempPlaces.length - 1]?.id && (
-                dragging? <Separator/> : <AddEventSeparator />
-              )}
+                  }}
+                  overSwipe={s(20)}
+                  key={item.id}
+                  item={item}
+                  renderUnderlayLeft={() => (
+                    <View style={placesEditStyles.removeContainer}>
+                      <TouchableOpacity
+                        onPress={() => {
+                          LayoutAnimation.configureNext(
+                            LayoutAnimation.Presets.easeInEaseOut,
+                          );
+                          setTempPlaces((prev: any) => {
+                            return prev.filter((temp: any) => temp !== item);
+                          });
+                        }}
+                        style={placesEditStyles.remove}>
+                        <Image
+                          style={placesEditStyles.icon}
+                          source={icons.remove}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                  )}
+                  snapPointsLeft={[s(70)]}>
+                  <TouchableOpacity
+                    style={[
+                      placesEditStyles.card,
+                      dragging && !isActive && placesEditStyles.transparentCard,
+                    ]}
+                    onLongPress={drag}
+                    delayLongPress={400}
+                    disabled={dragging && !isActive}
+                    onPressIn={() => {
+                      [...itemRefs.current.entries()].forEach(([key, ref]) => {
+                        if (key !== item.id && ref) {
+                          ref.close();
+                        }
+                      });
+                    }}
+                    onPress={() => {
+                      navigation.navigate('Place', {
+                        destination: item,
+                        category: item?.category?.name,
+                      });
+                    }}>
+                    <PlaceCard
+                      id={item?.id}
+                      name={item?.name}
+                      info={item?.category?.name}
+                      marked={bookmarks?.includes(item?.id)}
+                      image={
+                        item?.image_url
+                          ? {
+                              uri: item?.image_url,
+                            }
+                          : icons.defaultIcon
+                      }
+                    />
+                  </TouchableOpacity>
+                </SwipeableItem>
+                {item.id === tempPlaces[tempPlaces.length - 1]?.id &&
+                  (dragging ? <Separator /> : <AddEventSeparator />)}
               </View>
             )}
             onDragBegin={() => {
