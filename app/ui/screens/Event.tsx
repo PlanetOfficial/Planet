@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef, useMemo} from 'react';
+import React, {useEffect, useState, useRef, useMemo, useCallback} from 'react';
 import {
   StyleSheet,
   View,
@@ -9,6 +9,7 @@ import {
   SafeAreaView,
   ScrollView,
   Modal,
+  Pressable,
   LayoutAnimation,
 } from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
@@ -16,7 +17,7 @@ import {s, vs} from 'react-native-size-matters';
 import {Svg, Line, Circle} from 'react-native-svg';
 import DatePicker from 'react-native-date-picker';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import BottomSheet from '@gorhom/bottom-sheet';
+import BottomSheet, {BottomSheetModal} from '@gorhom/bottom-sheet';
 import DraggableFlatList from 'react-native-draggable-flatlist';
 import SwipeableItem from 'react-native-swipeable-item';
 
@@ -60,6 +61,17 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
     [insets.top, insets.bottom],
   );
 
+  const [addOptionsBottomSheetOpen, setAddOptionsBottomSheetOpen] =
+    useState(false);
+  const addOptionsBottomSheetRef: any = useRef<BottomSheetModal>(null);
+  const addOptionsSnapPoints = useMemo(() => [s(260) + insets.bottom], []);
+  const handleAddOptionsSheetChange = useCallback(
+    (fromIndex: number, toIndex: number) => {
+      setAddOptionsBottomSheetOpen(toIndex === 0);
+    },
+    [insets.bottom],
+  );
+
   const itemRefs = useRef(new Map());
 
   useEffect(() => {
@@ -86,6 +98,13 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
     bottomSheetRef.current?.collapse();
     setEditing(false);
     // save edits to database
+  };
+
+  const onAddPress = () => {
+    addOptionsBottomSheetRef.current?.present();
+    itemRefs.current.forEach((ref: any) => {
+      ref.close();
+    });
   };
 
   return (
@@ -169,7 +188,6 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
             data={tempPlaces}
             keyExtractor={(item: any) => item.id}
             showsVerticalScrollIndicator={false}
-            ItemSeparatorComponent={dragging ? Separator : AddEventSeparator}
             contentContainerStyle={placesEditStyles.contentContainer}
             activationDistance={20}
             renderItem={({item, drag, isActive}) => (
@@ -184,7 +202,20 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
                   key={item.id}
                   item={item}
                   renderUnderlayLeft={() => (
-                    <View style={placesEditStyles.removeContainer}>
+                    <View style={placesEditStyles.buttonsContainer}>
+                      <TouchableOpacity
+                        onPress={() => {
+                          console.log('Share!');
+                        }}
+                        style={[
+                          placesEditStyles.button,
+                          placesEditStyles.shareButton,
+                        ]}>
+                        <Image
+                          style={placesEditStyles.icon}
+                          source={icons.share}
+                        />
+                      </TouchableOpacity>
                       <TouchableOpacity
                         onPress={() => {
                           LayoutAnimation.configureNext(
@@ -194,7 +225,10 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
                             return prev.filter((temp: any) => temp !== item);
                           });
                         }}
-                        style={placesEditStyles.remove}>
+                        style={[
+                          placesEditStyles.button,
+                          placesEditStyles.removeButton,
+                        ]}>
                         <Image
                           style={placesEditStyles.icon}
                           source={icons.remove}
@@ -202,7 +236,7 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
                       </TouchableOpacity>
                     </View>
                   )}
-                  snapPointsLeft={[s(70)]}>
+                  snapPointsLeft={[s(60)]}>
                   <TouchableOpacity
                     style={[
                       placesEditStyles.card,
@@ -239,8 +273,11 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
                     />
                   </TouchableOpacity>
                 </SwipeableItem>
-                {item.id === tempPlaces[tempPlaces.length - 1]?.id &&
-                  (dragging ? <Separator /> : <AddEventSeparator />)}
+                {dragging ? (
+                  <Separator />
+                ) : (
+                  <AddEventSeparator onAddPress={onAddPress} />
+                )}
               </View>
             )}
             onDragBegin={() => {
@@ -307,6 +344,49 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
         )}
       </BottomSheet>
 
+      {addOptionsBottomSheetOpen && (
+        <Pressable
+          style={styles.dark}
+          onPress={() => {
+            addOptionsBottomSheetRef?.current.close();
+          }}
+        />
+      )}
+
+      <BottomSheetModal
+        ref={addOptionsBottomSheetRef}
+        snapPoints={addOptionsSnapPoints}
+        onAnimate={handleAddOptionsSheetChange}
+      >
+        <View style={addOptionsStyles.container}>
+          <TouchableOpacity style={addOptionsStyles.button} onPress={() => {
+            addOptionsBottomSheetRef?.current.close();
+            // navigation.navigate('AddPlace', {eventId: fullEventData?.id});
+          }}>
+            <Text style={addOptionsStyles.text}>Add by Category</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={addOptionsStyles.button} onPress={() => {
+            addOptionsBottomSheetRef?.current.close();
+            // navigation.navigate('AddPlace', {eventId: fullEventData?.id});
+          }}>
+            <Text style={addOptionsStyles.text}>Add from Library</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={addOptionsStyles.button} onPress={() => {
+            addOptionsBottomSheetRef?.current.close();
+            // navigation.navigate('AddPlace', {eventId: fullEventData?.id});
+          }}>
+            <Text style={addOptionsStyles.text}>Add by Custom Event</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={addOptionsStyles.cancelButton}
+            onPress={() => {
+              addOptionsBottomSheetRef?.current.close();
+            }}>
+            <Text style={addOptionsStyles.cancel}>{strings.createTabStack.cancel}</Text>
+          </TouchableOpacity>
+        </View>
+      </BottomSheetModal>
+
       <Modal
         animationType="fade"
         transparent={true}
@@ -344,22 +424,19 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
 
 const Separator = () => <View style={styles.separator} />;
 
-const AddEventSeparator = () => (
-  <TouchableOpacity
-    onPress={() => {
-      // TODO_NEXT: Add an event
-    }}>
-    <Svg width={s(350)} height={s(40)}>
+const AddEventSeparator = ({onAddPress}: {onAddPress: any}) => (
+  <TouchableOpacity onPress={onAddPress}>
+    <Svg width={s(310)} height={s(40)}>
       <Line
-        x1={s(20)}
+        x1={s(0)}
         y1={s(20)}
-        x2={s(162.5)}
+        x2={s(142.5)}
         y2={s(20)}
         stroke={colors.accent}
         strokeWidth={s(1)}
       />
       <Circle
-        cx={s(175)}
+        cx={s(155)}
         cy={s(20)}
         r={s(12.5)}
         stroke={colors.accent}
@@ -367,27 +444,27 @@ const AddEventSeparator = () => (
         fill="none"
       />
       <Line
-        x1={s(175)}
+        x1={s(155)}
         y1={s(14)}
-        x2={s(175)}
+        x2={s(155)}
         y2={s(26)}
         stroke={colors.accent}
         strokeWidth={s(2)}
         strokeLinecap="round"
       />
       <Line
-        x1={s(169)}
+        x1={s(149)}
         y1={s(20)}
-        x2={s(181)}
+        x2={s(161)}
         y2={s(20)}
         stroke={colors.accent}
         strokeWidth={s(2)}
         strokeLinecap="round"
       />
       <Line
-        x1={s(187.5)}
+        x1={s(167.5)}
         y1={s(20)}
-        x2={s(330)}
+        x2={s(310)}
         y2={s(20)}
         stroke={colors.accent}
         strokeWidth={s(1)}
@@ -409,6 +486,12 @@ const styles = StyleSheet.create({
   separator: {
     width: s(350),
     height: s(39.4),
+  },
+  dark: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
 });
 
@@ -465,15 +548,17 @@ const placesEditStyles = StyleSheet.create({
     width: s(280),
   },
   transparentCard: {
-    opacity: 0.5,
+    opacity: 0.6,
   },
-  removeContainer: {
-    justifyContent: 'center',
-    marginLeft: s(240),
+  buttonsContainer: {
+    justifyContent: 'space-between',
+    marginLeft: s(245),
+    paddingTop: s(40),
+    paddingBottom: s(80),
     width: '100%',
     height: '100%',
   },
-  remove: {
+  button: {
     alignItems: 'center',
     justifyContent: 'center',
     width: s(40),
@@ -481,8 +566,6 @@ const placesEditStyles = StyleSheet.create({
     borderRadius: s(20),
     borderWidth: 2,
     borderColor: colors.white,
-    backgroundColor: colors.red,
-
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -492,6 +575,12 @@ const placesEditStyles = StyleSheet.create({
     shadowRadius: 3.84,
 
     elevation: 5,
+  },
+  shareButton: {
+    backgroundColor: colors.accent,
+  },
+  removeButton: {
+    backgroundColor: colors.red,
   },
   icon: {
     width: '70%',
@@ -558,22 +647,22 @@ const modalStyles = StyleSheet.create({
     alignItems: 'center',
     width: '50%',
     height: '100%',
-    backgroundColor: colors.grey,
+    backgroundColor: colors.white,
     borderBottomLeftRadius: s(10),
     borderTopWidth: 1,
     borderRightWidth: 0.5,
-    borderColor: colors.darkgrey,
+    borderColor: colors.grey,
   },
   keepEditing: {
     justifyContent: 'center',
     alignItems: 'center',
     width: '50%',
     height: '100%',
-    backgroundColor: colors.grey,
+    backgroundColor: colors.white,
     borderBottomRightRadius: s(10),
     borderTopWidth: 1,
     borderLeftWidth: 0.5,
-    borderColor: colors.darkgrey,
+    borderColor: colors.grey,
   },
   discardText: {
     fontSize: s(14),
@@ -584,6 +673,41 @@ const modalStyles = StyleSheet.create({
     fontSize: s(14),
     fontWeight: '700',
     color: colors.accent,
+  },
+});
+
+const addOptionsStyles = StyleSheet.create({
+  container: {
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    height: s(240),
+    paddingTop: s(20),
+  },
+  button: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: s(290),
+    height: s(45),
+    borderRadius: s(10),
+    backgroundColor: colors.grey,
+  },
+  text: {
+    fontSize: s(16),
+    fontWeight: '700',
+    color: colors.black,
+  },
+  cancelButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: s(100),
+    height: s(40),
+    borderRadius: s(10),
+    backgroundColor: colors.grey,
+  },
+  cancel: {
+    fontSize: s(16),
+    fontWeight: '700',
+    color: colors.black,
   },
 });
 

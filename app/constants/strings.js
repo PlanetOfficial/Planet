@@ -93,6 +93,7 @@ const strings = {
     backConfirmation: 'Are you sure you want to go back?',
     discard: 'Discard',
     keepEditing: 'Keep Editing',
+    addDestination: 'Add a Destination',
   },
   profile: {
     followers: 'followers',
