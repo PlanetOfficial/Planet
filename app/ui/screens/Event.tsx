@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef, useMemo, useCallback} from 'react';
+import React, {useEffect, useState, useRef, useMemo} from 'react';
 import {
   StyleSheet,
   View,
@@ -9,6 +9,7 @@ import {
   SafeAreaView,
   ScrollView,
   Modal,
+  LayoutAnimation,
 } from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
 import {s, vs} from 'react-native-size-matters';
@@ -16,8 +17,8 @@ import {Svg, Line, Circle} from 'react-native-svg';
 import DatePicker from 'react-native-date-picker';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import BottomSheet from '@gorhom/bottom-sheet';
-import DraggableFlatList, {RenderItem} from 'react-native-draggable-flatlist';
-import SwipeableItem, {OpenDirection} from 'react-native-swipeable-item';
+import DraggableFlatList from 'react-native-draggable-flatlist';
+import SwipeableItem from 'react-native-swipeable-item';
 
 import {
   getMarkerArray,
@@ -86,69 +87,6 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
     setEditing(false);
     // save edits to database
   };
-
-  type Item = {
-    item: any;
-    drag: any;
-    isActive: boolean;
-  };
-
-  const renderItem: RenderItem<Item> = useCallback(({item, drag, isActive}) => {
-    return (
-      <View key={item.id}>
-        <SwipeableItem
-          ref={ref => {
-            if (ref && !itemRefs.current.get(item.id)) {
-              itemRefs.current.set(item.id, ref);
-            }
-          }}
-          onChange={({openDirection}) => {
-            if (openDirection !== OpenDirection.NONE) {
-              [...itemRefs.current.entries()].forEach(([key, ref]) => {
-                if (key !== item.id && ref) {
-                  ref.close();
-                }
-              });
-            }
-          }}
-          overSwipe={30}
-          key={item.id}
-          item={item}
-          // renderUnderlayLeft={() => <UnderlayLeft />}
-          snapPointsLeft={[50]}>
-          <TouchableOpacity
-            style={[
-              placesEditStyles.card,
-              dragging && !isActive && placesEditStyles.transparentCard,
-            ]}
-            onLongPress={drag}
-            delayLongPress={400}
-            disabled={dragging && !isActive}
-            onPress={() => {
-              navigation.navigate('Place', {
-                destination: item,
-                category: item?.category?.name,
-              });
-            }}>
-            <PlaceCard
-              id={item?.id}
-              name={item?.name}
-              info={item?.category?.name}
-              marked={bookmarks?.includes(item?.id)}
-              image={
-                item?.image_url
-                  ? {
-                      uri: item?.image_url,
-                    }
-                  : icons.defaultIcon
-              }
-            />
-          </TouchableOpacity>
-        </SwipeableItem>
-        {item.id === tempPlaces[tempPlaces.length - 1]?.id && <Separator />}
-      </View>
-    );
-  }, []);
 
   return (
     <View style={styles.container}>
@@ -234,7 +172,76 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
             ItemSeparatorComponent={dragging ? Separator : AddEventSeparator}
             contentContainerStyle={placesEditStyles.contentContainer}
             activationDistance={20}
-            renderItem={renderItem}
+            renderItem={({item, drag, isActive}) => (
+              <SwipeableItem
+                ref={ref => {
+                  if (ref && !itemRefs.current.get(item.id)) {
+                    itemRefs.current.set(item.id, ref);
+                  }
+                }}
+                overSwipe={s(20)}
+                key={item.id}
+                item={item}
+                renderUnderlayLeft={() => (
+                  <View style={placesEditStyles.removeContainer}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        LayoutAnimation.configureNext(
+                          LayoutAnimation.Presets.easeInEaseOut,
+                        );
+                        setTempPlaces((prev: any) => {
+                          return prev.filter((temp: any) => temp !== item);
+                        });
+                      }}
+                      style={placesEditStyles.remove}>
+                      <Image
+                        style={placesEditStyles.icon}
+                        source={icons.remove}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                )}
+                snapPointsLeft={[s(70)]}>
+                <TouchableOpacity
+                  style={[
+                    placesEditStyles.card,
+                    dragging && !isActive && placesEditStyles.transparentCard,
+                    item.id === tempPlaces[tempPlaces.length - 1]?.id && {
+                      marginBottom: s(40),
+                    },
+                  ]}
+                  onLongPress={drag}
+                  delayLongPress={400}
+                  disabled={dragging && !isActive}
+                  onPressIn={() => {
+                    [...itemRefs.current.entries()].forEach(([key, ref]) => {
+                      if (key !== item.id && ref) {
+                        ref.close();
+                      }
+                    });
+                  }}
+                  onPress={() => {
+                    navigation.navigate('Place', {
+                      destination: item,
+                      category: item?.category?.name,
+                    });
+                  }}>
+                  <PlaceCard
+                    id={item?.id}
+                    name={item?.name}
+                    info={item?.category?.name}
+                    marked={bookmarks?.includes(item?.id)}
+                    image={
+                      item?.image_url
+                        ? {
+                            uri: item?.image_url,
+                          }
+                        : icons.defaultIcon
+                    }
+                  />
+                </TouchableOpacity>
+              </SwipeableItem>
+            )}
             onDragBegin={() => {
               setDragging(true);
               for (const itemRef of itemRefs.current.values()) {
@@ -341,48 +348,48 @@ const AddEventSeparator = () => (
     onPress={() => {
       // TODO_NEXT: Add an event
     }}>
-    <Svg width={s(350)} height={s(50)}>
+    <Svg width={s(350)} height={s(40)}>
       <Line
         x1={s(20)}
-        y1={s(25)}
-        x2={s(160)}
-        y2={s(25)}
+        y1={s(20)}
+        x2={s(162.5)}
+        y2={s(20)}
         stroke={colors.accent}
-        strokeWidth="1.5"
+        strokeWidth={s(1)}
       />
       <Circle
         cx={s(175)}
-        cy={s(25)}
-        r={s(15)}
+        cy={s(20)}
+        r={s(12.5)}
         stroke={colors.accent}
-        strokeWidth="1.5"
+        strokeWidth={s(1)}
         fill="none"
       />
       <Line
         x1={s(175)}
-        y1={s(17)}
+        y1={s(14)}
         x2={s(175)}
-        y2={s(33)}
+        y2={s(26)}
         stroke={colors.accent}
-        strokeWidth="2.5"
+        strokeWidth={s(2)}
         strokeLinecap="round"
       />
       <Line
-        x1={s(167)}
-        y1={s(25)}
-        x2={s(183)}
-        y2={s(25)}
+        x1={s(169)}
+        y1={s(20)}
+        x2={s(181)}
+        y2={s(20)}
         stroke={colors.accent}
-        strokeWidth="2.5"
+        strokeWidth={s(2)}
         strokeLinecap="round"
       />
       <Line
-        x1={s(190)}
-        y1={s(25)}
+        x1={s(187.5)}
+        y1={s(20)}
         x2={s(330)}
-        y2={s(25)}
+        y2={s(20)}
         stroke={colors.accent}
-        strokeWidth="1.5"
+        strokeWidth={s(1)}
       />
     </Svg>
   </TouchableOpacity>
@@ -400,7 +407,7 @@ const styles = StyleSheet.create({
   },
   separator: {
     width: s(350),
-    height: s(49),
+    height: s(39.4),
   },
 });
 
@@ -451,7 +458,6 @@ const placesEditStyles = StyleSheet.create({
   card: {
     alignSelf: 'center',
     width: s(280), // height: 256 * 5/8 = 160
-    marginRight: s(10),
   },
   transparentCard: {
     opacity: 0.5,
@@ -463,6 +469,38 @@ const placesEditStyles = StyleSheet.create({
     width: s(50),
     height: s(50),
     backgroundColor: colors.red,
+  },
+  removeContainer: {
+    alignSelf: 'flex-end',
+    justifyContent: 'center',
+    marginRight: s(50),
+    paddingBottom: s(40),
+    height: '100%',
+  },
+  remove: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: s(40),
+    height: s(40),
+    borderRadius: s(20),
+    borderWidth: 2,
+    borderColor: colors.white,
+    backgroundColor: colors.red,
+
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
+  },
+  icon: {
+    width: '70%',
+    height: '70%',
+    tintColor: colors.white,
   },
 });
 
