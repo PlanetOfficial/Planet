@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef, useMemo} from 'react';
+import React, {useEffect, useState, useRef, useMemo, useCallback} from 'react';
 import {
   StyleSheet,
   View,
@@ -16,7 +16,8 @@ import {Svg, Line, Circle} from 'react-native-svg';
 import DatePicker from 'react-native-date-picker';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import BottomSheet from '@gorhom/bottom-sheet';
-import DraggableFlatList from 'react-native-draggable-flatlist';
+import DraggableFlatList, {RenderItem} from 'react-native-draggable-flatlist';
+import SwipeableItem, {OpenDirection} from 'react-native-swipeable-item';
 
 import {
   getMarkerArray,
@@ -58,6 +59,8 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
     [insets.top, insets.bottom],
   );
 
+  const itemRefs = useRef(new Map());
+
   useEffect(() => {
     const getEventData = async () => {
       const data = await getEventPlaces(eventId);
@@ -83,6 +86,69 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
     setEditing(false);
     // save edits to database
   };
+
+  type Item = {
+    item: any;
+    drag: any;
+    isActive: boolean;
+  };
+
+  const renderItem: RenderItem<Item> = useCallback(({item, drag, isActive}) => {
+    return (
+      <View key={item.id}>
+        <SwipeableItem
+          ref={ref => {
+            if (ref && !itemRefs.current.get(item.id)) {
+              itemRefs.current.set(item.id, ref);
+            }
+          }}
+          onChange={({openDirection}) => {
+            if (openDirection !== OpenDirection.NONE) {
+              [...itemRefs.current.entries()].forEach(([key, ref]) => {
+                if (key !== item.id && ref) {
+                  ref.close();
+                }
+              });
+            }
+          }}
+          overSwipe={30}
+          key={item.id}
+          item={item}
+          // renderUnderlayLeft={() => <UnderlayLeft />}
+          snapPointsLeft={[50]}>
+          <TouchableOpacity
+            style={[
+              placesEditStyles.card,
+              dragging && !isActive && placesEditStyles.transparentCard,
+            ]}
+            onLongPress={drag}
+            delayLongPress={400}
+            disabled={dragging && !isActive}
+            onPress={() => {
+              navigation.navigate('Place', {
+                destination: item,
+                category: item?.category?.name,
+              });
+            }}>
+            <PlaceCard
+              id={item?.id}
+              name={item?.name}
+              info={item?.category?.name}
+              marked={bookmarks?.includes(item?.id)}
+              image={
+                item?.image_url
+                  ? {
+                      uri: item?.image_url,
+                    }
+                  : icons.defaultIcon
+              }
+            />
+          </TouchableOpacity>
+        </SwipeableItem>
+        {item.id === tempPlaces[tempPlaces.length - 1]?.id && <Separator />}
+      </View>
+    );
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -167,42 +233,14 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
             showsVerticalScrollIndicator={false}
             ItemSeparatorComponent={dragging ? Separator : AddEventSeparator}
             contentContainerStyle={placesEditStyles.contentContainer}
-            renderItem={({item, drag, isActive}) => (
-              <View key={item.id}>
-                <TouchableOpacity
-                  style={[
-                    placesEditStyles.card,
-                    dragging && !isActive && placesEditStyles.transparentCard,
-                  ]}
-                  onLongPress={drag}
-                  delayLongPress={400}
-                  disabled={dragging && !isActive}
-                  onPress={() => {
-                    navigation.navigate('Place', {
-                      destination: item,
-                      category: item?.category?.name,
-                    });
-                  }}>
-                  <PlaceCard
-                    id={item?.id}
-                    name={item?.name}
-                    info={item?.category?.name}
-                    marked={bookmarks?.includes(item?.id)}
-                    image={
-                      item?.image_url
-                        ? {
-                            uri: item?.image_url,
-                          }
-                        : icons.defaultIcon
-                    }
-                  />
-                </TouchableOpacity>
-                {item.id === tempPlaces[tempPlaces.length - 1]?.id && (
-                  <Separator />
-                )}
-              </View>
-            )}
-            onDragBegin={() => setDragging(true)}
+            activationDistance={20}
+            renderItem={renderItem}
+            onDragBegin={() => {
+              setDragging(true);
+              for (const itemRef of itemRefs.current.values()) {
+                itemRef?.close();
+              }
+            }}
             onDragEnd={({data}) => {
               setDragging(false);
               setTempPlaces(data);

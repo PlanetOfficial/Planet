@@ -1026,7 +1026,7 @@
     "@babel/helper-validator-option" "^7.21.0"
     "@babel/plugin-transform-typescript" "^7.21.0"
 
-"@babel/preset-typescript@^7.16.7":
+"@babel/preset-typescript@^7.16.7", "@babel/preset-typescript@^7.17.12":
   version "7.21.4"
   resolved "https://registry.yarnpkg.com/@babel/preset-typescript/-/preset-typescript-7.21.4.tgz#b913ac8e6aa8932e47c21b01b4368d8aa239a529"
   integrity sha512-sMLNWY37TCdRH/bJ6ZeeOH1nPuanED7Ai9Y/vH31IPqalioJ6ZNFUWONsakhv4r4n+I6gm5lmoE0olkgib/j/A==
@@ -6567,6 +6567,13 @@ react-native-date-picker@^4.2.9:
   dependencies:
     prop-types "^15.8.1"
 
+react-native-draggable-flatlist@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/react-native-draggable-flatlist/-/react-native-draggable-flatlist-4.0.1.tgz#2f027d387ba4b8f3eb0907340e32cb85e6460df2"
+  integrity sha512-ZO1QUTNx64KZfXGXeXcBfql67l38X7kBcJ3rxUVZzPHt5r035GnGzIC0F8rqSXp6zgnwgUYMfB6zQc5PKmPL9Q==
+  dependencies:
+    "@babel/preset-typescript" "^7.17.12"
+
 react-native-encrypted-storage@^4.0.3:
   version "4.0.3"
   resolved "https://registry.yarnpkg.com/react-native-encrypted-storage/-/react-native-encrypted-storage-4.0.3.tgz#2a4d65459870511e8f4ccd22f02433dab7fa5e91"
@@ -6666,6 +6673,13 @@ react-native-svg@^13.8.0:
   dependencies:
     css-select "^5.1.0"
     css-tree "^1.1.3"
+
+react-native-swipeable-item@^2.0.9:
+  version "2.0.9"
+  resolved "https://registry.yarnpkg.com/react-native-swipeable-item/-/react-native-swipeable-item-2.0.9.tgz#694a3f10333b47ba7f0e57d916fa39407b76a6d6"
+  integrity sha512-NUBX5Xs8cYCU7lWj5O/NtY7kq8I9dIo3eQVtnSbfYU39RXi/n0TpRqpmaQTPM6sE5EQR/BcygD4jwDcrE5h/sQ==
+  dependencies:
+    "@babel/preset-typescript" "^7.17.12"
 
 react-native@0.71.6:
   version "0.71.6"
