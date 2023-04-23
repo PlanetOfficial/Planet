@@ -203,22 +203,6 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
                   item={item}
                   renderUnderlayLeft={() => (
                     <View style={placesEditStyles.buttonsContainer}>
-                      {/* <TouchableOpacity
-                        onPress={() => {
-                          itemRefs.current.forEach((ref: any) => {
-                            ref.close();
-                          });
-                          console.log('Share!');
-                        }}
-                        style={[
-                          placesEditStyles.button,
-                          placesEditStyles.shareButton,
-                        ]}>
-                        <Image
-                          style={placesEditStyles.icon}
-                          source={icons.share}
-                        />
-                      </TouchableOpacity> */}
                       <TouchableOpacity
                         onPress={() => {
                           LayoutAnimation.configureNext(
@@ -228,10 +212,7 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
                             return prev.filter((temp: any) => temp !== item);
                           });
                         }}
-                        style={[
-                          placesEditStyles.button,
-                          placesEditStyles.removeButton,
-                        ]}>
+                        style={placesEditStyles.button}>
                         <Image
                           style={placesEditStyles.icon}
                           source={icons.remove}
@@ -569,6 +550,7 @@ const placesEditStyles = StyleSheet.create({
     borderRadius: s(20),
     borderWidth: 2,
     borderColor: colors.white,
+    backgroundColor: colors.red,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -578,12 +560,6 @@ const placesEditStyles = StyleSheet.create({
     shadowRadius: 3.84,
 
     elevation: 5,
-  },
-  shareButton: {
-    backgroundColor: colors.accent,
-  },
-  removeButton: {
-    backgroundColor: colors.red,
   },
   icon: {
     width: '70%',
