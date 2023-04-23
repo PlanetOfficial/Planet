@@ -203,8 +203,11 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
                   item={item}
                   renderUnderlayLeft={() => (
                     <View style={placesEditStyles.buttonsContainer}>
-                      <TouchableOpacity
+                      {/* <TouchableOpacity
                         onPress={() => {
+                          itemRefs.current.forEach((ref: any) => {
+                            ref.close();
+                          });
                           console.log('Share!');
                         }}
                         style={[
@@ -215,7 +218,7 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
                           style={placesEditStyles.icon}
                           source={icons.share}
                         />
-                      </TouchableOpacity>
+                      </TouchableOpacity> */}
                       <TouchableOpacity
                         onPress={() => {
                           LayoutAnimation.configureNext(
@@ -363,19 +366,19 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
             addOptionsBottomSheetRef?.current.close();
             // navigation.navigate('AddPlace', {eventId: fullEventData?.id});
           }}>
-            <Text style={addOptionsStyles.text}>Add by Category</Text>
+            <Text style={addOptionsStyles.text}>Browse Categories</Text>
           </TouchableOpacity>
           <TouchableOpacity style={addOptionsStyles.button} onPress={() => {
             addOptionsBottomSheetRef?.current.close();
             // navigation.navigate('AddPlace', {eventId: fullEventData?.id});
           }}>
-            <Text style={addOptionsStyles.text}>Add from Library</Text>
+            <Text style={addOptionsStyles.text}>Add from Favorites</Text>
           </TouchableOpacity>
           <TouchableOpacity style={addOptionsStyles.button} onPress={() => {
             addOptionsBottomSheetRef?.current.close();
             // navigation.navigate('AddPlace', {eventId: fullEventData?.id});
           }}>
-            <Text style={addOptionsStyles.text}>Add by Custom Event</Text>
+            <Text style={addOptionsStyles.text}>Add a Custom Destination</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={addOptionsStyles.cancelButton}
@@ -551,7 +554,7 @@ const placesEditStyles = StyleSheet.create({
     opacity: 0.6,
   },
   buttonsContainer: {
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     marginLeft: s(245),
     paddingTop: s(40),
     paddingBottom: s(80),
@@ -689,12 +692,12 @@ const addOptionsStyles = StyleSheet.create({
     width: s(290),
     height: s(45),
     borderRadius: s(10),
-    backgroundColor: colors.grey,
+    backgroundColor: colors.accent,
   },
   text: {
-    fontSize: s(16),
+    fontSize: s(15),
     fontWeight: '700',
-    color: colors.black,
+    color: colors.white,
   },
   cancelButton: {
     alignItems: 'center',
@@ -705,8 +708,8 @@ const addOptionsStyles = StyleSheet.create({
     backgroundColor: colors.grey,
   },
   cancel: {
-    fontSize: s(16),
-    fontWeight: '700',
+    fontSize: s(15),
+    fontWeight: '600',
     color: colors.black,
   },
 });
