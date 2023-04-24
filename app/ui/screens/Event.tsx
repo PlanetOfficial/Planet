@@ -422,7 +422,11 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
           <AddByCategory onClose={onClose} onSelect={onCategorySelect} />
         )}
         {addBottomSheetStatus === 2 && (
-          <AddFromLibrary onClose={onClose} onSelect={onCategorySelect} />
+          <AddFromLibrary
+            navigation={navigation}
+            onClose={onClose}
+            onSelect={onCategorySelect}
+          />
         )}
         {/* {
             addBottomSheetStatus === 3 && (

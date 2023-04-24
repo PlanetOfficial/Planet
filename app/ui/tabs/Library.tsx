@@ -39,7 +39,7 @@ const Library = ({navigation}: {navigation: any}) => {
       setEvents(filterToUniqueIds(eventsRaw));
 
       const bookmarks = await getBookmarks(authToken);
-      setPlaces(bookmarks);
+      // setPlaces(bookmarks); // THIS IS SOMEHOW BROKEN
     };
 
     initializeData();
