@@ -31,6 +31,8 @@ import {getEventPlaces} from '../../utils/api/libraryCalls/getEventPlaces';
 import PlaceCard from '../components/PlaceCard';
 import Blur from '../components/Blur';
 import ScrollIndicator from '../components/ScrollIndicator';
+import AddByCategory from '../components/AddByCategory';
+import AddFromLibrary from '../components/AddFromLibrary';
 
 import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
@@ -64,12 +66,22 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
   const [addOptionsBottomSheetOpen, setAddOptionsBottomSheetOpen] =
     useState(false);
   const addOptionsBottomSheetRef: any = useRef<BottomSheetModal>(null);
-  const addOptionsSnapPoints = useMemo(() => [s(260) + insets.bottom], []);
+  const addOptionsSnapPoints = useMemo(
+    () => [s(260) + insets.bottom],
+    [insets.bottom],
+  );
   const handleAddOptionsSheetChange = useCallback(
     (fromIndex: number, toIndex: number) => {
       setAddOptionsBottomSheetOpen(toIndex === 0);
     },
-    [insets.bottom],
+    [],
+  );
+
+  const [addBottomSheetStatus, setAddBottomSheetStatus] = useState(0);
+  const addBottomSheetRef: any = useRef<BottomSheet>(null);
+  const addBottomSheetSnapPoints = useMemo(
+    () => [vs(680) - s(60) - insets.top],
+    [insets.top],
   );
 
   const itemRefs = useRef(new Map());
@@ -105,6 +117,15 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
     itemRefs.current.forEach((ref: any) => {
       ref.close();
     });
+  };
+
+  const onClose = () => {
+    addBottomSheetRef.current?.close();
+    setAddBottomSheetStatus(0);
+  };
+
+  const onCategorySelect = (id: number) => {
+    console.log(id);
   };
 
   return (
@@ -328,11 +349,12 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
         )}
       </BottomSheet>
 
-      {addOptionsBottomSheetOpen && (
+      {(addOptionsBottomSheetOpen || addBottomSheetStatus !== 0) && (
         <Pressable
-          style={styles.dark}
+          style={styles.dim}
           onPress={() => {
             addOptionsBottomSheetRef?.current.close();
+            onClose();
           }}
         />
       )}
@@ -340,36 +362,76 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
       <BottomSheetModal
         ref={addOptionsBottomSheetRef}
         snapPoints={addOptionsSnapPoints}
-        onAnimate={handleAddOptionsSheetChange}
-      >
+        onAnimate={handleAddOptionsSheetChange}>
         <View style={addOptionsStyles.container}>
-          <TouchableOpacity style={addOptionsStyles.button} onPress={() => {
-            addOptionsBottomSheetRef?.current.close();
-            // navigation.navigate('AddPlace', {eventId: fullEventData?.id});
-          }}>
-            <Text style={addOptionsStyles.text}>Browse Categories</Text>
+          <TouchableOpacity
+            style={addOptionsStyles.button}
+            onPress={() => {
+              addOptionsBottomSheetRef?.current.close();
+              setAddBottomSheetStatus(1);
+              addBottomSheetRef.current?.snapToIndex(0);
+            }}>
+            <Text style={addOptionsStyles.text}>
+              {strings.library.addByCategory}
+            </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={addOptionsStyles.button} onPress={() => {
-            addOptionsBottomSheetRef?.current.close();
-            // navigation.navigate('AddPlace', {eventId: fullEventData?.id});
-          }}>
-            <Text style={addOptionsStyles.text}>Add from Favorites</Text>
+          <TouchableOpacity
+            style={addOptionsStyles.button}
+            onPress={() => {
+              addOptionsBottomSheetRef?.current.close();
+              setAddBottomSheetStatus(2);
+              addBottomSheetRef.current?.snapToIndex(0);
+            }}>
+            <Text style={addOptionsStyles.text}>
+              {strings.library.addFromLibrary}
+            </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={addOptionsStyles.button} onPress={() => {
-            addOptionsBottomSheetRef?.current.close();
-            // navigation.navigate('AddPlace', {eventId: fullEventData?.id});
-          }}>
-            <Text style={addOptionsStyles.text}>Add a Custom Destination</Text>
+          <TouchableOpacity
+            style={addOptionsStyles.button}
+            onPress={() => {
+              addOptionsBottomSheetRef?.current.close();
+              setAddBottomSheetStatus(3);
+              addBottomSheetRef.current?.snapToIndex(0);
+            }}>
+            <Text style={addOptionsStyles.text}>
+              {strings.library.addCustom}
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={addOptionsStyles.cancelButton}
             onPress={() => {
               addOptionsBottomSheetRef?.current.close();
             }}>
-            <Text style={addOptionsStyles.cancel}>{strings.createTabStack.cancel}</Text>
+            <Text style={addOptionsStyles.cancel}>
+              {strings.createTabStack.cancel}
+            </Text>
           </TouchableOpacity>
         </View>
       </BottomSheetModal>
+
+      <BottomSheet
+        ref={addBottomSheetRef}
+        index={-1}
+        snapPoints={addBottomSheetSnapPoints}
+        handleStyle={placesDisplayStyles.handle}
+        handleIndicatorStyle={placesDisplayStyles.handleIndicator}
+        backgroundStyle={placesDisplayStyles.container}
+        enableContentPanningGesture={false}
+        enableHandlePanningGesture={false}>
+        {addBottomSheetStatus === 1 && (
+          <AddByCategory onClose={onClose} onSelect={onCategorySelect} />
+        )}
+        {addBottomSheetStatus === 2 && (
+          <AddFromLibrary onClose={onClose} onSelect={onCategorySelect} />
+        )}
+        {/* {
+            addBottomSheetStatus === 3 && (
+              <View style={addStyles.container}>
+
+              </View>
+            )
+          }      */}
+      </BottomSheet>
 
       <Modal
         animationType="fade"
@@ -471,7 +533,7 @@ const styles = StyleSheet.create({
     width: s(350),
     height: s(39.4),
   },
-  dark: {
+  dim: {
     position: 'absolute',
     width: '100%',
     height: '100%',

@@ -94,6 +94,9 @@ const strings = {
     discard: 'Discard',
     keepEditing: 'Keep Editing',
     addDestination: 'Add a Destination',
+    addByCategory: 'Add by Category',
+    addFromLibrary: 'Add from Library',
+    addCustom: 'Add a Custom Destination',
   },
   profile: {
     followers: 'followers',
