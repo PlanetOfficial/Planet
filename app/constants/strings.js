@@ -94,7 +94,7 @@ const strings = {
     discard: 'Discard',
     keepEditing: 'Keep Editing',
     addDestination: 'Add a Destination',
-    addByCategory: 'Add by Category',
+    addByCategory: 'Add a Category',
     addFromLibrary: 'Add from Library',
     addCustom: 'Add a Custom Destination',
     filter: 'Filter',

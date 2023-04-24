@@ -170,6 +170,7 @@ const genreStyles = StyleSheet.create({
     fontSize: s(15),
     fontWeight: '700',
     color: colors.white,
+    textAlign: 'center',
   },
   blur: {
     position: 'absolute',
