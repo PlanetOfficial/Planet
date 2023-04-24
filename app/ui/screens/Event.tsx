@@ -77,6 +77,7 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
     [],
   );
 
+  const [insertionIndex, setInsertionIndex] = useState<number | undefined>(0);
   const [addBottomSheetStatus, setAddBottomSheetStatus] = useState(0);
   const addBottomSheetRef: any = useRef<BottomSheet>(null);
   const addBottomSheetSnapPoints = useMemo(
@@ -112,7 +113,8 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
     // save edits to database
   };
 
-  const onAddPress = () => {
+  const onAddPress = (idx: number | undefined) => {
+    setInsertionIndex(idx);
     addOptionsBottomSheetRef.current?.present();
     itemRefs.current.forEach((ref: any) => {
       ref.close();
@@ -125,11 +127,28 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
   };
 
   const onCategorySelect = (id: number) => {
-    console.log(id);
+    if (insertionIndex !== undefined) {
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+      const temp = [...tempPlaces];
+      temp.splice(insertionIndex + 1, 0, {
+        categoryId: id,
+      });
+      setTempPlaces(temp);
+    }
   };
 
-  const onLibrarySelect = () => {
-    console.log('hi');
+  const onLibrarySelect = (place: any) => {
+    console.log('TO BE IMPLEMENTED');
+    // if(insertionIndex !== undefined) {
+    //   LayoutAnimation.configureNext(
+    //     LayoutAnimation.Presets.easeInEaseOut,
+    //   );
+    //   const temp = [...tempPlaces];
+    //   temp.splice(insertionIndex + 1, 0, {
+    //     place
+    //   });
+    //   setTempPlaces(temp);
+    // }
   };
 
   return (
@@ -215,7 +234,7 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
             showsVerticalScrollIndicator={false}
             contentContainerStyle={placesEditStyles.contentContainer}
             activationDistance={20}
-            renderItem={({item, drag, isActive}) => (
+            renderItem={({item, getIndex, drag, isActive}) => (
               <View style={placesEditStyles.container}>
                 <SwipeableItem
                   ref={ref => {
@@ -246,46 +265,57 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
                     </View>
                   )}
                   snapPointsLeft={[s(60)]}>
-                  <TouchableOpacity
-                    style={[
-                      placesEditStyles.card,
-                      dragging && !isActive && placesEditStyles.transparentCard,
-                    ]}
-                    onLongPress={drag}
-                    delayLongPress={400}
-                    disabled={dragging && !isActive}
-                    onPressIn={() => {
-                      [...itemRefs.current.entries()].forEach(([key, ref]) => {
-                        if (key !== item.id && ref) {
-                          ref.close();
-                        }
-                      });
-                    }}
-                    onPress={() => {
-                      navigation.navigate('Place', {
-                        destination: item,
-                        category: item?.category?.name,
-                      });
-                    }}>
-                    <PlaceCard
-                      id={item?.id}
-                      name={item?.name}
-                      info={item?.category?.name}
-                      marked={bookmarks?.includes(item?.id)}
-                      image={
-                        item?.image_url
-                          ? {
-                              uri: item?.image_url,
+                  {item.categoryId ? (
+                    <Text>Category</Text>
+                  ) : (
+                    <TouchableOpacity
+                      key={item.id}
+                      style={[
+                        placesEditStyles.card,
+                        dragging &&
+                          !isActive &&
+                          placesEditStyles.transparentCard,
+                      ]}
+                      onLongPress={drag}
+                      delayLongPress={400}
+                      disabled={dragging && !isActive}
+                      onPressIn={() => {
+                        [...itemRefs.current.entries()].forEach(
+                          ([key, ref]) => {
+                            if (key !== item.id && ref) {
+                              ref.close();
                             }
-                          : icons.defaultIcon
-                      }
-                    />
-                  </TouchableOpacity>
+                          },
+                        );
+                      }}
+                      onPress={() => {
+                        navigation.navigate('Place', {
+                          destination: item,
+                          category: item?.category?.name,
+                        });
+                      }}>
+                      <PlaceCard
+                        id={item?.id}
+                        name={item?.name}
+                        info={item?.category?.name}
+                        marked={bookmarks?.includes(item?.id)}
+                        image={
+                          item?.image_url
+                            ? {
+                                uri: item?.image_url,
+                              }
+                            : icons.defaultIcon
+                        }
+                      />
+                    </TouchableOpacity>
+                  )}
                 </SwipeableItem>
                 {dragging ? (
                   <Separator />
                 ) : (
-                  <AddEventSeparator onAddPress={onAddPress} />
+                  <TouchableOpacity onPress={() => onAddPress(getIndex())}>
+                    <AddEventSeparator />
+                  </TouchableOpacity>
                 )}
               </View>
             )}
@@ -318,8 +348,15 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
                   Math.round(event.nativeEvent.contentOffset.x / s(276)),
                 )
               }>
-              {fullEventData?.places?.map((dest: any) => (
-                <View style={placesDisplayStyles.card} key={dest.id}>
+              {fullEventData?.places?.map((dest: any, index: number) => (
+                <View
+                  style={[
+                    placesDisplayStyles.card,
+                    index === fullEventData?.places.length - 1 && {
+                      marginRight: s(20),
+                    },
+                  ]}
+                  key={dest.id}>
                   {/* TODO: Display estimated time and cost for this place */}
                   <TouchableOpacity
                     onPress={() => {
@@ -474,53 +511,51 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
 
 const Separator = () => <View style={styles.separator} />;
 
-const AddEventSeparator = ({onAddPress}: {onAddPress: any}) => (
-  <TouchableOpacity onPress={onAddPress}>
-    <Svg width={s(310)} height={s(40)}>
-      <Line
-        x1={s(0)}
-        y1={s(20)}
-        x2={s(142.5)}
-        y2={s(20)}
-        stroke={colors.accent}
-        strokeWidth={s(1)}
-      />
-      <Circle
-        cx={s(155)}
-        cy={s(20)}
-        r={s(12.5)}
-        stroke={colors.accent}
-        strokeWidth={s(1)}
-        fill="none"
-      />
-      <Line
-        x1={s(155)}
-        y1={s(14)}
-        x2={s(155)}
-        y2={s(26)}
-        stroke={colors.accent}
-        strokeWidth={s(2)}
-        strokeLinecap="round"
-      />
-      <Line
-        x1={s(149)}
-        y1={s(20)}
-        x2={s(161)}
-        y2={s(20)}
-        stroke={colors.accent}
-        strokeWidth={s(2)}
-        strokeLinecap="round"
-      />
-      <Line
-        x1={s(167.5)}
-        y1={s(20)}
-        x2={s(310)}
-        y2={s(20)}
-        stroke={colors.accent}
-        strokeWidth={s(1)}
-      />
-    </Svg>
-  </TouchableOpacity>
+const AddEventSeparator = () => (
+  <Svg width={s(310)} height={s(40)}>
+    <Line
+      x1={s(0)}
+      y1={s(20)}
+      x2={s(142.5)}
+      y2={s(20)}
+      stroke={colors.accent}
+      strokeWidth={s(1)}
+    />
+    <Circle
+      cx={s(155)}
+      cy={s(20)}
+      r={s(12.5)}
+      stroke={colors.accent}
+      strokeWidth={s(1)}
+      fill="none"
+    />
+    <Line
+      x1={s(155)}
+      y1={s(14)}
+      x2={s(155)}
+      y2={s(26)}
+      stroke={colors.accent}
+      strokeWidth={s(2)}
+      strokeLinecap="round"
+    />
+    <Line
+      x1={s(149)}
+      y1={s(20)}
+      x2={s(161)}
+      y2={s(20)}
+      stroke={colors.accent}
+      strokeWidth={s(2)}
+      strokeLinecap="round"
+    />
+    <Line
+      x1={s(167.5)}
+      y1={s(20)}
+      x2={s(310)}
+      y2={s(20)}
+      stroke={colors.accent}
+      strokeWidth={s(1)}
+    />
+  </Svg>
 );
 
 const styles = StyleSheet.create({
@@ -655,7 +690,6 @@ const placesDisplayStyles = StyleSheet.create({
   },
   card: {
     width: s(256), // height: 256 * 5/8 = 160
-    marginRight: s(20),
   },
 });
 
