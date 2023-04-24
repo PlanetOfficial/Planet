@@ -13,7 +13,7 @@ import {
 import {s} from 'react-native-size-matters';
 
 import {vectors, icons} from '../../constants/images';
-import {genres} from '../../constants/genres';
+import {genres} from '../../constants/categories';
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 

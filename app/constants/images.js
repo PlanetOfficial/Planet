@@ -31,6 +31,7 @@ export const icons = {
   down: require('../assets/icons/down.png'),
   replace: require('../assets/icons/replace.png'),
   remove: require('../assets/icons/remove.png'),
+  tick: require('../assets/icons/tick.png'),
 };
 
 export const vectors = {

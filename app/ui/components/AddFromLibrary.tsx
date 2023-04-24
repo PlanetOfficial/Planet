@@ -14,9 +14,10 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 import PlaceCard from '../components/PlaceCard';
 import {getBookmarks} from '../../utils/api/shared/getBookmarks';
 
-import { genres } from '../../constants/genres';
+import { genres } from '../../constants/categories';
 import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
+import misc from '../../constants/misc';
 import {colors} from '../../constants/theme';
 
 const TempData = [
@@ -153,7 +154,7 @@ const AddFromLibrary = ({
                 ]}>
                 {strings.filter.within +
                   ': ' +
-                  genres[0].filters?.radius[radius] +
+                  misc.libraryFilter.radius[radius] +
                   strings.createTabStack.milesAbbrev}
               </Text>
               <View style={filterStyles.drop}>
@@ -197,7 +198,7 @@ const AddFromLibrary = ({
                         : colors.black,
                   },
                 ]}>
-                {strings.filter.sortby + ': ' + genres[0].filters?.sort[sort]}
+                {strings.filter.sortby + ': ' + misc.libraryFilter.sort[sort]}
               </Text>
               <View style={filterStyles.drop}>
                 <Image
@@ -216,9 +217,18 @@ const AddFromLibrary = ({
             </TouchableOpacity>
           </View>
         </ScrollView>
+        <View>
+          <TouchableOpacity
+            style={filterStyles.button}
+            onPress={() => {
+              closeDropdown();
+            }}>
+            <Image style={filterStyles.icon} source={icons.filter} />
+          </TouchableOpacity>
+        </View>
         {dropdownStatus === 'radius' && width !== 0 && pos !== 0 && (
           <View style={[dropdownStyles.content, {left: pos, width: width}]}>
-            {genres[0].filters?.radius.map((option, idx) => (
+            {misc.libraryFilter.radius.map((option, idx) => (
               <View key={idx}>
                 <TouchableOpacity
                   style={dropdownStyles.option}
@@ -230,8 +240,8 @@ const AddFromLibrary = ({
                     <Image style={dropdownStyles.check} source={icons.tick} />
                   )}
                 </TouchableOpacity>
-                {!genres[0]?.filters?.radius?.length ||
-                  (idx < genres[0]?.filters?.radius?.length - 1 && (
+                {!misc.libraryFilter.radius?.length ||
+                  (idx < misc.libraryFilter.radius?.length - 1 && (
                     <View style={dropdownStyles.separator} />
                   ))}
               </View>
@@ -240,7 +250,7 @@ const AddFromLibrary = ({
         )}
         {dropdownStatus === 'sort' && width !== 0 && pos !== 0 && (
           <View style={[dropdownStyles.content, {left: pos, width: width}]}>
-            {genres[0].filters?.sort.map((option, idx) => (
+            {misc.libraryFilter.sort.map((option, idx) => (
               <View key={idx}>
                 <TouchableOpacity
                   style={dropdownStyles.option}
@@ -250,8 +260,8 @@ const AddFromLibrary = ({
                     <Image style={dropdownStyles.check} source={icons.tick} />
                   )}
                 </TouchableOpacity>
-                {!genres[0]?.filters?.radius?.length ||
-                  (idx < genres[0]?.filters?.sort?.length - 1 && (
+                {!misc.libraryFilter.radius?.length ||
+                  (idx < misc.libraryFilter.sort?.length - 1 && (
                     <View style={dropdownStyles.separator} />
                   ))}
               </View>
@@ -264,6 +274,7 @@ const AddFromLibrary = ({
         initialNumToRender={4}
         keyExtractor={(item: any) => item?.id}
         ItemSeparatorComponent={Spacer}
+        onTouchStart={() => closeDropdown()}
         contentContainerStyle={styles.contentContainer}
         renderItem={({item}) => {
           return (
@@ -321,6 +332,7 @@ const headerStyles = StyleSheet.create({
     justifyContent: 'center',
     width: '100%',
     height: s(40),
+    marginBottom: s(10),
   },
   title: {
     fontSize: s(17),
@@ -392,6 +404,15 @@ const filterStyles = StyleSheet.create({
     height: s(9),
     transform: [{rotate: '90deg'}],
   },
+  button: {
+    width: s(20),
+    height: s(20),
+  },
+  filter: {
+    width: '70%',
+    height: '70%',
+    tintColor: colors.accent,
+  }
 });
 
 const dropdownStyles = StyleSheet.create({

@@ -105,6 +105,15 @@ const strings = {
   misc: {
     maxRating: '5',
   },
+  filter: {
+    all: 'All Categories',
+    within: 'Within',
+    inTheNext: 'In the Next',
+    sortby: 'Sort By',
+    editView: 'Edit View',
+    visible: 'Visible',
+    hidden: 'Hidden',
+  },
 };
 
 export default strings;
