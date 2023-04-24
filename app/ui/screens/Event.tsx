@@ -128,6 +128,10 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
     console.log(id);
   };
 
+  const onLibrarySelect = () => {
+    console.log('hi');
+  };
+
   return (
     <View style={styles.container}>
       <MapView style={styles.map} region={getRegionForCoordinates(markers)}>
@@ -422,11 +426,7 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
           <AddByCategory onClose={onClose} onSelect={onCategorySelect} />
         )}
         {addBottomSheetStatus === 2 && (
-          <AddFromLibrary
-            navigation={navigation}
-            onClose={onClose}
-            onSelect={onCategorySelect}
-          />
+          <AddFromLibrary onClose={onClose} onSelect={onLibrarySelect} />
         )}
         {/* {
             addBottomSheetStatus === 3 && (

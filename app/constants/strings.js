@@ -97,6 +97,7 @@ const strings = {
     addByCategory: 'Add by Category',
     addFromLibrary: 'Add from Library',
     addCustom: 'Add a Custom Destination',
+    filter: 'Filter',
   },
   profile: {
     followers: 'followers',
@@ -113,6 +114,9 @@ const strings = {
     editView: 'Edit View',
     visible: 'Visible',
     hidden: 'Hidden',
+    categories: 'Filter Categories',
+    clear: 'Clear',
+    apply: 'Apply',
   },
 };
 

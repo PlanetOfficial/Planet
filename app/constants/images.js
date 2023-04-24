@@ -32,6 +32,7 @@ export const icons = {
   replace: require('../assets/icons/replace.png'),
   remove: require('../assets/icons/remove.png'),
   tick: require('../assets/icons/tick.png'),
+  filter: require('../assets/icons/filter.png'),
 };
 
 export const vectors = {

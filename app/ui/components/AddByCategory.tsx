@@ -34,6 +34,7 @@ const AddByCategory = ({onClose, onSelect}: {onClose: any; onSelect: any}) => {
       setAllCategories(genreObj.categories);
     }
   };
+
   return (
     <View>
       <View style={headerStyles.container}>
@@ -56,12 +57,13 @@ const AddByCategory = ({onClose, onSelect}: {onClose: any; onSelect: any}) => {
         ))}
       </View>
       <Modal animationType="fade" transparent={true} visible={modalVisible}>
-        <Pressable
-          style={modalStyles.container}
-          onPress={() => {
-            setModalVisible(false);
-            setSelectedGenre('');
-          }}>
+        <View style={modalStyles.container}>
+          <Pressable
+            style={modalStyles.dim}
+            onPress={() => {
+              setModalVisible(false);
+            }}
+          />
           <View style={modalStyles.modal}>
             <View style={modalStyles.header}>
               <TouchableOpacity
@@ -95,7 +97,7 @@ const AddByCategory = ({onClose, onSelect}: {onClose: any; onSelect: any}) => {
                 : null}
             </ScrollView>
           </View>
-        </Pressable>
+        </View>
       </Modal>
     </View>
   );
@@ -185,6 +187,11 @@ const modalStyles = StyleSheet.create({
     height: '100%',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  dim: {
+    position: 'absolute',
+    width: '100%',
+    height: '110%',
     backgroundColor: 'rgba(0, 0, 0, 0.3)',
   },
   modal: {
