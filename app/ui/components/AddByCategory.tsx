@@ -82,7 +82,11 @@ const AddByCategory = ({onClose, onSelect}: {onClose: any; onSelect: any}) => {
                     <TouchableOpacity
                       key={category.id}
                       onPress={() => {
-                        onSelect(category.id);
+                        onSelect({
+                          id: -category.id,
+                          name: category.name,
+                          icon: category.icon,
+                        });
                         onClose();
                       }}>
                       <View style={categoryStyles.container}>
