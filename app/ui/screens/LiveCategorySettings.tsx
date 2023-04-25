@@ -17,9 +17,9 @@ import {
   NestableDraggableFlatList,
 } from 'react-native-draggable-flatlist';
 
-const LiveCategorySettings = ({navigation}: {navigation: any}) => {
-  const [categories, setCategories]: [any, any] = useState(
-    genres[0].categories[0].subcategories,
+const LiveCategorySettings = ({navigation, route}: {navigation: any; route: any;}) => {
+  const [subcategories, setSubcategories]: [any, any] = useState(
+    route?.params?.subcategories,
   );
 
   const [hidden, setHidden]: [any, any] = useState([]);
@@ -29,7 +29,9 @@ const LiveCategorySettings = ({navigation}: {navigation: any}) => {
       <SafeAreaView style={headerStyles.container}>
         <TouchableOpacity
           style={headerStyles.button}
-          onPress={() => navigation.navigate('LiveCategory')}>
+          onPress={() => navigation.navigate('LiveCategory', {
+            subcategories,
+          })}>
           <Image style={headerStyles.back} source={icons.next} />
         </TouchableOpacity>
         <Text style={headerStyles.title}>{strings.filter.editView}</Text>
@@ -41,7 +43,7 @@ const LiveCategorySettings = ({navigation}: {navigation: any}) => {
           <Text style={styles.header}>{strings.filter.visible}:</Text>
         </View>
         <NestableDraggableFlatList
-          data={categories}
+          data={subcategories}
           renderItem={({
             item,
             drag,
@@ -59,9 +61,9 @@ const LiveCategorySettings = ({navigation}: {navigation: any}) => {
               <View style={categoryStyles.border} />
               <TouchableOpacity
                 onPress={() => {
-                  setCategories(
-                    categories.filter(
-                      (category: any) => category.id !== item.id,
+                  setSubcategories(
+                    subcategories.filter(
+                      (subcategory: any) => subcategory.id !== item.id,
                     ),
                   );
                   setHidden((_hidden: any) => [..._hidden, item]);
@@ -80,7 +82,7 @@ const LiveCategorySettings = ({navigation}: {navigation: any}) => {
             </View>
           )}
           keyExtractor={(item: any) => item.id}
-          onDragEnd={({data}) => setCategories(data)}
+          onDragEnd={({data}) => setSubcategories(data)}
         />
         <View>
           <Text style={styles.header}>{strings.filter.hidden}:</Text>
@@ -93,9 +95,9 @@ const LiveCategorySettings = ({navigation}: {navigation: any}) => {
               <TouchableOpacity
                 onPress={() => {
                   setHidden(
-                    hidden.filter((category: any) => category.id !== item.id),
+                    hidden.filter((subcategory: any) => subcategory.id !== item.id),
                   );
-                  setCategories((_categories: any) => [..._categories, item]);
+                  setSubcategories((_subcategories: any) => [..._subcategories, item]);
                 }}>
                 <Image style={categoryStyles.show} source={icons.plus} />
               </TouchableOpacity>

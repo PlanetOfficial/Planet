@@ -1,5 +1,6 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
+  ActivityIndicator,
   View,
   Text,
   SafeAreaView,
@@ -14,35 +15,22 @@ import {s} from 'react-native-size-matters';
 import {genres} from '../../constants/genres';
 import PlaceCard from '../components/PlaceCard';
 import {ScrollView} from 'react-native-gesture-handler';
+import { getCatFiltered } from '../../utils/api/shared/getCatFiltered';
+import { integers } from '../../constants/numbers';
+import { Subcategory } from '../../utils/interfaces/subcategory';
 
-const TEMP_DATA = [
-  {
-    id: '1',
-    name: 'The Witcher',
-    image: 'https://image.tmdb.org/t/p/w500/2W4ZvACURDyhiNnSIaFPHfNbny3.jpg',
-    rating: 8.5,
-    date: '2020-12-25',
-    marked: false,
-  },
-  {
-    id: '2',
-    name: 'The Mandalorian',
-    image: 'https://image.tmdb.org/t/p/w500/sWgBv7LV2PRoQgkxwlibdGXKz1S.jpg',
-    rating: 8.5,
-    date: '2020-12-25',
-    marked: true,
-  },
-  {
-    id: '3',
-    name: 'The Witcher',
-    image: 'https://image.tmdb.org/t/p/w500/2W4ZvACURDyhiNnSIaFPHfNbny3.jpg',
-    rating: 8.5,
-    date: '2020-12-25',
-    marked: true,
-  },
-];
+const LiveCategory = ({navigation, route}: {navigation: any; route: any;}) => {
+  const [radiusDistance, setRadiusDistance] = useState(route?.params?.radius);
+  const [longitude, setLongitude] = useState(route?.params?.longitude);
+  const [latitude, setLatitude] = useState(route?.params?.latitude);
+  const [categoryId, setCategoryId] = useState(route?.params?.categoryId);
+  const [categoryName, setCategoryName] = useState(route?.params?.categoryName);
 
-const LiveCategory = ({navigation}: {navigation: any}) => {
+  const [places, setPlaces]: [any, any] = useState({});
+  const [subcategories, setSubcategories] = useState([]);
+
+  const [loading, setLoading] = useState(false);
+
   const [radius, setRadius] = useState(0);
   const [time, setTime] = useState(0);
   const [sort, setSort] = useState(0);
@@ -85,6 +73,23 @@ const LiveCategory = ({navigation}: {navigation: any}) => {
     setWidth(0);
   };
 
+  useEffect(() => {
+    const initializeData = async () => {
+      if (route?.params?.subcategories) {
+        setSubcategories(route?.params?.subcategories);
+
+        const subcategoryIds: number[] = route?.params?.subcategories?.map((item: any) => item.id);
+
+        setLoading(true);
+        const response = await getCatFiltered(subcategoryIds, integers.defaultNumPlaces, latitude, longitude, integers.defaultDaysToAdds, radiusDistance, categoryId);
+        setPlaces(response?.places);
+        setLoading(false);
+      }
+    }
+
+    initializeData();
+  }, [route?.params?.subcategories]);
+
   return (
     <View style={styles.container}>
       <SafeAreaView style={headerStyles.container}>
@@ -94,9 +99,11 @@ const LiveCategory = ({navigation}: {navigation: any}) => {
           <Image style={headerStyles.back} source={icons.next} />
         </TouchableOpacity>
         <View style={headerStyles.row}>
-          <Text style={headerStyles.title}>Concerts</Text>
+          <Text style={headerStyles.title}>{categoryName}</Text>
           <TouchableOpacity
-            onPress={() => navigation.navigate('LiveCategorySettings')}>
+            onPress={() => navigation.navigate('LiveCategorySettings', {
+              subcategories,
+            })}>
             <Image style={headerStyles.settings} source={icons.settings} />
           </TouchableOpacity>
         </View>
@@ -307,18 +314,23 @@ const LiveCategory = ({navigation}: {navigation: any}) => {
           </View>
         )}
       </View>
+      <View>
+        {loading ? (
+          <ActivityIndicator size="large" color={colors.accent} />
+        ) : null}
+      </View>
       <ScrollView onTouchStart={() => closeDropdown()}>
-        {genres[0].categories[0].subcategories?.map((category, idx) => (
+        {subcategories?.map((subcategory: Subcategory, idx: number) => (
           <View key={idx} style={categoryStyles.container}>
             <View style={categoryStyles.header}>
-              <Text style={categoryStyles.title}>{category.title}</Text>
+              <Text style={categoryStyles.title}>{subcategory.title}</Text>
             </View>
             <ScrollView
               contentContainerStyle={categoryStyles.contentContainer}
               style={categoryStyles.scrollView}
               horizontal={true}
               showsHorizontalScrollIndicator={false}>
-              {TEMP_DATA.map((item: any, jdx) => (
+              {places[subcategory?.id] ? places[subcategory?.id].map((item: any, jdx: number) => (
                 <TouchableOpacity
                   style={categoryStyles.card}
                   key={jdx}
@@ -328,10 +340,10 @@ const LiveCategory = ({navigation}: {navigation: any}) => {
                     name={item?.name}
                     info={item?.date}
                     marked={item?.marked}
-                    image={{uri: item?.image}}
+                    image={{uri: item?.image_url}}
                   />
                 </TouchableOpacity>
-              ))}
+              )) : null}
             </ScrollView>
             <Spacer />
           </View>
