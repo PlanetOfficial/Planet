@@ -103,7 +103,14 @@ const Trending = ({navigation}: {navigation: any}) => {
             <View style={categoryStyles.header}>
               <Text style={categoryStyles.title}>{category.name}</Text>
               <TouchableOpacity
-                onPress={() => navigation.navigate('LiveCategory')}>
+                onPress={() => navigation.navigate('LiveCategory', {
+                  subcategories: category.subcategories,
+                  categoryId: category.id,
+                  categoryName: category.name,
+                  latitude,
+                  longitude,
+                  radius
+                })}>
                 <Text style={categoryStyles.seeAll}>
                   {strings.trending.seeAll}
                 </Text>
