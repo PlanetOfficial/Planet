@@ -100,6 +100,7 @@ const strings = {
     addByCategory: 'Add a Category',
     addFromLibrary: 'Add from Library',
     addCustom: 'Add a Custom Destination',
+    add: 'Add',
     filter: 'Filter',
   },
   profile: {

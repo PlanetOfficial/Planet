@@ -33,6 +33,7 @@ import Blur from '../components/Blur';
 import ScrollIndicator from '../components/ScrollIndicator';
 import AddByCategory from '../components/AddByCategory';
 import AddFromLibrary from '../components/AddFromLibrary';
+import AddCustomDest from '../components/AddCustomDest';
 
 import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
@@ -141,6 +142,9 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
       temp.splice(idx + direction, 0, tempItem);
     } else {
       // if direction is 0, then the item is being deleted
+      childRefs.current.forEach((value) => {
+        value?.closeDropdown();
+      });
       childRefs.current.delete(tempItem.id);
     }
     setTempPlaces(temp);
@@ -200,6 +204,10 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
     //   setTempPlaces(temp);
     // }
   };
+
+  const onCustomSelect = () => {
+    console.log('TO BE IMPLEMENTED');
+  }
 
   return (
     <View style={styles.container}>
@@ -572,13 +580,9 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
         {addBottomSheetStatus === 2 && (
           <AddFromLibrary onClose={onClose} onSelect={onLibrarySelect} />
         )}
-        {/* {
-            addBottomSheetStatus === 3 && (
-              <View style={addStyles.container}>
-
-              </View>
-            )
-          }      */}
+        {addBottomSheetStatus === 3 && (
+          <AddCustomDest onClose={onClose} onSelect={onCustomSelect} />
+        )}     
       </BottomSheet>
 
       <Modal
