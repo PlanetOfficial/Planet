@@ -86,6 +86,8 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
     [insets.top],
   );
 
+
+  const childRefs = useRef(new Map());
   const itemRefs = useRef(new Map());
 
   useEffect(() => {
@@ -115,11 +117,14 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
   };
 
   const onAddPress = (idx: number | undefined) => {
+    itemRefs.current.forEach((value) => {
+      value?.close();
+    });
+    childRefs.current.forEach((value) => {
+      value?.closeDropdown();
+    });
     setInsertionIndex(idx);
     addOptionsBottomSheetRef.current?.present();
-    itemRefs.current.forEach((ref: any) => {
-      ref.close();
-    });
   };
 
   const onClose = () => {
@@ -134,6 +139,9 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
     temp.splice(idx, 1);
     if (direction !== 0) {
       temp.splice(idx + direction, 0, tempItem);
+    } else {
+      // if direction is 0, then the item is being deleted
+      childRefs.current.delete(tempItem.id);
     }
     setTempPlaces(temp);
   };
@@ -277,7 +285,12 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
             contentContainerStyle={placesEditStyles.contentContainer}
             activationDistance={20}
             onScrollBeginDrag={() => {
-              // TODO: Close dropdowns
+              itemRefs.current.forEach((value) => {
+                value?.close();
+              });
+              childRefs.current.forEach((value) => {
+                value?.closeDropdown();
+              });
             }}
             renderItem={({
               item,
@@ -293,10 +306,21 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
               <>
                 {item?.id < 0 ? (
                   <View
+                    onTouchStart={() => {
+                      itemRefs.current.forEach((value) => {
+                        value?.close();
+                      });
+                      childRefs.current.forEach((value, key) => {
+                        if(key !== item.id){
+                          value?.closeDropdown();
+                        }
+                      });
+                    }}
                     style={
                       dragging && !isActive && placesEditStyles.transparentCard
                     }>
                     <Category
+                      ref={ref => childRefs.current.set(item.id, ref)}
                       navigation={navigation}
                       category={item}
                       fullEventData={fullEventData}
@@ -326,6 +350,7 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
                                   (temp: any) => temp !== item,
                                 );
                               });
+                              itemRefs.current.delete(item.id);
                             }}
                             style={[
                               placesEditStyles.button,
@@ -356,13 +381,14 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
                           delayLongPress={400}
                           disabled={dragging && !isActive}
                           onPressIn={() => {
-                            [...itemRefs.current.entries()].forEach(
-                              ([key, ref]) => {
-                                if (key !== item.id && ref) {
-                                  ref.close();
-                                }
-                              },
-                            );
+                            itemRefs.current.forEach((value, key) => {
+                              if (key !== item.id) {
+                                value?.close();
+                              }
+                            });
+                            childRefs.current.forEach((value) => {
+                              value?.closeDropdown();
+                            });
                           }}
                           onPress={() => {
                             navigation.navigate('Place', {
@@ -399,9 +425,12 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
             )}
             onDragBegin={() => {
               setDragging(true);
-              for (const itemRef of itemRefs.current.values()) {
-                itemRef?.close();
-              }
+              itemRefs.current.forEach((value) => {
+                value?.close();
+              });
+              childRefs.current.forEach((value) => {
+                value?.closeDropdown();
+              });
             }}
             onDragEnd={({data}) => {
               setDragging(false);

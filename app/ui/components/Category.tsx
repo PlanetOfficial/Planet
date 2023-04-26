@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, forwardRef, useImperativeHandle } from 'react';
 import {
   StyleSheet,
   View,
@@ -18,15 +18,7 @@ import {icons} from '../../constants/images';
 import {colors} from '../../constants/theme';
 import strings from '../../constants/strings';
 
-const Category = ({
-  navigation,
-  category,
-  fullEventData,
-  bookmarks,
-  categoryIndex,
-  tempPlaces,
-  onCategoryMove,
-}: {
+interface ChildComponentProps {
   navigation: any;
   category: any;
   fullEventData: any;
@@ -34,7 +26,23 @@ const Category = ({
   categoryIndex: number;
   tempPlaces: any;
   onCategoryMove: any;
-}) => {
+}
+
+const Category = forwardRef((props: ChildComponentProps, ref) => {
+  const {
+    navigation,
+    category,
+    fullEventData,
+    bookmarks,
+    categoryIndex,
+    tempPlaces,
+    onCategoryMove,
+  } = props;
+
+  useImperativeHandle(ref, () => ({
+    closeDropdown,
+  }));
+
   const [placeIdx, setPlaceIdx] = useState(0);
 
   const [optionDropDownOpen, setOptionDropDownOpen] = useState(false);
@@ -97,6 +105,9 @@ const Category = ({
         <TouchableOpacity
           style={categoryStyles.option}
           onPress={() => {
+            if (dropdownStatus !== '') {
+              closeDropdown();
+            }
             LayoutAnimation.configureNext(
               LayoutAnimation.Presets.easeInEaseOut,
             );
@@ -118,6 +129,7 @@ const Category = ({
               ref={refs[index]}
               style={[filterStyles.chip, filterStyles.chipContainer]}
               onPress={() => {
+                setOptionDropDownOpen(false);
                 if (dropdownStatus === item.name) {
                   closeDropdown();
                 } else {
@@ -418,7 +430,7 @@ const Category = ({
       </Modal>
     </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   dim: {
