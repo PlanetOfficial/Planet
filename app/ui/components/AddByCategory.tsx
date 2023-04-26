@@ -14,7 +14,7 @@ import {s} from 'react-native-size-matters';
 import {icons, vectors} from '../../constants/images';
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
-import {genres} from '../../constants/categories';
+import {genres} from '../../constants/genres';
 
 const AddByCategory = ({onClose, onSelect}: {onClose: any; onSelect: any}) => {
   const [modalVisible, setModalVisible] = useState(false);

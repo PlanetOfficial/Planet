@@ -16,7 +16,7 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 import PlaceCard from '../components/PlaceCard';
 import {getBookmarks} from '../../utils/api/shared/getBookmarks';
 
-import {genres} from '../../constants/categories';
+import {genres} from '../../constants/genres';
 import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
 import misc from '../../constants/misc';
