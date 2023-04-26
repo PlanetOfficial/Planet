@@ -127,6 +127,17 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
     setAddBottomSheetStatus(0);
   };
 
+  const onCategoryMove = (idx: number, direction: number) => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    const temp = [...tempPlaces];
+    const tempItem = temp[idx];
+    temp.splice(idx, 1);
+    if (direction !== 0) {
+      temp.splice(idx + direction, 0, tempItem);
+    }
+    setTempPlaces(temp);
+  };
+
   const onCategorySelect = async (category: any) => {
     if (insertionIndex !== undefined) {
       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
@@ -265,6 +276,9 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
             showsVerticalScrollIndicator={false}
             contentContainerStyle={placesEditStyles.contentContainer}
             activationDistance={20}
+            onScrollBeginDrag={() => {
+              // TODO: Close dropdowns
+            }}
             renderItem={({
               item,
               getIndex,
@@ -277,21 +291,25 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
               isActive: boolean;
             }) => (
               <>
-                {item.id < 0 ? (
-                  <Category
-                    navigation={navigation}
-                    category={item}
-                    fullEventData={fullEventData}
-                    bookmarks={bookmarks}
-                  />
+                {item?.id < 0 ? (
+                  <View
+                    style={
+                      dragging && !isActive && placesEditStyles.transparentCard
+                    }>
+                    <Category
+                      navigation={navigation}
+                      category={item}
+                      fullEventData={fullEventData}
+                      bookmarks={bookmarks}
+                      categoryIndex={getIndex()}
+                      tempPlaces={tempPlaces}
+                      onCategoryMove={onCategoryMove}
+                    />
+                  </View>
                 ) : (
                   <View style={placesEditStyles.container} key={item.id}>
                     <SwipeableItem
-                      ref={ref => {
-                        if (ref && !itemRefs.current.get(item.id)) {
-                          itemRefs.current.set(item.id, ref);
-                        }
-                      }}
+                      ref={ref => itemRefs.current.set(item.id, ref)}
                       overSwipe={s(20)}
                       key={item.id}
                       item={item}
@@ -400,12 +418,12 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
               showsHorizontalScrollIndicator={false}
               pagingEnabled={true}
               scrollEventThrottle={16}
-              snapToInterval={s(276)} // 256 + 20
+              snapToInterval={s(300)} // 280 + 20
               snapToAlignment={'start'}
               decelerationRate={'fast'}
               onScroll={event =>
                 setPlaceIdx(
-                  Math.round(event.nativeEvent.contentOffset.x / s(276)),
+                  Math.round(event.nativeEvent.contentOffset.x / s(300)),
                 )
               }>
               {fullEventData?.places?.map((dest: any, index: number) => (
@@ -744,10 +762,10 @@ const placesDisplayStyles = StyleSheet.create({
     overflow: 'visible', // display shadow
   },
   contentContainer: {
-    paddingHorizontal: s(47), // (350 - 256) / 2
+    paddingHorizontal: s(35), // (350 - 280) / 2
   },
   card: {
-    width: s(256), // height: 256 * 5/8 = 160
+    width: s(280), // height: 280 * 5/8 = 175
   },
 });
 

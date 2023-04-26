@@ -64,6 +64,9 @@ const strings = {
     eventStatus: 'Event Status',
     eventSpan: 'Event spans multiple days',
     eventUrl: 'Tap for more information',
+    moveUp: 'Move Up',
+    moveDown: 'Move Down',
+    remove: 'Remove',
   },
   settings: {
     name: 'Name',

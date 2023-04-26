@@ -8,6 +8,7 @@ import {
   ScrollView,
   Modal,
   Pressable,
+  LayoutAnimation,
 } from 'react-native';
 import {s, vs} from 'react-native-size-matters';
 import PlaceCard from '../components/PlaceCard';
@@ -22,14 +23,21 @@ const Category = ({
   category,
   fullEventData,
   bookmarks,
+  categoryIndex,
+  tempPlaces,
+  onCategoryMove,
 }: {
   navigation: any;
   category: any;
   fullEventData: any;
   bookmarks: any;
+  categoryIndex: number;
+  tempPlaces: any;
+  onCategoryMove: any;
 }) => {
   const [placeIdx, setPlaceIdx] = useState(0);
 
+  const [optionDropDownOpen, setOptionDropDownOpen] = useState(false);
   const [dropdownStatus, setDropdownStatus]: [any, any] = useState('');
   const [filters, setFilters]: [number[], any] = useState([0, 0]);
   const [tempFilters, setTempFilters]: [number[], any] = useState([0, 0]);
@@ -72,6 +80,8 @@ const Category = ({
   };
 
   const closeDropdown = () => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    setOptionDropDownOpen(false);
     setDropdownStatus('');
     setPos(0);
     setWidth(0);
@@ -84,7 +94,14 @@ const Category = ({
           <Image style={categoryStyles.categoryIcon} source={category.icon} />
         </View>
         <Text style={categoryStyles.categoryTitle}>{category.name}</Text>
-        <TouchableOpacity style={categoryStyles.option} onPress={() => {}}>
+        <TouchableOpacity
+          style={categoryStyles.option}
+          onPress={() => {
+            LayoutAnimation.configureNext(
+              LayoutAnimation.Presets.easeInEaseOut,
+            );
+            setOptionDropDownOpen(!optionDropDownOpen);
+          }}>
           <Image style={categoryStyles.optionIcon} source={icons.option} />
         </TouchableOpacity>
       </View>
@@ -107,6 +124,9 @@ const Category = ({
                   if (dropdownStatus !== '') {
                     closeDropdown();
                   }
+                  LayoutAnimation.configureNext(
+                    LayoutAnimation.Presets.easeInEaseOut,
+                  );
                   setDropdownStatus(item.name);
                   handleMeasure(refs[index]);
                 }
@@ -195,6 +215,51 @@ const Category = ({
             </View>
           ) : null,
         )}
+        {optionDropDownOpen ? (
+          <View style={dropdownStyles.optionContent}>
+            <TouchableOpacity
+              style={dropdownStyles.option}
+              disabled={categoryIndex === 0}
+              onPress={() => onCategoryMove(categoryIndex, -1)}>
+              <Text
+                style={[
+                  dropdownStyles.text,
+                  categoryIndex === 0 && {color: colors.darkgrey},
+                ]}>
+                {strings.createTabStack.moveUp}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={dropdownStyles.option}
+              disabled={categoryIndex === tempPlaces.length - 1}
+              onPress={() => onCategoryMove(categoryIndex, 1)}>
+              <Text
+                style={[
+                  dropdownStyles.text,
+                  categoryIndex === tempPlaces.length - 1 && {
+                    color: colors.darkgrey,
+                  },
+                ]}>
+                {strings.createTabStack.moveDown}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={dropdownStyles.option}
+              disabled={tempPlaces.length === 1}
+              onPress={() => onCategoryMove(categoryIndex, 0)}>
+              <Text
+                style={[
+                  dropdownStyles.text,
+                  {
+                    color:
+                      tempPlaces.length === 1 ? colors.darkgrey : colors.red,
+                  },
+                ]}>
+                {strings.createTabStack.remove}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        ) : null}
       </View>
       <ScrollView
         style={categoryStyles.scrollView}
@@ -206,9 +271,10 @@ const Category = ({
         snapToInterval={s(300)} // 280 + 20
         snapToAlignment={'start'}
         decelerationRate={'fast'}
-        onScroll={event =>
-          setPlaceIdx(Math.round(event.nativeEvent.contentOffset.x / s(300)))
-        }>
+        onScroll={event => {
+          closeDropdown();
+          setPlaceIdx(Math.round(event.nativeEvent.contentOffset.x / s(300)));
+        }}>
         {fullEventData?.places.map((dest: any, index: number) => (
           <View
             style={[
@@ -504,6 +570,23 @@ const dropdownStyles = StyleSheet.create({
   content: {
     position: 'absolute',
     top: s(35),
+    borderRadius: s(10),
+    backgroundColor: colors.white,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    zIndex: 1,
+  },
+  optionContent: {
+    position: 'absolute',
+    top: s(-5),
+    right: s(20),
+    width: s(100),
     borderRadius: s(10),
     backgroundColor: colors.white,
     shadowColor: '#000',
