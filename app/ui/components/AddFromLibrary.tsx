@@ -58,7 +58,7 @@ const TempData = [
 ];
 
 const AddFromLibrary = ({onClose, onSelect}: {onClose: any; onSelect: any}) => {
-  const [places, setPlaces] = useState([]);
+  const [_, setPlaces] = useState([]);
 
   useEffect(() => {
     const initializeData = async () => {

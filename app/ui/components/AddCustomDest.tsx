@@ -1,14 +1,7 @@
-import React, {useState, useRef} from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  SafeAreaView
-} from 'react-native';
+import React, {useState, useRef, useEffect} from 'react';
+import {StyleSheet, View, Text, Image, TouchableOpacity} from 'react-native';
 import {s} from 'react-native-size-matters';
-import MapView from 'react-native-maps';
+import MapView, {Marker} from 'react-native-maps';
 import {
   GooglePlacesAutocomplete,
   GooglePlacesAutocompleteRef,
@@ -17,13 +10,12 @@ import {
 import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
-import {integers, floats} from '../../constants/numbers';
-import {calculateRadius} from '../../utils/functions/Misc';
+import {floats} from '../../constants/numbers';
 
 import {GoogleMapsAPIKey} from '../../utils/api/APIConstants';
 
 const AddCustomDest = ({onClose, onSelect}: {onClose: any; onSelect: any}) => {
-  const autoCompleteRef: any = useRef<GooglePlacesAutocompleteRef>();
+  const autocompleteRef = useRef<GooglePlacesAutocompleteRef>(null);
   const [region, setRegion] = useState({
     latitude: floats.defaultLatitude,
     longitude: floats.defaultLongitude,
@@ -31,60 +23,134 @@ const AddCustomDest = ({onClose, onSelect}: {onClose: any; onSelect: any}) => {
     longitudeDelta: floats.defaultLongitudeDelta,
   });
 
+  const [destination, setDestination]: [any, any] = useState();
+  const [selected, setSelected] = useState(false);
+  const [custom, setCustom] = useState(false);
+
+  useEffect(() => {
+    autocompleteRef.current?.focus();
+  }, []);
+
   return (
-    <View style={styles.container}>
+    <View
+      style={styles.container}
+      onTouchEnd={() => {
+        setTimeout(() => {
+          if (autocompleteRef.current?.getAddressText() === '') {
+            setSelected(false);
+          }
+        }, 50);
+      }}>
       <View style={headerStyles.container}>
         <Text style={headerStyles.title}>{strings.library.addCustom}</Text>
         <TouchableOpacity style={headerStyles.button} onPress={onClose}>
           <Image style={headerStyles.x} source={icons.x} />
         </TouchableOpacity>
       </View>
-      <View style={styles.autoCompleteContainer}>
-        <GooglePlacesAutocomplete
-          ref={autoCompleteRef}
-          placeholder={strings.createTabStack.search}
-          onPress={(data, details = null) => {
-            if (
-              details?.geometry?.location?.lat &&
-              details?.geometry?.location?.lng
-            ) {
-              setRegion({
-                latitude: details.geometry.location.lat,
-                longitude: details.geometry.location.lng,
-                latitudeDelta: floats.defaultLatitudeDelta,
-                longitudeDelta: floats.defaultLongitudeDelta,
-              });
+      <GooglePlacesAutocomplete
+        ref={autocompleteRef}
+        textInputProps={{
+          selectTextOnFocus: true,
+          onFocus: () => {
+            setSelected(false);
+          },
+          onBlur(e) {
+            if (e.nativeEvent.text !== '') {
+              setSelected(true);
+              setCustom(
+                e.nativeEvent.text !==
+                  destination?.name + ', ' + destination?.address,
+              );
             }
-          }}
-          query={{
-            key: GoogleMapsAPIKey,
-            language: 'en',
-          }}
-          disableScroll={true}
-          isRowScrollable={false}
-          enablePoweredByContainer={false}
-          fetchDetails={true}
-          numberOfLines={10}
-          styles={{
-            container: searchStyles.container,
-            textInputContainer: searchStyles.textInputContainer,
-            textInput: searchStyles.textInput,
-            row: searchStyles.row,
-            separator: searchStyles.separator,
-          }}
-        />
-        <Image style={searchStyles.icon} source={icons.search} />
-      </View>
-      <MapView
-        style={styles.map}
-        initialRegion={region}
-        region={region}
-        onRegionChangeComplete={setRegion}
+          },
+        }}
+        placeholder={strings.createTabStack.search}
+        onPress={(data: any, details = null) => {
+          // As you can see if you turn these logs on, we get much more data than we're using. Maybe store in table?
+          // console.log(data);
+          // console.log(details);
+          if (
+            details?.geometry?.location?.lat &&
+            details?.geometry?.location?.lng
+          ) {
+            setSelected(true);
+            setRegion({
+              latitude: details.geometry.location.lat,
+              longitude: details.geometry.location.lng,
+              latitudeDelta: floats.defaultLatitudeDelta,
+              longitudeDelta: floats.defaultLongitudeDelta,
+            });
+            setDestination({
+              name: data?.structured_formatting?.main_text,
+              address: data?.structured_formatting?.secondary_text,
+              latitude: details.geometry.location.lat,
+              longitude: details.geometry.location.lng,
+            });
+            setTimeout(() => {
+              setCustom(false);
+            }, 10);
+          }
+        }}
+        query={{
+          key: GoogleMapsAPIKey,
+          language: 'en',
+        }}
+        disableScroll={true}
+        isRowScrollable={false}
+        enablePoweredByContainer={false}
+        fetchDetails={true}
+        numberOfLines={10}
+        styles={{
+          container: searchStyles.container,
+          textInputContainer: searchStyles.textInputContainer,
+          textInput: searchStyles.textInput,
+          row: searchStyles.row,
+          separator: searchStyles.separator,
+        }}
       />
+      <Image style={searchStyles.icon} source={icons.search} />
+      <View style={styles.contentContainer}>
+        {selected ? (
+          <>
+            {custom && (
+              <Text style={styles.suggestText}>
+                {strings.library.setCustomLocation + ':'}
+              </Text>
+            )}
+            <MapView
+              style={styles.map}
+              initialRegion={region}
+              region={region}
+              onRegionChangeComplete={setRegion}
+              onPress={e =>
+                setDestination({
+                  name: autocompleteRef.current?.getAddressText(),
+                  address: 'Custom Event',
+                  latitude: e.nativeEvent.coordinate.latitude,
+                  longitude: e.nativeEvent.coordinate.longitude,
+                })
+              }>
+              <Marker
+                coordinate={{
+                  latitude: destination?.latitude,
+                  longitude: destination?.longitude,
+                }}
+              />
+            </MapView>
+          </>
+        ) : (
+          <Text style={styles.text}>{strings.library.promptSearch}</Text>
+        )}
+      </View>
       <TouchableOpacity
-        style={buttonStyles.container}
+        style={[
+          buttonStyles.container,
+          {backgroundColor: selected ? colors.accent : colors.darkgrey},
+        ]}
+        disabled={!selected}
         onPress={() => {
-          onSelect();
+          onClose();
+          onSelect(destination);
         }}>
         <Text style={buttonStyles.title}>{strings.library.add}</Text>
       </TouchableOpacity>
@@ -96,37 +162,33 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  autoCompleteContainer: {
-    width: s(350),
-    height: s(20),
-  },
   contentContainer: {
+    flex: 1,
     marginHorizontal: s(20),
-    paddingTop: s(20),
-    paddingBottom: s(40),
-  },
-  separator: {
-    borderWidth: 0.5,
-    borderColor: colors.grey,
-    marginVertical: s(10),
-  },
-  card: {
-    alignSelf: 'center',
-    width: s(280),
-  },
-  dim: {
-    position: 'absolute',
-    width: '100%',
-    height: '150%',
-    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+    marginVertical: s(20),
   },
   map: {
     flex: 1,
-    width: s(310),
-    marginHorizontal: s(20),
-    marginVertical: s(20),
     borderRadius: s(10),
-  }
+  },
+  text: {
+    marginTop: s(100),
+    alignSelf: 'center',
+    width: s(200),
+    fontSize: s(18),
+    lineHeight: s(30),
+    fontWeight: '600',
+    color: colors.darkgrey,
+    textAlign: 'center',
+  },
+  suggestText: {
+    alignSelf: 'center',
+    fontSize: s(14),
+    fontWeight: '500',
+    color: colors.black,
+    marginTop: -s(5),
+    marginBottom: s(5),
+  },
 });
 
 const headerStyles = StyleSheet.create({
@@ -163,8 +225,8 @@ const headerStyles = StyleSheet.create({
 
 const searchStyles = StyleSheet.create({
   container: {
-    alignSelf: 'center',
-    width: s(310),
+    flex: 0,
+    marginHorizontal: s(20),
   },
   textInputContainer: {
     backgroundColor: colors.grey,
@@ -195,8 +257,8 @@ const searchStyles = StyleSheet.create({
   },
   icon: {
     position: 'absolute',
-    top: s(7),
-    left: s(27),
+    top: s(57), // 50 + 7
+    left: s(27), // 20 + 7
     width: s(11),
     height: s(11),
     tintColor: colors.darkgrey,
@@ -212,7 +274,6 @@ const buttonStyles = StyleSheet.create({
     height: s(40),
     marginBottom: s(50),
     borderRadius: s(10),
-    backgroundColor: colors.accent,
   },
   title: {
     fontSize: s(16),

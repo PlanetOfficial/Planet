@@ -102,6 +102,8 @@ const strings = {
     addCustom: 'Add a Custom Destination',
     add: 'Add',
     filter: 'Filter',
+    setCustomLocation: 'Set a custom location',
+    promptSearch: 'Search for a place or type in a custom destination above',
   },
   profile: {
     followers: 'followers',

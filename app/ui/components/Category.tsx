@@ -1,4 +1,4 @@
-import React, {useState, forwardRef, useImperativeHandle } from 'react';
+import React, {useState, forwardRef, useImperativeHandle} from 'react';
 import {
   StyleSheet,
   View,
@@ -59,8 +59,8 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
 
   const [modalVisible, setModalVisible] = useState(false);
 
-  const handleMeasure = (ref: any) => {
-    ref.current.measureInWindow((x: any, y: any, w: any) => {
+  const handleMeasure = (r: any) => {
+    r.current.measureInWindow((x: any, y: any, w: any) => {
       if (x < s(10)) {
         setPos(s(10));
       } else if (x + w > s(340)) {

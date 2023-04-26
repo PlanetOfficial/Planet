@@ -87,7 +87,6 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
     [insets.top],
   );
 
-
   const childRefs = useRef(new Map());
   const itemRefs = useRef(new Map());
 
@@ -118,10 +117,10 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
   };
 
   const onAddPress = (idx: number | undefined) => {
-    itemRefs.current.forEach((value) => {
+    itemRefs.current.forEach(value => {
       value?.close();
     });
-    childRefs.current.forEach((value) => {
+    childRefs.current.forEach(value => {
       value?.closeDropdown();
     });
     setInsertionIndex(idx);
@@ -142,7 +141,7 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
       temp.splice(idx + direction, 0, tempItem);
     } else {
       // if direction is 0, then the item is being deleted
-      childRefs.current.forEach((value) => {
+      childRefs.current.forEach(value => {
         value?.closeDropdown();
       });
       childRefs.current.delete(tempItem.id);
@@ -191,8 +190,8 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
     }
   };
 
-  const onLibrarySelect = (place: any) => {
-    console.log('TO BE IMPLEMENTED');
+  const onLibrarySelect = (dest: any) => {
+    console.log(dest);
     // if(insertionIndex !== undefined) {
     //   LayoutAnimation.configureNext(
     //     LayoutAnimation.Presets.easeInEaseOut,
@@ -205,9 +204,9 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
     // }
   };
 
-  const onCustomSelect = () => {
-    console.log('TO BE IMPLEMENTED');
-  }
+  const onCustomSelect = (dest: any) => {
+    console.log(dest);
+  };
 
   return (
     <View style={styles.container}>
@@ -293,10 +292,10 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
             contentContainerStyle={placesEditStyles.contentContainer}
             activationDistance={20}
             onScrollBeginDrag={() => {
-              itemRefs.current.forEach((value) => {
+              itemRefs.current.forEach(value => {
                 value?.close();
               });
-              childRefs.current.forEach((value) => {
+              childRefs.current.forEach(value => {
                 value?.closeDropdown();
               });
             }}
@@ -315,11 +314,11 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
                 {item?.id < 0 ? (
                   <View
                     onTouchStart={() => {
-                      itemRefs.current.forEach((value) => {
+                      itemRefs.current.forEach(value => {
                         value?.close();
                       });
                       childRefs.current.forEach((value, key) => {
-                        if(key !== item.id){
+                        if (key !== item.id) {
                           value?.closeDropdown();
                         }
                       });
@@ -394,7 +393,7 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
                                 value?.close();
                               }
                             });
-                            childRefs.current.forEach((value) => {
+                            childRefs.current.forEach(value => {
                               value?.closeDropdown();
                             });
                           }}
@@ -433,10 +432,10 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
             )}
             onDragBegin={() => {
               setDragging(true);
-              itemRefs.current.forEach((value) => {
+              itemRefs.current.forEach(value => {
                 value?.close();
               });
-              childRefs.current.forEach((value) => {
+              childRefs.current.forEach(value => {
                 value?.closeDropdown();
               });
             }}
@@ -582,7 +581,7 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
         )}
         {addBottomSheetStatus === 3 && (
           <AddCustomDest onClose={onClose} onSelect={onCustomSelect} />
-        )}     
+        )}
       </BottomSheet>
 
       <Modal
