@@ -55,7 +55,6 @@ const AddCustomDest = ({onClose, onSelect}: {onClose: any; onSelect: any}) => {
           },
           onBlur(e) {
             if (e.nativeEvent.text !== '') {
-              console.log(e.nativeEvent);
               setSelected(true);
             }
           },
