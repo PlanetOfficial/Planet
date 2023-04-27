@@ -704,6 +704,7 @@ const headerStyles = StyleSheet.create({
     height: s(40),
   },
   name: {
+    padding: 0,
     fontSize: s(18),
     fontWeight: '700',
     color: colors.black,
