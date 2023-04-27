@@ -64,21 +64,24 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
         </View>
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <MapView
-          style={styles.map}
-          initialRegion={{
-            latitude: destination?.latitude,
-            longitude: destination?.longitude,
-            latitudeDelta: floats.defaultLatitudeDelta,
-            longitudeDelta: floats.defaultLongitudeDelta,
-          }}>
+        {destination?.latitude && destination?.longitude ? (
+          <MapView
+            style={styles.map}
+            initialRegion={{
+              latitude: parseFloat(destination?.latitude),
+              longitude: parseFloat(destination?.longitude),
+              latitudeDelta: floats.defaultLatitudeDelta,
+              longitudeDelta: floats.defaultLongitudeDelta,
+            }}
+          >
           <Marker
             coordinate={{
-              latitude: destination?.latitude,
-              longitude: destination?.longitude,
+              latitude: parseFloat(destination?.latitude),
+              longitude: parseFloat(destination?.longitude),
             }}
           />
-        </MapView>
+          </MapView>
+        ) : null}
         <View style={styles.separator} />
         <>
           <ScrollView
