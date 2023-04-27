@@ -143,7 +143,7 @@ const Events = (navigation: any, events: Array<any>, places: Array<any>) => (
             name={item?.name}
             info={item?.date}
             image={
-              item?.places && item?.places?.length !== 0
+              item?.places && item?.places?.length !== 0 && item?.places[0]?.image_url
                 ? {uri: item?.places[0]?.image_url}
                 : icons.defaultIcon
             }
