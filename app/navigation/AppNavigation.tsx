@@ -1,6 +1,7 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
+import {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 
 import NavBar from '../ui/components/NavBar';
 import LoginScreen from '../ui/authScreens/LogIn';
@@ -12,6 +13,8 @@ import SelectDestinations from '../ui/createScreens/SelectDestinations';
 import Place from '../ui/screens/Place';
 import Event from '../ui/screens/Event';
 import Settings from '../ui/screens/Settings';
+import LiveCategory from '../ui/screens/LiveCategory';
+import LiveCategorySettings from '../ui/screens/LiveCategorySettings';
 
 interface AppNavigationProps {
   isLoggedIn: boolean;
@@ -48,29 +51,37 @@ const MainStack = createStackNavigator();
 const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
   return isLoggedIn ? (
     <NavigationContainer>
-      <MainStack.Navigator initialRouteName="Main">
-        {tabStack()}
-        {createStack()}
-        {placeStackScreen()}
-        {eventStackScreen()}
-        {settingsStackScreen()}
-        {loginStackScreen()}
-        {signUpStackScreen()}
-        {forgetPassStackScreen()}
-      </MainStack.Navigator>
+      <BottomSheetModalProvider>
+        <MainStack.Navigator initialRouteName="Main">
+          {tabStack()}
+          {createStack()}
+          {placeStackScreen()}
+          {eventStackScreen()}
+          {settingsStackScreen()}
+          {loginStackScreen()}
+          {signUpStackScreen()}
+          {forgetPassStackScreen()}
+          {liveCategoryStackScreen()}
+          {liveCategorySettingsStackScreen()}
+        </MainStack.Navigator>
+      </BottomSheetModalProvider>
     </NavigationContainer>
   ) : (
     <NavigationContainer>
-      <MainStack.Navigator initialRouteName="Main">
-        {loginStackScreen()}
-        {signUpStackScreen()}
-        {forgetPassStackScreen()}
-        {tabStack()}
-        {createStack()}
-        {placeStackScreen()}
-        {eventStackScreen()}
-        {settingsStackScreen()}
-      </MainStack.Navigator>
+      <BottomSheetModalProvider>
+        <MainStack.Navigator initialRouteName="Main">
+          {loginStackScreen()}
+          {signUpStackScreen()}
+          {forgetPassStackScreen()}
+          {tabStack()}
+          {createStack()}
+          {placeStackScreen()}
+          {eventStackScreen()}
+          {settingsStackScreen()}
+          {liveCategoryStackScreen()}
+          {liveCategorySettingsStackScreen()}
+        </MainStack.Navigator>
+      </BottomSheetModalProvider>
     </NavigationContainer>
   );
 };
@@ -138,6 +149,26 @@ const eventStackScreen = () => {
     <MainStack.Screen
       name="Event"
       component={Event}
+      options={{headerShown: false}}
+    />
+  );
+};
+
+const liveCategoryStackScreen = () => {
+  return (
+    <MainStack.Screen
+      name="LiveCategory"
+      component={LiveCategory}
+      options={{headerShown: false}}
+    />
+  );
+};
+
+const liveCategorySettingsStackScreen = () => {
+  return (
+    <MainStack.Screen
+      name="LiveCategorySettings"
+      component={LiveCategorySettings}
       options={{headerShown: false}}
     />
   );

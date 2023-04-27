@@ -72,7 +72,7 @@ const PlaceCard: React.FC<Props> = ({
             <View style={[styles.blur, styles.nonBlur]} />
           )}
         </View>
-        <View>
+        <View style={styles.texts}>
           <Text numberOfLines={1} style={styles.name}>
             {name}
           </Text>
@@ -92,7 +92,7 @@ const PlaceCard: React.FC<Props> = ({
 
 const styles = StyleSheet.create({
   container: {
-    height: s(200),
+    aspectRatio: s(310) / s(200),
   },
   shadow: {
     position: 'absolute',
@@ -130,30 +130,37 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-  nonBlur: {backgroundColor: colors.white, opacity: 0.85},
+  nonBlur: {
+    backgroundColor: colors.white,
+    opacity: 0.85,
+  },
+  texts: {
+    width: '85%',
+  },
   name: {
     marginLeft: s(7),
-    width: s(260),
-    fontSize: s(18),
+    width: '100%',
+    fontSize: s(17),
     fontWeight: '700',
     color: colors.black,
   },
   info: {
     marginLeft: s(7),
-    fontSize: s(12),
+    fontSize: s(11),
     fontWeight: '500',
     color: colors.accent,
   },
   image: {
     position: 'absolute',
     width: '100%',
-    height: s(200),
+    aspectRatio: s(310) / s(200),
     borderWidth: 2,
     borderColor: colors.white,
     borderRadius: s(10),
     zIndex: -1,
   },
   icon: {
+    right: 0,
     marginRight: s(10),
     width: s(18),
     height: s(18),
