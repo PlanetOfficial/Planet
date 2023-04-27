@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -11,28 +11,37 @@ import {colors} from '../../constants/theme';
 import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
 import {s} from 'react-native-size-matters';
-import {genres} from '../../constants/genres';
 import {
   NestableScrollContainer,
   NestableDraggableFlatList,
 } from 'react-native-draggable-flatlist';
 
-const LiveCategorySettings = ({navigation, route}: {navigation: any; route: any;}) => {
+const LiveCategorySettings = ({
+  navigation,
+  route,
+}: {
+  navigation: any;
+  route: any;
+}) => {
   const [subcategories, setSubcategories]: [any, any] = useState(
     route?.params?.subcategories,
   );
 
-  const [hiddenSubCategories, setHiddenSubCategories]: [any, any] = useState(route?.params?.hiddenSubCategories);
+  const [hiddenSubCategories, setHiddenSubCategories]: [any, any] = useState(
+    route?.params?.hiddenSubCategories,
+  );
 
   return (
     <View style={styles.container}>
       <SafeAreaView style={headerStyles.container}>
         <TouchableOpacity
           style={headerStyles.button}
-          onPress={() => navigation.navigate('LiveCategory', {
-            subcategories,
-            hiddenSubCategories,
-          })}>
+          onPress={() =>
+            navigation.navigate('LiveCategory', {
+              subcategories,
+              hiddenSubCategories,
+            })
+          }>
           <Image style={headerStyles.back} source={icons.next} />
         </TouchableOpacity>
         <Text style={headerStyles.title}>{strings.filter.editView}</Text>
@@ -67,7 +76,10 @@ const LiveCategorySettings = ({navigation, route}: {navigation: any; route: any;
                       (subcategory: any) => subcategory.id !== item.id,
                     ),
                   );
-                  setHiddenSubCategories((_hiddenSubCategory: any) => [..._hiddenSubCategory, item]);
+                  setHiddenSubCategories((_hiddenSubCategory: any) => [
+                    ..._hiddenSubCategory,
+                    item,
+                  ]);
                 }}>
                 <Image style={categoryStyles.hide} source={icons.hide} />
               </TouchableOpacity>
@@ -96,9 +108,14 @@ const LiveCategorySettings = ({navigation, route}: {navigation: any; route: any;
               <TouchableOpacity
                 onPress={() => {
                   setHiddenSubCategories(
-                    hiddenSubCategories.filter((subcategory: any) => subcategory.id !== item.id),
+                    hiddenSubCategories.filter(
+                      (subcategory: any) => subcategory.id !== item.id,
+                    ),
                   );
-                  setSubcategories((_subcategories: any) => [..._subcategories, item]);
+                  setSubcategories((_subcategories: any) => [
+                    ..._subcategories,
+                    item,
+                  ]);
                 }}>
                 <Image style={categoryStyles.show} source={icons.plus} />
               </TouchableOpacity>

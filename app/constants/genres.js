@@ -443,7 +443,11 @@ export const genres = [
     ],
     filters: {
       radius: [5, 10, 15, 25],
-      time: [{name: 'Week', days: 7}, {name: 'Two Weeks', days: 14}, {name: 'Month', days: 30}],
+      time: [
+        {name: 'Week', days: 7},
+        {name: 'Two Weeks', days: 14},
+        {name: 'Month', days: 30},
+      ],
       sort: ['Relevance', 'Distance'],
     },
   },

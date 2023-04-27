@@ -1,5 +1,4 @@
 export interface Subcategory {
-    id: number;
-    title: String;
+  id: number;
+  title: String;
 }
-  

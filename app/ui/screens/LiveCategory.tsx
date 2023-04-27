@@ -15,16 +15,16 @@ import {s} from 'react-native-size-matters';
 import {genres} from '../../constants/genres';
 import PlaceCard from '../components/PlaceCard';
 import {ScrollView} from 'react-native-gesture-handler';
-import { getCatFiltered } from '../../utils/api/shared/getCatFiltered';
-import { integers } from '../../constants/numbers';
-import { Subcategory } from '../../utils/interfaces/subcategory';
+import {getCatFiltered} from '../../utils/api/shared/getCatFiltered';
+import {integers} from '../../constants/numbers';
+import {Subcategory} from '../../utils/interfaces/subcategory';
 
-const LiveCategory = ({navigation, route}: {navigation: any; route: any;}) => {
+const LiveCategory = ({navigation, route}: {navigation: any; route: any}) => {
   const [radiusDistance, setRadiusDistance] = useState(route?.params?.radius);
-  const [longitude, setLongitude] = useState(route?.params?.longitude);
-  const [latitude, setLatitude] = useState(route?.params?.latitude);
-  const [categoryId, setCategoryId] = useState(route?.params?.categoryId);
-  const [categoryName, setCategoryName] = useState(route?.params?.categoryName);
+  const [longitude] = useState(route?.params?.longitude);
+  const [latitude] = useState(route?.params?.latitude);
+  const [categoryId] = useState(route?.params?.categoryId);
+  const [categoryName] = useState(route?.params?.categoryName);
   const [daysToAdd, setDaysToAdd] = useState(integers.defaultDaysToAdd2);
   const [sortByDistance, setSortByDistance] = useState(false);
 
@@ -61,8 +61,9 @@ const LiveCategory = ({navigation, route}: {navigation: any; route: any;}) => {
 
   const handleRadiusOptionPress = (option: any) => {
     if (genres[0]?.filters?.radius[option]) {
-      const radiusInMeters = genres[0]?.filters?.radius[option] * integers.milesToMeters;
-      
+      const radiusInMeters =
+        genres[0]?.filters?.radius[option] * integers.milesToMeters;
+
       if (radiusInMeters <= integers.maxRadiusInMeters) {
         setRadiusDistance(radiusInMeters);
       } else {
@@ -75,7 +76,7 @@ const LiveCategory = ({navigation, route}: {navigation: any; route: any;}) => {
   };
   const handleTimeOptionPress = (option: any) => {
     if (genres[0]?.filters?.time[option]?.days) {
-      setDaysToAdd(genres[0].filters?.time[option].days)
+      setDaysToAdd(genres[0].filters?.time[option].days);
     }
 
     setTime(option);
@@ -83,7 +84,7 @@ const LiveCategory = ({navigation, route}: {navigation: any; route: any;}) => {
   };
   const handleSortOptionPress = (option: any) => {
     if (genres[0]?.filters?.sort[option] === 'Distance') {
-      setSortByDistance(true)
+      setSortByDistance(true);
     } else {
       setSortByDistance(false);
     }
@@ -102,10 +103,21 @@ const LiveCategory = ({navigation, route}: {navigation: any; route: any;}) => {
       if (route?.params?.subcategories) {
         setSubcategories(route?.params?.subcategories);
 
-        const subcategoryIds: number[] = route?.params?.subcategories?.map((item: any) => item.id);
+        const subcategoryIds: number[] = route?.params?.subcategories?.map(
+          (item: any) => item.id,
+        );
 
         setLoading(true);
-        const response = await getCatFiltered(subcategoryIds, integers.defaultNumPlaces, latitude, longitude, daysToAdd, radiusDistance, categoryId, sortByDistance);
+        const response = await getCatFiltered(
+          subcategoryIds,
+          integers.defaultNumPlaces,
+          latitude,
+          longitude,
+          daysToAdd,
+          radiusDistance,
+          categoryId,
+          sortByDistance,
+        );
         setPlaces(response?.places);
         setLoading(false);
       }
@@ -113,10 +125,19 @@ const LiveCategory = ({navigation, route}: {navigation: any; route: any;}) => {
       if (route?.params?.hiddenSubCategories) {
         setHiddenSubCategories(route?.params?.hiddenSubCategories);
       }
-    }
+    };
 
     initializeData();
-  }, [route?.params?.subcategories, radiusDistance, daysToAdd, sortByDistance]);
+  }, [
+    categoryId,
+    latitude,
+    longitude,
+    route?.params?.hiddenSubCategories,
+    route?.params?.subcategories,
+    radiusDistance,
+    daysToAdd,
+    sortByDistance,
+  ]);
 
   return (
     <View style={styles.container}>
@@ -129,10 +150,12 @@ const LiveCategory = ({navigation, route}: {navigation: any; route: any;}) => {
         <View style={headerStyles.row}>
           <Text style={headerStyles.title}>{categoryName}</Text>
           <TouchableOpacity
-            onPress={() => navigation.navigate('LiveCategorySettings', {
-              subcategories,
-              hiddenSubCategories,
-            })}>
+            onPress={() =>
+              navigation.navigate('LiveCategorySettings', {
+                subcategories,
+                hiddenSubCategories,
+              })
+            }>
             <Image style={headerStyles.settings} source={icons.settings} />
           </TouchableOpacity>
         </View>
@@ -359,23 +382,27 @@ const LiveCategory = ({navigation, route}: {navigation: any; route: any;}) => {
               style={categoryStyles.scrollView}
               horizontal={true}
               showsHorizontalScrollIndicator={false}>
-              {places[subcategory?.id] ? places[subcategory?.id].map((dest: any, jdx: number) => (
-                <TouchableOpacity
-                  style={categoryStyles.card}
-                  key={jdx}
-                  onPress={() => navigation.navigate('Place', {
-                    destination: dest,
-                    category: categoryName,
-                  })}>
-                  <PlaceCard
-                    id={dest?.id}
-                    name={dest?.name}
-                    info={dest?.date}
-                    marked={dest?.marked}
-                    image={{uri: dest?.image_url}}
-                  />
-                </TouchableOpacity>
-              )) : null}
+              {places[subcategory?.id]
+                ? places[subcategory?.id].map((dest: any, jdx: number) => (
+                    <TouchableOpacity
+                      style={categoryStyles.card}
+                      key={jdx}
+                      onPress={() =>
+                        navigation.navigate('Place', {
+                          destination: dest,
+                          category: categoryName,
+                        })
+                      }>
+                      <PlaceCard
+                        id={dest?.id}
+                        name={dest?.name}
+                        info={dest?.date}
+                        marked={dest?.marked}
+                        image={{uri: dest?.image_url}}
+                      />
+                    </TouchableOpacity>
+                  ))
+                : null}
             </ScrollView>
             <Spacer />
           </View>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -17,14 +17,14 @@ import {s} from 'react-native-size-matters';
 import {genres} from '../../constants/genres';
 import PlaceCard from '../components/PlaceCard';
 import Geolocation from '@react-native-community/geolocation';
-import { floats, integers } from '../../constants/numbers';
-import { requestLocations } from '../../utils/api/CreateCalls/requestLocations';
-import { Subcategory } from '../../utils/interfaces/subcategory';
+import {floats, integers} from '../../constants/numbers';
+import {requestLocations} from '../../utils/api/CreateCalls/requestLocations';
+import {Subcategory} from '../../utils/interfaces/subcategory';
 
 const Trending = ({navigation}: {navigation: any}) => {
   const [latitude, setLatitude] = useState(floats.defaultLatitude);
   const [longitude, setLongitude] = useState(floats.defaultLongitude);
-  const [radius, setRadius] = useState(floats.defaultRadius);
+  const [radius] = useState(floats.defaultRadius);
   const [eventsData, setEventsData]: [any, any] = useState([]);
 
   useEffect(() => {
@@ -46,22 +46,22 @@ const Trending = ({navigation}: {navigation: any}) => {
         }
       }
 
-      const requestAPI = async (latitude: number, longitude: number) => {
+      const requestAPI = async (_latitude: number, _longitude: number) => {
         const categoryIds = genres[0].categories.map(category => category.id);
 
         const liveEventData = await requestLocations(
           categoryIds,
           radius,
-          latitude,
-          longitude,
+          _latitude,
+          _longitude,
           integers.defaultNumPlaces,
         );
-  
+
         setEventsData(liveEventData);
-      }
+      };
 
       Geolocation.getCurrentPosition(
-        async (position) => {
+        async position => {
           setLatitude(position.coords.latitude);
           setLongitude(position.coords.longitude);
           requestAPI(position.coords.latitude, position.coords.longitude);
@@ -77,7 +77,7 @@ const Trending = ({navigation}: {navigation: any}) => {
     };
 
     detectLocation();
-  }, []);
+  }, [radius]);
 
   return (
     <SafeAreaView testID="trendingScreenView" style={styles.container}>
@@ -125,7 +125,7 @@ const Trending = ({navigation}: {navigation: any}) => {
                     categoryName: category.name,
                     latitude,
                     longitude,
-                    radius
+                    radius,
                   });
                 }}>
                 <Text style={categoryStyles.seeAll}>
@@ -138,23 +138,27 @@ const Trending = ({navigation}: {navigation: any}) => {
               style={categoryStyles.scrollView}
               horizontal={true}
               showsHorizontalScrollIndicator={false}>
-              {eventsData[category.id] ? eventsData[category.id].map((item: any, jdx: number) => (
-                <TouchableOpacity
-                  style={categoryStyles.card}
-                  key={jdx}
-                  onPress={() => navigation.navigate('Place', {
-                    destination: item,
-                    category: item?.category?.name,
-                  })}>
-                  <PlaceCard
-                    id={item?.id}
-                    name={item?.name}
-                    info={item?.date}
-                    marked={item?.marked}
-                    image={{uri: item?.image_url}}
-                  />
-                </TouchableOpacity>
-              )) : null}
+              {eventsData[category.id]
+                ? eventsData[category.id].map((item: any, jdx: number) => (
+                    <TouchableOpacity
+                      style={categoryStyles.card}
+                      key={jdx}
+                      onPress={() =>
+                        navigation.navigate('Place', {
+                          destination: item,
+                          category: item?.category?.name,
+                        })
+                      }>
+                      <PlaceCard
+                        id={item?.id}
+                        name={item?.name}
+                        info={item?.date}
+                        marked={item?.marked}
+                        image={{uri: item?.image_url}}
+                      />
+                    </TouchableOpacity>
+                  ))
+                : null}
             </ScrollView>
             {idx === genres[0].categories.length - 1 ? (
               <View style={styles.bottomPadding} />

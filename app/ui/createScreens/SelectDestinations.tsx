@@ -33,7 +33,7 @@ import {getMarkerArray} from '../../utils/functions/Misc';
 import {MarkerObject} from '../../utils/interfaces/MarkerObject';
 import {sendEvent} from '../../utils/api/CreateCalls/sendEvent';
 import {ScrollView} from 'react-native-gesture-handler';
-import { integers } from '../../constants/numbers';
+import {integers} from '../../constants/numbers';
 
 const SelectDestinations = ({
   navigation,

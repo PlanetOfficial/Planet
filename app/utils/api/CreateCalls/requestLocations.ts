@@ -1,5 +1,5 @@
-import { integers } from '../../../constants/numbers';
-import { addDaysToToday } from '../../functions/Misc';
+import {integers} from '../../../constants/numbers';
+import {addDaysToToday} from '../../functions/Misc';
 import {CustomCallsURL} from '../APIConstants';
 
 export const requestLocations = async (
