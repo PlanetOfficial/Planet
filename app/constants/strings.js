@@ -64,6 +64,9 @@ const strings = {
     eventStatus: 'Event Status',
     eventSpan: 'Event spans multiple days',
     eventUrl: 'Tap for more information',
+    moveUp: 'Move Up',
+    moveDown: 'Move Down',
+    remove: 'Remove',
   },
   settings: {
     name: 'Name',
@@ -79,9 +82,28 @@ const strings = {
     profile: 'Profile',
     settings: 'Settings',
   },
+  friends: {
+    createPrompt: 'Create a Friend Group',
+    addPrompt: 'Add an Event',
+    likes: 'Likes',
+    dislikes: 'Dislikes',
+  },
   library: {
     saved: 'Saved',
     events: 'Events',
+    edit: 'Edit',
+    save: 'Save',
+    backConfirmation: 'Are you sure you want to go back?',
+    discard: 'Discard',
+    keepEditing: 'Keep Editing',
+    addDestination: 'Add a Destination',
+    addByCategory: 'Add a Category',
+    addFromLibrary: 'Add from Library',
+    addCustom: 'Add a Custom Destination',
+    add: 'Add',
+    filter: 'Filter',
+    setCustomLocation: 'Set a custom location',
+    promptSearch: 'Search for a place or type in a custom destination above',
   },
   profile: {
     followers: 'followers',
@@ -91,6 +113,9 @@ const strings = {
     in: 'in',
     seeAll: 'See All',
   },
+  misc: {
+    maxRating: '5',
+  },
   filter: {
     all: 'All Categories',
     within: 'Within',
@@ -99,9 +124,9 @@ const strings = {
     editView: 'Edit View',
     visible: 'Visible',
     hidden: 'Hidden',
-  },
-  misc: {
-    maxRating: '5',
+    categories: 'Filter Categories',
+    clear: 'Clear',
+    apply: 'Apply',
   },
 };
 

@@ -51,9 +51,9 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
     <SafeAreaView style={styles.container}>
       <View style={headerStyles.container}>
         <TouchableOpacity
-          style={headerStyles.next}
+          style={headerStyles.back}
           onPress={() => navigation.goBack()}>
-          <Image style={headerStyles.icon} source={icons.next} />
+          <Image style={headerStyles.icon} source={icons.back} />
         </TouchableOpacity>
         <View style={headerStyles.texts}>
           <Text style={headerStyles.title}>{destination?.name}</Text>
@@ -64,21 +64,23 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
         </View>
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <MapView
-          style={styles.map}
-          initialRegion={{
-            latitude: destination?.latitude,
-            longitude: destination?.longitude,
-            latitudeDelta: floats.defaultLatitudeDelta,
-            longitudeDelta: floats.defaultLongitudeDelta,
-          }}>
-          <Marker
-            coordinate={{
-              latitude: destination?.latitude,
-              longitude: destination?.longitude,
-            }}
-          />
-        </MapView>
+        {destination?.latitude && destination?.longitude ? (
+          <MapView
+            style={styles.map}
+            initialRegion={{
+              latitude: parseFloat(destination?.latitude),
+              longitude: parseFloat(destination?.longitude),
+              latitudeDelta: floats.defaultLatitudeDelta,
+              longitudeDelta: floats.defaultLongitudeDelta,
+            }}>
+            <Marker
+              coordinate={{
+                latitude: parseFloat(destination?.latitude),
+                longitude: parseFloat(destination?.longitude),
+              }}
+            />
+          </MapView>
+        ) : null}
         <View style={styles.separator} />
         <>
           <ScrollView
@@ -268,10 +270,9 @@ const headerStyles = StyleSheet.create({
     fontWeight: '600',
     color: colors.accent,
   },
-  next: {
+  back: {
     width: s(18),
     height: s(18),
-    transform: [{rotate: '180deg'}],
   },
   icon: {
     width: '100%',

@@ -12,7 +12,9 @@ import SelectCategories from '../ui/createScreens/SelectCategories';
 import SelectDestinations from '../ui/createScreens/SelectDestinations';
 import Place from '../ui/screens/Place';
 import Event from '../ui/screens/Event';
+import FGEvent from '../ui/screens/FGEvent';
 import Settings from '../ui/screens/Settings';
+import CreateFG from '../ui/screens/CreateFriendGroup';
 import LiveCategory from '../ui/screens/LiveCategory';
 import LiveCategorySettings from '../ui/screens/LiveCategorySettings';
 
@@ -57,12 +59,14 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {createStack()}
           {placeStackScreen()}
           {eventStackScreen()}
+          {fgEventStackScreen()}
           {settingsStackScreen()}
+          {createFGStackScreen()}
+          {liveCategoryStackScreen()}
+          {liveCategorySettingsStackScreen()}
           {loginStackScreen()}
           {signUpStackScreen()}
           {forgetPassStackScreen()}
-          {liveCategoryStackScreen()}
-          {liveCategorySettingsStackScreen()}
         </MainStack.Navigator>
       </BottomSheetModalProvider>
     </NavigationContainer>
@@ -77,7 +81,9 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {createStack()}
           {placeStackScreen()}
           {eventStackScreen()}
+          {fgEventStackScreen()}
           {settingsStackScreen()}
+          {createFGStackScreen()}
           {liveCategoryStackScreen()}
           {liveCategorySettingsStackScreen()}
         </MainStack.Navigator>
@@ -154,6 +160,16 @@ const eventStackScreen = () => {
   );
 };
 
+const fgEventStackScreen = () => {
+  return (
+    <MainStack.Screen
+      name="FGEvent"
+      component={FGEvent}
+      options={{headerShown: false}}
+    />
+  );
+};
+
 const liveCategoryStackScreen = () => {
   return (
     <MainStack.Screen
@@ -179,6 +195,16 @@ const settingsStackScreen = () => {
     <MainStack.Screen
       name="Settings"
       component={Settings}
+      options={{headerShown: false}}
+    />
+  );
+};
+
+const createFGStackScreen = () => {
+  return (
+    <MainStack.Screen
+      name="CreateFG"
+      component={CreateFG}
       options={{headerShown: false}}
     />
   );
