@@ -46,35 +46,38 @@ const Trending = ({navigation}: {navigation: any}) => {
         }
       }
 
+      const requestAPI = async (latitude: number, longitude: number) => {
+        const categoryIds = genres[0].categories.map(category => category.id);
+
+        const liveEventData = await requestLocations(
+          categoryIds,
+          radius,
+          latitude,
+          longitude,
+          integers.defaultNumPlaces,
+        );
+  
+        setEventsData(liveEventData);
+      }
+
       Geolocation.getCurrentPosition(
-        position => {
+        async (position) => {
           setLatitude(position.coords.latitude);
           setLongitude(position.coords.longitude);
+          requestAPI(position.coords.latitude, position.coords.longitude);
         },
         (error: any) => {
           console.log(error);
+
+          setLatitude(floats.defaultLatitude);
+          setLongitude(floats.defaultLongitude);
+          requestAPI(floats.defaultLatitude, floats.defaultLongitude);
         },
       );
     };
 
-    const loadTrending = async () => {
-      await detectLocation();
-
-      const categoryIds = genres[0].categories.map(category => category.id);
-
-      const liveEventData = await requestLocations(
-        categoryIds,
-        radius,
-        latitude,
-        longitude,
-        integers.defaultNumPlaces,
-      );
-
-      setEventsData(liveEventData);
-    };
-
-    loadTrending();
-  }, [latitude, longitude]);
+    detectLocation();
+  }, []);
 
   return (
     <SafeAreaView testID="trendingScreenView" style={styles.container}>
