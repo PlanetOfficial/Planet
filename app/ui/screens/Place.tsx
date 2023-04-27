@@ -72,14 +72,13 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
               longitude: parseFloat(destination?.longitude),
               latitudeDelta: floats.defaultLatitudeDelta,
               longitudeDelta: floats.defaultLongitudeDelta,
-            }}
-          >
-          <Marker
-            coordinate={{
-              latitude: parseFloat(destination?.latitude),
-              longitude: parseFloat(destination?.longitude),
-            }}
-          />
+            }}>
+            <Marker
+              coordinate={{
+                latitude: parseFloat(destination?.latitude),
+                longitude: parseFloat(destination?.longitude),
+              }}
+            />
           </MapView>
         ) : null}
         <View style={styles.separator} />

@@ -34,12 +34,10 @@ export const icons = {
   tick: require('../assets/icons/tick.png'),
   filter: require('../assets/icons/filter.png'),
   option: require('../assets/icons/option.png'),
-  filter: require('../assets/icons/filter.png'),
   drag: require('../assets/icons/drag.png'),
   plus: require('../assets/icons/plus.png'),
   minus: require('../assets/icons/minus.png'),
   hide: require('../assets/icons/hide.png'),
-  tick: require('../assets/icons/tick.png'),
 };
 
 export const vectors = {
