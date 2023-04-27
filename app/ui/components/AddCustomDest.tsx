@@ -35,11 +35,9 @@ const AddCustomDest = ({onClose, onSelect}: {onClose: any; onSelect: any}) => {
     <View
       style={styles.container}
       onTouchEnd={() => {
-        setTimeout(() => {
-          if (autocompleteRef.current?.getAddressText() === '') {
-            setSelected(false);
-          }
-        }, 50);
+        if (autocompleteRef.current?.getAddressText() === '') {
+          setSelected(false);
+        }
       }}>
       <View style={headerStyles.container}>
         <Text style={headerStyles.title}>{strings.library.addCustom}</Text>
@@ -52,15 +50,13 @@ const AddCustomDest = ({onClose, onSelect}: {onClose: any; onSelect: any}) => {
         textInputProps={{
           selectTextOnFocus: true,
           onFocus: () => {
+            setCustom(true);
             setSelected(false);
           },
           onBlur(e) {
             if (e.nativeEvent.text !== '') {
+              console.log(e.nativeEvent);
               setSelected(true);
-              setCustom(
-                e.nativeEvent.text !==
-                  destination?.name + ', ' + destination?.address,
-              );
             }
           },
         }}
@@ -86,9 +82,7 @@ const AddCustomDest = ({onClose, onSelect}: {onClose: any; onSelect: any}) => {
               latitude: details.geometry.location.lat,
               longitude: details.geometry.location.lng,
             });
-            setTimeout(() => {
-              setCustom(false);
-            }, 10);
+            setCustom(false);
           }
         }}
         query={{
@@ -99,7 +93,6 @@ const AddCustomDest = ({onClose, onSelect}: {onClose: any; onSelect: any}) => {
         isRowScrollable={false}
         enablePoweredByContainer={false}
         fetchDetails={true}
-        numberOfLines={10}
         styles={{
           container: searchStyles.container,
           textInputContainer: searchStyles.textInputContainer,
@@ -123,12 +116,14 @@ const AddCustomDest = ({onClose, onSelect}: {onClose: any; onSelect: any}) => {
               region={region}
               onRegionChangeComplete={setRegion}
               onPress={e =>
-                setDestination({
-                  name: autocompleteRef.current?.getAddressText(),
-                  address: 'Custom Event',
-                  latitude: e.nativeEvent.coordinate.latitude,
-                  longitude: e.nativeEvent.coordinate.longitude,
-                })
+                custom
+                  ? setDestination({
+                      name: autocompleteRef.current?.getAddressText(),
+                      address: 'Custom Event',
+                      latitude: e.nativeEvent.coordinate.latitude,
+                      longitude: e.nativeEvent.coordinate.longitude,
+                    })
+                  : null
               }>
               <Marker
                 coordinate={{

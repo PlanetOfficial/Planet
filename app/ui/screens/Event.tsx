@@ -373,51 +373,47 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
                         </View>
                       )}
                       snapPointsLeft={[s(60)]}>
-                      {item.categoryId ? (
-                        <Text>Category</Text>
-                      ) : (
-                        <TouchableOpacity
-                          key={item.id}
-                          style={[
-                            placesEditStyles.card,
-                            dragging &&
-                              !isActive &&
-                              placesEditStyles.transparentCard,
-                          ]}
-                          onLongPress={drag}
-                          delayLongPress={400}
-                          disabled={dragging && !isActive}
-                          onPressIn={() => {
-                            itemRefs.current.forEach((value, key) => {
-                              if (key !== item.id) {
-                                value?.close();
-                              }
-                            });
-                            childRefs.current.forEach(value => {
-                              value?.closeDropdown();
-                            });
-                          }}
-                          onPress={() => {
-                            navigation.navigate('Place', {
-                              destination: item,
-                              category: item?.category?.name,
-                            });
-                          }}>
-                          <PlaceCard
-                            id={item?.id}
-                            name={item?.name}
-                            info={item?.category?.name}
-                            marked={bookmarks?.includes(item?.id)}
-                            image={
-                              item?.image_url
-                                ? {
-                                    uri: item?.image_url,
-                                  }
-                                : icons.defaultIcon
+                      <TouchableOpacity
+                        key={item.id}
+                        style={[
+                          placesEditStyles.card,
+                          dragging &&
+                            !isActive &&
+                            placesEditStyles.transparentCard,
+                        ]}
+                        onLongPress={drag}
+                        delayLongPress={400}
+                        disabled={dragging && !isActive}
+                        onPressIn={() => {
+                          itemRefs.current.forEach((value, key) => {
+                            if (key !== item.id) {
+                              value?.close();
                             }
-                          />
-                        </TouchableOpacity>
-                      )}
+                          });
+                          childRefs.current.forEach(value => {
+                            value?.closeDropdown();
+                          });
+                        }}
+                        onPress={() => {
+                          navigation.navigate('Place', {
+                            destination: item,
+                            category: item?.category?.name,
+                          });
+                        }}>
+                        <PlaceCard
+                          id={item?.id}
+                          name={item?.name}
+                          info={item?.category?.name}
+                          marked={bookmarks?.includes(item?.id)}
+                          image={
+                            item?.image_url
+                              ? {
+                                  uri: item?.image_url,
+                                }
+                              : icons.defaultIcon
+                          }
+                        />
+                      </TouchableOpacity>
                     </SwipeableItem>
                   </View>
                 )}
