@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -22,7 +22,7 @@ const LiveCategorySettings = ({navigation, route}: {navigation: any; route: any;
     route?.params?.subcategories,
   );
 
-  const [hidden, setHidden]: [any, any] = useState([]);
+  const [hiddenSubCategories, setHiddenSubCategories]: [any, any] = useState(route?.params?.hiddenSubCategories);
 
   return (
     <View style={styles.container}>
@@ -31,6 +31,7 @@ const LiveCategorySettings = ({navigation, route}: {navigation: any; route: any;
           style={headerStyles.button}
           onPress={() => navigation.navigate('LiveCategory', {
             subcategories,
+            hiddenSubCategories,
           })}>
           <Image style={headerStyles.back} source={icons.next} />
         </TouchableOpacity>
@@ -66,7 +67,7 @@ const LiveCategorySettings = ({navigation, route}: {navigation: any; route: any;
                       (subcategory: any) => subcategory.id !== item.id,
                     ),
                   );
-                  setHidden((_hidden: any) => [..._hidden, item]);
+                  setHiddenSubCategories((_hiddenSubCategory: any) => [..._hiddenSubCategory, item]);
                 }}>
                 <Image style={categoryStyles.hide} source={icons.hide} />
               </TouchableOpacity>
@@ -88,14 +89,14 @@ const LiveCategorySettings = ({navigation, route}: {navigation: any; route: any;
           <Text style={styles.header}>{strings.filter.hidden}:</Text>
         </View>
         <NestableDraggableFlatList
-          data={hidden}
+          data={hiddenSubCategories}
           renderItem={({item}: {item: any}) => (
             <View style={categoryStyles.container}>
               <View style={categoryStyles.border} />
               <TouchableOpacity
                 onPress={() => {
-                  setHidden(
-                    hidden.filter((subcategory: any) => subcategory.id !== item.id),
+                  setHiddenSubCategories(
+                    hiddenSubCategories.filter((subcategory: any) => subcategory.id !== item.id),
                   );
                   setSubcategories((_subcategories: any) => [..._subcategories, item]);
                 }}>

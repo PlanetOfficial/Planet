@@ -25,9 +25,13 @@ const LiveCategory = ({navigation, route}: {navigation: any; route: any;}) => {
   const [latitude, setLatitude] = useState(route?.params?.latitude);
   const [categoryId, setCategoryId] = useState(route?.params?.categoryId);
   const [categoryName, setCategoryName] = useState(route?.params?.categoryName);
+  const [daysToAdd, setDaysToAdd] = useState(integers.defaultDaysToAdd2);
+  const [sortByDistance, setSortByDistance] = useState(false);
+
+  const [subcategories, setSubcategories] = useState([]);
+  const [hiddenSubCategories, setHiddenSubCategories] = useState([]);
 
   const [places, setPlaces]: [any, any] = useState({});
-  const [subcategories, setSubcategories] = useState([]);
 
   const [loading, setLoading] = useState(false);
 
@@ -56,14 +60,34 @@ const LiveCategory = ({navigation, route}: {navigation: any; route: any;}) => {
   };
 
   const handleRadiusOptionPress = (option: any) => {
+    if (genres[0]?.filters?.radius[option]) {
+      const radiusInMeters = genres[0]?.filters?.radius[option] * integers.milesToMeters;
+      
+      if (radiusInMeters <= integers.maxRadiusInMeters) {
+        setRadiusDistance(radiusInMeters);
+      } else {
+        setRadiusDistance(integers.maxRadiusInMeters);
+      }
+    }
+
     setRadius(option);
     closeDropdown();
   };
   const handleTimeOptionPress = (option: any) => {
+    if (genres[0]?.filters?.time[option]?.days) {
+      setDaysToAdd(genres[0].filters?.time[option].days)
+    }
+
     setTime(option);
     closeDropdown();
   };
   const handleSortOptionPress = (option: any) => {
+    if (genres[0]?.filters?.sort[option] === 'Distance') {
+      setSortByDistance(true)
+    } else {
+      setSortByDistance(false);
+    }
+
     setSort(option);
     closeDropdown();
   };
@@ -81,14 +105,18 @@ const LiveCategory = ({navigation, route}: {navigation: any; route: any;}) => {
         const subcategoryIds: number[] = route?.params?.subcategories?.map((item: any) => item.id);
 
         setLoading(true);
-        const response = await getCatFiltered(subcategoryIds, integers.defaultNumPlaces, latitude, longitude, integers.defaultDaysToAdds, radiusDistance, categoryId);
+        const response = await getCatFiltered(subcategoryIds, integers.defaultNumPlaces, latitude, longitude, daysToAdd, radiusDistance, categoryId, sortByDistance);
         setPlaces(response?.places);
         setLoading(false);
+      }
+
+      if (route?.params?.hiddenSubCategories) {
+        setHiddenSubCategories(route?.params?.hiddenSubCategories);
       }
     }
 
     initializeData();
-  }, [route?.params?.subcategories]);
+  }, [route?.params?.subcategories, radiusDistance, daysToAdd, sortByDistance]);
 
   return (
     <View style={styles.container}>
@@ -103,6 +131,7 @@ const LiveCategory = ({navigation, route}: {navigation: any; route: any;}) => {
           <TouchableOpacity
             onPress={() => navigation.navigate('LiveCategorySettings', {
               subcategories,
+              hiddenSubCategories,
             })}>
             <Image style={headerStyles.settings} source={icons.settings} />
           </TouchableOpacity>
@@ -188,7 +217,7 @@ const LiveCategory = ({navigation, route}: {navigation: any; route: any;}) => {
                 ]}>
                 {strings.filter.inTheNext +
                   ': ' +
-                  genres[0].filters?.time[time]}
+                  genres[0].filters?.time[time]?.name}
               </Text>
               <View style={filterStyles.drop}>
                 <Image
@@ -279,7 +308,7 @@ const LiveCategory = ({navigation, route}: {navigation: any; route: any;}) => {
                 <TouchableOpacity
                   style={dropdownStyles.option}
                   onPress={() => handleTimeOptionPress(idx)}>
-                  <Text style={dropdownStyles.text}>{option}</Text>
+                  <Text style={dropdownStyles.text}>{option.name}</Text>
                   {idx === time && (
                     <Image style={dropdownStyles.check} source={icons.tick} />
                   )}
@@ -330,17 +359,20 @@ const LiveCategory = ({navigation, route}: {navigation: any; route: any;}) => {
               style={categoryStyles.scrollView}
               horizontal={true}
               showsHorizontalScrollIndicator={false}>
-              {places[subcategory?.id] ? places[subcategory?.id].map((item: any, jdx: number) => (
+              {places[subcategory?.id] ? places[subcategory?.id].map((dest: any, jdx: number) => (
                 <TouchableOpacity
                   style={categoryStyles.card}
                   key={jdx}
-                  onPress={() => console.log("Lavy's backend magic")}>
+                  onPress={() => navigation.navigate('Place', {
+                    destination: dest,
+                    category: categoryName,
+                  })}>
                   <PlaceCard
-                    id={item?.id}
-                    name={item?.name}
-                    info={item?.date}
-                    marked={item?.marked}
-                    image={{uri: item?.image_url}}
+                    id={dest?.id}
+                    name={dest?.name}
+                    info={dest?.date}
+                    marked={dest?.marked}
+                    image={{uri: dest?.image_url}}
                   />
                 </TouchableOpacity>
               )) : null}

@@ -1,8 +1,9 @@
 export const integers = {
   milesToMeters: 1609,
   borderWidth: 2,
-  maxRadiusInMeters: 100000,
+  maxRadiusInMeters: 40000,
   defaultDaysToAdds: 14,
+  defaultDaysToAdd2: 7,
   defaultNumPlaces: 5,
 };
 

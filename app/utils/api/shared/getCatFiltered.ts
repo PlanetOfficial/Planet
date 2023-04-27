@@ -9,6 +9,7 @@ export const getCatFiltered = async (
 	daysUpperBound: number,
 	radius: number,
 	category_id: number,
+	sortByDistance: boolean,
 ) => {
   // TODO: filter inputs**
 
@@ -20,7 +21,7 @@ export const getCatFiltered = async (
 
 	const dateString = addDaysToToday(daysUpperBound);
 
-  const response = await fetch(CustomCallsURL + `/category_filter?${subcategoryString}count=${count}&latitude=${latitude}&longitude=${longitude}&latest_event_date=${dateString}&radius=${radius}&category_id=${category_id}`, {
+  const response = await fetch(CustomCallsURL + `/category_filter?${subcategoryString}count=${count}&latitude=${latitude}&longitude=${longitude}&latest_event_date=${dateString}&radius=${radius}&category_id=${category_id}&sort_by_distance=${sortByDistance}`, {
     method: 'GET',
   });
 

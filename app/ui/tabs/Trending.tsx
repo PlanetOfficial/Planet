@@ -19,6 +19,7 @@ import PlaceCard from '../components/PlaceCard';
 import Geolocation from '@react-native-community/geolocation';
 import { floats, integers } from '../../constants/numbers';
 import { requestLocations } from '../../utils/api/CreateCalls/requestLocations';
+import { Subcategory } from '../../utils/interfaces/subcategory';
 
 const Trending = ({navigation}: {navigation: any}) => {
   const [latitude, setLatitude] = useState(floats.defaultLatitude);
@@ -98,19 +99,32 @@ const Trending = ({navigation}: {navigation: any}) => {
         </TouchableOpacity>
       </View>
       <ScrollView>
-        {genres[0].categories.map((category, idx: number) => (
+        {genres[0].categories.map((category: any, idx: number) => (
           <View key={idx} style={categoryStyles.container}>
             <View style={categoryStyles.header}>
               <Text style={categoryStyles.title}>{category.name}</Text>
               <TouchableOpacity
-                onPress={() => navigation.navigate('LiveCategory', {
-                  subcategories: category.subcategories,
-                  categoryId: category.id,
-                  categoryName: category.name,
-                  latitude,
-                  longitude,
-                  radius
-                })}>
+                onPress={() => {
+                  let defaultSubcategories: Subcategory[] = [];
+                  let hiddenSubCategories = [];
+
+                  if (category?.subcategories?.length <= 5) {
+                    defaultSubcategories = category.subcategories;
+                  } else {
+                    defaultSubcategories = category?.subcategories?.slice(0, 5);
+                    hiddenSubCategories = category?.subcategories?.slice(5);
+                  }
+
+                  navigation.navigate('LiveCategory', {
+                    subcategories: defaultSubcategories,
+                    hiddenSubCategories,
+                    categoryId: category.id,
+                    categoryName: category.name,
+                    latitude,
+                    longitude,
+                    radius
+                  });
+                }}>
                 <Text style={categoryStyles.seeAll}>
                   {strings.trending.seeAll}
                 </Text>
