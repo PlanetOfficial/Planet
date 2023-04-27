@@ -10,6 +10,31 @@ export const genres = [
         icon: require('../assets/categories/concert.png'),
         subcategories: [
           {
+            id: 12,
+            alias: 'KnvZfZ7vAev',
+            title: 'Pop',
+          },
+          {
+            id: 13,
+            alias: 'KnvZfZ7vAee',
+            title: 'R&B',
+          },
+          {
+            id: 3,
+            alias: 'KnvZfZ7vAv6',
+            title: 'Country',
+          },
+          {
+            id: 6,
+            alias: 'KnvZfZ7vAv1',
+            title: 'Hip-Hop/Rap',
+          },
+          {
+            id: 8,
+            alias: 'KnvZfZ7vAvE',
+            title: 'Jazz',
+          },
+          {
             id: 1,
             alias: 'KnvZfZ7vAvd',
             title: 'Blues',
@@ -18,11 +43,6 @@ export const genres = [
             id: 2,
             alias: 'KnvZfZ7vAeJ',
             title: 'Classical',
-          },
-          {
-            id: 3,
-            alias: 'KnvZfZ7vAv6',
-            title: 'Country',
           },
           {
             id: 4,
@@ -35,19 +55,9 @@ export const genres = [
             title: 'Folk',
           },
           {
-            id: 6,
-            alias: 'KnvZfZ7vAv1',
-            title: 'Hip-Hop/Rap',
-          },
-          {
             id: 7,
             alias: 'KnvZfZ7vAvJ',
             title: 'Holiday',
-          },
-          {
-            id: 8,
-            alias: 'KnvZfZ7vAvE',
-            title: 'Jazz',
           },
           {
             id: 9,
@@ -65,16 +75,6 @@ export const genres = [
             title: 'New Age',
           },
           {
-            id: 12,
-            alias: 'KnvZfZ7vAev',
-            title: 'Pop',
-          },
-          {
-            id: 13,
-            alias: 'KnvZfZ7vAee',
-            title: 'R&B',
-          },
-          {
             id: 14,
             alias: 'KnvZfZ7vAeA',
             title: 'Rock',
@@ -86,6 +86,36 @@ export const genres = [
         name: 'Sports',
         icon: require('../assets/categories/sport.png'),
         subcategories: [
+          {
+            id: 51,
+            alias: 'KnvZfZ7vA7E',
+            title: 'Soccer',
+          },
+          {
+            id: 19,
+            alias: 'KnvZfZ7vAdv',
+            title: 'Baseball',
+          },
+          {
+            id: 20,
+            alias: 'KnvZfZ7vAde',
+            title: 'Basketball',
+          },
+          {
+            id: 33,
+            alias: 'KnvZfZ7vAdE',
+            title: 'Football',
+          },
+          {
+            id: 57,
+            alias: 'KnvZfZ7vAAv',
+            title: 'Tennis',
+          },
+          {
+            id: 34,
+            alias: 'KnvZfZ7vAdt',
+            title: 'Golf',
+          },
           {
             id: 15,
             alias: 'KnvZfZ7vAeI',
@@ -105,16 +135,6 @@ export const genres = [
             id: 18,
             alias: 'KnvZfZ7vAel',
             title: 'Bandy',
-          },
-          {
-            id: 19,
-            alias: 'KnvZfZ7vAdv',
-            title: 'Baseball',
-          },
-          {
-            id: 20,
-            alias: 'KnvZfZ7vAde',
-            title: 'Basketball',
           },
           {
             id: 21,
@@ -175,16 +195,6 @@ export const genres = [
             id: 32,
             alias: 'KnvZfZ7vA1l',
             title: 'Floorball',
-          },
-          {
-            id: 33,
-            alias: 'KnvZfZ7vAdE',
-            title: 'Football',
-          },
-          {
-            id: 34,
-            alias: 'KnvZfZ7vAdt',
-            title: 'Golf',
           },
           {
             id: 35,
@@ -267,11 +277,6 @@ export const genres = [
             title: 'Skiing',
           },
           {
-            id: 51,
-            alias: 'KnvZfZ7vA7E',
-            title: 'Soccer',
-          },
-          {
             id: 52,
             alias: 'KnvZfZ7vAJd',
             title: 'Softball',
@@ -295,11 +300,6 @@ export const genres = [
             id: 56,
             alias: 'KnvZfZ7vA7l',
             title: 'Table Tennis',
-          },
-          {
-            id: 57,
-            alias: 'KnvZfZ7vAAv',
-            title: 'Tennis',
           },
           {
             id: 58,
@@ -344,6 +344,36 @@ export const genres = [
         icon: require('../assets/categories/arts-theater.png'),
         subcategories: [
           {
+            id: 81,
+            alias: 'KnvZfZ7v7l1',
+            title: 'Theatre',
+          },
+          {
+            id: 68,
+            alias: 'KnvZfZ7vAe1',
+            title: 'Comedy',
+          },
+          {
+            id: 70,
+            alias: 'KnvZfZ7v7nI',
+            title: 'Dance',
+          },
+          {
+            id: 72,
+            alias: 'KnvZfZ7v7nn',
+            title: 'Fashion',
+          },
+          {
+            id: 74,
+            alias: 'KnvZfZ7v7lv',
+            title: 'Magic & Illusion',
+          },
+          {
+            id: 73,
+            alias: 'KnvZfZ7v7nl',
+            title: 'Fine Art',
+          },
+          {
             id: 65,
             alias: 'KnvZfZ7v7na',
             title: "Children's Theatre",
@@ -359,39 +389,14 @@ export const genres = [
             title: 'Classical',
           },
           {
-            id: 68,
-            alias: 'KnvZfZ7vAe1',
-            title: 'Comedy',
-          },
-          {
             id: 69,
             alias: 'KnvZfZ7v7nE',
             title: 'Cultural',
           },
           {
-            id: 70,
-            alias: 'KnvZfZ7v7nI',
-            title: 'Dance',
-          },
-          {
             id: 71,
             alias: 'KnvZfZ7v7nt',
             title: 'Espectaculo',
-          },
-          {
-            id: 72,
-            alias: 'KnvZfZ7v7nn',
-            title: 'Fashion',
-          },
-          {
-            id: 73,
-            alias: 'KnvZfZ7v7nl',
-            title: 'Fine Art',
-          },
-          {
-            id: 74,
-            alias: 'KnvZfZ7v7lv',
-            title: 'Magic & Illusion',
           },
           {
             id: 75,
@@ -424,11 +429,6 @@ export const genres = [
             title: 'Spectacular',
           },
           {
-            id: 81,
-            alias: 'KnvZfZ7v7l1',
-            title: 'Theatre',
-          },
-          {
             id: 82,
             alias: 'KnvZfZ7v7lJ',
             title: 'Variety',
@@ -442,9 +442,13 @@ export const genres = [
       },
     ],
     filters: {
-      radius: [10, 25, 50, 100],
-      time: ['Week', 'Two Weeks', 'Month'],
-      sort: ['Relevance', 'Distance', 'Rating'],
+      radius: [5, 10, 15, 25],
+      time: [
+        {name: 'Week', days: 7},
+        {name: 'Two Weeks', days: 14},
+        {name: 'Month', days: 30},
+      ],
+      sort: ['Relevance', 'Distance'],
     },
   },
   {

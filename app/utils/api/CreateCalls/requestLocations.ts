@@ -1,3 +1,5 @@
+import {integers} from '../../../constants/numbers';
+import {addDaysToToday} from '../../functions/Misc';
 import {CustomCallsURL} from '../APIConstants';
 
 export const requestLocations = async (
@@ -15,9 +17,7 @@ export const requestLocations = async (
     categoryString += `categories_ids[]=${item}&`;
   });
 
-  const currentDate = new Date();
-  currentDate.setDate(currentDate.getDate() + 14);
-  const dateString = currentDate.toISOString().slice(0, 10);
+  const dateString = addDaysToToday(integers.defaultDaysToAdds);
 
   const response = await fetch(
     CustomCallsURL +

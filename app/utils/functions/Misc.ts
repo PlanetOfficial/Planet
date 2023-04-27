@@ -231,3 +231,10 @@ export const convertDateToMMDDYYYY = (date: string): string => {
 
   return `${month}/${day}/${year}`;
 };
+
+// gets the date in [days] days from today in the format like this: 2023-05-05
+export const addDaysToToday = (days: number): string => {
+  const currentDate = new Date();
+  currentDate.setDate(currentDate.getDate() + days);
+  return currentDate.toISOString().slice(0, 10);
+};
