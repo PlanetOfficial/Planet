@@ -11,6 +11,7 @@ import {
   Modal,
   Pressable,
   LayoutAnimation,
+  Platform
 } from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
 import {s, vs} from 'react-native-size-matters';
@@ -239,6 +240,8 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
         {editing ? (
           <View style={headerStyles.texts}>
             <TextInput
+              onFocus={() => Platform.OS === 'android' && bottomSheetRef.current?.close()}
+              onBlur={() => Platform.OS === 'android' && bottomSheetRef.current?.expand()}
               style={[headerStyles.name, headerStyles.underline]}
               value={tempTitle}
               onChangeText={(text: any) => setTempTitle(text)}
@@ -278,6 +281,8 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
       <BottomSheet
         ref={bottomSheetRef}
         index={0}
+        keyboardBehavior='extend'
+        android_keyboardInputMode="adjustPan"
         snapPoints={snapPoints}
         handleStyle={placesDisplayStyles.handle}
         handleIndicatorStyle={placesDisplayStyles.handleIndicator}
