@@ -10,6 +10,7 @@ import {
   FlatList,
 } from 'react-native';
 import {BottomSheetModal} from '@gorhom/bottom-sheet';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
@@ -72,13 +73,20 @@ const events = [
 ];
 
 const Friends = ({navigation}: {navigation: any}) => {
+  const insets = useSafeAreaInsets();
+
   const [friendGroup, setFriendGroup] = useState(0);
 
   const [fgBottomSheetOpen, setFgBottomSheetOpen] = useState(false);
   const fgBottomSheetRef: any = useRef<BottomSheetModal>(null);
   const fgSnapPoints = useMemo(
-    () => [Math.min(s(70) * (friendGroups.length + invitations.length) + s(120), vs(500))],
-    [],
+    () => [
+      Math.min(
+        s(70) * (friendGroups.length + invitations.length) + s(120),
+        vs(680) - s(60) - insets.top,
+      ),
+    ],
+    [insets.top],
   );
   const handleFgSheetChange = useCallback(
     (fromIndex: number, toIndex: number) => {
@@ -89,7 +97,7 @@ const Friends = ({navigation}: {navigation: any}) => {
 
   const [addBottomSheetOpen, setAddBottomSheetOpen] = useState(false);
   const addBottomSheetRef: any = useRef<BottomSheetModal>(null);
-  const addSnapPoints = useMemo(() => ['80%'], []);
+  const addSnapPoints = useMemo(() => [vs(680) - s(60) - insets.top], [insets.top]);
   const handleAddSheetChange = useCallback(
     (fromIndex: number, toIndex: number) => {
       setAddBottomSheetOpen(toIndex === 0);
@@ -186,8 +194,36 @@ const Friends = ({navigation}: {navigation: any}) => {
         ref={addBottomSheetRef}
         snapPoints={addSnapPoints}
         onAnimate={handleAddSheetChange}>
-        {/* TODO: Display all events in library, tap on it to add to friend group */}
-        <View />
+        <FlatList
+          data={events} // TODO: get actual events from library
+          style={contentStyles.container}
+          initialNumToRender={4}
+          keyExtractor={item => item?.id.toString()}
+          ItemSeparatorComponent={Spacer}
+          contentContainerStyle={contentStyles.content}
+          renderItem={({item}: {item: any}) => {
+            return (
+              <TouchableOpacity
+                onPress={() => {
+                  setAddBottomSheetOpen(false);
+                  addBottomSheetRef?.current.close();
+                  // Add event to the friend group
+                }}>
+                <EventCard
+                  name={item?.name}
+                  info={item?.date}
+                  image={
+                    item?.places &&
+                    item?.places?.length !== 0 &&
+                    item?.places[0]?.image_url
+                      ? {uri: item?.places[0]?.image_url}
+                      : icons.defaultIcon
+                  }
+                />
+              </TouchableOpacity>
+            );
+          }}
+        />
       </BottomSheetModal>
     </>
   );

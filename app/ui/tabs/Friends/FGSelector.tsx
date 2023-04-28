@@ -1,5 +1,12 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Image, ScrollView} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  ScrollView,
+} from 'react-native';
 
 import strings from '../../../constants/strings';
 import {colors} from '../../../constants/theme';
@@ -68,14 +75,20 @@ const FGSelector = ({
             </View>
             <View style={fgBottomSheetStyles.buttonsContainer}>
               <TouchableOpacity
-                style={[fgBottomSheetStyles.button, {backgroundColor: colors.accent}]}
+                style={[
+                  fgBottomSheetStyles.button,
+                  {backgroundColor: colors.accent},
+                ]}
                 onPress={() => {
                   //TODO: Accept invitation
                 }}>
                 <Text style={fgBottomSheetStyles.buttonText}>Accept</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={[fgBottomSheetStyles.button, {backgroundColor: colors.darkgrey}]}
+                style={[
+                  fgBottomSheetStyles.button,
+                  {backgroundColor: colors.darkgrey},
+                ]}
                 onPress={() => {
                   //TODO: Reject invitation
                 }}>
@@ -168,7 +181,7 @@ const fgBottomSheetStyles = StyleSheet.create({
     fontSize: s(12),
     fontWeight: '600',
     color: colors.white,
-  }
+  },
 });
 
 export default FGSelector;
