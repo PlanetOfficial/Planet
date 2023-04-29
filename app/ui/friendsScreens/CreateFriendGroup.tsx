@@ -10,10 +10,10 @@ import {
   FlatList,
 } from 'react-native';
 
-import strings from '../../../constants/strings';
-import { fgIcons } from '../../../constants/images';
-import {colors} from '../../../constants/theme';
-import {icons} from '../../../constants/images';
+import strings from '../../constants/strings';
+import { fgIcons } from '../../constants/images';
+import {colors} from '../../constants/theme';
+import {icons} from '../../constants/images';
 import {s} from 'react-native-size-matters';
 
 const CreateFG = ({navigation}: {navigation: any}) => {

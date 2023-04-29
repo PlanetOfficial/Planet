@@ -17,17 +17,17 @@ import BottomSheet, {BottomSheetModal} from '@gorhom/bottom-sheet';
 import {
   getMarkerArray,
   getRegionForCoordinates,
-} from '../../../utils/functions/Misc';
-import {MarkerObject} from '../../../utils/interfaces/MarkerObject';
-import {getEventPlaces} from '../../../utils/api/libraryCalls/getEventPlaces';
+} from '../../utils/functions/Misc';
+import {MarkerObject} from '../../utils/interfaces/MarkerObject';
+import {getEventPlaces} from '../../utils/api/libraryCalls/getEventPlaces';
 
-import PlaceCard from '../../components/PlaceCard';
-import Blur from '../../components/Blur';
-import ScrollIndicator from '../../components/ScrollIndicator';
+import PlaceCard from '../components/PlaceCard';
+import Blur from '../components/Blur';
+import ScrollIndicator from '../components/ScrollIndicator';
 
-import {icons} from '../../../constants/images';
-import strings from '../../../constants/strings';
-import {colors} from '../../../constants/theme';
+import {icons} from '../../constants/images';
+import strings from '../../constants/strings';
+import {colors} from '../../constants/theme';
 
 const Event = ({navigation, route}: {navigation: any; route: any}) => {
   const [eventId] = useState(route?.params?.eventData?.id);
