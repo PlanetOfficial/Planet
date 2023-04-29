@@ -16,7 +16,7 @@ import FGEvent from '../ui/friendsScreens/FGEvent';
 import Settings from '../ui/screens/Settings';
 import CreateFG from '../ui/friendsScreens/CreateFriendGroup';
 import LiveCategory from '../ui/trendingScreens/LiveCategory';
-import LiveCategorySettings from '../ui/screens/LiveCategorySettings';
+import LiveCategorySettings from '../ui/trendingScreens/LiveCategorySettings';
 
 interface AppNavigationProps {
   isLoggedIn: boolean;
