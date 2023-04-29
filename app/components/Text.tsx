@@ -1,22 +1,60 @@
 import React from 'react';
 import {Text, TextStyle} from 'react-native';
+import {s} from 'react-native-size-matters';
 
 interface Props {
   children: React.ReactNode;
   color?: string;
-  size?: number;
-  fontWeight?: 'normal' | 'bold';
+  size?: 'xs' | 's' | 'm' | 'l' | 'xl';
+  weight?: 'l' | 'r' | 'b';
 }
 
 const CustomText: React.FC<Props> = ({
   children,
   color,
   size,
-  fontWeight,
+  weight,
 }) => {
+
+  let fontSize: number = s(16);
+  switch (size) {
+    case 'xs':
+      fontSize = s(12);
+      break;
+    case 's':
+      fontSize = s(14);
+      break;
+    case 'm':
+      fontSize = s(16);
+      break;
+    case 'l':
+      fontSize = s(18);
+      break;
+    case 'xl':
+      fontSize = s(20);
+      break;
+    default:
+      break;
+  }
+
+  let fontWeight : '500' | '600' | '700' = '600';
+  switch (weight) {
+    case 'l':
+      fontWeight = '500';
+      break;
+    case 'r':
+      fontWeight = '600';
+      break;
+    case 'b':
+      fontWeight = '700';
+      break;
+    default:
+      break;
+  }
+
   const textStyles: TextStyle = {
     color,
-    fontSize: size,
+    fontSize,
     fontWeight,
   };
 
