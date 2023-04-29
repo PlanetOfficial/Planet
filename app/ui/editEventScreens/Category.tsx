@@ -11,12 +11,12 @@ import {
   LayoutAnimation,
 } from 'react-native';
 import {s, vs} from 'react-native-size-matters';
-import PlaceCard from '../../components/PlaceCard';
-import ScrollIndicator from '../../components/ScrollIndicator';
+import PlaceCard from '../components/PlaceCard';
+import ScrollIndicator from '../components/ScrollIndicator';
 
-import {icons} from '../../../constants/images';
-import {colors} from '../../../constants/theme';
-import strings from '../../../constants/strings';
+import {icons} from '../../constants/images';
+import {colors} from '../../constants/theme';
+import strings from '../../constants/strings';
 
 interface ChildComponentProps {
   navigation: any;

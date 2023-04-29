@@ -32,10 +32,10 @@ import {getEventPlaces} from '../../utils/api/libraryCalls/getEventPlaces';
 import PlaceCard from '../components/PlaceCard';
 import Blur from '../components/Blur';
 import ScrollIndicator from '../components/ScrollIndicator';
-import AddByCategory from './editEventScreens/AddByCategory';
-import AddFromLibrary from './editEventScreens/AddFromLibrary';
-import AddCustomDest from './editEventScreens/AddCustomDest';
-import Category from './editEventScreens/Category';
+import AddByCategory from '../editEventScreens/AddByCategory';
+import AddFromLibrary from '../editEventScreens/AddFromLibrary';
+import AddCustomDest from '../editEventScreens/AddCustomDest';
+import Category from '../editEventScreens/Category';
 
 import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
