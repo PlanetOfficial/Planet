@@ -12,8 +12,6 @@ import {
 import {BottomSheetModal} from '@gorhom/bottom-sheet';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
-import CustomT from '../../components/Text';
-
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 import {icons} from '../../constants/images';
@@ -117,11 +115,11 @@ const Friends = ({navigation}: {navigation: any}) => {
           <TouchableOpacity
             style={headerStyles.fgSelector}
             onPress={() => fgBottomSheetRef.current?.present()}>
-            <CustomT size={s(20)} fontWeight='bold' color={colors.black}>
+            <Text style={headerStyles.title}>
               {friendGroup === -1
                 ? strings.title.friends
                 : friendGroups[friendGroup]}
-            </CustomT>
+            </Text>
             <View style={headerStyles.drop}>
               <Image style={[headerStyles.icon]} source={icons.next} />
             </View>

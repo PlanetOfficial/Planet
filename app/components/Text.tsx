@@ -4,18 +4,12 @@ import {s} from 'react-native-size-matters';
 
 interface Props {
   children: React.ReactNode;
-  color?: string;
   size?: 'xs' | 's' | 'm' | 'l' | 'xl';
   weight?: 'l' | 'r' | 'b';
+  color?: string;
 }
 
-const CustomText: React.FC<Props> = ({
-  children,
-  color,
-  size,
-  weight,
-}) => {
-
+const CustomText: React.FC<Props> = ({children, size, weight, color}) => {
   let fontSize: number = s(16);
   switch (size) {
     case 'xs':
@@ -37,7 +31,7 @@ const CustomText: React.FC<Props> = ({
       break;
   }
 
-  let fontWeight : '500' | '600' | '700' = '600';
+  let fontWeight: '500' | '600' | '700' = '600';
   switch (weight) {
     case 'l':
       fontWeight = '500';
