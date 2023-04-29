@@ -115,7 +115,7 @@ const Friends = ({navigation}: {navigation: any}) => {
           <TouchableOpacity
             style={headerStyles.fgSelector}
             onPress={() => fgBottomSheetRef.current?.present()}>
-            <Text style={headerStyles.title}>
+            <Text numberOfLines={1} style={headerStyles.title}>
               {friendGroup === -1
                 ? strings.title.friends
                 : friendGroups[friendGroup]}
