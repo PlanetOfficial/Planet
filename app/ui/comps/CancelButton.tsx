@@ -2,17 +2,15 @@ import React from 'react';
 import {ViewStyle, TouchableOpacity} from 'react-native';
 import {s} from 'react-native-size-matters';
 
-import {colors} from '../constants/theme';
+import {colors} from '../../constants/theme';
 import Text from './Text';
 
 interface Props {
-  size?: 's' | 'm' | 'l' ;
-  disabled?: boolean;
-  label?: string;
+  size?: 's' | 'm';
   onPress: () => void;
 }
 
-const Button: React.FC<Props> = ({size = 'm', disabled = false, label, onPress}) => {
+const Button: React.FC<Props> = ({size = 'm', onPress}) => {
   let w: number = s(90);
   let h: number = s(40);
   switch (size) {
@@ -24,10 +22,6 @@ const Button: React.FC<Props> = ({size = 'm', disabled = false, label, onPress})
       w = s(90);
       h = s(40);
       break;
-    case 'l':
-      w = s(270);
-      h = s(45);
-      break;
     default:
       break;
   }
@@ -38,16 +32,15 @@ const Button: React.FC<Props> = ({size = 'm', disabled = false, label, onPress})
     width: w,
     height: h,
     borderRadius: s(10),
-    backgroundColor: disabled ? colors.darkgrey : colors.accent,
+    backgroundColor: colors.grey,
   };
 
   return (
     <TouchableOpacity
       style={ButtonStyles}
-      disabled={disabled}
       onPress={onPress}>
-      <Text size={size} weight="b" color={colors.white}>
-        {label}
+      <Text size={size} weight="b" color={colors.black}>
+        Cancel
       </Text>
     </TouchableOpacity>
   );
