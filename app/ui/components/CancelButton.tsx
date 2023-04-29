@@ -4,6 +4,7 @@ import {s} from 'react-native-size-matters';
 
 import {colors} from '../../constants/theme';
 import Text from './Text';
+import strings from '../../constants/strings';
 
 interface Props {
   size?: 's' | 'm';
@@ -38,7 +39,7 @@ const Button: React.FC<Props> = ({size = 'm', onPress}) => {
   return (
     <TouchableOpacity style={ButtonStyles} onPress={onPress}>
       <Text size={size} weight="b" color={colors.black}>
-        Cancel
+        {strings.misc.cancel}
       </Text>
     </TouchableOpacity>
   );
