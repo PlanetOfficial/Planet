@@ -4,7 +4,7 @@ import {s} from 'react-native-size-matters';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 
 import Text from '../components/Text';
-import IconButton from '../components/IconButton';
+import IButton from '../components/IconButton';
 import Places from '../components/Places';
 import Events from '../components/Events';
 
@@ -47,7 +47,7 @@ const Library = ({navigation}: {navigation: any}) => {
           <Text size="xl" weight="b">
             {strings.title.library}
           </Text>
-          <IconButton
+          <IButton
             size="l"
             icon={icons.search}
             onPress={() => {

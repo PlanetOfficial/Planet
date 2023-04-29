@@ -58,7 +58,7 @@ const CustomText: React.FC<Props> = ({
     fontWeight,
   };
 
-  return <Text style={textStyles}>{children}</Text>;
+  return <Text numberOfLines={1} style={textStyles}>{children}</Text>;
 };
 
 export default CustomText;

@@ -12,7 +12,7 @@ interface Props {
   onPress: () => void;
 }
 
-const Button: React.FC<Props> = ({
+const AButton: React.FC<Props> = ({
   size = 'm',
   disabled = false,
   label,
@@ -58,4 +58,4 @@ const Button: React.FC<Props> = ({
   );
 };
 
-export default Button;
+export default AButton;
