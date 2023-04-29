@@ -11,7 +11,7 @@ import {
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 import {icons} from '../../constants/images';
-import { fgIcons } from '../../constants/images';
+import {fgIcons} from '../../constants/images';
 import {s} from 'react-native-size-matters';
 
 const FGSelector = ({

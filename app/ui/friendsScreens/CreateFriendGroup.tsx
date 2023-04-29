@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 
 import strings from '../../constants/strings';
-import { fgIcons } from '../../constants/images';
+import {fgIcons} from '../../constants/images';
 import {colors} from '../../constants/theme';
 import {icons} from '../../constants/images';
 import {s} from 'react-native-size-matters';
@@ -72,7 +72,10 @@ const CreateFG = ({navigation}: {navigation: any}) => {
           placeholder={strings.friends.promptInvite}
         />
         <TouchableOpacity
-          style={[inviteStyles.button, invite === '' && {backgroundColor: colors.darkgrey}]}
+          style={[
+            inviteStyles.button,
+            invite === '' && {backgroundColor: colors.darkgrey},
+          ]}
           disabled={invite === ''}
           onPress={() => {
             // if(invite is valid){
