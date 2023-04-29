@@ -201,7 +201,7 @@ const Friends = ({navigation}: {navigation: any}) => {
           data={events} // TODO: get actual events from library
           style={contentStyles.container}
           initialNumToRender={4}
-          keyExtractor={item => item?.id.toString()}
+          keyExtractor={item => item?.id?.toString()}
           ItemSeparatorComponent={Spacer}
           contentContainerStyle={contentStyles.content}
           renderItem={({item}: {item: any}) => {
