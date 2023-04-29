@@ -1,6 +1,7 @@
 import React from 'react';
 import {Text, TextStyle} from 'react-native';
 import {s} from 'react-native-size-matters';
+import {colors} from '../../constants/theme';
 
 interface Props {
   children: React.ReactNode;
@@ -9,7 +10,12 @@ interface Props {
   color?: string;
 }
 
-const CustomText: React.FC<Props> = ({children, size, weight, color}) => {
+const CustomText: React.FC<Props> = ({
+  children,
+  size = 'm',
+  weight = 'r',
+  color = colors.black,
+}) => {
   let fontSize: number = s(16);
   switch (size) {
     case 'xs':
