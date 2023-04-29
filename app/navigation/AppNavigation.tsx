@@ -12,9 +12,9 @@ import SelectCategories from '../ui/createScreens/SelectCategories';
 import SelectDestinations from '../ui/createScreens/SelectDestinations';
 import Place from '../ui/screens/Place';
 import Event from '../ui/screens/Event';
-import FGEvent from '../ui/screens/FGEvent';
+import FGEvent from '../ui/friendsScreens/FGEvent';
 import Settings from '../ui/screens/Settings';
-import CreateFG from '../ui/screens/CreateFriendGroup';
+import CreateFG from '../ui/friendsScreens/CreateFriendGroup';
 import LiveCategory from '../ui/screens/LiveCategory';
 import LiveCategorySettings from '../ui/screens/LiveCategorySettings';
 

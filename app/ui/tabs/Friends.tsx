@@ -7,20 +7,36 @@ import {
   SafeAreaView,
   Image,
   Pressable,
-  Platform,
   FlatList,
 } from 'react-native';
 import {BottomSheetModal} from '@gorhom/bottom-sheet';
-import {BlurView} from '@react-native-community/blur';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 import {icons} from '../../constants/images';
-import {s} from 'react-native-size-matters';
+import {s, vs} from 'react-native-size-matters';
+
 import EventCard from '../components/EventCard';
+import FGSelector from '../components/FGSelector';
 
 //TODO: Display actual friend groups
-const friendGroups = ['Poplar Residents', 'The Boys', 'Tennis People'];
+const friendGroups: any[] = ['Poplar Residents', 'The Boys', 'Tennis People'];
+
+const invitations = [
+  {
+    id: 1,
+    inviter: 'John Doe',
+    name: 'Wonky Wednesday',
+    iconIdx: 0,
+  },
+  {
+    id: 2,
+    inviter: 'Jane Doe',
+    name: 'Taco Tuesday',
+    iconIdx: 1,
+  },
+];
 
 //TODO: Display actual events
 const events = [
@@ -57,13 +73,20 @@ const events = [
 ];
 
 const Friends = ({navigation}: {navigation: any}) => {
+  const insets = useSafeAreaInsets();
+
   const [friendGroup, setFriendGroup] = useState(0);
 
   const [fgBottomSheetOpen, setFgBottomSheetOpen] = useState(false);
   const fgBottomSheetRef: any = useRef<BottomSheetModal>(null);
   const fgSnapPoints = useMemo(
-    () => [s(70) * friendGroups.length + s(120)],
-    [],
+    () => [
+      Math.min(
+        s(70) * (friendGroups.length + invitations.length) + s(120),
+        vs(680) - s(60) - insets.top,
+      ),
+    ],
+    [insets.top],
   );
   const handleFgSheetChange = useCallback(
     (fromIndex: number, toIndex: number) => {
@@ -74,7 +97,10 @@ const Friends = ({navigation}: {navigation: any}) => {
 
   const [addBottomSheetOpen, setAddBottomSheetOpen] = useState(false);
   const addBottomSheetRef: any = useRef<BottomSheetModal>(null);
-  const addSnapPoints = useMemo(() => ['80%'], []);
+  const addSnapPoints = useMemo(
+    () => [vs(680) - s(60) - insets.top],
+    [insets.top],
+  );
   const handleAddSheetChange = useCallback(
     (fromIndex: number, toIndex: number) => {
       setAddBottomSheetOpen(toIndex === 0);
@@ -139,74 +165,68 @@ const Friends = ({navigation}: {navigation: any}) => {
             );
           }}
         />
-
-        {fgBottomSheetOpen || addBottomSheetOpen ? (
-          <Pressable
-            onPress={() => {
-              fgBottomSheetRef?.current.close();
-              addBottomSheetRef?.current.close();
-            }}
-            style={styles.pressable}>
-            {Platform.OS === 'ios' ? (
-              <BlurView blurAmount={2} blurType="dark" style={styles.blur} />
-            ) : (
-              <View style={[styles.blur, styles.nonBlur]} />
-            )}
-          </Pressable>
-        ) : null}
       </SafeAreaView>
+
+      {(fgBottomSheetOpen || addBottomSheetOpen) && (
+        <Pressable
+          onPress={() => {
+            setFgBottomSheetOpen(false);
+            setAddBottomSheetOpen(false);
+            fgBottomSheetRef?.current.close();
+            addBottomSheetRef?.current.close();
+          }}
+          style={styles.dim}
+        />
+      )}
 
       <BottomSheetModal
         ref={fgBottomSheetRef}
         snapPoints={fgSnapPoints}
         onAnimate={handleFgSheetChange}>
-        {friendGroups?.map((fg: any, idx: number) => (
-          <TouchableOpacity
-            key={idx}
-            style={[
-              fgBottomSheetStyles.row,
-              {
-                backgroundColor:
-                  idx === friendGroup ? colors.grey : colors.white,
-              },
-            ]}
-            onPress={() => {
-              setFriendGroup(idx);
-              fgBottomSheetRef?.current.close();
-            }}>
-            <Image style={fgBottomSheetStyles.icon} source={icons.user} />
-            <Text
-              numberOfLines={1}
-              key={idx}
-              style={[
-                fgBottomSheetStyles.text,
-                {color: idx === friendGroup ? colors.accent : colors.black},
-              ]}>
-              {fg}
-            </Text>
-          </TouchableOpacity>
-        ))}
-        <TouchableOpacity
-          style={fgBottomSheetStyles.row}
-          onPress={() => {
-            fgBottomSheetRef?.current.close();
-            navigation.navigate('CreateFG');
-          }}>
-          <View style={fgBottomSheetStyles.plus}>
-            <Image style={fgBottomSheetStyles.plusIcon} source={icons.x} />
-          </View>
-          <Text numberOfLines={1} style={fgBottomSheetStyles.text}>
-            {strings.friends.createPrompt}
-          </Text>
-        </TouchableOpacity>
+        <FGSelector
+          bottomSheetRef={fgBottomSheetRef}
+          friendGroups={friendGroups}
+          friendGroup={friendGroup}
+          setFriendGroup={setFriendGroup}
+          invitations={invitations}
+          navigation={navigation}
+        />
       </BottomSheetModal>
 
       <BottomSheetModal
         ref={addBottomSheetRef}
         snapPoints={addSnapPoints}
         onAnimate={handleAddSheetChange}>
-        {/* TODO: Display all events in library, tap on it to add to friend group */}
-        <View />
+        <FlatList
+          data={events} // TODO: get actual events from library
+          style={contentStyles.container}
+          initialNumToRender={4}
+          keyExtractor={item => item?.id?.toString()}
+          ItemSeparatorComponent={Spacer}
+          contentContainerStyle={contentStyles.content}
+          renderItem={({item}: {item: any}) => {
+            return (
+              <TouchableOpacity
+                onPress={() => {
+                  setAddBottomSheetOpen(false);
+                  addBottomSheetRef?.current.close();
+                  // Add event to the friend group
+                }}>
+                <EventCard
+                  name={item?.name}
+                  info={item?.date}
+                  image={
+                    item?.places &&
+                    item?.places?.length !== 0 &&
+                    item?.places[0]?.image_url
+                      ? {uri: item?.places[0]?.image_url}
+                      : icons.defaultIcon
+                  }
+                />
+              </TouchableOpacity>
+            );
+          }}
+        />
       </BottomSheetModal>
     </>
   );
@@ -220,18 +240,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: colors.white,
   },
-  pressable: {
+  dim: {
     position: 'absolute',
     width: '100%',
     height: '150%',
-  },
-  blur: {
-    width: '100%',
-    height: '100%',
-  },
-  nonBlur: {
-    backgroundColor: colors.black,
-    opacity: 0.85,
+    backgroundColor: 'rgba(0,0,0,0.6)',
   },
   addEventContainer: {
     flexDirection: 'row',
@@ -312,44 +325,6 @@ const contentStyles = StyleSheet.create({
     borderWidth: 0.5,
     borderColor: colors.grey,
     marginVertical: s(10),
-  },
-});
-
-const fgBottomSheetStyles = StyleSheet.create({
-  background: {
-    backgroundColor: colors.white,
-  },
-  row: {
-    flexDirection: 'row',
-    paddingHorizontal: s(20),
-    alignItems: 'center',
-    height: s(70),
-    borderBottomWidth: 1,
-    borderBottomColor: colors.grey,
-  },
-  icon: {
-    width: s(40),
-    height: s(40),
-  },
-  plus: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: s(40),
-    height: s(40),
-    borderRadius: s(20),
-    borderWidth: s(2),
-    borderColor: colors.accent,
-  },
-  plusIcon: {
-    width: '40%',
-    height: '40%',
-    transform: [{rotate: '45deg'}],
-    tintColor: colors.accent,
-  },
-  text: {
-    marginLeft: s(12),
-    fontSize: s(15),
-    fontWeight: '600',
   },
 });
 
