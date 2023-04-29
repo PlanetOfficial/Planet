@@ -129,6 +129,7 @@ const Library = ({navigation}: {navigation: any}) => {
                     ? {uri: item?.places[0]?.image_url}
                     : icons.defaultIcon
                 }
+                option={true}
               />
             </TouchableOpacity>
           );
