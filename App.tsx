@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, {useEffect, useState} from 'react';
-import SplashScreen from './app/ui/screens/!SplashScreen';
+import SplashScreen from './app/ui/otherScreens/!SplashScreen';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import AppNavigation from './app/navigation/AppNavigation';
 import {updateAsyncStorage} from './app/utils/functions/CacheHelpers';

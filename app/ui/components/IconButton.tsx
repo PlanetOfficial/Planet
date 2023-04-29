@@ -1,11 +1,12 @@
 import React from 'react';
 import {
-  ViewStyle,
-  ImageStyle,
   TouchableOpacity,
+  ViewStyle,
   Image,
+  ImageStyle,
   ImageSourcePropType,
 } from 'react-native';
+
 import {s} from 'react-native-size-matters';
 
 import {colors} from '../../constants/theme';
@@ -18,7 +19,7 @@ interface Props {
   onPress: () => void;
 }
 
-const Button: React.FC<Props> = ({
+const IButton: React.FC<Props> = ({
   size = 'm',
   color = colors.black,
   padding = 0,
@@ -28,13 +29,13 @@ const Button: React.FC<Props> = ({
   let z: number = s(18);
   switch (size) {
     case 's':
-      z = s(16);
+      z = s(15);
       break;
     case 'm':
       z = s(18);
       break;
     case 'l':
-      z = s(20);
+      z = s(21);
       break;
     default:
       break;
@@ -61,4 +62,4 @@ const Button: React.FC<Props> = ({
   );
 };
 
-export default Button;
+export default IButton;

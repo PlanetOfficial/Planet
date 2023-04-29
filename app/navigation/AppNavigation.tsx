@@ -10,13 +10,13 @@ import ForgotPassword from '../ui/authScreens/!ForgotPwd';
 import MapSelection from '../ui/createScreens/MapSelection';
 import SelectCategories from '../ui/createScreens/SelectCategories';
 import SelectDestinations from '../ui/createScreens/SelectDestinations';
-import Place from '../ui/screens/Place';
-import Event from '../ui/screens/Event';
+import Place from '../ui/libraryScreens/Place';
+import Event from '../ui/libraryScreens/Event';
 import FGEvent from '../ui/friendsScreens/FGEvent';
-import Settings from '../ui/screens/Settings';
+import Settings from '../ui/profileScreens/Settings';
 import CreateFG from '../ui/friendsScreens/CreateFriendGroup';
-import LiveCategory from '../ui/screens/LiveCategory';
-import LiveCategorySettings from '../ui/screens/LiveCategorySettings';
+import LiveCategory from '../ui/trendingScreens/LiveCategory';
+import LiveCategorySettings from '../ui/trendingScreens/LiveCategorySettings';
 
 interface AppNavigationProps {
   isLoggedIn: boolean;

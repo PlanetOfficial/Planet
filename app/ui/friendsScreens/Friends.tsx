@@ -18,7 +18,7 @@ import {icons} from '../../constants/images';
 import {s, vs} from 'react-native-size-matters';
 
 import EventCard from '../components/EventCard';
-import FGSelector from '../components/FGSelector';
+import FGSelector from './FGSelector';
 
 //TODO: Display actual friend groups
 const friendGroups: any[] = ['Poplar Residents', 'The Boys', 'Tennis People'];

@@ -1,9 +1,16 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
-import {colors} from '../../constants/theme';
+import {StyleSheet, View} from 'react-native';
+
 import {s} from 'react-native-size-matters';
 
-const ScrollIndicator = ({num, idx}: {num: number; idx: number}) => (
+import {colors} from '../../constants/theme';
+
+interface Props {
+  num: number;
+  idx: number;
+}
+
+const ScrollIndicator: React.FC<Props> = ({num, idx}) => (
   <View style={styles.container}>
     {Array.from(Array(num), (e, i) => (
       <View

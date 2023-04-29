@@ -1,17 +1,18 @@
 import React from 'react';
-import {ViewStyle, TouchableOpacity} from 'react-native';
+import {TouchableOpacity, ViewStyle} from 'react-native';
+
 import {s} from 'react-native-size-matters';
 
 import {colors} from '../../constants/theme';
-import Text from './Text';
 import strings from '../../constants/strings';
+import Text from './Text';
 
 interface Props {
   size?: 's' | 'm';
   onPress: () => void;
 }
 
-const Button: React.FC<Props> = ({size = 'm', onPress}) => {
+const CButton: React.FC<Props> = ({size = 'm', onPress}) => {
   let w: number = s(90);
   let h: number = s(40);
   switch (size) {
@@ -45,4 +46,4 @@ const Button: React.FC<Props> = ({size = 'm', onPress}) => {
   );
 };
 
-export default Button;
+export default CButton;
