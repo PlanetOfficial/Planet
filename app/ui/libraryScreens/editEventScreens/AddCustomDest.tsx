@@ -7,12 +7,12 @@ import {
   GooglePlacesAutocompleteRef,
 } from 'react-native-google-places-autocomplete';
 
-import {icons} from '../../constants/images';
-import strings from '../../constants/strings';
-import {colors} from '../../constants/theme';
-import {floats} from '../../constants/numbers';
+import {icons} from '../../../constants/images';
+import strings from '../../../constants/strings';
+import {colors} from '../../../constants/theme';
+import {floats} from '../../../constants/numbers';
 
-import {GoogleMapsAPIKey} from '../../utils/api/APIConstants';
+import {GoogleMapsAPIKey} from '../../../utils/api/APIConstants';
 
 const AddCustomDest = ({onClose, onSelect}: {onClose: any; onSelect: any}) => {
   const autocompleteRef = useRef<GooglePlacesAutocompleteRef>(null);

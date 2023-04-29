@@ -7,10 +7,10 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {colors} from '../../constants/theme';
 import {tabIcons} from '../../constants/images';
 
-import Trending from '../tabs/Trending';
-import Friends from '../tabs/Friends';
-import Library from '../tabs/Library';
-import Profile from '../tabs/Profile';
+import Trending from '../trendingScreens/Trending';
+import Friends from '../friendsScreens/Friends';
+import Library from '../libraryScreens/Library';
+import Profile from '../profileScreens/Profile';
 
 const Tab = createBottomTabNavigator();
 

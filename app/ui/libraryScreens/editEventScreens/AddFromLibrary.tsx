@@ -13,14 +13,14 @@ import {
 import {s, vs} from 'react-native-size-matters';
 import EncryptedStorage from 'react-native-encrypted-storage';
 
-import PlaceCard from '../components/PlaceCard';
-import {getBookmarks} from '../../utils/api/shared/getBookmarks';
+import PlaceCard from '../../components/PlaceCard';
+import {getBookmarks} from '../../../utils/api/shared/getBookmarks';
 
-import {genres} from '../../constants/genres';
-import {icons} from '../../constants/images';
-import strings from '../../constants/strings';
-import misc from '../../constants/misc';
-import {colors} from '../../constants/theme';
+import {genres} from '../../../constants/genres';
+import {icons} from '../../../constants/images';
+import strings from '../../../constants/strings';
+import misc from '../../../constants/misc';
+import {colors} from '../../../constants/theme';
 
 const TempData = [
   {
