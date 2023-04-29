@@ -2,16 +2,22 @@ import React from 'react';
 import {ViewStyle, TouchableOpacity} from 'react-native';
 import {s} from 'react-native-size-matters';
 
-import {colors} from '../../../constants/theme';
-import strings from '../../../constants/strings';
+import {colors} from '../../constants/theme';
 import Text from './Text';
 
 interface Props {
-  size?: 's' | 'm';
+  size?: 's' | 'm' | 'l';
+  disabled?: boolean;
+  label: string;
   onPress: () => void;
 }
 
-const Button: React.FC<Props> = ({size = 'm', onPress}) => {
+const Button: React.FC<Props> = ({
+  size = 'm',
+  disabled = false,
+  label,
+  onPress,
+}) => {
   let w: number = s(90);
   let h: number = s(40);
   switch (size) {
@@ -23,6 +29,10 @@ const Button: React.FC<Props> = ({size = 'm', onPress}) => {
       w = s(90);
       h = s(40);
       break;
+    case 'l':
+      w = s(270);
+      h = s(45);
+      break;
     default:
       break;
   }
@@ -33,13 +43,16 @@ const Button: React.FC<Props> = ({size = 'm', onPress}) => {
     width: w,
     height: h,
     borderRadius: s(10),
-    backgroundColor: colors.grey,
+    backgroundColor: disabled ? colors.darkgrey : colors.accent,
   };
 
   return (
-    <TouchableOpacity style={ButtonStyles} onPress={onPress}>
-      <Text size={size} weight="b" color={colors.black}>
-        {strings.misc.cancel}
+    <TouchableOpacity
+      style={ButtonStyles}
+      disabled={disabled}
+      onPress={onPress}>
+      <Text size={size} weight="b" color={colors.white}>
+        {label}
       </Text>
     </TouchableOpacity>
   );

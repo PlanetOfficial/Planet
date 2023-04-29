@@ -1,18 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {
-  View,
-  StyleSheet,
-  FlatList,
-  SafeAreaView,
-  TouchableOpacity,
-} from 'react-native';
+import {View, StyleSheet, SafeAreaView} from 'react-native';
 import {s} from 'react-native-size-matters';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 
-import Text from '../components/elements/Text';
-import IconButton from '../components/elements/IconButton';
-import PlaceCard from '../components/PlaceCard';
-import EventCard from '../components/EventCard';
+import Text from '../components/Text';
+import IconButton from '../components/IconButton';
+import Places from '../components/Places';
+import Events from '../components/Events';
 
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
@@ -50,15 +44,20 @@ const Library = ({navigation}: {navigation: any}) => {
     <View style={styles.container}>
       <SafeAreaView>
         <View style={styles.header}>
-          <Text size='xl' weight='b'>{strings.title.library}</Text>
-          <IconButton size='l' icon={icons.search} onPress={() => {
-            navigation.navigate('SearchLibrary');
-          }}/>
+          <Text size="xl" weight="b">
+            {strings.title.library}
+          </Text>
+          <IconButton
+            size="l"
+            icon={icons.search}
+            onPress={() => {
+              navigation.navigate('SearchLibrary');
+            }}
+          />
         </View>
       </SafeAreaView>
 
       <SegmentedControlTab
-        testIDs={['saved', 'events']}
         tabsContainerStyle={sctStyles.container}
         tabStyle={sctStyles.tab}
         activeTabStyle={sctStyles.activeTab}
@@ -71,93 +70,31 @@ const Library = ({navigation}: {navigation: any}) => {
         onTabPress={index => setIndex(index)}
       />
 
-      {selectedIndex === 0
-        ? Places(navigation, places, removePlace)
-        : Events(navigation, events, places)}
-    </View>
-  );
-};
-
-const Places = (
-  navigation: any,
-  places: Array<any>,
-  removePlace: (placeId: number) => void,
-) => (
-  <FlatList
-    testID="bookmarksList"
-    data={places}
-    style={styles.flatlist}
-    key={'Places'}
-    initialNumToRender={4}
-    keyExtractor={item => item?.id}
-    ItemSeparatorComponent={Spacer}
-    contentContainerStyle={styles.contentContainer}
-    renderItem={({item}) => {
-      return (
-        <TouchableOpacity
-          onPress={() => {
+      {selectedIndex === 0 ? (
+        <Places
+          data={places}
+          onPress={(item: any) => {
             navigation.navigate('Place', {
               destination: item,
               category: item?.category?.name,
             });
-          }}>
-          <PlaceCard
-            id={item?.id}
-            name={item?.name}
-            info={item?.category?.name}
-            marked={true}
-            image={
-              item?.image_url
-                ? {
-                    uri: item?.image_url,
-                  }
-                : icons.defaultIcon
-            }
-            onUnBookmark={removePlace}
-          />
-        </TouchableOpacity>
-      );
-    }}
-  />
-);
-
-const Events = (navigation: any, events: Array<any>, places: Array<any>) => (
-  <FlatList
-    testID="eventHistoryList"
-    data={events}
-    style={styles.flatlist}
-    initialNumToRender={4}
-    key={'Events'}
-    keyExtractor={item => item?.id}
-    ItemSeparatorComponent={Spacer}
-    contentContainerStyle={styles.contentContainer}
-    renderItem={({item}) => {
-      return (
-        <TouchableOpacity
-          onPress={() => {
+          }}
+          onUnBookmark={removePlace}
+        />
+      ) : (
+        <Events
+          data={events}
+          onPress={(item: any) => {
             navigation.navigate('Event', {
               eventData: item,
-              bookmarks: places?.map(place => place?.id),
+              bookmarks: places?.map((place: any) => place?.id),
             });
-          }}>
-          <EventCard
-            name={item?.name}
-            info={item?.date}
-            image={
-              item?.places &&
-              item?.places?.length !== 0 &&
-              item?.places[0]?.image_url
-                ? {uri: item?.places[0]?.image_url}
-                : icons.defaultIcon
-            }
-          />
-        </TouchableOpacity>
-      );
-    }}
-  />
-);
-
-const Spacer = () => <View style={styles.separator} />;
+          }}
+        />
+      )}
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -172,18 +109,6 @@ const styles = StyleSheet.create({
     height: s(50),
     paddingHorizontal: s(20),
     paddingVertical: s(10),
-  },
-  flatlist: {
-    width: s(350),
-    paddingHorizontal: s(20),
-  },
-  contentContainer: {
-    paddingVertical: s(10),
-  },
-  separator: {
-    borderWidth: 0.5,
-    borderColor: colors.grey,
-    marginVertical: s(10),
   },
 });
 
