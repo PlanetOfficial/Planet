@@ -119,6 +119,7 @@ const strings = {
   },
   misc: {
     maxRating: '5',
+    cancel: 'Cancel',
   },
   filter: {
     all: 'All Categories',
