@@ -1,5 +1,5 @@
 import React from 'react';
-import {ViewStyle, ImageStyle, TouchableOpacity, Image} from 'react-native';
+import {ViewStyle, ImageStyle, TouchableOpacity, Image, ImageSourcePropType} from 'react-native';
 import {s} from 'react-native-size-matters';
 
 import {colors} from '../../constants/theme';
@@ -8,7 +8,7 @@ interface Props {
   size?: 's' | 'm' | 'l';
   color: string;
   padding: number;
-  icon?: any;
+  icon?: ImageSourcePropType;
   onPress: () => void;
 }
 
