@@ -97,7 +97,10 @@ const Friends = ({navigation}: {navigation: any}) => {
 
   const [addBottomSheetOpen, setAddBottomSheetOpen] = useState(false);
   const addBottomSheetRef: any = useRef<BottomSheetModal>(null);
-  const addSnapPoints = useMemo(() => [vs(680) - s(60) - insets.top], [insets.top]);
+  const addSnapPoints = useMemo(
+    () => [vs(680) - s(60) - insets.top],
+    [insets.top],
+  );
   const handleAddSheetChange = useCallback(
     (fromIndex: number, toIndex: number) => {
       setAddBottomSheetOpen(toIndex === 0);

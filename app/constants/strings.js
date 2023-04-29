@@ -84,9 +84,13 @@ const strings = {
   },
   friends: {
     createPrompt: 'Create a Friend Group',
+    editName: 'Edit Name Here',
+    promptInvite: 'Invite Friends with email',
+    add: 'Add',
     addPrompt: 'Add an Event',
     likes: 'Likes',
     dislikes: 'Dislikes',
+    create: 'Create',
   },
   library: {
     saved: 'Saved',
