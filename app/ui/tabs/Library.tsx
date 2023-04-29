@@ -9,7 +9,8 @@ import {
 import {s} from 'react-native-size-matters';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 
-import Header from '../components/Header';
+import Text from '../components/elements/Text';
+import IconButton from '../components/elements/IconButton';
 import PlaceCard from '../components/PlaceCard';
 import EventCard from '../components/EventCard';
 
@@ -46,36 +47,36 @@ const Library = ({navigation}: {navigation: any}) => {
   }, []);
 
   return (
-    <SafeAreaView testID="libraryScreenView" style={styles.container}>
-      {Header(strings.title.library, icons.search, () =>
-        navigation.navigate('SearchLibrary'),
-      )}
-      {SegmentedControl(selectedIndex, setIndex)}
+    <View style={styles.container}>
+      <SafeAreaView>
+        <View style={styles.header}>
+          <Text size='xl' weight='b'>{strings.title.library}</Text>
+          <IconButton size='l' icon={icons.search} onPress={() => {
+            navigation.navigate('SearchLibrary');
+          }}/>
+        </View>
+      </SafeAreaView>
+
+      <SegmentedControlTab
+        testIDs={['saved', 'events']}
+        tabsContainerStyle={sctStyles.container}
+        tabStyle={sctStyles.tab}
+        activeTabStyle={sctStyles.activeTab}
+        tabTextStyle={sctStyles.text}
+        firstTabStyle={sctStyles.firstTab}
+        activeTabTextStyle={sctStyles.activeText}
+        borderRadius={0}
+        values={[strings.library.saved, strings.library.events]}
+        selectedIndex={selectedIndex}
+        onTabPress={index => setIndex(index)}
+      />
+
       {selectedIndex === 0
         ? Places(navigation, places, removePlace)
         : Events(navigation, events, places)}
-    </SafeAreaView>
+    </View>
   );
 };
-
-const SegmentedControl = (
-  selectedIndex: number,
-  setIndex: React.Dispatch<React.SetStateAction<number>>,
-) => (
-  <SegmentedControlTab
-    testIDs={['saved', 'events']}
-    tabsContainerStyle={sctStyles.container}
-    tabStyle={sctStyles.tab}
-    activeTabStyle={sctStyles.activeTab}
-    tabTextStyle={sctStyles.text}
-    firstTabStyle={sctStyles.firstTab}
-    activeTabTextStyle={sctStyles.activeText}
-    borderRadius={0}
-    values={[strings.library.saved, strings.library.events]}
-    selectedIndex={selectedIndex}
-    onTabPress={index => setIndex(index)}
-  />
-);
 
 const Places = (
   navigation: any,
@@ -160,10 +161,17 @@ const Spacer = () => <View style={styles.separator} />;
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
-    width: '100%',
-    height: '100%',
+    flex: 1,
     backgroundColor: colors.white,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: s(350),
+    height: s(50),
+    paddingHorizontal: s(20),
+    paddingVertical: s(10),
   },
   flatlist: {
     width: s(350),

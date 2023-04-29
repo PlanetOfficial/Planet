@@ -1,7 +1,7 @@
 import React from 'react';
 import {Text, TextStyle} from 'react-native';
 import {s} from 'react-native-size-matters';
-import {colors} from '../../constants/theme';
+import {colors} from '../../../constants/theme';
 
 interface Props {
   children: React.ReactNode;
@@ -28,10 +28,10 @@ const CustomText: React.FC<Props> = ({
       fontSize = s(16);
       break;
     case 'l':
-      fontSize = s(18);
+      fontSize = s(20);
       break;
     case 'xl':
-      fontSize = s(20);
+      fontSize = s(24);
       break;
     default:
       break;
