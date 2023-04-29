@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
-import {View,Image,StyleSheet} from 'react-native';
+import {View, Image, StyleSheet} from 'react-native';
 import {s} from 'react-native-size-matters';
 
-import Text from '../components/Text'
+import Text from '../components/Text';
 import IButton from './IconButton';
 
 import {colors} from '../../constants/theme';
@@ -10,7 +10,6 @@ import {icons} from '../../constants/images';
 import {setBookmark} from '../../utils/api/shared/setBookmark';
 import {unbookmark} from '../../utils/api/shared/unbookmark';
 import EncryptedStorage from 'react-native-encrypted-storage';
-
 
 interface Props {
   id: number;
@@ -61,10 +60,19 @@ const PlaceCard: React.FC<Props> = ({
       <Image style={styles.image} source={image} />
       <View style={styles.header}>
         <View style={styles.texts}>
-          <Text size='m' weight='b'>{name}</Text>
-          <Text size='xs' weight='l' color={colors.accent}>{info}</Text>
+          <Text size="m" weight="b">
+            {name}
+          </Text>
+          <Text size="xs" weight="l" color={colors.accent}>
+            {info}
+          </Text>
         </View>
-        <IButton size='m' color={colors.accent} icon={bookmarked ? icons.hearted : icons.heart} onPress={handleBookmark}/>
+        <IButton
+          size="m"
+          color={colors.accent}
+          icon={bookmarked ? icons.hearted : icons.heart}
+          onPress={handleBookmark}
+        />
       </View>
     </View>
   );

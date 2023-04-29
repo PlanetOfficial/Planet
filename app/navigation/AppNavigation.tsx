@@ -15,7 +15,7 @@ import Event from '../ui/screens/Event';
 import FGEvent from '../ui/friendsScreens/FGEvent';
 import Settings from '../ui/screens/Settings';
 import CreateFG from '../ui/friendsScreens/CreateFriendGroup';
-import LiveCategory from '../ui/screens/LiveCategory';
+import LiveCategory from '../ui/trendingScreens/LiveCategory';
 import LiveCategorySettings from '../ui/screens/LiveCategorySettings';
 
 interface AppNavigationProps {

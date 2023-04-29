@@ -18,8 +18,12 @@ const EventCard: React.FC<Props> = ({name, info, image}) => {
       <Image style={styles.image} source={image} />
       <View style={styles.header}>
         <View>
-          <Text size='m' weight='b'>{name}</Text>
-          <Text size='xs' weight='l' color={colors.accent}>{info}</Text>
+          <Text size="m" weight="b">
+            {name}
+          </Text>
+          <Text size="xs" weight="l" color={colors.accent}>
+            {info}
+          </Text>
         </View>
       </View>
     </View>
@@ -58,6 +62,5 @@ const styles = StyleSheet.create({
     borderRadius: s(8),
   },
 });
-
 
 export default EventCard;
