@@ -10,7 +10,7 @@ interface Props {
   onPress: () => void;
 }
 
-const Button: React.FC<Props> = ({size, onPress}) => {
+const Button: React.FC<Props> = ({size = 'm', onPress}) => {
   let w: number = s(90);
   let h: number = s(40);
   switch (size) {

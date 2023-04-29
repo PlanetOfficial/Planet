@@ -6,13 +6,13 @@ import {colors} from '../constants/theme';
 import Text from './Text';
 
 interface Props {
-  label?: string;
   size?: 's' | 'm' | 'l' ;
   disabled?: boolean;
+  label?: string;
   onPress: () => void;
 }
 
-const Button: React.FC<Props> = ({label, size, disabled = false, onPress}) => {
+const Button: React.FC<Props> = ({size = 'm', disabled = false, label, onPress}) => {
   let w: number = s(90);
   let h: number = s(40);
   switch (size) {
