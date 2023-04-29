@@ -1,5 +1,6 @@
 import React from 'react';
 import {View, ViewStyle, Platform} from 'react-native';
+
 import {BlurView} from '@react-native-community/blur';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 

@@ -1,6 +1,8 @@
 import React from 'react';
 import {Text, TextStyle} from 'react-native';
+
 import {s} from 'react-native-size-matters';
+
 import {colors} from '../../constants/theme';
 
 interface Props {

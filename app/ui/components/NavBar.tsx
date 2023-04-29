@@ -1,5 +1,6 @@
 import React from 'react';
-import {Image, View, Pressable, StyleSheet} from 'react-native';
+import {Image, Pressable, StyleSheet, View} from 'react-native';
+
 import {Svg, Circle, Line} from 'react-native-svg';
 import {s} from 'react-native-size-matters';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';

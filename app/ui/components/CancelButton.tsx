@@ -1,5 +1,6 @@
 import React from 'react';
-import {ViewStyle, TouchableOpacity} from 'react-native';
+import {TouchableOpacity, ViewStyle} from 'react-native';
+
 import {s} from 'react-native-size-matters';
 
 import {colors} from '../../constants/theme';

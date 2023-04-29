@@ -1,9 +1,10 @@
 import React from 'react';
-import {ViewStyle, TouchableOpacity} from 'react-native';
+import {TouchableOpacity, ViewStyle} from 'react-native';
+
 import {s} from 'react-native-size-matters';
 
-import {colors} from '../../constants/theme';
 import Text from './Text';
+import {colors} from '../../constants/theme';
 
 interface Props {
   size?: 's' | 'm' | 'l';

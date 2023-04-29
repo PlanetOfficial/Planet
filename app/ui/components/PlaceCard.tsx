@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
-import {View, Image, StyleSheet} from 'react-native';
+import {Image, StyleSheet, View} from 'react-native';
+
 import {s} from 'react-native-size-matters';
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 import Text from '../components/Text';
 import IButton from './IconButton';
@@ -9,7 +11,6 @@ import {colors} from '../../constants/theme';
 import {icons} from '../../constants/images';
 import {setBookmark} from '../../utils/api/shared/setBookmark';
 import {unbookmark} from '../../utils/api/shared/unbookmark';
-import EncryptedStorage from 'react-native-encrypted-storage';
 
 interface Props {
   id: number;

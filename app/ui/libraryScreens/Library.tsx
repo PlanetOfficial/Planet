@@ -6,19 +6,20 @@ import {
   FlatList,
   TouchableOpacity,
 } from 'react-native';
+
 import {s} from 'react-native-size-matters';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 import Text from '../components/Text';
 import IButton from '../components/IconButton';
 import PlaceCard from '../components/PlaceCard';
 import EventCard from '../components/EventCard';
-
 import strings from '../../constants/strings';
+
 import {colors} from '../../constants/theme';
 import {icons} from '../../constants/images';
 
-import EncryptedStorage from 'react-native-encrypted-storage';
 import {getEvents} from '../../utils/api/libraryCalls/getEvents';
 import {getBookmarks} from '../../utils/api/shared/getBookmarks';
 import {filterToUniqueIds} from '../../utils/functions/Misc';

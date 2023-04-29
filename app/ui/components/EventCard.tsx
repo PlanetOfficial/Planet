@@ -1,9 +1,9 @@
 import React from 'react';
-import {View, StyleSheet, Image} from 'react-native';
+import {Image, StyleSheet, View} from 'react-native';
+
 import {s} from 'react-native-size-matters';
 
 import Text from './Text';
-
 import {colors} from '../../constants/theme';
 
 interface Props {
