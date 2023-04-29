@@ -1,8 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import {View, Image, Text, StyleSheet, SafeAreaView} from 'react-native';
+import {
+  View,
+  Image,
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  TouchableOpacity,
+} from 'react-native';
 import {s, vs} from 'react-native-size-matters';
-
-import Header from '../components/Header';
 
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
@@ -26,9 +31,12 @@ const Profile = ({navigation}: {navigation: any}) => {
 
   return (
     <SafeAreaView testID="profileScreenView" style={styles.container}>
-      {Header(strings.title.profile, icons.settings, () =>
-        navigation.navigate('Settings'),
-      )}
+      <View style={headerStyles.container}>
+        <Text style={headerStyles.title}>{strings.title.profile}</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
+          <Image style={headerStyles.icon} source={icons.settings} />
+        </TouchableOpacity>
+      </View>
       <View style={infoStyles.container}>
         <Image style={infoStyles.profilePic} source={icons.user} />
         <Text style={infoStyles.name}>{name}</Text>
@@ -53,6 +61,27 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     backgroundColor: colors.white,
+  },
+});
+
+const headerStyles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: s(20),
+    paddingVertical: s(15),
+    width: '100%',
+  },
+  title: {
+    fontSize: s(24),
+    fontWeight: '700',
+    color: colors.black,
+  },
+  icon: {
+    width: s(20),
+    height: s(20),
+    tintColor: colors.black,
   },
 });
 

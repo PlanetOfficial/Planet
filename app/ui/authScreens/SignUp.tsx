@@ -6,11 +6,11 @@ import {
   StyleSheet,
   TouchableOpacity,
   SafeAreaView,
+  Image,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 
 import strings from '../../constants/strings';
-import Header from '../components/Header';
 
 import {signup} from '../../utils/api/auth/signup';
 import {colors} from '../../constants/theme';
@@ -62,9 +62,13 @@ const SignUp = ({navigation}: {navigation: any}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {Header(strings.login.signUp, icons.x, () =>
-        navigation.navigate('Login'),
-      )}
+      <View style={headerStyles.container}>
+        <Text style={headerStyles.title}>{strings.login.signUp}</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+          <Image style={headerStyles.icon} source={icons.x} />
+        </TouchableOpacity>
+      </View>
+
       <View style={accountStyles.container}>
         <View style={accountStyles.input}>
           <Text style={accountStyles.prompt}>{strings.signUp.name}:</Text>
@@ -140,6 +144,27 @@ const styles = StyleSheet.create({
     fontSize: 12,
     textAlign: 'center',
     color: colors.grey,
+  },
+});
+
+const headerStyles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: s(20),
+    paddingVertical: s(15),
+    width: '100%',
+  },
+  title: {
+    fontSize: s(24),
+    fontWeight: '700',
+    color: colors.black,
+  },
+  icon: {
+    width: s(20),
+    height: s(20),
+    tintColor: colors.black,
   },
 });
 
