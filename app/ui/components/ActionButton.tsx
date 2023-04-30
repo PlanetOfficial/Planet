@@ -52,7 +52,7 @@ const AButton: React.FC<Props> = ({
       style={ButtonStyles}
       disabled={disabled}
       onPress={onPress}>
-      <Text size={size} weight="b" color={colors.white}>
+      <Text size={size === 'l' ? 'm' : size} weight="b" color={colors.white}>
         {label}
       </Text>
     </TouchableOpacity>

@@ -11,7 +11,7 @@ interface Props {
   data: any[];
   width: number;
   bookmarks: any;
-  closeDropdown: () => void;
+  closeDropdown?: () => void;
   index: number;
   setIndex: (index: number) => void;
 }
@@ -40,18 +40,18 @@ const PlacesDisplay: React.FC<Props> = ({
         snapToAlignment={'start'}
         decelerationRate={'fast'}
         onScroll={event => {
-          closeDropdown();
+          closeDropdown && closeDropdown();
           setIndex(
             Math.round(event.nativeEvent.contentOffset.x / (width + s(20))),
           );
         }}>
-        {data.map((dest: any, idx: number) => (
+        {data?.map((dest: any, idx: number) => (
           <View
             style={[
               {
                 width: width,
               },
-              idx !== data.length - 1 && {
+              idx !== data?.length - 1 && {
                 marginRight: s(20),
               },
             ]}
@@ -80,7 +80,7 @@ const PlacesDisplay: React.FC<Props> = ({
           </View>
         ))}
       </ScrollView>
-      <ScrollIndicator num={data.length} idx={index} />
+      <ScrollIndicator num={data?.length} idx={index} />
     </>
   );
 };

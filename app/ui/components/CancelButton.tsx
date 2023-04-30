@@ -39,7 +39,7 @@ const CButton: React.FC<Props> = ({size = 'm', onPress}) => {
 
   return (
     <TouchableOpacity style={ButtonStyles} onPress={onPress}>
-      <Text size={size} weight="b" color={colors.black}>
+      <Text size={'s'} weight="b" color={colors.black}>
         {strings.misc.cancel}
       </Text>
     </TouchableOpacity>
