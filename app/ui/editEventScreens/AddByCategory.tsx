@@ -13,7 +13,7 @@ interface Props {
   onSelect: (arg0: any) => void;
 }
 
-const AddByCategory : React.FC<Props> = ({onClose, onSelect}) => {
+const AddByCategory: React.FC<Props> = ({onClose, onSelect}) => {
   return (
     <View style={styles.container}>
       <View style={headerStyles.container}>

@@ -21,7 +21,7 @@ interface Props {
   onSelect: (arg0: any) => void;
 }
 
-const AddCustomDest : React.FC<Props> = ({onClose, onSelect}) => {
+const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
   const autocompleteRef = useRef<GooglePlacesAutocompleteRef>(null);
   const [region, setRegion] = useState({
     latitude: floats.defaultLatitude,
@@ -48,7 +48,7 @@ const AddCustomDest : React.FC<Props> = ({onClose, onSelect}) => {
       }}>
       <View style={headerStyles.container}>
         <CustomText size="m" weight="b">
-        {strings.library.addCustom}
+          {strings.library.addCustom}
         </CustomText>
         <TouchableOpacity style={headerStyles.button} onPress={onClose}>
           <Image style={headerStyles.x} source={icons.x} />
@@ -146,10 +146,14 @@ const AddCustomDest : React.FC<Props> = ({onClose, onSelect}) => {
         )}
       </View>
       <View style={styles.button}>
-        <AButton disabled={!selected} label={strings.library.add} onPress={() => {
+        <AButton
+          disabled={!selected}
+          label={strings.library.add}
+          onPress={() => {
             onClose();
             onSelect(destination);
-        }}/>
+          }}
+        />
       </View>
     </View>
   );
@@ -189,7 +193,7 @@ const styles = StyleSheet.create({
   button: {
     alignItems: 'center',
     marginBottom: s(40),
-  }
+  },
 });
 
 const headerStyles = StyleSheet.create({
