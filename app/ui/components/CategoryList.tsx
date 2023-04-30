@@ -5,7 +5,6 @@ import {
   Text,
   Image,
   TouchableOpacity,
-  ScrollView,
   Modal,
   Pressable,
 } from 'react-native';
@@ -13,14 +12,13 @@ import {s} from 'react-native-size-matters';
 import CustomText from '../components/Text';
 
 import {icons, vectors} from '../../constants/images';
-import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 import {genres} from '../../constants/genres';
 
 interface Props {
-    onClose: () => void;
-    onSelect: (arg0: any) => void;
-  }
+  onClose: () => void;
+  onSelect: (arg0: any) => void;
+}
 
 const CategoryList: React.FC<Props> = ({onClose, onSelect}) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -51,7 +49,12 @@ const CategoryList: React.FC<Props> = ({onClose, onSelect}) => {
             <View style={genreStyles.imageContainer}>
               <Image style={genreStyles.image} source={genre.image} />
               <Image style={genreStyles.blur} source={vectors.blur} />
-              <CustomText size="m" weight="b" color={colors.white} numberOfLines={2} center={true}>
+              <CustomText
+                size="m"
+                weight="b"
+                color={colors.white}
+                numberOfLines={2}
+                center={true}>
                 {genre.name}
               </CustomText>
             </View>
@@ -76,7 +79,9 @@ const CategoryList: React.FC<Props> = ({onClose, onSelect}) => {
                 style={modalStyles.x}>
                 <Image style={modalStyles.icon} source={icons.x} />
               </TouchableOpacity>
-              <CustomText size="m" weight="b">{selectedGenre}</CustomText>
+              <CustomText size="m" weight="b">
+                {selectedGenre}
+              </CustomText>
             </View>
             {allCategories
               ? allCategories?.map((category: any) => (

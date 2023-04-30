@@ -12,7 +12,7 @@ interface Props {
   color?: string;
   underline?: boolean;
   numberOfLines?: number;
-  center? : boolean;
+  center?: boolean;
 }
 
 const CustomText: React.FC<Props> = ({

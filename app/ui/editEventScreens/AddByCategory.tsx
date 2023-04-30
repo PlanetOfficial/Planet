@@ -1,10 +1,5 @@
-import React, {useState} from 'react';
-import {
-  StyleSheet,
-  View,
-  Image,
-  TouchableOpacity,
-} from 'react-native';
+import React from 'react';
+import {StyleSheet, View, Image, TouchableOpacity} from 'react-native';
 import {s} from 'react-native-size-matters';
 import Text from '../components/Text';
 import CategoryList from '../components/CategoryList';
@@ -18,19 +13,22 @@ const AddByCategory = ({onClose, onSelect}: {onClose: any; onSelect: any}) => {
     <View style={styles.container}>
       <View style={headerStyles.container}>
         <Text size="m" weight="b">
-        {strings.library.addByCategory}
+          {strings.library.addByCategory}
         </Text>
         <TouchableOpacity style={headerStyles.button} onPress={onClose}>
           <Image style={headerStyles.x} source={icons.x} />
         </TouchableOpacity>
       </View>
-      <CategoryList onClose={onClose} onSelect={(category) => {
-        onSelect({
-          id: -category.id,
-          name: category.name,
-          icon: category.icon,
-        })
-      }}/>
+      <CategoryList
+        onClose={onClose}
+        onSelect={category => {
+          onSelect({
+            id: -category.id,
+            name: category.name,
+            icon: category.icon,
+          });
+        }}
+      />
     </View>
   );
 };
