@@ -83,7 +83,7 @@ const Library = ({navigation}: {navigation: any}) => {
         style={contentStyles.container}
         contentContainerStyle={contentStyles.content}
         initialNumToRender={5}
-        keyExtractor={(item: any) => item?.id}
+        keyExtractor={(item: any, idx: any) => idx}
         ItemSeparatorComponent={Spacer}
         renderItem={({item, index}) => {
           return selectedIndex === 0 ? (
