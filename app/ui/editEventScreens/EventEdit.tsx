@@ -4,11 +4,13 @@ import {
   View,
   TouchableOpacity,
   LayoutAnimation,
+  Image,
 } from 'react-native';
 
 import {s} from 'react-native-size-matters';
 import {Svg, Line, Circle} from 'react-native-svg';
 import DraggableFlatList from 'react-native-draggable-flatlist';
+import SwipeableItem from 'react-native-swipeable-item';
 
 import PlaceCard from '../components/PlaceCard';
 import Category from './Category';
@@ -31,6 +33,7 @@ const EditEvent: React.FC<Props> = ({
   onAddPress,
 }) => {
   const [dragging, setDragging] = useState(false);
+  const itemRefs = useRef(new Map());
   const childRefs = useRef(new Map());
 
   const onMove = (idx: number, direction: number) => {
@@ -50,14 +53,26 @@ const EditEvent: React.FC<Props> = ({
     console.log(temp);
   };
 
+  const onRemove = (item: any) => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    setTempPlaces((prev: any) => {
+      return prev.filter((temp: any) => temp !== item);
+    });
+    itemRefs.current.delete(item.id);
+  };
+
   return (
     <DraggableFlatList
       data={tempPlaces}
       keyExtractor={(_, index) => index.toString()}
       showsVerticalScrollIndicator={false}
       contentContainerStyle={styles.flatlist}
+      activationDistance={20}
       onDragBegin={() => {
         setDragging(true);
+        itemRefs.current.forEach(value => {
+          value?.close();
+        });
         childRefs.current.forEach(value => {
           value?.closeDropdown();
         });
@@ -67,6 +82,9 @@ const EditEvent: React.FC<Props> = ({
         setTempPlaces(data);
       }}
       onScrollBeginDrag={() => {
+        itemRefs.current.forEach(value => {
+          value?.close();
+        });
         childRefs.current.forEach(value => {
           value?.closeDropdown();
         });
@@ -84,6 +102,9 @@ const EditEvent: React.FC<Props> = ({
       }) => (
         <View
           onTouchStart={() => {
+            itemRefs.current.forEach(value => {
+              value?.close();
+            });
             childRefs.current.forEach((value, key) => {
               if (key !== item.id) {
                 value?.closeDropdown();
@@ -91,7 +112,9 @@ const EditEvent: React.FC<Props> = ({
             });
           }}>
           {item?.id < 0 ? (
-            <View style={dragging && !isActive && styles.transparent}>
+            <View
+              key={item.id}
+              style={dragging && !isActive && styles.transparent}>
               <Category
                 ref={ref => childRefs.current.set(item.id, ref)}
                 navigation={navigation}
@@ -103,31 +126,61 @@ const EditEvent: React.FC<Props> = ({
               />
             </View>
           ) : (
-            <TouchableOpacity
-              style={[styles.card, dragging && !isActive && styles.transparent]}
-              onLongPress={drag}
-              delayLongPress={400}
-              disabled={dragging && !isActive}
-              onPress={() => {
-                navigation.navigate('Place', {
-                  destination: item,
-                  category: item?.category?.name,
-                });
-              }}>
-              <PlaceCard
-                id={item?.id}
-                name={item?.name}
-                info={item?.category?.name}
-                marked={bookmarks?.includes(item?.id)}
-                image={
-                  item?.image_url
-                    ? {
-                        uri: item?.image_url,
-                      }
-                    : icons.defaultIcon
-                }
-              />
-            </TouchableOpacity>
+            <View
+              key={item.id}
+              style={[
+                styles.cardContainer,
+                dragging && !isActive && styles.transparent,
+              ]}>
+              <SwipeableItem
+                ref={ref => itemRefs.current.set(item.id, ref)}
+                overSwipe={s(20)}
+                item={item}
+                renderUnderlayLeft={() => (
+                  <View style={styles.removeContainer}>
+                    <TouchableOpacity
+                      disabled={tempPlaces.length === 1}
+                      onPress={() => {
+                        onRemove(item);
+                      }}
+                      style={[
+                        styles.removeButton,
+                        tempPlaces.length === 1 && {
+                          backgroundColor: colors.darkgrey,
+                        },
+                      ]}>
+                      <Image style={styles.remove} source={icons.remove} />
+                    </TouchableOpacity>
+                  </View>
+                )}
+                snapPointsLeft={[s(60)]}>
+                <TouchableOpacity
+                  style={styles.card}
+                  onLongPress={drag}
+                  delayLongPress={400}
+                  disabled={dragging && !isActive}
+                  onPress={() => {
+                    navigation.navigate('Place', {
+                      destination: item,
+                      category: item?.category?.name,
+                    });
+                  }}>
+                  <PlaceCard
+                    id={item?.id}
+                    name={item?.name}
+                    info={item?.category?.name}
+                    marked={bookmarks?.includes(item?.id)}
+                    image={
+                      item?.image_url
+                        ? {
+                            uri: item?.image_url,
+                          }
+                        : icons.defaultIcon
+                    }
+                  />
+                </TouchableOpacity>
+              </SwipeableItem>
+            </View>
           )}
           {dragging ? (
             <Separator />
@@ -196,6 +249,9 @@ const styles = StyleSheet.create({
     paddingTop: s(10),
     paddingBottom: s(20),
   },
+  cardContainer: {
+    marginHorizontal: s(30),
+  },
   card: {
     alignSelf: 'center',
     width: s(290),
@@ -206,6 +262,27 @@ const styles = StyleSheet.create({
   separator: {
     width: s(350),
     height: s(39.4),
+  },
+  removeContainer: {
+    alignSelf: 'flex-end',
+    justifyContent: 'center',
+    height: '100%',
+    paddingRight: s(10),
+  },
+  removeButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: s(40),
+    height: s(40),
+    borderRadius: s(20),
+    borderWidth: s(2),
+    borderColor: colors.white,
+    backgroundColor: colors.red,
+  },
+  remove: {
+    width: '70%',
+    height: '70%',
+    tintColor: colors.white,
   },
 });
 

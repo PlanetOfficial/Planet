@@ -86,8 +86,6 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
     [insets.top],
   );
 
-  const childRefs = useRef(new Map());
-
   useEffect(() => {
     const getEventData = async () => {
       const data = await getEventPlaces(eventId);
@@ -115,9 +113,6 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
   };
 
   const onAddPress = (idx: number | undefined) => {
-    childRefs.current.forEach(value => {
-      value?.closeDropdown();
-    });
     setInsertionIndex(idx);
     addOptionsBottomSheetRef.current?.present();
   };
