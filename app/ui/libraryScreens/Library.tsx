@@ -55,7 +55,7 @@ const Library = ({navigation}: {navigation: any}) => {
             {strings.title.library}
           </Text>
           <Icon
-            size="l"
+            size="m"
             icon={icons.search}
             onPress={() => {
               navigation.navigate('SearchLibrary');
