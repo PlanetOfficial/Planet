@@ -19,8 +19,6 @@ interface Props {
 }
 
 const OptionMenu: React.FC<Props> = ({options}) => {
-  const hideMenu = () => setVisible(false);
-  const showMenu = () => setVisible(true);
   const [visible, setVisible] = useState(false);
   const [pressed, setPressed] = useState(Array(options.length).fill(false));
 
@@ -28,8 +26,10 @@ const OptionMenu: React.FC<Props> = ({options}) => {
     <Menu
       style={styles.container}
       visible={visible}
-      anchor={<Icon size="m" icon={icons.option} onPress={showMenu} />}
-      onRequestClose={hideMenu}
+      anchor={
+        <Icon size="m" icon={icons.option} onPress={() => setVisible(true)} />
+      }
+      onRequestClose={() => setVisible(false)}
       animationDuration={100}>
       {options.map((option, index) => (
         <View key={index}>
@@ -43,7 +43,7 @@ const OptionMenu: React.FC<Props> = ({options}) => {
               setPressed(pressed.map(() => false));
             }}
             onPress={() => {
-              hideMenu();
+              setVisible(false);
               option.onPress();
             }}
             pressColor="transparent">

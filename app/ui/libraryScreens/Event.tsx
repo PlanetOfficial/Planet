@@ -60,7 +60,7 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
   const insets = useSafeAreaInsets();
   const bottomSheetRef: any = useRef<BottomSheet>(null);
   const snapPoints = useMemo(
-    () => [s(220) + insets.bottom, vs(680) - s(60) - insets.top],
+    () => [s(240) + insets.bottom, vs(680) - s(60) - insets.top],
     [insets.top, insets.bottom],
   );
 

@@ -105,7 +105,11 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
           ]}
         />
       </View>
-      <Filter ref={childRef} category={category} />
+      <Filter
+        ref={childRef}
+        filters={category.filters}
+        subcategories={category.subcategories}
+      />
       <PlacesDisplay
         navigation={navigation}
         data={TempData}

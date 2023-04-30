@@ -47,6 +47,7 @@ const EditEvent: React.FC<Props> = ({
       childRefs.current.delete(tempItem.id);
     }
     setTempPlaces(temp);
+    console.log(temp);
   };
 
   return (
