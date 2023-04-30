@@ -10,11 +10,12 @@ import {
   ScrollView,
   Modal,
   Pressable,
-  LayoutAnimation,
   Platform,
+  LayoutAnimation,
 } from 'react-native';
-import MapView, {Marker} from 'react-native-maps';
+
 import {s, vs} from 'react-native-size-matters';
+import MapView, {Marker} from 'react-native-maps';
 import {Svg, Line, Circle} from 'react-native-svg';
 import DatePicker from 'react-native-date-picker';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -32,10 +33,14 @@ import {getEventPlaces} from '../../utils/api/libraryCalls/getEventPlaces';
 import PlaceCard from '../components/PlaceCard';
 import Blur from '../components/Blur';
 import ScrollIndicator from '../components/ScrollIndicator';
+import CustomText from '../components/Text';
+import Icon from '../components/Icon';
+import OptionMenu from '../components/OptionMenu';
+
 import AddByCategory from '../editEventScreens/AddByCategory';
 import AddFromLibrary from '../editEventScreens/AddFromLibrary';
 import AddCustomDest from '../editEventScreens/AddCustomDest';
-import Category from '../editEventScreens/Category';
+import EditEvent from '../editEventScreens/EventEdit';
 
 import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
@@ -164,6 +169,11 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
             options: ['$', '$$', '$$$', '$$$$'],
             text: 'Price',
           },
+          {
+            name: 'Distance',
+            options: ['10mi', '25mi', '50mi', '100mi'],
+            text: 'Distance',
+          },
         ],
         subcategories: [
           {
@@ -228,58 +238,98 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
 
       <Blur height={s(50)} />
 
-      <SafeAreaView style={headerStyles.container}>
-        <TouchableOpacity
-          onPress={() =>
-            editing
-              ? setBackConfirmationOpen(true)
-              : navigation.navigate('Library')
-          }>
-          <Image style={headerStyles.back} source={icons.back} />
-        </TouchableOpacity>
-        {editing ? (
-          <View style={headerStyles.texts}>
-            <TextInput
-              onFocus={() =>
-                Platform.OS === 'android' && bottomSheetRef.current?.close()
-              }
-              onBlur={() =>
-                Platform.OS === 'android' && bottomSheetRef.current?.expand()
-              }
-              style={[headerStyles.name, headerStyles.underline]}
-              value={tempTitle}
-              onChangeText={(text: any) => setTempTitle(text)}
-            />
-            <TouchableOpacity onPress={() => setDatePickerOpen(true)}>
-              <Text style={[headerStyles.date, headerStyles.underline]}>
-                {tempDate.toLocaleDateString()}
-              </Text>
-            </TouchableOpacity>
-            <DatePicker
-              modal
-              open={datePickerOpen}
-              date={date}
-              onConfirm={newDate => {
-                setDatePickerOpen(false);
-                setTempDate(newDate);
-              }}
-              onCancel={() => {
-                setDatePickerOpen(false);
-              }}
-            />
-          </View>
-        ) : (
-          <View style={headerStyles.texts}>
-            <Text style={headerStyles.name}>{eventTitle}</Text>
-            <Text style={headerStyles.date}>{date.toLocaleDateString()}</Text>
-          </View>
-        )}
-        <TouchableOpacity
-          onPress={() => (editing ? saveEdits() : beginEdits())}>
-          <Text style={headerStyles.edit}>
-            {editing ? strings.library.save : strings.library.edit}
-          </Text>
-        </TouchableOpacity>
+      <SafeAreaView>
+        <View style={headerStyles.container}>
+          <Icon
+            size="m"
+            icon={icons.back}
+            onPress={() =>
+              editing
+                ? setBackConfirmationOpen(true)
+                : navigation.navigate('Library')
+            }
+          />
+
+          {editing ? (
+            <>
+              <View style={headerStyles.texts}>
+                <TextInput
+                  onFocus={() =>
+                    Platform.OS === 'android' && bottomSheetRef.current?.close()
+                  }
+                  onBlur={() =>
+                    Platform.OS === 'android' &&
+                    bottomSheetRef.current?.expand()
+                  }
+                  style={headerStyles.name}
+                  value={tempTitle}
+                  onChangeText={(text: any) => setTempTitle(text)}
+                />
+                <TouchableOpacity onPress={() => setDatePickerOpen(true)}>
+                  <CustomText
+                    size="xs"
+                    weight="l"
+                    color={colors.accent}
+                    underline={true}>
+                    {tempDate.toLocaleDateString()}
+                  </CustomText>
+                </TouchableOpacity>
+                <DatePicker
+                  modal
+                  open={datePickerOpen}
+                  date={date}
+                  onConfirm={newDate => {
+                    setDatePickerOpen(false);
+                    setTempDate(newDate);
+                  }}
+                  onCancel={() => {
+                    setDatePickerOpen(false);
+                  }}
+                />
+              </View>
+              <Icon
+                size="m"
+                color={colors.accent}
+                icon={icons.confirm}
+                onPress={saveEdits}
+              />
+            </>
+          ) : (
+            <>
+              <View style={headerStyles.texts}>
+                <CustomText size="l" weight="b">
+                  {eventTitle}
+                </CustomText>
+                <CustomText size="xs" weight="l" color={colors.accent}>
+                  {date.toLocaleDateString()}
+                </CustomText>
+              </View>
+              <OptionMenu
+                options={[
+                  {
+                    name: strings.main.share,
+                    onPress: () => {
+                      console.log('TODO: Share Event');
+                    },
+                    color: colors.black,
+                  },
+                  {
+                    name: strings.library.edit,
+                    onPress: beginEdits,
+                    color: colors.accent,
+                  },
+                  {
+                    name: strings.main.remove,
+                    onPress: () => {
+                      console.log('TODO: Remove Event');
+                    },
+                    color: colors.red,
+                  },
+                ]}
+              />
+            </>
+          )}
+        </View>
       </SafeAreaView>
 
       <BottomSheet
@@ -294,160 +344,12 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
         enableContentPanningGesture={false}
         enableHandlePanningGesture={false}>
         {editing ? (
-          <DraggableFlatList
-            data={tempPlaces}
-            keyExtractor={(item, index) => index.toString()}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={placesEditStyles.contentContainer}
-            activationDistance={20}
-            onScrollBeginDrag={() => {
-              itemRefs.current.forEach(value => {
-                value?.close();
-              });
-              childRefs.current.forEach(value => {
-                value?.closeDropdown();
-              });
-            }}
-            renderItem={({
-              item,
-              getIndex,
-              drag,
-              isActive,
-            }: {
-              item: any;
-              getIndex: any;
-              drag: any;
-              isActive: boolean;
-            }) => (
-              <>
-                {item?.id < 0 ? (
-                  <View
-                    onTouchStart={() => {
-                      itemRefs.current.forEach(value => {
-                        value?.close();
-                      });
-                      childRefs.current.forEach((value, key) => {
-                        if (key !== item.id) {
-                          value?.closeDropdown();
-                        }
-                      });
-                    }}
-                    style={
-                      dragging && !isActive && placesEditStyles.transparentCard
-                    }>
-                    <Category
-                      ref={ref => childRefs.current.set(item.id, ref)}
-                      navigation={navigation}
-                      category={item}
-                      fullEventData={fullEventData}
-                      bookmarks={bookmarks}
-                      categoryIndex={getIndex()}
-                      tempPlaces={tempPlaces}
-                      onCategoryMove={onCategoryMove}
-                    />
-                  </View>
-                ) : (
-                  <View style={placesEditStyles.container} key={item.id}>
-                    <SwipeableItem
-                      ref={ref => itemRefs.current.set(item.id, ref)}
-                      overSwipe={s(20)}
-                      key={item.id}
-                      item={item}
-                      renderUnderlayLeft={() => (
-                        <View style={placesEditStyles.buttonsContainer}>
-                          <TouchableOpacity
-                            disabled={tempPlaces.length === 1}
-                            onPress={() => {
-                              LayoutAnimation.configureNext(
-                                LayoutAnimation.Presets.easeInEaseOut,
-                              );
-                              setTempPlaces((prev: any) => {
-                                return prev.filter(
-                                  (temp: any) => temp !== item,
-                                );
-                              });
-                              itemRefs.current.delete(item.id);
-                            }}
-                            style={[
-                              placesEditStyles.button,
-                              tempPlaces.length === 1 && {
-                                backgroundColor: colors.darkgrey,
-                              },
-                            ]}>
-                            <Image
-                              style={placesEditStyles.icon}
-                              source={icons.remove}
-                            />
-                          </TouchableOpacity>
-                        </View>
-                      )}
-                      snapPointsLeft={[s(60)]}>
-                      <TouchableOpacity
-                        key={item.id}
-                        style={[
-                          placesEditStyles.card,
-                          dragging &&
-                            !isActive &&
-                            placesEditStyles.transparentCard,
-                        ]}
-                        onLongPress={drag}
-                        delayLongPress={400}
-                        disabled={dragging && !isActive}
-                        onPressIn={() => {
-                          itemRefs.current.forEach((value, key) => {
-                            if (key !== item.id) {
-                              value?.close();
-                            }
-                          });
-                          childRefs.current.forEach(value => {
-                            value?.closeDropdown();
-                          });
-                        }}
-                        onPress={() => {
-                          navigation.navigate('Place', {
-                            destination: item,
-                            category: item?.category?.name,
-                          });
-                        }}>
-                        <PlaceCard
-                          id={item?.id}
-                          name={item?.name}
-                          info={item?.category?.name}
-                          marked={bookmarks?.includes(item?.id)}
-                          image={
-                            item?.image_url
-                              ? {
-                                  uri: item?.image_url,
-                                }
-                              : icons.defaultIcon
-                          }
-                        />
-                      </TouchableOpacity>
-                    </SwipeableItem>
-                  </View>
-                )}
-                {dragging ? (
-                  <Separator />
-                ) : (
-                  <TouchableOpacity onPress={() => onAddPress(getIndex())}>
-                    <AddEventSeparator />
-                  </TouchableOpacity>
-                )}
-              </>
-            )}
-            onDragBegin={() => {
-              setDragging(true);
-              itemRefs.current.forEach(value => {
-                value?.close();
-              });
-              childRefs.current.forEach(value => {
-                value?.closeDropdown();
-              });
-            }}
-            onDragEnd={({data}) => {
-              setDragging(false);
-              setTempPlaces(data);
-            }}
+          <EditEvent
+            navigation={navigation}
+            bookmarks={bookmarks}
+            tempPlaces={tempPlaces}
+            setTempPlaces={setTempPlaces}
+            onAddPress={onAddPress}
           />
         ) : (
           <SafeAreaView>
@@ -699,38 +601,20 @@ const headerStyles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginHorizontal: s(20),
-  },
-  back: {
-    width: s(12),
-    height: s(18),
-    marginRight: s(20),
-    tintColor: colors.black,
+    justifyContent: 'space-between',
+    width: s(350),
+    height: s(50),
+    paddingHorizontal: s(20),
   },
   texts: {
-    justifyContent: 'space-between',
-    width: s(238),
-    height: s(40),
+    flex: 1,
+    marginHorizontal: s(10),
   },
   name: {
     padding: 0,
-    fontSize: s(18),
+    fontSize: s(20),
     fontWeight: '700',
     color: colors.black,
-  },
-  date: {
-    fontSize: s(11),
-    fontWeight: '600',
-    color: colors.accent,
-  },
-  edit: {
-    width: s(40),
-    fontSize: s(14),
-    fontWeight: '600',
-    textAlign: 'right',
-    color: colors.accent,
-  },
-  underline: {
     textDecorationLine: 'underline',
   },
 });

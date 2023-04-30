@@ -5,7 +5,7 @@ import {s} from 'react-native-size-matters';
 import EncryptedStorage from 'react-native-encrypted-storage';
 
 import Text from '../components/Text';
-import IButton from './IconButton';
+import Icon from './Icon';
 
 import {colors} from '../../constants/theme';
 import {icons} from '../../constants/images';
@@ -68,7 +68,7 @@ const PlaceCard: React.FC<Props> = ({
             {info}
           </Text>
         </View>
-        <IButton
+        <Icon
           size="m"
           color={colors.accent}
           icon={bookmarked ? icons.hearted : icons.heart}

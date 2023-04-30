@@ -10,6 +10,7 @@ interface Props {
   size?: 'xs' | 's' | 'm' | 'l' | 'xl';
   weight?: 'l' | 'r' | 'b';
   color?: string;
+  underline?: boolean;
 }
 
 const CustomText: React.FC<Props> = ({
@@ -17,17 +18,18 @@ const CustomText: React.FC<Props> = ({
   size = 'm',
   weight = 'r',
   color = colors.black,
+  underline = false,
 }) => {
-  let fontSize: number = s(16);
+  let fontSize: number = s(17);
   switch (size) {
     case 'xs':
-      fontSize = s(12);
+      fontSize = s(11);
       break;
     case 's':
       fontSize = s(14);
       break;
     case 'm':
-      fontSize = s(16);
+      fontSize = s(17);
       break;
     case 'l':
       fontSize = s(20);
@@ -58,6 +60,7 @@ const CustomText: React.FC<Props> = ({
     color,
     fontSize,
     fontWeight,
+    textDecorationLine: underline ? 'underline' : 'none',
   };
 
   return (

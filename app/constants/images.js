@@ -38,6 +38,7 @@ export const icons = {
   plus: require('../assets/icons/plus.png'),
   minus: require('../assets/icons/minus.png'),
   hide: require('../assets/icons/hide.png'),
+  drop: require('../assets/icons/drop.png'),
 };
 
 export const fgIcons = [

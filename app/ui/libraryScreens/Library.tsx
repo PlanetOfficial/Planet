@@ -12,7 +12,7 @@ import SegmentedControlTab from 'react-native-segmented-control-tab';
 import EncryptedStorage from 'react-native-encrypted-storage';
 
 import Text from '../components/Text';
-import IButton from '../components/IconButton';
+import Icon from '../components/Icon';
 import PlaceCard from '../components/PlaceCard';
 import EventCard from '../components/EventCard';
 import strings from '../../constants/strings';
@@ -54,7 +54,7 @@ const Library = ({navigation}: {navigation: any}) => {
           <Text size="xl" weight="b">
             {strings.title.library}
           </Text>
-          <IButton
+          <Icon
             size="l"
             icon={icons.search}
             onPress={() => {
@@ -153,7 +153,6 @@ const styles = StyleSheet.create({
     width: s(350),
     height: s(50),
     paddingHorizontal: s(20),
-    paddingVertical: s(10),
   },
 });
 
