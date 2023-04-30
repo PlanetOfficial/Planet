@@ -11,6 +11,8 @@ interface Props {
   weight?: 'l' | 'r' | 'b';
   color?: string;
   underline?: boolean;
+  numberOfLines?: number;
+  center? : boolean;
 }
 
 const CustomText: React.FC<Props> = ({
@@ -19,6 +21,8 @@ const CustomText: React.FC<Props> = ({
   weight = 'r',
   color = colors.black,
   underline = false,
+  numberOfLines = 1,
+  center = false,
 }) => {
   let fontSize: number = s(17);
   switch (size) {
@@ -61,10 +65,11 @@ const CustomText: React.FC<Props> = ({
     fontSize,
     fontWeight,
     textDecorationLine: underline ? 'underline' : 'none',
+    textAlign: center ? 'center' : 'left',
   };
 
   return (
-    <Text numberOfLines={1} style={textStyles}>
+    <Text numberOfLines={numberOfLines} style={textStyles}>
       {children}
     </Text>
   );

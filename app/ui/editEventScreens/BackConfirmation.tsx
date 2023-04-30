@@ -60,8 +60,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   container: {
-    alignItems: 'center',
-    justifyContent: 'space-between',
     width: s(250),
     height: s(120),
     borderRadius: s(10),
