@@ -8,7 +8,12 @@ import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 
-const AddByCategory = ({onClose, onSelect}: {onClose: any; onSelect: any}) => {
+interface Props {
+  onClose: () => void;
+  onSelect: (arg0: any) => void;
+}
+
+const AddByCategory : React.FC<Props> = ({onClose, onSelect}) => {
   return (
     <View style={styles.container}>
       <View style={headerStyles.container}>

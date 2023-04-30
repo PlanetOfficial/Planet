@@ -52,7 +52,12 @@ const TempData = [
   },
 ];
 
-const AddFromLibrary = ({onClose, onSelect}: {onClose: any; onSelect: any}) => {
+interface Props {
+  onClose: () => void;
+  onSelect: (arg0: any) => void;
+}
+
+const AddFromLibrary: React.FC<Props> = ({onClose, onSelect}) => {
   const ref: any = useRef(null);
 
   return (
@@ -80,7 +85,7 @@ const AddFromLibrary = ({onClose, onSelect}: {onClose: any; onSelect: any}) => {
             <TouchableOpacity
               style={styles.card}
               onPress={() => {
-                onSelect();
+                onSelect(item);
                 onClose();
               }}>
               <PlaceCard
