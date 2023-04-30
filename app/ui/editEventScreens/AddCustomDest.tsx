@@ -11,10 +11,17 @@ import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 import {floats} from '../../constants/numbers';
+import CustomText from '../components/Text';
 
 import {GoogleMapsAPIKey} from '../../utils/api/APIConstants';
+import AButton from '../components/ActionButton';
 
-const AddCustomDest = ({onClose, onSelect}: {onClose: any; onSelect: any}) => {
+interface Props {
+  onClose: () => void;
+  onSelect: (arg0: any) => void;
+}
+
+const AddCustomDest : React.FC<Props> = ({onClose, onSelect}) => {
   const autocompleteRef = useRef<GooglePlacesAutocompleteRef>(null);
   const [region, setRegion] = useState({
     latitude: floats.defaultLatitude,
@@ -40,7 +47,9 @@ const AddCustomDest = ({onClose, onSelect}: {onClose: any; onSelect: any}) => {
         }
       }}>
       <View style={headerStyles.container}>
-        <Text style={headerStyles.title}>{strings.library.addCustom}</Text>
+        <CustomText size="m" weight="b">
+        {strings.library.addCustom}
+        </CustomText>
         <TouchableOpacity style={headerStyles.button} onPress={onClose}>
           <Image style={headerStyles.x} source={icons.x} />
         </TouchableOpacity>
@@ -136,18 +145,12 @@ const AddCustomDest = ({onClose, onSelect}: {onClose: any; onSelect: any}) => {
           <Text style={styles.text}>{strings.library.promptSearch}</Text>
         )}
       </View>
-      <TouchableOpacity
-        style={[
-          buttonStyles.container,
-          {backgroundColor: selected ? colors.accent : colors.darkgrey},
-        ]}
-        disabled={!selected}
-        onPress={() => {
-          onClose();
-          onSelect(destination);
-        }}>
-        <Text style={buttonStyles.title}>{strings.library.add}</Text>
-      </TouchableOpacity>
+      <View style={styles.button}>
+        <AButton disabled={!selected} label={strings.library.add} onPress={() => {
+            onClose();
+            onSelect(destination);
+        }}/>
+      </View>
     </View>
   );
 };
@@ -183,6 +186,10 @@ const styles = StyleSheet.create({
     marginTop: -s(5),
     marginBottom: s(5),
   },
+  button: {
+    alignItems: 'center',
+    marginBottom: s(40),
+  }
 });
 
 const headerStyles = StyleSheet.create({
@@ -192,13 +199,6 @@ const headerStyles = StyleSheet.create({
     width: '100%',
     height: s(40),
     marginBottom: s(10),
-  },
-  title: {
-    fontSize: s(17),
-    fontWeight: '700',
-    color: colors.black,
-    textAlign: 'center',
-    textAlignVertical: 'center',
   },
   button: {
     alignItems: 'center',
@@ -256,23 +256,6 @@ const searchStyles = StyleSheet.create({
     width: s(11),
     height: s(11),
     tintColor: colors.darkgrey,
-  },
-});
-
-const buttonStyles = StyleSheet.create({
-  container: {
-    alignSelf: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: s(120),
-    height: s(40),
-    marginBottom: s(50),
-    borderRadius: s(10),
-  },
-  title: {
-    fontSize: s(16),
-    fontWeight: '700',
-    color: colors.white,
   },
 });
 
