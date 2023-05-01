@@ -104,7 +104,7 @@ const Trending = ({navigation}: {navigation: any}) => {
               <Icon size="xs" icon={icons.drop} />
             </View>
           </TouchableOpacity>
-          
+
           <View style={headerStyles.search}>
             <Icon
               size="m"
@@ -117,73 +117,80 @@ const Trending = ({navigation}: {navigation: any}) => {
         </View>
       </SafeAreaView>
       <ScrollView>
-        {genres[0].categories.map((category: any, idx: number) => (
-          (eventsData[category.id] && eventsData[category.id].length > 0) && (
-          <View key={idx} style={categoryStyles.container}>
-            <View style={categoryStyles.header}>
-              <Text size='m' weight='b'>{category.name}</Text>
-              <TouchableOpacity
-                onPress={() => {
-                  let defaultSubcategories: Subcategory[] = [];
-                  let hiddenSubCategories = [];
+        {genres[0].categories.map(
+          (category: any, idx: number) =>
+            eventsData[category.id] &&
+            eventsData[category.id].length > 0 && (
+              <View key={idx} style={categoryStyles.container}>
+                <View style={categoryStyles.header}>
+                  <Text size="m" weight="b">
+                    {category.name}
+                  </Text>
+                  <TouchableOpacity
+                    onPress={() => {
+                      let defaultSubcategories: Subcategory[] = [];
+                      let hiddenSubCategories = [];
 
-                  if (category?.subcategories?.length <= 5) {
-                    defaultSubcategories = category.subcategories;
-                  } else {
-                    defaultSubcategories = category?.subcategories?.slice(0, 5);
-                    hiddenSubCategories = category?.subcategories?.slice(5);
-                  }
+                      if (category?.subcategories?.length <= 5) {
+                        defaultSubcategories = category.subcategories;
+                      } else {
+                        defaultSubcategories = category?.subcategories?.slice(
+                          0,
+                          5,
+                        );
+                        hiddenSubCategories = category?.subcategories?.slice(5);
+                      }
 
-                  navigation.navigate('LiveCategory', {
-                    subcategories: defaultSubcategories,
-                    hiddenSubCategories,
-                    categoryId: category.id,
-                    categoryName: category.name,
-                    latitude,
-                    longitude,
-                    radius,
-                  });
-                }}>
-                <Text size="xs" weight="b" color={colors.accent}>
-                  {strings.trending.seeAll}
-                </Text>
-              </TouchableOpacity>
-            </View>
-            <ScrollView
-              contentContainerStyle={categoryStyles.contentContainer}
-              style={categoryStyles.scrollView}
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}>
-              {eventsData[category.id]
-                ? eventsData[category.id].map((item: any, jdx: number) => (
-                    <TouchableOpacity
-                      style={categoryStyles.card}
-                      key={jdx}
-                      onPress={() =>
-                        navigation.navigate('Place', {
-                          destination: item,
-                          category: item?.category?.name,
-                        })
-                      }>
-                      <PlaceCard
-                        id={item?.id}
-                        name={item?.name}
-                        info={item?.date}
-                        marked={item?.marked}
-                        image={{uri: item?.image_url}}
-                      />
-                    </TouchableOpacity>
-                  ))
-                : null}
-            </ScrollView>
-            {idx === genres[0].categories.length - 1 ? (
-              <View style={styles.bottomPadding} />
-            ) : (
-              <Spacer />
-            )}
-          </View>
-          )
-        ))}
+                      navigation.navigate('LiveCategory', {
+                        subcategories: defaultSubcategories,
+                        hiddenSubCategories,
+                        categoryId: category.id,
+                        categoryName: category.name,
+                        latitude,
+                        longitude,
+                        radius,
+                      });
+                    }}>
+                    <Text size="xs" weight="b" color={colors.accent}>
+                      {strings.trending.seeAll}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+                <ScrollView
+                  contentContainerStyle={categoryStyles.contentContainer}
+                  style={categoryStyles.scrollView}
+                  horizontal={true}
+                  showsHorizontalScrollIndicator={false}>
+                  {eventsData[category.id]
+                    ? eventsData[category.id].map((item: any, jdx: number) => (
+                        <TouchableOpacity
+                          style={categoryStyles.card}
+                          key={jdx}
+                          onPress={() =>
+                            navigation.navigate('Place', {
+                              destination: item,
+                              category: item?.category?.name,
+                            })
+                          }>
+                          <PlaceCard
+                            id={item?.id}
+                            name={item?.name}
+                            info={item?.date}
+                            marked={item?.marked}
+                            image={{uri: item?.image_url}}
+                          />
+                        </TouchableOpacity>
+                      ))
+                    : null}
+                </ScrollView>
+                {idx === genres[0].categories.length - 1 ? (
+                  <View style={styles.bottomPadding} />
+                ) : (
+                  <Spacer />
+                )}
+              </View>
+            ),
+        )}
       </ScrollView>
     </View>
   );
@@ -229,7 +236,7 @@ const headerStyles = StyleSheet.create({
   search: {
     position: 'absolute',
     right: s(20),
-  }
+  },
 });
 
 const categoryStyles = StyleSheet.create({

@@ -1,10 +1,5 @@
 import React, {useState} from 'react';
-import {
-  View,
-  SafeAreaView,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
+import {View, SafeAreaView, StyleSheet, TouchableOpacity} from 'react-native';
 import {colors} from '../../constants/theme';
 import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
@@ -36,11 +31,15 @@ const LiveCategorySettings = ({
       <SafeAreaView>
         <View style={styles.header}>
           <View style={styles.back}>
-            <Icon icon={icons.back} onPress={() =>
-              navigation.navigate('LiveCategory', {
-                subcategories,
-                hiddenSubCategories,
-              })} />
+            <Icon
+              icon={icons.back}
+              onPress={() =>
+                navigation.navigate('LiveCategory', {
+                  subcategories,
+                  hiddenSubCategories,
+                })
+              }
+            />
           </View>
           <Text>{strings.filter.editView}</Text>
         </View>
@@ -49,7 +48,9 @@ const LiveCategorySettings = ({
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.bottomPadding}>
         <View style={categoryStyles.header}>
-          <Text size='s' weight='b'>{strings.filter.visible}:</Text>
+          <Text size="s" weight="b">
+            {strings.filter.visible}:
+          </Text>
         </View>
         <NestableDraggableFlatList
           data={subcategories}
@@ -70,7 +71,10 @@ const LiveCategorySettings = ({
                   categoryStyles.container,
                   isActive ? categoryStyles.shadow : null,
                 ]}>
-                <Icon icon={icons.hide} color={colors.darkgrey} onPress={() => {
+                <Icon
+                  icon={icons.hide}
+                  color={colors.darkgrey}
+                  onPress={() => {
                     setSubcategories(
                       subcategories.filter(
                         (subcategory: any) => subcategory.id !== item.id,
@@ -80,22 +84,25 @@ const LiveCategorySettings = ({
                       ..._hiddenSubCategory,
                       item,
                     ]);
-                }}/>
+                  }}
+                />
                 <View style={categoryStyles.title}>
-                  <Text size='s'>{item.title}</Text>
+                  <Text size="s">{item.title}</Text>
                 </View>
                 <TouchableOpacity
                   delayLongPress={1}
                   onLongPress={drag}
                   disabled={isActive}>
-                    <Icon icon={icons.drag} color={colors.darkgrey}/>
+                  <Icon icon={icons.drag} color={colors.darkgrey} />
                 </TouchableOpacity>
               </View>
             </>
           )}
         />
         <View style={categoryStyles.header}>
-          <Text size='s' weight='b'>{strings.filter.hidden}:</Text>
+          <Text size="s" weight="b">
+            {strings.filter.hidden}:
+          </Text>
         </View>
         <NestableDraggableFlatList
           data={hiddenSubCategories}
@@ -104,7 +111,10 @@ const LiveCategorySettings = ({
             <>
               <View style={categoryStyles.container}>
                 <View style={categoryStyles.border} />
-                <Icon icon={icons.plus} color={colors.accent} onPress={() => {
+                <Icon
+                  icon={icons.plus}
+                  color={colors.accent}
+                  onPress={() => {
                     setHiddenSubCategories(
                       hiddenSubCategories.filter(
                         (subcategory: any) => subcategory.id !== item.id,
@@ -114,9 +124,10 @@ const LiveCategorySettings = ({
                       ..._subcategories,
                       item,
                     ]);
-                }}/>
+                  }}
+                />
                 <View style={categoryStyles.title}>
-                  <Text size='s'>{item.title}</Text>
+                  <Text size="s">{item.title}</Text>
                 </View>
               </View>
               <View style={categoryStyles.border} />
