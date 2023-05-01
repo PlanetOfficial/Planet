@@ -82,7 +82,7 @@ const Library = ({navigation}: {navigation: any}) => {
         data={selectedIndex === 0 ? places : events}
         contentContainerStyle={styles.contentContainer}
         initialNumToRender={5}
-        keyExtractor={(item: any) => item?.id}
+        keyExtractor={(item: any, idx: any) => idx}
         ItemSeparatorComponent={Spacer}
         renderItem={({item}) => {
           return selectedIndex === 0 ? (

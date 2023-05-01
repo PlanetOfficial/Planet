@@ -136,8 +136,8 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
                 Math.round(event.nativeEvent.contentOffset.x / s(276)),
               )
             }>
-            {fullEventData?.places?.map((dest: any) => (
-              <View style={placesDisplayStyles.card} key={dest.id}>
+            {fullEventData?.places?.map((dest: any, idx: any) => (
+              <View style={placesDisplayStyles.card} key={idx}>
                 {/* TODO: Display estimated time and cost for this place */}
                 <TouchableOpacity
                   onPress={() => {
