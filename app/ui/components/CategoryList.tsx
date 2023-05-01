@@ -17,7 +17,7 @@ import {genres} from '../../constants/genres';
 
 interface Props {
   onClose: () => void;
-  onSelect: (arg0: any) => void;
+  onSelect: (dest: any) => void;
 }
 
 const CategoryList: React.FC<Props> = ({onClose, onSelect}) => {
