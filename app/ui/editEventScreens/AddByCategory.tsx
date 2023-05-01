@@ -10,7 +10,7 @@ import {colors} from '../../constants/theme';
 
 interface Props {
   onClose: () => void;
-  onSelect: (arg0: any) => void;
+  onSelect: (dest: any) => void;
 }
 
 const AddByCategory: React.FC<Props> = ({onClose, onSelect}) => {

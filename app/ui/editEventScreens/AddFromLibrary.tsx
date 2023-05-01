@@ -54,7 +54,7 @@ const TempData = [
 
 interface Props {
   onClose: () => void;
-  onSelect: (arg0: any) => void;
+  onSelect: (place: any) => void;
 }
 
 const AddFromLibrary: React.FC<Props> = ({onClose, onSelect}) => {

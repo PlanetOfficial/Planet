@@ -21,8 +21,8 @@ interface Props {
   navigation: any;
   bookmarks: any;
   tempPlaces: any;
-  setTempPlaces: (arg0: any) => void;
-  onAddPress: (arg0: any) => void;
+  setTempPlaces: (dest: any) => void;
+  onAddPress: (idx: any) => void;
 }
 
 const EditEvent: React.FC<Props> = ({

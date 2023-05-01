@@ -18,7 +18,7 @@ import AButton from '../components/ActionButton';
 
 interface Props {
   onClose: () => void;
-  onSelect: (arg0: any) => void;
+  onSelect: (dest: any) => void;
 }
 
 const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
