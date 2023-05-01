@@ -140,11 +140,13 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
           {
             name: 'Price',
             options: ['$', '$$', '$$$', '$$$$'],
+            values: [0, 1, 2, 3],
             text: 'Price',
           },
           {
             name: 'Distance',
             options: ['10mi', '25mi', '50mi', '100mi'],
+            values: [10, 25, 50, 100],
             text: 'Distance',
           },
         ],

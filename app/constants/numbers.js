@@ -3,7 +3,6 @@ export const integers = {
   borderWidth: 2,
   maxRadiusInMeters: 40000,
   defaultDaysToAdds: 14,
-  defaultDaysToAdd2: 7,
   defaultNumPlaces: 5,
 };
 
@@ -12,5 +11,5 @@ export const floats = {
   defaultLongitude: -122.3032,
   defaultLatitudeDelta: 0.0922,
   defaultLongitudeDelta: 0.0421,
-  defaultRadius: 16093, // meters, ~10 miles
+  defaultRadius: 24140, // meters, ~15 miles
 };

@@ -359,15 +359,29 @@ export const genres = [
         icon: require('../assets/categories/fair.png'),
       },
     ],
-    filters: {
-      radius: [5, 10, 15, 25],
-      time: [
-        {name: 'Week', days: 7},
-        {name: 'Two Weeks', days: 14},
-        {name: 'Month', days: 30},
-      ],
-      sort: ['Relevance', 'Distance'],
-    },
+    filters: [
+      {
+        name: 'radius',
+        options: ['5mi', '15mi', '25mi'],
+        values: [5, 15, 25],
+        text: 'Within',
+        defaultIdx: 1,
+      },
+      {
+        name: 'time',
+        options: ['Week', 'Two Weeks', 'Month'],
+        values: [7, 14, 30],
+        text: 'In the next',
+        defaultIdx: 1,
+      },
+      {
+        name: 'sort',
+        options: ['Relevance', 'Distance'],
+        values: [0, 1],
+        text: 'Sort by',
+        defaultIdx: 0,
+      },
+    ],
   },
   {
     id: 2,

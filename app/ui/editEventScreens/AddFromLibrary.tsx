@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useState, useRef} from 'react';
 import {
   StyleSheet,
   View,
@@ -60,6 +60,14 @@ interface Props {
 const AddFromLibrary: React.FC<Props> = ({onClose, onSelect}) => {
   const ref: any = useRef(null);
 
+  let filters = misc.libraryFilter;
+
+  let defaultFilterValues: number[] = [];
+  for (let i = 0; filters && i < filters.length; i++) {
+    defaultFilterValues.push(filters[i].defaultIdx);
+  }
+  const [filterValues, setFilterValues] = useState(defaultFilterValues);
+
   return (
     <View style={styles.container}>
       <View style={headerStyles.container}>
@@ -71,7 +79,13 @@ const AddFromLibrary: React.FC<Props> = ({onClose, onSelect}) => {
         </TouchableOpacity>
       </View>
 
-      <Filter ref={ref} filters={misc.libraryFilter} />
+      <Filter
+        ref={ref}
+        filters={filters}
+        currFilters={filterValues}
+        setCurrFilters={setFilterValues}
+        defaultFilterValues={defaultFilterValues}
+      />
 
       <FlatList
         data={TempData}

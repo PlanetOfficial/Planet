@@ -73,6 +73,14 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
 
   const [placeIdx, setPlaceIdx] = useState(0);
 
+  let filters = category.filters;
+
+  let defaultFilterValues: number[] = [];
+  for (let i = 0; filters && i < filters.length; i++) {
+    defaultFilterValues.push(filters[i].defaultIdx);
+  }
+  const [filterValues, setFilterValues] = useState(defaultFilterValues);
+
   return (
     <View key={category.id}>
       <View style={styles.header}>
@@ -107,8 +115,11 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
       </View>
       <Filter
         ref={childRef}
-        filters={category.filters}
+        filters={filters}
         subcategories={category.subcategories}
+        currFilters={filterValues}
+        setCurrFilters={setFilterValues}
+        defaultFilterValues={defaultFilterValues}
       />
       <PlacesDisplay
         navigation={navigation}
