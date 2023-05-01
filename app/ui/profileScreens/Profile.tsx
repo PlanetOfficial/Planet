@@ -5,9 +5,10 @@ import {
   Text,
   StyleSheet,
   SafeAreaView,
-  TouchableOpacity,
 } from 'react-native';
 import {s, vs} from 'react-native-size-matters';
+import CustomText from '../components/Text';
+import Icon from '../components/Icon';
 
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
@@ -30,13 +31,22 @@ const Profile = ({navigation}: {navigation: any}) => {
   }, []);
 
   return (
-    <SafeAreaView testID="profileScreenView" style={styles.container}>
-      <View style={headerStyles.container}>
-        <Text style={headerStyles.title}>{strings.title.profile}</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
-          <Image style={headerStyles.icon} source={icons.settings} />
-        </TouchableOpacity>
-      </View>
+    <View style={styles.container}>
+      <SafeAreaView>
+        <View style={styles.header}>
+          <CustomText size="xl" weight="b">
+            {strings.title.profile}
+          </CustomText>
+          <Icon
+            size="m"
+            icon={icons.settings}
+            onPress={() => {
+              navigation.navigate('Settings');
+            }}
+          />
+        </View>
+      </SafeAreaView>
+
       <View style={infoStyles.container}>
         <Image style={infoStyles.profilePic} source={icons.user} />
         <Text style={infoStyles.name}>{name}</Text>
@@ -51,44 +61,30 @@ const Profile = ({navigation}: {navigation: any}) => {
           </View>
         </View>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
-    width: '100%',
-    height: '100%',
+    flex: 1,
     backgroundColor: colors.white,
   },
-});
-
-const headerStyles = StyleSheet.create({
-  container: {
+  header: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
+    justifyContent: 'space-between',
+    width: s(350),
+    height: s(50),
     paddingHorizontal: s(20),
-    paddingVertical: s(15),
-    width: '100%',
-  },
-  title: {
-    fontSize: s(24),
-    fontWeight: '700',
-    color: colors.black,
-  },
-  icon: {
-    width: s(20),
-    height: s(20),
-    tintColor: colors.black,
   },
 });
 
 const infoStyles = StyleSheet.create({
   container: {
+    alignSelf: 'center',
     marginTop: vs(20),
-    width: s(300),
+    width: s(310),
     height: s(100),
   },
   profilePic: {

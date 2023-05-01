@@ -2,13 +2,14 @@ import React from 'react';
 import {
   View,
   Text,
-  Image,
   StyleSheet,
   TextInput,
   SafeAreaView,
   TouchableOpacity,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
+import CustomText from '../components/Text';
+import Icon from '../components/Icon';
 
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
@@ -16,20 +17,6 @@ import {icons} from '../../constants/images';
 import {clearCaches} from '../../utils/functions/CacheHelpers';
 
 const Settings = ({navigation}: {navigation: any}) => {
-  return (
-    <SafeAreaView style={styles.container}>
-      <View style={headerStyles.container}>
-        <Text style={headerStyles.title}>{strings.title.settings}</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
-          <Image style={headerStyles.icon} source={icons.x} />
-        </TouchableOpacity>
-      </View>
-      {Account(navigation)}
-    </SafeAreaView>
-  );
-};
-
-const Account = (navigation: any) => {
   const handleLogout = async () => {
     try {
       clearCaches();
@@ -45,73 +32,79 @@ const Account = (navigation: any) => {
   };
 
   return (
-    <View testID="settingsScreenView" style={accountStyles.container}>
-      <View style={accountStyles.input}>
-        <Text style={accountStyles.prompt}>{strings.settings.name}:</Text>
-        <TextInput
-          placeholder={strings.settings.name}
-          style={accountStyles.inputText}
-        />
-      </View>
-      <View style={accountStyles.input}>
-        <Text style={accountStyles.prompt}>{strings.login.email}:</Text>
-        <TextInput
-          placeholder={strings.login.email}
-          style={accountStyles.inputText}
-        />
-      </View>
-      <View style={accountStyles.input}>
-        <Text style={accountStyles.prompt}>{strings.settings.username}:</Text>
-        <TextInput
-          placeholder={strings.settings.username}
-          style={accountStyles.inputText}
-        />
-      </View>
+    <View style={styles.container}>
+      <SafeAreaView>
+        <View style={styles.header}>
+          <Icon
+            size="m"
+            icon={icons.back}
+            onPress={() => {
+              navigation.navigate('Profile');
+            }}
+          />
+          <View style={styles.headerText}>
+            <CustomText size="xl" weight="b">
+              {strings.title.settings}
+            </CustomText>
+          </View>
+        </View>
+      </SafeAreaView>
 
-      <TouchableOpacity>
-        <Text style={accountStyles.resetPwd}>
-          {strings.settings.resetPassword}
-        </Text>
-      </TouchableOpacity>
-      <TouchableOpacity>
-        <Text style={accountStyles.upgrade}>{strings.settings.upgrade}</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={handleLogout}>
-        <Text testID="logoutButton" style={accountStyles.logoutButtonText}>
-          {strings.settings.logout}
-        </Text>
-      </TouchableOpacity>
+      <View testID="settingsScreenView" style={accountStyles.container}>
+        <View style={accountStyles.input}>
+          <Text style={accountStyles.prompt}>{strings.settings.name}:</Text>
+          <TextInput
+            placeholder={strings.settings.name}
+            style={accountStyles.inputText}
+          />
+        </View>
+        <View style={accountStyles.input}>
+          <Text style={accountStyles.prompt}>{strings.login.email}:</Text>
+          <TextInput
+            placeholder={strings.login.email}
+            style={accountStyles.inputText}
+          />
+        </View>
+        <View style={accountStyles.input}>
+          <Text style={accountStyles.prompt}>{strings.settings.username}:</Text>
+          <TextInput
+            placeholder={strings.settings.username}
+            style={accountStyles.inputText}
+          />
+        </View>
+
+        <TouchableOpacity>
+          <Text style={accountStyles.resetPwd}>
+            {strings.settings.resetPassword}
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <Text style={accountStyles.upgrade}>{strings.settings.upgrade}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handleLogout}>
+          <Text testID="logoutButton" style={accountStyles.logoutButtonText}>
+            {strings.settings.logout}
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
-    width: '100%',
-    height: '100%',
+    flex: 1,
     backgroundColor: colors.white,
   },
-});
-
-const headerStyles = StyleSheet.create({
-  container: {
+  header: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
+    width: s(350),
+    height: s(50),
     paddingHorizontal: s(20),
-    paddingVertical: s(15),
-    width: '100%',
   },
-  title: {
-    fontSize: s(24),
-    fontWeight: '700',
-    color: colors.black,
-  },
-  icon: {
-    width: s(20),
-    height: s(20),
-    tintColor: colors.black,
+  headerText: {
+    marginLeft: s(10),
   },
 });
 
