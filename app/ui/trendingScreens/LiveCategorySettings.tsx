@@ -1,10 +1,8 @@
 import React, {useState} from 'react';
 import {
   View,
-  Text,
   SafeAreaView,
   StyleSheet,
-  Image,
   TouchableOpacity,
 } from 'react-native';
 import {colors} from '../../constants/theme';
@@ -15,6 +13,8 @@ import {
   NestableScrollContainer,
   NestableDraggableFlatList,
 } from 'react-native-draggable-flatlist';
+import Text from '../components/Text';
+import Icon from '../components/Icon';
 
 const LiveCategorySettings = ({
   navigation,
@@ -33,27 +33,28 @@ const LiveCategorySettings = ({
 
   return (
     <View style={styles.container}>
-      <SafeAreaView style={headerStyles.container}>
-        <TouchableOpacity
-          style={headerStyles.button}
-          onPress={() =>
-            navigation.navigate('LiveCategory', {
-              subcategories,
-              hiddenSubCategories,
-            })
-          }>
-          <Image style={headerStyles.back} source={icons.next} />
-        </TouchableOpacity>
-        <Text style={headerStyles.title}>{strings.filter.editView}</Text>
+      <SafeAreaView>
+        <View style={styles.header}>
+          <View style={styles.back}>
+            <Icon icon={icons.back} onPress={() =>
+              navigation.navigate('LiveCategory', {
+                subcategories,
+                hiddenSubCategories,
+              })} />
+          </View>
+          <Text>{strings.filter.editView}</Text>
+        </View>
       </SafeAreaView>
       <NestableScrollContainer
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.bottomPadding}>
-        <View>
-          <Text style={styles.header}>{strings.filter.visible}:</Text>
+        <View style={categoryStyles.header}>
+          <Text size='s' weight='b'>{strings.filter.visible}:</Text>
         </View>
         <NestableDraggableFlatList
           data={subcategories}
+          keyExtractor={(item: any) => item.id}
+          onDragEnd={({data}) => setSubcategories(data)}
           renderItem={({
             item,
             drag,
@@ -63,66 +64,64 @@ const LiveCategorySettings = ({
             drag: any;
             isActive: boolean;
           }) => (
-            <View
-              style={[
-                categoryStyles.container,
-                isActive ? categoryStyles.shadow : null,
-              ]}>
-              <View style={categoryStyles.border} />
-              <TouchableOpacity
-                onPress={() => {
-                  setSubcategories(
-                    subcategories.filter(
-                      (subcategory: any) => subcategory.id !== item.id,
-                    ),
-                  );
-                  setHiddenSubCategories((_hiddenSubCategory: any) => [
-                    ..._hiddenSubCategory,
-                    item,
-                  ]);
-                }}>
-                <Image style={categoryStyles.hide} source={icons.hide} />
-              </TouchableOpacity>
-              <Text style={categoryStyles.title}>{item.title}</Text>
-              <TouchableOpacity
-                delayLongPress={1}
-                onLongPress={drag}
-                disabled={isActive}>
-                <View>
-                  <Image style={categoryStyles.drag} source={icons.drag} />
+            <>
+              <View
+                style={[
+                  categoryStyles.container,
+                  isActive ? categoryStyles.shadow : null,
+                ]}>
+                <Icon icon={icons.hide} color={colors.darkgrey} onPress={() => {
+                    setSubcategories(
+                      subcategories.filter(
+                        (subcategory: any) => subcategory.id !== item.id,
+                      ),
+                    );
+                    setHiddenSubCategories((_hiddenSubCategory: any) => [
+                      ..._hiddenSubCategory,
+                      item,
+                    ]);
+                }}/>
+                <View style={categoryStyles.title}>
+                  <Text size='s'>{item.title}</Text>
                 </View>
-              </TouchableOpacity>
-            </View>
+                <TouchableOpacity
+                  delayLongPress={1}
+                  onLongPress={drag}
+                  disabled={isActive}>
+                    <Icon icon={icons.drag} color={colors.darkgrey}/>
+                </TouchableOpacity>
+              </View>
+            </>
           )}
-          keyExtractor={(item: any) => item.id}
-          onDragEnd={({data}) => setSubcategories(data)}
         />
-        <View>
-          <Text style={styles.header}>{strings.filter.hidden}:</Text>
+        <View style={categoryStyles.header}>
+          <Text size='s' weight='b'>{strings.filter.hidden}:</Text>
         </View>
         <NestableDraggableFlatList
           data={hiddenSubCategories}
-          renderItem={({item}: {item: any}) => (
-            <View style={categoryStyles.container}>
-              <View style={categoryStyles.border} />
-              <TouchableOpacity
-                onPress={() => {
-                  setHiddenSubCategories(
-                    hiddenSubCategories.filter(
-                      (subcategory: any) => subcategory.id !== item.id,
-                    ),
-                  );
-                  setSubcategories((_subcategories: any) => [
-                    ..._subcategories,
-                    item,
-                  ]);
-                }}>
-                <Image style={categoryStyles.show} source={icons.plus} />
-              </TouchableOpacity>
-              <Text style={categoryStyles.hiddenTitle}>{item.title}</Text>
-            </View>
-          )}
           keyExtractor={(item: any) => item.id}
+          renderItem={({item}: {item: any}) => (
+            <>
+              <View style={categoryStyles.container}>
+                <View style={categoryStyles.border} />
+                <Icon icon={icons.plus} color={colors.accent} onPress={() => {
+                    setHiddenSubCategories(
+                      hiddenSubCategories.filter(
+                        (subcategory: any) => subcategory.id !== item.id,
+                      ),
+                    );
+                    setSubcategories((_subcategories: any) => [
+                      ..._subcategories,
+                      item,
+                    ]);
+                }}/>
+                <View style={categoryStyles.title}>
+                  <Text size='s'>{item.title}</Text>
+                </View>
+              </View>
+              <View style={categoryStyles.border} />
+            </>
+          )}
         />
       </NestableScrollContainer>
     </View>
@@ -135,43 +134,19 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
   },
   header: {
-    marginHorizontal: s(20),
-    marginTop: s(20),
-    marginBottom: s(12),
-    fontSize: s(14),
-    fontWeight: '600',
-    color: colors.black,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: s(350),
+    height: s(50),
+    paddingHorizontal: s(20),
+  },
+  back: {
+    position: 'absolute',
+    left: s(20),
   },
   bottomPadding: {
     paddingBottom: s(40),
-  },
-});
-
-const headerStyles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginHorizontal: s(20),
-  },
-  title: {
-    width: s(250),
-    marginRight: s(30),
-    marginVertical: s(10),
-    fontSize: s(16),
-    fontWeight: '600',
-    color: colors.black,
-    textAlign: 'center',
-  },
-  button: {
-    width: s(30),
-  },
-  back: {
-    width: s(12),
-    height: s(18),
-    marginRight: s(6),
-    tintColor: colors.black,
-    transform: [{rotate: '180deg'}],
   },
 });
 
@@ -179,16 +154,17 @@ const categoryStyles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     paddingHorizontal: s(20),
-    paddingVertical: s(10),
+    paddingVertical: s(12),
     backgroundColor: colors.white,
   },
+  header: {
+    marginTop: s(10),
+    marginLeft: s(20),
+  },
   border: {
-    position: 'absolute',
     marginHorizontal: s(20),
-    width: '100%',
-    height: s(38),
     borderBottomWidth: 0.5,
     borderColor: colors.grey,
   },
@@ -204,37 +180,8 @@ const categoryStyles = StyleSheet.create({
     elevation: 5,
   },
   title: {
-    position: 'absolute',
-    left: s(60),
-    width: s(230),
-    fontSize: s(14),
-    fontWeight: '600',
-    color: colors.black,
-  },
-  hiddenTitle: {
-    position: 'absolute',
-    left: s(60),
-    width: s(230),
-    fontSize: s(14),
-    fontWeight: '600',
-    color: colors.darkgrey,
-  },
-  hide: {
-    marginLeft: s(5),
-    width: s(18),
-    height: s(18),
-    tintColor: colors.darkgrey,
-  },
-  show: {
-    marginLeft: s(5),
-    width: s(18),
-    height: s(18),
-    tintColor: colors.accent,
-  },
-  drag: {
-    width: s(18),
-    height: s(18),
-    tintColor: colors.darkgrey,
+    flex: 1,
+    marginHorizontal: s(10),
   },
 });
 
