@@ -4,15 +4,19 @@ import {Image, StyleSheet, View} from 'react-native';
 import {s} from 'react-native-size-matters';
 
 import Text from './Text';
+import OptionMenu from './OptionMenu';
+
 import {colors} from '../../constants/theme';
+import strings from '../../constants/strings';
 
 interface Props {
   name: string;
   info: string;
   image: Object;
+  option?: boolean;
 }
 
-const EventCard: React.FC<Props> = ({name, info, image}) => {
+const EventCard: React.FC<Props> = ({name, info, image, option = false}) => {
   return (
     <View style={styles.container}>
       <Image style={styles.image} source={image} />
@@ -25,6 +29,26 @@ const EventCard: React.FC<Props> = ({name, info, image}) => {
             {info}
           </Text>
         </View>
+        {option && (
+          <OptionMenu
+            options={[
+              {
+                name: strings.main.share,
+                onPress: () => {
+                  console.log('TODO: Share Event');
+                },
+                color: colors.black,
+              },
+              {
+                name: strings.main.remove,
+                onPress: () => {
+                  console.log('TODO: Remove Event');
+                },
+                color: colors.red,
+              },
+            ]}
+          />
+        )}
       </View>
     </View>
   );

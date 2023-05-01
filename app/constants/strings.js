@@ -3,6 +3,8 @@ const strings = {
     rivalet: 'Rivalet',
     done: 'Done',
     save: 'Save',
+    share: 'Share',
+    remove: 'Remove',
     images: 'Images',
     dash: '-',
     notApplicable: 'N/A',

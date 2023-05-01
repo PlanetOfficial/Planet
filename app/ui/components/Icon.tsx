@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  View,
   TouchableOpacity,
   ViewStyle,
   Image,
@@ -12,14 +13,14 @@ import {s} from 'react-native-size-matters';
 import {colors} from '../../constants/theme';
 
 interface Props {
-  size?: 's' | 'm' | 'l';
+  size?: 'xs' | 's' | 'm' | 'l';
   color?: string;
   padding?: number;
   icon: ImageSourcePropType;
-  onPress: () => void;
+  onPress?: () => void;
 }
 
-const IButton: React.FC<Props> = ({
+const Icon: React.FC<Props> = ({
   size = 'm',
   color = colors.black,
   padding = 0,
@@ -28,14 +29,17 @@ const IButton: React.FC<Props> = ({
 }) => {
   let z: number = s(18);
   switch (size) {
+    case 'xs':
+      z = s(12);
+      break;
     case 's':
-      z = s(15);
+      z = s(16);
       break;
     case 'm':
-      z = s(18);
+      z = s(20);
       break;
     case 'l':
-      z = s(21);
+      z = s(24);
       break;
     default:
       break;
@@ -46,20 +50,24 @@ const IButton: React.FC<Props> = ({
     justifyContent: 'center',
     width: z,
     height: z,
+    padding: padding,
   };
 
   const IconStyles: ImageStyle = {
-    margin: padding,
     width: '100%',
     height: '100%',
     tintColor: color,
   };
 
-  return (
+  return onPress ? (
     <TouchableOpacity style={ButtonStyles} onPress={onPress}>
       <Image source={icon} style={IconStyles} />
     </TouchableOpacity>
+  ) : (
+    <View style={ButtonStyles}>
+      <Image source={icon} style={IconStyles} />
+    </View>
   );
 };
 
-export default IButton;
+export default Icon;

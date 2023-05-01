@@ -12,7 +12,7 @@ import SegmentedControlTab from 'react-native-segmented-control-tab';
 import EncryptedStorage from 'react-native-encrypted-storage';
 
 import Text from '../components/Text';
-import IButton from '../components/IconButton';
+import Icon from '../components/Icon';
 import PlaceCard from '../components/PlaceCard';
 import EventCard from '../components/EventCard';
 import strings from '../../constants/strings';
@@ -54,8 +54,8 @@ const Library = ({navigation}: {navigation: any}) => {
           <Text size="xl" weight="b">
             {strings.title.library}
           </Text>
-          <IButton
-            size="l"
+          <Icon
+            size="m"
             icon={icons.search}
             onPress={() => {
               navigation.navigate('SearchLibrary');
@@ -80,15 +80,14 @@ const Library = ({navigation}: {navigation: any}) => {
       <FlatList
         key={selectedIndex}
         data={selectedIndex === 0 ? places : events}
-        style={contentStyles.container}
-        contentContainerStyle={contentStyles.content}
+        contentContainerStyle={styles.contentContainer}
         initialNumToRender={5}
         keyExtractor={(item: any) => item?.id}
         ItemSeparatorComponent={Spacer}
-        renderItem={({item, index}) => {
+        renderItem={({item}) => {
           return selectedIndex === 0 ? (
             <TouchableOpacity
-              key={index}
+              style={styles.card}
               onPress={() => {
                 navigation.navigate('Place', {
                   destination: item,
@@ -112,7 +111,7 @@ const Library = ({navigation}: {navigation: any}) => {
             </TouchableOpacity>
           ) : (
             <TouchableOpacity
-              key={index}
+              style={styles.card}
               onPress={() => {
                 navigation.navigate('Event', {
                   eventData: item,
@@ -129,6 +128,7 @@ const Library = ({navigation}: {navigation: any}) => {
                     ? {uri: item?.places[0]?.image_url}
                     : icons.defaultIcon
                 }
+                option={true}
               />
             </TouchableOpacity>
           );
@@ -138,7 +138,7 @@ const Library = ({navigation}: {navigation: any}) => {
   );
 };
 
-const Spacer = () => <View style={contentStyles.separator} />;
+const Spacer = () => <View style={styles.separator} />;
 
 const styles = StyleSheet.create({
   container: {
@@ -152,7 +152,18 @@ const styles = StyleSheet.create({
     width: s(350),
     height: s(50),
     paddingHorizontal: s(20),
+  },
+  contentContainer: {
     paddingVertical: s(10),
+  },
+  separator: {
+    borderWidth: 0.5,
+    borderColor: colors.grey,
+    marginVertical: s(10),
+  },
+  card: {
+    alignSelf: 'center',
+    width: s(310),
   },
 });
 
@@ -184,21 +195,6 @@ const sctStyles = StyleSheet.create({
   activeText: {
     marginBottom: 0,
     color: colors.accent,
-  },
-});
-
-const contentStyles = StyleSheet.create({
-  container: {
-    width: s(350),
-    paddingHorizontal: s(20),
-  },
-  content: {
-    paddingVertical: s(10),
-  },
-  separator: {
-    borderWidth: 0.5,
-    borderColor: colors.grey,
-    marginVertical: s(10),
   },
 });
 
