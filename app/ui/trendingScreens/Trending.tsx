@@ -1,25 +1,28 @@
 import React, {useEffect, useState} from 'react';
 import {
   View,
-  Text,
   SafeAreaView,
-  StyleSheet,
-  Image,
   ScrollView,
   TouchableOpacity,
+  StyleSheet,
   Platform,
   PermissionsAndroid,
 } from 'react-native';
+import {s} from 'react-native-size-matters';
+import Geolocation from '@react-native-community/geolocation';
+
 import {colors} from '../../constants/theme';
 import {icons} from '../../constants/images';
-import strings from '../../constants/strings';
-import {s} from 'react-native-size-matters';
 import {genres} from '../../constants/genres';
-import PlaceCard from '../components/PlaceCard';
-import Geolocation from '@react-native-community/geolocation';
 import {floats, integers} from '../../constants/numbers';
+import strings from '../../constants/strings';
+
 import {requestLocations} from '../../utils/api/CreateCalls/requestLocations';
 import {Subcategory} from '../../utils/interfaces/subcategory';
+
+import Text from '../components/Text';
+import Icon from '../components/Icon';
+import PlaceCard from '../components/PlaceCard';
 
 const Trending = ({navigation}: {navigation: any}) => {
   const [latitude, setLatitude] = useState(floats.defaultLatitude);
@@ -80,32 +83,45 @@ const Trending = ({navigation}: {navigation: any}) => {
   }, [radius]);
 
   return (
-    <SafeAreaView testID="trendingScreenView" style={styles.container}>
-      <View style={headerStyles.container}>
-        <View style={headerStyles.titles}>
-          <Text style={headerStyles.title}>{strings.title.trending}</Text>
-          <Text style={headerStyles.in}>{strings.trending.in}</Text>
+    <View style={styles.container}>
+      <SafeAreaView>
+        <View style={headerStyles.container}>
+          <Text size="xl" weight="b">
+            {strings.title.trending}
+          </Text>
+          <View style={headerStyles.in}>
+            <Text size="l" weight="b" color={colors.darkgrey}>
+              {strings.trending.in}
+            </Text>
+          </View>
           <TouchableOpacity
             style={headerStyles.fgSelector}
             onPress={() => console.log('Switch location')}>
-            <Text numberOfLines={1} style={headerStyles.location}>
+            <Text size="xl" weight="b" color={colors.accent}>
               Seattle
             </Text>
             <View style={headerStyles.drop}>
-              <Image style={[headerStyles.icon]} source={icons.next} />
+              <Icon size="xs" icon={icons.drop} />
             </View>
           </TouchableOpacity>
+          
+          <View style={headerStyles.search}>
+            <Icon
+              size="m"
+              icon={icons.search}
+              onPress={() => {
+                navigation.navigate('SearchLibrary');
+              }}
+            />
+          </View>
         </View>
-        <TouchableOpacity
-          onPress={() => console.log("Search doesn't work :DDDD")}>
-          <Image style={headerStyles.search} source={icons.search} />
-        </TouchableOpacity>
-      </View>
+      </SafeAreaView>
       <ScrollView>
         {genres[0].categories.map((category: any, idx: number) => (
+          (eventsData[category.id] && eventsData[category.id].length > 0) && (
           <View key={idx} style={categoryStyles.container}>
             <View style={categoryStyles.header}>
-              <Text style={categoryStyles.title}>{category.name}</Text>
+              <Text size='m' weight='b'>{category.name}</Text>
               <TouchableOpacity
                 onPress={() => {
                   let defaultSubcategories: Subcategory[] = [];
@@ -128,7 +144,7 @@ const Trending = ({navigation}: {navigation: any}) => {
                     radius,
                   });
                 }}>
-                <Text style={categoryStyles.seeAll}>
+                <Text size="xs" weight="b" color={colors.accent}>
                   {strings.trending.seeAll}
                 </Text>
               </TouchableOpacity>
@@ -166,9 +182,10 @@ const Trending = ({navigation}: {navigation: any}) => {
               <Spacer />
             )}
           </View>
+          )
         ))}
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -178,10 +195,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.white,
-  },
-  text: {
-    fontSize: 20,
-    fontWeight: '700',
   },
   separator: {
     borderWidth: 0.5,
@@ -197,53 +210,26 @@ const styles = StyleSheet.create({
 const headerStyles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    marginHorizontal: s(20),
-    marginVertical: s(15),
-  },
-  titles: {
-    flexDirection: 'row',
-    alignItems: 'baseline',
-  },
-  title: {
-    fontSize: s(22),
-    fontWeight: '700',
-    color: colors.black,
+    width: s(350),
+    height: s(50),
+    paddingHorizontal: s(20),
   },
   in: {
-    fontSize: s(20),
-    fontWeight: '700',
-    color: colors.darkgrey,
-    marginHorizontal: s(6),
-  },
-  location: {
-    fontSize: s(22),
-    fontWeight: '700',
-    color: colors.accent,
-  },
-  search: {
-    width: s(20),
-    height: s(20),
-    tintColor: colors.black,
+    marginTop: s(2),
+    marginHorizontal: s(4),
   },
   fgSelector: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   drop: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: s(6),
-    width: s(12),
-    height: s(8),
+    marginLeft: s(2),
   },
-  icon: {
-    width: s(8),
-    height: s(12),
-    tintColor: colors.black,
-    transform: [{rotate: '90deg'}],
-  },
+  search: {
+    position: 'absolute',
+    right: s(20),
+  }
 });
 
 const categoryStyles = StyleSheet.create({
@@ -257,18 +243,8 @@ const categoryStyles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  title: {
-    fontSize: s(18),
-    fontWeight: '700',
-    color: colors.black,
-  },
-  seeAll: {
-    fontSize: s(12),
-    fontWeight: '700',
-    color: colors.accent,
-  },
   card: {
-    width: s(225),
+    width: s(250),
     marginRight: s(10),
   },
   scrollView: {
