@@ -1888,10 +1888,10 @@
     deepmerge "^4.2.2"
     svgo "^2.8.0"
 
-"@tanem/svg-injector@^10.1.49":
-  version "10.1.50"
-  resolved "https://registry.yarnpkg.com/@tanem/svg-injector/-/svg-injector-10.1.50.tgz#77b52a1fbffa12571372e3338bb378b029c48eed"
-  integrity sha512-6BvbjmEBN/ngnagnEdrTQ24tKc6SHT/VZTl27DgP0/vIeIQnpqn1DcUO1NWi0dJCpgUX2JyQaB0E2qV9r76AdQ==
+"@tanem/svg-injector@^10.1.51":
+  version "10.1.52"
+  resolved "https://registry.yarnpkg.com/@tanem/svg-injector/-/svg-injector-10.1.52.tgz#8f5c9ab55939305047d71152f7b4816f2b775ec8"
+  integrity sha512-vr2BFzQKr6y2Vdus3OGkoT7aYu/3xtXgpShMGh1q8c6LFuHNRZMBLVpiQAzZOrXMbcI6f/5EuSIEK4MZFjpE3w==
   dependencies:
     "@babel/runtime" "^7.21.0"
     content-type "^1.0.5"
@@ -6739,13 +6739,13 @@ react-shallow-renderer@^16.15.0:
     object-assign "^4.1.1"
     react-is "^16.12.0 || ^17.0.0 || ^18.0.0"
 
-react-svg@^16.1.4:
-  version "16.1.5"
-  resolved "https://registry.yarnpkg.com/react-svg/-/react-svg-16.1.5.tgz#5098b5f381a867406c75fb1a7ab10b785dadf079"
-  integrity sha512-pLDbfbh+5GZeuFKXKr5fncFqQlhew7g0udandZjTc49RXI3VMrKFS5zcXXzh6oRMRU3eqp704TPlvjKK7x/w7Q==
+react-svg@^16.1.7:
+  version "16.1.10"
+  resolved "https://registry.yarnpkg.com/react-svg/-/react-svg-16.1.10.tgz#99f10bea7c4b681e0a87e3e8a04c8d5387ffda23"
+  integrity sha512-gvcSci1s7oSlK8MLRlso0Pf2yN8HFj2eWCO0JpOf70bjMx/Q3KydYGrds9v4vUEQ9fNIOufeHLiN6gNbv8B0wg==
   dependencies:
     "@babel/runtime" "^7.21.0"
-    "@tanem/svg-injector" "^10.1.49"
+    "@tanem/svg-injector" "^10.1.51"
     "@types/prop-types" "^15.7.5"
     prop-types "^15.8.1"
 
