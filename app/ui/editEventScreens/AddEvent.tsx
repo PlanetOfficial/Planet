@@ -1,10 +1,12 @@
-import React, {useState, useRef, useMemo, useCallback, forwardRef, useImperativeHandle} from 'react';
-import {
-  StyleSheet,
-  View,
-  Pressable,
-  LayoutAnimation,
-} from 'react-native';
+import React, {
+  useState,
+  useRef,
+  useMemo,
+  useCallback,
+  forwardRef,
+  useImperativeHandle,
+} from 'react';
+import {StyleSheet, View, Pressable, LayoutAnimation} from 'react-native';
 
 import {s, vs} from 'react-native-size-matters';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -18,17 +20,18 @@ import AddCustomDest from '../editEventScreens/AddCustomDest';
 import strings from '../../constants/strings';
 
 interface ChildComponentProps {
-    destinations: any;
-    setDestinations: (destinations: any) => void;
-    selectionIndices: number[];
-    setSelectionIndices: (selectionIndices: number[]) => void;
-  }
+  destinations: any;
+  setDestinations: (destinations: any) => void;
+  selectionIndices: number[];
+  setSelectionIndices: (selectionIndices: number[]) => void;
+}
 
 const AddEvent = forwardRef((props: ChildComponentProps, ref) => {
-  const {destinations, setDestinations, selectionIndices, setSelectionIndices} = props;
+  const {destinations, setDestinations, selectionIndices, setSelectionIndices} =
+    props;
   useImperativeHandle(ref, () => ({
     onAddPress,
-  }))
+  }));
 
   const insets = useSafeAreaInsets();
 

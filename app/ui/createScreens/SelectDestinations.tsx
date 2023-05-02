@@ -61,7 +61,7 @@ const SelectDestinations = ({
   const [selectionIndices, setSelectionIndices]: [number[], any] = useState([]);
 
   const [markers, setMarkers]: [Array<MarkerObject>, any] = useState([]);
-  
+
   const insets = useSafeAreaInsets();
 
   const bottomSheetRef: any = useRef<BottomSheet>(null);
@@ -209,9 +209,13 @@ const SelectDestinations = ({
         />
       </BottomSheet>
 
-      <AddEvent ref={addRef} destinations={destinations} setDestinations={setDestinations}
-      selectionIndices={selectionIndices}
-      setSelectionIndices={setSelectionIndices}/>
+      <AddEvent
+        ref={addRef}
+        destinations={destinations}
+        setDestinations={setDestinations}
+        selectionIndices={selectionIndices}
+        setSelectionIndices={setSelectionIndices}
+      />
 
       <Confirmation
         onPress={handleSave}
