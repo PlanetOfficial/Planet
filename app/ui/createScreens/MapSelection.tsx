@@ -28,7 +28,7 @@ import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
 
 import Blur from '../components/Blur';
-import CustomText from '../components/Text';
+import Text from '../components/Text';
 import Icon from '../components/Icon';
 
 const MapScreen = ({navigation}: {navigation: any}) => {
@@ -141,15 +141,11 @@ const MapScreen = ({navigation}: {navigation: any}) => {
         </View>
         <View
           style={[mapStyles.rIndContainer, {bottom: insets.bottom + s(55)}]}>
-          <CustomText size="s">
-            {strings.createTabStack.radius + ': '}
-          </CustomText>
-          <CustomText size="s" weight="b" color={colors.accent}>
+          <Text size="s">{strings.createTabStack.radius + ': '}</Text>
+          <Text size="s" weight="b" color={colors.accent}>
             {(radius / integers.milesToMeters).toFixed(1)}
-          </CustomText>
-          <CustomText size="s">
-            {' ' + strings.createTabStack.milesAbbrev}
-          </CustomText>
+          </Text>
+          <Text size="s">{' ' + strings.createTabStack.milesAbbrev}</Text>
         </View>
       </View>
 
@@ -162,7 +158,7 @@ const MapScreen = ({navigation}: {navigation: any}) => {
             icon={icons.x}
             onPress={() => navigation.navigate('TabStack')}
           />
-          <CustomText>{strings.createTabStack.planEvent}</CustomText>
+          <Text>{strings.createTabStack.planEvent}</Text>
           <Icon
             size="s"
             icon={icons.next}

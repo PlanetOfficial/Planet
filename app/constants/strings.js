@@ -42,6 +42,8 @@ const strings = {
     outdoors: 'Outdoors',
     restaurants: 'Restaurants',
     sweets: 'Sweets',
+    selected: 'Selected',
+    noCategoriesSelected: 'No Categories Selected',
     selectedCategories: 'Selected Categories',
     untitledEvent: 'Untitled Event',
     pickDate: 'Pick a date',
