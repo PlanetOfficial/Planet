@@ -22,6 +22,8 @@ interface Props {
   bookmarks: any;
   tempPlaces: any;
   setTempPlaces: (dest: any) => void;
+  selectionIndices: number[];
+  setSelectionIndices: (idx: number[]) => void;
   onAddPress: (idx: any) => void;
 }
 
@@ -30,6 +32,8 @@ const EditEvent: React.FC<Props> = ({
   bookmarks,
   tempPlaces,
   setTempPlaces,
+  selectionIndices,
+  setSelectionIndices,
   onAddPress,
 }) => {
   const [dragging, setDragging] = useState(false);
@@ -120,6 +124,12 @@ const EditEvent: React.FC<Props> = ({
                 bookmarks={bookmarks}
                 category={item}
                 categoryIndex={getIndex()}
+                selectionIndex={selectionIndices[getIndex()]}
+                setSelectionIndex={(idx: number) => {
+                  const _selectionIndices = [...selectionIndices];
+                  _selectionIndices[getIndex()] = idx;
+                  setSelectionIndices(_selectionIndices);
+                }}
                 tempPlaces={tempPlaces}
                 onCategoryMove={onMove}
               />

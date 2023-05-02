@@ -41,9 +41,12 @@ const PlacesDisplay: React.FC<Props> = ({
         decelerationRate={'fast'}
         onScroll={event => {
           closeDropdown && closeDropdown();
-          setIndex(
-            Math.round(event.nativeEvent.contentOffset.x / (width + s(20))),
+          let idx = Math.round(
+            event.nativeEvent.contentOffset.x / (width + s(20)),
           );
+          if (idx !== index) {
+            setIndex(idx);
+          }
         }}>
         {data?.map((dest: any, idx: number) => (
           <View

@@ -30,11 +30,11 @@ import OptionMenu from '../components/OptionMenu';
 import PlacesDisplay from '../components/PlacesDisplay';
 import AButton from '../components/ActionButton';
 import CButton from '../components/CancelButton';
-import BackConfirmation from '../editEventScreens/BackConfirmation';
+import Confirmation from '../editEventScreens/Confirmation';
 import AddByCategory from '../editEventScreens/AddByCategory';
 import AddFromLibrary from '../editEventScreens/AddFromLibrary';
 import AddCustomDest from '../editEventScreens/AddCustomDest';
-import EditEvent from '../editEventScreens/EventEdit';
+import EditEvent from '../editEventScreens/EditEvent';
 
 import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
@@ -216,7 +216,7 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
       <SafeAreaView>
         <View style={headerStyles.container}>
           <Icon
-            size="m"
+            size="s"
             icon={icons.back}
             onPress={() =>
               editing
@@ -399,10 +399,15 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
         )}
       </BottomSheet>
 
-      <BackConfirmation
+      <Confirmation
         onPress={() => navigation.goBack()}
         open={backConfirmationOpen}
         setOpen={setBackConfirmationOpen}
+        prompt={strings.library.backConfirmation}
+        leftText={strings.library.discard}
+        rightText={strings.library.keepEditing}
+        leftColor={colors.red}
+        rightColor={colors.accent}
       />
     </View>
   );

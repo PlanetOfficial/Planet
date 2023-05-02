@@ -12,8 +12,16 @@ import PlacesDisplay from '../components/PlacesDisplay';
 interface ChildComponentProps {
   navigation: any;
   bookmarks: any[];
-  category: any;
+  category: {
+    id: number;
+    name: string;
+    icon: any;
+    filters?: any[];
+    subcategories?: any[];
+  };
   categoryIndex: number;
+  selectionIndex: number;
+  setSelectionIndex: (idx: number) => void;
   tempPlaces: any;
   onCategoryMove: any;
 }
@@ -59,6 +67,8 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
     bookmarks,
     category,
     categoryIndex,
+    selectionIndex,
+    setSelectionIndex,
     tempPlaces,
     onCategoryMove,
   } = props;
@@ -71,7 +81,7 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
     closeDropdown,
   }));
 
-  const [placeIdx, setPlaceIdx] = useState(0);
+  // const [placeIdx, setPlaceIdx] = useState(0);
 
   let filters = category.filters;
 
@@ -113,22 +123,24 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
           ]}
         />
       </View>
-      <Filter
-        ref={childRef}
-        filters={filters}
-        subcategories={category.subcategories}
-        currFilters={filterValues}
-        setCurrFilters={setFilterValues}
-        defaultFilterValues={defaultFilterValues}
-      />
+      {filters && (
+        <Filter
+          ref={childRef}
+          filters={filters}
+          subcategories={category.subcategories}
+          currFilters={filterValues}
+          setCurrFilters={setFilterValues}
+          defaultFilterValues={defaultFilterValues}
+        />
+      )}
       <PlacesDisplay
         navigation={navigation}
         data={TempData}
         width={s(290)}
         bookmarks={bookmarks}
         closeDropdown={closeDropdown}
-        index={placeIdx}
-        setIndex={setPlaceIdx}
+        index={selectionIndex}
+        setIndex={setSelectionIndex}
       />
     </View>
   );

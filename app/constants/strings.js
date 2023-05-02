@@ -102,6 +102,7 @@ const strings = {
     edit: 'Edit',
     save: 'Save',
     backConfirmation: 'Are you sure you want to go back?',
+    saveConfirmation: 'Are you sure you want to save?',
     discard: 'Discard',
     keepEditing: 'Keep Editing',
     addDestination: 'Add a Destination',
