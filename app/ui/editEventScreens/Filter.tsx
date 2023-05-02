@@ -19,12 +19,27 @@ import Text from '../components/Text';
 import Icon from '../components/Icon';
 
 interface ChildComponentProps {
-  filters: any;
+  filters: {
+    name: string;
+    options: string[];
+    values?: any[];
+    text: string;
+    defaultIdx: number;
+  }[];
   subcategories?: any;
+  currFilters: number[];
+  setCurrFilters: any;
+  defaultFilterValues: number[];
 }
 
 const Filter = forwardRef((props: ChildComponentProps, ref) => {
-  const {filters, subcategories} = props;
+  const {
+    filters,
+    subcategories,
+    currFilters,
+    setCurrFilters,
+    defaultFilterValues,
+  } = props;
 
   useImperativeHandle(ref, () => ({
     closeDropdown,
@@ -32,8 +47,9 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
 
   const [dropdownStatus, setDropdownStatus]: [any, any] = useState('');
 
-  const [currFilters, setCurrFilters]: [number[], any] = useState([0, 0]);
-  const [tempFilters, setTempFilters]: [number[], any] = useState([0, 0]);
+  const [tempFilters, setTempFilters]: [number[], any] = useState(
+    Array(filters.length).fill(0),
+  );
   const [categoryFilter, setCategoryFilter]: [number[], any] = useState([]);
   const [tempCategoryFilter, setTempCategoryFilter]: [number[], any] = useState(
     [],
@@ -60,7 +76,7 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
   };
 
   const handleOptionPress = (idx: number, option: number) => {
-    let newFilters = currFilters;
+    let newFilters = [...currFilters];
     newFilters[idx] = option;
     setCurrFilters(newFilters);
     closeDropdown();
@@ -273,7 +289,7 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
               <TouchableOpacity
                 style={[modalStyles.button, modalStyles.clear]}
                 onPress={() => {
-                  setCurrFilters([0, 0]);
+                  setCurrFilters(defaultFilterValues);
                   setCategoryFilter([]);
                   setModalVisible(false);
                 }}>

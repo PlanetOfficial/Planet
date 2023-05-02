@@ -1,4 +1,10 @@
-import React, {useState, forwardRef, useImperativeHandle, useRef} from 'react';
+import React, {
+  useState,
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+} from 'react';
 import {StyleSheet, View, Image} from 'react-native';
 import {s} from 'react-native-size-matters';
 
@@ -73,6 +79,21 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
 
   const [placeIdx, setPlaceIdx] = useState(0);
 
+  let filters = category.filters;
+
+  const [filterValues, setFilterValues] = useState<number[]>([]);
+  const [defaultFilterValues, setDefaultFilterValues] = useState<number[]>([]);
+
+  useEffect(() => {
+    let _defaultFilterValues: number[] = [];
+    for (let i = 0; filters && i < filters.length; i++) {
+      _defaultFilterValues.push(filters[i].defaultIdx);
+    }
+    setDefaultFilterValues(_defaultFilterValues);
+    setFilterValues(_defaultFilterValues);
+    console.log(_defaultFilterValues);
+  }, [filters]);
+
   return (
     <View key={category.id}>
       <View style={styles.header}>
@@ -107,8 +128,11 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
       </View>
       <Filter
         ref={childRef}
-        filters={category.filters}
+        filters={filters}
         subcategories={category.subcategories}
+        currFilters={filterValues}
+        setCurrFilters={setFilterValues}
+        defaultFilterValues={defaultFilterValues}
       />
       <PlacesDisplay
         navigation={navigation}
