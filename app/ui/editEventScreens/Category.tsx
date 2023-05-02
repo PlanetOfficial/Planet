@@ -1,16 +1,21 @@
-import React, {useState, forwardRef, useImperativeHandle, useRef} from 'react';
+import React, {useState, forwardRef, useImperativeHandle, useRef, useEffect} from 'react';
 import {StyleSheet, View, Image} from 'react-native';
 import {s} from 'react-native-size-matters';
 
+import {requestLocations} from '../../utils/api/CreateCalls/requestLocations';
 import {colors} from '../../constants/theme';
 import strings from '../../constants/strings';
 import Text from '../components/Text';
 import OptionMenu from '../components/OptionMenu';
 import Filter from './Filter';
 import PlacesDisplay from '../components/PlacesDisplay';
+import { integers } from '../../constants/numbers';
 
 interface ChildComponentProps {
   navigation: any;
+  radius: number;
+  latitude: number;
+  longitude: number;
   bookmarks: any[];
   category: {
     id: number;
@@ -22,54 +27,24 @@ interface ChildComponentProps {
   categoryIndex: number;
   selectionIndex: number;
   setSelectionIndex: (idx: number) => void;
-  tempPlaces: any;
+  destinations: any;
+  setDestinations: (destinations: any) => void;
   onCategoryMove: any;
 }
-
-const TempData = [
-  {
-    id: 1,
-    name: 'Place 1',
-    category: {
-      name: 'Category 1',
-    },
-    image_url: 'https://picsum.photos/200/300',
-  },
-  {
-    id: 2,
-    name: 'Place 2',
-    category: {
-      name: 'Category 2',
-    },
-    image_url: 'https://picsum.photos/200/300',
-  },
-  {
-    id: 3,
-    name: 'Place 3',
-    category: {
-      name: 'Category 3',
-    },
-    image_url: 'https://picsum.photos/200/300',
-  },
-  {
-    id: 4,
-    name: 'Place 4',
-    category: {
-      name: 'Category 4',
-    },
-    image_url: 'https://picsum.photos/200/300',
-  },
-];
 
 const Category = forwardRef((props: ChildComponentProps, ref) => {
   const {
     navigation,
+    radius,
+    latitude,
+    longitude,
     bookmarks,
     category,
     categoryIndex,
     selectionIndex,
     setSelectionIndex,
-    tempPlaces,
+    destinations,
+    setDestinations,
     onCategoryMove,
   } = props;
 
@@ -81,15 +56,32 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
     closeDropdown,
   }));
 
-  // const [placeIdx, setPlaceIdx] = useState(0);
-
   let filters = category.filters;
-
   let defaultFilterValues: number[] = [];
   for (let i = 0; filters && i < filters.length; i++) {
     defaultFilterValues.push(filters[i].defaultIdx);
   }
   const [filterValues, setFilterValues] = useState(defaultFilterValues);
+  
+  useEffect(() => {
+    const loadDestinations = async (categoryId: number) => {
+      const response = await requestLocations(
+        [categoryId],
+        radius,
+        latitude,
+        longitude,
+        integers.defaultNumPlaces,
+      );
+
+      const _destinations = [...destinations];
+      _destinations[categoryIndex].options = response[categoryId];
+      await setDestinations(_destinations);
+    };
+
+    if(destinations[categoryIndex].options?.length === 0){
+      loadDestinations(-category.id);
+    }
+  }, []);
 
   return (
     <View key={category.id}>
@@ -112,13 +104,13 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
               name: strings.createTabStack.moveDown,
               onPress: () => onCategoryMove(categoryIndex, 1),
               color: colors.black,
-              disabled: categoryIndex === tempPlaces.length - 1,
+              disabled: categoryIndex === destinations.length - 1,
             },
             {
               name: strings.main.remove,
               onPress: () => onCategoryMove(categoryIndex, 0),
               color: colors.red,
-              disabled: tempPlaces.length === 1,
+              disabled: destinations.length === 1,
             },
           ]}
         />
@@ -135,7 +127,7 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
       )}
       <PlacesDisplay
         navigation={navigation}
-        data={TempData}
+        data={destinations[categoryIndex].options}
         width={s(290)}
         bookmarks={bookmarks}
         closeDropdown={closeDropdown}

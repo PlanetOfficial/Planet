@@ -33,6 +33,7 @@ import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 import AddEvent from '../editEventScreens/AddEvent';
+import { floats } from '../../constants/numbers';
 
 const Event = ({navigation, route}: {navigation: any; route: any}) => {
   const [eventId] = useState(route?.params?.eventData?.id);
@@ -213,9 +214,12 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
         {editing ? (
           <EditEvent
             navigation={navigation}
+            radius={floats.defaultRadius}
+            latitude={floats.defaultLatitude}
+            longitude={floats.defaultLongitude}
             bookmarks={bookmarks}
-            tempPlaces={tempPlaces}
-            setTempPlaces={setTempPlaces}
+            destinations={tempPlaces}
+            setDestinations={setTempPlaces}
             selectionIndices={selectionIndices}
             setSelectionIndices={setSelectionIndices}
             onAddPress={addRef?.current?.onAddPress}

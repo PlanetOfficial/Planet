@@ -73,14 +73,23 @@ const SelectDestinations = ({
   const addRef: any = useRef(null);
 
   useEffect(() => {
-    const loadDestinations = async (categories: any[]) => {
+    const loadDestinations = async () => {
+      const response = await requestLocations(
+        categories?.map((category: any) => category?.id),
+        radius,
+        latitude,
+        longitude,
+        integers.defaultNumPlaces,
+      );
+
       let _destinations: any[] = [];
       let _selectionIndices: number[] = [];
-      categories?.forEach((item: any) => {
+      categories?.forEach((category: any) => {
         _destinations.push({
-          id: -item.id,
-          name: item.name,
-          icon: item.icon,
+          id: -category.id,
+          name: category.name,
+          icon: category.icon,
+          options: response[category.id],
         });
         _selectionIndices.push(0);
       });
@@ -102,18 +111,20 @@ const SelectDestinations = ({
       setBookmarks(bookmarksLoaded);
     };
 
-    loadDestinations(categories);
+    loadDestinations();
     loadBookmarks();
   }, [latitude, longitude, radius, categories]);
 
   const handleSave = async () => {
     // send destinations to backend
     const placeIds: number[] = [];
-    // for (let i = 0; i < indices.length; i++) {
-    //   if (indices[i] !== -1) {
-    //     placeIds.push(locations[categories[i]?.id][indices[i]]?.id);
-    //   }
-    // }
+    destinations?.forEach((destination: any, index: number) => {
+      if(destination?.id < 0){
+        placeIds.push(destination?.options[selectionIndices[index]]?.id);
+      } else {
+        placeIds.push(destination?.id);
+      }
+    });
 
     if (placeIds.length > 0) {
       const authToken = await EncryptedStorage.getItem('auth_token');
@@ -200,9 +211,12 @@ const SelectDestinations = ({
       <BottomSheet ref={bottomSheetRef} index={0} snapPoints={snapPoints}>
         <EditEvent
           navigation={navigation}
+          radius={radius}
+          latitude={latitude}
+          longitude={longitude}
           bookmarks={bookmarks}
-          tempPlaces={destinations}
-          setTempPlaces={setDestinations}
+          destinations={destinations}
+          setDestinations={setDestinations}
           selectionIndices={selectionIndices}
           setSelectionIndices={setSelectionIndices}
           onAddPress={addRef?.current?.onAddPress}

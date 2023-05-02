@@ -82,6 +82,7 @@ const AddEvent = forwardRef((props: ChildComponentProps, ref) => {
         id: category.id,
         name: category.name,
         icon: category.icon,
+        options: [],
       });
       _selectionIndices.splice(insertionIndex + 1, 0, 0);
       setDestinations(_destionations);
