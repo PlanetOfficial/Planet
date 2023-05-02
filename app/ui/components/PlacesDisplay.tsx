@@ -55,7 +55,7 @@ const PlacesDisplay: React.FC<Props> = ({
                 marginRight: s(20),
               },
             ]}
-            key={dest.id}>
+            key={dest?.id}>
             <TouchableOpacity
               onPress={() => {
                 navigation.navigate('Place', {
