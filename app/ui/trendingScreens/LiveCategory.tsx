@@ -36,11 +36,17 @@ const LiveCategory = ({navigation, route}: {navigation: any; route: any}) => {
 
   let filters = genres[0].filters;
 
-  let defaultFilterValues: number[] = [];
-  for (let i = 0; filters && i < filters.length; i++) {
-    defaultFilterValues.push(filters[i].defaultIdx);
-  }
-  const [filterValues, setFilterValues] = useState(defaultFilterValues);
+  const [filterValues, setFilterValues] = useState<number[]>([]);
+  const [defaultFilterValues, setDefaultFilterValues] = useState<number[]>([]);
+
+  useEffect(() => {
+    let _defaultFilterValues: number[] = [];
+    for (let i = 0; filters && i < filters.length; i++) {
+      _defaultFilterValues.push(filters[i].defaultIdx);
+    }
+    setDefaultFilterValues(_defaultFilterValues);
+    setFilterValues(_defaultFilterValues);
+  }, [filters]);
 
   useEffect(() => {
     const initializeData = async () => {

@@ -1,4 +1,10 @@
-import React, {useState, forwardRef, useImperativeHandle, useRef} from 'react';
+import React, {
+  useState,
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+} from 'react';
 import {StyleSheet, View, Image} from 'react-native';
 import {s} from 'react-native-size-matters';
 
@@ -75,11 +81,18 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
 
   let filters = category.filters;
 
-  let defaultFilterValues: number[] = [];
-  for (let i = 0; filters && i < filters.length; i++) {
-    defaultFilterValues.push(filters[i].defaultIdx);
-  }
-  const [filterValues, setFilterValues] = useState(defaultFilterValues);
+  const [filterValues, setFilterValues] = useState<number[]>([]);
+  const [defaultFilterValues, setDefaultFilterValues] = useState<number[]>([]);
+
+  useEffect(() => {
+    let _defaultFilterValues: number[] = [];
+    for (let i = 0; filters && i < filters.length; i++) {
+      _defaultFilterValues.push(filters[i].defaultIdx);
+    }
+    setDefaultFilterValues(_defaultFilterValues);
+    setFilterValues(_defaultFilterValues);
+    console.log(_defaultFilterValues);
+  }, [filters]);
 
   return (
     <View key={category.id}>
