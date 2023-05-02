@@ -58,11 +58,14 @@ const Icon: React.FC<Props> = ({
   const IconStyles: ImageStyle = {
     width: '100%',
     height: '100%',
-    tintColor: disabled? colors.darkgrey : color,
+    tintColor: disabled ? colors.darkgrey : color,
   };
 
   return onPress ? (
-    <TouchableOpacity style={ButtonStyles} disabled={disabled} onPress={onPress}>
+    <TouchableOpacity
+      style={ButtonStyles}
+      disabled={disabled}
+      onPress={onPress}>
       <Image source={icon} style={IconStyles} />
     </TouchableOpacity>
   ) : (

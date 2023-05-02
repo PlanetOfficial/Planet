@@ -1,33 +1,31 @@
-import React, {useCallback, useMemo, useRef, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {
-  View,
-  SafeAreaView,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
   Image,
   PermissionsAndroid,
   Platform,
+  SafeAreaView,
+  StyleSheet,
+  View,
 } from 'react-native';
+
 import {s, vs} from 'react-native-size-matters';
 import MapView from 'react-native-maps';
-import {Svg, Circle} from 'react-native-svg';
+import {Circle, Svg} from 'react-native-svg';
 import {
   GooglePlacesAutocomplete,
   GooglePlacesAutocompleteRef,
 } from 'react-native-google-places-autocomplete';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {BlurView} from '@react-native-community/blur';
 import BottomSheet from '@gorhom/bottom-sheet';
-
 import Geolocation from '@react-native-community/geolocation';
+
+import {calculateRadius} from '../../utils/functions/Misc';
+import {GoogleMapsAPIKey} from '../../utils/api/APIConstants';
+
+import {colors} from '../../constants/theme';
+import {floats, integers} from '../../constants/numbers';
 import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
-import {integers, floats} from '../../constants/numbers';
-import {colors} from '../../constants/theme';
-import {calculateRadius} from '../../utils/functions/Misc';
-
-import {GoogleMapsAPIKey} from '../../utils/api/APIConstants';
 
 import Blur from '../components/Blur';
 import CustomText from '../components/Text';
@@ -143,33 +141,40 @@ const MapScreen = ({navigation}: {navigation: any}) => {
         </View>
         <View
           style={[mapStyles.rIndContainer, {bottom: insets.bottom + s(55)}]}>
-          <CustomText size='s'>
+          <CustomText size="s">
             {strings.createTabStack.radius + ': '}
           </CustomText>
-          <CustomText size='s' weight='b' color={colors.accent}>
-          {(radius / integers.milesToMeters).toFixed(1)}
+          <CustomText size="s" weight="b" color={colors.accent}>
+            {(radius / integers.milesToMeters).toFixed(1)}
           </CustomText>
-          <CustomText size='s'>
-          {' ' + strings.createTabStack.milesAbbrev}
+          <CustomText size="s">
+            {' ' + strings.createTabStack.milesAbbrev}
           </CustomText>
         </View>
       </View>
 
-      <Blur height={s(40)}/>
+      <Blur height={s(40)} />
 
       <SafeAreaView>
         <View style={styles.header}>
-          <Icon size='s' icon={icons.x} onPress={() => navigation.navigate('TabStack')}/>
-          <CustomText>
-            {strings.createTabStack.planEvent}
-          </CustomText>
-          <Icon size='s' icon={icons.next} disabled={radius > integers.maxRadiusInMeters} onPress={() => {
+          <Icon
+            size="s"
+            icon={icons.x}
+            onPress={() => navigation.navigate('TabStack')}
+          />
+          <CustomText>{strings.createTabStack.planEvent}</CustomText>
+          <Icon
+            size="s"
+            icon={icons.next}
+            disabled={radius > integers.maxRadiusInMeters}
+            onPress={() => {
               navigation.navigate('SelectCategories', {
                 latitude: region.latitude,
                 longitude: region.longitude,
                 radius: radius,
               });
-          }}/>
+            }}
+          />
         </View>
       </SafeAreaView>
 
