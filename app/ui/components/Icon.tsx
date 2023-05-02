@@ -16,6 +16,7 @@ interface Props {
   size?: 'xs' | 's' | 'm' | 'l';
   color?: string;
   padding?: number;
+  disabled?: boolean;
   icon: ImageSourcePropType;
   onPress?: () => void;
 }
@@ -24,6 +25,7 @@ const Icon: React.FC<Props> = ({
   size = 'm',
   color = colors.black,
   padding = 0,
+  disabled = false,
   icon,
   onPress,
 }) => {
@@ -56,11 +58,11 @@ const Icon: React.FC<Props> = ({
   const IconStyles: ImageStyle = {
     width: '100%',
     height: '100%',
-    tintColor: color,
+    tintColor: disabled? colors.darkgrey : color,
   };
 
   return onPress ? (
-    <TouchableOpacity style={ButtonStyles} onPress={onPress}>
+    <TouchableOpacity style={ButtonStyles} disabled={disabled} onPress={onPress}>
       <Image source={icon} style={IconStyles} />
     </TouchableOpacity>
   ) : (
