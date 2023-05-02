@@ -1688,10 +1688,10 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/geolocation/-/geolocation-3.0.5.tgz#de6a0519277133be46df556f09c5691fe1ed8eaf"
   integrity sha512-dpigB7ni085rCBi85rIHNrs8hcKaLtDQVxNm1zgXrYZNO7XKN/GSL3AjYBBG7z9pG6qNyQNl4Xge8jWUCudTyQ==
 
-"@react-native-segmented-control/segmented-control@^2.4.0":
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/@react-native-segmented-control/segmented-control/-/segmented-control-2.4.0.tgz#0a88f22ad2c0fe07ecc002ee1e5d62c55a3dd0ae"
-  integrity sha512-2s1AaT6xk/Do5s6u7ioCXucqesAt02NQlLKBOM28dJWI7PTH9o89x6AwsGHIeMkTe4nQ6iENiJKzO7Y3SGG9Ew==
+"@react-native-segmented-control/segmented-control@^2.4.1":
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/@react-native-segmented-control/segmented-control/-/segmented-control-2.4.1.tgz#ea612c8b12bfea7712c7ea456b7b98dfc6748485"
+  integrity sha512-c8Q7TP14CD6vJ38VO5SWoIcxfwLPIz/4zRKJnJOJ0xKkMxkrUu089m86Y0dSvo+T3c1NQyvBFRtKWrPqbqG6tg==
 
 "@react-native/assets@1.0.0":
   version "1.0.0"
