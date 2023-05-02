@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef, useEffect} from 'react';
 import {StyleSheet, View, TouchableOpacity, ScrollView} from 'react-native';
 import {s} from 'react-native-size-matters';
 import PlaceCard from '../components/PlaceCard';
@@ -25,9 +25,21 @@ const PlacesDisplay: React.FC<Props> = ({
   index,
   setIndex,
 }) => {
+  const scrollViewRef: any = useRef(null);
+
+  useEffect(() => {
+    if (scrollViewRef.current) {
+      console.log('scrolling to', (width + s(20)) * index)
+      setTimeout(() => {
+        scrollViewRef.current.scrollTo({ x: (width + s(20)) * index, y: 0, animated: false});
+      }, 10);
+    }
+  }, []);
+
   return (
     <>
       <ScrollView
+        ref={scrollViewRef}
         style={styles.scrollView}
         contentContainerStyle={{
           paddingHorizontal: (s(350) - width) / 2,

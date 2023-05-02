@@ -95,8 +95,6 @@ const SelectDestinations = ({
       });
       setDestinations(_destinations);
       setSelectionIndices(_selectionIndices);
-
-      // setMarkers(getMarkerArray(places));
     };
 
     const loadBookmarks = async () => {
@@ -114,6 +112,19 @@ const SelectDestinations = ({
     loadDestinations();
     loadBookmarks();
   }, [latitude, longitude, radius, categories]);
+
+  useEffect(() => {
+    let places: any[] = [];
+    destinations?.forEach((destination: any, index: number) => {
+      if(destination?.id < 0){
+        places.push(destination?.options[selectionIndices[index]]);
+      } else {
+        places.push(destination);
+      }
+    });
+
+    setMarkers(getMarkerArray(places))
+  }, [destinations, selectionIndices]);
 
   const handleSave = async () => {
     // send destinations to backend

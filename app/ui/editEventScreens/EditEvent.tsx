@@ -48,18 +48,24 @@ const EditEvent: React.FC<Props> = ({
 
   const onMove = (idx: number, direction: number) => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    const temp = [...destinations];
-    const tempItem = temp[idx];
-    temp.splice(idx, 1);
+    const _destinations = [...destinations];
+    const destination = _destinations[idx];
+    const _selectionIndices = [...selectionIndices];
+    const selectionIndex = _selectionIndices[idx];
+    _destinations.splice(idx, 1);
+    _selectionIndices.splice(idx, 1);
     if (direction !== 0) {
-      temp.splice(idx + direction, 0, tempItem);
+      _destinations.splice(idx + direction, 0, destination);
+      _selectionIndices.splice(idx + direction, 0, selectionIndex);
     } else {
       childRefs.current.forEach(value => {
         value?.closeDropdown();
       });
-      childRefs.current.delete(tempItem.id);
+      childRefs.current.delete(destination.id);
+      _selectionIndices.splice(idx, 1);
     }
-    setDestinations(temp);
+    setDestinations(_destinations);
+    setSelectionIndices(_selectionIndices);
   };
 
   const onRemove = (item: any) => {
@@ -86,9 +92,13 @@ const EditEvent: React.FC<Props> = ({
           value?.closeDropdown();
         });
       }}
-      onDragEnd={({data}) => {
+      onDragEnd={({data, from, to}) => {
         setDragging(false);
         setDestinations(data);
+        const _selectionIndices = [...selectionIndices];
+        const item = _selectionIndices.splice(from, 1)[0];
+        _selectionIndices.splice(to, 0, item);
+        setSelectionIndices(_selectionIndices);
       }}
       onScrollBeginDrag={() => {
         itemRefs.current.forEach(value => {
