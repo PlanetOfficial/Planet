@@ -124,8 +124,8 @@ const Library = ({navigation}: {navigation: any}) => {
                 image={
                   item?.places &&
                   item?.places?.length !== 0 &&
-                  item?.places[0]?.image_url
-                    ? {uri: item?.places[0]?.image_url}
+                  item?.places[0]?.place?.image_url
+                    ? {uri: item?.places[0]?.place?.image_url}
                     : icons.defaultIcon
                 }
                 option={true}
