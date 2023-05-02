@@ -81,7 +81,7 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
 
       const _destinations = [...destinations];
       _destinations[categoryIndex].options = response[categoryId];
-      await setDestinations(_destinations);
+      setDestinations(_destinations);
     };
 
     if (destinations[categoryIndex].options?.length === 0) {
@@ -122,7 +122,7 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
           ]}
         />
       </View>
-      {filters && (
+      {filters ? (
         <Filter
           ref={childRef}
           filters={filters}
@@ -131,7 +131,7 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
           setCurrFilters={setFilterValues}
           defaultFilterValues={defaultFilterValues}
         />
-      )}
+      ): null}
       <PlacesDisplay
         navigation={navigation}
         data={destinations[categoryIndex].options}
