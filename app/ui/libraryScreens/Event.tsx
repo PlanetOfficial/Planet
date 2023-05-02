@@ -33,7 +33,7 @@ import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 import AddEvent from '../editEventScreens/AddEvent';
-import { floats } from '../../constants/numbers';
+import {floats} from '../../constants/numbers';
 
 const Event = ({navigation, route}: {navigation: any; route: any}) => {
   const [eventId] = useState(route?.params?.eventData?.id);

@@ -1,4 +1,10 @@
-import React, {useState, forwardRef, useImperativeHandle, useRef, useEffect} from 'react';
+import React, {
+  useState,
+  forwardRef,
+  useImperativeHandle,
+  useRef,
+  useEffect,
+} from 'react';
 import {StyleSheet, View, Image} from 'react-native';
 import {s} from 'react-native-size-matters';
 
@@ -9,7 +15,7 @@ import Text from '../components/Text';
 import OptionMenu from '../components/OptionMenu';
 import Filter from './Filter';
 import PlacesDisplay from '../components/PlacesDisplay';
-import { integers } from '../../constants/numbers';
+import {integers} from '../../constants/numbers';
 
 interface ChildComponentProps {
   navigation: any;
@@ -62,7 +68,7 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
     defaultFilterValues.push(filters[i].defaultIdx);
   }
   const [filterValues, setFilterValues] = useState(defaultFilterValues);
-  
+
   useEffect(() => {
     const loadDestinations = async (categoryId: number) => {
       const response = await requestLocations(
@@ -78,9 +84,10 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
       await setDestinations(_destinations);
     };
 
-    if(destinations[categoryIndex].options?.length === 0){
+    if (destinations[categoryIndex].options?.length === 0) {
       loadDestinations(-category.id);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

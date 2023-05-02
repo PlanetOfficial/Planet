@@ -116,21 +116,21 @@ const SelectDestinations = ({
   useEffect(() => {
     let places: any[] = [];
     destinations?.forEach((destination: any, index: number) => {
-      if(destination?.id < 0){
+      if (destination?.id < 0) {
         places.push(destination?.options[selectionIndices[index]]);
       } else {
         places.push(destination);
       }
     });
 
-    setMarkers(getMarkerArray(places))
+    setMarkers(getMarkerArray(places));
   }, [destinations, selectionIndices]);
 
   const handleSave = async () => {
     // send destinations to backend
     const placeIds: number[] = [];
     destinations?.forEach((destination: any, index: number) => {
-      if(destination?.id < 0){
+      if (destination?.id < 0) {
         placeIds.push(destination?.options[selectionIndices[index]]?.id);
       } else {
         placeIds.push(destination?.id);

@@ -27,13 +27,21 @@ const PlacesDisplay: React.FC<Props> = ({
 }) => {
   const scrollViewRef: any = useRef(null);
 
-  useEffect(() => {
+  const scrollToPosition = () => {
     if (scrollViewRef.current) {
-      console.log('scrolling to', (width + s(20)) * index)
       setTimeout(() => {
-        scrollViewRef.current.scrollTo({ x: (width + s(20)) * index, y: 0, animated: false});
+        scrollViewRef.current.scrollTo({
+          x: (width + s(20)) * index,
+          y: 0,
+          animated: false,
+        });
       }, 10);
     }
+  };
+
+  useEffect(() => {
+    scrollToPosition();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
