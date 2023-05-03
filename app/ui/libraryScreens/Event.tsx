@@ -16,6 +16,7 @@ import BottomSheet from '@gorhom/bottom-sheet';
 
 import {
   getMarkerArray,
+  getAveragePoint,
   getRegionForCoordinates,
 } from '../../utils/functions/Misc';
 import {MarkerObject} from '../../utils/interfaces/MarkerObject';
@@ -40,6 +41,9 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
   const [eventTitle] = useState(route?.params?.eventData?.name);
   const [date] = useState(new Date(route?.params?.eventData?.date)); // this probably doesn't work but whatever
   const [bookmarks] = useState(route?.params?.bookmarks);
+
+  const [latitude, setLatitude] = useState<number>(floats.defaultLatitude);
+  const [longitude, setLongitude] = useState<number>(floats.defaultLongitude);
 
   const [fullEventData, setFullEventData]: [any, any] = useState({});
   const [placeIdx, setPlaceIdx] = useState(0);
@@ -69,6 +73,10 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
 
       const markerArray: any = getMarkerArray(data?.places);
       setMarkers(markerArray);
+
+      const averagePoint = getAveragePoint(markerArray);
+      setLatitude(averagePoint?.latitude);
+      setLongitude(averagePoint?.longitude);
     };
 
     getEventData();
@@ -215,8 +223,8 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
           <EditEvent
             navigation={navigation}
             radius={floats.defaultRadius}
-            latitude={floats.defaultLatitude}
-            longitude={floats.defaultLongitude}
+            latitude={latitude}
+            longitude={longitude}
             bookmarks={bookmarks}
             destinations={tempPlaces}
             setDestinations={setTempPlaces}

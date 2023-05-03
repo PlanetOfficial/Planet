@@ -19,8 +19,10 @@ interface Props {
 }
 
 const OptionMenu: React.FC<Props> = ({options}) => {
-  const [visible, setVisible] = useState(false);
-  const [pressed, setPressed] = useState(Array(options.length).fill(false));
+  const [visible, setVisible] = useState<boolean>(false);
+  const [pressed, setPressed] = useState<boolean[]>(
+    Array(options.length).fill(false),
+  );
 
   return (
     <Menu
