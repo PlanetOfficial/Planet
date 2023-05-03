@@ -52,6 +52,8 @@ const TempData = [
   },
 ];
 
+// TODO: NOT IMPLEMENTED YET, REFACTORING MUST BE DONE
+
 interface Props {
   onClose: () => void;
   onSelect: (place: any) => void;
