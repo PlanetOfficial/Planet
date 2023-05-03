@@ -7,8 +7,10 @@ import {
   TouchableOpacity,
   Modal,
   Pressable,
+  ImageSourcePropType,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
+
 import CustomText from '../components/Text';
 
 import {icons, vectors} from '../../constants/images';
@@ -20,20 +22,44 @@ interface Props {
   onSelect: (category: any) => void;
 }
 
-const CategoryList: React.FC<Props> = ({onClose, onSelect}) => {
-  const [modalVisible, setModalVisible] = useState(false);
-  const [selectedGenre, setSelectedGenre] = useState('');
-  const [allCategories, setAllCategories]: [any, any] = useState([]);
+interface GenreType {
+  id: number;
+  name: string;
+  image: ImageSourcePropType;
+  categories: CategoryType[];
+  filters?: {
+    name: string;
+    options: string[];
+    values: number[];
+    text: string;
+    defaultIdx: number;
+  }[];
+}
 
-  const handleGenrePress = async (genre: any) => {
+interface CategoryType {
+  id: number;
+  name: string;
+  icon: ImageSourcePropType;
+  subcategories?: SubcategoryType[]; 
+}
+
+interface SubcategoryType {
+  id: number;
+  title: string;
+}
+
+const CategoryList: React.FC<Props> = ({onClose, onSelect}) => {
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [selectedGenre, setSelectedGenre] = useState<string>('');
+  const [allCategories, setAllCategories] = useState<CategoryType[]>([]);
+
+  const handleGenrePress = async (genre: GenreType) => {
     setSelectedGenre(genre.name);
     setModalVisible(true);
     setAllCategories([]);
 
-    // display categories from genre
-
     // find index of genre
-    const genreObj = genres.find(item => item.id === genre.id);
+    const genreObj: GenreType | undefined = genres.find((_genre: GenreType) => _genre.id === genre.id);
     if (genreObj) {
       setAllCategories(genreObj.categories);
     }
@@ -42,7 +68,7 @@ const CategoryList: React.FC<Props> = ({onClose, onSelect}) => {
   return (
     <View style={styles.container}>
       <View style={genreStyles.container}>
-        {genres.map(genre => (
+        {genres.map((genre: GenreType) => (
           <TouchableOpacity
             key={genre.id}
             onPress={() => handleGenrePress(genre)}>
@@ -84,7 +110,7 @@ const CategoryList: React.FC<Props> = ({onClose, onSelect}) => {
               </CustomText>
             </View>
             {allCategories
-              ? allCategories?.map((category: any) => (
+              ? allCategories?.map((category: CategoryType) => (
                   <TouchableOpacity
                     key={category.id}
                     onPress={() => {

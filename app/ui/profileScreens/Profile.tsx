@@ -21,7 +21,7 @@ const Profile: React.FC<Props> = ({navigation}) => {
   useEffect(() => {
     const initializeData = async () => {
       // TODO: make sure name updates if info gets updated
-      const _name = await AsyncStorage.getItem('name');
+      const _name: string | null = await AsyncStorage.getItem('name');
       if (_name) {
         setName(_name);
       }

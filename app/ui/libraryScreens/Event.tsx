@@ -236,7 +236,7 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
           <SafeAreaView>
             <PlacesDisplay
               navigation={navigation}
-              data={fullEventData?.places}
+              places={fullEventData?.places}
               width={s(290)}
               bookmarks={bookmarks}
               index={placeIdx}
