@@ -1,11 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {
-  View,
-  Image,
-  Text,
-  StyleSheet,
-  SafeAreaView,
-} from 'react-native';
+import {View, Image, Text, StyleSheet, SafeAreaView} from 'react-native';
 import {s, vs} from 'react-native-size-matters';
 import CustomText from '../components/Text';
 import Icon from '../components/Icon';

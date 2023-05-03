@@ -130,7 +130,10 @@ const SelectDestinations = ({
     // send destinations to backend
     const placeIds: number[] = [];
     destinations?.forEach((destination: any, index: number) => {
-      if (destination?.id < 0) {
+      if (
+        destination?.id < 0 &&
+        destination?.options[selectionIndices[index]]
+      ) {
         placeIds.push(destination?.options[selectionIndices[index]]?.id);
       } else {
         placeIds.push(destination?.id);
