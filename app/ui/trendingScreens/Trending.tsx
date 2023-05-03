@@ -18,7 +18,7 @@ import {floats, integers} from '../../constants/numbers';
 import strings from '../../constants/strings';
 
 import {requestLocations} from '../../utils/api/CreateCalls/requestLocations';
-import {Subcategory} from '../../utils/interfaces/subcategory';
+import {Subcategory} from '../../utils/interfaces/types';
 
 import Text from '../components/Text';
 import Icon from '../components/Icon';

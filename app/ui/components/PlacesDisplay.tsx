@@ -6,28 +6,16 @@ import ScrollIndicator from '../components/ScrollIndicator';
 
 import {icons} from '../../constants/images';
 
+import {Place} from '../../utils/interfaces/types';
+
 interface Props {
   navigation: any;
-  places: PlaceType[];
+  places: Place[];
   width: number;
   bookmarks: number[];
   closeDropdown?: () => void;
   index: number;
   setIndex: (index: number) => void;
-}
-
-interface PlaceType {
-  category_id: number;
-  category_name: string;
-  created_at: number;
-  id: number;
-  image_url?: string;
-  latitude: number;
-  longitude: number;
-  name: string;
-  place_id: string;
-  subcategory_id?: number;
-  supplier: string;
 }
 
 const PlacesDisplay: React.FC<Props> = ({
@@ -82,7 +70,7 @@ const PlacesDisplay: React.FC<Props> = ({
             setIndex(idx);
           }
         }}>
-        {places?.map((place: PlaceType, idx: number) => (
+        {places?.map((place: Place, idx: number) => (
           <View
             style={[
               {
