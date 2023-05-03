@@ -1,71 +1,56 @@
 import React, {
   useState,
   forwardRef,
-  useEffect,
   useImperativeHandle,
   useRef,
+  useEffect,
 } from 'react';
 import {StyleSheet, View, Image} from 'react-native';
 import {s} from 'react-native-size-matters';
 
+import {requestLocations} from '../../utils/api/CreateCalls/requestLocations';
 import {colors} from '../../constants/theme';
 import strings from '../../constants/strings';
 import Text from '../components/Text';
 import OptionMenu from '../components/OptionMenu';
 import Filter from './Filter';
 import PlacesDisplay from '../components/PlacesDisplay';
+import {integers} from '../../constants/numbers';
 
 interface ChildComponentProps {
   navigation: any;
+  radius: number;
+  latitude: number;
+  longitude: number;
   bookmarks: any[];
-  category: any;
+  category: {
+    id: number;
+    name: string;
+    icon: any;
+    filters?: any[];
+    subcategories?: any[];
+  };
   categoryIndex: number;
-  tempPlaces: any;
+  selectionIndex: number;
+  setSelectionIndex: (idx: number) => void;
+  destinations: any;
+  setDestinations: (destinations: any) => void;
   onCategoryMove: any;
 }
-
-const TempData = [
-  {
-    id: 1,
-    name: 'Place 1',
-    category: {
-      name: 'Category 1',
-    },
-    image_url: 'https://picsum.photos/200/300',
-  },
-  {
-    id: 2,
-    name: 'Place 2',
-    category: {
-      name: 'Category 2',
-    },
-    image_url: 'https://picsum.photos/200/300',
-  },
-  {
-    id: 3,
-    name: 'Place 3',
-    category: {
-      name: 'Category 3',
-    },
-    image_url: 'https://picsum.photos/200/300',
-  },
-  {
-    id: 4,
-    name: 'Place 4',
-    category: {
-      name: 'Category 4',
-    },
-    image_url: 'https://picsum.photos/200/300',
-  },
-];
 
 const Category = forwardRef((props: ChildComponentProps, ref) => {
   const {
     navigation,
+    radius,
+    latitude,
+    longitude,
     bookmarks,
     category,
     categoryIndex,
-    tempPlaces,
+    selectionIndex,
+    setSelectionIndex,
+    destinations,
+    setDestinations,
     onCategoryMove,
   } = props;
 
@@ -76,8 +61,6 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
   useImperativeHandle(ref, () => ({
     closeDropdown,
   }));
-
-  const [placeIdx, setPlaceIdx] = useState(0);
 
   let filters = category.filters;
 
@@ -91,8 +74,28 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
     }
     setDefaultFilterValues(_defaultFilterValues);
     setFilterValues(_defaultFilterValues);
-    console.log(_defaultFilterValues);
   }, [filters]);
+
+  useEffect(() => {
+    const loadDestinations = async (categoryId: number) => {
+      const response = await requestLocations(
+        [categoryId],
+        radius,
+        latitude,
+        longitude,
+        integers.defaultNumPlaces,
+      );
+
+      const _destinations = [...destinations];
+      _destinations[categoryIndex].options = response[categoryId];
+      setDestinations(_destinations);
+    };
+
+    if (destinations[categoryIndex].options?.length === 0) {
+      loadDestinations(-category.id);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <View key={category.id}>
@@ -115,33 +118,35 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
               name: strings.createTabStack.moveDown,
               onPress: () => onCategoryMove(categoryIndex, 1),
               color: colors.black,
-              disabled: categoryIndex === tempPlaces.length - 1,
+              disabled: categoryIndex === destinations.length - 1,
             },
             {
               name: strings.main.remove,
               onPress: () => onCategoryMove(categoryIndex, 0),
               color: colors.red,
-              disabled: tempPlaces.length === 1,
+              disabled: destinations.length === 1,
             },
           ]}
         />
       </View>
-      <Filter
-        ref={childRef}
-        filters={filters}
-        subcategories={category.subcategories}
-        currFilters={filterValues}
-        setCurrFilters={setFilterValues}
-        defaultFilterValues={defaultFilterValues}
-      />
+      {filters ? (
+        <Filter
+          ref={childRef}
+          filters={filters}
+          subcategories={category.subcategories}
+          currFilters={filterValues}
+          setCurrFilters={setFilterValues}
+          defaultFilterValues={defaultFilterValues}
+        />
+      ) : null}
       <PlacesDisplay
         navigation={navigation}
-        data={TempData}
+        data={destinations[categoryIndex].options}
         width={s(290)}
         bookmarks={bookmarks}
         closeDropdown={closeDropdown}
-        index={placeIdx}
-        setIndex={setPlaceIdx}
+        index={selectionIndex}
+        setIndex={setSelectionIndex}
       />
     </View>
   );

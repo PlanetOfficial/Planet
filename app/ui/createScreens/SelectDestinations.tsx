@@ -1,39 +1,41 @@
 import 'react-native-gesture-handler';
-import React, {useMemo, useRef, useEffect, useState} from 'react';
+import React, {useRef, useEffect, useState, useMemo} from 'react';
 import {
-  View,
   SafeAreaView,
-  Text,
-  Modal,
-  Pressable,
+  StyleSheet,
   TextInput,
   TouchableOpacity,
-  StyleSheet,
-  Image,
-  Platform,
+  View,
 } from 'react-native';
+
 import DatePicker from 'react-native-date-picker';
 import EncryptedStorage from 'react-native-encrypted-storage';
-import {icons} from '../../constants/images';
-import strings from '../../constants/strings';
-import {colors} from '../../constants/theme';
+import {Marker} from 'react-native-maps';
+import MapView from 'react-native-maps';
 import {s, vs} from 'react-native-size-matters';
-import MapView, {Marker} from 'react-native-maps';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {BlurView} from '@react-native-community/blur';
-import BottomSheet, {BottomSheetScrollView} from '@gorhom/bottom-sheet';
+import BottomSheet from '@gorhom/bottom-sheet';
 
-import PlaceCard from '../components/PlaceCard';
+import Blur from '../components/Blur';
+import CustomText from '../components/Text';
+import Icon from '../components/Icon';
+import EditEvent from '../editEventScreens/EditEvent';
+import AddEvent from '../editEventScreens/AddEvent';
+import Confirmation from '../editEventScreens/Confirmation';
 
 import {requestLocations} from '../../utils/api/CreateCalls/requestLocations';
-
 import {getBookmarks} from '../../utils/api/shared/getBookmarks';
-import {getRegionForCoordinates} from '../../utils/functions/Misc';
-import {getMarkerArray} from '../../utils/functions/Misc';
-import {MarkerObject} from '../../utils/interfaces/MarkerObject';
 import {sendEvent} from '../../utils/api/CreateCalls/sendEvent';
-import {ScrollView} from 'react-native-gesture-handler';
+import {
+  getMarkerArray,
+  getRegionForCoordinates,
+} from '../../utils/functions/Misc';
+import {MarkerObject} from '../../utils/interfaces/MarkerObject';
+
+import {colors} from '../../constants/theme';
 import {integers} from '../../constants/numbers';
+import {icons} from '../../constants/images';
+import strings from '../../constants/strings';
 
 const SelectDestinations = ({
   navigation,
@@ -46,53 +48,53 @@ const SelectDestinations = ({
   const [longitude] = useState(route?.params?.longitude);
   const [radius] = useState(route?.params?.radius);
   const [categories] = useState(route?.params?.selectedCategories);
-  const [modalVisible, setModalVisible] = useState(false);
 
-  const [locations, setLocations]: [any, any] = useState({});
-  const [indices, setIndices]: [number[], any] = useState([]);
   const [bookmarks, setBookmarks]: [any, any] = useState([]);
   const [eventTitle, setEventTitle] = useState(
     strings.createTabStack.untitledEvent,
   );
-  const [markers, setMarkers]: [Array<MarkerObject>, any] = useState([]);
   const [date, setDate] = useState(new Date());
   const [datePickerOpen, setDatePickerOpen] = useState(false);
+  const [saveConfirmationOpen, setSaveConfirmationOpen] = useState(false);
+
+  const [destinations, setDestinations]: [any, any] = useState([]);
+  const [selectionIndices, setSelectionIndices]: [number[], any] = useState([]);
+
+  const [markers, setMarkers]: [Array<MarkerObject>, any] = useState([]);
+
   const insets = useSafeAreaInsets();
 
+  const bottomSheetRef: any = useRef<BottomSheet>(null);
   const snapPoints = useMemo(
-    () => [
-      '10%',
-      vs(350) - (insets.top + s(35)),
-      vs(680) - (insets.top + s(35)),
-    ],
+    () => [vs(350) - (insets.top + s(35)), vs(680) - (insets.top + s(60))],
     [insets.top],
   );
 
+  const addRef: any = useRef(null);
+
   useEffect(() => {
-    const loadDestinations = async (categoryIds: Array<number>) => {
+    const loadDestinations = async () => {
       const response = await requestLocations(
-        categoryIds,
+        categories?.map((category: any) => category?.id),
         radius,
         latitude,
         longitude,
         integers.defaultNumPlaces,
       );
 
-      let ind: number[] = [];
-      let places: any[] = [];
-      categories?.forEach((item: any) => {
-        if (response[item?.id] && response[item?.id]?.length > 0) {
-          ind.push(0);
-          places.push(response[item?.id][0]);
-        } else {
-          ind.push(-1);
-        }
+      let _destinations: any[] = [];
+      let _selectionIndices: number[] = [];
+      categories?.forEach((category: any) => {
+        _destinations.push({
+          id: -category.id,
+          name: category.name,
+          icon: category.icon,
+          options: response[category.id],
+        });
+        _selectionIndices.push(0);
       });
-
-      setMarkers(getMarkerArray(places));
-      setIndices(ind);
-
-      await setLocations(response);
+      setDestinations(_destinations);
+      setSelectionIndices(_selectionIndices);
     };
 
     const loadBookmarks = async () => {
@@ -107,22 +109,33 @@ const SelectDestinations = ({
       setBookmarks(bookmarksLoaded);
     };
 
-    const filteredCategories = categories?.map((item: any) => item?.id);
-    loadDestinations(filteredCategories);
-
+    loadDestinations();
     loadBookmarks();
   }, [latitude, longitude, radius, categories]);
 
-  const handleSave = async () => {
-    setModalVisible(false);
+  useEffect(() => {
+    let places: any[] = [];
+    destinations?.forEach((destination: any, index: number) => {
+      if (destination?.id < 0) {
+        places.push(destination?.options[selectionIndices[index]]);
+      } else {
+        places.push(destination);
+      }
+    });
 
+    setMarkers(getMarkerArray(places));
+  }, [destinations, selectionIndices]);
+
+  const handleSave = async () => {
     // send destinations to backend
     const placeIds: number[] = [];
-    for (let i = 0; i < indices.length; i++) {
-      if (indices[i] !== -1) {
-        placeIds.push(locations[categories[i]?.id][indices[i]]?.id);
+    destinations?.forEach((destination: any, index: number) => {
+      if (destination?.id < 0) {
+        placeIds.push(destination?.options[selectionIndices[index]]?.id);
+      } else {
+        placeIds.push(destination?.id);
       }
-    }
+    });
 
     if (placeIds.length > 0) {
       const authToken = await EncryptedStorage.getItem('auth_token');
@@ -143,8 +156,6 @@ const SelectDestinations = ({
     }
   };
 
-  const bottomSheetRef: any = useRef<BottomSheet>(null);
-
   return (
     <View testID="selectDestinationsScreenView" style={styles.container}>
       <MapView style={styles.map} region={getRegionForCoordinates(markers)}>
@@ -161,184 +172,30 @@ const SelectDestinations = ({
             ))
           : null}
       </MapView>
-      {Platform.OS === 'ios' ? (
-        <BlurView
-          blurAmount={3}
-          blurType="xlight"
-          style={[styles.top, {height: insets.top + s(35)}]}
-        />
-      ) : (
-        <View
-          style={[
-            styles.top,
-            styles.nonBlur,
-            {
-              height: insets.top + s(35),
-            },
-          ]}
-        />
-      )}
+
+      <Blur height={s(50)} />
+
       <SafeAreaView>
         <View style={headerStyles.container}>
-          <TouchableOpacity
-            testID="selectDestinationsScreenBack"
-            style={headerStyles.back}
-            onPress={() => navigation.navigate('SelectCategories')}>
-            <Image style={headerStyles.icon} source={icons.back} />
-          </TouchableOpacity>
-          <Text style={headerStyles.title}>
-            {strings.createTabStack.selectDestinations}
-          </Text>
-          <TouchableOpacity
-            testID="confirmDestinations"
-            style={headerStyles.confirm}
-            onPress={() => setModalVisible(true)}>
-            <Image style={headerStyles.icon} source={icons.confirm} />
-          </TouchableOpacity>
-        </View>
-      </SafeAreaView>
-      <BottomSheet
-        ref={bottomSheetRef}
-        index={1}
-        snapPoints={snapPoints}
-        backgroundStyle={destStyles.container}>
-        <BottomSheetScrollView
-          testID="selectDestinationsMainScroll"
-          showsVerticalScrollIndicator={false}>
-          {categories
-            ? categories?.map((category: any, idx: number) => (
-                <View key={category?.id}>
-                  <View style={destStyles.header}>
-                    <Image
-                      style={destStyles.icon}
-                      source={icons.tempCategory}
-                    />
-                    <Text style={destStyles.name}>{category?.name}</Text>
-                  </View>
-                  <ScrollView
-                    contentContainerStyle={styles.contentContainer}
-                    style={styles.scrollView}
-                    testID={`category.${category?.id}.scrollView`}
-                    horizontal={true}
-                    onScroll={event => {
-                      const i: number = Math.round(
-                        event.nativeEvent.contentOffset.x / s(325),
-                      );
-
-                      let _indices = [...indices];
-                      if (_indices[idx] !== i) {
-                        _indices[idx] = i;
-                        setIndices(_indices);
-                        let places: any[] = [];
-                        for (let j = 0; j < _indices.length; j++) {
-                          if (_indices[j] !== -1) {
-                            places.push(
-                              locations[categories[j]?.id][_indices[j]],
-                            );
-                          }
-                        }
-                        setMarkers(getMarkerArray(places));
-                      }
-                    }}
-                    scrollEventThrottle={16}
-                    showsHorizontalScrollIndicator={false}
-                    decelerationRate={'fast'}
-                    snapToInterval={s(325)}
-                    snapToAlignment={'start'}
-                    pagingEnabled>
-                    {locations &&
-                    locations[category?.id] &&
-                    locations[category?.id].length > 0 ? (
-                      locations[category?.id]?.map((dest: any) => (
-                        <View
-                          style={styles.card}
-                          testID={`destination.${category?.id}.${dest?.id}`}
-                          key={dest?.id}>
-                          <TouchableOpacity
-                            onPress={() =>
-                              navigation.navigate('Place', {
-                                destination: dest,
-                                category: category?.name,
-                              })
-                            }>
-                            <PlaceCard
-                              id={dest?.id}
-                              name={dest?.name}
-                              info={`${strings.createTabStack.rating}: ${dest?.rating}/${strings.misc.maxRating}  ${strings.createTabStack.price}: ${dest?.price}`}
-                              marked={bookmarks?.includes(dest?.id)}
-                              image={
-                                dest?.image_url
-                                  ? {
-                                      uri: dest?.image_url,
-                                    }
-                                  : icons.defaultIcon
-                              }
-                            />
-                          </TouchableOpacity>
-                        </View>
-                      ))
-                    ) : (
-                      <View style={styles.placeHolder}>
-                        <Text style={styles.placeHolderText}>
-                          {strings.createTabStack.noDestinations}
-                        </Text>
-                      </View>
-                    )}
-                  </ScrollView>
-                  {locations &&
-                  locations[category?.id] &&
-                  locations[category?.id].length > 0 ? (
-                    <View style={indStyles.container}>
-                      {locations[category?.id].map((e: any, i: number) => (
-                        <View
-                          key={i}
-                          style={[
-                            indStyles.circle,
-                            {
-                              backgroundColor:
-                                i === indices[idx]
-                                  ? colors.accent
-                                  : colors.darkgrey,
-                            },
-                          ]}
-                        />
-                      ))}
-                    </View>
-                  ) : null}
-                  <View style={styles.separator} />
-                </View>
-              ))
-            : null}
-        </BottomSheetScrollView>
-      </BottomSheet>
-      <Modal animationType="fade" transparent={true} visible={modalVisible}>
-        <Pressable
-          style={modalStyles.dim}
-          onPress={() => {
-            setModalVisible(false);
-          }}
-        />
-        <View style={modalStyles.container}>
-          <Text style={modalStyles.title}>
-            {strings.createTabStack.saveEvent}
-          </Text>
-          <View style={modalStyles.option}>
-            <Text style={modalStyles.boldText}>
-              {strings.createTabStack.name}:
-            </Text>
+          <Icon
+            size="s"
+            icon={icons.back}
+            onPress={() => navigation.navigate('SelectCategories')}
+          />
+          <View style={headerStyles.texts}>
             <TextInput
-              testID="eventTitleText"
-              style={modalStyles.text}
-              onChangeText={setEventTitle}>
-              {eventTitle}
-            </TextInput>
-          </View>
-          <View style={modalStyles.option}>
-            <Text style={modalStyles.boldText}>
-              {strings.createTabStack.date}:
-            </Text>
+              style={headerStyles.name}
+              value={eventTitle}
+              onChangeText={(text: any) => setEventTitle(text)}
+            />
             <TouchableOpacity onPress={() => setDatePickerOpen(true)}>
-              <Text style={modalStyles.text}>{date.toLocaleDateString()}</Text>
+              <CustomText
+                size="xs"
+                weight="l"
+                color={colors.accent}
+                underline={true}>
+                {date.toLocaleDateString()}
+              </CustomText>
             </TouchableOpacity>
             <DatePicker
               modal
@@ -353,250 +210,104 @@ const SelectDestinations = ({
               }}
             />
           </View>
-          <View style={modalStyles.footer}>
-            <TouchableOpacity
-              onPress={() => setModalVisible(false)}
-              style={modalStyles.cancelContainer}>
-              <Text style={modalStyles.cancel}>
-                {strings.createTabStack.cancel}
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={handleSave}
-              style={modalStyles.confirmContainer}>
-              <Text style={modalStyles.confirm}>
-                {strings.createTabStack.confirm}
-              </Text>
-            </TouchableOpacity>
-          </View>
+          <Icon
+            size="s"
+            color={colors.accent}
+            icon={icons.confirm}
+            onPress={() => setSaveConfirmationOpen(true)}
+          />
         </View>
-      </Modal>
+      </SafeAreaView>
+
+      <BottomSheet
+        ref={bottomSheetRef}
+        index={0}
+        snapPoints={snapPoints}
+        enableContentPanningGesture={false}>
+        <EditEvent
+          navigation={navigation}
+          radius={radius}
+          latitude={latitude}
+          longitude={longitude}
+          bookmarks={bookmarks}
+          destinations={destinations}
+          setDestinations={setDestinations}
+          selectionIndices={selectionIndices}
+          setSelectionIndices={setSelectionIndices}
+          onAddPress={addRef?.current?.onAddPress}
+        />
+      </BottomSheet>
+
+      <AddEvent
+        ref={addRef}
+        destinations={destinations}
+        setDestinations={setDestinations}
+        selectionIndices={selectionIndices}
+        setSelectionIndices={setSelectionIndices}
+      />
+
+      <Confirmation
+        onPress={handleSave}
+        open={saveConfirmationOpen}
+        setOpen={setSaveConfirmationOpen}
+        prompt={strings.library.saveConfirmation}
+        leftText={strings.library.save}
+        rightText={strings.library.keepEditing}
+        rightColor={colors.accent}
+      />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
-    width: '100%',
-    height: '100%',
+    flex: 1,
     backgroundColor: colors.white,
-  },
-  top: {
-    position: 'absolute',
-    top: 0,
-    width: '100%',
-  },
-  bottom: {
-    position: 'absolute',
-    bottom: 0,
-    width: '100%',
-    height: s(15),
-    backgroundColor: colors.darkgrey,
-    opacity: 0.7,
-  },
-  contentContainer: {
-    paddingLeft: s(20),
-    paddingRight: s(5),
-  },
-  scrollView: {
-    overflow: 'visible',
-  },
-  card: {
-    width: s(310),
-    marginRight: s(15),
-  },
-  separator: {
-    borderWidth: 0.5,
-    borderColor: colors.grey,
-    marginHorizontal: s(20),
-    marginBottom: s(5),
-  },
-  placeHolder: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: s(310),
-    marginVertical: s(20),
-  },
-  placeHolderText: {
-    fontSize: s(18),
-    fontWeight: '600',
-    color: colors.black,
   },
   map: {
     position: 'absolute',
-    width: s(350),
+    width: '100%',
     height: '100%',
-    marginHorizontal: s(20),
   },
-  nonBlur: {backgroundColor: colors.white, opacity: 0.85},
+  handle: {
+    paddingTop: 0,
+  },
+  handleIndicator: {
+    height: 0,
+  },
+  dim: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  addOptionsContainer: {
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    height: s(240),
+    paddingTop: s(20),
+  },
 });
 
 const headerStyles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
+    justifyContent: 'space-between',
     width: s(350),
-    height: s(30),
-    marginBottom: s(5),
+    height: s(50),
     paddingHorizontal: s(20),
   },
-  title: {
-    fontSize: s(16),
-    fontWeight: '600',
-    color: colors.black,
-  },
-  back: {
-    width: s(18),
-    height: s(18),
-  },
-  confirm: {
-    width: s(18),
-    height: s(18),
-  },
-  icon: {
-    width: '100%',
-    height: '100%',
-    tintColor: colors.black,
-  },
-});
-
-const destStyles = StyleSheet.create({
-  container: {
-    backgroundColor: colors.white,
-    opacity: 0.83,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    marginHorizontal: s(20),
-    paddingHorizontal: s(7),
-    marginBottom: s(7),
-  },
-  icon: {
-    width: s(30),
-    height: s(30),
-    borderRadius: s(15),
-    borderWidth: 2,
-    tintColor: colors.black,
-    borderColor: colors.accent,
-    backgroundColor: colors.white,
+  texts: {
+    flex: 1,
+    marginHorizontal: s(10),
   },
   name: {
-    marginLeft: s(7),
+    padding: 0,
     fontSize: s(17),
     fontWeight: '700',
     color: colors.black,
-  },
-});
-
-const modalStyles = StyleSheet.create({
-  container: {
-    position: 'absolute',
-    left: s(45),
-    top: '35%',
-    width: s(260),
-    height: '30%',
-    borderRadius: s(10),
-    borderWidth: 2,
-    borderColor: colors.white,
-    shadowOffset: {
-      width: 0,
-      height: 7,
-    },
-    shadowOpacity: 0.41,
-    shadowRadius: 9.11,
-    elevation: 14,
-    backgroundColor: colors.white,
-  },
-  dim: {
-    width: '100%',
-    height: '200%',
-    position: 'absolute',
-    backgroundColor: colors.black,
-    opacity: 0.5,
-  },
-  title: {
-    marginTop: s(10),
-    fontSize: s(20),
-    fontWeight: '700',
-    color: colors.black,
-    textAlign: 'center',
-  },
-  option: {
-    marginTop: s(20),
-    flexDirection: 'row',
-    marginHorizontal: s(30),
-  },
-  boldText: {
-    fontSize: s(16),
-    fontWeight: '700',
-    color: colors.black,
-    textAlign: 'center',
-  },
-  text: {
-    marginLeft: s(20),
-    fontSize: s(16),
-    fontWeight: '600',
-    color: colors.black,
-    textAlign: 'center',
-  },
-  footer: {
-    justifyContent: 'center',
-    position: 'absolute',
-    width: s(260) - 4,
-    bottom: 0,
-  },
-  cancelContainer: {
-    justifyContent: 'center',
-    position: 'absolute',
-    left: 0,
-    bottom: 0,
-    width: s(130) - 3,
-    height: s(40),
-    backgroundColor: colors.darkgrey,
-    borderBottomLeftRadius: s(10) - 2,
-  },
-  cancel: {
-    fontSize: s(16),
-    fontWeight: '700',
-    color: colors.black,
-    textAlign: 'center',
-  },
-  confirmContainer: {
-    justifyContent: 'center',
-    position: 'absolute',
-    right: 0,
-    bottom: 0,
-    width: s(130) - 3,
-    height: s(40),
-    backgroundColor: colors.accent,
-    borderBottomRightRadius: s(10) - 2,
-  },
-  confirm: {
-    fontSize: s(16),
-    fontWeight: '700',
-    color: colors.white,
-    textAlign: 'center',
-  },
-});
-
-const indStyles = StyleSheet.create({
-  container: {
-    alignSelf: 'center',
-    flexDirection: 'row',
-    margin: s(7),
-    padding: s(7),
-    borderRadius: s(11.5),
-    backgroundColor: colors.grey,
-  },
-  circle: {
-    marginHorizontal: s(3.5),
-    width: s(7),
-    height: s(7),
-    borderRadius: s(3.5),
+    textDecorationLine: 'underline',
   },
 });
 

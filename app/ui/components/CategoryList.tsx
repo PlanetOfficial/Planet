@@ -16,8 +16,8 @@ import {colors} from '../../constants/theme';
 import {genres} from '../../constants/genres';
 
 interface Props {
-  onClose: () => void;
-  onSelect: (dest: any) => void;
+  onClose?: () => void;
+  onSelect: (category: any) => void;
 }
 
 const CategoryList: React.FC<Props> = ({onClose, onSelect}) => {
@@ -89,7 +89,8 @@ const CategoryList: React.FC<Props> = ({onClose, onSelect}) => {
                     key={category.id}
                     onPress={() => {
                       onSelect(category);
-                      onClose();
+                      setModalVisible(false);
+                      onClose && onClose();
                     }}>
                     <View style={categoryStyles.container}>
                       <Image

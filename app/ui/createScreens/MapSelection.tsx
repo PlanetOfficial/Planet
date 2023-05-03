@@ -1,33 +1,35 @@
-import React, {useCallback, useMemo, useRef, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {
-  View,
-  SafeAreaView,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
   Image,
   PermissionsAndroid,
   Platform,
+  SafeAreaView,
+  StyleSheet,
+  View,
 } from 'react-native';
+
 import {s, vs} from 'react-native-size-matters';
 import MapView from 'react-native-maps';
-import {Svg, Circle} from 'react-native-svg';
+import {Circle, Svg} from 'react-native-svg';
 import {
   GooglePlacesAutocomplete,
   GooglePlacesAutocompleteRef,
 } from 'react-native-google-places-autocomplete';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {BlurView} from '@react-native-community/blur';
 import BottomSheet from '@gorhom/bottom-sheet';
-
 import Geolocation from '@react-native-community/geolocation';
+
+import {calculateRadius} from '../../utils/functions/Misc';
+import {GoogleMapsAPIKey} from '../../utils/api/APIConstants';
+
+import {colors} from '../../constants/theme';
+import {floats, integers} from '../../constants/numbers';
 import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
-import {integers, floats} from '../../constants/numbers';
-import {colors} from '../../constants/theme';
-import {calculateRadius} from '../../utils/functions/Misc';
 
-import {GoogleMapsAPIKey} from '../../utils/api/APIConstants';
+import Blur from '../components/Blur';
+import Text from '../components/Text';
+import Icon from '../components/Icon';
 
 const MapScreen = ({navigation}: {navigation: any}) => {
   const [region, setRegion] = useState({
@@ -96,7 +98,7 @@ const MapScreen = ({navigation}: {navigation: any}) => {
   const bottomSheetRef: any = useRef<BottomSheet>(null);
   const autoCompleteRef: any = useRef<GooglePlacesAutocompleteRef>(null);
   const snapPoints = useMemo(
-    () => [insets.bottom + s(55), vs(680) - (insets.top + s(35))],
+    () => [insets.bottom + s(55), vs(680) - (insets.top + s(50))],
     [insets.bottom, insets.top],
   );
   const handleSheetChange = useCallback(
@@ -111,7 +113,7 @@ const MapScreen = ({navigation}: {navigation: any}) => {
   );
 
   return (
-    <View testID="mapSelectionScreenView" style={styles.container}>
+    <View style={styles.container}>
       <View style={mapStyles.container}>
         <MapView
           style={mapStyles.map}
@@ -139,57 +141,27 @@ const MapScreen = ({navigation}: {navigation: any}) => {
         </View>
         <View
           style={[mapStyles.rIndContainer, {bottom: insets.bottom + s(55)}]}>
-          {Platform.OS === 'ios' ? (
-            <BlurView
-              blurAmount={3}
-              blurType="xlight"
-              style={mapStyles.rIndBackground}
-            />
-          ) : (
-            <View style={[mapStyles.rIndBackground, styles.nonBlur]} />
-          )}
-          <Text style={[mapStyles.radiusIndicator, {color: colors.black}]}>
-            {strings.createTabStack.radius}
-            {': '}
-            <Text style={mapStyles.radius}>
-              {(radius / integers.milesToMeters).toFixed(1)}
-            </Text>{' '}
-            {strings.createTabStack.milesAbbrev}
+          <Text size="s">{strings.createTabStack.radius + ': '}</Text>
+          <Text size="s" weight="b" color={colors.accent}>
+            {(radius / integers.milesToMeters).toFixed(1)}
           </Text>
+          <Text size="s">{' ' + strings.createTabStack.milesAbbrev}</Text>
         </View>
       </View>
-      {Platform.OS === 'ios' ? (
-        <BlurView
-          blurAmount={3}
-          blurType="xlight"
-          style={[styles.top, {height: insets.top + s(35)}]}
-        />
-      ) : (
-        <View
-          style={[
-            styles.top,
-            styles.nonBlur,
-            {
-              height: insets.top + s(35),
-            },
-          ]}
-        />
-      )}
 
-      <SafeAreaView style={styles.headerContainer}>
-        <View style={headerStyles.container}>
-          <TouchableOpacity
-            testID="mapSelectionScreenBack"
-            style={headerStyles.x}
-            onPress={() => navigation.navigate('TabStack')}>
-            <Image style={headerStyles.icon} source={icons.x} />
-          </TouchableOpacity>
-          <Text style={headerStyles.title}>
-            {strings.createTabStack.planEvent}
-          </Text>
-          <TouchableOpacity
-            testID="mapSelectionNext"
-            style={headerStyles.next}
+      <Blur height={s(40)} />
+
+      <SafeAreaView>
+        <View style={styles.header}>
+          <Icon
+            size="s"
+            icon={icons.x}
+            onPress={() => navigation.navigate('TabStack')}
+          />
+          <Text>{strings.createTabStack.planEvent}</Text>
+          <Icon
+            size="s"
+            icon={icons.next}
             disabled={radius > integers.maxRadiusInMeters}
             onPress={() => {
               navigation.navigate('SelectCategories', {
@@ -197,16 +169,8 @@ const MapScreen = ({navigation}: {navigation: any}) => {
                 longitude: region.longitude,
                 radius: radius,
               });
-            }}>
-            <Image
-              style={
-                radius <= integers.maxRadiusInMeters
-                  ? headerStyles.icon
-                  : headerStyles.disabledIcon
-              }
-              source={icons.next}
-            />
-          </TouchableOpacity>
+            }}
+          />
         </View>
       </SafeAreaView>
 
@@ -214,18 +178,28 @@ const MapScreen = ({navigation}: {navigation: any}) => {
         ref={bottomSheetRef}
         index={0}
         snapPoints={snapPoints}
-        onAnimate={handleSheetChange}
-        backgroundStyle={bottomSheetStyle.background}>
-        <View style={bottomSheetStyle.container} testID="searchLocationInput">
+        onAnimate={handleSheetChange}>
+        <>
           <GooglePlacesAutocomplete
             ref={autoCompleteRef}
+            placeholder={strings.createTabStack.search}
+            disableScroll={true}
+            isRowScrollable={false}
+            enablePoweredByContainer={false}
+            fetchDetails={true}
+            query={{
+              key: GoogleMapsAPIKey,
+              language: 'en',
+            }}
             textInputProps={{
               onFocus: () => {
                 bottomSheetRef?.current.snapToIndex(1);
               },
             }}
-            placeholder={strings.createTabStack.search}
             onPress={(data, details = null) => {
+              // As you can see if you turn these logs on, we get much more data than we're using. Maybe store in table?
+              // console.log(data);
+              // console.log(details);
               bottomSheetRef?.current.snapToIndex(0);
               if (
                 details?.geometry?.location?.lat &&
@@ -239,12 +213,6 @@ const MapScreen = ({navigation}: {navigation: any}) => {
                 });
               }
             }}
-            query={{
-              key: GoogleMapsAPIKey,
-              language: 'en',
-            }}
-            enablePoweredByContainer={false}
-            fetchDetails={true}
             styles={{
               container: searchStyles.container,
               textInputContainer: searchStyles.textInputContainer,
@@ -254,7 +222,7 @@ const MapScreen = ({navigation}: {navigation: any}) => {
             }}
           />
           <Image style={searchStyles.icon} source={icons.search} />
-        </View>
+        </>
       </BottomSheet>
     </View>
   );
@@ -266,106 +234,13 @@ const styles = StyleSheet.create({
     height: '100%',
     alignItems: 'center',
   },
-  headerContainer: {
-    width: '100%',
-    alignItems: 'center',
-  },
-  top: {
-    position: 'absolute',
-    top: 0,
-    width: '100%',
-  },
-  nonBlur: {
-    backgroundColor: colors.white,
-    opacity: 0.85,
-  },
-});
-
-const headerStyles = StyleSheet.create({
-  container: {
+  header: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    width: '100%',
-    height: s(30),
-    paddingHorizontal: s(20),
-    marginBottom: s(5),
-  },
-  title: {
-    fontSize: s(16),
-    fontWeight: '600',
-    color: colors.black,
-  },
-  x: {
-    width: s(18),
-    height: s(18),
-  },
-  next: {
-    width: s(18),
-    height: s(18),
-  },
-  icon: {
-    width: '100%',
-    height: '100%',
-    tintColor: colors.black,
-  },
-  disabledIcon: {
-    width: '100%',
-    height: '100%',
-    tintColor: colors.darkgrey,
-  },
-});
-
-const bottomSheetStyle = StyleSheet.create({
-  background: {
-    backgroundColor: colors.white,
-    opacity: 0.9,
-  },
-  container: {
-    marginHorizontal: s(10),
-  },
-});
-
-const searchStyles = StyleSheet.create({
-  container: {
-    flex: 0,
-    width: s(330),
-    backgroundColor: 'transparent',
-  },
-  textInputContainer: {
-    backgroundColor: colors.grey,
-    borderRadius: s(10),
-    marginBottom: s(10),
-  },
-  textInput: {
-    paddingVertical: 0,
-    marginLeft: s(15),
-    paddingLeft: s(10),
-    marginBottom: 0,
-    height: s(25),
-    fontSize: s(12),
-    color: colors.black,
-    backgroundColor: 'transparent',
-  },
-  row: {
+    justifyContent: 'space-between',
+    width: s(350),
     height: s(40),
-    width: s(320),
-    paddingLeft: s(10),
-    color: colors.black,
-    borderTopColor: colors.darkgrey,
-    backgroundColor: 'transparent',
-  },
-  separator: {
-    height: 1,
-    backgroundColor: colors.grey,
-  },
-  icon: {
-    position: 'absolute',
-    top: s(7),
-    left: s(7),
-    width: s(11),
-    height: s(11),
-    tintColor: colors.darkgrey,
+    paddingHorizontal: s(20),
   },
 });
 
@@ -388,27 +263,55 @@ const mapStyles = StyleSheet.create({
     height: s(300),
   },
   rIndContainer: {
+    flexDirection: 'row',
     position: 'absolute',
     right: 0,
     margin: s(10),
-  },
-  rIndBackground: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
+    padding: s(10),
     borderRadius: s(10),
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
   },
-  radiusIndicator: {
-    paddingHorizontal: s(10),
-    paddingVertical: s(5),
-    fontSize: s(13),
-    fontWeight: '600',
+});
+
+const searchStyles = StyleSheet.create({
+  container: {
+    flex: 0,
+    marginHorizontal: s(20),
   },
-  radius: {
-    margin: s(30),
-    fontSize: s(15),
-    fontWeight: '800',
-    color: colors.accent,
+  textInputContainer: {
+    backgroundColor: colors.grey,
+    borderRadius: s(10),
+    marginBottom: s(10),
+  },
+  textInput: {
+    paddingVertical: 0,
+    marginLeft: s(15),
+    paddingLeft: s(10),
+    marginBottom: 0,
+    height: s(25),
+    fontSize: s(12),
+    color: colors.black,
+    backgroundColor: 'transparent',
+  },
+  row: {
+    height: s(40),
+    width: s(320),
+    paddingLeft: s(10),
+    color: colors.black,
+    borderTopColor: colors.darkgrey,
+    backgroundColor: colors.white,
+  },
+  separator: {
+    height: 1,
+    backgroundColor: colors.grey,
+  },
+  icon: {
+    position: 'absolute',
+    top: s(7),
+    left: s(27), // 20 + 7
+    width: s(11),
+    height: s(11),
+    tintColor: colors.darkgrey,
   },
 });
 

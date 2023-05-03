@@ -39,14 +39,7 @@ const LiveCategory = ({navigation, route}: {navigation: any; route: any}) => {
   const [filterValues, setFilterValues] = useState<number[]>([]);
   const [defaultFilterValues, setDefaultFilterValues] = useState<number[]>([]);
 
-  useEffect(() => {
-    let _defaultFilterValues: number[] = [];
-    for (let i = 0; filters && i < filters.length; i++) {
-      _defaultFilterValues.push(filters[i].defaultIdx);
-    }
-    setDefaultFilterValues(_defaultFilterValues);
-    setFilterValues(_defaultFilterValues);
-  }, [filters]);
+  const [filtersInitialized, setFiltersInitialized] = useState(false);
 
   useEffect(() => {
     const initializeData = async () => {
@@ -77,7 +70,21 @@ const LiveCategory = ({navigation, route}: {navigation: any; route: any}) => {
       }
     };
 
-    initializeData();
+    const initializeFilterValues = () => {
+      let _defaultFilterValues: number[] = [];
+      for (let i = 0; filters && i < filters.length; i++) {
+        _defaultFilterValues.push(filters[i].defaultIdx);
+      }
+      setDefaultFilterValues(_defaultFilterValues);
+      setFilterValues(_defaultFilterValues);
+      setFiltersInitialized(true);
+    };
+
+    if (!filtersInitialized) {
+      initializeFilterValues();
+    } else {
+      initializeData();
+    }
   }, [
     categoryId,
     latitude,
@@ -86,6 +93,7 @@ const LiveCategory = ({navigation, route}: {navigation: any; route: any}) => {
     route?.params?.subcategories,
     filters,
     filterValues,
+    filtersInitialized,
   ]);
 
   return (

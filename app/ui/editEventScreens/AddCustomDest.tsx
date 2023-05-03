@@ -56,6 +56,15 @@ const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
       </View>
       <GooglePlacesAutocomplete
         ref={autocompleteRef}
+        placeholder={strings.createTabStack.search}
+        disableScroll={true}
+        isRowScrollable={false}
+        enablePoweredByContainer={false}
+        fetchDetails={true}
+        query={{
+          key: GoogleMapsAPIKey,
+          language: 'en',
+        }}
         textInputProps={{
           selectTextOnFocus: true,
           onFocus: () => {
@@ -68,7 +77,6 @@ const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
             }
           },
         }}
-        placeholder={strings.createTabStack.search}
         onPress={(data: any, details = null) => {
           // As you can see if you turn these logs on, we get much more data than we're using. Maybe store in table?
           // console.log(data);
@@ -93,14 +101,6 @@ const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
             setCustom(false);
           }
         }}
-        query={{
-          key: GoogleMapsAPIKey,
-          language: 'en',
-        }}
-        disableScroll={true}
-        isRowScrollable={false}
-        enablePoweredByContainer={false}
-        fetchDetails={true}
         styles={{
           container: searchStyles.container,
           textInputContainer: searchStyles.textInputContainer,

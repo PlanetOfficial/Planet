@@ -19,17 +19,27 @@ import {colors} from '../../constants/theme';
 
 interface Props {
   navigation: any;
+  radius: number;
+  latitude: number;
+  longitude: number;
   bookmarks: any;
-  tempPlaces: any;
-  setTempPlaces: (dest: any) => void;
+  destinations: any;
+  setDestinations: (dest: any) => void;
+  selectionIndices: number[];
+  setSelectionIndices: (idx: number[]) => void;
   onAddPress: (idx: any) => void;
 }
 
 const EditEvent: React.FC<Props> = ({
   navigation,
+  radius,
+  latitude,
+  longitude,
   bookmarks,
-  tempPlaces,
-  setTempPlaces,
+  destinations,
+  setDestinations,
+  selectionIndices,
+  setSelectionIndices,
   onAddPress,
 }) => {
   const [dragging, setDragging] = useState(false);
@@ -38,23 +48,28 @@ const EditEvent: React.FC<Props> = ({
 
   const onMove = (idx: number, direction: number) => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    const temp = [...tempPlaces];
-    const tempItem = temp[idx];
-    temp.splice(idx, 1);
+    const _destinations = [...destinations];
+    const destination = _destinations[idx];
+    const _selectionIndices = [...selectionIndices];
+    const selectionIndex = _selectionIndices[idx];
+    _destinations.splice(idx, 1);
+    _selectionIndices.splice(idx, 1);
     if (direction !== 0) {
-      temp.splice(idx + direction, 0, tempItem);
+      _destinations.splice(idx + direction, 0, destination);
+      _selectionIndices.splice(idx + direction, 0, selectionIndex);
     } else {
       childRefs.current.forEach(value => {
         value?.closeDropdown();
       });
-      childRefs.current.delete(tempItem.id);
+      childRefs.current.delete(destination.id);
     }
-    setTempPlaces(temp);
+    setDestinations(_destinations);
+    setSelectionIndices(_selectionIndices);
   };
 
   const onRemove = (item: any) => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    setTempPlaces((prev: any) => {
+    setDestinations((prev: any) => {
       return prev.filter((temp: any) => temp !== item);
     });
     itemRefs.current.delete(item.id);
@@ -62,7 +77,7 @@ const EditEvent: React.FC<Props> = ({
 
   return (
     <DraggableFlatList
-      data={tempPlaces}
+      data={destinations}
       keyExtractor={(_, index) => index.toString()}
       showsVerticalScrollIndicator={false}
       contentContainerStyle={styles.flatlist}
@@ -76,9 +91,13 @@ const EditEvent: React.FC<Props> = ({
           value?.closeDropdown();
         });
       }}
-      onDragEnd={({data}) => {
+      onDragEnd={({data, from, to}) => {
         setDragging(false);
-        setTempPlaces(data);
+        setDestinations(data);
+        const _selectionIndices = [...selectionIndices];
+        const item = _selectionIndices.splice(from, 1)[0];
+        _selectionIndices.splice(to, 0, item);
+        setSelectionIndices(_selectionIndices);
       }}
       onScrollBeginDrag={() => {
         itemRefs.current.forEach(value => {
@@ -117,10 +136,20 @@ const EditEvent: React.FC<Props> = ({
               <Category
                 ref={ref => childRefs.current.set(item.id, ref)}
                 navigation={navigation}
+                radius={radius}
+                latitude={latitude}
+                longitude={longitude}
                 bookmarks={bookmarks}
                 category={item}
                 categoryIndex={getIndex()}
-                tempPlaces={tempPlaces}
+                selectionIndex={selectionIndices[getIndex()]}
+                setSelectionIndex={(idx: number) => {
+                  const _selectionIndices = [...selectionIndices];
+                  _selectionIndices[getIndex()] = idx;
+                  setSelectionIndices(_selectionIndices);
+                }}
+                destinations={destinations}
+                setDestinations={setDestinations}
                 onCategoryMove={onMove}
               />
             </View>
@@ -138,13 +167,13 @@ const EditEvent: React.FC<Props> = ({
                 renderUnderlayLeft={() => (
                   <View style={styles.removeContainer}>
                     <TouchableOpacity
-                      disabled={tempPlaces.length === 1}
+                      disabled={destinations.length === 1}
                       onPress={() => {
                         onRemove(item);
                       }}
                       style={[
                         styles.removeButton,
-                        tempPlaces.length === 1 && {
+                        destinations.length === 1 && {
                           backgroundColor: colors.darkgrey,
                         },
                       ]}>

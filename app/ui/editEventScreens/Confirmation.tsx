@@ -2,23 +2,36 @@ import React from 'react';
 import {
   StyleSheet,
   View,
-  Text,
   TouchableOpacity,
   Modal,
   Pressable,
 } from 'react-native';
 
 import {s} from 'react-native-size-matters';
-import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
+import Text from '../components/Text';
 
 interface Props {
   onPress: () => void;
   open: boolean;
   setOpen: (open: boolean) => void;
+  prompt: string;
+  leftText: string;
+  rightText: string;
+  leftColor?: string;
+  rightColor?: string;
 }
 
-const BackConfirmation: React.FC<Props> = ({onPress, open, setOpen}) => {
+const Confirmation: React.FC<Props> = ({
+  onPress,
+  open,
+  setOpen,
+  prompt,
+  leftText,
+  rightText,
+  leftColor = colors.black,
+  rightColor = colors.black,
+}) => {
   return (
     <Modal animationType="fade" transparent={true} visible={open}>
       <View style={styles.vertCenter}>
@@ -29,21 +42,27 @@ const BackConfirmation: React.FC<Props> = ({onPress, open, setOpen}) => {
           }}
         />
         <View style={styles.container}>
-          <Text style={styles.title}>{strings.library.backConfirmation}</Text>
+          <View style={styles.title}>
+            <Text size="s" numberOfLines={2} center={true}>
+              {prompt}
+            </Text>
+          </View>
           <View style={styles.buttons}>
             <TouchableOpacity
-              style={styles.discard}
+              style={styles.left}
               onPress={() => {
                 setOpen(false);
                 onPress();
               }}>
-              <Text style={styles.discardText}>{strings.library.discard}</Text>
+              <Text size="s" weight="b" color={leftColor}>
+                {leftText}
+              </Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={styles.keepEditing}
+              style={styles.right}
               onPress={() => setOpen(false)}>
-              <Text style={styles.keepEditingText}>
-                {strings.library.keepEditing}
+              <Text size="s" weight="b" color={rightColor}>
+                {rightText}
               </Text>
             </TouchableOpacity>
           </View>
@@ -61,24 +80,20 @@ const styles = StyleSheet.create({
   },
   container: {
     width: s(250),
-    height: s(120),
     borderRadius: s(10),
     backgroundColor: colors.white,
   },
   title: {
     margin: s(20),
     paddingHorizontal: s(20),
-    fontSize: s(15),
-    fontWeight: '600',
-    color: colors.black,
-    textAlign: 'center',
   },
   buttons: {
+    bottom: 0,
     flexDirection: 'row',
     justifyContent: 'space-between',
     height: s(40),
   },
-  discard: {
+  left: {
     justifyContent: 'center',
     alignItems: 'center',
     width: '50%',
@@ -89,7 +104,7 @@ const styles = StyleSheet.create({
     borderRightWidth: 0.5,
     borderColor: colors.grey,
   },
-  keepEditing: {
+  right: {
     justifyContent: 'center',
     alignItems: 'center',
     width: '50%',
@@ -100,16 +115,6 @@ const styles = StyleSheet.create({
     borderLeftWidth: 0.5,
     borderColor: colors.grey,
   },
-  discardText: {
-    fontSize: s(14),
-    fontWeight: '700',
-    color: colors.red,
-  },
-  keepEditingText: {
-    fontSize: s(14),
-    fontWeight: '700',
-    color: colors.accent,
-  },
   dim: {
     position: 'absolute',
     width: '100%',
@@ -118,4 +123,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BackConfirmation;
+export default Confirmation;

@@ -1,20 +1,18 @@
-import React, {useEffect, useState, useRef, useMemo, useCallback} from 'react';
+import React, {useEffect, useState, useRef, useMemo} from 'react';
 import {
   StyleSheet,
   View,
   TextInput,
   TouchableOpacity,
   SafeAreaView,
-  Pressable,
   Platform,
-  LayoutAnimation,
 } from 'react-native';
 
 import {s, vs} from 'react-native-size-matters';
 import MapView, {Marker} from 'react-native-maps';
 import DatePicker from 'react-native-date-picker';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import BottomSheet, {BottomSheetModal} from '@gorhom/bottom-sheet';
+import BottomSheet from '@gorhom/bottom-sheet';
 
 import {
   getMarkerArray,
@@ -28,17 +26,14 @@ import Text from '../components/Text';
 import Icon from '../components/Icon';
 import OptionMenu from '../components/OptionMenu';
 import PlacesDisplay from '../components/PlacesDisplay';
-import AButton from '../components/ActionButton';
-import CButton from '../components/CancelButton';
-import BackConfirmation from '../editEventScreens/BackConfirmation';
-import AddByCategory from '../editEventScreens/AddByCategory';
-import AddFromLibrary from '../editEventScreens/AddFromLibrary';
-import AddCustomDest from '../editEventScreens/AddCustomDest';
-import EditEvent from '../editEventScreens/EventEdit';
+import Confirmation from '../editEventScreens/Confirmation';
+import EditEvent from '../editEventScreens/EditEvent';
 
 import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
+import AddEvent from '../editEventScreens/AddEvent';
+import {floats} from '../../constants/numbers';
 
 const Event = ({navigation, route}: {navigation: any; route: any}) => {
   const [eventId] = useState(route?.params?.eventData?.id);
@@ -56,6 +51,7 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
   const [tempPlaces, setTempPlaces]: [any, any] = useState([]);
   const [datePickerOpen, setDatePickerOpen] = useState(false);
   const [backConfirmationOpen, setBackConfirmationOpen] = useState(false);
+  const [selectionIndices, setSelectionIndices]: [number[], any] = useState([]);
 
   const insets = useSafeAreaInsets();
   const bottomSheetRef: any = useRef<BottomSheet>(null);
@@ -64,27 +60,7 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
     [insets.top, insets.bottom],
   );
 
-  const [addOptionsBottomSheetOpen, setAddOptionsBottomSheetOpen] =
-    useState(false);
-  const addOptionsBottomSheetRef: any = useRef<BottomSheetModal>(null);
-  const addOptionsSnapPoints = useMemo(
-    () => [s(260) + insets.bottom],
-    [insets.bottom],
-  );
-  const handleAddOptionsSheetChange = useCallback(
-    (fromIndex: number, toIndex: number) => {
-      setAddOptionsBottomSheetOpen(toIndex === 0);
-    },
-    [],
-  );
-
-  const [insertionIndex, setInsertionIndex] = useState<number | undefined>(0);
-  const [addBottomSheetStatus, setAddBottomSheetStatus] = useState(0);
-  const addBottomSheetRef: any = useRef<BottomSheet>(null);
-  const addBottomSheetSnapPoints = useMemo(
-    () => [vs(680) - s(60) - insets.top],
-    [insets.top],
-  );
+  const addRef: any = useRef(null);
 
   useEffect(() => {
     const getEventData = async () => {
@@ -112,88 +88,6 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
     // save edits to database
   };
 
-  const onAddPress = (idx: number | undefined) => {
-    setInsertionIndex(idx);
-    addOptionsBottomSheetRef.current?.present();
-  };
-
-  const onAddOptionPress = (idx: number) => {
-    addOptionsBottomSheetRef?.current.close();
-    setAddBottomSheetStatus(idx);
-    addBottomSheetRef.current?.snapToIndex(0);
-  };
-
-  const onClose = () => {
-    addBottomSheetRef.current?.close();
-    setAddBottomSheetStatus(0);
-  };
-
-  const onCategorySelect = async (category: any) => {
-    if (insertionIndex !== undefined) {
-      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-      const temp = [...tempPlaces];
-      temp.splice(insertionIndex + 1, 0, {
-        id: category.id,
-        name: category.name,
-        icon: category.icon,
-        filters: [
-          {
-            name: 'Price',
-            options: ['$', '$$', '$$$', '$$$$'],
-            values: [0, 1, 2, 3],
-            text: 'Price',
-          },
-          {
-            name: 'Distance',
-            options: ['10mi', '25mi', '50mi', '100mi'],
-            values: [10, 25, 50, 100],
-            text: 'Distance',
-          },
-        ],
-        subcategories: [
-          {
-            id: 1,
-            name: 'Japanese',
-          },
-          {
-            id: 2,
-            name: 'Chinese',
-          },
-          {
-            id: 3,
-            name: 'Korean',
-          },
-        ],
-        // places: await requestLocations(
-        //   [category.id],
-        //   10,
-        //   floats.defaultLatitude,
-        //   floats.defaultLongitude,
-        //   5,
-        // ),
-      });
-      setTempPlaces(temp);
-    }
-  };
-
-  const onLibrarySelect = (dest: any) => {
-    console.log(dest);
-    // if(insertionIndex !== undefined) {
-    //   LayoutAnimation.configureNext(
-    //     LayoutAnimation.Presets.easeInEaseOut,
-    //   );
-    //   const temp = [...tempPlaces];
-    //   temp.splice(insertionIndex + 1, 0, {
-    //     place
-    //   });
-    //   setTempPlaces(temp);
-    // }
-  };
-
-  const onCustomSelect = (dest: any) => {
-    console.log(dest);
-  };
-
   return (
     <View style={styles.container}>
       <MapView style={styles.map} region={getRegionForCoordinates(markers)}>
@@ -216,7 +110,7 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
       <SafeAreaView>
         <View style={headerStyles.container}>
           <Icon
-            size="m"
+            size="s"
             icon={icons.back}
             onPress={() =>
               editing
@@ -320,10 +214,15 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
         {editing ? (
           <EditEvent
             navigation={navigation}
+            radius={floats.defaultRadius}
+            latitude={floats.defaultLatitude}
+            longitude={floats.defaultLongitude}
             bookmarks={bookmarks}
-            tempPlaces={tempPlaces}
-            setTempPlaces={setTempPlaces}
-            onAddPress={onAddPress}
+            destinations={tempPlaces}
+            setDestinations={setTempPlaces}
+            selectionIndices={selectionIndices}
+            setSelectionIndices={setSelectionIndices}
+            onAddPress={addRef?.current?.onAddPress}
           />
         ) : (
           <SafeAreaView>
@@ -339,70 +238,23 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
         )}
       </BottomSheet>
 
-      {(addOptionsBottomSheetOpen || addBottomSheetStatus !== 0) && (
-        <Pressable
-          style={styles.dim}
-          onPress={() => {
-            addOptionsBottomSheetRef?.current.close();
-            onClose();
-          }}
-        />
-      )}
+      <AddEvent
+        ref={addRef}
+        destinations={tempPlaces}
+        setDestinations={setTempPlaces}
+        selectionIndices={selectionIndices}
+        setSelectionIndices={setSelectionIndices}
+      />
 
-      <BottomSheetModal
-        ref={addOptionsBottomSheetRef}
-        snapPoints={addOptionsSnapPoints}
-        onAnimate={handleAddOptionsSheetChange}>
-        <View style={styles.addOptionsContainer}>
-          <AButton
-            size="l"
-            label={strings.library.addByCategory}
-            onPress={() => {
-              onAddOptionPress(1);
-            }}
-          />
-          <AButton
-            size="l"
-            label={strings.library.addFromLibrary}
-            onPress={() => {
-              onAddOptionPress(2);
-            }}
-          />
-          <AButton
-            size="l"
-            label={strings.library.addCustom}
-            onPress={() => {
-              onAddOptionPress(3);
-            }}
-          />
-
-          <CButton onPress={() => addOptionsBottomSheetRef?.current.close()} />
-        </View>
-      </BottomSheetModal>
-
-      <BottomSheet
-        ref={addBottomSheetRef}
-        index={-1}
-        snapPoints={addBottomSheetSnapPoints}
-        handleStyle={styles.handle}
-        handleIndicatorStyle={styles.handleIndicator}
-        enableContentPanningGesture={false}
-        enableHandlePanningGesture={false}>
-        {addBottomSheetStatus === 1 && (
-          <AddByCategory onClose={onClose} onSelect={onCategorySelect} />
-        )}
-        {addBottomSheetStatus === 2 && (
-          <AddFromLibrary onClose={onClose} onSelect={onLibrarySelect} />
-        )}
-        {addBottomSheetStatus === 3 && (
-          <AddCustomDest onClose={onClose} onSelect={onCustomSelect} />
-        )}
-      </BottomSheet>
-
-      <BackConfirmation
+      <Confirmation
         onPress={() => navigation.goBack()}
         open={backConfirmationOpen}
         setOpen={setBackConfirmationOpen}
+        prompt={strings.library.backConfirmation}
+        leftText={strings.library.discard}
+        rightText={strings.library.keepEditing}
+        leftColor={colors.red}
+        rightColor={colors.accent}
       />
     </View>
   );

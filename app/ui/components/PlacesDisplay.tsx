@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef, useEffect} from 'react';
 import {StyleSheet, View, TouchableOpacity, ScrollView} from 'react-native';
 import {s} from 'react-native-size-matters';
 import PlaceCard from '../components/PlaceCard';
@@ -25,9 +25,29 @@ const PlacesDisplay: React.FC<Props> = ({
   index,
   setIndex,
 }) => {
+  const scrollViewRef: any = useRef(null);
+
+  const scrollToPosition = () => {
+    if (scrollViewRef.current) {
+      setTimeout(() => {
+        scrollViewRef.current.scrollTo({
+          x: (width + s(20)) * index,
+          y: 0,
+          animated: false,
+        });
+      }, 10);
+    }
+  };
+
+  useEffect(() => {
+    scrollToPosition();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <>
       <ScrollView
+        ref={scrollViewRef}
         style={styles.scrollView}
         contentContainerStyle={{
           paddingHorizontal: (s(350) - width) / 2,
@@ -41,9 +61,12 @@ const PlacesDisplay: React.FC<Props> = ({
         decelerationRate={'fast'}
         onScroll={event => {
           closeDropdown && closeDropdown();
-          setIndex(
-            Math.round(event.nativeEvent.contentOffset.x / (width + s(20))),
+          let idx = Math.round(
+            event.nativeEvent.contentOffset.x / (width + s(20)),
           );
+          if (idx !== index) {
+            setIndex(idx);
+          }
         }}>
         {data?.map((dest: any, idx: number) => (
           <View

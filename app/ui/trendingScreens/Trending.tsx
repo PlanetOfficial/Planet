@@ -224,7 +224,7 @@ const headerStyles = StyleSheet.create({
   },
   in: {
     marginTop: s(2),
-    marginHorizontal: s(4),
+    marginHorizontal: s(6),
   },
   fgSelector: {
     flexDirection: 'row',
