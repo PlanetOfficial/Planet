@@ -20,7 +20,7 @@ import {Genre, Category} from '../../utils/interfaces/types';
 
 interface Props {
   onClose?: () => void;
-  onSelect: (category: any) => void;
+  onSelect: (category: Category) => void;
 }
 
 const CategoryList: React.FC<Props> = ({onClose, onSelect}) => {

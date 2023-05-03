@@ -80,7 +80,7 @@ const SelectDestinations: React.FC<Props> = ({navigation, route}) => {
   useEffect(() => {
     const loadDestinations = async () => {
       const response = await requestLocations(
-        categories.map((category: any) => category.id),
+        categories.map((category: Category) => category.id),
         radius,
         latitude,
         longitude,
@@ -198,7 +198,7 @@ const SelectDestinations: React.FC<Props> = ({navigation, route}) => {
             <TextInput
               style={headerStyles.name}
               value={eventTitle}
-              onChangeText={(text: any) => setEventTitle(text)}
+              onChangeText={(text: string) => setEventTitle(text)}
             />
             <TouchableOpacity onPress={() => setDatePickerOpen(true)}>
               <CustomText
