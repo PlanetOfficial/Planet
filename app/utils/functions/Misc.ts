@@ -124,6 +124,27 @@ export const getMarkerArray = (places: any): any => {
   return markers;
 };
 
+/*
+  Given an array of destinations, return latitude and longitude of the
+  average of all of the destinations.
+*/
+export const getAveragePoint = (places: any): any => {
+  let latSum = 0;
+  let lngSum = 0;
+  let count = 0;
+  places?.forEach((place: any) => {
+    if (place && place?.latitude && place?.longitude) {
+      latSum += parseFloat(place?.latitude);
+      lngSum += parseFloat(place?.longitude);
+      count += 1;
+    }
+  });
+  return {
+    latitude: latSum / count,
+    longitude: lngSum / count,
+  };
+};
+
 // converts from international time to normal time (1330 => 1:30 PM)
 function convertTime(internationalTime: string): string {
   const hours = parseInt(internationalTime.slice(0, 2), 10);

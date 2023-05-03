@@ -130,12 +130,14 @@ const SelectDestinations = ({
     // send destinations to backend
     const placeIds: number[] = [];
     destinations?.forEach((destination: any, index: number) => {
-      if (destination?.id < 0) {
-        placeIds.push(destination?.options[selectionIndices[index]]?.id);
+      if (destination?.id < 0 && destination?.options[selectionIndices[index]]) {
+          placeIds.push(destination?.options[selectionIndices[index]]?.id);
       } else {
         placeIds.push(destination?.id);
       }
     });
+
+    console.log(placeIds);
 
     if (placeIds.length > 0) {
       const authToken = await EncryptedStorage.getItem('auth_token');

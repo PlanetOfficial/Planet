@@ -29,7 +29,7 @@ const PlaceCard: React.FC<Props> = ({
   image,
   onUnBookmark,
 }) => {
-  const [bookmarked, setBookmarked] = useState(marked);
+  const [bookmarked, setBookmarked] = useState<boolean>(marked);
 
   const handleBookmark = async () => {
     const authToken = await EncryptedStorage.getItem('auth_token');
