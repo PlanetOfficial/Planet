@@ -12,8 +12,9 @@ import {Svg, Line, Circle} from 'react-native-svg';
 import DraggableFlatList from 'react-native-draggable-flatlist';
 import SwipeableItem from 'react-native-swipeable-item';
 
-import PlaceCard from '../components/PlaceCard';
 import Category from './Category';
+import PlaceCard from '../components/PlaceCard';
+
 import {icons} from '../../constants/images';
 import {colors} from '../../constants/theme';
 
@@ -186,18 +187,18 @@ const EditEvent: React.FC<Props> = ({
                     onPress={() => {
                       navigation.navigate('Place', {
                         destination: item,
-                        category: item?.category_name,
+                        category: item.category_name,
                       });
                     }}>
                     <PlaceCard
-                      id={item?.id}
-                      name={item?.name}
-                      info={item?.category_name}
-                      marked={bookmarks?.includes(item?.id)}
+                      id={item.id}
+                      name={item.name}
+                      info={item.category_name}
+                      marked={bookmarks.includes(item.id)}
                       image={
-                        item?.image_url
+                        item.image_url
                           ? {
-                              uri: item?.image_url,
+                              uri: item.image_url,
                             }
                           : icons.defaultIcon
                       }

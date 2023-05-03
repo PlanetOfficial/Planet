@@ -17,7 +17,9 @@ import CButton from '../components/CancelButton';
 import AddByCategory from '../editEventScreens/AddByCategory';
 import AddFromLibrary from '../editEventScreens/AddFromLibrary';
 import AddCustomDest from '../editEventScreens/AddCustomDest';
+
 import strings from '../../constants/strings';
+
 import {Place, Category} from '../../utils/interfaces/types';
 
 interface ChildComponentProps {

@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 
 import {s} from 'react-native-size-matters';
+
 import {colors} from '../../constants/theme';
 import Text from '../components/Text';
 

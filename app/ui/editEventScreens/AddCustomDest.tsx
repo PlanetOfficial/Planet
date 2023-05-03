@@ -11,10 +11,11 @@ import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 import {floats} from '../../constants/numbers';
+
 import CustomText from '../components/Text';
+import AButton from '../components/ActionButton';
 
 import {GoogleMapsAPIKey} from '../../utils/api/APIConstants';
-import AButton from '../components/ActionButton';
 import {Place, Region} from '../../utils/interfaces/types';
 
 // TODO: THIS FUNCTIONALITY IS INCOMPLETE, AND SO IS REFACTORING
@@ -98,8 +99,8 @@ const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
             setDestination({
               name: data?.structured_formatting?.main_text,
               address: data?.structured_formatting?.secondary_text,
-              latitude: details.geometry.location.lat,
-              longitude: details.geometry.location.lng,
+              latitude: details?.geometry?.location?.lat,
+              longitude: details?.geometry?.location?.lng,
             });
             setCustom(false);
           }

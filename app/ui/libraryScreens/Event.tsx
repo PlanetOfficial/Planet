@@ -19,7 +19,12 @@ import {
   getAveragePoint,
   getRegionForCoordinates,
 } from '../../utils/functions/Misc';
-import {MarkerObject, Place, Category} from '../../utils/interfaces/types';
+import {
+  MarkerObject,
+  Place,
+  Category,
+  Coordinate,
+} from '../../utils/interfaces/types';
 import {getEventPlaces} from '../../utils/api/libraryCalls/getEventPlaces';
 
 import Blur from '../components/Blur';
@@ -29,11 +34,11 @@ import OptionMenu from '../components/OptionMenu';
 import PlacesDisplay from '../components/PlacesDisplay';
 import Confirmation from '../editEventScreens/Confirmation';
 import EditEvent from '../editEventScreens/EditEvent';
+import AddEvent from '../editEventScreens/AddEvent';
 
 import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
-import AddEvent from '../editEventScreens/AddEvent';
 import {floats} from '../../constants/numbers';
 
 interface Props {
@@ -80,9 +85,9 @@ const Event: React.FC<Props> = ({navigation, route}) => {
       const markerArray: MarkerObject[] = getMarkerArray(data?.places);
       setMarkers(markerArray);
 
-      const averagePoint = getAveragePoint(markerArray);
-      setLatitude(averagePoint?.latitude);
-      setLongitude(averagePoint?.longitude);
+      const averagePoint: Coordinate = getAveragePoint(markerArray);
+      setLatitude(averagePoint.latitude);
+      setLongitude(averagePoint.longitude);
     };
 
     getEventData();
@@ -113,7 +118,7 @@ const Event: React.FC<Props> = ({navigation, route}) => {
                   latitude: marker.latitude,
                   longitude: marker.longitude,
                 }}
-                title={marker?.name}
+                title={marker.name}
               />
             ))
           : null}

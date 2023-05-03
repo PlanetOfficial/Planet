@@ -126,7 +126,7 @@ export const getMarkerArray = (places: any): any => {
   Given an array of destinations, return latitude and longitude of the
   average of all of the destinations.
 */
-export const getAveragePoint = (places: any): any => {
+export const getAveragePoint = (places: any): Coordinate => {
   let latSum = 0;
   let lngSum = 0;
   let count = 0;

@@ -99,7 +99,7 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
           onScrollBeginDrag={() => closeDropdown()}
           horizontal={true}
           showsHorizontalScrollIndicator={false}>
-          {filters?.map((filter: FilterT, idx: number) => (
+          {filters.map((filter: FilterT, idx: number) => (
             <TouchableOpacity
               key={idx}
               ref={r => refs.current.set(idx, r)}
@@ -122,11 +122,11 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
                 size="xs"
                 weight="l"
                 color={
-                  dropdownStatus === filter?.name
+                  dropdownStatus === filter.name
                     ? colors.darkgrey
                     : colors.black
                 }>
-                {filter?.text + ': ' + filter?.options[currFilters[idx]]}
+                {filter.text + ': ' + filter.options[currFilters[idx]]}
               </Text>
               <View style={styles.chipIcon}>
                 <Icon size="s" icon={icons.drop} padding={s(3)} />
@@ -167,7 +167,7 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
             }}
           />
         </View>
-        {filters?.map((filter: FilterT, index: number) =>
+        {filters.map((filter: FilterT, index: number) =>
           dropdownStatus === filter.name && width !== 0 && pos !== 0 ? (
             <View
               key={index}
@@ -213,13 +213,13 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
             <ScrollView
               contentContainerStyle={modalStyles.contentContainer}
               showsVerticalScrollIndicator={false}>
-              {filters?.map((filter: FilterT, index: number) => (
+              {filters.map((filter: FilterT, index: number) => (
                 <View key={index} style={modalStyles.filter}>
                   <Text size="s" weight="l">
-                    {filter?.text + ':'}
+                    {filter.text + ':'}
                   </Text>
                   <View style={modalStyles.filterContainer}>
-                    {filter?.options.map((option: string, idx: number) => (
+                    {filter.options.map((option: string, idx: number) => (
                       <TouchableOpacity
                         key={idx}
                         style={[styles.chip, modalStyles.chip]}
@@ -249,7 +249,7 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
                     {strings.filter.categories + ':'}
                   </Text>
                   <View style={modalStyles.filterContainer}>
-                    {subcategories?.map(
+                    {subcategories.map(
                       (subcategory: Subcategory, index: number) => (
                         <TouchableOpacity
                           key={index}

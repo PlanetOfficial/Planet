@@ -1,13 +1,15 @@
 import React, {useState} from 'react';
 import {View, SafeAreaView, StyleSheet, TouchableOpacity} from 'react-native';
-import {colors} from '../../constants/theme';
-import {icons} from '../../constants/images';
-import strings from '../../constants/strings';
 import {s} from 'react-native-size-matters';
 import {
   NestableScrollContainer,
   NestableDraggableFlatList,
 } from 'react-native-draggable-flatlist';
+
+import {colors} from '../../constants/theme';
+import {icons} from '../../constants/images';
+import strings from '../../constants/strings';
+
 import Text from '../components/Text';
 import Icon from '../components/Icon';
 

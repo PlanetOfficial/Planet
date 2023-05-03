@@ -13,11 +13,11 @@ import {s} from 'react-native-size-matters';
 import CustomText from '../components/Text';
 import Icon from '../components/Icon';
 
-import {clearCaches} from '../../utils/functions/CacheHelpers';
-
 import {colors} from '../../constants/theme';
 import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
+
+import {clearCaches} from '../../utils/functions/CacheHelpers';
 
 interface Props {
   navigation: any;

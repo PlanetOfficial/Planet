@@ -87,7 +87,7 @@ const CategoryList: React.FC<Props> = ({onClose, onSelect}) => {
               </CustomText>
             </View>
             {allCategories
-              ? allCategories?.map((category: Category) => (
+              ? allCategories.map((category: Category) => (
                   <TouchableOpacity
                     key={category.id}
                     onPress={() => {

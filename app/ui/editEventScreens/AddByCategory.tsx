@@ -1,6 +1,7 @@
 import React from 'react';
 import {StyleSheet, View, Image, TouchableOpacity} from 'react-native';
 import {s} from 'react-native-size-matters';
+
 import Text from '../components/Text';
 import CategoryList from '../components/CategoryList';
 

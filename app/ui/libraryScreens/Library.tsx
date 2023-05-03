@@ -15,8 +15,8 @@ import Text from '../components/Text';
 import Icon from '../components/Icon';
 import PlaceCard from '../components/PlaceCard';
 import EventCard from '../components/EventCard';
-import strings from '../../constants/strings';
 
+import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 import {icons} from '../../constants/images';
 
