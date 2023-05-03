@@ -34,7 +34,9 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
   const [categoryName] = useState<string>(route?.params?.categoryName);
   const [bookmarks] = useState<number[]>(route?.params?.bookmarks);
   const [subcategories, setSubcategories] = useState<Subcategory[]>([]);
-  const [hiddenSubCategories, setHiddenSubCategories] = useState<Subcategory[]>([]);
+  const [hiddenSubCategories, setHiddenSubCategories] = useState<Subcategory[]>(
+    [],
+  );
   const [liveEvents, setLiveEvents] = useState<LiveEvents>({});
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -127,7 +129,7 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
           </View>
         </View>
       </SafeAreaView>
-      {(genres[0] && genres[0].filters) ? (
+      {genres[0] && genres[0].filters ? (
         <Filter
           ref={ref}
           filters={genres[0].filters}
@@ -141,48 +143,47 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
         <ActivityIndicator size="small" color={colors.accent} />
       ) : (
         <ScrollView onTouchStart={() => ref.current?.closeDropdown()}>
-          {subcategories?.map(
-            (subcategory: Subcategory, idx: number) =>
-              (liveEvents[subcategory.id] &&
-              liveEvents[subcategory.id].length > 0) ? (
-                <View key={idx} style={categoryStyles.container}>
-                  <View style={categoryStyles.header}>
-                    <Text size="m" weight="b">
-                      {subcategory.title}
-                    </Text>
-                  </View>
-                  <ScrollView
-                    contentContainerStyle={categoryStyles.contentContainer}
-                    style={categoryStyles.scrollView}
-                    horizontal={true}
-                    showsHorizontalScrollIndicator={false}>
-                    {liveEvents[subcategory.id]
-                      ? liveEvents[subcategory.id].map(
-                          (liveEvent: LiveEvent, jdx: number) => (
-                            <TouchableOpacity
-                              style={categoryStyles.card}
-                              key={jdx}
-                              onPress={() =>
-                                navigation.navigate('Place', {
-                                  destination: liveEvent,
-                                  category: categoryName,
-                                })
-                              }>
-                              <PlaceCard
-                                id={liveEvent.id}
-                                name={liveEvent.name}
-                                info={liveEvent.date}
-                                marked={bookmarks.includes(liveEvent.id)}
-                                image={{uri: liveEvent.image_url}}
-                              />
-                            </TouchableOpacity>
-                          ),
-                        )
-                      : null}
-                  </ScrollView>
-                  <Spacer />
+          {subcategories?.map((subcategory: Subcategory, idx: number) =>
+            liveEvents[subcategory.id] &&
+            liveEvents[subcategory.id].length > 0 ? (
+              <View key={idx} style={categoryStyles.container}>
+                <View style={categoryStyles.header}>
+                  <Text size="m" weight="b">
+                    {subcategory.title}
+                  </Text>
                 </View>
-              ) : null
+                <ScrollView
+                  contentContainerStyle={categoryStyles.contentContainer}
+                  style={categoryStyles.scrollView}
+                  horizontal={true}
+                  showsHorizontalScrollIndicator={false}>
+                  {liveEvents[subcategory.id]
+                    ? liveEvents[subcategory.id].map(
+                        (liveEvent: LiveEvent, jdx: number) => (
+                          <TouchableOpacity
+                            style={categoryStyles.card}
+                            key={jdx}
+                            onPress={() =>
+                              navigation.navigate('Place', {
+                                destination: liveEvent,
+                                category: categoryName,
+                              })
+                            }>
+                            <PlaceCard
+                              id={liveEvent.id}
+                              name={liveEvent.name}
+                              info={liveEvent.date}
+                              marked={bookmarks.includes(liveEvent.id)}
+                              image={{uri: liveEvent.image_url}}
+                            />
+                          </TouchableOpacity>
+                        ),
+                      )
+                    : null}
+                </ScrollView>
+                <Spacer />
+              </View>
+            ) : null,
           )}
         </ScrollView>
       )}

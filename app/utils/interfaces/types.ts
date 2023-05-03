@@ -79,3 +79,16 @@ export interface LiveEvent {
 export interface LiveEvents {
   [categoryIndex: number]: LiveEvent[];
 }
+
+export interface Event {
+  date: string;
+  id: number;
+  name: string;
+  places: {
+    created_at: number;
+    event_id: number;
+    id: number;
+    place: Place;
+    place_id: number;
+  }[];
+}

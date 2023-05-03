@@ -11,17 +11,14 @@ import {
 import Text from '../components/Text';
 import Icon from '../components/Icon';
 
-import { Subcategory } from '../../utils/interfaces/types';
+import {Subcategory} from '../../utils/interfaces/types';
 
 interface Props {
   navigation: any;
   route: any;
 }
 
-const LiveCategorySettings: React.FC<Props> = ({
-  navigation,
-  route,
-}) => {
+const LiveCategorySettings: React.FC<Props> = ({navigation, route}) => {
   const [subcategories, setSubcategories] = useState<Subcategory[]>(
     route?.params?.subcategories,
   );
@@ -81,13 +78,16 @@ const LiveCategorySettings: React.FC<Props> = ({
                   onPress={() => {
                     setSubcategories(
                       subcategories.filter(
-                        (subcategory: Subcategory) => subcategory.id !== item.id,
+                        (subcategory: Subcategory) =>
+                          subcategory.id !== item.id,
                       ),
                     );
-                    setHiddenSubCategories((_hiddenSubCategories: Subcategory[]) => [
-                      ..._hiddenSubCategories,
-                      item,
-                    ]);
+                    setHiddenSubCategories(
+                      (_hiddenSubCategories: Subcategory[]) => [
+                        ..._hiddenSubCategories,
+                        item,
+                      ],
+                    );
                   }}
                 />
                 <View style={categoryStyles.title}>
@@ -121,7 +121,8 @@ const LiveCategorySettings: React.FC<Props> = ({
                   onPress={() => {
                     setHiddenSubCategories(
                       hiddenSubCategories.filter(
-                        (subcategory: Subcategory) => subcategory.id !== item.id,
+                        (subcategory: Subcategory) =>
+                          subcategory.id !== item.id,
                       ),
                     );
                     setSubcategories((_subcategories: Subcategory[]) => [
