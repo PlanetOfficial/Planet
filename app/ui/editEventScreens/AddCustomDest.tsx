@@ -15,7 +15,7 @@ import CustomText from '../components/Text';
 
 import {GoogleMapsAPIKey} from '../../utils/api/APIConstants';
 import AButton from '../components/ActionButton';
-import { Place, Region } from '../../utils/interfaces/types';
+import {Place, Region} from '../../utils/interfaces/types';
 
 interface Props {
   onClose: () => void;

@@ -18,7 +18,7 @@ import AddByCategory from '../editEventScreens/AddByCategory';
 import AddFromLibrary from '../editEventScreens/AddFromLibrary';
 import AddCustomDest from '../editEventScreens/AddCustomDest';
 import strings from '../../constants/strings';
-import { Place, Category } from '../../utils/interfaces/types';
+import {Place, Category} from '../../utils/interfaces/types';
 
 interface ChildComponentProps {
   destinations: (Place | Category)[];
@@ -76,9 +76,9 @@ const AddEvent = forwardRef((props: ChildComponentProps, ref) => {
 
   const onCategorySelect = async (category: Category) => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    const _destionations : (Place | Category)[] = [...destinations];
-    const _selectionIndices : number[] = [...selectionIndices];
-    _destionations.splice(insertionIndex + 1, 0, {
+    const _destinations: (Place | Category)[] = [...destinations];
+    const _selectionIndices: number[] = [...selectionIndices];
+    _destinations.splice(insertionIndex + 1, 0, {
       id: category.id,
       name: category.name,
       icon: category.icon,
@@ -86,7 +86,7 @@ const AddEvent = forwardRef((props: ChildComponentProps, ref) => {
       options: [],
     });
     _selectionIndices.splice(insertionIndex + 1, 0, 0);
-    setDestinations(_destionations);
+    setDestinations(_destinations);
     setSelectionIndices(_selectionIndices);
   };
 
@@ -112,7 +112,7 @@ const AddEvent = forwardRef((props: ChildComponentProps, ref) => {
 
   return (
     <>
-      {(addOptionsBottomSheetOpen || addBottomSheetStatus !== 0) ? (
+      {addOptionsBottomSheetOpen || addBottomSheetStatus !== 0 ? (
         <Pressable
           style={styles.dim}
           onPress={() => {

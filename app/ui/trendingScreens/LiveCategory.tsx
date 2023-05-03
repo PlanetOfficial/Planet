@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React, {useEffect, useState, useRef, useMemo} from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -20,7 +20,12 @@ import Icon from '../components/Icon';
 import Filter from '../editEventScreens/Filter';
 
 import {getCatFiltered} from '../../utils/api/shared/getCatFiltered';
-import {Filter as FilterT, LiveEvent, LiveEvents, Subcategory} from '../../utils/interfaces/types';
+import {
+  Filter as FilterT,
+  LiveEvent,
+  LiveEvents,
+  Subcategory,
+} from '../../utils/interfaces/types';
 
 interface Props {
   navigation: any;
@@ -33,7 +38,7 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
   const [categoryId] = useState<number>(route?.params?.categoryId);
   const [categoryName] = useState<string>(route?.params?.categoryName);
   const [bookmarks] = useState<number[]>(route?.params?.bookmarks);
-  const [subcategories, setSubcategories] = useState<Subcategory[]>([]);
+  const [subcategories, setSubcategories] = useState<Subcategory[]>();
   const [hiddenSubCategories, setHiddenSubCategories] = useState<Subcategory[]>(
     [],
   );
@@ -42,15 +47,19 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
 
   const ref = useRef<any>(null); // any because typescript sucks
 
-  let filters : FilterT[] = genres[0].filters ? genres[0].filters : [];
+  let filters: FilterT[] = useMemo(
+    () => (genres[0].filters ? genres[0].filters : []),
+    [],
+  );
 
   const [filterValues, setFilterValues] = useState<number[]>([]);
   const [defaultFilterValues, setDefaultFilterValues] = useState<number[]>([]);
 
-  const [filtersInitialized, setFiltersInitialized] = useState(false);
+  const [filtersInitialized, setFiltersInitialized] = useState<boolean>(false);
 
   useEffect(() => {
     const initializeData = async () => {
+      console.log('initializing data');
       if (route?.params?.subcategories && filters) {
         setSubcategories(route?.params?.subcategories);
 

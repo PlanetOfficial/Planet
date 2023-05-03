@@ -17,7 +17,11 @@ import Filter from './Filter';
 import PlacesDisplay from '../components/PlacesDisplay';
 import {integers} from '../../constants/numbers';
 
-import {Place, Category as CategoryT, Filter as FilterT} from '../../utils/interfaces/types';
+import {
+  Place,
+  Category as CategoryT,
+  Filter as FilterT,
+} from '../../utils/interfaces/types';
 
 interface ChildComponentProps {
   navigation: any;
@@ -60,19 +64,19 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
     closeDropdown,
   }));
 
-  let filters : FilterT[] = category.filters ? category.filters : [];
-
+  // let filters: FilterT[] = category.filters ? category.filters : [];
+  let filters: FilterT[] = [];
   const [filterValues, setFilterValues] = useState<number[]>([]);
-  const [defaultFilterValues, setDefaultFilterValues] = useState<number[]>([]);
+  const [defaultFilterValues] = useState<number[]>([]);
 
-  useEffect(() => {
-    let _defaultFilterValues: number[] = [];
-    for (let i = 0; filters && i < filters.length; i++) {
-      _defaultFilterValues.push(filters[i].defaultIdx);
-    }
-    setDefaultFilterValues(_defaultFilterValues);
-    setFilterValues(_defaultFilterValues);
-  }, [filters]);
+  // useEffect(() => {
+  //   let _defaultFilterValues: number[] = [];
+  //   for (let i = 0; filters && i < filters.length; i++) {
+  //     _defaultFilterValues.push(filters[i].defaultIdx);
+  //   }
+  //   setDefaultFilterValues(_defaultFilterValues);
+  //   setFilterValues(_defaultFilterValues);
+  // }, [filters]);
 
   useEffect(() => {
     const loadDestinations = async (categoryId: number) => {
@@ -84,9 +88,9 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
         integers.defaultNumPlaces,
       );
 
-      const _destinations : (Place | CategoryT)[] = [...destinations];
-      const _destination : Place | CategoryT = _destinations[categoryIndex];
-      if(isCategory(_destination)){
+      const _destinations: (Place | CategoryT)[] = [...destinations];
+      const _destination: Place | CategoryT = _destinations[categoryIndex];
+      if (isCategory(_destination)) {
         _destination.options = response[categoryId];
         setDestinations(_destinations);
       }
@@ -98,9 +102,9 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const isCategory = (item: Place | CategoryT) : item is CategoryT => {
+  const isCategory = (item: Place | CategoryT): item is CategoryT => {
     return 'icon' in item;
-  }
+  };
 
   return (
     <View key={category.id}>
@@ -146,7 +150,11 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
       ) : null}
       <PlacesDisplay
         navigation={navigation}
-        places={isCategory(destination) && destination.options ? destination.options : []}
+        places={
+          isCategory(destination) && destination.options
+            ? destination.options
+            : []
+        }
         width={s(290)}
         bookmarks={bookmarks}
         closeDropdown={closeDropdown}

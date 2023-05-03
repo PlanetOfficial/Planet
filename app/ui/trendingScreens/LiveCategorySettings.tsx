@@ -100,6 +100,7 @@ const LiveCategorySettings: React.FC<Props> = ({navigation, route}) => {
                   <Icon icon={icons.drag} color={colors.darkgrey} />
                 </TouchableOpacity>
               </View>
+              <View style={categoryStyles.border} />
             </>
           )}
         />
@@ -114,7 +115,6 @@ const LiveCategorySettings: React.FC<Props> = ({navigation, route}) => {
           renderItem={({item}: {item: Subcategory}) => (
             <>
               <View style={categoryStyles.container}>
-                <View style={categoryStyles.border} />
                 <Icon
                   icon={icons.plus}
                   color={colors.accent}

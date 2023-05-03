@@ -50,10 +50,10 @@ const EditEvent: React.FC<Props> = ({
 
   const onMove = (idx: number, direction: number) => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    const _destinations : (Place | CategoryT)[] = [...destinations];
-    const destination : Place | CategoryT = _destinations[idx];
-    const _selectionIndices : number[] = [...selectionIndices];
-    const selectionIndex : number = _selectionIndices[idx];
+    const _destinations: (Place | CategoryT)[] = [...destinations];
+    const destination: Place | CategoryT = _destinations[idx];
+    const _selectionIndices: number[] = [...selectionIndices];
+    const selectionIndex: number = _selectionIndices[idx];
     _destinations.splice(idx, 1);
     _selectionIndices.splice(idx, 1);
     if (direction !== 0) {
@@ -69,11 +69,14 @@ const EditEvent: React.FC<Props> = ({
     setSelectionIndices(_selectionIndices);
   };
 
-  const onRemove = (destination : Place | CategoryT) => {
+  const onRemove = (destination: Place | CategoryT) => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    const _destinations : (Place | CategoryT)[] = [...destinations];
-    _destinations.filter((_destination: (Place | CategoryT)) => _destination !== destination);
-    setDestinations(_destinations);
+    let _destinations: (Place | CategoryT)[] = [...destinations];
+    setDestinations(
+      _destinations.filter(
+        (_destination: Place | CategoryT) => _destination.id !== destination.id,
+      ),
+    );
     itemRefs.current.delete(destination.id);
   };
 
@@ -84,7 +87,7 @@ const EditEvent: React.FC<Props> = ({
   return (
     <DraggableFlatList
       data={destinations}
-      keyExtractor={(_: (Place | CategoryT), index: number) => index.toString()}
+      keyExtractor={(_: Place | CategoryT, index: number) => index.toString()}
       showsVerticalScrollIndicator={false}
       contentContainerStyle={styles.flatlist}
       activationDistance={20}
@@ -97,10 +100,18 @@ const EditEvent: React.FC<Props> = ({
           value?.closeDropdown();
         });
       }}
-      onDragEnd={({data, from, to} : {data : (Place | CategoryT)[], from : number, to: number}) => {
+      onDragEnd={({
+        data,
+        from,
+        to,
+      }: {
+        data: (Place | CategoryT)[];
+        from: number;
+        to: number;
+      }) => {
         setDragging(false);
         setDestinations(data);
-        const _selectionIndices : number[] = [...selectionIndices];
+        const _selectionIndices: number[] = [...selectionIndices];
         const item = _selectionIndices.splice(from, 1)[0];
         _selectionIndices.splice(to, 0, item);
         setSelectionIndices(_selectionIndices);
@@ -119,8 +130,8 @@ const EditEvent: React.FC<Props> = ({
         drag,
         isActive,
       }: {
-        item: (Place | CategoryT);
-        getIndex: () => (number | undefined);
+        item: Place | CategoryT;
+        getIndex: () => number | undefined;
         drag: () => void;
         isActive: boolean;
       }) => {
@@ -153,14 +164,14 @@ const EditEvent: React.FC<Props> = ({
                     <View style={styles.removeContainer}>
                       <TouchableOpacity
                         disabled={destinations.length === 1}
-                        onPress={() => {
-                          onRemove(item);
-                        }}
+                        onPress={() => onRemove(item)}
                         style={[
                           styles.removeButton,
-                          destinations.length === 1 ? {
-                            backgroundColor: colors.darkgrey,
-                          } : null,
+                          destinations.length === 1
+                            ? {
+                                backgroundColor: colors.darkgrey,
+                              }
+                            : null,
                         ]}>
                         <Image style={styles.remove} source={icons.remove} />
                       </TouchableOpacity>
@@ -228,7 +239,7 @@ const EditEvent: React.FC<Props> = ({
               </TouchableOpacity>
             )}
           </View>
-        )
+        );
       }}
     />
   );

@@ -7,7 +7,7 @@ import CategoryList from '../components/CategoryList';
 import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
-import { Category } from '../../utils/interfaces/types';
+import {Category} from '../../utils/interfaces/types';
 
 interface Props {
   onClose: () => void;
