@@ -59,7 +59,6 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
 
   useEffect(() => {
     const initializeData = async () => {
-      console.log('initializing data');
       if (route?.params?.subcategories && filters) {
         setSubcategories(route?.params?.subcategories);
 
