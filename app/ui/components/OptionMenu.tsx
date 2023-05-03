@@ -62,7 +62,7 @@ const OptionMenu: React.FC<Props> = ({options}) => {
               {option.name}
             </Text>
           </MenuItem>
-          {index !== options.length - 1 && <MenuDivider />}
+          {index !== options.length - 1 ? <MenuDivider /> : null}
         </View>
       ))}
     </Menu>

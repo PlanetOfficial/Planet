@@ -2,7 +2,7 @@ import {addDaysToToday} from '../../functions/Misc';
 import {CustomCallsURL} from '../APIConstants';
 
 export const getCatFiltered = async (
-  subcategories: Array<number>,
+  subcategories: number[],
   count: number,
   latitude: number,
   longitude: number,

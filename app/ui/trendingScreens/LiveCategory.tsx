@@ -20,19 +20,25 @@ import Icon from '../components/Icon';
 import Filter from '../editEventScreens/Filter';
 
 import {getCatFiltered} from '../../utils/api/shared/getCatFiltered';
-import {Subcategory} from '../../utils/interfaces/types';
+import {LiveEvent, LiveEvents, Subcategory} from '../../utils/interfaces/types';
 
-const LiveCategory = ({navigation, route}: {navigation: any; route: any}) => {
-  const [longitude] = useState(route?.params?.longitude);
-  const [latitude] = useState(route?.params?.latitude);
-  const [categoryId] = useState(route?.params?.categoryId);
-  const [categoryName] = useState(route?.params?.categoryName);
-  const [subcategories, setSubcategories] = useState([]);
-  const [hiddenSubCategories, setHiddenSubCategories] = useState([]);
-  const [places, setPlaces]: [any, any] = useState({});
-  const [loading, setLoading] = useState(false);
+interface Props {
+  navigation: any;
+  route: any;
+}
 
-  const ref: any = useRef(null);
+const LiveCategory: React.FC<Props> = ({navigation, route}) => {
+  const [longitude] = useState<number>(route?.params?.longitude);
+  const [latitude] = useState<number>(route?.params?.latitude);
+  const [categoryId] = useState<number>(route?.params?.categoryId);
+  const [categoryName] = useState<string>(route?.params?.categoryName);
+  const [bookmarks] = useState<number[]>(route?.params?.bookmarks);
+  const [subcategories, setSubcategories] = useState<Subcategory[]>([]);
+  const [hiddenSubCategories, setHiddenSubCategories] = useState<Subcategory[]>([]);
+  const [liveEvents, setLiveEvents] = useState<LiveEvents>({});
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const ref = useRef<any>(null); // any because typescript sucks
 
   let filters = genres[0].filters;
 
@@ -47,7 +53,7 @@ const LiveCategory = ({navigation, route}: {navigation: any; route: any}) => {
         setSubcategories(route?.params?.subcategories);
 
         const subcategoryIds: number[] = route?.params?.subcategories?.map(
-          (item: any) => item.id,
+          (subcategory: Subcategory) => subcategory.id,
         );
 
         setLoading(true);
@@ -61,7 +67,7 @@ const LiveCategory = ({navigation, route}: {navigation: any; route: any}) => {
           categoryId,
           filters[2].values[filterValues[2]] === 1, // sort by distance
         );
-        setPlaces(response?.places);
+        setLiveEvents(response?.places);
         setLoading(false);
       }
 
@@ -121,24 +127,24 @@ const LiveCategory = ({navigation, route}: {navigation: any; route: any}) => {
           </View>
         </View>
       </SafeAreaView>
-      {genres[0] && genres[0]?.filters && (
+      {(genres[0] && genres[0].filters) ? (
         <Filter
           ref={ref}
-          filters={genres[0]?.filters}
+          filters={genres[0].filters}
           currFilters={filterValues}
           setCurrFilters={setFilterValues}
           defaultFilterValues={defaultFilterValues}
         />
-      )}
+      ) : null}
 
       {loading ? (
         <ActivityIndicator size="small" color={colors.accent} />
       ) : (
-        <ScrollView onTouchStart={() => ref?.current?.closeDropdown()}>
+        <ScrollView onTouchStart={() => ref.current?.closeDropdown()}>
           {subcategories?.map(
             (subcategory: Subcategory, idx: number) =>
-              places[subcategory?.id] &&
-              places[subcategory?.id].length > 0 && (
+              (liveEvents[subcategory.id] &&
+              liveEvents[subcategory.id].length > 0) ? (
                 <View key={idx} style={categoryStyles.container}>
                   <View style={categoryStyles.header}>
                     <Text size="m" weight="b">
@@ -150,24 +156,24 @@ const LiveCategory = ({navigation, route}: {navigation: any; route: any}) => {
                     style={categoryStyles.scrollView}
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}>
-                    {places[subcategory?.id]
-                      ? places[subcategory?.id].map(
-                          (dest: any, jdx: number) => (
+                    {liveEvents[subcategory.id]
+                      ? liveEvents[subcategory.id].map(
+                          (liveEvent: LiveEvent, jdx: number) => (
                             <TouchableOpacity
                               style={categoryStyles.card}
                               key={jdx}
                               onPress={() =>
                                 navigation.navigate('Place', {
-                                  destination: dest,
+                                  destination: liveEvent,
                                   category: categoryName,
                                 })
                               }>
                               <PlaceCard
-                                id={dest?.id}
-                                name={dest?.name}
-                                info={dest?.date}
-                                marked={dest?.marked}
-                                image={{uri: dest?.image_url}}
+                                id={liveEvent.id}
+                                name={liveEvent.name}
+                                info={liveEvent.date}
+                                marked={bookmarks.includes(liveEvent.id)}
+                                image={{uri: liveEvent.image_url}}
                               />
                             </TouchableOpacity>
                           ),
@@ -176,7 +182,7 @@ const LiveCategory = ({navigation, route}: {navigation: any; route: any}) => {
                   </ScrollView>
                   <Spacer />
                 </View>
-              ),
+              ) : null
           )}
         </ScrollView>
       )}
