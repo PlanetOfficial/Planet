@@ -62,7 +62,6 @@ const EditEvent: React.FC<Props> = ({
         value?.closeDropdown();
       });
       childRefs.current.delete(destination.id);
-      _selectionIndices.splice(idx, 1);
     }
     setDestinations(_destinations);
     setSelectionIndices(_selectionIndices);

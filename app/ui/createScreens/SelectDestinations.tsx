@@ -219,7 +219,11 @@ const SelectDestinations = ({
         </View>
       </SafeAreaView>
 
-      <BottomSheet ref={bottomSheetRef} index={0} snapPoints={snapPoints}>
+      <BottomSheet
+        ref={bottomSheetRef}
+        index={0}
+        snapPoints={snapPoints}
+        enableContentPanningGesture={false}>
         <EditEvent
           navigation={navigation}
           radius={radius}

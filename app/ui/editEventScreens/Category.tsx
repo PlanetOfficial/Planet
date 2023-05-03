@@ -74,7 +74,6 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
     }
     setDefaultFilterValues(_defaultFilterValues);
     setFilterValues(_defaultFilterValues);
-    console.log(_defaultFilterValues);
   }, [filters]);
 
   useEffect(() => {
@@ -139,7 +138,7 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
           setCurrFilters={setFilterValues}
           defaultFilterValues={defaultFilterValues}
         />
-      ): null}
+      ) : null}
       <PlacesDisplay
         navigation={navigation}
         data={destinations[categoryIndex].options}
