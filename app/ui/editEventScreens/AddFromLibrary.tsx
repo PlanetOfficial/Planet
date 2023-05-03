@@ -17,6 +17,8 @@ import strings from '../../constants/strings';
 import misc from '../../constants/misc';
 import {colors} from '../../constants/theme';
 
+// TODO: THIS FUNCTIONALITY IS INCOMPLETE, AND SO IS REFACTORING
+
 const TempData = [
   {
     id: 1,
@@ -51,8 +53,6 @@ const TempData = [
     image_url: 'https://picsum.photos/200/300',
   },
 ];
-
-// TODO: NOT IMPLEMENTED YET, REFACTORING MUST BE DONE
 
 interface Props {
   onClose: () => void;

@@ -6,8 +6,8 @@ import AppNavigation from './app/navigation/AppNavigation';
 import {updateAsyncStorage} from './app/utils/functions/CacheHelpers';
 
 export default function App() {
-  const [isLoading, setLoading] = useState(true);
-  const [isLoggedIn, setLoggedIn] = useState(false);
+  const [isLoading, setLoading] = useState<boolean>(true);
+  const [isLoggedIn, setLoggedIn] = useState<boolean>(false);
 
   useEffect(() => {
     const initialize = async () => {

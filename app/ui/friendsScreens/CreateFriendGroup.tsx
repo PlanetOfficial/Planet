@@ -17,9 +17,9 @@ import {icons} from '../../constants/images';
 import {s} from 'react-native-size-matters';
 
 const CreateFG = ({navigation}: {navigation: any}) => {
-  const [name, setName] = useState('');
-  const [iconIdx, setIconIdx] = useState(0);
-  const [invite, setInvite] = useState('');
+  const [name, setName] = useState<string>('');
+  const [iconIdx, setIconIdx] = useState<number>(0);
+  const [invite, setInvite] = useState<string>('');
   const [invitations, setInvitations]: [any, any] = useState([]);
 
   const inviteRef: any = React.useRef(null);

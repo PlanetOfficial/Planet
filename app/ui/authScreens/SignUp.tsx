@@ -18,13 +18,13 @@ import {icons} from '../../constants/images';
 import {cacheUserInfo} from '../../utils/functions/CacheHelpers';
 
 const SignUp = ({navigation}: {navigation: any}) => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordConfirmed, setPasswordConfirmed] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
+  const [name, setName] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [passwordConfirmed, setPasswordConfirmed] = useState<string>('');
+  const [phoneNumber, setPhoneNumber] = useState<string>('');
 
-  const [error, setError] = useState('');
+  const [error, setError] = useState<string>('');
 
   const handleSignUp = async () => {
     // TODO: set limits on email, passwords, etc. lengths

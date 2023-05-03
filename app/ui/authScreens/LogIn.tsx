@@ -18,11 +18,11 @@ import {vectors} from '../../constants/images';
 import {cacheUserInfo} from '../../utils/functions/CacheHelpers';
 
 const LoginScreen = ({navigation}: {navigation: any}) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
 
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleLogin = async () => {
     // Perform login logic, e.g. send login request to API

@@ -17,12 +17,12 @@ import {GoogleMapsAPIKey} from '../../utils/api/APIConstants';
 import AButton from '../components/ActionButton';
 import {Place, Region} from '../../utils/interfaces/types';
 
+// TODO: THIS FUNCTIONALITY IS INCOMPLETE, AND SO IS REFACTORING
+
 interface Props {
   onClose: () => void;
   onSelect: (destination: Place) => void;
 }
-
-//TODO: THIS FUNCTIONALITY IS INCOMPLETE, AND SO IS REFACTORING
 
 const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
   const autocompleteRef = useRef<GooglePlacesAutocompleteRef>(null);

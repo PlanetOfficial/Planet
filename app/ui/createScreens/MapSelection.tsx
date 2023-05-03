@@ -45,7 +45,7 @@ const MapScreen: React.FC<Props> = ({navigation}) => {
     longitudeDelta: floats.defaultLongitudeDelta,
   });
 
-  const [radius, setRadius] = useState(
+  const [radius, setRadius] = useState<number>(
     calculateRadius(
       {latitude: floats.defaultLatitude, longitude: floats.defaultLongitude},
       floats.defaultLongitudeDelta,

@@ -44,7 +44,7 @@ const EditEvent: React.FC<Props> = ({
   setSelectionIndices,
   onAddPress,
 }) => {
-  const [dragging, setDragging] = useState(false);
+  const [dragging, setDragging] = useState<boolean>(false);
   const itemRefs = useRef(new Map());
   const childRefs = useRef(new Map());
 
@@ -135,8 +135,8 @@ const EditEvent: React.FC<Props> = ({
         drag: () => void;
         isActive: boolean;
       }) => {
-        let _index: any = getIndex();
-        const index: number = _index; // typescript is so stupid
+        let _index: any = getIndex(); // typescript is so stupid
+        const index: number = _index;
         return (
           <View
             onTouchStart={() => {
