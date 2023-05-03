@@ -19,7 +19,7 @@ import {
   getAveragePoint,
   getRegionForCoordinates,
 } from '../../utils/functions/Misc';
-import {MarkerObject} from '../../utils/interfaces/MarkerObject';
+import {MarkerObject} from '../../utils/interfaces/types';
 import {getEventPlaces} from '../../utils/api/libraryCalls/getEventPlaces';
 
 import Blur from '../components/Blur';

@@ -30,7 +30,7 @@ import {
   getMarkerArray,
   getRegionForCoordinates,
 } from '../../utils/functions/Misc';
-import {MarkerObject} from '../../utils/interfaces/MarkerObject';
+import {MarkerObject} from '../../utils/interfaces/types';
 
 import {colors} from '../../constants/theme';
 import {integers} from '../../constants/numbers';

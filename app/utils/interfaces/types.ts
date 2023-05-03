@@ -47,3 +47,19 @@ export interface Region {
   latitudeDelta: number;
   longitudeDelta: number;
 }
+
+export interface MarkerObject {
+  name: string;
+  latitude: number;
+  longitude: number;
+}
+
+export interface Coordinate {
+  latitude: number;
+  longitude: number;
+}
+
+export interface WeekDay {
+  day: string;
+  hours: string[];
+}
