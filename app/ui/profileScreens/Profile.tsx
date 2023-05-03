@@ -1,16 +1,22 @@
 import React, {useEffect, useState} from 'react';
-import {View, Image, Text, StyleSheet, SafeAreaView} from 'react-native';
+import {Image, SafeAreaView, StyleSheet, Text, View} from 'react-native';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {s, vs} from 'react-native-size-matters';
+
 import CustomText from '../components/Text';
 import Icon from '../components/Icon';
 
-import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 import {icons} from '../../constants/images';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import strings from '../../constants/strings';
 
-const Profile = ({navigation}: {navigation: any}) => {
-  const [name, setName] = useState('');
+interface Props {
+  navigation: any;
+}
+
+const Profile: React.FC<Props> = ({navigation}) => {
+  const [name, setName] = useState<String>('');
 
   useEffect(() => {
     const initializeData = async () => {
