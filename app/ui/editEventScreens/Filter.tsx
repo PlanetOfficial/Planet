@@ -51,7 +51,7 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
     [],
   );
 
-  const refs = useRef<any>(new Map());
+  const refs = useRef(new Map());
 
   const [pos, setPos] = useState<number>(0);
   const [width, setWidth] = useState<number>(0);

@@ -18,10 +18,11 @@ import AddByCategory from '../editEventScreens/AddByCategory';
 import AddFromLibrary from '../editEventScreens/AddFromLibrary';
 import AddCustomDest from '../editEventScreens/AddCustomDest';
 import strings from '../../constants/strings';
+import { Place, Category } from '../../utils/interfaces/types';
 
 interface ChildComponentProps {
-  destinations: any;
-  setDestinations: (destinations: any) => void;
+  destinations: (Place | Category)[];
+  setDestinations: (destinations: (Place | Category)[]) => void;
   selectionIndices: number[];
   setSelectionIndices: (selectionIndices: number[]) => void;
 }
@@ -36,8 +37,8 @@ const AddEvent = forwardRef((props: ChildComponentProps, ref) => {
   const insets = useSafeAreaInsets();
 
   const [addOptionsBottomSheetOpen, setAddOptionsBottomSheetOpen] =
-    useState(false);
-  const addOptionsBottomSheetRef: any = useRef<BottomSheetModal>(null);
+    useState<boolean>(false);
+  const addOptionsBottomSheetRef = useRef<BottomSheetModal>(null);
   const addOptionsSnapPoints = useMemo(
     () => [s(260) + insets.bottom],
     [insets.bottom],
@@ -49,21 +50,21 @@ const AddEvent = forwardRef((props: ChildComponentProps, ref) => {
     [],
   );
 
-  const [insertionIndex, setInsertionIndex] = useState<number | undefined>(0);
-  const [addBottomSheetStatus, setAddBottomSheetStatus] = useState(0);
-  const addBottomSheetRef: any = useRef<BottomSheet>(null);
+  const [insertionIndex, setInsertionIndex] = useState<number>(0);
+  const [addBottomSheetStatus, setAddBottomSheetStatus] = useState<number>(0);
+  const addBottomSheetRef = useRef<BottomSheet>(null);
   const addBottomSheetSnapPoints = useMemo(
     () => [vs(680) - s(60) - insets.top],
     [insets.top],
   );
 
-  const onAddPress = (idx: number | undefined) => {
+  const onAddPress = (idx: number) => {
     setInsertionIndex(idx);
     addOptionsBottomSheetRef.current?.present();
   };
 
   const onAddOptionPress = (idx: number) => {
-    addOptionsBottomSheetRef?.current.close();
+    addOptionsBottomSheetRef.current?.close();
     setAddBottomSheetStatus(idx);
     addBottomSheetRef.current?.snapToIndex(0);
   };
@@ -73,23 +74,23 @@ const AddEvent = forwardRef((props: ChildComponentProps, ref) => {
     setAddBottomSheetStatus(0);
   };
 
-  const onCategorySelect = async (category: any) => {
-    if (insertionIndex !== undefined) {
-      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-      const _destionations = [...destinations];
-      const _selectionIndices = [...selectionIndices];
-      _destionations.splice(insertionIndex + 1, 0, {
-        id: category.id,
-        name: category.name,
-        icon: category.icon,
-        options: [],
-      });
-      _selectionIndices.splice(insertionIndex + 1, 0, 0);
-      setDestinations(_destionations);
-      setSelectionIndices(_selectionIndices);
-    }
+  const onCategorySelect = async (category: Category) => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    const _destionations : (Place | Category)[] = [...destinations];
+    const _selectionIndices : number[] = [...selectionIndices];
+    _destionations.splice(insertionIndex + 1, 0, {
+      id: category.id,
+      name: category.name,
+      icon: category.icon,
+      subcategories: category.subcategories,
+      options: [],
+    });
+    _selectionIndices.splice(insertionIndex + 1, 0, 0);
+    setDestinations(_destionations);
+    setSelectionIndices(_selectionIndices);
   };
 
+  // TODO: NOT YET IMPLEMENTED
   const onLibrarySelect = (dest: any) => {
     console.log(dest);
     // if(insertionIndex !== undefined) {
@@ -104,21 +105,22 @@ const AddEvent = forwardRef((props: ChildComponentProps, ref) => {
     // }
   };
 
+  // TODO: NOT YET IMPLEMENTED
   const onCustomSelect = (dest: any) => {
     console.log(dest);
   };
 
   return (
     <>
-      {(addOptionsBottomSheetOpen || addBottomSheetStatus !== 0) && (
+      {(addOptionsBottomSheetOpen || addBottomSheetStatus !== 0) ? (
         <Pressable
           style={styles.dim}
           onPress={() => {
-            addOptionsBottomSheetRef?.current.close();
+            addOptionsBottomSheetRef.current?.close();
             onClose();
           }}
         />
-      )}
+      ) : null}
 
       <BottomSheetModal
         ref={addOptionsBottomSheetRef}
@@ -147,7 +149,7 @@ const AddEvent = forwardRef((props: ChildComponentProps, ref) => {
             }}
           />
 
-          <CButton onPress={() => addOptionsBottomSheetRef?.current.close()} />
+          <CButton onPress={() => addOptionsBottomSheetRef.current?.close()} />
         </View>
       </BottomSheetModal>
 
@@ -159,15 +161,15 @@ const AddEvent = forwardRef((props: ChildComponentProps, ref) => {
         handleIndicatorStyle={styles.handleIndicator}
         enableContentPanningGesture={false}
         enableHandlePanningGesture={false}>
-        {addBottomSheetStatus === 1 && (
+        {addBottomSheetStatus === 1 ? (
           <AddByCategory onClose={onClose} onSelect={onCategorySelect} />
-        )}
-        {addBottomSheetStatus === 2 && (
+        ) : null}
+        {addBottomSheetStatus === 2 ? (
           <AddFromLibrary onClose={onClose} onSelect={onLibrarySelect} />
-        )}
-        {addBottomSheetStatus === 3 && (
+        ) : null}
+        {addBottomSheetStatus === 3 ? (
           <AddCustomDest onClose={onClose} onSelect={onCustomSelect} />
-        )}
+        ) : null}
       </BottomSheet>
     </>
   );

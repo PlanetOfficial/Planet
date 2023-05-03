@@ -20,7 +20,7 @@ import Icon from '../components/Icon';
 import Filter from '../editEventScreens/Filter';
 
 import {getCatFiltered} from '../../utils/api/shared/getCatFiltered';
-import {LiveEvent, LiveEvents, Subcategory} from '../../utils/interfaces/types';
+import {Filter as FilterT, LiveEvent, LiveEvents, Subcategory} from '../../utils/interfaces/types';
 
 interface Props {
   navigation: any;
@@ -42,7 +42,7 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
 
   const ref = useRef<any>(null); // any because typescript sucks
 
-  let filters = genres[0].filters;
+  let filters : FilterT[] = genres[0].filters ? genres[0].filters : [];
 
   const [filterValues, setFilterValues] = useState<number[]>([]);
   const [defaultFilterValues, setDefaultFilterValues] = useState<number[]>([]);
@@ -129,10 +129,10 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
           </View>
         </View>
       </SafeAreaView>
-      {genres[0] && genres[0].filters ? (
+      {filters ? (
         <Filter
           ref={ref}
-          filters={genres[0].filters}
+          filters={filters}
           currFilters={filterValues}
           setCurrFilters={setFilterValues}
           defaultFilterValues={defaultFilterValues}

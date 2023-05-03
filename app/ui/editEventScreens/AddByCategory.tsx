@@ -29,7 +29,7 @@ const AddByCategory: React.FC<Props> = ({onClose, onSelect}) => {
         onClose={onClose}
         onSelect={(category: Category) => {
           onSelect({
-            id: -category.id,
+            id: category.id,
             name: category.name,
             icon: category.icon,
           });

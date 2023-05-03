@@ -20,6 +20,7 @@ export interface Category {
   icon: ImageSourcePropType;
   subcategories?: Subcategory[];
   options?: Place[];
+  filters?: Filter[];
 }
 
 export interface Subcategory {
