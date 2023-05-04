@@ -82,6 +82,8 @@ const Event: React.FC<Props> = ({navigation, route}) => {
       const data = await getEventPlaces(eventId);
       setPlaces(data?.places);
 
+      setSelectionIndices(Array(data?.places.length).fill(-1));
+
       const markerArray: MarkerObject[] = getMarkerArray(data?.places);
       setMarkers(markerArray);
 

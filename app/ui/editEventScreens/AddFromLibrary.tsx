@@ -7,6 +7,7 @@ import {
   FlatList,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 import Filter from './Filter';
 import PlaceCard from '../components/PlaceCard';
@@ -17,64 +18,53 @@ import strings from '../../constants/strings';
 import misc from '../../constants/misc';
 import {colors} from '../../constants/theme';
 
-// TODO: THIS FUNCTIONALITY IS INCOMPLETE, AND SO IS REFACTORING
-
-const TempData = [
-  {
-    id: 1,
-    name: 'Place 1',
-    category: {
-      name: 'Category 1',
-    },
-    image_url: 'https://picsum.photos/200/300',
-  },
-  {
-    id: 2,
-    name: 'Place 2',
-    category: {
-      name: 'Category 2',
-    },
-    image_url: 'https://picsum.photos/200/300',
-  },
-  {
-    id: 3,
-    name: 'Place 3',
-    category: {
-      name: 'Category 3',
-    },
-    image_url: 'https://picsum.photos/200/300',
-  },
-  {
-    id: 4,
-    name: 'Place 4',
-    category: {
-      name: 'Category 4',
-    },
-    image_url: 'https://picsum.photos/200/300',
-  },
-];
+import {getBookmarks} from '../../utils/api/shared/getBookmarks';
+import {Place} from '../../utils/interfaces/types';
 
 interface Props {
   onClose: () => void;
-  onSelect: (place: any) => void;
+  onSelect: (place: Place) => void;
 }
 
 const AddFromLibrary: React.FC<Props> = ({onClose, onSelect}) => {
-  const ref: any = useRef(null);
+  const filterRef = useRef<any>(null);
 
   let filters = misc.libraryFilter;
 
   const [filterValues, setFilterValues] = useState<number[]>([]);
   const [defaultFilterValues, setDefaultFilterValues] = useState<number[]>([]);
+  const [filtersInitialized, setFiltersInitialized] = useState<boolean>(false);
+
+  const [bookmarks, setBookmarks] = useState<Place[]>([]);
 
   useEffect(() => {
-    let _defaultFilterValues: number[] = [];
-    for (let i = 0; filters && i < filters.length; i++) {
-      _defaultFilterValues.push(filters[i].defaultIdx);
+    const initializeData = async () => {
+      const authToken = await EncryptedStorage.getItem('auth_token');
+    
+      // TODO: Implement application of filters
+
+      const _bookmarks = await getBookmarks(authToken);
+      setBookmarks(_bookmarks);
+    };
+
+    initializeData();
+  }, []);
+
+  useEffect(() => {
+    const initializeFilterValues = () => {
+      let _defaultFilterValues: number[] = [];
+      for (let i = 0; filters && i < filters.length; i++) {
+        _defaultFilterValues.push(filters[i].defaultIdx);
+      }
+      setDefaultFilterValues(_defaultFilterValues);
+      setFilterValues(_defaultFilterValues);
+      setFiltersInitialized(true);
     }
-    setDefaultFilterValues(_defaultFilterValues);
-    setFilterValues(_defaultFilterValues);
-  }, [filters, defaultFilterValues]);
+
+    if (!filtersInitialized) {
+      initializeFilterValues();
+    }
+  }, [filters, filtersInitialized]);
 
   return (
     <View style={styles.container}>
@@ -88,7 +78,7 @@ const AddFromLibrary: React.FC<Props> = ({onClose, onSelect}) => {
       </View>
 
       <Filter
-        ref={ref}
+        ref={filterRef}
         filters={filters}
         currFilters={filterValues}
         setCurrFilters={setFilterValues}
@@ -96,12 +86,12 @@ const AddFromLibrary: React.FC<Props> = ({onClose, onSelect}) => {
       />
 
       <FlatList
-        data={TempData}
+        data={bookmarks}
         contentContainerStyle={styles.contentContainer}
         initialNumToRender={5}
-        keyExtractor={(item: any) => item?.id}
+        keyExtractor={(item: Place) => item.id.toString()}
         ItemSeparatorComponent={Spacer}
-        onTouchStart={() => ref?.current?.closeDropdown()}
+        onTouchStart={() => filterRef.current?.closeDropdown()}
         renderItem={({item}) => {
           return (
             <TouchableOpacity
@@ -111,14 +101,14 @@ const AddFromLibrary: React.FC<Props> = ({onClose, onSelect}) => {
                 onClose();
               }}>
               <PlaceCard
-                id={item?.id}
-                name={item?.name}
-                info={item?.category?.name}
+                id={item.id}
+                name={item.name}
+                info={item.category_name}
                 marked={true}
                 image={
-                  item?.image_url
+                  item.image_url
                     ? {
-                        uri: item?.image_url,
+                        uri: item.image_url,
                       }
                     : icons.defaultIcon
                 }
