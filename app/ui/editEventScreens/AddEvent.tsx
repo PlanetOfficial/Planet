@@ -92,24 +92,12 @@ const AddEvent = forwardRef((props: ChildComponentProps, ref) => {
     setSelectionIndices(_selectionIndices);
   };
 
-  // TODO: NOT YET IMPLEMENTED
   const onLibrarySelect = (dest: any) => {
-    console.log(dest);
-    // if(insertionIndex !== undefined) {
-    //   LayoutAnimation.configureNext(
-    //     LayoutAnimation.Presets.easeInEaseOut,
-    //   );
-    //   const temp = [...tempPlaces];
-    //   temp.splice(insertionIndex + 1, 0, {
-    //     place
-    //   });
-    //   setTempPlaces(temp);
-    // }
+    // TODO: implement library destination selection
   };
 
-  // TODO: NOT YET IMPLEMENTED
   const onCustomSelect = (dest: any) => {
-    console.log(dest);
+    // TODO: implement custom destination selection
   };
 
   return (

@@ -263,9 +263,11 @@ const SelectDestinations: React.FC<Props> = ({navigation, route}) => {
         open={saveConfirmationOpen}
         setOpen={setSaveConfirmationOpen}
         prompt={strings.library.saveConfirmation}
-        leftText={strings.library.save}
-        rightText={strings.library.keepEditing}
+        leftText={strings.library.keepEditing}
+        leftColor={colors.black}
+        rightText={strings.library.save}
         rightColor={colors.accent}
+        actionOnRight={true}
       />
     </View>
   );

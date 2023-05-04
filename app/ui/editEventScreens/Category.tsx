@@ -66,6 +66,8 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
     closeDropdown,
   }));
 
+  // TODO: implement filters for each categories 
+
   // let filters: FilterT[] = category.filters ? category.filters : [];
   let filters: FilterT[] = [];
   const [filterValues, setFilterValues] = useState<number[]>([]);

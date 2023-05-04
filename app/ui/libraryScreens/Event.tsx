@@ -104,7 +104,8 @@ const Event: React.FC<Props> = ({navigation, route}) => {
   const saveEdits = () => {
     bottomSheetRef.current?.collapse();
     setEditing(false);
-    // save edits to database
+
+    // TODO: implement save edits
   };
 
   return (
@@ -200,7 +201,7 @@ const Event: React.FC<Props> = ({navigation, route}) => {
                   {
                     name: strings.main.share,
                     onPress: () => {
-                      console.log('TODO: Share Event');
+                      // TODO: share event
                     },
                     color: colors.black,
                   },
@@ -212,7 +213,7 @@ const Event: React.FC<Props> = ({navigation, route}) => {
                   {
                     name: strings.main.remove,
                     onPress: () => {
-                      console.log('TODO: Remove Event');
+                      // TODO: remove event
                     },
                     color: colors.red,
                   },
