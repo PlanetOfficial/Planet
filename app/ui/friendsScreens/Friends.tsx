@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {
   View,
   Text,
@@ -19,24 +19,10 @@ import {s, vs} from 'react-native-size-matters';
 
 import EventCard from '../components/EventCard';
 import FGSelector from './FGSelector';
-
-//TODO: Display actual friend groups
-const friendGroups: any[] = ['Poplar Residents', 'The Boys', 'Tennis People'];
-
-const invitations = [
-  {
-    id: 1,
-    inviter: 'John Doe',
-    name: 'Wonky Wednesday',
-    iconIdx: 0,
-  },
-  {
-    id: 2,
-    inviter: 'Jane Doe',
-    name: 'Taco Tuesday',
-    iconIdx: 1,
-  },
-];
+import EncryptedStorage from 'react-native-encrypted-storage';
+import { getFGsAndInvites } from '../../utils/api/friendsCalls/getFGsAndInvites';
+import { FriendGroup } from '../../utils/interfaces/friendGroup';
+import { Invitation } from '../../utils/interfaces/invitation';
 
 //TODO: Display actual events
 const events = [
@@ -77,6 +63,9 @@ const Friends = ({navigation}: {navigation: any}) => {
 
   const [friendGroup, setFriendGroup] = useState(0);
 
+  const [friendGroups, setFriendGroups] = useState<FriendGroup[]>([]);
+  const [invitations, setInvitations] = useState<Invitation[]>([]);
+
   const [fgBottomSheetOpen, setFgBottomSheetOpen] = useState(false);
   const fgBottomSheetRef: any = useRef<BottomSheetModal>(null);
   const fgSnapPoints = useMemo(
@@ -108,6 +97,24 @@ const Friends = ({navigation}: {navigation: any}) => {
     [],
   );
 
+  useEffect(() => {
+    const initializeData = async () => {
+      const token = await EncryptedStorage.getItem('auth_token');
+      
+      const responseData = await getFGsAndInvites(token);
+
+      if (responseData?.groups) {
+        setFriendGroups(responseData.groups);
+      }
+
+      if (responseData?.invites) {
+        setInvitations(responseData.invites);
+      }
+    };
+
+    initializeData();
+  }, [])
+
   return (
     <>
       <SafeAreaView testID="friendsScreenView" style={styles.container}>
@@ -118,7 +125,7 @@ const Friends = ({navigation}: {navigation: any}) => {
             <Text numberOfLines={1} style={headerStyles.title}>
               {friendGroup === -1
                 ? strings.title.friends
-                : friendGroups[friendGroup]}
+                : friendGroups[friendGroup]?.group?.name}
             </Text>
             <View style={headerStyles.drop}>
               <Image style={[headerStyles.icon]} source={icons.next} />

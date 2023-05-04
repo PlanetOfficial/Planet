@@ -15,6 +15,7 @@ import {fgIcons} from '../../constants/images';
 import {colors} from '../../constants/theme';
 import {icons} from '../../constants/images';
 import {s} from 'react-native-size-matters';
+import { createGroup } from '../../utils/api/friendsCalls/createGroup';
 
 const CreateFG = ({navigation}: {navigation: any}) => {
   const [name, setName] = useState('');
@@ -23,6 +24,22 @@ const CreateFG = ({navigation}: {navigation: any}) => {
   const [invitations, setInvitations]: [any, any] = useState([]);
 
   const inviteRef: any = React.useRef(null);
+
+  const handleGroupCreation = async () => {
+    const responseStatus = await createGroup(
+      name,
+      invitations
+    )
+
+    if (responseStatus) {
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'Friends'}],
+      });
+    } else {
+      // TODO: error, make sure connected to internet and logged in, if error persists, log out and log back in
+    }
+  }
 
   return (
     <View style={styles.container}>
@@ -114,9 +131,7 @@ const CreateFG = ({navigation}: {navigation: any}) => {
           name === '' && {backgroundColor: colors.darkgrey},
         ]}
         disabled={name === ''}
-        onPress={() => {
-          // Create FG
-        }}>
+        onPress={() => handleGroupCreation()}>
         <Text style={styles.create}>{strings.friends.create}</Text>
       </TouchableOpacity>
     </View>

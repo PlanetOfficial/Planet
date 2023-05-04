@@ -13,6 +13,8 @@ import {colors} from '../../constants/theme';
 import {icons} from '../../constants/images';
 import {fgIcons} from '../../constants/images';
 import {s} from 'react-native-size-matters';
+import { FriendGroup } from '../../utils/interfaces/friendGroup';
+import { Invitation } from '../../utils/interfaces/invitation';
 
 const FGSelector = ({
   bottomSheetRef,
@@ -31,7 +33,7 @@ const FGSelector = ({
 }) => {
   return (
     <ScrollView>
-      {friendGroups?.map((fg: any, idx: number) => (
+      {friendGroups?.map((fg: FriendGroup, idx: number) => (
         <TouchableOpacity
           key={idx}
           style={[
@@ -53,24 +55,24 @@ const FGSelector = ({
                 fgBottomSheetStyles.text,
                 {color: idx === friendGroup ? colors.accent : colors.black},
               ]}>
-              {fg}
+              {fg.group.name}
             </Text>
           </View>
         </TouchableOpacity>
       ))}
-      {invitations?.map((invitation: any, idx: number) => (
+      {invitations?.map((invitation: Invitation, idx: number) => (
         <View key={idx} style={fgBottomSheetStyles.row}>
           <Image
             style={fgBottomSheetStyles.icon}
-            source={fgIcons[invitation.iconIdx]}
+            source={fgIcons[0]}
           />
           <View style={fgBottomSheetStyles.wrap}>
             <View style={fgBottomSheetStyles.texts}>
               <Text numberOfLines={1} style={fgBottomSheetStyles.text}>
-                {invitation.name}
+                {invitation.group.name}
               </Text>
               <Text numberOfLines={1} style={fgBottomSheetStyles.inviter}>
-                {invitation.inviter}
+                {invitation.inviter.name}
               </Text>
             </View>
             <View style={fgBottomSheetStyles.buttonsContainer}>
