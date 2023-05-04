@@ -9,13 +9,12 @@ import {
 import {s} from 'react-native-size-matters';
 import EncryptedStorage from 'react-native-encrypted-storage';
 
-import Filter from './Filter';
 import PlaceCard from '../components/PlaceCard';
 import Text from '../components/Text';
 
 import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
-import misc from '../../constants/misc';
+// import misc from '../../constants/misc';
 import {colors} from '../../constants/theme';
 
 import {getBookmarks} from '../../utils/api/shared/getBookmarks';
@@ -29,18 +28,18 @@ interface Props {
 const AddFromLibrary: React.FC<Props> = ({onClose, onSelect}) => {
   const filterRef = useRef<any>(null);
 
-  let filters = misc.libraryFilter;
+  // let filters = misc.libraryFilter;
 
-  const [filterValues, setFilterValues] = useState<number[]>([]);
-  const [defaultFilterValues, setDefaultFilterValues] = useState<number[]>([]);
-  const [filtersInitialized, setFiltersInitialized] = useState<boolean>(false);
+  // const [filterValues, setFilterValues] = useState<number[]>([]);
+  // const [defaultFilterValues, setDefaultFilterValues] = useState<number[]>([]);
+  // const [filtersInitialized, setFiltersInitialized] = useState<boolean>(false);
 
   const [bookmarks, setBookmarks] = useState<Place[]>([]);
 
   useEffect(() => {
     const initializeData = async () => {
       const authToken = await EncryptedStorage.getItem('auth_token');
-    
+
       // TODO: Implement application of filters
 
       const _bookmarks = await getBookmarks(authToken);
@@ -50,21 +49,21 @@ const AddFromLibrary: React.FC<Props> = ({onClose, onSelect}) => {
     initializeData();
   }, []);
 
-  useEffect(() => {
-    const initializeFilterValues = () => {
-      let _defaultFilterValues: number[] = [];
-      for (let i = 0; filters && i < filters.length; i++) {
-        _defaultFilterValues.push(filters[i].defaultIdx);
-      }
-      setDefaultFilterValues(_defaultFilterValues);
-      setFilterValues(_defaultFilterValues);
-      setFiltersInitialized(true);
-    }
+  // useEffect(() => {
+  //   const initializeFilterValues = () => {
+  //     let _defaultFilterValues: number[] = [];
+  //     for (let i = 0; filters && i < filters.length; i++) {
+  //       _defaultFilterValues.push(filters[i].defaultIdx);
+  //     }
+  //     setDefaultFilterValues(_defaultFilterValues);
+  //     setFilterValues(_defaultFilterValues);
+  //     setFiltersInitialized(true);
+  //   };
 
-    if (!filtersInitialized) {
-      initializeFilterValues();
-    }
-  }, [filters, filtersInitialized]);
+  //   if (!filtersInitialized) {
+  //     initializeFilterValues();
+  //   }
+  // }, [filters, filtersInitialized]);
 
   return (
     <View style={styles.container}>
@@ -77,13 +76,13 @@ const AddFromLibrary: React.FC<Props> = ({onClose, onSelect}) => {
         </TouchableOpacity>
       </View>
 
-      <Filter
+      {/* <Filter
         ref={filterRef}
         filters={filters}
         currFilters={filterValues}
         setCurrFilters={setFilterValues}
         defaultFilterValues={defaultFilterValues}
-      />
+      /> */}
 
       <FlatList
         data={bookmarks}
