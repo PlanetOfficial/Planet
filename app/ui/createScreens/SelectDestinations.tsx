@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import moment from 'moment';
 
 import DatePicker from 'react-native-date-picker';
 import EncryptedStorage from 'react-native-encrypted-storage';
@@ -54,7 +55,7 @@ const SelectDestinations: React.FC<Props> = ({navigation, route}) => {
   const [eventTitle, setEventTitle] = useState<string>(
     strings.createTabStack.untitledEvent,
   );
-  const [date, setDate] = useState<Date>(new Date());
+  const [date, setDate] = useState<string>(moment(new Date()).format('M/D/YYYY'));
   const [datePickerOpen, setDatePickerOpen] = useState<boolean>(false);
   const [saveConfirmationOpen, setSaveConfirmationOpen] =
     useState<boolean>(false);
@@ -156,7 +157,7 @@ const SelectDestinations: React.FC<Props> = ({navigation, route}) => {
         eventTitle,
         placeIds,
         authToken,
-        date.toLocaleDateString(),
+        moment(date, 'M/D/YYYY').format('YYYY-MM-DD'),
       );
 
       if (responseStatus) {
@@ -206,16 +207,17 @@ const SelectDestinations: React.FC<Props> = ({navigation, route}) => {
                 weight="l"
                 color={colors.accent}
                 underline={true}>
-                {date.toLocaleDateString()}
+                {date}
               </CustomText>
             </TouchableOpacity>
             <DatePicker
               modal
+              mode="date"
               open={datePickerOpen}
-              date={date}
+              date={moment(date, 'M/D/YYYY').toDate()}
               onConfirm={newDate => {
                 setDatePickerOpen(false);
-                setDate(newDate);
+                setDate(moment(newDate, 'YYYY-MM-DD HH:mm:ssZ').format('M/D/YYYY'));
               }}
               onCancel={() => {
                 setDatePickerOpen(false);
