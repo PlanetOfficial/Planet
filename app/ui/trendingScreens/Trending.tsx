@@ -200,7 +200,7 @@ const Trending: React.FC<Props> = ({navigation}) => {
                           <PlaceCard
                             id={event.id}
                             name={event.name}
-                            info={moment(event.date, 'YYYY-MM-DD').format('D/M/YYYY')}
+                            info={moment(event.date, 'YYYY-MM-DD').format('M/D/YYYY')}
                             marked={bookmarks.includes(event.id)}
                             image={{uri: event.image_url}}
                           />
