@@ -86,6 +86,7 @@ const EditEvent: React.FC<Props> = ({
   };
 
   return (
+    // TODO: draggable flat list currently reloads all items on drag, which is not ideal
     <DraggableFlatList
       data={destinations}
       keyExtractor={(_: Place | CategoryT, index: number) => index.toString()}

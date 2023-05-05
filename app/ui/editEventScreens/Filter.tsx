@@ -28,6 +28,10 @@ interface ChildComponentProps {
   defaultFilterValues: (number | number[])[];
 }
 
+// TODO-NAOTO:
+// subcategories selection should say all when all are selected
+// in the modal, multiselect should work as intended (fill in with orange)
+
 const Filter = forwardRef((props: ChildComponentProps, ref) => {
   const {
     filters,
@@ -162,7 +166,7 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
             <View style={styles.chipContainer}>
               <View style={styles.chip}>
                 <Text size="xs" weight="l">
-                  {subcategories[categoryFilter[0] - 1].title +
+                  {subcategories[0].title +
                     (categoryFilter.length > 1
                       ? ' +' + (categoryFilter.length - 1)
                       : '')}
@@ -426,6 +430,7 @@ const modalStyles = StyleSheet.create({
   },
   container: {
     marginHorizontal: s(20),
+    maxHeight: '80%',
     backgroundColor: colors.white,
     borderRadius: s(10),
     borderWidth: s(2),
@@ -449,6 +454,7 @@ const modalStyles = StyleSheet.create({
   },
   chip: {
     marginRight: s(5),
+    marginBottom: s(5),
   },
   filterContainer: {
     flexDirection: 'row',
