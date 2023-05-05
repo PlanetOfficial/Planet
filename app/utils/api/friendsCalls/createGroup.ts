@@ -3,6 +3,7 @@ import {DBOpsURL} from '../APIConstants';
 export const createGroup = async (
   name: String,
   invitee_emails: Array<String>,
+  authToken: any,
 ) => {
   // TODO: filter inputs**
 
@@ -14,7 +15,7 @@ export const createGroup = async (
 
   const response = await fetch(
     DBOpsURL +
-      `/createGroup?${emails_string}&name=${name}`,
+      `/createGroup?${emails_string}&name=${name}&authtoken=${authToken}`,
     {
       method: 'POST',
     },

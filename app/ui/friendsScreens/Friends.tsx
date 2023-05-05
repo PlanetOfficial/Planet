@@ -75,7 +75,7 @@ const Friends = ({navigation}: {navigation: any}) => {
         vs(680) - s(60) - insets.top,
       ),
     ],
-    [insets.top],
+    [insets.top, friendGroups, invitations],
   );
   const handleFgSheetChange = useCallback(
     (fromIndex: number, toIndex: number) => {
@@ -113,7 +113,7 @@ const Friends = ({navigation}: {navigation: any}) => {
     };
 
     initializeData();
-  }, [])
+  }, [invitations])
 
   return (
     <>
@@ -195,6 +195,7 @@ const Friends = ({navigation}: {navigation: any}) => {
           friendGroups={friendGroups}
           friendGroup={friendGroup}
           setFriendGroup={setFriendGroup}
+          setInvites={setInvitations}
           invitations={invitations}
           navigation={navigation}
         />

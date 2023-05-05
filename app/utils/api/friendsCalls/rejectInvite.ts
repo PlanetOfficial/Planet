@@ -1,13 +1,14 @@
 import {DBOpsURL} from '../APIConstants';
 
 export const rejectInvite = async (
-  group_id: number,
+  invite_id: number,
+  token: any,
 ) => {
   // TODO: filter inputs**
 
   const response = await fetch(
     DBOpsURL +
-      `/rejectInvite?group_id=${group_id}`,
+      `/rejectInvite?invite_id=${invite_id}&authtoken=${token}`,
     {
       method: 'POST',
     },
