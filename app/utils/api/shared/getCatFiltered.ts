@@ -21,9 +21,9 @@ export const getCatFiltered = async (
     [key: string]: string | number | (string | number)[];
   } = {};
   filters.forEach((item, index) => {
-    const filterValue : number | number[] = filterValues[index];
+    const filterValue: number | number[] = filterValues[index];
     if (Array.isArray(filterValue)) {
-      _filterValues[item.name] = filterValue.map((value) => item.values[value]);
+      _filterValues[item.name] = filterValue.map(value => item.values[value]);
     } else {
       _filterValues[item.name] = item.values[filterValue];
     }
@@ -31,7 +31,9 @@ export const getCatFiltered = async (
 
   const response = await fetch(
     CustomCallsURL +
-      `/category_filter_v2?${subcategoryString}count=${count}&latitude=${latitude}&longitude=${longitude}&category_id=${category_id}&filters=${JSON.stringify(_filterValues)}`,
+      `/category_filter_v2?${subcategoryString}count=${count}&latitude=${latitude}&longitude=${longitude}&category_id=${category_id}&filters=${JSON.stringify(
+        _filterValues,
+      )}`,
     {
       method: 'GET',
     },

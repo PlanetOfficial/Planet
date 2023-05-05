@@ -8,6 +8,7 @@ export const requestLocations = async (
   latitude: number,
   longitude: number,
   count: number,
+  //TODO-NAOTO: Accept filters
 ) => {
   // TODO: filter inputs**
 
@@ -29,7 +30,6 @@ export const requestLocations = async (
 
   if (response?.ok) {
     const myJson = await response.json(); //extract JSON from the http response
-    console.log('myJson', myJson);
     return myJson?.places;
   } else {
     return {};

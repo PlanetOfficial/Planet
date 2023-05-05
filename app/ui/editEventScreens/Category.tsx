@@ -24,7 +24,6 @@ import {
   Category as CategoryT,
   Filter as FilterT,
 } from '../../utils/interfaces/types';
-import { filter } from '../../../e2e/jest.config';
 
 interface ChildComponentProps {
   navigation: any;
@@ -69,11 +68,15 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
 
   let filters: FilterT[] = category.filters ? category.filters : [];
   const [filterValues, setFilterValues] = useState<(number | number[])[]>([]);
-  const [defaultFilterValues, setDefaultFilterValues] = useState<(number | number[])[]>([]);
+  const [defaultFilterValues, setDefaultFilterValues] = useState<
+    (number | number[])[]
+  >([]);
   const [filtersInitialized, setFiltersInitialized] = useState<boolean>(false);
+  const [toBeRefreshed, setToBeRefreshed] = useState<boolean>(true);
 
   useEffect(() => {
     const loadDestinations = async (categoryId: number) => {
+      setToBeRefreshed(false);
       const response = await requestLocations(
         [categoryId],
         radius,
@@ -84,8 +87,9 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
 
       const _destinations: (Place | CategoryT)[] = [...destinations];
       const _destination: Place | CategoryT = _destinations[categoryIndex];
-      if (isCategory(_destination)) {
+      if (isCategory(_destination) && response[categoryId]) {
         _destination.options = response[categoryId];
+        console.log(_destination.options);
         setDestinations(_destinations);
       }
     };
@@ -98,25 +102,28 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
       setDefaultFilterValues(_defaultFilterValues);
       setFilterValues(_defaultFilterValues);
       setFiltersInitialized(true);
-    }
+    };
 
-    if (isCategory(destination)) {
+    if (isCategory(destination) && toBeRefreshed) {
       loadDestinations(category.id);
     }
 
-    if(!filtersInitialized) {
+    if (!filtersInitialized) {
       initializeFilterValues();
     }
   }, [
     category.id,
     categoryIndex,
-    destination,
-    destinations,
     latitude,
     longitude,
     radius,
     filterValues,
+    destination,
+    destinations,
     setDestinations,
+    filters,
+    filtersInitialized,
+    toBeRefreshed,
   ]);
 
   const isCategory = (item: Place | CategoryT): item is CategoryT => {
@@ -161,7 +168,10 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
           filters={filters}
           subcategories={category.subcategories}
           currFilters={filterValues}
-          setCurrFilters={setFilterValues}
+          setCurrFilters={(_filterValues: (number | number[])[]) => {
+            setToBeRefreshed(true);
+            setFilterValues(_filterValues);
+          }}
           defaultFilterValues={defaultFilterValues}
         />
       ) : null}

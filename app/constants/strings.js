@@ -127,7 +127,7 @@ const strings = {
     cancel: 'Cancel',
   },
   filter: {
-    all: 'All Categories',
+    all: 'All',
     editView: 'Edit View',
     visible: 'Visible',
     hidden: 'Hidden',

@@ -71,7 +71,16 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
 
   const handleOptionPress = (idx: number, option: number) => {
     let newFilters = [...currFilters];
-    newFilters[idx] = option;
+    let _option: number | number[] = newFilters[idx];
+    if (Array.isArray(_option)) {
+      if (_option.includes(option)) {
+        newFilters[idx] = _option.filter((i: number) => i !== option);
+      } else {
+        newFilters[idx] = [..._option, option];
+      }
+    } else {
+      newFilters[idx] = option;
+    }
     setCurrFilters(newFilters);
     closeDropdown();
   };
@@ -89,6 +98,22 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
     setDropdownStatus('');
     setPos(0);
     setWidth(0);
+  };
+
+  const displayFilter = (filter: FilterT, index: number) => {
+    const _filter: number | number[] = currFilters[index];
+    if (Array.isArray(_filter)) {
+      if (_filter.length === filter.options.length || _filter.length === 0) {
+        return strings.filter.all;
+      } else {
+        return _filter
+          .sort()
+          .map((i: number) => filter.options[i])
+          .join(', ');
+      }
+    } else {
+      return filter.options[_filter];
+    }
   };
 
   return (
@@ -126,11 +151,7 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
                     ? colors.darkgrey
                     : colors.black
                 }>
-                {filter.text + ': ' + (Array.isArray(currFilters[idx])
-                  ? currFilters[idx]  // @ts-ignore
-                      .map((i: number) => filter.options[i])
-                      .join(', ')     // @ts-ignore
-                  : filter.options[currFilters[idx]])}
+                {filter.text + ': ' + displayFilter(filter, idx)}
               </Text>
               <View style={styles.chipIcon}>
                 <Icon size="s" icon={icons.drop} padding={s(3)} />
@@ -184,7 +205,10 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
                     <Text size="xs" weight="l">
                       {option}
                     </Text>
-                    {idx === currFilters[index] ? (
+                    {idx === currFilters[index] ||
+                    (Array.isArray(currFilters[index]) &&
+                      // @ts-ignore
+                      currFilters[index].includes(idx)) ? (
                       <Icon
                         size="xs"
                         icon={icons.confirm}

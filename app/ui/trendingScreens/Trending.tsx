@@ -51,7 +51,7 @@ const Trending: React.FC<Props> = ({navigation}) => {
       _liveCategories?.forEach((category: Category) => {
         category.icon = categoryIcons[category.id - 1];
       });
-      
+
       setLiveCategories(_liveCategories);
     };
 
@@ -109,7 +109,7 @@ const Trending: React.FC<Props> = ({navigation}) => {
       );
     };
 
-    if(liveCategories?.length > 0){
+    if (liveCategories?.length > 0) {
       detectLocation();
     }
   }, [radius, liveCategories]);
