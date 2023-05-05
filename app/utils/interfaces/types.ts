@@ -17,10 +17,13 @@ export interface Place {
 export interface Category {
   id: number;
   name: string;
+  supplier: string;
+  alias: string;
+  genre_id: number;
+  filters?: Filter[];
   icon: ImageSourcePropType;
   subcategories?: Subcategory[];
   options?: Place[];
-  filters?: Filter[];
 }
 
 export interface Subcategory {
@@ -31,9 +34,9 @@ export interface Subcategory {
 export interface Filter {
   name: string;
   options: string[];
-  values: number[];
+  values: (number | string)[];
   text: string;
-  defaultIdx: number;
+  defaultIdx: number | number[];
 }
 
 export interface Genre {
@@ -41,7 +44,6 @@ export interface Genre {
   name: string;
   image: ImageSourcePropType;
   categories: Category[];
-  filters?: Filter[];
 }
 
 export interface Region {

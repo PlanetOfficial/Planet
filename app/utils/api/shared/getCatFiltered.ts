@@ -1,4 +1,4 @@
-import {addDaysToToday} from '../../functions/Misc';
+import {Filter} from '../../interfaces/types';
 import {CustomCallsURL} from '../APIConstants';
 
 export const getCatFiltered = async (
@@ -6,24 +6,32 @@ export const getCatFiltered = async (
   count: number,
   latitude: number,
   longitude: number,
-  daysUpperBound: number,
-  radius: number,
   category_id: number,
-  sortByDistance: boolean,
+  filters: Filter[],
+  filterValues: (number | number[])[],
 ) => {
   // TODO: filter inputs**
-
   let subcategoryString = '';
 
   subcategories.forEach(item => {
     subcategoryString += `subcategories_ids[]=${item}&`;
   });
 
-  const dateString = addDaysToToday(daysUpperBound);
+  let _filterValues: {
+    [key: string]: string | number | (string | number)[];
+  } = {};
+  filters.forEach((item, index) => {
+    const filterValue : number | number[] = filterValues[index];
+    if (Array.isArray(filterValue)) {
+      _filterValues[item.name] = filterValue.map((value) => item.values[value]);
+    } else {
+      _filterValues[item.name] = item.values[filterValue];
+    }
+  });
 
   const response = await fetch(
     CustomCallsURL +
-      `/category_filter?${subcategoryString}count=${count}&latitude=${latitude}&longitude=${longitude}&latest_event_date=${dateString}&radius=${radius}&category_id=${category_id}&sort_by_distance=${sortByDistance}`,
+      `/category_filter_v2?${subcategoryString}count=${count}&latitude=${latitude}&longitude=${longitude}&category_id=${category_id}&filters=${JSON.stringify(_filterValues)}`,
     {
       method: 'GET',
     },

@@ -13,8 +13,7 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 import Geolocation from '@react-native-community/geolocation';
 
 import {colors} from '../../constants/theme';
-import {icons} from '../../constants/images';
-import {genres} from '../../constants/genres';
+import {categoryIcons, icons} from '../../constants/images';
 import {floats, integers} from '../../constants/numbers';
 import strings from '../../constants/strings';
 
@@ -26,6 +25,7 @@ import {getBookmarks} from '../../utils/api/shared/getBookmarks';
 import {requestLocations} from '../../utils/api/CreateCalls/requestLocations';
 import {Subcategory} from '../../utils/interfaces/types';
 import {Category, LiveEvent, LiveEvents} from '../../utils/interfaces/types';
+import {getGenres} from '../../utils/api/shared/getGenres';
 
 interface Props {
   navigation: any;
@@ -37,6 +37,7 @@ const Trending: React.FC<Props> = ({navigation}) => {
   const [radius] = useState<number>(floats.defaultRadius);
   const [eventsData, setEventsData] = useState<LiveEvents>([]);
   const [bookmarks, setBookmarks] = useState<number[]>([]);
+  const [liveCategories, setLiveCategories] = useState<Category[]>([]);
 
   useEffect(() => {
     const initializeData = async () => {
@@ -44,6 +45,14 @@ const Trending: React.FC<Props> = ({navigation}) => {
 
       const _bookmarks = await getBookmarks(authToken);
       setBookmarks(_bookmarks);
+
+      const _genres = await getGenres();
+      const _liveCategories: Category[] = _genres[0]?.categories;
+      _liveCategories?.forEach((category: Category) => {
+        category.icon = categoryIcons[category.id - 1];
+      });
+      
+      setLiveCategories(_liveCategories);
     };
 
     initializeData();
@@ -69,7 +78,7 @@ const Trending: React.FC<Props> = ({navigation}) => {
       }
 
       const requestAPI = async (_latitude: number, _longitude: number) => {
-        const categoryIds: number[] = genres[0].categories.map(
+        const categoryIds: number[] = liveCategories?.map(
           (category: Category) => category.id,
         );
 
@@ -100,8 +109,10 @@ const Trending: React.FC<Props> = ({navigation}) => {
       );
     };
 
-    detectLocation();
-  }, [radius]);
+    if(liveCategories?.length > 0){
+      detectLocation();
+    }
+  }, [radius, liveCategories]);
 
   return (
     <View style={styles.container}>
@@ -138,7 +149,7 @@ const Trending: React.FC<Props> = ({navigation}) => {
         </View>
       </SafeAreaView>
       <ScrollView>
-        {genres[0].categories.map((category: Category, idx: number) =>
+        {liveCategories?.map((category: Category, idx: number) =>
           eventsData[category.id] && eventsData[category.id].length > 0 ? (
             <View key={idx} style={categoryStyles.container}>
               <View style={categoryStyles.header}>
@@ -151,7 +162,7 @@ const Trending: React.FC<Props> = ({navigation}) => {
                     let hiddenSubCategories: Subcategory[] = [];
 
                     if (category.subcategories) {
-                      if (category.subcategories?.length <= 5) {
+                      if (category.subcategories.length <= 5) {
                         defaultSubcategories = category.subcategories;
                       } else {
                         defaultSubcategories = category.subcategories?.slice(
@@ -165,6 +176,7 @@ const Trending: React.FC<Props> = ({navigation}) => {
                         subcategories: defaultSubcategories,
                         hiddenSubCategories,
                         categoryId: category.id,
+                        filters: category.filters,
                         categoryName: category.name,
                         bookmarks,
                         latitude,
@@ -207,7 +219,7 @@ const Trending: React.FC<Props> = ({navigation}) => {
                     )
                   : null}
               </ScrollView>
-              {idx === genres[0].categories.length - 1 ? (
+              {idx === liveCategories?.length - 1 ? (
                 <View style={styles.bottomPadding} />
               ) : (
                 <Spacer />

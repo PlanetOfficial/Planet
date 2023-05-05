@@ -24,6 +24,7 @@ import {
   Category as CategoryT,
   Filter as FilterT,
 } from '../../utils/interfaces/types';
+import { filter } from '../../../e2e/jest.config';
 
 interface ChildComponentProps {
   navigation: any;
@@ -66,21 +67,10 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
     closeDropdown,
   }));
 
-  // TODO-MVP: implement filters for each categories
-
-  // let filters: FilterT[] = category.filters ? category.filters : [];
-  let filters: FilterT[] = [];
-  const [filterValues, setFilterValues] = useState<number[]>([]);
-  const [defaultFilterValues] = useState<number[]>([]);
-
-  // useEffect(() => {
-  //   let _defaultFilterValues: number[] = [];
-  //   for (let i = 0; filters && i < filters.length; i++) {
-  //     _defaultFilterValues.push(filters[i].defaultIdx);
-  //   }
-  //   setDefaultFilterValues(_defaultFilterValues);
-  //   setFilterValues(_defaultFilterValues);
-  // }, [filters]);
+  let filters: FilterT[] = category.filters ? category.filters : [];
+  const [filterValues, setFilterValues] = useState<(number | number[])[]>([]);
+  const [defaultFilterValues, setDefaultFilterValues] = useState<(number | number[])[]>([]);
+  const [filtersInitialized, setFiltersInitialized] = useState<boolean>(false);
 
   useEffect(() => {
     const loadDestinations = async (categoryId: number) => {
@@ -100,11 +90,34 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
       }
     };
 
-    if (isCategory(destination) && destination.options?.length === 0) {
+    const initializeFilterValues = () => {
+      let _defaultFilterValues: (number | number[])[] = [];
+      for (let i = 0; filters && i < filters.length; i++) {
+        _defaultFilterValues.push(filters[i].defaultIdx);
+      }
+      setDefaultFilterValues(_defaultFilterValues);
+      setFilterValues(_defaultFilterValues);
+      setFiltersInitialized(true);
+    }
+
+    if (isCategory(destination)) {
       loadDestinations(category.id);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+
+    if(!filtersInitialized) {
+      initializeFilterValues();
+    }
+  }, [
+    category.id,
+    categoryIndex,
+    destination,
+    destinations,
+    latitude,
+    longitude,
+    radius,
+    filterValues,
+    setDestinations,
+  ]);
 
   const isCategory = (item: Place | CategoryT): item is CategoryT => {
     return 'icon' in item;

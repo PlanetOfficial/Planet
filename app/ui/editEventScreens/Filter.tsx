@@ -23,9 +23,9 @@ import {Filter as FilterT, Subcategory} from '../../utils/interfaces/types';
 interface ChildComponentProps {
   filters: FilterT[];
   subcategories?: Subcategory[];
-  currFilters: number[];
-  setCurrFilters: (filters: number[]) => void;
-  defaultFilterValues: number[];
+  currFilters: (number | number[])[];
+  setCurrFilters: (filters: (number | number[])[]) => void;
+  defaultFilterValues: (number | number[])[];
 }
 
 const Filter = forwardRef((props: ChildComponentProps, ref) => {
@@ -43,7 +43,7 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
 
   const [dropdownStatus, setDropdownStatus] = useState<string>('');
 
-  const [tempFilters, setTempFilters] = useState<number[]>(
+  const [tempFilters, setTempFilters] = useState<(number | number[])[]>(
     Array(filters.length).fill(0),
   );
   const [categoryFilter, setCategoryFilter] = useState<number[]>([]);
@@ -126,7 +126,11 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
                     ? colors.darkgrey
                     : colors.black
                 }>
-                {filter.text + ': ' + filter.options[currFilters[idx]]}
+                {filter.text + ': ' + (Array.isArray(currFilters[idx])
+                  ? currFilters[idx]  // @ts-ignore
+                      .map((i: number) => filter.options[i])
+                      .join(', ')     // @ts-ignore
+                  : filter.options[currFilters[idx]])}
               </Text>
               <View style={styles.chipIcon}>
                 <Icon size="s" icon={icons.drop} padding={s(3)} />

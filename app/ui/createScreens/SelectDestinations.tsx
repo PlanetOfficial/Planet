@@ -93,7 +93,12 @@ const SelectDestinations: React.FC<Props> = ({navigation, route}) => {
         _destinations.push({
           id: category.id,
           name: category.name,
+          supplier: category.supplier,
+          alias: category.alias,
+          genre_id: category.genre_id,
+          filters: category.filters,
           icon: category.icon,
+          subcategories: category.subcategories,
           options: response[category.id],
         });
         _selectionIndices.push(0);

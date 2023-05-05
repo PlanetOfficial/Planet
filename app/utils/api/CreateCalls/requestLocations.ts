@@ -29,6 +29,7 @@ export const requestLocations = async (
 
   if (response?.ok) {
     const myJson = await response.json(); //extract JSON from the http response
+    console.log('myJson', myJson);
     return myJson?.places;
   } else {
     return {};
