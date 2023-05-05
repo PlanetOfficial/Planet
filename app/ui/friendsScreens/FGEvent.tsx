@@ -29,7 +29,7 @@ import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 
-const Event = ({navigation, route}: {navigation: any; route: any}) => {
+const FGEvent = ({navigation, route}: {navigation: any; route: any}) => {
   const [eventId] = useState(route?.params?.eventData?.id);
   const [eventTitle] = useState(route?.params?.eventData?.name);
   const [date] = useState(new Date(route?.params?.eventData?.date)); // this probably doesn't work but whatever
@@ -461,4 +461,4 @@ const commentModalStyles = StyleSheet.create({
   },
 });
 
-export default Event;
+export default FGEvent;

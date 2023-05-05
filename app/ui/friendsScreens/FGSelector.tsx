@@ -24,7 +24,7 @@ const FGSelector = ({
   friendGroups,
   friendGroup,
   setFriendGroup,
-  setInvites,
+  refreshOnInviteEvent,
   invitations,
   navigation,
 }: {
@@ -32,7 +32,7 @@ const FGSelector = ({
   friendGroups: any[];
   friendGroup: any;
   setFriendGroup: any;
-  setInvites: any;
+  refreshOnInviteEvent: any;
   invitations: any[];
   navigation: any;
 }) => {
@@ -42,8 +42,7 @@ const FGSelector = ({
     const response = await acceptInvite(invite_id, token);
 
     if (response) {
-      // remove the invite from the list, which triggers a refresh for API data
-      setInvites(invitations.filter((item: any) => item.id !== invite_id));
+      refreshOnInviteEvent();
     } else {
       // TODO: error, make sure connected to internet and logged in, if error persists, log out and log back in
     }
@@ -55,8 +54,7 @@ const FGSelector = ({
     const response = await rejectInvite(invite_id, token);
 
     if (response) {
-      // remove the invite from the list, which triggers a refresh for API data
-      setInvites(invitations.filter((item: any) => item.id !== invite_id));
+      refreshOnInviteEvent();
     } else {
       // TODO: error, make sure connected to internet and logged in, if error persists, log out and log back in
     }
