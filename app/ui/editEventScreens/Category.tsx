@@ -187,21 +187,25 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
           setCategoryFilter={setCategoryFilter}
         />
       ) : null}
-      <PlacesDisplay
-        navigation={navigation}
-        places={
-          isCategory(destination) &&
+      {isCategory(destination) &&
           destination.options &&
-          Array.isArray(destination.options)
-            ? destination.options
-            : []
-        }
-        width={s(290)}
-        bookmarks={bookmarks}
-        closeDropdown={closeDropdown}
-        index={selectionIndex}
-        setIndex={setSelectionIndex}
-      />
+          Array.isArray(destination.options) &&
+          destination.options.length > 0 ? (
+            <PlacesDisplay
+              navigation={navigation}
+              places={destination.options}
+              width={s(290)}
+              bookmarks={bookmarks}
+              closeDropdown={closeDropdown}
+              index={selectionIndex}
+              setIndex={setSelectionIndex}
+            />
+          ) : (
+            <View style={styles.noPlacesFound}>
+              <Text size='m' color={colors.darkgrey}>{strings.createTabStack.noPlaces}</Text>
+            </View>
+          )
+      }
     </View>
   );
 });
@@ -231,6 +235,11 @@ const styles = StyleSheet.create({
     borderRadius: s(17.5),
     tintColor: colors.black,
   },
+  noPlacesFound: {
+    height: s(100),
+    alignItems: 'center',
+    justifyContent: 'center',
+  }
 });
 
 export default Category;

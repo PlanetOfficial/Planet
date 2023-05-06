@@ -30,6 +30,7 @@ const strings = {
     missingFields: 'Fields are missing',
   },
   createTabStack: {
+    noPlaces: 'No Places Found',
     milesAbbrev: 'mi',
     planEvent: 'Choose a Location',
     search: 'Search',
