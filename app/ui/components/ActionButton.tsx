@@ -4,6 +4,7 @@ import {TouchableOpacity, ViewStyle} from 'react-native';
 import {s} from 'react-native-size-matters';
 
 import Text from './Text';
+
 import {colors} from '../../constants/theme';
 
 interface Props {

@@ -6,11 +6,13 @@ import ScrollIndicator from '../components/ScrollIndicator';
 
 import {icons} from '../../constants/images';
 
+import {Place} from '../../utils/interfaces/types';
+
 interface Props {
   navigation: any;
-  data: any[];
+  places: Place[];
   width: number;
-  bookmarks: any;
+  bookmarks: number[];
   closeDropdown?: () => void;
   index: number;
   setIndex: (index: number) => void;
@@ -18,19 +20,19 @@ interface Props {
 
 const PlacesDisplay: React.FC<Props> = ({
   navigation,
-  data,
+  places,
   width,
   bookmarks,
   closeDropdown,
   index,
   setIndex,
 }) => {
-  const scrollViewRef: any = useRef(null);
+  const scrollViewRef = useRef<ScrollView>(null);
 
   const scrollToPosition = () => {
     if (scrollViewRef.current) {
       setTimeout(() => {
-        scrollViewRef.current.scrollTo({
+        scrollViewRef.current?.scrollTo({
           x: (width + s(20)) * index,
           y: 0,
           animated: false,
@@ -68,33 +70,33 @@ const PlacesDisplay: React.FC<Props> = ({
             setIndex(idx);
           }
         }}>
-        {data?.map((dest: any, idx: number) => (
+        {places?.map((place: Place, idx: number) => (
           <View
             style={[
               {
                 width: width,
               },
-              idx !== data?.length - 1 && {
+              idx !== places?.length - 1 && {
                 marginRight: s(20),
               },
             ]}
-            key={dest?.id}>
+            key={place?.id}>
             <TouchableOpacity
               onPress={() => {
                 navigation.navigate('Place', {
-                  destination: dest,
-                  category: dest?.category?.name,
+                  destination: place,
+                  category: place?.category_name,
                 });
               }}>
               <PlaceCard
-                id={dest?.id}
-                name={dest?.name}
-                info={dest?.category?.name}
-                marked={bookmarks?.includes(dest?.id)}
+                id={place?.id}
+                name={place?.name}
+                info={place?.category_name}
+                marked={bookmarks?.includes(place?.id)}
                 image={
-                  dest?.image_url
+                  place?.image_url
                     ? {
-                        uri: dest?.image_url,
+                        uri: place?.image_url,
                       }
                     : icons.defaultIcon
                 }
@@ -103,7 +105,7 @@ const PlacesDisplay: React.FC<Props> = ({
           </View>
         ))}
       </ScrollView>
-      <ScrollIndicator num={data?.length} idx={index} />
+      <ScrollIndicator num={places?.length} idx={index} />
     </>
   );
 };

@@ -141,7 +141,7 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
       ) : null}
       <PlacesDisplay
         navigation={navigation}
-        data={destinations[categoryIndex].options}
+        places={destinations[categoryIndex].options}
         width={s(290)}
         bookmarks={bookmarks}
         closeDropdown={closeDropdown}

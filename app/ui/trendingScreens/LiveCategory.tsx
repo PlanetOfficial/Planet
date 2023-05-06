@@ -20,7 +20,7 @@ import Icon from '../components/Icon';
 import Filter from '../editEventScreens/Filter';
 
 import {getCatFiltered} from '../../utils/api/shared/getCatFiltered';
-import {Subcategory} from '../../utils/interfaces/subcategory';
+import {Subcategory} from '../../utils/interfaces/types';
 
 const LiveCategory = ({navigation, route}: {navigation: any; route: any}) => {
   const [longitude] = useState(route?.params?.longitude);
