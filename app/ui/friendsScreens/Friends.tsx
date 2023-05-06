@@ -79,7 +79,7 @@ const Friends = ({navigation}: {navigation: any}) => {
 
   useEffect(() => {
     if (friendGroup !== -1) {
-      fetchCurGroupInfo(friendGroups[friendGroup].id);
+      fetchCurGroupInfo(friendGroups[friendGroup].group.id);
     }
   }, [friendGroup])
 
@@ -94,7 +94,7 @@ const Friends = ({navigation}: {navigation: any}) => {
       if (responseData.groups.length > 0) {
         setFriendGroup(0);
 
-        fetchCurGroupInfo(responseData.groups[0].id);
+        fetchCurGroupInfo(responseData.groups[0].group.id);
       }
     }
 
@@ -119,7 +119,7 @@ const Friends = ({navigation}: {navigation: any}) => {
       console.log("Error adding event");
     }
 
-    fetchCurGroupInfo(friendGroups[friendGroup].id);
+    fetchCurGroupInfo(friendGroups[friendGroup].group.id);
   }
 
   return (

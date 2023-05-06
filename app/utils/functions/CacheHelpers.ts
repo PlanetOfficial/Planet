@@ -2,11 +2,18 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {getUserInfo} from '../api/auth/getUserInfo';
 
-const cacheAsyncStorage = async (authToken: any) => {
+// caches: auth_token, user_id, name
+const cacheStorage = async (authToken: any) => {
   const response = await getUserInfo(authToken);
   let name = '';
   if (response?.name) {
     name = response.name;
+  }
+
+  if (response?.id) {
+    await EncryptedStorage.setItem('user_id', response.id.toString());
+  } else {
+    await EncryptedStorage.setItem('user_id', '');
   }
 
   // set name and other info into async storage
@@ -20,11 +27,11 @@ export const cacheUserInfo = async (authToken: any) => {
   // set auth token into encrypted storage
   await EncryptedStorage.setItem('auth_token', authToken);
 
-  await cacheAsyncStorage(authToken);
+  await cacheStorage(authToken);
 };
 
-export const updateAsyncStorage = async (authToken: any) => {
-  await cacheAsyncStorage(authToken);
+export const updateCaches = async (authToken: any) => {
+  await cacheStorage(authToken);
 };
 
 export const clearCaches = async () => {

@@ -1,0 +1,18 @@
+import {DBOpsURL} from '../APIConstants';
+
+export const likeFGPlace = async (
+  group_event_place_id: number,
+  token: any,
+) => {
+  // TODO: filter inputs**
+
+  const response = await fetch(
+    DBOpsURL +
+      `/likeFGPlace?group_event_place_id=${group_event_place_id}&authtoken=${token}`,
+    {
+      method: 'POST',
+    },
+  );
+
+  return response?.ok;
+};
