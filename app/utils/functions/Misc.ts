@@ -1,16 +1,14 @@
 import haversine from 'haversine-distance';
 
-import {MarkerObject} from '../interfaces/MarkerObject';
-import {coordinate} from '../interfaces/coordinate';
+import {MarkerObject, Coordinate, WeekDay} from '../interfaces/types';
 import misc from '../../constants/misc';
 import {floats} from '../../constants/numbers';
-import {WeekDay} from '../interfaces/weekday';
 
 /*
   Given a point and the longitudeDelta, calculate the radius of the circle (the
   point is the center of the circle)
 */
-export const calculateRadius = (point1: coordinate, longitudeDelta: number) => {
+export const calculateRadius = (point1: Coordinate, longitudeDelta: number) => {
   const point2 = {
     latitude: point1.latitude,
     longitude: point1.longitude + longitudeDelta / 2,
@@ -25,8 +23,8 @@ export const calculateRadius = (point1: coordinate, longitudeDelta: number) => {
   and longitude.
 */
 export const getDistanceFromCoordinates = (
-  point1: coordinate,
-  point2: coordinate,
+  point1: Coordinate,
+  point2: Coordinate,
 ) => {
   return haversine(point1, point2);
 };

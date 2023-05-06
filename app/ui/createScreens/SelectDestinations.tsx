@@ -30,61 +30,66 @@ import {
   getMarkerArray,
   getRegionForCoordinates,
 } from '../../utils/functions/Misc';
-import {MarkerObject} from '../../utils/interfaces/MarkerObject';
+import {MarkerObject} from '../../utils/interfaces/types';
 
 import {colors} from '../../constants/theme';
 import {integers} from '../../constants/numbers';
 import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
 
-const SelectDestinations = ({
-  navigation,
-  route,
-}: {
+import {Place, Category} from '../../utils/interfaces/types';
+
+interface Props {
   navigation: any;
   route: any;
-}) => {
-  const [latitude] = useState(route?.params?.latitude);
-  const [longitude] = useState(route?.params?.longitude);
-  const [radius] = useState(route?.params?.radius);
-  const [categories] = useState(route?.params?.selectedCategories);
+}
 
-  const [bookmarks, setBookmarks]: [any, any] = useState([]);
-  const [eventTitle, setEventTitle] = useState(
+const SelectDestinations: React.FC<Props> = ({navigation, route}) => {
+  const [latitude] = useState<number>(route?.params?.latitude);
+  const [longitude] = useState<number>(route?.params?.longitude);
+  const [radius] = useState<number>(route?.params?.radius);
+  const [categories] = useState<Category[]>(route?.params?.selectedCategories);
+
+  const [bookmarks, setBookmarks] = useState<number[]>([]);
+  const [eventTitle, setEventTitle] = useState<string>(
     strings.createTabStack.untitledEvent,
   );
-  const [date, setDate] = useState(new Date());
-  const [datePickerOpen, setDatePickerOpen] = useState(false);
-  const [saveConfirmationOpen, setSaveConfirmationOpen] = useState(false);
+  const [date, setDate] = useState<Date>(new Date());
+  const [datePickerOpen, setDatePickerOpen] = useState<boolean>(false);
+  const [saveConfirmationOpen, setSaveConfirmationOpen] =
+    useState<boolean>(false);
 
-  const [destinations, setDestinations]: [any, any] = useState([]);
-  const [selectionIndices, setSelectionIndices]: [number[], any] = useState([]);
+  const [destinations, setDestinations] = useState<(Place | Category)[]>([]);
+  const [selectionIndices, setSelectionIndices] = useState<number[]>([]);
 
-  const [markers, setMarkers]: [Array<MarkerObject>, any] = useState([]);
+  const [markers, setMarkers] = useState<MarkerObject[]>([]);
 
   const insets = useSafeAreaInsets();
 
-  const bottomSheetRef: any = useRef<BottomSheet>(null);
+  const addRef = useRef<any>(null); // any because of weird typing in custom component
+  const bottomSheetRef = useRef<BottomSheet>(null);
   const snapPoints = useMemo(
     () => [vs(350) - (insets.top + s(35)), vs(680) - (insets.top + s(60))],
     [insets.top],
   );
 
-  const addRef: any = useRef(null);
+  const isPlace = (destination: Place | Category): destination is Place => {
+    return destination.hasOwnProperty('latitude');
+  };
 
   useEffect(() => {
     const loadDestinations = async () => {
       const response = await requestLocations(
-        categories?.map((category: any) => category?.id),
+        categories.map((category: Category) => category.id),
         radius,
         latitude,
         longitude,
         integers.defaultNumPlaces,
       );
 
-      let _destinations: any[] = [];
+      let _destinations: (Place | Category)[] = [];
       let _selectionIndices: number[] = [];
-      categories?.forEach((category: any) => {
+      categories.forEach((category: Category) => {
         _destinations.push({
           id: -category.id,
           name: category.name,
@@ -101,12 +106,12 @@ const SelectDestinations = ({
       const authToken = await EncryptedStorage.getItem('auth_token');
       const response = await getBookmarks(authToken);
 
-      let bookmarksLoaded: any = [];
-      response?.forEach((bookmark: any) => {
-        bookmarksLoaded?.push(bookmark?.id);
+      let _bookmarks: number[] = [];
+      response.forEach((bookmark: Place) => {
+        _bookmarks.push(bookmark.id);
       });
 
-      setBookmarks(bookmarksLoaded);
+      setBookmarks(_bookmarks);
     };
 
     loadDestinations();
@@ -114,12 +119,14 @@ const SelectDestinations = ({
   }, [latitude, longitude, radius, categories]);
 
   useEffect(() => {
-    let places: any[] = [];
-    destinations?.forEach((destination: any, index: number) => {
-      if (destination?.id < 0) {
-        places.push(destination?.options[selectionIndices[index]]);
-      } else {
+    let places: Place[] = [];
+    destinations.forEach((destination: Place | Category, index: number) => {
+      if (isPlace(destination)) {
         places.push(destination);
+      } else {
+        if (destination.options) {
+          places.push(destination.options[selectionIndices[index]]);
+        }
       }
     });
 
@@ -129,14 +136,16 @@ const SelectDestinations = ({
   const handleSave = async () => {
     // send destinations to backend
     const placeIds: number[] = [];
-    destinations?.forEach((destination: any, index: number) => {
-      if (
-        destination?.id < 0 &&
-        destination?.options[selectionIndices[index]]
-      ) {
-        placeIds.push(destination?.options[selectionIndices[index]]?.id);
+    destinations.forEach((destination: Place | Category, index: number) => {
+      if (isPlace(destination)) {
+        placeIds.push(destination.id);
       } else {
-        placeIds.push(destination?.id);
+        if (
+          destination.options &&
+          destination.options[selectionIndices[index]]
+        ) {
+          placeIds.push(destination.options[selectionIndices[index]]?.id);
+        }
       }
     });
 
@@ -162,15 +171,15 @@ const SelectDestinations = ({
   return (
     <View testID="selectDestinationsScreenView" style={styles.container}>
       <MapView style={styles.map} region={getRegionForCoordinates(markers)}>
-        {markers?.length > 0
-          ? markers?.map((marker: MarkerObject, index: number) => (
+        {markers.length > 0
+          ? markers.map((marker: MarkerObject, index: number) => (
               <Marker
                 key={index}
                 coordinate={{
-                  latitude: marker?.latitude,
-                  longitude: marker?.longitude,
+                  latitude: marker.latitude,
+                  longitude: marker.longitude,
                 }}
-                title={marker?.name}
+                title={marker.name}
               />
             ))
           : null}
@@ -189,7 +198,7 @@ const SelectDestinations = ({
             <TextInput
               style={headerStyles.name}
               value={eventTitle}
-              onChangeText={(text: any) => setEventTitle(text)}
+              onChangeText={(text: string) => setEventTitle(text)}
             />
             <TouchableOpacity onPress={() => setDatePickerOpen(true)}>
               <CustomText
@@ -237,7 +246,7 @@ const SelectDestinations = ({
           setDestinations={setDestinations}
           selectionIndices={selectionIndices}
           setSelectionIndices={setSelectionIndices}
-          onAddPress={addRef?.current?.onAddPress}
+          onAddPress={addRef.current?.onAddPress}
         />
       </BottomSheet>
 

@@ -31,8 +31,14 @@ import Blur from '../components/Blur';
 import Text from '../components/Text';
 import Icon from '../components/Icon';
 
-const MapScreen = ({navigation}: {navigation: any}) => {
-  const [region, setRegion] = useState({
+import {Region} from '../../utils/interfaces/types';
+
+interface Props {
+  navigation: any;
+}
+
+const MapScreen: React.FC<Props> = ({navigation}) => {
+  const [region, setRegion] = useState<Region>({
     latitude: floats.defaultLatitude,
     longitude: floats.defaultLongitude,
     latitudeDelta: floats.defaultLatitudeDelta,
@@ -46,7 +52,7 @@ const MapScreen = ({navigation}: {navigation: any}) => {
     ),
   );
 
-  const updateRadius = (reg: any) => {
+  const updateRadius = (reg: Region) => {
     setRadius(
       calculateRadius(
         {latitude: reg.latitude, longitude: reg.longitude},
@@ -86,7 +92,7 @@ const MapScreen = ({navigation}: {navigation: any}) => {
           };
           setRegion(newRegion);
         },
-        (error: any) => {
+        error => {
           console.log(error);
         },
       );
@@ -95,18 +101,18 @@ const MapScreen = ({navigation}: {navigation: any}) => {
     setCurrentLocation();
   }, []);
 
-  const bottomSheetRef: any = useRef<BottomSheet>(null);
-  const autoCompleteRef: any = useRef<GooglePlacesAutocompleteRef>(null);
+  const bottomSheetRef = useRef<BottomSheet>(null);
+  const autoCompleteRef = useRef<GooglePlacesAutocompleteRef>(null);
   const snapPoints = useMemo(
     () => [insets.bottom + s(55), vs(680) - (insets.top + s(50))],
     [insets.bottom, insets.top],
   );
   const handleSheetChange = useCallback(
-    (fromIndex: number, toIndex: number) => {
+    (_fromIndex: number, toIndex: number) => {
       if (toIndex === 0) {
-        autoCompleteRef?.current.blur();
+        autoCompleteRef.current?.blur();
       } else {
-        autoCompleteRef?.current.focus();
+        autoCompleteRef.current?.focus();
       }
     },
     [],
@@ -193,14 +199,14 @@ const MapScreen = ({navigation}: {navigation: any}) => {
             }}
             textInputProps={{
               onFocus: () => {
-                bottomSheetRef?.current.snapToIndex(1);
+                bottomSheetRef.current?.snapToIndex(1);
               },
             }}
-            onPress={(data, details = null) => {
+            onPress={(_data, details = null) => {
               // As you can see if you turn these logs on, we get much more data than we're using. Maybe store in table?
               // console.log(data);
               // console.log(details);
-              bottomSheetRef?.current.snapToIndex(0);
+              bottomSheetRef.current?.snapToIndex(0);
               if (
                 details?.geometry?.location?.lat &&
                 details?.geometry?.location?.lng
