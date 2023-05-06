@@ -239,7 +239,7 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
                         currFilters,
                         setCurrFilters,
                       );
-                      if(!Array.isArray(currFilters[index])){
+                      if (!Array.isArray(currFilters[index])) {
                         closeDropdown();
                       }
                     }}>

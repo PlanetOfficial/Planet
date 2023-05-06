@@ -188,24 +188,25 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
         />
       ) : null}
       {isCategory(destination) &&
-          destination.options &&
-          Array.isArray(destination.options) &&
-          destination.options.length > 0 ? (
-            <PlacesDisplay
-              navigation={navigation}
-              places={destination.options}
-              width={s(290)}
-              bookmarks={bookmarks}
-              closeDropdown={closeDropdown}
-              index={selectionIndex}
-              setIndex={setSelectionIndex}
-            />
-          ) : (
-            <View style={styles.noPlacesFound}>
-              <Text size='m' color={colors.darkgrey}>{strings.createTabStack.noPlaces}</Text>
-            </View>
-          )
-      }
+      destination.options &&
+      Array.isArray(destination.options) &&
+      destination.options.length > 0 ? (
+        <PlacesDisplay
+          navigation={navigation}
+          places={destination.options}
+          width={s(290)}
+          bookmarks={bookmarks}
+          closeDropdown={closeDropdown}
+          index={selectionIndex}
+          setIndex={setSelectionIndex}
+        />
+      ) : (
+        <View style={styles.noPlacesFound}>
+          <Text size="m" color={colors.darkgrey}>
+            {strings.createTabStack.noPlaces}
+          </Text>
+        </View>
+      )}
     </View>
   );
 });
@@ -239,7 +240,7 @@ const styles = StyleSheet.create({
     height: s(100),
     alignItems: 'center',
     justifyContent: 'center',
-  }
+  },
 });
 
 export default Category;
