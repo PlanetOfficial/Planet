@@ -4,11 +4,10 @@ import React, {
   useImperativeHandle,
   useRef,
   useEffect,
+  useMemo,
 } from 'react';
 import {StyleSheet, View, Image} from 'react-native';
 import {s} from 'react-native-size-matters';
-
-import {requestLocations} from '../../utils/api/CreateCalls/requestLocations';
 
 import {colors} from '../../constants/theme';
 import strings from '../../constants/strings';
@@ -24,6 +23,7 @@ import {
   Category as CategoryT,
   Filter as FilterT,
 } from '../../utils/interfaces/types';
+import {requestLocationsSingle} from '../../utils/api/CreateCalls/requestLocationsSingle';
 
 interface ChildComponentProps {
   navigation: any;
@@ -66,30 +66,37 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
     closeDropdown,
   }));
 
-  let filters: FilterT[] = category.filters ? category.filters : [];
+  let filters: FilterT[] = useMemo(() => {
+    return category.filters ? category.filters : [];
+  }, [category.filters]);
+
   const [filterValues, setFilterValues] = useState<(number | number[])[]>([]);
+  const [categoryFilter, setCategoryFilter] = useState<number[]>([]);
   const [defaultFilterValues, setDefaultFilterValues] = useState<
     (number | number[])[]
   >([]);
   const [filtersInitialized, setFiltersInitialized] = useState<boolean>(false);
-  const [toBeRefreshed, setToBeRefreshed] = useState<boolean>(true);
+  const [toBeRefreshed, setToBeRefreshed] = useState<boolean>(false);
 
   useEffect(() => {
     const loadDestinations = async (categoryId: number) => {
       setToBeRefreshed(false);
-      const response = await requestLocations(
-        [categoryId],
+      const response = await requestLocationsSingle(
+        categoryId,
         radius,
         latitude,
         longitude,
         integers.defaultNumPlaces,
+        filters,
+        filterValues,
+        category.subcategories,
+        categoryFilter,
       );
 
       const _destinations: (Place | CategoryT)[] = [...destinations];
       const _destination: Place | CategoryT = _destinations[categoryIndex];
-      if (isCategory(_destination) && response[categoryId]) {
-        _destination.options = response[categoryId];
-        console.log(_destination.options);
+      if (isCategory(_destination) && response !== null) {
+        _destination.options = response;
         setDestinations(_destinations);
       }
     };
@@ -102,6 +109,7 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
       setDefaultFilterValues(_defaultFilterValues);
       setFilterValues(_defaultFilterValues);
       setFiltersInitialized(true);
+      setToBeRefreshed(true);
     };
 
     if (isCategory(destination) && toBeRefreshed) {
@@ -113,15 +121,17 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
     }
   }, [
     category.id,
+    category.subcategories,
+    categoryFilter,
     categoryIndex,
     latitude,
     longitude,
     radius,
+    filters,
     filterValues,
     destination,
     destinations,
     setDestinations,
-    filters,
     filtersInitialized,
     toBeRefreshed,
   ]);
@@ -173,12 +183,16 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
             setFilterValues(_filterValues);
           }}
           defaultFilterValues={defaultFilterValues}
+          categoryFilter={categoryFilter}
+          setCategoryFilter={setCategoryFilter}
         />
       ) : null}
       <PlacesDisplay
         navigation={navigation}
         places={
-          isCategory(destination) && destination.options
+          isCategory(destination) &&
+          destination.options &&
+          Array.isArray(destination.options)
             ? destination.options
             : []
         }

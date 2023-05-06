@@ -29,6 +29,7 @@ export interface Category {
 export interface Subcategory {
   id: number;
   title: string;
+  alias: string;
 }
 
 export interface Filter {

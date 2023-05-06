@@ -8,10 +8,7 @@ export const requestLocations = async (
   latitude: number,
   longitude: number,
   count: number,
-  //TODO-NAOTO: Accept filters
 ) => {
-  // TODO: filter inputs**
-
   let categoryString = '';
 
   categories.forEach(item => {
