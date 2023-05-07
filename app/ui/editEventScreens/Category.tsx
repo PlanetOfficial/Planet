@@ -17,25 +17,26 @@ import Filter from './Filter';
 import PlacesDisplay from '../components/PlacesDisplay';
 import {integers} from '../../constants/numbers';
 
+import {
+  Place,
+  Category as CategoryT,
+  Filter as FilterT,
+} from '../../utils/interfaces/types';
+
 interface ChildComponentProps {
   navigation: any;
   radius: number;
   latitude: number;
   longitude: number;
-  bookmarks: any[];
-  category: {
-    id: number;
-    name: string;
-    icon: any;
-    filters?: any[];
-    subcategories?: any[];
-  };
+  bookmarks: number[];
+  category: CategoryT;
   categoryIndex: number;
+  destination: Place | CategoryT;
   selectionIndex: number;
   setSelectionIndex: (idx: number) => void;
-  destinations: any;
-  setDestinations: (destinations: any) => void;
-  onCategoryMove: any;
+  destinations: (Place | CategoryT)[];
+  setDestinations: (destinations: (Place | CategoryT)[]) => void;
+  onCategoryMove: (idx: number, direction: number) => void;
 }
 
 const Category = forwardRef((props: ChildComponentProps, ref) => {
@@ -47,6 +48,7 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
     bookmarks,
     category,
     categoryIndex,
+    destination,
     selectionIndex,
     setSelectionIndex,
     destinations,
@@ -54,27 +56,27 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
     onCategoryMove,
   } = props;
 
-  const childRef: any = useRef(null);
+  const childRef = useRef<any>(null);
   const closeDropdown = () => {
-    childRef?.current?.closeDropdown();
+    childRef.current?.closeDropdown();
   };
   useImperativeHandle(ref, () => ({
     closeDropdown,
   }));
 
-  let filters = category.filters;
-
+  // let filters: FilterT[] = category.filters ? category.filters : [];
+  let filters: FilterT[] = [];
   const [filterValues, setFilterValues] = useState<number[]>([]);
-  const [defaultFilterValues, setDefaultFilterValues] = useState<number[]>([]);
+  const [defaultFilterValues] = useState<number[]>([]);
 
-  useEffect(() => {
-    let _defaultFilterValues: number[] = [];
-    for (let i = 0; filters && i < filters.length; i++) {
-      _defaultFilterValues.push(filters[i].defaultIdx);
-    }
-    setDefaultFilterValues(_defaultFilterValues);
-    setFilterValues(_defaultFilterValues);
-  }, [filters]);
+  // useEffect(() => {
+  //   let _defaultFilterValues: number[] = [];
+  //   for (let i = 0; filters && i < filters.length; i++) {
+  //     _defaultFilterValues.push(filters[i].defaultIdx);
+  //   }
+  //   setDefaultFilterValues(_defaultFilterValues);
+  //   setFilterValues(_defaultFilterValues);
+  // }, [filters]);
 
   useEffect(() => {
     const loadDestinations = async (categoryId: number) => {
@@ -86,16 +88,23 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
         integers.defaultNumPlaces,
       );
 
-      const _destinations = [...destinations];
-      _destinations[categoryIndex].options = response[categoryId];
-      setDestinations(_destinations);
+      const _destinations: (Place | CategoryT)[] = [...destinations];
+      const _destination: Place | CategoryT = _destinations[categoryIndex];
+      if (isCategory(_destination)) {
+        _destination.options = response[categoryId];
+        setDestinations(_destinations);
+      }
     };
 
-    if (destinations[categoryIndex].options?.length === 0) {
-      loadDestinations(-category.id);
+    if (isCategory(destination) && destination.options?.length === 0) {
+      loadDestinations(category.id);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const isCategory = (item: Place | CategoryT): item is CategoryT => {
+    return 'icon' in item;
+  };
 
   return (
     <View key={category.id}>
@@ -129,7 +138,7 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
           ]}
         />
       </View>
-      {filters ? (
+      {filters.length > 0 ? (
         <Filter
           ref={childRef}
           filters={filters}
@@ -141,7 +150,11 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
       ) : null}
       <PlacesDisplay
         navigation={navigation}
-        places={destinations[categoryIndex].options}
+        places={
+          isCategory(destination) && destination.options
+            ? destination.options
+            : []
+        }
         width={s(290)}
         bookmarks={bookmarks}
         closeDropdown={closeDropdown}

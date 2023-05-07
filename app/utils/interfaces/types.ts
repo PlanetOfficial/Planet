@@ -20,6 +20,7 @@ export interface Category {
   icon: ImageSourcePropType;
   subcategories?: Subcategory[];
   options?: Place[];
+  filters?: Filter[];
 }
 
 export interface Subcategory {
@@ -27,18 +28,20 @@ export interface Subcategory {
   title: string;
 }
 
+export interface Filter {
+  name: string;
+  options: string[];
+  values: number[];
+  text: string;
+  defaultIdx: number;
+}
+
 export interface Genre {
   id: number;
   name: string;
   image: ImageSourcePropType;
   categories: Category[];
-  filters?: {
-    name: string;
-    options: string[];
-    values: number[];
-    text: string;
-    defaultIdx: number;
-  }[];
+  filters?: Filter[];
 }
 
 export interface Region {

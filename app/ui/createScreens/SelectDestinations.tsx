@@ -91,7 +91,7 @@ const SelectDestinations: React.FC<Props> = ({navigation, route}) => {
       let _selectionIndices: number[] = [];
       categories.forEach((category: Category) => {
         _destinations.push({
-          id: -category.id,
+          id: category.id,
           name: category.name,
           icon: category.icon,
           options: response[category.id],

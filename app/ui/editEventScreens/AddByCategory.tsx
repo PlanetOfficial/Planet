@@ -7,10 +7,11 @@ import CategoryList from '../components/CategoryList';
 import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
+import {Category} from '../../utils/interfaces/types';
 
 interface Props {
   onClose: () => void;
-  onSelect: (dest: any) => void;
+  onSelect: (category: Category) => void;
 }
 
 const AddByCategory: React.FC<Props> = ({onClose, onSelect}) => {
@@ -26,9 +27,9 @@ const AddByCategory: React.FC<Props> = ({onClose, onSelect}) => {
       </View>
       <CategoryList
         onClose={onClose}
-        onSelect={category => {
+        onSelect={(category: Category) => {
           onSelect({
-            id: -category.id,
+            id: category.id,
             name: category.name,
             icon: category.icon,
           });

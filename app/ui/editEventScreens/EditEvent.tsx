@@ -17,17 +17,19 @@ import Category from './Category';
 import {icons} from '../../constants/images';
 import {colors} from '../../constants/theme';
 
+import {Place, Category as CategoryT} from '../../utils/interfaces/types';
+
 interface Props {
   navigation: any;
   radius: number;
   latitude: number;
   longitude: number;
-  bookmarks: any;
-  destinations: any;
-  setDestinations: (dest: any) => void;
+  bookmarks: number[];
+  destinations: (Place | CategoryT)[];
+  setDestinations: (destinations: (Place | CategoryT)[]) => void;
   selectionIndices: number[];
   setSelectionIndices: (idx: number[]) => void;
-  onAddPress: (idx: any) => void;
+  onAddPress: (idx: number) => void;
 }
 
 const EditEvent: React.FC<Props> = ({
@@ -48,10 +50,10 @@ const EditEvent: React.FC<Props> = ({
 
   const onMove = (idx: number, direction: number) => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    const _destinations = [...destinations];
-    const destination = _destinations[idx];
-    const _selectionIndices = [...selectionIndices];
-    const selectionIndex = _selectionIndices[idx];
+    const _destinations: (Place | CategoryT)[] = [...destinations];
+    const destination: Place | CategoryT = _destinations[idx];
+    const _selectionIndices: number[] = [...selectionIndices];
+    const selectionIndex: number = _selectionIndices[idx];
     _destinations.splice(idx, 1);
     _selectionIndices.splice(idx, 1);
     if (direction !== 0) {
@@ -67,18 +69,25 @@ const EditEvent: React.FC<Props> = ({
     setSelectionIndices(_selectionIndices);
   };
 
-  const onRemove = (item: any) => {
+  const onRemove = (destination: Place | CategoryT) => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    setDestinations((prev: any) => {
-      return prev.filter((temp: any) => temp !== item);
-    });
-    itemRefs.current.delete(item.id);
+    let _destinations: (Place | CategoryT)[] = [...destinations];
+    setDestinations(
+      _destinations.filter(
+        (_destination: Place | CategoryT) => _destination.id !== destination.id,
+      ),
+    );
+    itemRefs.current.delete(destination.id);
+  };
+
+  const isPlace = (destination: Place | CategoryT): destination is Place => {
+    return destination.hasOwnProperty('latitude');
   };
 
   return (
     <DraggableFlatList
       data={destinations}
-      keyExtractor={(_, index) => index.toString()}
+      keyExtractor={(_: Place | CategoryT, index: number) => index.toString()}
       showsVerticalScrollIndicator={false}
       contentContainerStyle={styles.flatlist}
       activationDistance={20}
@@ -91,10 +100,18 @@ const EditEvent: React.FC<Props> = ({
           value?.closeDropdown();
         });
       }}
-      onDragEnd={({data, from, to}) => {
+      onDragEnd={({
+        data,
+        from,
+        to,
+      }: {
+        data: (Place | CategoryT)[];
+        from: number;
+        to: number;
+      }) => {
         setDragging(false);
         setDestinations(data);
-        const _selectionIndices = [...selectionIndices];
+        const _selectionIndices: number[] = [...selectionIndices];
         const item = _selectionIndices.splice(from, 1)[0];
         _selectionIndices.splice(to, 0, item);
         setSelectionIndices(_selectionIndices);
@@ -113,112 +130,117 @@ const EditEvent: React.FC<Props> = ({
         drag,
         isActive,
       }: {
-        item: any;
-        getIndex: any;
-        drag: any;
-        isActive: any;
-      }) => (
-        <View
-          onTouchStart={() => {
-            itemRefs.current.forEach(value => {
-              value?.close();
-            });
-            childRefs.current.forEach((value, key) => {
-              if (key !== item.id) {
-                value?.closeDropdown();
-              }
-            });
-          }}>
-          {item?.id < 0 ? (
-            <View
-              key={item.id}
-              style={dragging && !isActive && styles.transparent}>
-              <Category
-                ref={ref => childRefs.current.set(item.id, ref)}
-                navigation={navigation}
-                radius={radius}
-                latitude={latitude}
-                longitude={longitude}
-                bookmarks={bookmarks}
-                category={item}
-                categoryIndex={getIndex()}
-                selectionIndex={selectionIndices[getIndex()]}
-                setSelectionIndex={(idx: number) => {
-                  const _selectionIndices = [...selectionIndices];
-                  _selectionIndices[getIndex()] = idx;
-                  setSelectionIndices(_selectionIndices);
-                }}
-                destinations={destinations}
-                setDestinations={setDestinations}
-                onCategoryMove={onMove}
-              />
-            </View>
-          ) : (
-            <View
-              key={item.id}
-              style={[
-                styles.cardContainer,
-                dragging && !isActive && styles.transparent,
-              ]}>
-              <SwipeableItem
-                ref={ref => itemRefs.current.set(item.id, ref)}
-                overSwipe={s(20)}
-                item={item}
-                renderUnderlayLeft={() => (
-                  <View style={styles.removeContainer}>
-                    <TouchableOpacity
-                      disabled={destinations.length === 1}
-                      onPress={() => {
-                        onRemove(item);
-                      }}
-                      style={[
-                        styles.removeButton,
-                        destinations.length === 1 && {
-                          backgroundColor: colors.darkgrey,
-                        },
-                      ]}>
-                      <Image style={styles.remove} source={icons.remove} />
-                    </TouchableOpacity>
-                  </View>
-                )}
-                snapPointsLeft={[s(60)]}>
-                <TouchableOpacity
-                  style={styles.card}
-                  onLongPress={drag}
-                  delayLongPress={400}
-                  disabled={dragging && !isActive}
-                  onPress={() => {
-                    navigation.navigate('Place', {
-                      destination: item,
-                      category: item?.category?.name,
-                    });
-                  }}>
-                  <PlaceCard
-                    id={item?.id}
-                    name={item?.name}
-                    info={item?.category?.name}
-                    marked={bookmarks?.includes(item?.id)}
-                    image={
-                      item?.image_url
-                        ? {
-                            uri: item?.image_url,
-                          }
-                        : icons.defaultIcon
-                    }
-                  />
-                </TouchableOpacity>
-              </SwipeableItem>
-            </View>
-          )}
-          {dragging ? (
-            <Separator />
-          ) : (
-            <TouchableOpacity onPress={() => onAddPress(getIndex())}>
-              <AddEventSeparator />
-            </TouchableOpacity>
-          )}
-        </View>
-      )}
+        item: Place | CategoryT;
+        getIndex: () => number | undefined;
+        drag: () => void;
+        isActive: boolean;
+      }) => {
+        let _index: any = getIndex();
+        const index: number = _index; // typescript is so stupid
+        return (
+          <View
+            onTouchStart={() => {
+              itemRefs.current.forEach(value => {
+                value?.close();
+              });
+              childRefs.current.forEach((value, key) => {
+                if (key !== item.id) {
+                  value?.closeDropdown();
+                }
+              });
+            }}>
+            {isPlace(item) ? (
+              <View
+                key={item.id}
+                style={[
+                  styles.cardContainer,
+                  dragging && !isActive ? styles.transparent : null,
+                ]}>
+                <SwipeableItem
+                  ref={ref => itemRefs.current.set(item.id, ref)}
+                  overSwipe={s(20)}
+                  item={item}
+                  renderUnderlayLeft={() => (
+                    <View style={styles.removeContainer}>
+                      <TouchableOpacity
+                        disabled={destinations.length === 1}
+                        onPress={() => onRemove(item)}
+                        style={[
+                          styles.removeButton,
+                          destinations.length === 1
+                            ? {
+                                backgroundColor: colors.darkgrey,
+                              }
+                            : null,
+                        ]}>
+                        <Image style={styles.remove} source={icons.remove} />
+                      </TouchableOpacity>
+                    </View>
+                  )}
+                  snapPointsLeft={[s(60)]}>
+                  <TouchableOpacity
+                    style={styles.card}
+                    onLongPress={drag}
+                    delayLongPress={400}
+                    disabled={dragging && !isActive}
+                    onPress={() => {
+                      navigation.navigate('Place', {
+                        destination: item,
+                        category: item?.category_name,
+                      });
+                    }}>
+                    <PlaceCard
+                      id={item?.id}
+                      name={item?.name}
+                      info={item?.category_name}
+                      marked={bookmarks?.includes(item?.id)}
+                      image={
+                        item?.image_url
+                          ? {
+                              uri: item?.image_url,
+                            }
+                          : icons.defaultIcon
+                      }
+                    />
+                  </TouchableOpacity>
+                </SwipeableItem>
+              </View>
+            ) : (
+              <View
+                key={item.id}
+                style={dragging && !isActive ? styles.transparent : null}>
+                <Category
+                  ref={ref => childRefs.current.set(item.id, ref)}
+                  navigation={navigation}
+                  radius={radius}
+                  latitude={latitude}
+                  longitude={longitude}
+                  bookmarks={bookmarks}
+                  category={item}
+                  categoryIndex={index}
+                  destination={destinations[index]}
+                  selectionIndex={selectionIndices[index]}
+                  setSelectionIndex={(idx: number) => {
+                    const _selectionIndices = [...selectionIndices];
+                    _selectionIndices[index] = idx;
+                    setSelectionIndices(_selectionIndices);
+                  }}
+                  destinations={destinations}
+                  setDestinations={setDestinations}
+                  onCategoryMove={onMove}
+                />
+              </View>
+            )}
+            {dragging ? (
+              <Separator />
+            ) : (
+              <TouchableOpacity onPress={() => onAddPress(index)}>
+                <AddEventSeparator />
+              </TouchableOpacity>
+            )}
+          </View>
+        );
+      }}
     />
   );
 };
