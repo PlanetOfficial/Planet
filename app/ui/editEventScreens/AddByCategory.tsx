@@ -26,16 +26,7 @@ const AddByCategory: React.FC<Props> = ({onClose, onSelect}) => {
           <Image style={headerStyles.x} source={icons.x} />
         </TouchableOpacity>
       </View>
-      <CategoryList
-        onClose={onClose}
-        onSelect={(category: Category) => {
-          onSelect({
-            id: category.id,
-            name: category.name,
-            icon: category.icon,
-          });
-        }}
-      />
+      <CategoryList onClose={onClose} onSelect={onSelect} />
     </View>
   );
 };

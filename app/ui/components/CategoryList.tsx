@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   View,
@@ -12,11 +12,16 @@ import {s} from 'react-native-size-matters';
 
 import CustomText from '../components/Text';
 
-import {icons, vectors} from '../../constants/images';
+import {
+  icons,
+  vectors,
+  genreImages,
+  categoryIcons,
+} from '../../constants/images';
 import {colors} from '../../constants/theme';
-import {genres} from '../../constants/genres';
 
 import {Genre, Category} from '../../utils/interfaces/types';
+import {getGenres} from '../../utils/api/shared/getGenres';
 
 interface Props {
   onClose?: () => void;
@@ -27,6 +32,25 @@ const CategoryList: React.FC<Props> = ({onClose, onSelect}) => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [selectedGenre, setSelectedGenre] = useState<string>('');
   const [allCategories, setAllCategories] = useState<Category[]>([]);
+
+  const [genres, setGenres] = useState<Genre[]>([]);
+
+  useEffect(() => {
+    const initializeData = async () => {
+      const _genres = await getGenres();
+      // replace empty images with actual images
+      _genres.forEach((genre: Genre) => {
+        genre.image = genreImages[genre.id - 1];
+        genre.categories.forEach((category: Category) => {
+          category.icon = categoryIcons[category.id - 1];
+        });
+      });
+
+      setGenres(_genres);
+    };
+
+    initializeData();
+  }, []);
 
   const handleGenrePress = async (genre: Genre) => {
     setSelectedGenre(genre.name);

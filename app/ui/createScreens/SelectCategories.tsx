@@ -40,12 +40,7 @@ const SelectCategories: React.FC<Props> = ({navigation, route}) => {
     ) {
       setSelectedCategories((prevCategories: Category[]) => [
         ...prevCategories,
-        {
-          id: category.id,
-          name: category.name,
-          icon: category.icon,
-          subcategories: category.subcategories,
-        },
+        category,
       ]);
     }
   };
