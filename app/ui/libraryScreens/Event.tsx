@@ -174,7 +174,6 @@ const Event: React.FC<Props> = ({navigation, route}) => {
                   date={moment(date, 'M/D/YYYY').toDate()}
                   mode="date"
                   onConfirm={newDate => {
-                    console.log(newDate);
                     setDatePickerOpen(false);
                     setTempDate(moment(newDate, 'YYYY-MM-DD HH:mm:ssZ').format('M/D/YYYY'));
                   }}
