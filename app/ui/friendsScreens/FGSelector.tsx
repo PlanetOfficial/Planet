@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
+  Alert,
 } from 'react-native';
 
 import strings from '../../constants/strings';
@@ -44,7 +45,7 @@ const FGSelector = ({
     if (response) {
       refreshOnInviteEvent();
     } else {
-      // TODO: error, make sure connected to internet and logged in, if error persists, log out and log back in
+      Alert.alert('Error', 'Something went wrong. Please try again.');
     }
   };
 
@@ -56,7 +57,7 @@ const FGSelector = ({
     if (response) {
       refreshOnInviteEvent();
     } else {
-      // TODO: error, make sure connected to internet and logged in, if error persists, log out and log back in
+      Alert.alert('Error', 'Something went wrong. Please try again.');
     }
   };
 

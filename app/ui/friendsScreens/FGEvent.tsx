@@ -8,6 +8,7 @@ import {
   SafeAreaView,
   ScrollView,
   Pressable,
+  Alert,
 } from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
 import {s} from 'react-native-size-matters';
@@ -111,8 +112,7 @@ const FGEvent = ({navigation, route}: {navigation: any; route: any}) => {
     if (response) {
       getEventData();
     } else {
-      // TODO: error, make sure connected to internet and logged in, if error persists, log out and log back in
-      return;
+      Alert.alert('Error', 'Something went wrong. Please try again.');
     }
   };
 
@@ -124,8 +124,7 @@ const FGEvent = ({navigation, route}: {navigation: any; route: any}) => {
     if (response) {
       getEventData();
     } else {
-      // TODO: error, make sure connected to internet and logged in, if error persists, log out and log back in
-      return;
+      Alert.alert('Error', 'Something went wrong. Please try again.');
     }
   };
 
@@ -184,7 +183,7 @@ const FGEvent = ({navigation, route}: {navigation: any; route: any}) => {
         </View>
         <TouchableOpacity
           onPress={() => {
-            // TODO: FOrk functionality
+            // TODO-MVP: Fork event
           }}>
           <Text style={headerStyles.fork}>Fork</Text>
         </TouchableOpacity>
@@ -200,7 +199,6 @@ const FGEvent = ({navigation, route}: {navigation: any; route: any}) => {
         enableContentPanningGesture={false}
         enableHandlePanningGesture={false}>
         <SafeAreaView>
-          {/* TODO: Display estimated time and cost for this event */}
           <ScrollView
             style={placesDisplayStyles.scrollView}
             contentContainerStyle={placesDisplayStyles.contentContainer}
@@ -218,7 +216,6 @@ const FGEvent = ({navigation, route}: {navigation: any; route: any}) => {
             }>
             {fullEventData?.places?.map((dest: any, idx: any) => (
               <View style={placesDisplayStyles.card} key={idx}>
-                {/* TODO: Display estimated time and cost for this place */}
                 <TouchableOpacity
                   onPress={() => {
                     navigation.navigate('Place', {
@@ -251,7 +248,6 @@ const FGEvent = ({navigation, route}: {navigation: any; route: any}) => {
                       style={[
                         feedbackStyles.icon,
                         {
-                          // TODO: change the tint color based on like status
                           tintColor: didIReact(dest?.likes)
                             ? colors.accent
                             : colors.black,
@@ -285,7 +281,6 @@ const FGEvent = ({navigation, route}: {navigation: any; route: any}) => {
                       style={[
                         feedbackStyles.icon,
                         {
-                          // TODO: change the tint color based on dislike status
                           tintColor: didIReact(dest?.dislikes)
                             ? colors.accent
                             : colors.black,
@@ -371,7 +366,7 @@ const FGEvent = ({navigation, route}: {navigation: any; route: any}) => {
         snapPoints={commentSnapPoints}
         onAnimate={handleCommentSheetChange}>
         <View style={commentModalStyles.container}>
-          {/* TODO: Comment section goes here */}
+          {/* TODO: Comment functionality */}
         </View>
       </BottomSheetModal>
     </View>

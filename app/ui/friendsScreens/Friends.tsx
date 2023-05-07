@@ -8,6 +8,7 @@ import {
   Image,
   Pressable,
   FlatList,
+  Alert,
 } from 'react-native';
 import {BottomSheetModal} from '@gorhom/bottom-sheet';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -120,8 +121,7 @@ const Friends = ({navigation}: {navigation: any}) => {
     );
 
     if (!response) {
-      // TODO: display error
-      console.log('Error adding event');
+      Alert.alert('Error', 'Something went wrong. Please try again.');
     }
 
     fetchCurGroupInfo(friendGroups[friendGroup].group.id);
@@ -163,7 +163,6 @@ const Friends = ({navigation}: {navigation: any}) => {
           ItemSeparatorComponent={Spacer}
           contentContainerStyle={contentStyles.content}
           renderItem={({item}) => {
-            // TODO: Display actual events + user's icons and, if authorized, ability to remove events (LATER)
             // const images = getImagesFromURLs(item?.places);
             return (
               <TouchableOpacity

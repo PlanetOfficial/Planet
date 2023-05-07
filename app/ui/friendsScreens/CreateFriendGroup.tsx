@@ -8,6 +8,7 @@ import {
   Image,
   TextInput,
   FlatList,
+  Alert,
 } from 'react-native';
 
 import strings from '../../constants/strings';
@@ -39,7 +40,7 @@ const CreateFG = ({navigation}: {navigation: any}) => {
 
       navigation.navigate('Friends');
     } else {
-      // TODO: error, make sure connected to internet and logged in, if error persists, log out and log back in
+      Alert.alert('Error', 'Something went wrong. Please try again.');
     }
   };
 
