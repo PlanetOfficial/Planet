@@ -24,7 +24,7 @@ import {
   displayHours,
 } from '../../utils/functions/Misc';
 
-// TODO-MVP: THIS FUNCTIONALITY IS INCOMPLETE, AND SO IS REFACTORING
+// TODO-MVP: Redesign/Refactor Place Screen
 
 const Place = ({navigation, route}: {navigation: any; route: any}) => {
   const [destination] = useState(route?.params?.destination);

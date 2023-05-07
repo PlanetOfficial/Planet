@@ -216,7 +216,8 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
                 onPress: () => {
                   // TODO-MVP: remove event
                 },
-                disabled: false, // TODO-MVP: check if owner,
+                // TODO-MVP: check if owner
+                disabled: false,
                 color: colors.red,
               },
             ]}

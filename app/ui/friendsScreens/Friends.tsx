@@ -30,6 +30,12 @@ import {getFGEvents} from '../../utils/api/friendsCalls/getFGEvents';
 import {FriendGroup, Invitation, Event} from '../../utils/interfaces/types';
 import {getBookmarks} from '../../utils/api/shared/getBookmarks';
 
+// TODO-MVP: Add the following functionalities
+// 1. The FG Selector Rows should be slidable, with the following options:
+//    a. Edit (name, members, etc.)
+//    b. Leave
+// 2. Each event should also be slidable, allowing the poster of the event to remove their event.
+
 interface Props {
   navigation: any;
 }

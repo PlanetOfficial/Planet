@@ -18,7 +18,7 @@ import AButton from '../components/ActionButton';
 import {GoogleMapsAPIKey} from '../../utils/api/APIConstants';
 import {Place, Region} from '../../utils/interfaces/types';
 
-// TODO-MVP: THIS FUNCTIONALITY IS INCOMPLETE, AND SO IS REFACTORING
+// TODO-MVP: AddCustomDest Incomplete
 
 interface Props {
   onClose: () => void;
