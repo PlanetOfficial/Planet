@@ -1,7 +1,7 @@
 import {DBOpsURL} from '../APIConstants';
 
 export const getGenres = async () => {
-  // TODO: filter inputs**
+  // TODO-SECURITY: filter inputs**
 
   const response = await fetch(DBOpsURL + '/category', {
     method: 'GET',

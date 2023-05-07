@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Alert,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -28,7 +29,7 @@ const Settings: React.FC<Props> = ({navigation}) => {
     try {
       clearCaches();
     } catch (error) {
-      // TODO: display error
+      Alert.alert('Error', 'Something went wrong. Please try again.');
       console.log(error);
     } finally {
       navigation.reset({

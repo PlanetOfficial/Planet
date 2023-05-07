@@ -1,7 +1,7 @@
 import {DBOpsURL} from '../APIConstants';
 
 export const getPlaceDetails = async (placeId: any) => {
-  // TODO: filter inputs**
+  // TODO-SECURITY: filter inputs**
 
   const response = await fetch(DBOpsURL + `/place/${placeId}`, {
     method: 'GET',

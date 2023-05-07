@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   View,
   Platform,
+  Alert,
 } from 'react-native';
 import moment from 'moment';
 
@@ -169,9 +170,8 @@ const SelectDestinations: React.FC<Props> = ({navigation, route}) => {
 
       if (responseStatus) {
         navigation.navigate('TabStack', {screen: 'Library'});
-        // TODO: show successful save
       } else {
-        // TODO: error, make sure connected to internet and logged in, if error persists, log out and log back in
+        Alert.alert('Error', 'Something went wrong. Please try again.');
       }
     }
   };

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Image, StyleSheet, View} from 'react-native';
+import {Alert, Image, StyleSheet, View} from 'react-native';
 
 import {s} from 'react-native-size-matters';
 import EncryptedStorage from 'react-native-encrypted-storage';
@@ -50,10 +50,8 @@ const PlaceCard: React.FC<Props> = ({
 
     if (responseStatus) {
       setBookmarked(!bookmarked);
-
-      // TODO: success
     } else {
-      // failed
+      Alert.alert('Error', 'Something went wrong. Please try again.');
     }
   };
 
