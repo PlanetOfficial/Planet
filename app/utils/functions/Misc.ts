@@ -69,19 +69,6 @@ export const getRegionForCoordinates = (points: MarkerObject[]): any => {
   };
 };
 
-/* O(n) algorithm to filter objects and return objects in the array with
-   unique IDs
-*/
-export const filterToUniqueIds = (arr: any[]): any => {
-  const uniqueObj: any = {};
-  arr?.forEach(item => {
-    if (item?.id && !uniqueObj[item.id]) {
-      uniqueObj[item.id] = item;
-    }
-  });
-
-  return Object.values(uniqueObj).reverse();
-};
 
 /*
   Give an array where each element is another array, fetches images

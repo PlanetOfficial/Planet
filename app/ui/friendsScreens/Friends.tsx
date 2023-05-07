@@ -104,8 +104,6 @@ const Friends: React.FC<Props> = ({navigation}) => {
 
     const eventsData = await getEvents(token);
     setUserEvents(eventsData);
-
-    console.log(eventsData[0]);
   };
 
   useEffect(() => {
