@@ -13,12 +13,18 @@ import {colors} from '../../constants/theme';
 import {icons} from '../../constants/images';
 import {fgIcons} from '../../constants/images';
 import {s} from 'react-native-size-matters';
+import {FriendGroup} from '../../utils/interfaces/friendGroup';
+import {Invitation} from '../../utils/interfaces/invitation';
+import {acceptInvite} from '../../utils/api/friendsCalls/acceptInvite';
+import EncryptedStorage from 'react-native-encrypted-storage';
+import {rejectInvite} from '../../utils/api/friendsCalls/rejectInvite';
 
 const FGSelector = ({
   bottomSheetRef,
   friendGroups,
   friendGroup,
   setFriendGroup,
+  refreshOnInviteEvent,
   invitations,
   navigation,
 }: {
@@ -26,12 +32,37 @@ const FGSelector = ({
   friendGroups: any[];
   friendGroup: any;
   setFriendGroup: any;
+  refreshOnInviteEvent: any;
   invitations: any[];
   navigation: any;
 }) => {
+  const handleAcceptInvite = async (invite_id: number) => {
+    const token = await EncryptedStorage.getItem('auth_token');
+
+    const response = await acceptInvite(invite_id, token);
+
+    if (response) {
+      refreshOnInviteEvent();
+    } else {
+      // TODO: error, make sure connected to internet and logged in, if error persists, log out and log back in
+    }
+  };
+
+  const handleRejectInvite = async (invite_id: number) => {
+    const token = await EncryptedStorage.getItem('auth_token');
+
+    const response = await rejectInvite(invite_id, token);
+
+    if (response) {
+      refreshOnInviteEvent();
+    } else {
+      // TODO: error, make sure connected to internet and logged in, if error persists, log out and log back in
+    }
+  };
+
   return (
     <ScrollView>
-      {friendGroups?.map((fg: any, idx: number) => (
+      {friendGroups?.map((fg: FriendGroup, idx: number) => (
         <TouchableOpacity
           key={idx}
           style={[
@@ -42,7 +73,7 @@ const FGSelector = ({
           ]}
           onPress={() => {
             setFriendGroup(idx);
-            bottomSheetRef?.current.close();
+            bottomSheetRef.current?.close();
           }}>
           <Image style={fgBottomSheetStyles.icon} source={icons.user} />
           <View style={fgBottomSheetStyles.texts}>
@@ -53,24 +84,21 @@ const FGSelector = ({
                 fgBottomSheetStyles.text,
                 {color: idx === friendGroup ? colors.accent : colors.black},
               ]}>
-              {fg}
+              {fg.group.name}
             </Text>
           </View>
         </TouchableOpacity>
       ))}
-      {invitations?.map((invitation: any, idx: number) => (
+      {invitations?.map((invitation: Invitation, idx: number) => (
         <View key={idx} style={fgBottomSheetStyles.row}>
-          <Image
-            style={fgBottomSheetStyles.icon}
-            source={fgIcons[invitation.iconIdx]}
-          />
+          <Image style={fgBottomSheetStyles.icon} source={fgIcons[0]} />
           <View style={fgBottomSheetStyles.wrap}>
             <View style={fgBottomSheetStyles.texts}>
               <Text numberOfLines={1} style={fgBottomSheetStyles.text}>
-                {invitation.name}
+                {invitation.group.name}
               </Text>
               <Text numberOfLines={1} style={fgBottomSheetStyles.inviter}>
-                {invitation.inviter}
+                {invitation.inviter.name}
               </Text>
             </View>
             <View style={fgBottomSheetStyles.buttonsContainer}>
@@ -79,9 +107,7 @@ const FGSelector = ({
                   fgBottomSheetStyles.button,
                   {backgroundColor: colors.accent},
                 ]}
-                onPress={() => {
-                  //TODO: Accept invitation
-                }}>
+                onPress={() => handleAcceptInvite(invitation.id)}>
                 <Text style={fgBottomSheetStyles.buttonText}>Accept</Text>
               </TouchableOpacity>
               <TouchableOpacity
@@ -89,9 +115,7 @@ const FGSelector = ({
                   fgBottomSheetStyles.button,
                   {backgroundColor: colors.darkgrey},
                 ]}
-                onPress={() => {
-                  //TODO: Reject invitation
-                }}>
+                onPress={() => handleRejectInvite(invitation.id)}>
                 <Text style={fgBottomSheetStyles.buttonText}>Reject</Text>
               </TouchableOpacity>
             </View>
@@ -101,7 +125,7 @@ const FGSelector = ({
       <TouchableOpacity
         style={fgBottomSheetStyles.row}
         onPress={() => {
-          bottomSheetRef?.current.close();
+          bottomSheetRef.current?.close();
           navigation.navigate('CreateFG');
         }}>
         <View style={fgBottomSheetStyles.plus}>

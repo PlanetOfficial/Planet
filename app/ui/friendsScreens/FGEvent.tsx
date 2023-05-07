@@ -19,7 +19,6 @@ import {
   getRegionForCoordinates,
 } from '../../utils/functions/Misc';
 import {MarkerObject} from '../../utils/interfaces/types';
-import {getEventPlaces} from '../../utils/api/libraryCalls/getEventPlaces';
 
 import PlaceCard from '../components/PlaceCard';
 import Blur from '../components/Blur';
@@ -28,14 +27,23 @@ import ScrollIndicator from '../components/ScrollIndicator';
 import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
+import {getGroupEventPlaces} from '../../utils/api/friendsCalls/getGroupEventPlaces';
+import EncryptedStorage from 'react-native-encrypted-storage';
+import {likeFGPlace} from '../../utils/api/friendsCalls/likeFGPlace';
+import {dislikeFGPlace} from '../../utils/api/friendsCalls/dislikeFGPlace';
 
-const Event = ({navigation, route}: {navigation: any; route: any}) => {
-  const [eventId] = useState(route?.params?.eventData?.id);
+const FGEvent = ({navigation, route}: {navigation: any; route: any}) => {
+  const [groupEventId] = useState(route?.params?.eventData?.id);
   const [eventTitle] = useState(route?.params?.eventData?.name);
   const [date] = useState(new Date(route?.params?.eventData?.date)); // this probably doesn't work but whatever
   const [bookmarks] = useState(route?.params?.bookmarks);
+  const [userId, setUserId] = useState(-1);
 
   const [fullEventData, setFullEventData]: [any, any] = useState({});
+
+  const [curPlaceLikes, setCurPlaceLikes]: [any, any] = useState([]);
+  const [curPlaceDislikes, setCurPlaceDislikes]: [any, any] = useState([]);
+
   const [placeIdx, setPlaceIdx] = useState(0);
   const [markers, setMarkers] = useState([]);
 
@@ -63,17 +71,89 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
     [],
   );
 
+  const initializeUserId = async () => {
+    const idString = await EncryptedStorage.getItem('user_id');
+    if (!idString) {
+      return;
+    }
+
+    const id = parseInt(idString, 10);
+    if (Number.isNaN(id)) {
+      return;
+    }
+
+    setUserId(id);
+  };
+
+  const getEventData = async () => {
+    const data = await getGroupEventPlaces(groupEventId);
+    setFullEventData(data);
+
+    const markerArray: any = getMarkerArray(data?.places);
+    setMarkers(markerArray);
+  };
+
+  const initializeData = async () => {
+    await getEventData();
+  };
+
   useEffect(() => {
-    const getEventData = async () => {
-      const data = await getEventPlaces(eventId);
-      setFullEventData(data);
+    initializeUserId();
+    initializeData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [groupEventId]);
 
-      const markerArray: any = getMarkerArray(data?.places);
-      setMarkers(markerArray);
-    };
+  const handlePlaceLike = async (group_event_place_id: number) => {
+    const token = await EncryptedStorage.getItem('auth_token');
 
-    getEventData();
-  }, [eventId]);
+    const response = await likeFGPlace(group_event_place_id, token);
+
+    if (response) {
+      getEventData();
+    } else {
+      // TODO: error, make sure connected to internet and logged in, if error persists, log out and log back in
+      return;
+    }
+  };
+
+  const handlePlaceDislike = async (group_event_place_id: number) => {
+    const token = await EncryptedStorage.getItem('auth_token');
+
+    const response = await dislikeFGPlace(group_event_place_id, token);
+
+    if (response) {
+      getEventData();
+    } else {
+      // TODO: error, make sure connected to internet and logged in, if error persists, log out and log back in
+      return;
+    }
+  };
+
+  const didIReact = (reactionArray: any[]): boolean => {
+    let result = false;
+    reactionArray.forEach(reaction => {
+      if (reaction?.user?.id === userId) {
+        result = true;
+      }
+    });
+
+    return result;
+  };
+
+  const handleReactionInfo = (likes: any[], dislikes: any[]) => {
+    feedbackBottomSheetRef.current?.present();
+
+    setCurPlaceLikes(likes);
+    setCurPlaceDislikes(dislikes);
+  };
+
+  const getSign = (num: number): string => {
+    if (num > 0) {
+      return '+';
+    } else {
+      return '';
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -166,15 +246,15 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
                       feedbackStyles.iconContainer,
                       feedbackStyles.likeContainer,
                     ]}
-                    onPress={() => {
-                      // TODO: Add user to the list of likes
-                    }}>
+                    onPress={() => handlePlaceLike(dest?.group_event_place_id)}>
                     <Image
                       style={[
                         feedbackStyles.icon,
                         {
                           // TODO: change the tint color based on like status
-                          tintColor: true ? colors.accent : colors.black,
+                          tintColor: didIReact(dest?.likes)
+                            ? colors.accent
+                            : colors.black,
                         },
                       ]}
                       source={icons.like}
@@ -185,23 +265,30 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
                       feedbackStyles.iconContainer,
                       feedbackStyles.countContainer,
                     ]}
-                    onPress={() => feedbackBottomSheetRef.current?.present()}>
-                    <Text style={feedbackStyles.count}>+3</Text>
+                    onPress={() =>
+                      handleReactionInfo(dest?.likes, dest?.dislikes)
+                    }>
+                    <Text style={feedbackStyles.count}>
+                      {getSign(dest?.likes?.length - dest?.dislikes?.length) +
+                        (dest?.likes?.length - dest?.dislikes?.length)}
+                    </Text>
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={[
                       feedbackStyles.iconContainer,
                       feedbackStyles.dislikeContainer,
                     ]}
-                    onPress={() => {
-                      // TODO: Add user to the list of dislikes
-                    }}>
+                    onPress={() =>
+                      handlePlaceDislike(dest?.group_event_place_id)
+                    }>
                     <Image
                       style={[
                         feedbackStyles.icon,
                         {
                           // TODO: change the tint color based on dislike status
-                          tintColor: false ? colors.accent : colors.black,
+                          tintColor: didIReact(dest?.dislikes)
+                            ? colors.accent
+                            : colors.black,
                         },
                       ]}
                       source={icons.dislike}
@@ -222,7 +309,7 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
                       ]}
                       source={icons.comment}
                     />
-                    <Text style={feedbackStyles.commentCount}> 2</Text>
+                    <Text style={feedbackStyles.commentCount}> 0</Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -232,15 +319,17 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
         </SafeAreaView>
       </BottomSheet>
 
-      {(feedbackBottomSheetOpen || commentBottomSheetOpen) && (
+      {feedbackBottomSheetOpen || commentBottomSheetOpen ? (
         <Pressable
           style={styles.dark}
           onPress={() => {
             feedbackBottomSheetRef?.current.close();
             commentBottomSheetRef?.current.close();
+            setCurPlaceLikes([]);
+            setCurPlaceDislikes([]);
           }}
         />
-      )}
+      ) : null}
 
       <BottomSheetModal
         ref={feedbackBottomSheetRef}
@@ -252,7 +341,13 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
               {strings.friends.likes}
             </Text>
             <View style={feedbackModalStyles.horizontalLine} />
-            {/* TODO: Display all the likes */}
+            <View>
+              {curPlaceLikes?.map((like: any, index: number) => (
+                <View key={index}>
+                  <Text>{like?.user?.name}</Text>
+                </View>
+              ))}
+            </View>
           </View>
           <View style={feedbackModalStyles.verticalLine} />
           <View style={feedbackModalStyles.halfContainer}>
@@ -260,7 +355,13 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
               {strings.friends.dislikes}
             </Text>
             <View style={feedbackModalStyles.horizontalLine} />
-            {/* TODO: Display all the dislikes */}
+            <View>
+              {curPlaceDislikes?.map((dislike: any, index: number) => (
+                <View key={index}>
+                  <Text>{dislike?.user?.name}</Text>
+                </View>
+              ))}
+            </View>
           </View>
         </View>
       </BottomSheetModal>
@@ -461,4 +562,4 @@ const commentModalStyles = StyleSheet.create({
   },
 });
 
-export default Event;
+export default FGEvent;

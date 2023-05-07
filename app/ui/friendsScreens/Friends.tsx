@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {
   View,
   Text,
@@ -19,63 +19,25 @@ import {s, vs} from 'react-native-size-matters';
 
 import EventCard from '../components/EventCard';
 import FGSelector from './FGSelector';
-
-//TODO: Display actual friend groups
-const friendGroups: any[] = ['Poplar Residents', 'The Boys', 'Tennis People'];
-
-const invitations = [
-  {
-    id: 1,
-    inviter: 'John Doe',
-    name: 'Wonky Wednesday',
-    iconIdx: 0,
-  },
-  {
-    id: 2,
-    inviter: 'Jane Doe',
-    name: 'Taco Tuesday',
-    iconIdx: 1,
-  },
-];
-
-//TODO: Display actual events
-const events = [
-  {
-    id: 1,
-    name: 'Event 1',
-    date: '2021-01-01',
-    location: 'Seattle, WA',
-  },
-  {
-    id: 2,
-    name: 'Event 2',
-    date: '2021-01-01',
-    location: 'Capitol Hill, WA',
-  },
-  {
-    id: 3,
-    name: 'Event 3',
-    date: '2021-01-01',
-    location: 'Seattle, WA',
-  },
-  {
-    id: 4,
-    name: 'Event 4',
-    date: '2021-01-01',
-    location: 'Seattle, WA',
-  },
-  {
-    id: 5,
-    name: 'Event 5',
-    date: '2021-01-01',
-    location: 'Seattle, WA',
-  },
-];
+import EncryptedStorage from 'react-native-encrypted-storage';
+import {getFGsAndInvites} from '../../utils/api/friendsCalls/getFGsAndInvites';
+import {FriendGroup} from '../../utils/interfaces/friendGroup';
+import {Invitation} from '../../utils/interfaces/invitation';
+import {getEvents} from '../../utils/api/libraryCalls/getEvents';
+import {makeFGEvent} from '../../utils/api/friendsCalls/makeFGEvent';
+import {getFGEvents} from '../../utils/api/friendsCalls/getFGEvents';
 
 const Friends = ({navigation}: {navigation: any}) => {
   const insets = useSafeAreaInsets();
 
-  const [friendGroup, setFriendGroup] = useState(0);
+  const [friendGroup, setFriendGroup] = useState(-1);
+
+  const [friendGroups, setFriendGroups] = useState<FriendGroup[]>([]);
+  const [invitations, setInvitations] = useState<Invitation[]>([]);
+
+  const [userEvents, setUserEvents] = useState<any[]>([]);
+
+  const [curFGEvents, setCurFGEvents] = useState<any[]>([]);
 
   const [fgBottomSheetOpen, setFgBottomSheetOpen] = useState(false);
   const fgBottomSheetRef: any = useRef<BottomSheetModal>(null);
@@ -86,7 +48,7 @@ const Friends = ({navigation}: {navigation: any}) => {
         vs(680) - s(60) - insets.top,
       ),
     ],
-    [insets.top],
+    [insets.top, friendGroups, invitations],
   );
   const handleFgSheetChange = useCallback(
     (fromIndex: number, toIndex: number) => {
@@ -108,6 +70,63 @@ const Friends = ({navigation}: {navigation: any}) => {
     [],
   );
 
+  const fetchCurGroupInfo = async (group_id: number) => {
+    const token = await EncryptedStorage.getItem('auth_token');
+
+    const response = await getFGEvents(group_id, token);
+    setCurFGEvents(response);
+  };
+
+  useEffect(() => {
+    if (friendGroup !== -1) {
+      fetchCurGroupInfo(friendGroups[friendGroup].group.id);
+    }
+  }, [friendGroup, friendGroups]);
+
+  const initializeData = async () => {
+    const token = await EncryptedStorage.getItem('auth_token');
+
+    const responseData = await getFGsAndInvites(token);
+
+    if (responseData?.groups) {
+      setFriendGroups(responseData.groups);
+
+      if (responseData.groups.length > 0) {
+        setFriendGroup(0);
+
+        fetchCurGroupInfo(responseData.groups[0].group.id);
+      }
+    }
+
+    if (responseData?.invites) {
+      setInvitations(responseData.invites);
+    }
+
+    const eventsData = await getEvents(token);
+    setUserEvents(eventsData);
+  };
+
+  useEffect(() => {
+    initializeData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleAddEvent = async (user_event_id: number) => {
+    const token = await EncryptedStorage.getItem('auth_token');
+    const response = await makeFGEvent(
+      user_event_id,
+      friendGroups[friendGroup].group.id,
+      token,
+    );
+
+    if (!response) {
+      // TODO: display error
+      console.log('Error adding event');
+    }
+
+    fetchCurGroupInfo(friendGroups[friendGroup].group.id);
+  };
+
   return (
     <>
       <SafeAreaView testID="friendsScreenView" style={styles.container}>
@@ -118,7 +137,7 @@ const Friends = ({navigation}: {navigation: any}) => {
             <Text numberOfLines={1} style={headerStyles.title}>
               {friendGroup === -1
                 ? strings.title.friends
-                : friendGroups[friendGroup]}
+                : friendGroups[friendGroup]?.group?.name}
             </Text>
             <View style={headerStyles.drop}>
               <Image style={[headerStyles.icon]} source={icons.next} />
@@ -128,14 +147,16 @@ const Friends = ({navigation}: {navigation: any}) => {
             <Image style={headerStyles.bell} source={icons.notification} />
           </TouchableOpacity>
         </View>
-        <TouchableOpacity
-          style={styles.addEventContainer}
-          onPress={() => addBottomSheetRef.current?.present()}>
-          <Image style={styles.plus} source={icons.x} />
-          <Text style={styles.text}>{strings.friends.addPrompt}</Text>
-        </TouchableOpacity>
+        {friendGroup !== -1 ? (
+          <TouchableOpacity
+            style={styles.addEventContainer}
+            onPress={() => addBottomSheetRef.current?.present()}>
+            <Image style={styles.plus} source={icons.x} />
+            <Text style={styles.text}>{strings.friends.addPrompt}</Text>
+          </TouchableOpacity>
+        ) : null}
         <FlatList
-          data={events}
+          data={curFGEvents}
           style={contentStyles.container}
           initialNumToRender={4}
           keyExtractor={(item: any) => item?.id}
@@ -156,9 +177,11 @@ const Friends = ({navigation}: {navigation: any}) => {
                   name={item?.name}
                   info={item?.date}
                   image={
-                    // images && images?.length !== 0
-                    //   ? {uri: images[0]} :
-                    icons.defaultIcon
+                    item?.places &&
+                    item?.places?.length > 0 &&
+                    item?.places[0]?.place?.image_url
+                      ? {uri: item?.places[0]?.place?.image_url}
+                      : icons.defaultIcon
                   }
                 />
               </TouchableOpacity>
@@ -167,7 +190,7 @@ const Friends = ({navigation}: {navigation: any}) => {
         />
       </SafeAreaView>
 
-      {(fgBottomSheetOpen || addBottomSheetOpen) && (
+      {fgBottomSheetOpen || addBottomSheetOpen ? (
         <Pressable
           onPress={() => {
             setFgBottomSheetOpen(false);
@@ -177,7 +200,7 @@ const Friends = ({navigation}: {navigation: any}) => {
           }}
           style={styles.dim}
         />
-      )}
+      ) : null}
 
       <BottomSheetModal
         ref={fgBottomSheetRef}
@@ -188,6 +211,7 @@ const Friends = ({navigation}: {navigation: any}) => {
           friendGroups={friendGroups}
           friendGroup={friendGroup}
           setFriendGroup={setFriendGroup}
+          refreshOnInviteEvent={initializeData}
           invitations={invitations}
           navigation={navigation}
         />
@@ -198,7 +222,7 @@ const Friends = ({navigation}: {navigation: any}) => {
         snapPoints={addSnapPoints}
         onAnimate={handleAddSheetChange}>
         <FlatList
-          data={events} // TODO: get actual events from library
+          data={userEvents}
           style={contentStyles.container}
           initialNumToRender={4}
           keyExtractor={item => item?.id?.toString()}
@@ -210,7 +234,7 @@ const Friends = ({navigation}: {navigation: any}) => {
                 onPress={() => {
                   setAddBottomSheetOpen(false);
                   addBottomSheetRef?.current.close();
-                  // Add event to the friend group
+                  handleAddEvent(item?.id);
                 }}>
                 <EventCard
                   name={item?.name}
@@ -218,8 +242,8 @@ const Friends = ({navigation}: {navigation: any}) => {
                   image={
                     item?.places &&
                     item?.places?.length !== 0 &&
-                    item?.places[0]?.image_url
-                      ? {uri: item?.places[0]?.image_url}
+                    item?.places[0]?.place?.image_url
+                      ? {uri: item?.places[0]?.place?.image_url}
                       : icons.defaultIcon
                   }
                 />

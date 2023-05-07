@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 import SplashScreen from './app/ui/otherScreens/!SplashScreen';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import AppNavigation from './app/navigation/AppNavigation';
-import {updateAsyncStorage} from './app/utils/functions/CacheHelpers';
+import {updateCaches} from './app/utils/functions/CacheHelpers';
 
 export default function App() {
   const [isLoading, setLoading] = useState<boolean>(true);
@@ -15,7 +15,7 @@ export default function App() {
 
       if (token) {
         setLoggedIn(true);
-        await updateAsyncStorage(token);
+        await updateCaches(token);
       } else {
         setLoggedIn(false);
       }
