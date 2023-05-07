@@ -30,6 +30,7 @@ const strings = {
     missingFields: 'Fields are missing',
   },
   createTabStack: {
+    noPlaces: 'No Places Found',
     milesAbbrev: 'mi',
     planEvent: 'Choose a Location',
     search: 'Search',
@@ -127,11 +128,12 @@ const strings = {
     cancel: 'Cancel',
   },
   filter: {
-    all: 'All Categories',
+    all: 'All',
     editView: 'Edit View',
     visible: 'Visible',
     hidden: 'Hidden',
-    categories: 'Filter Categories',
+    categories: 'Categories',
+    filterCategories: 'Filter Categories',
     clear: 'Clear',
     apply: 'Apply',
   },

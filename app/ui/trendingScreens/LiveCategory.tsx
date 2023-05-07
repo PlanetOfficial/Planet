@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef, useMemo} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -13,7 +13,6 @@ import moment from 'moment';
 
 import {icons} from '../../constants/images';
 import {colors} from '../../constants/theme';
-import {genres} from '../../constants/genres';
 import {integers} from '../../constants/numbers';
 
 import PlaceCard from '../components/PlaceCard';
@@ -38,6 +37,7 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
   const [longitude] = useState<number>(route?.params?.longitude);
   const [latitude] = useState<number>(route?.params?.latitude);
   const [categoryId] = useState<number>(route?.params?.categoryId);
+  const [filters] = useState<FilterT[]>(route?.params?.filters);
   const [categoryName] = useState<string>(route?.params?.categoryName);
   const [bookmarks] = useState<number[]>(route?.params?.bookmarks);
   const [subcategories, setSubcategories] = useState<Subcategory[]>();
@@ -49,14 +49,10 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
 
   const ref = useRef<any>(null); // any because typescript sucks
 
-  let filters: FilterT[] = useMemo(
-    () => (genres[0].filters ? genres[0].filters : []),
-    [],
-  );
-
-  const [filterValues, setFilterValues] = useState<number[]>([]);
-  const [defaultFilterValues, setDefaultFilterValues] = useState<number[]>([]);
-
+  const [filterValues, setFilterValues] = useState<(number | number[])[]>([]);
+  const [defaultFilterValues, setDefaultFilterValues] = useState<
+    (number | number[])[]
+  >([]);
   const [filtersInitialized, setFiltersInitialized] = useState<boolean>(false);
 
   useEffect(() => {
@@ -74,10 +70,9 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
           integers.defaultNumPlaces,
           latitude,
           longitude,
-          filters[1].values[filterValues[1]], // time
-          filters[0].values[filterValues[0]] * integers.milesToMeters, // radius
           categoryId,
-          filters[2].values[filterValues[2]] === 1, // sort by distance
+          filters,
+          filterValues,
         );
         setLiveEvents(response?.places);
         setLoading(false);
@@ -89,7 +84,7 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
     };
 
     const initializeFilterValues = () => {
-      let _defaultFilterValues: number[] = [];
+      let _defaultFilterValues: (number | number[])[] = [];
       for (let i = 0; filters && i < filters.length; i++) {
         _defaultFilterValues.push(filters[i].defaultIdx);
       }
@@ -154,6 +149,7 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
       ) : (
         <ScrollView onTouchStart={() => ref.current?.closeDropdown()}>
           {subcategories?.map((subcategory: Subcategory, idx: number) =>
+            liveEvents &&
             liveEvents[subcategory.id] &&
             liveEvents[subcategory.id].length > 0 ? (
               <View key={idx} style={categoryStyles.container}>
@@ -182,7 +178,9 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
                             <PlaceCard
                               id={liveEvent.id}
                               name={liveEvent.name}
-                              info={moment(liveEvent.date, 'YYYY-MM-DD').format('M/D/Y')}
+                              info={moment(liveEvent.date, 'YYYY-MM-DD').format(
+                                'M/D/Y',
+                              )}
                               marked={bookmarks.includes(liveEvent.id)}
                               image={{uri: liveEvent.image_url}}
                             />

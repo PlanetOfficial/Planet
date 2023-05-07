@@ -71,13 +71,13 @@ const PlacesDisplay: React.FC<Props> = ({
             setIndex(idx);
           }
         }}>
-        {places.map((place: Place, idx: number) => (
+        {places?.map((place: Place, idx: number) => (
           <View
             style={[
               {
                 width: width,
               },
-              idx !== places.length - 1
+              idx !== places?.length - 1
                 ? {
                     marginRight: s(20),
                   }
@@ -94,7 +94,7 @@ const PlacesDisplay: React.FC<Props> = ({
               <PlaceCard
                 id={place.id}
                 name={place.name}
-                info={place.category_name}
+                info={place.category_name} // TODO-MVP: more information
                 marked={bookmarks.includes(place.id)}
                 image={
                   place.image_url
@@ -108,7 +108,7 @@ const PlacesDisplay: React.FC<Props> = ({
           </View>
         ))}
       </ScrollView>
-      <ScrollIndicator num={places.length} idx={index} />
+      <ScrollIndicator num={places?.length} idx={index} />
     </>
   );
 };

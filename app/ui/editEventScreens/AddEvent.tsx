@@ -83,6 +83,9 @@ const AddEvent = forwardRef((props: ChildComponentProps, ref) => {
     _destinations.splice(insertionIndex + 1, 0, {
       id: category.id,
       name: category.name,
+      alias: category.alias,
+      genre_id: category.genre_id,
+      filters: category.filters,
       icon: category.icon,
       subcategories: category.subcategories,
       options: [],

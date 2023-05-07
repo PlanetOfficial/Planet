@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  Platform,
 } from 'react-native';
 import moment from 'moment';
 
@@ -55,7 +56,9 @@ const SelectDestinations: React.FC<Props> = ({navigation, route}) => {
   const [eventTitle, setEventTitle] = useState<string>(
     strings.createTabStack.untitledEvent,
   );
-  const [date, setDate] = useState<string>(moment(new Date()).format('M/D/YYYY'));
+  const [date, setDate] = useState<string>(
+    moment(new Date()).format('M/D/YYYY'),
+  );
   const [datePickerOpen, setDatePickerOpen] = useState<boolean>(false);
   const [saveConfirmationOpen, setSaveConfirmationOpen] =
     useState<boolean>(false);
@@ -94,7 +97,11 @@ const SelectDestinations: React.FC<Props> = ({navigation, route}) => {
         _destinations.push({
           id: category.id,
           name: category.name,
+          alias: category.alias,
+          genre_id: category.genre_id,
+          filters: category.filters,
           icon: category.icon,
+          subcategories: category.subcategories,
           options: response[category.id],
         });
         _selectionIndices.push(0);
@@ -197,6 +204,16 @@ const SelectDestinations: React.FC<Props> = ({navigation, route}) => {
           />
           <View style={headerStyles.texts}>
             <TextInput
+              onFocus={() =>
+                Platform.OS === 'android'
+                  ? bottomSheetRef.current?.close()
+                  : null
+              }
+              onBlur={() =>
+                Platform.OS === 'android'
+                  ? bottomSheetRef.current?.snapToIndex(0)
+                  : null
+              }
               style={headerStyles.name}
               value={eventTitle}
               onChangeText={(text: string) => setEventTitle(text)}
@@ -217,7 +234,9 @@ const SelectDestinations: React.FC<Props> = ({navigation, route}) => {
               date={moment(date, 'M/D/YYYY').toDate()}
               onConfirm={newDate => {
                 setDatePickerOpen(false);
-                setDate(moment(newDate, 'YYYY-MM-DD HH:mm:ssZ').format('M/D/YYYY'));
+                setDate(
+                  moment(newDate, 'YYYY-MM-DD HH:mm:ssZ').format('M/D/YYYY'),
+                );
               }}
               onCancel={() => {
                 setDatePickerOpen(false);
@@ -237,6 +256,7 @@ const SelectDestinations: React.FC<Props> = ({navigation, route}) => {
         ref={bottomSheetRef}
         index={0}
         snapPoints={snapPoints}
+        animateOnMount={Platform.OS === 'ios'}
         enableContentPanningGesture={false}>
         <EditEvent
           navigation={navigation}

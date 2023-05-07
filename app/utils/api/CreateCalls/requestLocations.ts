@@ -9,8 +9,6 @@ export const requestLocations = async (
   longitude: number,
   count: number,
 ) => {
-  // TODO: filter inputs**
-
   let categoryString = '';
 
   categories.forEach(item => {

@@ -51,7 +51,9 @@ interface Props {
 const Event: React.FC<Props> = ({navigation, route}) => {
   const [eventId] = useState<number>(route?.params?.eventData?.id);
   const [eventTitle] = useState<string>(route?.params?.eventData?.name);
-  const [date] = useState<string>(moment(route?.params?.eventData?.date, 'YYYY-MM-DD').format('M/D/YYYY'));
+  const [date] = useState<string>(
+    moment(route?.params?.eventData?.date, 'YYYY-MM-DD').format('M/D/YYYY'),
+  );
   const [bookmarks] = useState<number[]>(route?.params?.bookmarks);
 
   const [latitude, setLatitude] = useState<number>(floats.defaultLatitude);
@@ -84,7 +86,7 @@ const Event: React.FC<Props> = ({navigation, route}) => {
       const data = await getEventPlaces(eventId);
       setPlaces(data?.places);
 
-      setSelectionIndices(Array(data?.places.length).fill(-1));
+      setSelectionIndices(Array(data?.places?.length).fill(-1));
 
       const markerArray: MarkerObject[] = getMarkerArray(data?.places);
       setMarkers(markerArray);
@@ -115,7 +117,7 @@ const Event: React.FC<Props> = ({navigation, route}) => {
   return (
     <View style={styles.container}>
       <MapView style={styles.map} region={getRegionForCoordinates(markers)}>
-        {markers.length > 0
+        {markers?.length > 0
           ? markers.map((marker: MarkerObject, index: number) => (
               <Marker
                 key={index}
@@ -177,7 +179,11 @@ const Event: React.FC<Props> = ({navigation, route}) => {
                   mode="date"
                   onConfirm={newDate => {
                     setDatePickerOpen(false);
-                    setTempDate(moment(newDate, 'YYYY-MM-DD HH:mm:ssZ').format('M/D/YYYY'));
+                    setTempDate(
+                      moment(newDate, 'YYYY-MM-DD HH:mm:ssZ').format(
+                        'M/D/YYYY',
+                      ),
+                    );
                   }}
                   onCancel={() => {
                     setDatePickerOpen(false);
