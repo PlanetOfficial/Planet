@@ -36,6 +36,11 @@ const CreateFG = ({navigation}: {navigation: any}) => {
     )
 
     if (responseStatus) {
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Friends' }],
+      });
+
       navigation.navigate('Friends');
     } else {
       // TODO: error, make sure connected to internet and logged in, if error persists, log out and log back in
