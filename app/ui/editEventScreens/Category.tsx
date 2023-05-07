@@ -9,13 +9,15 @@ import {StyleSheet, View, Image} from 'react-native';
 import {s} from 'react-native-size-matters';
 
 import {requestLocations} from '../../utils/api/CreateCalls/requestLocations';
+
 import {colors} from '../../constants/theme';
 import strings from '../../constants/strings';
+import {integers} from '../../constants/numbers';
+
+import Filter from './Filter';
 import Text from '../components/Text';
 import OptionMenu from '../components/OptionMenu';
-import Filter from './Filter';
 import PlacesDisplay from '../components/PlacesDisplay';
-import {integers} from '../../constants/numbers';
 
 import {
   Place,
@@ -63,6 +65,8 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
   useImperativeHandle(ref, () => ({
     closeDropdown,
   }));
+
+  // TODO: implement filters for each categories 
 
   // let filters: FilterT[] = category.filters ? category.filters : [];
   let filters: FilterT[] = [];

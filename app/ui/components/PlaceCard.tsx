@@ -9,6 +9,7 @@ import Icon from './Icon';
 
 import {colors} from '../../constants/theme';
 import {icons} from '../../constants/images';
+
 import {setBookmark} from '../../utils/api/shared/setBookmark';
 import {unbookmark} from '../../utils/api/shared/unbookmark';
 

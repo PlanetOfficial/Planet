@@ -1,6 +1,7 @@
 import React, {useRef, useEffect} from 'react';
 import {StyleSheet, View, TouchableOpacity, ScrollView} from 'react-native';
 import {s} from 'react-native-size-matters';
+
 import PlaceCard from '../components/PlaceCard';
 import ScrollIndicator from '../components/ScrollIndicator';
 
@@ -70,13 +71,13 @@ const PlacesDisplay: React.FC<Props> = ({
             setIndex(idx);
           }
         }}>
-        {places?.map((place: Place, idx: number) => (
+        {places.map((place: Place, idx: number) => (
           <View
             style={[
               {
                 width: width,
               },
-              idx !== places?.length - 1
+              idx !== places.length - 1
                 ? {
                     marginRight: s(20),
                   }
@@ -94,7 +95,7 @@ const PlacesDisplay: React.FC<Props> = ({
                 id={place.id}
                 name={place.name}
                 info={place.category_name}
-                marked={bookmarks?.includes(place.id)}
+                marked={bookmarks.includes(place.id)}
                 image={
                   place.image_url
                     ? {
@@ -107,7 +108,7 @@ const PlacesDisplay: React.FC<Props> = ({
           </View>
         ))}
       </ScrollView>
-      <ScrollIndicator num={places?.length} idx={index} />
+      <ScrollIndicator num={places.length} idx={index} />
     </>
   );
 };

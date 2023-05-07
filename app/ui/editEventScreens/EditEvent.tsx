@@ -12,8 +12,9 @@ import {Svg, Line, Circle} from 'react-native-svg';
 import DraggableFlatList from 'react-native-draggable-flatlist';
 import SwipeableItem from 'react-native-swipeable-item';
 
-import PlaceCard from '../components/PlaceCard';
 import Category from './Category';
+import PlaceCard from '../components/PlaceCard';
+
 import {icons} from '../../constants/images';
 import {colors} from '../../constants/theme';
 
@@ -44,7 +45,7 @@ const EditEvent: React.FC<Props> = ({
   setSelectionIndices,
   onAddPress,
 }) => {
-  const [dragging, setDragging] = useState(false);
+  const [dragging, setDragging] = useState<boolean>(false);
   const itemRefs = useRef(new Map());
   const childRefs = useRef(new Map());
 
@@ -135,8 +136,8 @@ const EditEvent: React.FC<Props> = ({
         drag: () => void;
         isActive: boolean;
       }) => {
-        let _index: any = getIndex();
-        const index: number = _index; // typescript is so stupid
+        let _index: any = getIndex(); // typescript is so stupid
+        const index: number = _index;
         return (
           <View
             onTouchStart={() => {
@@ -186,18 +187,18 @@ const EditEvent: React.FC<Props> = ({
                     onPress={() => {
                       navigation.navigate('Place', {
                         destination: item,
-                        category: item?.category_name,
+                        category: item.category_name,
                       });
                     }}>
                     <PlaceCard
-                      id={item?.id}
-                      name={item?.name}
-                      info={item?.category_name}
-                      marked={bookmarks?.includes(item?.id)}
+                      id={item.id}
+                      name={item.name}
+                      info={item.category_name}
+                      marked={bookmarks.includes(item.id)}
                       image={
-                        item?.image_url
+                        item.image_url
                           ? {
-                              uri: item?.image_url,
+                              uri: item.image_url,
                             }
                           : icons.defaultIcon
                       }

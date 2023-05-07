@@ -9,6 +9,7 @@ import {
   PermissionsAndroid,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
+import EncryptedStorage from 'react-native-encrypted-storage';
 import Geolocation from '@react-native-community/geolocation';
 
 import {colors} from '../../constants/theme';
@@ -17,16 +18,14 @@ import {genres} from '../../constants/genres';
 import {floats, integers} from '../../constants/numbers';
 import strings from '../../constants/strings';
 
-import {getBookmarks} from '../../utils/api/shared/getBookmarks';
-import {requestLocations} from '../../utils/api/CreateCalls/requestLocations';
-import {Subcategory} from '../../utils/interfaces/types';
-
 import Text from '../components/Text';
 import Icon from '../components/Icon';
 import PlaceCard from '../components/PlaceCard';
 
+import {getBookmarks} from '../../utils/api/shared/getBookmarks';
+import {requestLocations} from '../../utils/api/CreateCalls/requestLocations';
+import {Subcategory} from '../../utils/interfaces/types';
 import {Category, LiveEvent, LiveEvents} from '../../utils/interfaces/types';
-import EncryptedStorage from 'react-native-encrypted-storage';
 
 interface Props {
   navigation: any;

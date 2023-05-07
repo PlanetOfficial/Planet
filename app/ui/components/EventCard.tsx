@@ -35,14 +35,14 @@ const EventCard: React.FC<Props> = ({name, info, image, option = false}) => {
               {
                 name: strings.main.share,
                 onPress: () => {
-                  console.log('TODO: Share Event');
+                  // TODO: share event
                 },
                 color: colors.black,
               },
               {
                 name: strings.main.remove,
                 onPress: () => {
-                  console.log('TODO: Remove Event');
+                  // TODO: remove event
                 },
                 color: colors.red,
               },
