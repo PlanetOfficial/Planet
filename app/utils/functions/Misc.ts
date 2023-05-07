@@ -69,7 +69,6 @@ export const getRegionForCoordinates = (points: MarkerObject[]): any => {
   };
 };
 
-
 /*
   Give an array where each element is another array, fetches images
   from all of this data

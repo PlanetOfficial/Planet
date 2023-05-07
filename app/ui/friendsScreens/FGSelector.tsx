@@ -12,7 +12,6 @@ import {
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 import {icons} from '../../constants/images';
-import {fgIcons} from '../../constants/images';
 import {s} from 'react-native-size-matters';
 import {acceptInvite} from '../../utils/api/friendsCalls/acceptInvite';
 import EncryptedStorage from 'react-native-encrypted-storage';
@@ -20,15 +19,7 @@ import {rejectInvite} from '../../utils/api/friendsCalls/rejectInvite';
 
 import {FriendGroup, Invitation} from '../../utils/interfaces/types';
 
-const FGSelector = ({
-  bottomSheetRef,
-  friendGroups,
-  friendGroup,
-  setFriendGroup,
-  refreshOnInviteEvent,
-  invitations,
-  navigation,
-}: {
+interface Props {
   bottomSheetRef: any;
   friendGroups: any[];
   friendGroup: any;
@@ -36,6 +27,16 @@ const FGSelector = ({
   refreshOnInviteEvent: any;
   invitations: any[];
   navigation: any;
+}
+
+const FGSelector: React.FC<Props> = ({
+  bottomSheetRef,
+  friendGroups,
+  friendGroup,
+  setFriendGroup,
+  refreshOnInviteEvent,
+  invitations,
+  navigation,
 }) => {
   const handleAcceptInvite = async (invite_id: number) => {
     const token = await EncryptedStorage.getItem('auth_token');
