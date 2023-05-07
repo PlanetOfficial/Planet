@@ -4,7 +4,7 @@ export const getFGsAndInvites = async (authToken: any) => {
   // TODO-SECURITY: filter inputs**
 
   const response = await fetch(
-    DBOpsURL + `/groupsAndInvites?authtoken=${authToken}`,
+    DBOpsURL + `/friends/groupsAndInvites?authtoken=${authToken}`,
     {
       method: 'GET',
     },
