@@ -1,16 +1,14 @@
 import haversine from 'haversine-distance';
 
-import {MarkerObject} from '../interfaces/MarkerObject';
-import {coordinate} from '../interfaces/coordinate';
+import {MarkerObject, Coordinate, WeekDay} from '../interfaces/types';
 import misc from '../../constants/misc';
 import {floats} from '../../constants/numbers';
-import {WeekDay} from '../interfaces/weekday';
 
 /*
   Given a point and the longitudeDelta, calculate the radius of the circle (the
   point is the center of the circle)
 */
-export const calculateRadius = (point1: coordinate, longitudeDelta: number) => {
+export const calculateRadius = (point1: Coordinate, longitudeDelta: number) => {
   const point2 = {
     latitude: point1.latitude,
     longitude: point1.longitude + longitudeDelta / 2,
@@ -25,13 +23,13 @@ export const calculateRadius = (point1: coordinate, longitudeDelta: number) => {
   and longitude.
 */
 export const getDistanceFromCoordinates = (
-  point1: coordinate,
-  point2: coordinate,
+  point1: Coordinate,
+  point2: Coordinate,
 ) => {
   return haversine(point1, point2);
 };
 
-export const getRegionForCoordinates = (points: Array<MarkerObject>): any => {
+export const getRegionForCoordinates = (points: MarkerObject[]): any => {
   if (!points || points?.length === 0) {
     return {
       latitude: floats.defaultLatitude,
@@ -74,7 +72,7 @@ export const getRegionForCoordinates = (points: Array<MarkerObject>): any => {
 /* O(n) algorithm to filter objects and return objects in the array with
    unique IDs
 */
-export const filterToUniqueIds = (arr: Array<any>): any => {
+export const filterToUniqueIds = (arr: any[]): any => {
   const uniqueObj: any = {};
   arr?.forEach(item => {
     if (item?.id && !uniqueObj[item.id]) {
@@ -89,7 +87,7 @@ export const filterToUniqueIds = (arr: Array<any>): any => {
   Give an array where each element is another array, fetches images
   from all of this data
 */
-export const getImagesFromURLs = (places: Array<any>) => {
+export const getImagesFromURLs = (places: any[]) => {
   let images: any = [];
   if (places && places?.length !== 0) {
     places.forEach(item => {
@@ -109,7 +107,7 @@ export const getImagesFromURLs = (places: Array<any>) => {
   MarkerObjects.
 */
 export const getMarkerArray = (places: any): any => {
-  let markers: Array<MarkerObject> = [];
+  let markers: MarkerObject[] = [];
   places?.forEach((place: any) => {
     if (place && place?.name && place?.latitude && place?.longitude) {
       const markerObject = {
@@ -128,7 +126,7 @@ export const getMarkerArray = (places: any): any => {
   Given an array of destinations, return latitude and longitude of the
   average of all of the destinations.
 */
-export const getAveragePoint = (places: any): any => {
+export const getAveragePoint = (places: any): Coordinate => {
   let latSum = 0;
   let lngSum = 0;
   let count = 0;
@@ -181,7 +179,7 @@ function convertTime(internationalTime: string): string {
   Make sure hoursArray is not empty.
 */
 
-export const displayHours = (hoursArray: Array<any>): string => {
+export const displayHours = (hoursArray: any[]): string => {
   const weekMap: WeekDay[] = [
     {day: 'Monday', hours: []},
     {day: 'Tuesday', hours: []},
@@ -212,7 +210,7 @@ export const displayHours = (hoursArray: Array<any>): string => {
 };
 
 // given an array of chunks of an address, format to a nice string
-export const displayAddress = (chunks: Array<string>): string => {
+export const displayAddress = (chunks: string[]): string => {
   let concatenated = '';
   chunks.forEach(chunk => {
     concatenated += chunk + ' ';

@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 
 import {s} from 'react-native-size-matters';
+
 import {colors} from '../../constants/theme';
 import Text from '../components/Text';
 
@@ -20,6 +21,7 @@ interface Props {
   rightText: string;
   leftColor?: string;
   rightColor?: string;
+  actionOnRight?: boolean;
 }
 
 const Confirmation: React.FC<Props> = ({
@@ -31,6 +33,7 @@ const Confirmation: React.FC<Props> = ({
   rightText,
   leftColor = colors.black,
   rightColor = colors.black,
+  actionOnRight = false,
 }) => {
   return (
     <Modal animationType="fade" transparent={true} visible={open}>
@@ -52,7 +55,9 @@ const Confirmation: React.FC<Props> = ({
               style={styles.left}
               onPress={() => {
                 setOpen(false);
-                onPress();
+                if (!actionOnRight) {
+                  onPress();
+                }
               }}>
               <Text size="s" weight="b" color={leftColor}>
                 {leftText}
@@ -60,7 +65,12 @@ const Confirmation: React.FC<Props> = ({
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.right}
-              onPress={() => setOpen(false)}>
+              onPress={() => {
+                setOpen(false);
+                if (actionOnRight) {
+                  onPress();
+                }
+              }}>
               <Text size="s" weight="b" color={rightColor}>
                 {rightText}
               </Text>

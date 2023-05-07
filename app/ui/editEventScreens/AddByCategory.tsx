@@ -1,16 +1,18 @@
 import React from 'react';
 import {StyleSheet, View, Image, TouchableOpacity} from 'react-native';
 import {s} from 'react-native-size-matters';
+
 import Text from '../components/Text';
 import CategoryList from '../components/CategoryList';
 
 import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
+import {Category} from '../../utils/interfaces/types';
 
 interface Props {
   onClose: () => void;
-  onSelect: (dest: any) => void;
+  onSelect: (category: Category) => void;
 }
 
 const AddByCategory: React.FC<Props> = ({onClose, onSelect}) => {
@@ -24,16 +26,7 @@ const AddByCategory: React.FC<Props> = ({onClose, onSelect}) => {
           <Image style={headerStyles.x} source={icons.x} />
         </TouchableOpacity>
       </View>
-      <CategoryList
-        onClose={onClose}
-        onSelect={category => {
-          onSelect({
-            id: -category.id,
-            name: category.name,
-            icon: category.icon,
-          });
-        }}
-      />
+      <CategoryList onClose={onClose} onSelect={onSelect} />
     </View>
   );
 };

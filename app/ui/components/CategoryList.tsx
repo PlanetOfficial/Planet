@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   View,
@@ -9,31 +9,58 @@ import {
   Pressable,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
+
 import CustomText from '../components/Text';
 
-import {icons, vectors} from '../../constants/images';
+import {
+  icons,
+  vectors,
+  genreImages,
+  categoryIcons,
+} from '../../constants/images';
 import {colors} from '../../constants/theme';
-import {genres} from '../../constants/genres';
+
+import {Genre, Category} from '../../utils/interfaces/types';
+import {getGenres} from '../../utils/api/shared/getGenres';
 
 interface Props {
   onClose?: () => void;
-  onSelect: (category: any) => void;
+  onSelect: (category: Category) => void;
 }
 
 const CategoryList: React.FC<Props> = ({onClose, onSelect}) => {
-  const [modalVisible, setModalVisible] = useState(false);
-  const [selectedGenre, setSelectedGenre] = useState('');
-  const [allCategories, setAllCategories]: [any, any] = useState([]);
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [selectedGenre, setSelectedGenre] = useState<string>('');
+  const [allCategories, setAllCategories] = useState<Category[]>([]);
 
-  const handleGenrePress = async (genre: any) => {
+  const [genres, setGenres] = useState<Genre[]>([]);
+
+  useEffect(() => {
+    const initializeData = async () => {
+      const _genres = await getGenres();
+      // replace empty images with actual images
+      _genres.forEach((genre: Genre) => {
+        genre.image = genreImages[genre.id - 1];
+        genre.categories.forEach((category: Category) => {
+          category.icon = categoryIcons[category.id - 1];
+        });
+      });
+
+      setGenres(_genres);
+    };
+
+    initializeData();
+  }, []);
+
+  const handleGenrePress = async (genre: Genre) => {
     setSelectedGenre(genre.name);
     setModalVisible(true);
     setAllCategories([]);
 
-    // display categories from genre
-
     // find index of genre
-    const genreObj = genres.find(item => item.id === genre.id);
+    const genreObj: Genre | undefined = genres.find(
+      (_genre: Genre) => _genre.id === genre.id,
+    );
     if (genreObj) {
       setAllCategories(genreObj.categories);
     }
@@ -42,7 +69,7 @@ const CategoryList: React.FC<Props> = ({onClose, onSelect}) => {
   return (
     <View style={styles.container}>
       <View style={genreStyles.container}>
-        {genres.map(genre => (
+        {genres.map((genre: Genre) => (
           <TouchableOpacity
             key={genre.id}
             onPress={() => handleGenrePress(genre)}>
@@ -84,13 +111,13 @@ const CategoryList: React.FC<Props> = ({onClose, onSelect}) => {
               </CustomText>
             </View>
             {allCategories
-              ? allCategories?.map((category: any) => (
+              ? allCategories.map((category: Category) => (
                   <TouchableOpacity
                     key={category.id}
                     onPress={() => {
                       onSelect(category);
                       setModalVisible(false);
-                      onClose && onClose();
+                      onClose ? onClose() : null;
                     }}>
                     <View style={categoryStyles.container}>
                       <Image

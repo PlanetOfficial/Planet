@@ -4,38 +4,41 @@ import React, {
   useImperativeHandle,
   useRef,
   useEffect,
+  useMemo,
 } from 'react';
 import {StyleSheet, View, Image} from 'react-native';
 import {s} from 'react-native-size-matters';
 
-import {requestLocations} from '../../utils/api/CreateCalls/requestLocations';
 import {colors} from '../../constants/theme';
 import strings from '../../constants/strings';
+import {integers} from '../../constants/numbers';
+
+import Filter from './Filter';
 import Text from '../components/Text';
 import OptionMenu from '../components/OptionMenu';
-import Filter from './Filter';
 import PlacesDisplay from '../components/PlacesDisplay';
-import {integers} from '../../constants/numbers';
+
+import {
+  Place,
+  Category as CategoryT,
+  Filter as FilterT,
+} from '../../utils/interfaces/types';
+import {requestLocationsSingle} from '../../utils/api/CreateCalls/requestLocationsSingle';
 
 interface ChildComponentProps {
   navigation: any;
   radius: number;
   latitude: number;
   longitude: number;
-  bookmarks: any[];
-  category: {
-    id: number;
-    name: string;
-    icon: any;
-    filters?: any[];
-    subcategories?: any[];
-  };
+  bookmarks: number[];
+  category: CategoryT;
   categoryIndex: number;
+  destination: Place | CategoryT;
   selectionIndex: number;
   setSelectionIndex: (idx: number) => void;
-  destinations: any;
-  setDestinations: (destinations: any) => void;
-  onCategoryMove: any;
+  destinations: (Place | CategoryT)[];
+  setDestinations: (destinations: (Place | CategoryT)[]) => void;
+  onCategoryMove: (idx: number, direction: number) => void;
 }
 
 const Category = forwardRef((props: ChildComponentProps, ref) => {
@@ -47,6 +50,7 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
     bookmarks,
     category,
     categoryIndex,
+    destination,
     selectionIndex,
     setSelectionIndex,
     destinations,
@@ -54,48 +58,87 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
     onCategoryMove,
   } = props;
 
-  const childRef: any = useRef(null);
+  const childRef = useRef<any>(null);
   const closeDropdown = () => {
-    childRef?.current?.closeDropdown();
+    childRef.current?.closeDropdown();
   };
   useImperativeHandle(ref, () => ({
     closeDropdown,
   }));
 
-  let filters = category.filters;
+  let filters: FilterT[] = useMemo(() => {
+    return category.filters ? category.filters : [];
+  }, [category.filters]);
 
-  const [filterValues, setFilterValues] = useState<number[]>([]);
-  const [defaultFilterValues, setDefaultFilterValues] = useState<number[]>([]);
-
-  useEffect(() => {
-    let _defaultFilterValues: number[] = [];
-    for (let i = 0; filters && i < filters.length; i++) {
-      _defaultFilterValues.push(filters[i].defaultIdx);
-    }
-    setDefaultFilterValues(_defaultFilterValues);
-    setFilterValues(_defaultFilterValues);
-  }, [filters]);
+  const [filterValues, setFilterValues] = useState<(number | number[])[]>([]);
+  const [categoryFilter, setCategoryFilter] = useState<number[]>([]);
+  const [defaultFilterValues, setDefaultFilterValues] = useState<
+    (number | number[])[]
+  >([]);
+  const [filtersInitialized, setFiltersInitialized] = useState<boolean>(false);
+  const [toBeRefreshed, setToBeRefreshed] = useState<boolean>(false);
 
   useEffect(() => {
     const loadDestinations = async (categoryId: number) => {
-      const response = await requestLocations(
-        [categoryId],
+      setToBeRefreshed(false);
+      const response = await requestLocationsSingle(
+        categoryId,
         radius,
         latitude,
         longitude,
         integers.defaultNumPlaces,
+        filters,
+        filterValues,
+        category.subcategories,
+        categoryFilter,
       );
 
-      const _destinations = [...destinations];
-      _destinations[categoryIndex].options = response[categoryId];
-      setDestinations(_destinations);
+      const _destinations: (Place | CategoryT)[] = [...destinations];
+      const _destination: Place | CategoryT = _destinations[categoryIndex];
+      if (isCategory(_destination) && response !== null) {
+        _destination.options = response;
+        setDestinations(_destinations);
+      }
     };
 
-    if (destinations[categoryIndex].options?.length === 0) {
-      loadDestinations(-category.id);
+    const initializeFilterValues = () => {
+      let _defaultFilterValues: (number | number[])[] = [];
+      for (let i = 0; filters && i < filters.length; i++) {
+        _defaultFilterValues.push(filters[i].defaultIdx);
+      }
+      setDefaultFilterValues(_defaultFilterValues);
+      setFilterValues(_defaultFilterValues);
+      setFiltersInitialized(true);
+      setToBeRefreshed(true);
+    };
+
+    if (isCategory(destination) && toBeRefreshed) {
+      loadDestinations(category.id);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+
+    if (!filtersInitialized) {
+      initializeFilterValues();
+    }
+  }, [
+    category.id,
+    category.subcategories,
+    categoryFilter,
+    categoryIndex,
+    latitude,
+    longitude,
+    radius,
+    filters,
+    filterValues,
+    destination,
+    destinations,
+    setDestinations,
+    filtersInitialized,
+    toBeRefreshed,
+  ]);
+
+  const isCategory = (item: Place | CategoryT): item is CategoryT => {
+    return 'icon' in item;
+  };
 
   return (
     <View key={category.id}>
@@ -129,25 +172,41 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
           ]}
         />
       </View>
-      {filters ? (
+      {filters.length > 0 ? (
         <Filter
           ref={childRef}
           filters={filters}
           subcategories={category.subcategories}
           currFilters={filterValues}
-          setCurrFilters={setFilterValues}
+          setCurrFilters={(_filterValues: (number | number[])[]) => {
+            setToBeRefreshed(true);
+            setFilterValues(_filterValues);
+          }}
           defaultFilterValues={defaultFilterValues}
+          categoryFilter={categoryFilter}
+          setCategoryFilter={setCategoryFilter}
         />
       ) : null}
-      <PlacesDisplay
-        navigation={navigation}
-        data={destinations[categoryIndex].options}
-        width={s(290)}
-        bookmarks={bookmarks}
-        closeDropdown={closeDropdown}
-        index={selectionIndex}
-        setIndex={setSelectionIndex}
-      />
+      {isCategory(destination) &&
+      destination.options &&
+      Array.isArray(destination.options) &&
+      destination.options.length > 0 ? (
+        <PlacesDisplay
+          navigation={navigation}
+          places={destination.options}
+          width={s(290)}
+          bookmarks={bookmarks}
+          closeDropdown={closeDropdown}
+          index={selectionIndex}
+          setIndex={setSelectionIndex}
+        />
+      ) : (
+        <View style={styles.noPlacesFound}>
+          <Text size="m" color={colors.darkgrey}>
+            {strings.createTabStack.noPlaces}
+          </Text>
+        </View>
+      )}
     </View>
   );
 });
@@ -176,6 +235,11 @@ const styles = StyleSheet.create({
     height: '100%',
     borderRadius: s(17.5),
     tintColor: colors.black,
+  },
+  noPlacesFound: {
+    height: s(100),
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 

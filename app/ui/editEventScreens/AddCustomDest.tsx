@@ -11,28 +11,32 @@ import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 import {floats} from '../../constants/numbers';
+
 import CustomText from '../components/Text';
+import AButton from '../components/ActionButton';
 
 import {GoogleMapsAPIKey} from '../../utils/api/APIConstants';
-import AButton from '../components/ActionButton';
+import {Place, Region} from '../../utils/interfaces/types';
+
+// TODO-MVP: THIS FUNCTIONALITY IS INCOMPLETE, AND SO IS REFACTORING
 
 interface Props {
   onClose: () => void;
-  onSelect: (dest: any) => void;
+  onSelect: (destination: Place) => void;
 }
 
 const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
   const autocompleteRef = useRef<GooglePlacesAutocompleteRef>(null);
-  const [region, setRegion] = useState({
+  const [region, setRegion] = useState<Region>({
     latitude: floats.defaultLatitude,
     longitude: floats.defaultLongitude,
     latitudeDelta: floats.defaultLatitudeDelta,
     longitudeDelta: floats.defaultLongitudeDelta,
   });
 
-  const [destination, setDestination]: [any, any] = useState();
-  const [selected, setSelected] = useState(false);
-  const [custom, setCustom] = useState(false);
+  const [destination, setDestination] = useState<any>();
+  const [selected, setSelected] = useState<boolean>(false);
+  const [custom, setCustom] = useState<boolean>(false);
 
   useEffect(() => {
     autocompleteRef.current?.focus();
@@ -95,8 +99,8 @@ const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
             setDestination({
               name: data?.structured_formatting?.main_text,
               address: data?.structured_formatting?.secondary_text,
-              latitude: details.geometry.location.lat,
-              longitude: details.geometry.location.lng,
+              latitude: details?.geometry?.location?.lat,
+              longitude: details?.geometry?.location?.lng,
             });
             setCustom(false);
           }
@@ -113,11 +117,11 @@ const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
       <View style={styles.contentContainer}>
         {selected ? (
           <>
-            {custom && (
+            {custom ? (
               <Text style={styles.suggestText}>
                 {strings.library.setCustomLocation + ':'}
               </Text>
-            )}
+            ) : null}
             <MapView
               style={styles.map}
               initialRegion={region}

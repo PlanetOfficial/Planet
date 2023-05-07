@@ -14,12 +14,19 @@ import DatePicker from 'react-native-date-picker';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import BottomSheet from '@gorhom/bottom-sheet';
 
+import moment from 'moment';
+
 import {
   getMarkerArray,
   getAveragePoint,
   getRegionForCoordinates,
 } from '../../utils/functions/Misc';
-import {MarkerObject} from '../../utils/interfaces/MarkerObject';
+import {
+  MarkerObject,
+  Place,
+  Category,
+  Coordinate,
+} from '../../utils/interfaces/types';
 import {getEventPlaces} from '../../utils/api/libraryCalls/getEventPlaces';
 
 import Blur from '../components/Blur';
@@ -29,54 +36,64 @@ import OptionMenu from '../components/OptionMenu';
 import PlacesDisplay from '../components/PlacesDisplay';
 import Confirmation from '../editEventScreens/Confirmation';
 import EditEvent from '../editEventScreens/EditEvent';
+import AddEvent from '../editEventScreens/AddEvent';
 
 import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
-import AddEvent from '../editEventScreens/AddEvent';
 import {floats} from '../../constants/numbers';
 
-const Event = ({navigation, route}: {navigation: any; route: any}) => {
-  const [eventId] = useState(route?.params?.eventData?.id);
-  const [eventTitle] = useState(route?.params?.eventData?.name);
-  const [date] = useState(new Date(route?.params?.eventData?.date)); // this probably doesn't work but whatever
-  const [bookmarks] = useState(route?.params?.bookmarks);
+interface Props {
+  navigation: any;
+  route: any;
+}
+
+const Event: React.FC<Props> = ({navigation, route}) => {
+  const [eventId] = useState<number>(route?.params?.eventData?.id);
+  const [eventTitle] = useState<string>(route?.params?.eventData?.name);
+  const [date] = useState<string>(
+    moment(route?.params?.eventData?.date, 'YYYY-MM-DD').format('M/D/YYYY'),
+  );
+  const [bookmarks] = useState<number[]>(route?.params?.bookmarks);
 
   const [latitude, setLatitude] = useState<number>(floats.defaultLatitude);
   const [longitude, setLongitude] = useState<number>(floats.defaultLongitude);
 
-  const [fullEventData, setFullEventData]: [any, any] = useState({});
-  const [placeIdx, setPlaceIdx] = useState(0);
-  const [markers, setMarkers] = useState([]);
+  const [places, setPlaces] = useState<Place[]>([]);
+  const [placeIdx, setPlaceIdx] = useState<number>(0);
+  const [markers, setMarkers] = useState<MarkerObject[]>([]);
 
-  const [editing, setEditing] = useState(false);
-  const [tempTitle, setTempTitle] = useState();
-  const [tempDate, setTempDate] = useState(new Date());
-  const [tempPlaces, setTempPlaces]: [any, any] = useState([]);
-  const [datePickerOpen, setDatePickerOpen] = useState(false);
-  const [backConfirmationOpen, setBackConfirmationOpen] = useState(false);
-  const [selectionIndices, setSelectionIndices]: [number[], any] = useState([]);
+  const [editing, setEditing] = useState<boolean>(false);
+  const [tempTitle, setTempTitle] = useState<string>();
+  const [tempDate, setTempDate] = useState<string>();
+  const [tempPlaces, setTempPlaces] = useState<(Place | Category)[]>([]);
+  const [datePickerOpen, setDatePickerOpen] = useState<boolean>(false);
+  const [backConfirmationOpen, setBackConfirmationOpen] =
+    useState<boolean>(false);
+  const [selectionIndices, setSelectionIndices] = useState<number[]>([]);
 
   const insets = useSafeAreaInsets();
-  const bottomSheetRef: any = useRef<BottomSheet>(null);
+  const bottomSheetRef = useRef<BottomSheet>(null);
   const snapPoints = useMemo(
     () => [s(240) + insets.bottom, vs(680) - s(60) - insets.top],
     [insets.top, insets.bottom],
   );
 
-  const addRef: any = useRef(null);
+  const addRef = useRef<any>(null); // any bc typescript bad
 
   useEffect(() => {
     const getEventData = async () => {
       const data = await getEventPlaces(eventId);
-      setFullEventData(data);
+      setPlaces(data?.places);
 
-      const markerArray: any = getMarkerArray(data?.places);
+      setSelectionIndices(Array(data?.places?.length).fill(-1));
+
+      const markerArray: MarkerObject[] = getMarkerArray(data?.places);
       setMarkers(markerArray);
 
-      const averagePoint = getAveragePoint(markerArray);
-      setLatitude(averagePoint?.latitude);
-      setLongitude(averagePoint?.longitude);
+      const averagePoint: Coordinate = getAveragePoint(markerArray);
+      setLatitude(averagePoint.latitude);
+      setLongitude(averagePoint.longitude);
     };
 
     getEventData();
@@ -87,27 +104,28 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
     setEditing(true);
     setTempTitle(eventTitle);
     setTempDate(date);
-    setTempPlaces(fullEventData?.places);
+    setTempPlaces(places);
   };
 
   const saveEdits = () => {
     bottomSheetRef.current?.collapse();
     setEditing(false);
-    // save edits to database
+
+    // TODO-MVP: implement save edits
   };
 
   return (
     <View style={styles.container}>
       <MapView style={styles.map} region={getRegionForCoordinates(markers)}>
         {markers?.length > 0
-          ? markers?.map((marker: MarkerObject, index: number) => (
+          ? markers.map((marker: MarkerObject, index: number) => (
               <Marker
                 key={index}
                 coordinate={{
-                  latitude: marker?.latitude,
-                  longitude: marker?.longitude,
+                  latitude: marker.latitude,
+                  longitude: marker.longitude,
                 }}
-                title={marker?.name}
+                title={marker.name}
               />
             ))
           : null}
@@ -132,15 +150,18 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
               <View style={headerStyles.texts}>
                 <TextInput
                   onFocus={() =>
-                    Platform.OS === 'android' && bottomSheetRef.current?.close()
+                    Platform.OS === 'android'
+                      ? bottomSheetRef.current?.close()
+                      : null
                   }
                   onBlur={() =>
-                    Platform.OS === 'android' &&
-                    bottomSheetRef.current?.expand()
+                    Platform.OS === 'android'
+                      ? bottomSheetRef.current?.expand()
+                      : null
                   }
                   style={headerStyles.name}
                   value={tempTitle}
-                  onChangeText={(text: any) => setTempTitle(text)}
+                  onChangeText={(text: string) => setTempTitle(text)}
                 />
                 <TouchableOpacity onPress={() => setDatePickerOpen(true)}>
                   <Text
@@ -148,16 +169,21 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
                     weight="l"
                     color={colors.accent}
                     underline={true}>
-                    {tempDate.toLocaleDateString()}
+                    {tempDate}
                   </Text>
                 </TouchableOpacity>
                 <DatePicker
                   modal
                   open={datePickerOpen}
-                  date={date}
+                  date={moment(date, 'M/D/YYYY').toDate()}
+                  mode="date"
                   onConfirm={newDate => {
                     setDatePickerOpen(false);
-                    setTempDate(newDate);
+                    setTempDate(
+                      moment(newDate, 'YYYY-MM-DD HH:mm:ssZ').format(
+                        'M/D/YYYY',
+                      ),
+                    );
                   }}
                   onCancel={() => {
                     setDatePickerOpen(false);
@@ -178,7 +204,7 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
                   {eventTitle}
                 </Text>
                 <Text size="xs" weight="l" color={colors.accent}>
-                  {date.toLocaleDateString()}
+                  {date}
                 </Text>
               </View>
               <OptionMenu
@@ -186,7 +212,7 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
                   {
                     name: strings.main.share,
                     onPress: () => {
-                      console.log('TODO: Share Event');
+                      // TODO: share event
                     },
                     color: colors.black,
                   },
@@ -198,7 +224,7 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
                   {
                     name: strings.main.remove,
                     onPress: () => {
-                      console.log('TODO: Remove Event');
+                      // TODO-MVP: remove event
                     },
                     color: colors.red,
                   },
@@ -230,13 +256,13 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
             setDestinations={setTempPlaces}
             selectionIndices={selectionIndices}
             setSelectionIndices={setSelectionIndices}
-            onAddPress={addRef?.current?.onAddPress}
+            onAddPress={addRef.current?.onAddPress}
           />
         ) : (
           <SafeAreaView>
             <PlacesDisplay
               navigation={navigation}
-              data={fullEventData?.places}
+              places={places}
               width={s(290)}
               bookmarks={bookmarks}
               index={placeIdx}

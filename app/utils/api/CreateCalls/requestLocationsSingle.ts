@@ -1,22 +1,17 @@
-import {Filter} from '../../interfaces/types';
+import {Filter, Subcategory} from '../../interfaces/types';
 import {CustomCallsURL} from '../APIConstants';
 
-export const getCatFiltered = async (
-  subcategories: number[],
-  count: number,
+export const requestLocationsSingle = async (
+  category: number,
+  radius: number,
   latitude: number,
   longitude: number,
-  category_id: number,
+  count: number,
   filters: Filter[],
   filterValues: (number | number[])[],
+  subcategories?: Subcategory[],
+  categoryFilter?: number[],
 ) => {
-  // TODO-SECURITY: filter inputs**
-  let subcategoryString = '';
-
-  subcategories.forEach(item => {
-    subcategoryString += `subcategories_ids[]=${item}&`;
-  });
-
   let _filterValues: {
     [key: string]: string | number | (string | number)[];
   } = {};
@@ -29,11 +24,18 @@ export const getCatFiltered = async (
     }
   });
 
+  let _subcategories: number[] = [];
+  if (subcategories && categoryFilter) {
+    categoryFilter.forEach(item => {
+      _subcategories.push(subcategories[item].id);
+    });
+  }
+
   const response = await fetch(
     CustomCallsURL +
-      `/category_filter_v2?${subcategoryString}count=${count}&latitude=${latitude}&longitude=${longitude}&category_id=${category_id}&filters=${JSON.stringify(
+      `/categoryLocations?category_id=${category}&radius=${radius}&latitude=${latitude}&longitude=${longitude}&count=${count}&filters=${JSON.stringify(
         _filterValues,
-      )}`,
+      )}&subcategories_ids=${JSON.stringify(_subcategories)}`,
     {
       method: 'GET',
     },
@@ -41,8 +43,8 @@ export const getCatFiltered = async (
 
   if (response?.ok) {
     const myJson = await response.json(); //extract JSON from the http response
-    return myJson;
+    return myJson?.places;
   } else {
-    return [];
+    return {};
   }
 };

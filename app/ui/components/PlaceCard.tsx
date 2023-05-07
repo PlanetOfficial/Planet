@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Image, StyleSheet, View} from 'react-native';
+import {Alert, Image, StyleSheet, View} from 'react-native';
 
 import {s} from 'react-native-size-matters';
 import EncryptedStorage from 'react-native-encrypted-storage';
@@ -9,6 +9,7 @@ import Icon from './Icon';
 
 import {colors} from '../../constants/theme';
 import {icons} from '../../constants/images';
+
 import {setBookmark} from '../../utils/api/shared/setBookmark';
 import {unbookmark} from '../../utils/api/shared/unbookmark';
 
@@ -49,10 +50,8 @@ const PlaceCard: React.FC<Props> = ({
 
     if (responseStatus) {
       setBookmarked(!bookmarked);
-
-      // TODO: success
     } else {
-      // failed
+      Alert.alert('Error', 'Something went wrong. Please try again.');
     }
   };
 

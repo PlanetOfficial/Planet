@@ -6,6 +6,7 @@ import {
   FlatList,
   TouchableOpacity,
 } from 'react-native';
+import moment from 'moment';
 
 import {s} from 'react-native-size-matters';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
@@ -15,22 +16,31 @@ import Text from '../components/Text';
 import Icon from '../components/Icon';
 import PlaceCard from '../components/PlaceCard';
 import EventCard from '../components/EventCard';
-import strings from '../../constants/strings';
 
+import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 import {icons} from '../../constants/images';
 
 import {getEvents} from '../../utils/api/libraryCalls/getEvents';
 import {getBookmarks} from '../../utils/api/shared/getBookmarks';
 import {filterToUniqueIds} from '../../utils/functions/Misc';
+import {Place, Event} from '../../utils/interfaces/types';
 
-const Library = ({navigation}: {navigation: any}) => {
-  const [selectedIndex, setIndex] = useState(0);
-  const [places, setPlaces] = useState([]);
-  const [events, setEvents] = useState([]);
+interface Props {
+  navigation: any;
+}
+
+const Library: React.FC<Props> = ({navigation}) => {
+  const [selectedIndex, setIndex] = useState<number>(0);
+  const [places, setPlaces] = useState<Place[]>([]);
+  const [events, setEvents] = useState<Event[]>([]);
 
   const removePlace = (placeId: number) => {
-    setPlaces(places.filter((item: any) => item?.id !== placeId));
+    setPlaces(places.filter((place: Place) => place.id !== placeId));
+  };
+
+  const isPlace = (item: Place | Event): item is Place => {
+    return item.hasOwnProperty('latitude');
   };
 
   useEffect(() => {
@@ -38,6 +48,7 @@ const Library = ({navigation}: {navigation: any}) => {
       const authToken = await EncryptedStorage.getItem('auth_token');
 
       const eventsRaw = await getEvents(authToken);
+
       setEvents(filterToUniqueIds(eventsRaw));
 
       const bookmarks = await getBookmarks(authToken);
@@ -74,7 +85,7 @@ const Library = ({navigation}: {navigation: any}) => {
         borderRadius={0}
         values={[strings.library.saved, strings.library.events]}
         selectedIndex={selectedIndex}
-        onTabPress={index => setIndex(index)}
+        onTabPress={(index: number) => setIndex(index)}
       />
 
       <FlatList
@@ -82,27 +93,27 @@ const Library = ({navigation}: {navigation: any}) => {
         data={selectedIndex === 0 ? places : events}
         contentContainerStyle={styles.contentContainer}
         initialNumToRender={5}
-        keyExtractor={(item: any, idx: any) => idx}
+        keyExtractor={(_: Place | Event, idx: number) => idx.toString()}
         ItemSeparatorComponent={Spacer}
-        renderItem={({item}) => {
-          return selectedIndex === 0 ? (
+        renderItem={({item}: {item: Place | Event}) => {
+          return isPlace(item) ? (
             <TouchableOpacity
               style={styles.card}
               onPress={() => {
                 navigation.navigate('Place', {
                   destination: item,
-                  category: item?.category?.name,
+                  category: item.category_name,
                 });
               }}>
               <PlaceCard
-                id={item?.id}
-                name={item?.name}
-                info={item?.category?.name}
-                marked={true}
+                id={item.id}
+                name={item.name}
+                info={item.category_name}
+                marked={places.includes(item)}
                 image={
-                  item?.image_url
+                  item.image_url
                     ? {
-                        uri: item?.image_url,
+                        uri: item.image_url,
                       }
                     : icons.defaultIcon
                 }
@@ -115,17 +126,17 @@ const Library = ({navigation}: {navigation: any}) => {
               onPress={() => {
                 navigation.navigate('Event', {
                   eventData: item,
-                  bookmarks: places?.map((place: any) => place?.id),
+                  bookmarks: places.map((place: Place) => place.id),
                 });
               }}>
               <EventCard
-                name={item?.name}
-                info={item?.date}
+                name={item.name}
+                info={moment(item.date, 'YYYY-MM-DD').format('M/D/YYYY')}
                 image={
-                  item?.places &&
-                  item?.places?.length !== 0 &&
-                  item?.places[0]?.place?.image_url
-                    ? {uri: item?.places[0]?.place?.image_url}
+                  item.places &&
+                  item.places.length !== 0 &&
+                  item.places[0].place.image_url
+                    ? {uri: item.places[0].place.image_url}
                     : icons.defaultIcon
                 }
                 option={true}

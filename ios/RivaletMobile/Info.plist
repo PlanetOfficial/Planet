@@ -35,10 +35,12 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Please allow location access if you wish to search for a nearby locations.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>Please allow location access if you wish to search for a nearby locations.</string>
 	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen</string>
+	<string>LaunchScreen.storyboard</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
@@ -50,8 +52,6 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<false/>
+	<string>NSLocationWhenInUseUsageDescription</string>
 </dict>
 </plist>

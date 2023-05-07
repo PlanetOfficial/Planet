@@ -1,27 +1,35 @@
 import React from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
+  Alert,
   SafeAreaView,
+  StyleSheet,
+  Text,
+  TextInput,
   TouchableOpacity,
+  View,
 } from 'react-native';
+
 import {s} from 'react-native-size-matters';
+
 import CustomText from '../components/Text';
 import Icon from '../components/Icon';
 
-import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 import {icons} from '../../constants/images';
+import strings from '../../constants/strings';
+
 import {clearCaches} from '../../utils/functions/CacheHelpers';
 
-const Settings = ({navigation}: {navigation: any}) => {
+interface Props {
+  navigation: any;
+}
+
+const Settings: React.FC<Props> = ({navigation}) => {
   const handleLogout = async () => {
     try {
       clearCaches();
     } catch (error) {
-      // TODO: display error
+      Alert.alert('Error', 'Something went wrong. Please try again.');
       console.log(error);
     } finally {
       navigation.reset({

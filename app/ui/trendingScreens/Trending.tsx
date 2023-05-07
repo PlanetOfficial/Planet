@@ -9,26 +9,59 @@ import {
   PermissionsAndroid,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
+import EncryptedStorage from 'react-native-encrypted-storage';
 import Geolocation from '@react-native-community/geolocation';
 
+import moment from 'moment';
+
 import {colors} from '../../constants/theme';
-import {icons} from '../../constants/images';
-import {genres} from '../../constants/genres';
+import {categoryIcons, icons} from '../../constants/images';
 import {floats, integers} from '../../constants/numbers';
 import strings from '../../constants/strings';
-
-import {requestLocations} from '../../utils/api/CreateCalls/requestLocations';
-import {Subcategory} from '../../utils/interfaces/subcategory';
 
 import Text from '../components/Text';
 import Icon from '../components/Icon';
 import PlaceCard from '../components/PlaceCard';
 
-const Trending = ({navigation}: {navigation: any}) => {
-  const [latitude, setLatitude] = useState(floats.defaultLatitude);
-  const [longitude, setLongitude] = useState(floats.defaultLongitude);
-  const [radius] = useState(floats.defaultRadius);
-  const [eventsData, setEventsData]: [any, any] = useState([]);
+import {getBookmarks} from '../../utils/api/shared/getBookmarks';
+import {requestLocations} from '../../utils/api/CreateCalls/requestLocations';
+import {Subcategory} from '../../utils/interfaces/types';
+import {Category, LiveEvent, LiveEvents} from '../../utils/interfaces/types';
+import {getGenres} from '../../utils/api/shared/getGenres';
+
+interface Props {
+  navigation: any;
+}
+
+const Trending: React.FC<Props> = ({navigation}) => {
+  const [latitude, setLatitude] = useState<number>(floats.defaultLatitude);
+  const [longitude, setLongitude] = useState<number>(floats.defaultLongitude);
+  const [radius] = useState<number>(floats.defaultRadius);
+  const [eventsData, setEventsData] = useState<LiveEvents>([]);
+  const [bookmarks, setBookmarks] = useState<number[]>([]);
+  const [liveCategories, setLiveCategories] = useState<Category[]>([]);
+
+  useEffect(() => {
+    const initializeData = async () => {
+      const authToken = await EncryptedStorage.getItem('auth_token');
+
+      const _bookmarks = await getBookmarks(authToken);
+      const bookmarksIds: number[] = _bookmarks.map(
+        (bookmark: any) => bookmark.id,
+      );
+      setBookmarks(bookmarksIds);
+
+      const _genres = await getGenres();
+      const _liveCategories: Category[] = _genres[0]?.categories;
+      _liveCategories?.forEach((category: Category) => {
+        category.icon = categoryIcons[category.id - 1];
+      });
+
+      setLiveCategories(_liveCategories);
+    };
+
+    initializeData();
+  }, []);
 
   useEffect(() => {
     const detectLocation = async () => {
@@ -50,9 +83,11 @@ const Trending = ({navigation}: {navigation: any}) => {
       }
 
       const requestAPI = async (_latitude: number, _longitude: number) => {
-        const categoryIds = genres[0].categories.map(category => category.id);
+        const categoryIds: number[] = liveCategories?.map(
+          (category: Category) => category.id,
+        );
 
-        const liveEventData = await requestLocations(
+        const liveEvents: LiveEvents = await requestLocations(
           categoryIds,
           radius,
           _latitude,
@@ -60,7 +95,7 @@ const Trending = ({navigation}: {navigation: any}) => {
           integers.defaultNumPlaces,
         );
 
-        setEventsData(liveEventData);
+        setEventsData(liveEvents);
       };
 
       Geolocation.getCurrentPosition(
@@ -69,7 +104,7 @@ const Trending = ({navigation}: {navigation: any}) => {
           setLongitude(position.coords.longitude);
           requestAPI(position.coords.latitude, position.coords.longitude);
         },
-        (error: any) => {
+        error => {
           console.log(error);
 
           setLatitude(floats.defaultLatitude);
@@ -79,8 +114,10 @@ const Trending = ({navigation}: {navigation: any}) => {
       );
     };
 
-    detectLocation();
-  }, [radius]);
+    if (liveCategories?.length > 0) {
+      detectLocation();
+    }
+  }, [radius, liveCategories]);
 
   return (
     <View style={styles.container}>
@@ -117,79 +154,85 @@ const Trending = ({navigation}: {navigation: any}) => {
         </View>
       </SafeAreaView>
       <ScrollView>
-        {genres[0].categories.map(
-          (category: any, idx: number) =>
-            eventsData[category.id] &&
-            eventsData[category.id].length > 0 && (
-              <View key={idx} style={categoryStyles.container}>
-                <View style={categoryStyles.header}>
-                  <Text size="m" weight="b">
-                    {category.name}
-                  </Text>
-                  <TouchableOpacity
-                    onPress={() => {
-                      let defaultSubcategories: Subcategory[] = [];
-                      let hiddenSubCategories = [];
+        {liveCategories?.map((category: Category, idx: number) =>
+          eventsData[category.id] && eventsData[category.id].length > 0 ? (
+            <View key={idx} style={categoryStyles.container}>
+              <View style={categoryStyles.header}>
+                <Text size="m" weight="b">
+                  {category.name}
+                </Text>
+                <TouchableOpacity
+                  onPress={() => {
+                    let defaultSubcategories: Subcategory[] = [];
+                    let hiddenSubCategories: Subcategory[] = [];
 
-                      if (category?.subcategories?.length <= 5) {
+                    if (category.subcategories) {
+                      if (category.subcategories.length <= 5) {
                         defaultSubcategories = category.subcategories;
                       } else {
-                        defaultSubcategories = category?.subcategories?.slice(
+                        defaultSubcategories = category.subcategories?.slice(
                           0,
                           5,
                         );
-                        hiddenSubCategories = category?.subcategories?.slice(5);
+                        hiddenSubCategories = category.subcategories?.slice(5);
                       }
 
                       navigation.navigate('LiveCategory', {
                         subcategories: defaultSubcategories,
                         hiddenSubCategories,
                         categoryId: category.id,
+                        filters: category.filters,
                         categoryName: category.name,
+                        bookmarks,
                         latitude,
                         longitude,
                         radius,
                       });
-                    }}>
-                    <Text size="xs" weight="b" color={colors.accent}>
-                      {strings.trending.seeAll}
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-                <ScrollView
-                  contentContainerStyle={categoryStyles.contentContainer}
-                  style={categoryStyles.scrollView}
-                  horizontal={true}
-                  showsHorizontalScrollIndicator={false}>
-                  {eventsData[category.id]
-                    ? eventsData[category.id].map((item: any, jdx: number) => (
+                    }
+                  }}>
+                  <Text size="xs" weight="b" color={colors.accent}>
+                    {strings.trending.seeAll}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+              <ScrollView
+                contentContainerStyle={categoryStyles.contentContainer}
+                style={categoryStyles.scrollView}
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}>
+                {eventsData[category.id]
+                  ? eventsData[category.id].map(
+                      (event: LiveEvent, jdx: number) => (
                         <TouchableOpacity
                           style={categoryStyles.card}
                           key={jdx}
                           onPress={() =>
                             navigation.navigate('Place', {
-                              destination: item,
-                              category: item?.category?.name,
+                              destination: event,
+                              category: event.category,
                             })
                           }>
                           <PlaceCard
-                            id={item?.id}
-                            name={item?.name}
-                            info={item?.date}
-                            marked={item?.marked}
-                            image={{uri: item?.image_url}}
+                            id={event.id}
+                            name={event.name}
+                            info={moment(event.date, 'YYYY-MM-DD').format(
+                              'M/D/YYYY',
+                            )}
+                            marked={bookmarks.includes(event.id)}
+                            image={{uri: event.image_url}}
                           />
                         </TouchableOpacity>
-                      ))
-                    : null}
-                </ScrollView>
-                {idx === genres[0].categories.length - 1 ? (
-                  <View style={styles.bottomPadding} />
-                ) : (
-                  <Spacer />
-                )}
-              </View>
-            ),
+                      ),
+                    )
+                  : null}
+              </ScrollView>
+              {idx === liveCategories?.length - 1 ? (
+                <View style={styles.bottomPadding} />
+              ) : (
+                <Spacer />
+              )}
+            </View>
+          ) : null,
         )}
       </ScrollView>
     </View>

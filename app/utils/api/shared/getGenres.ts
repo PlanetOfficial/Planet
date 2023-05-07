@@ -1,9 +1,9 @@
 import {DBOpsURL} from '../APIConstants';
 
-export const getEventPlaces = async (event_id: number) => {
+export const getGenres = async () => {
   // TODO-SECURITY: filter inputs**
 
-  const response = await fetch(DBOpsURL + `/event/${event_id}`, {
+  const response = await fetch(DBOpsURL + '/category', {
     method: 'GET',
   });
 
@@ -11,6 +11,6 @@ export const getEventPlaces = async (event_id: number) => {
     const myJson = await response.json(); //extract JSON from the http response
     return myJson;
   } else {
-    return {};
+    return [];
   }
 };

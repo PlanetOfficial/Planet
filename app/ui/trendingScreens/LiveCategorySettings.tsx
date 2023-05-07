@@ -1,28 +1,31 @@
 import React, {useState} from 'react';
 import {View, SafeAreaView, StyleSheet, TouchableOpacity} from 'react-native';
-import {colors} from '../../constants/theme';
-import {icons} from '../../constants/images';
-import strings from '../../constants/strings';
 import {s} from 'react-native-size-matters';
 import {
   NestableScrollContainer,
   NestableDraggableFlatList,
 } from 'react-native-draggable-flatlist';
+
+import {colors} from '../../constants/theme';
+import {icons} from '../../constants/images';
+import strings from '../../constants/strings';
+
 import Text from '../components/Text';
 import Icon from '../components/Icon';
 
-const LiveCategorySettings = ({
-  navigation,
-  route,
-}: {
+import {Subcategory} from '../../utils/interfaces/types';
+
+interface Props {
   navigation: any;
   route: any;
-}) => {
-  const [subcategories, setSubcategories]: [any, any] = useState(
+}
+
+const LiveCategorySettings: React.FC<Props> = ({navigation, route}) => {
+  const [subcategories, setSubcategories] = useState<Subcategory[]>(
     route?.params?.subcategories,
   );
 
-  const [hiddenSubCategories, setHiddenSubCategories]: [any, any] = useState(
+  const [hiddenSubCategories, setHiddenSubCategories] = useState<Subcategory[]>(
     route?.params?.hiddenSubCategories,
   );
 
@@ -54,15 +57,15 @@ const LiveCategorySettings = ({
         </View>
         <NestableDraggableFlatList
           data={subcategories}
-          keyExtractor={(item: any) => item.id}
+          keyExtractor={(item: Subcategory) => item.id.toString()}
           onDragEnd={({data}) => setSubcategories(data)}
           renderItem={({
             item,
             drag,
             isActive,
           }: {
-            item: any;
-            drag: any;
+            item: Subcategory;
+            drag: () => void;
             isActive: boolean;
           }) => (
             <>
@@ -77,13 +80,16 @@ const LiveCategorySettings = ({
                   onPress={() => {
                     setSubcategories(
                       subcategories.filter(
-                        (subcategory: any) => subcategory.id !== item.id,
+                        (subcategory: Subcategory) =>
+                          subcategory.id !== item.id,
                       ),
                     );
-                    setHiddenSubCategories((_hiddenSubCategory: any) => [
-                      ..._hiddenSubCategory,
-                      item,
-                    ]);
+                    setHiddenSubCategories(
+                      (_hiddenSubCategories: Subcategory[]) => [
+                        ..._hiddenSubCategories,
+                        item,
+                      ],
+                    );
                   }}
                 />
                 <View style={categoryStyles.title}>
@@ -96,6 +102,7 @@ const LiveCategorySettings = ({
                   <Icon icon={icons.drag} color={colors.darkgrey} />
                 </TouchableOpacity>
               </View>
+              <View style={categoryStyles.border} />
             </>
           )}
         />
@@ -106,21 +113,21 @@ const LiveCategorySettings = ({
         </View>
         <NestableDraggableFlatList
           data={hiddenSubCategories}
-          keyExtractor={(item: any) => item.id}
-          renderItem={({item}: {item: any}) => (
+          keyExtractor={(item: Subcategory) => item.id.toString()}
+          renderItem={({item}: {item: Subcategory}) => (
             <>
               <View style={categoryStyles.container}>
-                <View style={categoryStyles.border} />
                 <Icon
                   icon={icons.plus}
                   color={colors.accent}
                   onPress={() => {
                     setHiddenSubCategories(
                       hiddenSubCategories.filter(
-                        (subcategory: any) => subcategory.id !== item.id,
+                        (subcategory: Subcategory) =>
+                          subcategory.id !== item.id,
                       ),
                     );
-                    setSubcategories((_subcategories: any) => [
+                    setSubcategories((_subcategories: Subcategory[]) => [
                       ..._subcategories,
                       item,
                     ]);

@@ -18,7 +18,7 @@ import {
   getMarkerArray,
   getRegionForCoordinates,
 } from '../../utils/functions/Misc';
-import {MarkerObject} from '../../utils/interfaces/MarkerObject';
+import {MarkerObject} from '../../utils/interfaces/types';
 
 import PlaceCard from '../components/PlaceCard';
 import Blur from '../components/Blur';

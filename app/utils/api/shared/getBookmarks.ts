@@ -1,7 +1,7 @@
 import {DBOpsURL} from '../APIConstants';
 
 export const getBookmarks = async (authToken: any) => {
-  // TODO: filter inputs**
+  // TODO-SECURITY: filter inputs**
 
   const response = await fetch(DBOpsURL + `/saved?authtoken=${authToken}`, {
     method: 'GET',

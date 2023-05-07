@@ -2,11 +2,11 @@ import {DBOpsURL} from '../APIConstants';
 
 export const sendEvent = async (
   name: String,
-  place_ids: Array<number>,
-  authToken,
-  date,
+  place_ids: number[],
+  authToken: string | null,
+  date: string,
 ) => {
-  // TODO: filter inputs**
+  // TODO-SECURITY: filter inputs**
 
   let placesString = '';
 

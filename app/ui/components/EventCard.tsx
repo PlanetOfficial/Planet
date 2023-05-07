@@ -29,26 +29,26 @@ const EventCard: React.FC<Props> = ({name, info, image, option = false}) => {
             {info}
           </Text>
         </View>
-        {option && (
+        {option ? (
           <OptionMenu
             options={[
               {
                 name: strings.main.share,
                 onPress: () => {
-                  console.log('TODO: Share Event');
+                  // TODO: share event
                 },
                 color: colors.black,
               },
               {
                 name: strings.main.remove,
                 onPress: () => {
-                  console.log('TODO: Remove Event');
+                  // TODO-MVP: remove event
                 },
                 color: colors.red,
               },
             ]}
           />
-        )}
+        ) : null}
       </View>
     </View>
   );

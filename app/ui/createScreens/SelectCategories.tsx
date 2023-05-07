@@ -18,24 +18,29 @@ import Text from '../components/Text';
 import Icon from '../components/Icon';
 import CategoryList from '../components/CategoryList';
 
-const SelectCategories = ({
-  navigation,
-  route,
-}: {
+import {Category} from '../../utils/interfaces/types';
+
+interface Props {
   navigation: any;
   route: any;
-}) => {
-  const [latitude] = useState(route?.params?.latitude);
-  const [longitude] = useState(route?.params?.longitude);
-  const [radius] = useState(route?.params?.radius); // in meters
+}
 
-  const [selectedCategories, setSelectedCategories]: [any, any] = useState([]);
+const SelectCategories: React.FC<Props> = ({navigation, route}) => {
+  const [latitude] = useState<number>(route?.params?.latitude);
+  const [longitude] = useState<number>(route?.params?.longitude);
+  const [radius] = useState<number>(route?.params?.radius); // in meters
 
-  const onCategorySelect = (category: any) => {
-    if (!selectedCategories.find((item: any) => item.id === category.id)) {
-      setSelectedCategories((prevCategories: any) => [
+  const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
+
+  const onCategorySelect = (category: Category) => {
+    if (
+      !selectedCategories.find(
+        (_category: Category) => _category.id === category.id,
+      )
+    ) {
+      setSelectedCategories((prevCategories: Category[]) => [
         ...prevCategories,
-        {id: category.id, name: category.name, icon: category.icon},
+        category,
       ]);
     }
   };
@@ -43,7 +48,9 @@ const SelectCategories = ({
   const removeCategory = (categoryId: number) => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     setSelectedCategories(
-      selectedCategories.filter((item: any) => item.id !== categoryId),
+      selectedCategories.filter(
+        (_category: Category) => _category.id !== categoryId,
+      ),
     );
   };
 
@@ -60,7 +67,7 @@ const SelectCategories = ({
           <Icon
             size="s"
             icon={icons.confirm}
-            disabled={selectedCategories?.length === 0}
+            disabled={selectedCategories.length === 0}
             onPress={() => {
               navigation.navigate('SelectDestinations', {
                 selectedCategories: selectedCategories,
@@ -87,17 +94,17 @@ const SelectCategories = ({
           contentContainerStyle={styles.scrollView}>
           <View style={styles.contentContainer}>
             {selectedCategories.length > 0 ? (
-              selectedCategories.map((selected: any) => (
-                <View key={selected.id} style={styles.category}>
-                  <Image style={styles.icon} source={selected.icon} />
+              selectedCategories.map((category: Category) => (
+                <View key={category.id} style={styles.category}>
+                  <Image style={styles.icon} source={category.icon} />
                   <TouchableOpacity
                     style={styles.xButton}
-                    onPress={() => removeCategory(selected.id)}>
+                    onPress={() => removeCategory(category.id)}>
                     <Image style={styles.x} source={icons.x} />
                   </TouchableOpacity>
                   <View style={styles.name}>
                     <Text size="xs" numberOfLines={2} center={true}>
-                      {selected.name}
+                      {category.name}
                     </Text>
                   </View>
                 </View>
