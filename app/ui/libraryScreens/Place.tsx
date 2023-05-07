@@ -24,7 +24,7 @@ import {
   displayHours,
 } from '../../utils/functions/Misc';
 
-// TODO: THIS FUNCTIONALITY IS INCOMPLETE, AND SO IS REFACTORING
+// TODO-MVP: THIS FUNCTIONALITY IS INCOMPLETE, AND SO IS REFACTORING
 
 const Place = ({navigation, route}: {navigation: any; route: any}) => {
   const [destination] = useState(route?.params?.destination);

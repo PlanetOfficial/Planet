@@ -42,7 +42,7 @@ const EventCard: React.FC<Props> = ({name, info, image, option = false}) => {
               {
                 name: strings.main.remove,
                 onPress: () => {
-                  // TODO: remove event
+                  // TODO-MVP: remove event
                 },
                 color: colors.red,
               },
