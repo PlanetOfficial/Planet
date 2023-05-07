@@ -132,7 +132,7 @@ const Trending: React.FC<Props> = ({navigation}) => {
             </Text>
           </View>
           <TouchableOpacity
-            style={headerStyles.fgSelector}
+            style={headerStyles.selector}
             onPress={() => console.log('Switch location')}>
             <Text size="xl" weight="b" color={colors.accent}>
               Seattle
@@ -269,7 +269,7 @@ const headerStyles = StyleSheet.create({
     marginTop: s(2),
     marginHorizontal: s(6),
   },
-  fgSelector: {
+  selector: {
     flexDirection: 'row',
     alignItems: 'center',
   },

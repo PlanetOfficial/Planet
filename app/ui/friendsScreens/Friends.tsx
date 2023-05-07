@@ -1,47 +1,52 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {
   View,
-  Text,
   StyleSheet,
   TouchableOpacity,
   SafeAreaView,
-  Image,
   Pressable,
   FlatList,
   Alert,
 } from 'react-native';
 import {BottomSheetModal} from '@gorhom/bottom-sheet';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {s, vs} from 'react-native-size-matters';
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 import {icons} from '../../constants/images';
-import {s, vs} from 'react-native-size-matters';
 
 import EventCard from '../components/EventCard';
 import FGSelector from './FGSelector';
-import EncryptedStorage from 'react-native-encrypted-storage';
+import Icon from '../components/Icon';
+import Text from '../components/Text';
+import AButton from '../components/ActionButton';
+
 import {getFGsAndInvites} from '../../utils/api/friendsCalls/getFGsAndInvites';
 import {getEvents} from '../../utils/api/libraryCalls/getEvents';
 import {makeFGEvent} from '../../utils/api/friendsCalls/makeFGEvent';
 import {getFGEvents} from '../../utils/api/friendsCalls/getFGEvents';
+import {FriendGroup, Invitation, Event} from '../../utils/interfaces/types';
 
-import { FriendGroup, Invitation } from '../../utils/interfaces/types';
+interface Props {
+  navigation: any;
+}
 
-const Friends = ({navigation}: {navigation: any}) => {
+const Friends: React.FC<Props> = ({navigation}) => {
   const insets = useSafeAreaInsets();
 
-  const [friendGroup, setFriendGroup] = useState(-1);
+  const [friendGroup, setFriendGroup] = useState<number>(-1);
 
   const [friendGroups, setFriendGroups] = useState<FriendGroup[]>([]);
   const [invitations, setInvitations] = useState<Invitation[]>([]);
 
-  const [userEvents, setUserEvents] = useState<any[]>([]);
+  const [userEvents, setUserEvents] = useState<Event[]>([]);
 
-  const [curFGEvents, setCurFGEvents] = useState<any[]>([]);
+  const [curFGEvents, setCurFGEvents] = useState<Event[]>([]);
 
-  const [fgBottomSheetOpen, setFgBottomSheetOpen] = useState(false);
-  const fgBottomSheetRef: any = useRef<BottomSheetModal>(null);
+  const [fgBottomSheetOpen, setFgBottomSheetOpen] = useState<boolean>(false);
+  const fgBottomSheetRef = useRef<BottomSheetModal>(null);
   const fgSnapPoints = useMemo(
     () => [
       Math.min(
@@ -49,27 +54,21 @@ const Friends = ({navigation}: {navigation: any}) => {
         vs(680) - s(60) - insets.top,
       ),
     ],
-    [insets.top, friendGroups, invitations],
+    [insets.top, friendGroups.length, invitations.length],
   );
-  const handleFgSheetChange = useCallback(
-    (fromIndex: number, toIndex: number) => {
-      setFgBottomSheetOpen(toIndex === 0);
-    },
-    [],
-  );
+  const handleFgSheetChange = useCallback((_: number, toIndex: number) => {
+    setFgBottomSheetOpen(toIndex === 0);
+  }, []);
 
-  const [addBottomSheetOpen, setAddBottomSheetOpen] = useState(false);
-  const addBottomSheetRef: any = useRef<BottomSheetModal>(null);
+  const [addBottomSheetOpen, setAddBottomSheetOpen] = useState<boolean>(false);
+  const addBottomSheetRef = useRef<BottomSheetModal>(null);
   const addSnapPoints = useMemo(
     () => [vs(680) - s(60) - insets.top],
     [insets.top],
   );
-  const handleAddSheetChange = useCallback(
-    (fromIndex: number, toIndex: number) => {
-      setAddBottomSheetOpen(toIndex === 0);
-    },
-    [],
-  );
+  const handleAddSheetChange = useCallback((_: number, toIndex: number) => {
+    setAddBottomSheetOpen(toIndex === 0);
+  }, []);
 
   const fetchCurGroupInfo = async (group_id: number) => {
     const token = await EncryptedStorage.getItem('auth_token');
@@ -105,6 +104,8 @@ const Friends = ({navigation}: {navigation: any}) => {
 
     const eventsData = await getEvents(token);
     setUserEvents(eventsData);
+
+    console.log(eventsData[0]);
   };
 
   useEffect(() => {
@@ -128,74 +129,81 @@ const Friends = ({navigation}: {navigation: any}) => {
   };
 
   return (
-    <>
-      <SafeAreaView testID="friendsScreenView" style={styles.container}>
+    <View style={styles.container}>
+      <SafeAreaView>
         <View style={headerStyles.container}>
           <TouchableOpacity
-            style={headerStyles.fgSelector}
+            style={headerStyles.selector}
             onPress={() => fgBottomSheetRef.current?.present()}>
-            <Text numberOfLines={1} style={headerStyles.title}>
+            <Text size="xl" weight="b">
               {friendGroup === -1
                 ? strings.title.friends
                 : friendGroups[friendGroup]?.group?.name}
             </Text>
             <View style={headerStyles.drop}>
-              <Image style={[headerStyles.icon]} source={icons.next} />
+              <Icon size="xs" icon={icons.drop} />
             </View>
           </TouchableOpacity>
-          <TouchableOpacity style={headerStyles.notification}>
-            <Image style={headerStyles.bell} source={icons.notification} />
-          </TouchableOpacity>
+          <View style={headerStyles.notification}>
+            <Icon
+              size="m"
+              icon={icons.notification}
+              onPress={() => {
+                // TODO: implement notifications
+              }}
+            />
+          </View>
         </View>
-        {friendGroup !== -1 ? (
-          <TouchableOpacity
-            style={styles.addEventContainer}
-            onPress={() => addBottomSheetRef.current?.present()}>
-            <Image style={styles.plus} source={icons.x} />
-            <Text style={styles.text}>{strings.friends.addPrompt}</Text>
-          </TouchableOpacity>
-        ) : null}
-        <FlatList
-          data={curFGEvents}
-          style={contentStyles.container}
-          initialNumToRender={4}
-          keyExtractor={(item: any) => item?.id}
-          ItemSeparatorComponent={Spacer}
-          contentContainerStyle={contentStyles.content}
-          renderItem={({item}) => {
-            // const images = getImagesFromURLs(item?.places);
-            return (
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate('FGEvent', {
-                    eventData: item,
-                    // bookmarks: places?.map(place => place?.id),
-                  });
-                }}>
-                <EventCard
-                  name={item?.name}
-                  info={item?.date}
-                  image={
-                    item?.places &&
-                    item?.places?.length > 0 &&
-                    item?.places[0]?.place?.image_url
-                      ? {uri: item?.places[0]?.place?.image_url}
-                      : icons.defaultIcon
-                  }
-                />
-              </TouchableOpacity>
-            );
-          }}
-        />
       </SafeAreaView>
+
+      {friendGroup !== -1 ? (
+        <View style={styles.addButton}>
+          <AButton
+            size="l"
+            label={strings.friends.addPrompt}
+            onPress={() => addBottomSheetRef.current?.present()}
+          />
+        </View>
+      ) : null}
+
+      <FlatList
+        data={curFGEvents}
+        style={contentStyles.container}
+        initialNumToRender={4}
+        keyExtractor={(item: Event) => item.id.toString()}
+        ItemSeparatorComponent={Spacer}
+        contentContainerStyle={contentStyles.content}
+        renderItem={({item}: {item: Event}) => {
+          return (
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('FGEvent', {
+                  eventData: item,
+                });
+              }}>
+              <EventCard
+                name={item.name}
+                info={item.date}
+                image={
+                  item.places &&
+                  item.places.length > 0 &&
+                  item.places[0]?.place.image_url
+                    ? {uri: item.places[0]?.place.image_url}
+                    : icons.defaultIcon
+                }
+              />
+            </TouchableOpacity>
+          );
+        }}
+      />
 
       {fgBottomSheetOpen || addBottomSheetOpen ? (
         <Pressable
           onPress={() => {
             setFgBottomSheetOpen(false);
             setAddBottomSheetOpen(false);
-            fgBottomSheetRef?.current.close();
-            addBottomSheetRef?.current.close();
+            fgBottomSheetRef.current?.close();
+            addBottomSheetRef.current?.close();
           }}
           style={styles.dim}
         />
@@ -224,25 +232,25 @@ const Friends = ({navigation}: {navigation: any}) => {
           data={userEvents}
           style={contentStyles.container}
           initialNumToRender={4}
-          keyExtractor={item => item?.id?.toString()}
+          keyExtractor={(item: Event) => item.id.toString()}
           ItemSeparatorComponent={Spacer}
           contentContainerStyle={contentStyles.content}
-          renderItem={({item}: {item: any}) => {
+          renderItem={({item}: {item: Event}) => {
             return (
               <TouchableOpacity
                 onPress={() => {
                   setAddBottomSheetOpen(false);
-                  addBottomSheetRef?.current.close();
-                  handleAddEvent(item?.id);
+                  addBottomSheetRef.current?.close();
+                  handleAddEvent(item.id);
                 }}>
                 <EventCard
-                  name={item?.name}
-                  info={item?.date}
+                  name={item.name}
+                  info={item.date}
                   image={
-                    item?.places &&
-                    item?.places?.length !== 0 &&
-                    item?.places[0]?.place?.image_url
-                      ? {uri: item?.places[0]?.place?.image_url}
+                    item.places &&
+                    item.places.length !== 0 &&
+                    item.places[0]?.place.image_url
+                      ? {uri: item.places[0]?.place.image_url}
                       : icons.defaultIcon
                   }
                 />
@@ -251,7 +259,7 @@ const Friends = ({navigation}: {navigation: any}) => {
           }}
         />
       </BottomSheetModal>
-    </>
+    </View>
   );
 };
 
@@ -260,79 +268,38 @@ const Spacer = () => <View style={contentStyles.separator} />;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
     backgroundColor: colors.white,
+  },
+  addButton: {
+    alignItems: 'center',
+    marginVertical: s(15),
   },
   dim: {
     position: 'absolute',
     width: '100%',
-    height: '150%',
-    backgroundColor: 'rgba(0,0,0,0.6)',
-  },
-  addEventContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: s(310),
-    height: s(50),
-    marginVertical: s(10),
-    borderWidth: 3,
-    borderColor: colors.accent,
-    borderStyle: 'dashed',
-    borderRadius: s(10),
-  },
-  plus: {
-    width: s(16),
-    height: s(16),
-    marginRight: s(13),
-    tintColor: colors.accent,
-    transform: [{rotate: '45deg'}],
-  },
-  text: {
-    fontSize: s(16),
-    fontWeight: '700',
-    color: colors.black,
+    height: '100%',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
 });
 
 const headerStyles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
+    width: s(350),
+    height: s(50),
     paddingHorizontal: s(20),
-    paddingVertical: s(15),
-    width: '100%',
   },
-  title: {
-    fontSize: s(24),
-    fontWeight: '700',
-    color: colors.black,
-  },
-  fgSelector: {
+  selector: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   drop: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: s(10),
-    width: s(15),
-    height: s(10),
-  },
-  icon: {
-    width: s(10),
-    height: s(15),
-    tintColor: colors.black,
-    transform: [{rotate: '90deg'}],
+    marginLeft: s(4),
   },
   notification: {
-    width: s(25),
-    height: s(25),
-  },
-  bell: {
-    width: '100%',
-    height: '100%',
+    position: 'absolute',
+    right: s(20),
   },
 });
 

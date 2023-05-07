@@ -18,7 +18,7 @@ import {acceptInvite} from '../../utils/api/friendsCalls/acceptInvite';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {rejectInvite} from '../../utils/api/friendsCalls/rejectInvite';
 
-import { FriendGroup, Invitation } from '../../utils/interfaces/types';
+import {FriendGroup, Invitation} from '../../utils/interfaces/types';
 
 const FGSelector = ({
   bottomSheetRef,
