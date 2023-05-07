@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  Platform,
 } from 'react-native';
 import moment from 'moment';
 
@@ -201,6 +202,16 @@ const SelectDestinations: React.FC<Props> = ({navigation, route}) => {
           />
           <View style={headerStyles.texts}>
             <TextInput
+              onFocus={() =>
+                Platform.OS === 'android'
+                  ? bottomSheetRef.current?.close()
+                  : null
+              }
+              onBlur={() =>
+                Platform.OS === 'android'
+                  ? bottomSheetRef.current?.snapToIndex(0)
+                  : null
+              }
               style={headerStyles.name}
               value={eventTitle}
               onChangeText={(text: string) => setEventTitle(text)}
