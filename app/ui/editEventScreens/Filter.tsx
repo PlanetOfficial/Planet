@@ -22,10 +22,12 @@ import {Filter as FilterT, Subcategory} from '../../utils/interfaces/types';
 
 interface ChildComponentProps {
   filters: FilterT[];
+  currFilters: (number | number[])[];
+  setCurrFilters: (filters: (number | number[])[]) => void;
+  defaultFilterValues: (number | number[])[];
   subcategories?: Subcategory[];
-  currFilters: number[];
-  setCurrFilters: (filters: number[]) => void;
-  defaultFilterValues: number[];
+  categoryFilter?: number[];
+  setCategoryFilter?: (categoryFilter: number[]) => void;
 }
 
 const Filter = forwardRef((props: ChildComponentProps, ref) => {
@@ -35,6 +37,8 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
     currFilters,
     setCurrFilters,
     defaultFilterValues,
+    categoryFilter,
+    setCategoryFilter,
   } = props;
 
   useImperativeHandle(ref, () => ({
@@ -43,10 +47,9 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
 
   const [dropdownStatus, setDropdownStatus] = useState<string>('');
 
-  const [tempFilters, setTempFilters] = useState<number[]>(
+  const [tempFilters, setTempFilters] = useState<(number | number[])[]>(
     Array(filters.length).fill(0),
   );
-  const [categoryFilter, setCategoryFilter] = useState<number[]>([]);
   const [tempCategoryFilter, setTempCategoryFilter] = useState<number[]>([]);
 
   const refs = useRef(new Map());
@@ -69,26 +72,80 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
     });
   };
 
-  const handleOptionPress = (idx: number, option: number) => {
-    let newFilters = [...currFilters];
-    newFilters[idx] = option;
-    setCurrFilters(newFilters);
-    closeDropdown();
-  };
-
-  const handleTempOptionPress = (idx: number, option: number) => {
-    setTempFilters([
-      ...tempFilters.slice(0, idx),
-      option,
-      ...tempFilters.slice(idx + 1),
-    ]);
+  const handleOptionPress = (
+    idx: number,
+    option: number,
+    _filters: (number | number[])[],
+    setFilters: (filters: (number | number[])[]) => void,
+  ) => {
+    let newFilters = [..._filters];
+    let _option: number | number[] = newFilters[idx];
+    if (Array.isArray(_option)) {
+      if (_option.includes(option)) {
+        newFilters[idx] = _option.filter((i: number) => i !== option);
+      } else {
+        newFilters[idx] = [..._option, option];
+      }
+    } else {
+      newFilters[idx] = option;
+    }
+    setFilters(newFilters);
   };
 
   const closeDropdown = () => {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     setDropdownStatus('');
     setPos(0);
     setWidth(0);
+  };
+
+  const displayFilter = (filter: FilterT, index: number): string => {
+    const _filter: number | number[] = currFilters[index];
+    if (Array.isArray(_filter)) {
+      if (_filter.length === filter.options.length || _filter.length === 0) {
+        return strings.filter.all;
+      } else {
+        return _filter
+          .sort()
+          .map((i: number) => filter.options[i])
+          .join(', ');
+      }
+    } else {
+      return filter.options[_filter];
+    }
+  };
+
+  const displaySubcategory = (): string => {
+    if (!subcategories || !categoryFilter || categoryFilter.length === 0) {
+      return '';
+    }
+    if (categoryFilter.length === subcategories.length) {
+      return strings.filter.all + ' ' + strings.filter.categories;
+    } else if (categoryFilter.length > 2) {
+      return (
+        subcategories[categoryFilter[0]].title +
+        ', ' +
+        subcategories[categoryFilter[1]].title +
+        ' +' +
+        (categoryFilter.length - 2)
+      );
+    } else if (categoryFilter.length > 1) {
+      return (
+        subcategories[categoryFilter[0]].title +
+        ', ' +
+        subcategories[categoryFilter[1]].title
+      );
+    } else {
+      return subcategories[categoryFilter[0]].title;
+    }
+  };
+
+  const isSelected = (
+    fiterIdx: number,
+    idx: number,
+    _filters: (number | number[])[],
+  ): boolean => {
+    const _filter: number | number[] = _filters[fiterIdx];
+    return Array.isArray(_filter) && _filter.includes(idx);
   };
 
   return (
@@ -126,28 +183,27 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
                     ? colors.darkgrey
                     : colors.black
                 }>
-                {filter.text + ': ' + filter.options[currFilters[idx]]}
+                {filter.text + ': ' + displayFilter(filter, idx)}
               </Text>
               <View style={styles.chipIcon}>
                 <Icon size="s" icon={icons.drop} padding={s(3)} />
               </View>
             </TouchableOpacity>
           ))}
-          {subcategories && categoryFilter.length > 0 ? (
+          {subcategories && categoryFilter && categoryFilter.length > 0 ? (
             <View style={styles.chipContainer}>
               <View style={styles.chip}>
                 <Text size="xs" weight="l">
-                  {subcategories[categoryFilter[0] - 1].title +
-                    (categoryFilter.length > 1
-                      ? ' +' + (categoryFilter.length - 1)
-                      : '')}
+                  {displaySubcategory()}
                 </Text>
                 <View style={styles.chipIcon}>
                   <Icon
                     size="s"
                     icon={icons.x}
                     padding={s(4)}
-                    onPress={() => setCategoryFilter([])}
+                    onPress={() =>
+                      setCategoryFilter ? setCategoryFilter([]) : null
+                    }
                   />
                 </View>
               </View>
@@ -163,7 +219,7 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
               closeDropdown();
               setModalVisible(true);
               setTempFilters(currFilters);
-              setTempCategoryFilter(categoryFilter);
+              setTempCategoryFilter(categoryFilter ? categoryFilter : []);
             }}
           />
         </View>
@@ -176,11 +232,22 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
                 <View key={idx}>
                   <TouchableOpacity
                     style={styles.option}
-                    onPress={() => handleOptionPress(index, idx)}>
+                    onPress={() => {
+                      handleOptionPress(
+                        index,
+                        idx,
+                        currFilters,
+                        setCurrFilters,
+                      );
+                      if (!Array.isArray(currFilters[index])) {
+                        closeDropdown();
+                      }
+                    }}>
                     <Text size="xs" weight="l">
                       {option}
                     </Text>
-                    {idx === currFilters[index] ? (
+                    {idx === currFilters[index] ||
+                    isSelected(index, idx, currFilters) ? (
                       <Icon
                         size="xs"
                         icon={icons.confirm}
@@ -224,12 +291,18 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
                         key={idx}
                         style={[styles.chip, modalStyles.chip]}
                         onPress={() => {
-                          handleTempOptionPress(index, idx);
+                          handleOptionPress(
+                            index,
+                            idx,
+                            tempFilters,
+                            setTempFilters,
+                          );
                         }}>
                         <Text size="xs" weight="l">
                           {option}
                         </Text>
-                        {idx === tempFilters[index] ? (
+                        {idx === tempFilters[index] ||
+                        isSelected(index, idx, tempFilters) ? (
                           <View style={styles.chipIcon}>
                             <Icon
                               size="xs"
@@ -246,7 +319,7 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
               {subcategories ? (
                 <View style={modalStyles.filter}>
                   <Text size="s" weight="l">
-                    {strings.filter.categories + ':'}
+                    {strings.filter.filterCategories + ':'}
                   </Text>
                   <View style={modalStyles.filterContainer}>
                     {subcategories.map(
@@ -258,7 +331,7 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
                             modalStyles.chip,
                             {
                               backgroundColor: tempCategoryFilter.includes(
-                                subcategory.id,
+                                index,
                               )
                                 ? colors.accent
                                 : colors.white,
@@ -266,11 +339,11 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
                           ]}
                           onPress={() => {
                             setTempCategoryFilter(
-                              tempCategoryFilter.includes(subcategory.id)
+                              tempCategoryFilter.includes(index)
                                 ? tempCategoryFilter.filter(
-                                    (i: number) => i !== subcategory.id,
+                                    (i: number) => i !== index,
                                   )
-                                : [...tempCategoryFilter, subcategory.id],
+                                : [...tempCategoryFilter, index],
                             );
                           }}>
                           <Text size="xs" weight="l">
@@ -288,7 +361,7 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
                 style={[modalStyles.button, modalStyles.clear]}
                 onPress={() => {
                   setCurrFilters(defaultFilterValues);
-                  setCategoryFilter([]);
+                  setCategoryFilter ? setCategoryFilter([]) : null;
                   setModalVisible(false);
                 }}>
                 <Text size="s" color={colors.white}>
@@ -299,7 +372,9 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
                 style={[modalStyles.button, modalStyles.apply]}
                 onPress={() => {
                   setCurrFilters(tempFilters);
-                  setCategoryFilter(tempCategoryFilter);
+                  setCategoryFilter
+                    ? setCategoryFilter(tempCategoryFilter)
+                    : null;
                   setModalVisible(false);
                 }}>
                 <Text size="s" color={colors.white}>
@@ -398,6 +473,7 @@ const modalStyles = StyleSheet.create({
   },
   container: {
     marginHorizontal: s(20),
+    maxHeight: '80%',
     backgroundColor: colors.white,
     borderRadius: s(10),
     borderWidth: s(2),
@@ -421,6 +497,7 @@ const modalStyles = StyleSheet.create({
   },
   chip: {
     marginRight: s(5),
+    marginBottom: s(5),
   },
   filterContainer: {
     flexDirection: 'row',
