@@ -3,7 +3,7 @@ import {addDaysToToday} from '../../functions/Misc';
 import {CustomCallsURL} from '../APIConstants';
 
 export const requestLocations = async (
-  categories: Array<number>,
+  categories: number[],
   radius: number,
   latitude: number,
   longitude: number,

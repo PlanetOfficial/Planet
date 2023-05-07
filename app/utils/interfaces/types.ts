@@ -63,3 +63,19 @@ export interface WeekDay {
   day: string;
   hours: string[];
 }
+
+export interface LiveEvent {
+  category: string;
+  date: string;
+  id: number;
+  image_url: string;
+  latitude: string;
+  longitude: string;
+  name: string;
+  price: number;
+  rating: number;
+}
+
+export interface LiveEvents {
+  [categoryIndex: number]: LiveEvent[];
+}

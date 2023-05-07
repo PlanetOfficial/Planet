@@ -2,7 +2,7 @@ import {DBOpsURL} from '../APIConstants';
 
 export const sendEvent = async (
   name: String,
-  place_ids: Array<number>,
+  place_ids: number[],
   authToken,
   date,
 ) => {

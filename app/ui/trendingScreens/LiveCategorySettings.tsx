@@ -11,18 +11,22 @@ import {
 import Text from '../components/Text';
 import Icon from '../components/Icon';
 
-const LiveCategorySettings = ({
-  navigation,
-  route,
-}: {
+import { Subcategory } from '../../utils/interfaces/types';
+
+interface Props {
   navigation: any;
   route: any;
+}
+
+const LiveCategorySettings: React.FC<Props> = ({
+  navigation,
+  route,
 }) => {
-  const [subcategories, setSubcategories]: [any, any] = useState(
+  const [subcategories, setSubcategories] = useState<Subcategory[]>(
     route?.params?.subcategories,
   );
 
-  const [hiddenSubCategories, setHiddenSubCategories]: [any, any] = useState(
+  const [hiddenSubCategories, setHiddenSubCategories] = useState<Subcategory[]>(
     route?.params?.hiddenSubCategories,
   );
 
@@ -54,15 +58,15 @@ const LiveCategorySettings = ({
         </View>
         <NestableDraggableFlatList
           data={subcategories}
-          keyExtractor={(item: any) => item.id}
+          keyExtractor={(item: Subcategory) => item.id.toString()}
           onDragEnd={({data}) => setSubcategories(data)}
           renderItem={({
             item,
             drag,
             isActive,
           }: {
-            item: any;
-            drag: any;
+            item: Subcategory;
+            drag: () => void;
             isActive: boolean;
           }) => (
             <>
@@ -77,11 +81,11 @@ const LiveCategorySettings = ({
                   onPress={() => {
                     setSubcategories(
                       subcategories.filter(
-                        (subcategory: any) => subcategory.id !== item.id,
+                        (subcategory: Subcategory) => subcategory.id !== item.id,
                       ),
                     );
-                    setHiddenSubCategories((_hiddenSubCategory: any) => [
-                      ..._hiddenSubCategory,
+                    setHiddenSubCategories((_hiddenSubCategories: Subcategory[]) => [
+                      ..._hiddenSubCategories,
                       item,
                     ]);
                   }}
@@ -106,8 +110,8 @@ const LiveCategorySettings = ({
         </View>
         <NestableDraggableFlatList
           data={hiddenSubCategories}
-          keyExtractor={(item: any) => item.id}
-          renderItem={({item}: {item: any}) => (
+          keyExtractor={(item: Subcategory) => item.id.toString()}
+          renderItem={({item}: {item: Subcategory}) => (
             <>
               <View style={categoryStyles.container}>
                 <View style={categoryStyles.border} />
@@ -117,10 +121,10 @@ const LiveCategorySettings = ({
                   onPress={() => {
                     setHiddenSubCategories(
                       hiddenSubCategories.filter(
-                        (subcategory: any) => subcategory.id !== item.id,
+                        (subcategory: Subcategory) => subcategory.id !== item.id,
                       ),
                     );
-                    setSubcategories((_subcategories: any) => [
+                    setSubcategories((_subcategories: Subcategory[]) => [
                       ..._subcategories,
                       item,
                     ]);

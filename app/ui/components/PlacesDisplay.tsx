@@ -62,7 +62,7 @@ const PlacesDisplay: React.FC<Props> = ({
         snapToAlignment={'start'}
         decelerationRate={'fast'}
         onScroll={event => {
-          closeDropdown && closeDropdown();
+          closeDropdown ? closeDropdown() : null;
           let idx = Math.round(
             event.nativeEvent.contentOffset.x / (width + s(20)),
           );
@@ -76,27 +76,27 @@ const PlacesDisplay: React.FC<Props> = ({
               {
                 width: width,
               },
-              idx !== places?.length - 1 && {
+              idx !== places?.length - 1 ? {
                 marginRight: s(20),
-              },
+              } : null,
             ]}
-            key={place?.id}>
+            key={place.id}>
             <TouchableOpacity
               onPress={() => {
                 navigation.navigate('Place', {
                   destination: place,
-                  category: place?.category_name,
+                  category: place.category_name,
                 });
               }}>
               <PlaceCard
-                id={place?.id}
-                name={place?.name}
-                info={place?.category_name}
-                marked={bookmarks?.includes(place?.id)}
+                id={place.id}
+                name={place.name}
+                info={place.category_name}
+                marked={bookmarks?.includes(place.id)}
                 image={
-                  place?.image_url
+                  place.image_url
                     ? {
-                        uri: place?.image_url,
+                        uri: place.image_url,
                       }
                     : icons.defaultIcon
                 }

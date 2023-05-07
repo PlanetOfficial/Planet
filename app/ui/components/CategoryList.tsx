@@ -93,7 +93,7 @@ const CategoryList: React.FC<Props> = ({onClose, onSelect}) => {
                     onPress={() => {
                       onSelect(category);
                       setModalVisible(false);
-                      onClose && onClose();
+                      onClose ? onClose() : null;
                     }}>
                     <View style={categoryStyles.container}>
                       <Image

@@ -29,7 +29,7 @@ const EventCard: React.FC<Props> = ({name, info, image, option = false}) => {
             {info}
           </Text>
         </View>
-        {option && (
+        {option ? (
           <OptionMenu
             options={[
               {
@@ -48,7 +48,7 @@ const EventCard: React.FC<Props> = ({name, info, image, option = false}) => {
               },
             ]}
           />
-        )}
+        ) : null}
       </View>
     </View>
   );
