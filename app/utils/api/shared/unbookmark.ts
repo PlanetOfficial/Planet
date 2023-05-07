@@ -1,7 +1,7 @@
 import {CustomCallsURL} from '../APIConstants';
 
 export const unbookmark = async (authToken: any, placeId: number) => {
-  // TODO: filter inputs**
+  // TODO-SECURITY: filter inputs**
 
   const response = await fetch(
     CustomCallsURL + `/unbookmark/${placeId}?authtoken=${authToken}`,

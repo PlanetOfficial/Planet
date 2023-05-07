@@ -27,8 +27,7 @@ const SignUp = ({navigation}: {navigation: any}) => {
   const [error, setError] = useState<string>('');
 
   const handleSignUp = async () => {
-    // TODO: set limits on email, passwords, etc. lengths
-    // TODO: do we need phone #
+    // TODO: set limits on email, passwords, etc. phone number?
 
     setError('');
 

@@ -18,7 +18,7 @@ const loginTest = () => {
             await expect(passwordInput).toBeVisible();
             await expect(loginButton).toBeVisible();
     
-            await emailInput.typeText('lavindude@gmail.com') // TODO: store these in .env
+            await emailInput.typeText('lavindude@gmail.com') // TODO-SECURITY: store these in .env
             await passwordInput.typeText('Password123')
             await loginButton.tap();
     
