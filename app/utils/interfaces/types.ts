@@ -17,7 +17,6 @@ export interface Place {
 export interface Category {
   id: number;
   name: string;
-  supplier: string;
   alias: string;
   genre_id: number;
   filters?: Filter[];
