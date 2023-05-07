@@ -13,47 +13,62 @@ import {
 import MapView, {Marker} from 'react-native-maps';
 import {s} from 'react-native-size-matters';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import EncryptedStorage from 'react-native-encrypted-storage';
 import BottomSheet, {BottomSheetModal} from '@gorhom/bottom-sheet';
+
+import moment from 'moment';
 
 import {
   getMarkerArray,
   getRegionForCoordinates,
 } from '../../utils/functions/Misc';
-import {MarkerObject} from '../../utils/interfaces/types';
+import {getGroupEventPlaces} from '../../utils/api/friendsCalls/getGroupEventPlaces';
+import {likeFGPlace} from '../../utils/api/friendsCalls/likeFGPlace';
+import {dislikeFGPlace} from '../../utils/api/friendsCalls/dislikeFGPlace';
+import {MarkerObject, FGReaction, FGPlace} from '../../utils/interfaces/types';
 
 import PlaceCard from '../components/PlaceCard';
 import Blur from '../components/Blur';
 import ScrollIndicator from '../components/ScrollIndicator';
+import OptionMenu from '../components/OptionMenu';
+import Icon from '../components/Icon';
+import CustomText from '../components/Text';
 
 import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
-import {getGroupEventPlaces} from '../../utils/api/friendsCalls/getGroupEventPlaces';
-import EncryptedStorage from 'react-native-encrypted-storage';
-import {likeFGPlace} from '../../utils/api/friendsCalls/likeFGPlace';
-import {dislikeFGPlace} from '../../utils/api/friendsCalls/dislikeFGPlace';
 
-const FGEvent = ({navigation, route}: {navigation: any; route: any}) => {
-  const [groupEventId] = useState(route?.params?.eventData?.id);
-  const [eventTitle] = useState(route?.params?.eventData?.name);
-  const [date] = useState(new Date(route?.params?.eventData?.date)); // this probably doesn't work but whatever
-  const [bookmarks] = useState(route?.params?.bookmarks);
-  const [userId, setUserId] = useState(-1);
+interface Props {
+  navigation: any;
+  route: any;
+}
 
-  const [fullEventData, setFullEventData]: [any, any] = useState({});
+const FGEvent: React.FC<Props> = ({navigation, route}) => {
+  const [groupEventId] = useState<number>(route?.params?.eventData?.id);
+  const [eventTitle] = useState<string>(route?.params?.eventData?.name);
+  const [date] = useState<string>(
+    moment(route?.params?.eventData?.date, 'YYYY-MM-DD').format('M/D/YYYY'),
+  );
+  const [bookmarks] = useState<number[]>(route?.params?.bookmarks);
+  const [userId, setUserId] = useState<number>(-1);
 
-  const [curPlaceLikes, setCurPlaceLikes]: [any, any] = useState([]);
-  const [curPlaceDislikes, setCurPlaceDislikes]: [any, any] = useState([]);
+  const [fullEventData, setFullEventData] = useState<{places: FGPlace[]}>({
+    places: [],
+  });
 
-  const [placeIdx, setPlaceIdx] = useState(0);
-  const [markers, setMarkers] = useState([]);
+  const [curPlaceLikes, setCurPlaceLikes] = useState<FGReaction[]>([]);
+  const [curPlaceDislikes, setCurPlaceDislikes] = useState<FGReaction[]>([]);
+
+  const [placeIdx, setPlaceIdx] = useState<number>(0);
+  const [markers, setMarkers] = useState<MarkerObject[]>([]);
 
   const insets = useSafeAreaInsets();
-  const bottomSheetRef: any = useRef<BottomSheet>(null);
-  const snapPoints = useMemo(() => [s(265) + insets.bottom], [insets.bottom]);
+  const bottomSheetRef = useRef<BottomSheet>(null);
+  const snapPoints = useMemo(() => [s(290) + insets.bottom], [insets.bottom]);
 
-  const [feedbackBottomSheetOpen, setFeedbackBottomSheetOpen] = useState(false);
-  const feedbackBottomSheetRef: any = useRef<BottomSheetModal>(null);
+  const [feedbackBottomSheetOpen, setFeedbackBottomSheetOpen] =
+    useState<boolean>(false);
+  const feedbackBottomSheetRef = useRef<BottomSheetModal>(null);
   const feedbackSnapPoints = useMemo(() => ['40%'], []);
   const handleFeedbackSheetChange = useCallback(
     (fromIndex: number, toIndex: number) => {
@@ -62,23 +77,13 @@ const FGEvent = ({navigation, route}: {navigation: any; route: any}) => {
     [],
   );
 
-  const [commentBottomSheetOpen, setCommentBottomSheetOpen] = useState(false);
-  const commentBottomSheetRef: any = useRef<BottomSheetModal>(null);
-  const commentSnapPoints = useMemo(() => ['75%'], []);
-  const handleCommentSheetChange = useCallback(
-    (fromIndex: number, toIndex: number) => {
-      setCommentBottomSheetOpen(toIndex === 0);
-    },
-    [],
-  );
-
   const initializeUserId = async () => {
-    const idString = await EncryptedStorage.getItem('user_id');
+    const idString: string | null = await EncryptedStorage.getItem('user_id');
     if (!idString) {
       return;
     }
 
-    const id = parseInt(idString, 10);
+    const id: number = parseInt(idString, 10);
     if (Number.isNaN(id)) {
       return;
     }
@@ -90,7 +95,7 @@ const FGEvent = ({navigation, route}: {navigation: any; route: any}) => {
     const data = await getGroupEventPlaces(groupEventId);
     setFullEventData(data);
 
-    const markerArray: any = getMarkerArray(data?.places);
+    const markerArray: MarkerObject[] = getMarkerArray(data?.places);
     setMarkers(markerArray);
   };
 
@@ -128,10 +133,10 @@ const FGEvent = ({navigation, route}: {navigation: any; route: any}) => {
     }
   };
 
-  const didIReact = (reactionArray: any[]): boolean => {
+  const didIReact = (reactionArray: FGReaction[]): boolean => {
     let result = false;
-    reactionArray.forEach(reaction => {
-      if (reaction?.user?.id === userId) {
+    reactionArray.forEach((reaction: FGReaction) => {
+      if (reaction.user.id === userId) {
         result = true;
       }
     });
@@ -139,7 +144,8 @@ const FGEvent = ({navigation, route}: {navigation: any; route: any}) => {
     return result;
   };
 
-  const handleReactionInfo = (likes: any[], dislikes: any[]) => {
+  const handleReactionInfo = (likes: FGReaction[], dislikes: FGReaction[]) => {
+    console.log(likes);
     feedbackBottomSheetRef.current?.present();
 
     setCurPlaceLikes(likes);
@@ -162,10 +168,10 @@ const FGEvent = ({navigation, route}: {navigation: any; route: any}) => {
               <Marker
                 key={index}
                 coordinate={{
-                  latitude: marker?.latitude,
-                  longitude: marker?.longitude,
+                  latitude: marker.latitude,
+                  longitude: marker.longitude,
                 }}
-                title={marker?.name}
+                title={marker.name}
               />
             ))
           : null}
@@ -173,20 +179,49 @@ const FGEvent = ({navigation, route}: {navigation: any; route: any}) => {
 
       <Blur height={s(50)} />
 
-      <SafeAreaView style={headerStyles.container}>
-        <TouchableOpacity onPress={() => navigation.navigate('Friends')}>
-          <Image style={headerStyles.back} source={icons.back} />
-        </TouchableOpacity>
-        <View style={headerStyles.texts}>
-          <Text style={headerStyles.name}>{eventTitle}</Text>
-          <Text style={headerStyles.date}>{date.toLocaleDateString()}</Text>
+      <SafeAreaView>
+        <View style={headerStyles.container}>
+          <Icon
+            size="s"
+            icon={icons.back}
+            onPress={() => navigation.navigate('Friends')}
+          />
+
+          <View style={headerStyles.texts}>
+            <CustomText size="m" weight="b">
+              {eventTitle}
+            </CustomText>
+            <CustomText size="xs" weight="l" color={colors.accent}>
+              {date}
+            </CustomText>
+          </View>
+          <OptionMenu
+            options={[
+              {
+                name: strings.main.share,
+                onPress: () => {
+                  // TODO: share event
+                },
+                color: colors.black,
+              },
+              {
+                name: strings.friends.fork,
+                onPress: () => {
+                  // TODO-MVP: fork event
+                },
+                color: colors.accent,
+              },
+              {
+                name: strings.main.remove,
+                onPress: () => {
+                  // TODO-MVP: remove event
+                },
+                disabled: false, // TODO-MVP: check if owner,
+                color: colors.red,
+              },
+            ]}
+          />
         </View>
-        <TouchableOpacity
-          onPress={() => {
-            // TODO-MVP: Fork event
-          }}>
-          <Text style={headerStyles.fork}>Fork</Text>
-        </TouchableOpacity>
       </SafeAreaView>
 
       <BottomSheet
@@ -206,32 +241,41 @@ const FGEvent = ({navigation, route}: {navigation: any; route: any}) => {
             showsHorizontalScrollIndicator={false}
             pagingEnabled={true}
             scrollEventThrottle={16}
-            snapToInterval={s(276)} // 256 + 20
+            snapToInterval={s(310)} // 290 + 20
             snapToAlignment={'start'}
             decelerationRate={'fast'}
             onScroll={event =>
               setPlaceIdx(
-                Math.round(event.nativeEvent.contentOffset.x / s(276)),
+                Math.round(event.nativeEvent.contentOffset.x / s(310)),
               )
             }>
-            {fullEventData?.places?.map((dest: any, idx: any) => (
-              <View style={placesDisplayStyles.card} key={idx}>
+            {fullEventData?.places?.map((dest: FGPlace, idx: number) => (
+              <View
+                style={[
+                  placesDisplayStyles.card,
+                  idx !== fullEventData?.places?.length - 1
+                    ? {
+                        marginRight: s(20),
+                      }
+                    : null,
+                ]}
+                key={idx}>
                 <TouchableOpacity
                   onPress={() => {
                     navigation.navigate('Place', {
                       destination: dest,
-                      category: dest?.category?.name,
+                      category: dest.category_name,
                     });
                   }}>
                   <PlaceCard
-                    id={dest?.id}
-                    name={dest?.name}
-                    info={dest?.category?.name}
-                    marked={bookmarks?.includes(dest?.id)}
+                    id={dest.id}
+                    name={dest.name}
+                    info={dest.category_name}
+                    marked={bookmarks.includes(dest.id)}
                     image={
-                      dest?.image_url
+                      dest.image_url
                         ? {
-                            uri: dest?.image_url,
+                            uri: dest.image_url,
                           }
                         : icons.defaultIcon
                     }
@@ -243,12 +287,12 @@ const FGEvent = ({navigation, route}: {navigation: any; route: any}) => {
                       feedbackStyles.iconContainer,
                       feedbackStyles.likeContainer,
                     ]}
-                    onPress={() => handlePlaceLike(dest?.group_event_place_id)}>
+                    onPress={() => handlePlaceLike(dest.group_event_place_id)}>
                     <Image
                       style={[
                         feedbackStyles.icon,
                         {
-                          tintColor: didIReact(dest?.likes)
+                          tintColor: didIReact(dest.likes)
                             ? colors.accent
                             : colors.black,
                         },
@@ -262,12 +306,12 @@ const FGEvent = ({navigation, route}: {navigation: any; route: any}) => {
                       feedbackStyles.countContainer,
                     ]}
                     onPress={() =>
-                      handleReactionInfo(dest?.likes, dest?.dislikes)
+                      handleReactionInfo(dest.likes, dest.dislikes)
                     }>
-                    <Text style={feedbackStyles.count}>
-                      {getSign(dest?.likes?.length - dest?.dislikes?.length) +
-                        (dest?.likes?.length - dest?.dislikes?.length)}
-                    </Text>
+                    <CustomText size="s" color={colors.accent}>
+                      {getSign(dest.likes.length - dest.dislikes.length) +
+                        (dest.likes.length - dest.dislikes.length)}
+                    </CustomText>
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={[
@@ -275,13 +319,13 @@ const FGEvent = ({navigation, route}: {navigation: any; route: any}) => {
                       feedbackStyles.dislikeContainer,
                     ]}
                     onPress={() =>
-                      handlePlaceDislike(dest?.group_event_place_id)
+                      handlePlaceDislike(dest.group_event_place_id)
                     }>
                     <Image
                       style={[
                         feedbackStyles.icon,
                         {
-                          tintColor: didIReact(dest?.dislikes)
+                          tintColor: didIReact(dest.dislikes)
                             ? colors.accent
                             : colors.black,
                         },
@@ -294,7 +338,9 @@ const FGEvent = ({navigation, route}: {navigation: any; route: any}) => {
                       feedbackStyles.iconContainer,
                       feedbackStyles.commentContainer,
                     ]}
-                    onPress={() => commentBottomSheetRef.current?.present()}>
+                    onPress={() => {
+                      // TODO: Comment on place
+                    }}>
                     <Image
                       style={[
                         feedbackStyles.icon,
@@ -304,7 +350,7 @@ const FGEvent = ({navigation, route}: {navigation: any; route: any}) => {
                       ]}
                       source={icons.comment}
                     />
-                    <Text style={feedbackStyles.commentCount}> 0</Text>
+                    <CustomText size="s"> 0</CustomText>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -314,12 +360,11 @@ const FGEvent = ({navigation, route}: {navigation: any; route: any}) => {
         </SafeAreaView>
       </BottomSheet>
 
-      {feedbackBottomSheetOpen || commentBottomSheetOpen ? (
+      {feedbackBottomSheetOpen ? (
         <Pressable
-          style={styles.dark}
+          style={styles.dim}
           onPress={() => {
-            feedbackBottomSheetRef?.current.close();
-            commentBottomSheetRef?.current.close();
+            feedbackBottomSheetRef.current?.close();
             setCurPlaceLikes([]);
             setCurPlaceDislikes([]);
           }}
@@ -337,9 +382,9 @@ const FGEvent = ({navigation, route}: {navigation: any; route: any}) => {
             </Text>
             <View style={feedbackModalStyles.horizontalLine} />
             <View>
-              {curPlaceLikes?.map((like: any, index: number) => (
+              {curPlaceLikes?.map((like: FGReaction, index: number) => (
                 <View key={index}>
-                  <Text>{like?.user?.name}</Text>
+                  <Text>{like.user.name}</Text>
                 </View>
               ))}
             </View>
@@ -351,22 +396,13 @@ const FGEvent = ({navigation, route}: {navigation: any; route: any}) => {
             </Text>
             <View style={feedbackModalStyles.horizontalLine} />
             <View>
-              {curPlaceDislikes?.map((dislike: any, index: number) => (
+              {curPlaceDislikes?.map((dislike: FGReaction, index: number) => (
                 <View key={index}>
-                  <Text>{dislike?.user?.name}</Text>
+                  <Text>{dislike.user.name}</Text>
                 </View>
               ))}
             </View>
           </View>
-        </View>
-      </BottomSheetModal>
-
-      <BottomSheetModal
-        ref={commentBottomSheetRef}
-        snapPoints={commentSnapPoints}
-        onAnimate={handleCommentSheetChange}>
-        <View style={commentModalStyles.container}>
-          {/* TODO: Comment functionality */}
         </View>
       </BottomSheetModal>
     </View>
@@ -383,7 +419,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-  dark: {
+  dim: {
     position: 'absolute',
     width: '100%',
     height: '100%',
@@ -395,35 +431,14 @@ const headerStyles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginHorizontal: s(20),
-  },
-  back: {
-    width: s(12),
-    height: s(18),
-    marginRight: s(20),
-    tintColor: colors.black,
+    justifyContent: 'space-between',
+    width: s(350),
+    height: s(50),
+    paddingHorizontal: s(20),
   },
   texts: {
-    justifyContent: 'space-between',
-    width: s(238),
-    height: s(40),
-  },
-  name: {
-    fontSize: s(18),
-    fontWeight: '700',
-    color: colors.black,
-  },
-  date: {
-    fontSize: s(11),
-    fontWeight: '600',
-    color: colors.accent,
-  },
-  fork: {
-    width: s(40),
-    fontSize: s(14),
-    fontWeight: '600',
-    textAlign: 'right',
-    color: colors.accent,
+    flex: 1,
+    marginHorizontal: s(10),
   },
 });
 
@@ -444,11 +459,10 @@ const placesDisplayStyles = StyleSheet.create({
     overflow: 'visible', // display shadow
   },
   contentContainer: {
-    paddingHorizontal: s(47), // (350 - 256) / 2
+    paddingHorizontal: s(30), // (350 - 290) / 2
   },
   card: {
-    width: s(256), // height: 256 * 5/8 = 160
-    marginRight: s(20),
+    width: s(290), // height: 290 * 5/8 = 181.25
   },
 });
 
@@ -458,7 +472,7 @@ const feedbackStyles = StyleSheet.create({
     justifyContent: 'space-between',
     marginTop: s(10),
     marginBottom: -s(5),
-    paddingHorizontal: s(10),
+    paddingHorizontal: s(20),
     height: s(40),
   },
   iconContainer: {
@@ -505,18 +519,6 @@ const feedbackStyles = StyleSheet.create({
     width: s(14),
     height: s(14),
   },
-  count: {
-    fontSize: s(14),
-    fontWeight: '700',
-    color: colors.accent,
-  },
-  commentCount: {
-    fontSize: s(12),
-    fontWeight: '500',
-    color: colors.black,
-    marginTop: -s(1),
-    marginBottom: s(1),
-  },
 });
 
 const feedbackModalStyles = StyleSheet.create({
@@ -546,14 +548,6 @@ const feedbackModalStyles = StyleSheet.create({
     marginBottom: s(5),
     fontWeight: '700',
     color: colors.black,
-  },
-});
-
-const commentModalStyles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: s(20),
-    paddingVertical: s(10),
   },
 });
 

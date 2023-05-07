@@ -9,17 +9,18 @@ import {
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 import EncryptedStorage from 'react-native-encrypted-storage';
+import {BottomSheetModalMethods} from '@gorhom/bottom-sheet/lib/typescript/types';
 
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 import {icons} from '../../constants/images';
 
+import Text from '../components/Text';
+import AButton from '../components/ActionButton';
+
 import {acceptInvite} from '../../utils/api/friendsCalls/acceptInvite';
 import {rejectInvite} from '../../utils/api/friendsCalls/rejectInvite';
 import {FriendGroup, Invitation} from '../../utils/interfaces/types';
-import {BottomSheetModalMethods} from '@gorhom/bottom-sheet/lib/typescript/types';
-import Text from '../components/Text';
-import AButton from '../components/ActionButton';
 
 interface Props {
   bottomSheetRef: React.RefObject<BottomSheetModalMethods>;

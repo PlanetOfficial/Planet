@@ -98,6 +98,7 @@ const strings = {
     create: 'Create',
     accept: 'Accept',
     decline: 'Decline',
+    fork: 'Fork',
   },
   library: {
     saved: 'Saved',

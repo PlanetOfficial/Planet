@@ -28,6 +28,7 @@ import {getEvents} from '../../utils/api/libraryCalls/getEvents';
 import {makeFGEvent} from '../../utils/api/friendsCalls/makeFGEvent';
 import {getFGEvents} from '../../utils/api/friendsCalls/getFGEvents';
 import {FriendGroup, Invitation, Event} from '../../utils/interfaces/types';
+import {getBookmarks} from '../../utils/api/shared/getBookmarks';
 
 interface Props {
   navigation: any;
@@ -42,8 +43,8 @@ const Friends: React.FC<Props> = ({navigation}) => {
   const [invitations, setInvitations] = useState<Invitation[]>([]);
 
   const [userEvents, setUserEvents] = useState<Event[]>([]);
-
   const [curFGEvents, setCurFGEvents] = useState<Event[]>([]);
+  const [bookmarks, setBookmarks] = useState<number[]>([]);
 
   const [fgBottomSheetOpen, setFgBottomSheetOpen] = useState<boolean>(false);
   const fgBottomSheetRef = useRef<BottomSheetModal>(null);
@@ -104,6 +105,12 @@ const Friends: React.FC<Props> = ({navigation}) => {
 
     const eventsData = await getEvents(token);
     setUserEvents(eventsData);
+
+    const _bookmarks = await getBookmarks(token);
+    const bookmarksIds: number[] = _bookmarks.map(
+      (bookmark: any) => bookmark.id,
+    );
+    setBookmarks(bookmarksIds);
   };
 
   useEffect(() => {
@@ -177,6 +184,7 @@ const Friends: React.FC<Props> = ({navigation}) => {
               onPress={() => {
                 navigation.navigate('FGEvent', {
                   eventData: item,
+                  bookmarks: bookmarks,
                 });
               }}>
               <EventCard
