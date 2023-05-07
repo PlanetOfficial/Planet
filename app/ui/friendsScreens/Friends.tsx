@@ -112,7 +112,7 @@ const Friends = ({navigation}: {navigation: any}) => {
 
   const handleAddEvent = async (user_event_id: number) => {
     const token = await EncryptedStorage.getItem('auth_token');
-    const response = await makeFGEvent(user_event_id, friendGroups[friendGroup].id, token);
+    const response = await makeFGEvent(user_event_id, friendGroups[friendGroup].group.id, token);
 
     if (!response) {
       // TODO: display error
