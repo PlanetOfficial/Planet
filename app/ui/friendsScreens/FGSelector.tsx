@@ -73,7 +73,7 @@ const FGSelector = ({
           ]}
           onPress={() => {
             setFriendGroup(idx);
-            bottomSheetRef?.current.close();
+            bottomSheetRef.current?.close();
           }}>
           <Image style={fgBottomSheetStyles.icon} source={icons.user} />
           <View style={fgBottomSheetStyles.texts}>
@@ -128,7 +128,7 @@ const FGSelector = ({
       <TouchableOpacity
         style={fgBottomSheetStyles.row}
         onPress={() => {
-          bottomSheetRef?.current.close();
+          bottomSheetRef.current?.close();
           navigation.navigate('CreateFG');
         }}>
         <View style={fgBottomSheetStyles.plus}>

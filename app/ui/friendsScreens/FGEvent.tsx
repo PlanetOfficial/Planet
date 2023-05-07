@@ -308,7 +308,7 @@ const FGEvent = ({navigation, route}: {navigation: any; route: any}) => {
         </SafeAreaView>
       </BottomSheet>
 
-      {(feedbackBottomSheetOpen || commentBottomSheetOpen) && (
+      {(feedbackBottomSheetOpen || commentBottomSheetOpen) ? (
         <Pressable
           style={styles.dark}
           onPress={() => {
@@ -318,7 +318,7 @@ const FGEvent = ({navigation, route}: {navigation: any; route: any}) => {
             setCurPlaceDislikes([]);
           }}
         />
-      )}
+      ) : null}
 
       <BottomSheetModal
         ref={feedbackBottomSheetRef}

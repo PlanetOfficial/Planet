@@ -183,7 +183,7 @@ const Friends = ({navigation}: {navigation: any}) => {
         />
       </SafeAreaView>
 
-      {(fgBottomSheetOpen || addBottomSheetOpen) && (
+      {(fgBottomSheetOpen || addBottomSheetOpen) ? (
         <Pressable
           onPress={() => {
             setFgBottomSheetOpen(false);
@@ -193,7 +193,7 @@ const Friends = ({navigation}: {navigation: any}) => {
           }}
           style={styles.dim}
         />
-      )}
+      ) : null}
 
       <BottomSheetModal
         ref={fgBottomSheetRef}
