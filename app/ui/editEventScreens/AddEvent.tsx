@@ -92,12 +92,19 @@ const AddEvent = forwardRef((props: ChildComponentProps, ref) => {
     setSelectionIndices(_selectionIndices);
   };
 
-  const onLibrarySelect = (dest: any) => {
-    // TODO: implement library destination selection
+  const onLibrarySelect = (destination: Place) => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    const _destinations: (Place | Category)[] = [...destinations];
+    const _selectionIndices: number[] = [...selectionIndices];
+    _destinations.splice(insertionIndex + 1, 0, destination);
+    _selectionIndices.splice(insertionIndex + 1, 0, -1);
+    setDestinations(_destinations);
+    setSelectionIndices(_selectionIndices);
   };
 
   const onCustomSelect = (dest: any) => {
     // TODO: implement custom destination selection
+    console.log(dest);
   };
 
   return (
