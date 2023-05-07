@@ -256,6 +256,7 @@ const SelectDestinations: React.FC<Props> = ({navigation, route}) => {
         ref={bottomSheetRef}
         index={0}
         snapPoints={snapPoints}
+        animateOnMount={Platform.OS === 'ios'}
         enableContentPanningGesture={false}>
         <EditEvent
           navigation={navigation}
