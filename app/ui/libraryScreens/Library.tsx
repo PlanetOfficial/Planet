@@ -6,6 +6,7 @@ import {
   FlatList,
   TouchableOpacity,
 } from 'react-native';
+import moment from 'moment';
 
 import {s} from 'react-native-size-matters';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
@@ -130,7 +131,7 @@ const Library: React.FC<Props> = ({navigation}) => {
               }}>
               <EventCard
                 name={item.name}
-                info={item.date}
+                info={moment(item.date, 'YYYY-MM-DD').format('M/D/YYYY')}
                 image={
                   item.places &&
                   item.places.length !== 0 &&

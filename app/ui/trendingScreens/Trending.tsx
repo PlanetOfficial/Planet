@@ -12,6 +12,8 @@ import {s} from 'react-native-size-matters';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import Geolocation from '@react-native-community/geolocation';
 
+import moment from 'moment';
+
 import {colors} from '../../constants/theme';
 import {icons} from '../../constants/images';
 import {genres} from '../../constants/genres';
@@ -201,7 +203,7 @@ const Trending: React.FC<Props> = ({navigation}) => {
                           <PlaceCard
                             id={event.id}
                             name={event.name}
-                            info={event.date}
+                            info={moment(event.date, 'YYYY-MM-DD').format('M/D/YYYY')}
                             marked={bookmarks.includes(event.id)}
                             image={{uri: event.image_url}}
                           />

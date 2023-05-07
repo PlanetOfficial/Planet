@@ -14,6 +14,8 @@ import DatePicker from 'react-native-date-picker';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import BottomSheet from '@gorhom/bottom-sheet';
 
+import moment from 'moment';
+
 import {
   getMarkerArray,
   getAveragePoint,
@@ -49,7 +51,7 @@ interface Props {
 const Event: React.FC<Props> = ({navigation, route}) => {
   const [eventId] = useState<number>(route?.params?.eventData?.id);
   const [eventTitle] = useState<string>(route?.params?.eventData?.name);
-  const [date] = useState<Date>(new Date(route?.params?.eventData?.date)); // this probably doesn't work but whatever
+  const [date] = useState<string>(moment(route?.params?.eventData?.date, 'YYYY-MM-DD').format('M/D/YYYY'));
   const [bookmarks] = useState<number[]>(route?.params?.bookmarks);
 
   const [latitude, setLatitude] = useState<number>(floats.defaultLatitude);
@@ -61,7 +63,7 @@ const Event: React.FC<Props> = ({navigation, route}) => {
 
   const [editing, setEditing] = useState<boolean>(false);
   const [tempTitle, setTempTitle] = useState<string>();
-  const [tempDate, setTempDate] = useState<Date>(new Date());
+  const [tempDate, setTempDate] = useState<string>();
   const [tempPlaces, setTempPlaces] = useState<(Place | Category)[]>([]);
   const [datePickerOpen, setDatePickerOpen] = useState<boolean>(false);
   const [backConfirmationOpen, setBackConfirmationOpen] =
@@ -163,16 +165,18 @@ const Event: React.FC<Props> = ({navigation, route}) => {
                     weight="l"
                     color={colors.accent}
                     underline={true}>
-                    {tempDate.toLocaleDateString()}
+                    {tempDate}
                   </Text>
                 </TouchableOpacity>
                 <DatePicker
                   modal
                   open={datePickerOpen}
-                  date={date}
+                  date={moment(date, 'M/D/YYYY').toDate()}
+                  mode="date"
                   onConfirm={newDate => {
+                    console.log(newDate);
                     setDatePickerOpen(false);
-                    setTempDate(newDate);
+                    setTempDate(moment(newDate, 'YYYY-MM-DD HH:mm:ssZ').format('M/D/YYYY'));
                   }}
                   onCancel={() => {
                     setDatePickerOpen(false);
@@ -193,7 +197,7 @@ const Event: React.FC<Props> = ({navigation, route}) => {
                   {eventTitle}
                 </Text>
                 <Text size="xs" weight="l" color={colors.accent}>
-                  {date.toLocaleDateString()}
+                  {date}
                 </Text>
               </View>
               <OptionMenu

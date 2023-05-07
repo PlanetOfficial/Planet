@@ -9,6 +9,8 @@ import {
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 
+import moment from 'moment';
+
 import {icons} from '../../constants/images';
 import {colors} from '../../constants/theme';
 import {genres} from '../../constants/genres';
@@ -180,7 +182,7 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
                             <PlaceCard
                               id={liveEvent.id}
                               name={liveEvent.name}
-                              info={liveEvent.date}
+                              info={moment(liveEvent.date, 'YYYY-MM-DD').format('M/D/Y')}
                               marked={bookmarks.includes(liveEvent.id)}
                               image={{uri: liveEvent.image_url}}
                             />
