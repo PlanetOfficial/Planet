@@ -33,7 +33,7 @@ export const requestLocationsSingle = async (
 
   const response = await fetch(
     CustomCallsURL +
-      `/location_list_v3?category_id=${category}&radius=${radius}&latitude=${latitude}&longitude=${longitude}&count=${count}&filters=${JSON.stringify(
+      `/categoryLocations?category_id=${category}&radius=${radius}&latitude=${latitude}&longitude=${longitude}&count=${count}&filters=${JSON.stringify(
         _filterValues,
       )}&subcategories_ids=${JSON.stringify(_subcategories)}`,
     {

@@ -178,7 +178,9 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
                             <PlaceCard
                               id={liveEvent.id}
                               name={liveEvent.name}
-                              info={moment(liveEvent.date, 'YYYY-MM-DD').format('M/D/Y')}
+                              info={moment(liveEvent.date, 'YYYY-MM-DD').format(
+                                'M/D/Y',
+                              )}
                               marked={bookmarks.includes(liveEvent.id)}
                               image={{uri: liveEvent.image_url}}
                             />
