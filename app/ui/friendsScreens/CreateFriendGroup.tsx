@@ -15,7 +15,7 @@ import {fgIcons} from '../../constants/images';
 import {colors} from '../../constants/theme';
 import {icons} from '../../constants/images';
 import {s} from 'react-native-size-matters';
-import { createGroup } from '../../utils/api/friendsCalls/createGroup';
+import {createGroup} from '../../utils/api/friendsCalls/createGroup';
 import EncryptedStorage from 'react-native-encrypted-storage';
 
 const CreateFG = ({navigation}: {navigation: any}) => {
@@ -29,23 +29,19 @@ const CreateFG = ({navigation}: {navigation: any}) => {
   const handleGroupCreation = async () => {
     const token = await EncryptedStorage.getItem('auth_token');
 
-    const responseStatus = await createGroup(
-      name,
-      invitations,
-      token,
-    )
+    const responseStatus = await createGroup(name, invitations, token);
 
     if (responseStatus) {
       navigation.reset({
         index: 0,
-        routes: [{ name: 'Friends' }],
+        routes: [{name: 'Friends'}],
       });
 
       navigation.navigate('Friends');
     } else {
       // TODO: error, make sure connected to internet and logged in, if error persists, log out and log back in
     }
-  }
+  };
 
   return (
     <View style={styles.container}>

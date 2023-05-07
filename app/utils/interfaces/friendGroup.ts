@@ -1,7 +1,7 @@
-import { Group } from "./group";
+import {Group} from './group';
 
 export interface FriendGroup {
-    id: number;
-    user_id: number;
-    group: Group;
+  id: number;
+  user_id: number;
+  group: Group;
 }

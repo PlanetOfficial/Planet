@@ -20,12 +20,12 @@ import {s, vs} from 'react-native-size-matters';
 import EventCard from '../components/EventCard';
 import FGSelector from './FGSelector';
 import EncryptedStorage from 'react-native-encrypted-storage';
-import { getFGsAndInvites } from '../../utils/api/friendsCalls/getFGsAndInvites';
-import { FriendGroup } from '../../utils/interfaces/friendGroup';
-import { Invitation } from '../../utils/interfaces/invitation';
-import { getEvents } from '../../utils/api/libraryCalls/getEvents';
-import { makeFGEvent } from '../../utils/api/friendsCalls/makeFGEvent';
-import { getFGEvents } from '../../utils/api/friendsCalls/getFGEvents';
+import {getFGsAndInvites} from '../../utils/api/friendsCalls/getFGsAndInvites';
+import {FriendGroup} from '../../utils/interfaces/friendGroup';
+import {Invitation} from '../../utils/interfaces/invitation';
+import {getEvents} from '../../utils/api/libraryCalls/getEvents';
+import {makeFGEvent} from '../../utils/api/friendsCalls/makeFGEvent';
+import {getFGEvents} from '../../utils/api/friendsCalls/getFGEvents';
 
 const Friends = ({navigation}: {navigation: any}) => {
   const insets = useSafeAreaInsets();
@@ -75,17 +75,17 @@ const Friends = ({navigation}: {navigation: any}) => {
 
     const response = await getFGEvents(group_id, token);
     setCurFGEvents(response);
-  }
+  };
 
   useEffect(() => {
     if (friendGroup !== -1) {
       fetchCurGroupInfo(friendGroups[friendGroup].group.id);
     }
-  }, [friendGroup])
+  }, [friendGroup, friendGroups]);
 
   const initializeData = async () => {
     const token = await EncryptedStorage.getItem('auth_token');
-    
+
     const responseData = await getFGsAndInvites(token);
 
     if (responseData?.groups) {
@@ -108,19 +108,24 @@ const Friends = ({navigation}: {navigation: any}) => {
 
   useEffect(() => {
     initializeData();
-  }, [])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleAddEvent = async (user_event_id: number) => {
     const token = await EncryptedStorage.getItem('auth_token');
-    const response = await makeFGEvent(user_event_id, friendGroups[friendGroup].group.id, token);
+    const response = await makeFGEvent(
+      user_event_id,
+      friendGroups[friendGroup].group.id,
+      token,
+    );
 
     if (!response) {
       // TODO: display error
-      console.log("Error adding event");
+      console.log('Error adding event');
     }
 
     fetchCurGroupInfo(friendGroups[friendGroup].group.id);
-  }
+  };
 
   return (
     <>
@@ -172,9 +177,11 @@ const Friends = ({navigation}: {navigation: any}) => {
                   name={item?.name}
                   info={item?.date}
                   image={
-                    item?.places && item?.places?.length > 0 && item?.places[0]?.place?.image_url
-                      ? {uri: item?.places[0]?.place?.image_url} :
-                    icons.defaultIcon
+                    item?.places &&
+                    item?.places?.length > 0 &&
+                    item?.places[0]?.place?.image_url
+                      ? {uri: item?.places[0]?.place?.image_url}
+                      : icons.defaultIcon
                   }
                 />
               </TouchableOpacity>
@@ -183,7 +190,7 @@ const Friends = ({navigation}: {navigation: any}) => {
         />
       </SafeAreaView>
 
-      {(fgBottomSheetOpen || addBottomSheetOpen) ? (
+      {fgBottomSheetOpen || addBottomSheetOpen ? (
         <Pressable
           onPress={() => {
             setFgBottomSheetOpen(false);

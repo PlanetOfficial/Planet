@@ -13,11 +13,11 @@ import {colors} from '../../constants/theme';
 import {icons} from '../../constants/images';
 import {fgIcons} from '../../constants/images';
 import {s} from 'react-native-size-matters';
-import { FriendGroup } from '../../utils/interfaces/friendGroup';
-import { Invitation } from '../../utils/interfaces/invitation';
-import { acceptInvite } from '../../utils/api/friendsCalls/acceptInvite';
+import {FriendGroup} from '../../utils/interfaces/friendGroup';
+import {Invitation} from '../../utils/interfaces/invitation';
+import {acceptInvite} from '../../utils/api/friendsCalls/acceptInvite';
 import EncryptedStorage from 'react-native-encrypted-storage';
-import { rejectInvite } from '../../utils/api/friendsCalls/rejectInvite';
+import {rejectInvite} from '../../utils/api/friendsCalls/rejectInvite';
 
 const FGSelector = ({
   bottomSheetRef,
@@ -58,7 +58,7 @@ const FGSelector = ({
     } else {
       // TODO: error, make sure connected to internet and logged in, if error persists, log out and log back in
     }
-  }
+  };
 
   return (
     <ScrollView>
@@ -91,10 +91,7 @@ const FGSelector = ({
       ))}
       {invitations?.map((invitation: Invitation, idx: number) => (
         <View key={idx} style={fgBottomSheetStyles.row}>
-          <Image
-            style={fgBottomSheetStyles.icon}
-            source={fgIcons[0]}
-          />
+          <Image style={fgBottomSheetStyles.icon} source={fgIcons[0]} />
           <View style={fgBottomSheetStyles.wrap}>
             <View style={fgBottomSheetStyles.texts}>
               <Text numberOfLines={1} style={fgBottomSheetStyles.text}>

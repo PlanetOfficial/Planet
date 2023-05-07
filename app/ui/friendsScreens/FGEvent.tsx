@@ -19,7 +19,6 @@ import {
   getRegionForCoordinates,
 } from '../../utils/functions/Misc';
 import {MarkerObject} from '../../utils/interfaces/MarkerObject';
-import {getEventPlaces} from '../../utils/api/libraryCalls/getEventPlaces';
 
 import PlaceCard from '../components/PlaceCard';
 import Blur from '../components/Blur';
@@ -28,10 +27,10 @@ import ScrollIndicator from '../components/ScrollIndicator';
 import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
-import { getGroupEventPlaces } from '../../utils/api/friendsCalls/getGroupEventPlaces';
+import {getGroupEventPlaces} from '../../utils/api/friendsCalls/getGroupEventPlaces';
 import EncryptedStorage from 'react-native-encrypted-storage';
-import { likeFGPlace } from '../../utils/api/friendsCalls/likeFGPlace';
-import { dislikeFGPlace } from '../../utils/api/friendsCalls/dislikeFGPlace';
+import {likeFGPlace} from '../../utils/api/friendsCalls/likeFGPlace';
+import {dislikeFGPlace} from '../../utils/api/friendsCalls/dislikeFGPlace';
 
 const FGEvent = ({navigation, route}: {navigation: any; route: any}) => {
   const [groupEventId] = useState(route?.params?.eventData?.id);
@@ -78,13 +77,13 @@ const FGEvent = ({navigation, route}: {navigation: any; route: any}) => {
       return;
     }
 
-    const id = parseInt(idString);
+    const id = parseInt(idString, 10);
     if (Number.isNaN(id)) {
       return;
     }
 
     setUserId(id);
-  }
+  };
 
   const getEventData = async () => {
     const data = await getGroupEventPlaces(groupEventId);
@@ -96,11 +95,12 @@ const FGEvent = ({navigation, route}: {navigation: any; route: any}) => {
 
   const initializeData = async () => {
     await getEventData();
-  }
+  };
 
   useEffect(() => {
     initializeUserId();
     initializeData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [groupEventId]);
 
   const handlePlaceLike = async (group_event_place_id: number) => {
@@ -114,7 +114,7 @@ const FGEvent = ({navigation, route}: {navigation: any; route: any}) => {
       // TODO: error, make sure connected to internet and logged in, if error persists, log out and log back in
       return;
     }
-  }
+  };
 
   const handlePlaceDislike = async (group_event_place_id: number) => {
     const token = await EncryptedStorage.getItem('auth_token');
@@ -127,25 +127,25 @@ const FGEvent = ({navigation, route}: {navigation: any; route: any}) => {
       // TODO: error, make sure connected to internet and logged in, if error persists, log out and log back in
       return;
     }
-  }
+  };
 
   const didIReact = (reactionArray: any[]): boolean => {
     let result = false;
-    reactionArray.forEach((reaction) => {
+    reactionArray.forEach(reaction => {
       if (reaction?.user?.id === userId) {
         result = true;
       }
-    })
+    });
 
     return result;
-  }
+  };
 
   const handleReactionInfo = (likes: any[], dislikes: any[]) => {
-    feedbackBottomSheetRef.current?.present()
+    feedbackBottomSheetRef.current?.present();
 
     setCurPlaceLikes(likes);
     setCurPlaceDislikes(dislikes);
-  }
+  };
 
   const getSign = (num: number): string => {
     if (num > 0) {
@@ -153,7 +153,7 @@ const FGEvent = ({navigation, route}: {navigation: any; route: any}) => {
     } else {
       return '';
     }
-  }
+  };
 
   return (
     <View style={styles.container}>
@@ -252,7 +252,9 @@ const FGEvent = ({navigation, route}: {navigation: any; route: any}) => {
                         feedbackStyles.icon,
                         {
                           // TODO: change the tint color based on like status
-                          tintColor: didIReact(dest?.likes) ? colors.accent : colors.black,
+                          tintColor: didIReact(dest?.likes)
+                            ? colors.accent
+                            : colors.black,
                         },
                       ]}
                       source={icons.like}
@@ -263,21 +265,30 @@ const FGEvent = ({navigation, route}: {navigation: any; route: any}) => {
                       feedbackStyles.iconContainer,
                       feedbackStyles.countContainer,
                     ]}
-                    onPress={() => handleReactionInfo(dest?.likes, dest?.dislikes)}>
-                    <Text style={feedbackStyles.count}>{getSign(dest?.likes?.length - dest?.dislikes?.length) + (dest?.likes?.length - dest?.dislikes?.length)}</Text>
+                    onPress={() =>
+                      handleReactionInfo(dest?.likes, dest?.dislikes)
+                    }>
+                    <Text style={feedbackStyles.count}>
+                      {getSign(dest?.likes?.length - dest?.dislikes?.length) +
+                        (dest?.likes?.length - dest?.dislikes?.length)}
+                    </Text>
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={[
                       feedbackStyles.iconContainer,
                       feedbackStyles.dislikeContainer,
                     ]}
-                    onPress={() => handlePlaceDislike(dest?.group_event_place_id)}>
+                    onPress={() =>
+                      handlePlaceDislike(dest?.group_event_place_id)
+                    }>
                     <Image
                       style={[
                         feedbackStyles.icon,
                         {
                           // TODO: change the tint color based on dislike status
-                          tintColor: didIReact(dest?.dislikes) ? colors.accent : colors.black,
+                          tintColor: didIReact(dest?.dislikes)
+                            ? colors.accent
+                            : colors.black,
                         },
                       ]}
                       source={icons.dislike}
@@ -308,7 +319,7 @@ const FGEvent = ({navigation, route}: {navigation: any; route: any}) => {
         </SafeAreaView>
       </BottomSheet>
 
-      {(feedbackBottomSheetOpen || commentBottomSheetOpen) ? (
+      {feedbackBottomSheetOpen || commentBottomSheetOpen ? (
         <Pressable
           style={styles.dark}
           onPress={() => {

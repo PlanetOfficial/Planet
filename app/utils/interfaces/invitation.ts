@@ -1,11 +1,11 @@
-import { Group } from "./group";
+import {Group} from './group';
 
 interface Inviter {
-    name: string;
+  name: string;
 }
 
 export interface Invitation {
-    id: number;
-    group: Group;
-    inviter: Inviter;
+  id: number;
+  group: Group;
+  inviter: Inviter;
 }
