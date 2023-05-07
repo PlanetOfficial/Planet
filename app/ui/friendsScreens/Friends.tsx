@@ -21,11 +21,11 @@ import EventCard from '../components/EventCard';
 import FGSelector from './FGSelector';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {getFGsAndInvites} from '../../utils/api/friendsCalls/getFGsAndInvites';
-import {FriendGroup} from '../../utils/interfaces/friendGroup';
-import {Invitation} from '../../utils/interfaces/invitation';
 import {getEvents} from '../../utils/api/libraryCalls/getEvents';
 import {makeFGEvent} from '../../utils/api/friendsCalls/makeFGEvent';
 import {getFGEvents} from '../../utils/api/friendsCalls/getFGEvents';
+
+import { FriendGroup, Invitation } from '../../utils/interfaces/types';
 
 const Friends = ({navigation}: {navigation: any}) => {
   const insets = useSafeAreaInsets();

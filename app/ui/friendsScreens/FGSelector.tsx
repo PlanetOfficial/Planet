@@ -13,11 +13,11 @@ import {colors} from '../../constants/theme';
 import {icons} from '../../constants/images';
 import {fgIcons} from '../../constants/images';
 import {s} from 'react-native-size-matters';
-import {FriendGroup} from '../../utils/interfaces/friendGroup';
-import {Invitation} from '../../utils/interfaces/invitation';
 import {acceptInvite} from '../../utils/api/friendsCalls/acceptInvite';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {rejectInvite} from '../../utils/api/friendsCalls/rejectInvite';
+
+import { FriendGroup, Invitation } from '../../utils/interfaces/types';
 
 const FGSelector = ({
   bottomSheetRef,

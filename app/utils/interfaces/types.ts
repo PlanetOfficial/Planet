@@ -97,3 +97,23 @@ export interface Event {
     place_id: number;
   }[];
 }
+
+export interface FriendGroup {
+  id: number;
+  user_id: number;
+  group: Group;
+}
+
+export interface Group {
+  id: number;
+  name: string;
+  owner: number;
+}
+
+export interface Invitation {
+  id: number;
+  group: Group;
+  inviter: {
+    name: string;
+  };
+}
