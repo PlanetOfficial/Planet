@@ -1,31 +1,33 @@
 import React from 'react';
 import {
   View,
-  Text,
   StyleSheet,
   TouchableOpacity,
   Image,
   ScrollView,
   Alert,
 } from 'react-native';
+import {s} from 'react-native-size-matters';
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 import {icons} from '../../constants/images';
-import {s} from 'react-native-size-matters';
-import {acceptInvite} from '../../utils/api/friendsCalls/acceptInvite';
-import EncryptedStorage from 'react-native-encrypted-storage';
-import {rejectInvite} from '../../utils/api/friendsCalls/rejectInvite';
 
+import {acceptInvite} from '../../utils/api/friendsCalls/acceptInvite';
+import {rejectInvite} from '../../utils/api/friendsCalls/rejectInvite';
 import {FriendGroup, Invitation} from '../../utils/interfaces/types';
+import {BottomSheetModalMethods} from '@gorhom/bottom-sheet/lib/typescript/types';
+import Text from '../components/Text';
+import AButton from '../components/ActionButton';
 
 interface Props {
-  bottomSheetRef: any;
-  friendGroups: any[];
-  friendGroup: any;
-  setFriendGroup: any;
-  refreshOnInviteEvent: any;
-  invitations: any[];
+  bottomSheetRef: React.RefObject<BottomSheetModalMethods>;
+  friendGroups: FriendGroup[];
+  friendGroup: number;
+  setFriendGroup: (friendGroup: number) => void;
+  refreshOnInviteEvent: () => void;
+  invitations: Invitation[];
   navigation: any;
 }
 
@@ -63,12 +65,12 @@ const FGSelector: React.FC<Props> = ({
   };
 
   return (
-    <ScrollView>
+    <ScrollView contentContainerStyle={styles.container}>
       {friendGroups?.map((fg: FriendGroup, idx: number) => (
         <TouchableOpacity
           key={idx}
           style={[
-            fgBottomSheetStyles.row,
+            styles.row,
             {
               backgroundColor: idx === friendGroup ? colors.grey : colors.white,
             },
@@ -77,71 +79,65 @@ const FGSelector: React.FC<Props> = ({
             setFriendGroup(idx);
             bottomSheetRef.current?.close();
           }}>
-          <Image style={fgBottomSheetStyles.icon} source={icons.user} />
-          <View style={fgBottomSheetStyles.texts}>
-            <Text
-              numberOfLines={1}
-              key={idx}
-              style={[
-                fgBottomSheetStyles.text,
-                {color: idx === friendGroup ? colors.accent : colors.black},
-              ]}>
+          <Image style={styles.icon} source={icons.user} />
+          <View style={styles.texts}>
+            <Text color={idx === friendGroup ? colors.accent : colors.black}>
               {fg.group.name}
             </Text>
           </View>
         </TouchableOpacity>
       ))}
       {invitations?.map((invitation: Invitation, idx: number) => (
-        <View key={idx} style={fgBottomSheetStyles.row}>
-          <Image style={fgBottomSheetStyles.icon} source={fgIcons[0]} />
-          <View style={fgBottomSheetStyles.wrap}>
-            <View style={fgBottomSheetStyles.texts}>
-              <Text numberOfLines={1} style={fgBottomSheetStyles.text}>
-                {invitation.group.name}
-              </Text>
-              <Text numberOfLines={1} style={fgBottomSheetStyles.inviter}>
+        <View key={idx} style={styles.row}>
+          <Image style={styles.icon} source={icons.user} />
+          <View style={styles.wrap}>
+            <View style={styles.texts}>
+              <Text>{invitation.group.name}</Text>
+              <Text size="xs" weight="l" color={colors.darkgrey}>
                 {invitation.inviter.name}
               </Text>
             </View>
-            <View style={fgBottomSheetStyles.buttonsContainer}>
-              <TouchableOpacity
-                style={[
-                  fgBottomSheetStyles.button,
-                  {backgroundColor: colors.accent},
-                ]}
-                onPress={() => handleAcceptInvite(invitation.id)}>
-                <Text style={fgBottomSheetStyles.buttonText}>Accept</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[
-                  fgBottomSheetStyles.button,
-                  {backgroundColor: colors.darkgrey},
-                ]}
-                onPress={() => handleRejectInvite(invitation.id)}>
-                <Text style={fgBottomSheetStyles.buttonText}>Reject</Text>
-              </TouchableOpacity>
+            <View style={styles.buttonsContainer}>
+              <AButton
+                size="xs"
+                label={strings.friends.accept}
+                onPress={() => {
+                  handleAcceptInvite(invitation.id);
+                }}
+              />
+              <AButton
+                size="xs"
+                label={strings.friends.decline}
+                color={colors.darkgrey}
+                onPress={() => {
+                  handleRejectInvite(invitation.id);
+                }}
+              />
             </View>
           </View>
         </View>
       ))}
       <TouchableOpacity
-        style={fgBottomSheetStyles.row}
+        style={styles.row}
         onPress={() => {
           bottomSheetRef.current?.close();
           navigation.navigate('CreateFG');
         }}>
-        <View style={fgBottomSheetStyles.plus}>
-          <Image style={fgBottomSheetStyles.plusIcon} source={icons.x} />
+        <View style={styles.plus}>
+          <Image style={styles.plusIcon} source={icons.x} />
         </View>
-        <Text numberOfLines={1} style={fgBottomSheetStyles.text}>
-          {strings.friends.createPrompt}
-        </Text>
+        <View style={styles.texts}>
+          <Text>{strings.friends.createPrompt}</Text>
+        </View>
       </TouchableOpacity>
     </ScrollView>
   );
 };
 
-const fgBottomSheetStyles = StyleSheet.create({
+const styles = StyleSheet.create({
+  container: {
+    paddingBottom: s(20),
+  },
   background: {
     backgroundColor: colors.white,
   },
@@ -178,35 +174,14 @@ const fgBottomSheetStyles = StyleSheet.create({
     tintColor: colors.accent,
   },
   texts: {
+    marginLeft: s(12),
     flex: 1,
-  },
-  text: {
-    marginLeft: s(12),
-    fontSize: s(15),
-    fontWeight: '600',
-  },
-  inviter: {
-    marginLeft: s(12),
-    fontSize: s(12),
-    fontWeight: '500',
-    color: colors.darkgrey,
   },
   buttonsContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  button: {
-    margin: s(5),
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: s(55),
-    height: s(30),
-    borderRadius: s(10),
-  },
-  buttonText: {
-    fontSize: s(12),
-    fontWeight: '600',
-    color: colors.white,
+    width: s(120),
+    justifyContent: 'space-between',
   },
 });
 

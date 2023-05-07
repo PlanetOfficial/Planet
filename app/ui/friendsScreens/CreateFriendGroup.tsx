@@ -80,7 +80,8 @@ const CreateFG: React.FC<Props> = ({navigation}) => {
           value={invite}
           placeholder={strings.friends.promptInvite}
         />
-        <AButton size='s'
+        <AButton
+          size="s"
           disabled={invite === ''}
           label={strings.friends.add}
           onPress={() => {
@@ -95,12 +96,20 @@ const CreateFG: React.FC<Props> = ({navigation}) => {
         <FlatList
           data={invitations}
           ItemSeparatorComponent={Spacer}
-          renderItem={({item, index} : {item: string, index: number}) => (
+          renderItem={({item, index}: {item: string; index: number}) => (
             <View key={index} style={inviteStyles.row}>
-              <Text size="s" weight='l'>{item}</Text>
-              <Icon size="s" icon={icons.x} onPress={() => {
-                setInvitations(invitations.filter((_: string, i: number) => i !== index));
-              }} />
+              <Text size="s" weight="l">
+                {item}
+              </Text>
+              <Icon
+                size="s"
+                icon={icons.x}
+                onPress={() => {
+                  setInvitations(
+                    invitations.filter((_: string, i: number) => i !== index),
+                  );
+                }}
+              />
             </View>
           )}
         />

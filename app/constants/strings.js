@@ -96,6 +96,8 @@ const strings = {
     likes: 'Likes',
     dislikes: 'Dislikes',
     create: 'Create',
+    accept: 'Accept',
+    decline: 'Decline',
   },
   library: {
     saved: 'Saved',
