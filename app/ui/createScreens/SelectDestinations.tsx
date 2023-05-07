@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   View,
   Platform,
+  Alert,
 } from 'react-native';
 import moment from 'moment';
 
