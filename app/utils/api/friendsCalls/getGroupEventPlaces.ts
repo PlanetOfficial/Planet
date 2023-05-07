@@ -4,7 +4,7 @@ export const getGroupEventPlaces = async (group_event_id: number) => {
   // TODO: filter inputs**
 
   const response = await fetch(
-    DBOpsURL + `/groupEvent?group_event_id=${group_event_id}`,
+    DBOpsURL + `/friends/event?group_event_id=${group_event_id}`,
     {
       method: 'GET',
     },

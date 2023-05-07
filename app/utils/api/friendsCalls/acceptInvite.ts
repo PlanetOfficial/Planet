@@ -4,7 +4,7 @@ export const acceptInvite = async (invite_id: number, token: any) => {
   // TODO: filter inputs**
 
   const response = await fetch(
-    DBOpsURL + `/acceptInvite?invite_id=${invite_id}&authtoken=${token}`,
+    DBOpsURL + `/friends/acceptInvite?invite_id=${invite_id}&authtoken=${token}`,
     {
       method: 'POST',
     },

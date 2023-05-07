@@ -15,7 +15,7 @@ export const createGroup = async (
 
   const response = await fetch(
     DBOpsURL +
-      `/createGroup?${emails_string}&name=${name}&authtoken=${authToken}`,
+      `/friends/createGroup?${emails_string}&name=${name}&authtoken=${authToken}`,
     {
       method: 'POST',
     },

@@ -8,7 +8,7 @@ export const dislikeFGPlace = async (
 
   const response = await fetch(
     DBOpsURL +
-      `/dislikeFGPlace?group_event_place_id=${group_event_place_id}&authtoken=${token}`,
+      `/friends/dislikePlace?group_event_place_id=${group_event_place_id}&authtoken=${token}`,
     {
       method: 'POST',
     },

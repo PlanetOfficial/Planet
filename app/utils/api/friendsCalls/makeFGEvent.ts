@@ -9,7 +9,7 @@ export const makeFGEvent = async (
 
   const response = await fetch(
     DBOpsURL +
-      `/makeFGEvent?user_event_id=${user_event_id}&group_id=${group_id}&authtoken=${token}`,
+      `/friends/createEvent?user_event_id=${user_event_id}&group_id=${group_id}&authtoken=${token}`,
     {
       method: 'POST',
     },
