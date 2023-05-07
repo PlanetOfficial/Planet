@@ -44,7 +44,10 @@ const Trending: React.FC<Props> = ({navigation}) => {
       const authToken = await EncryptedStorage.getItem('auth_token');
 
       const _bookmarks = await getBookmarks(authToken);
-      setBookmarks(_bookmarks);
+      const bookmarksIds: number[] = _bookmarks.map(
+        (bookmark: any) => bookmark.id,
+      );
+      setBookmarks(bookmarksIds);
     };
 
     initializeData();

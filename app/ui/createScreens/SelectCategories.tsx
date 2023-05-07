@@ -54,7 +54,7 @@ const SelectCategories: React.FC<Props> = ({navigation, route}) => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     setSelectedCategories(
       selectedCategories.filter(
-        (_subcategory: Category) => _subcategory.id !== categoryId,
+        (_category: Category) => _category.id !== categoryId,
       ),
     );
   };
