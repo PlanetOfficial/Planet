@@ -26,7 +26,7 @@ interface Props {
 }
 
 const AddFromLibrary: React.FC<Props> = ({onClose, onSelect}) => {
-  const filterRef = useRef<any>(null);
+  const filterRef = useRef<any>(null); // due to forwardRef
 
   // let filters = misc.libraryFilter;
 

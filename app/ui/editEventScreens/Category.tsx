@@ -58,7 +58,7 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
     onCategoryMove,
   } = props;
 
-  const childRef = useRef<any>(null);
+  const childRef = useRef<any>(null); // due to forwardRef
   const closeDropdown = () => {
     childRef.current?.closeDropdown();
   };

@@ -47,7 +47,7 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
   const [liveEvents, setLiveEvents] = useState<LiveEvents>({});
   const [loading, setLoading] = useState<boolean>(false);
 
-  const ref = useRef<any>(null); // any because typescript sucks
+  const ref = useRef<any>(null); // due to forwardRef
 
   const [filterValues, setFilterValues] = useState<(number | number[])[]>([]);
   const [defaultFilterValues, setDefaultFilterValues] = useState<

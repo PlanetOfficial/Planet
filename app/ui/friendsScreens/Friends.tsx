@@ -114,7 +114,7 @@ const Friends: React.FC<Props> = ({navigation}) => {
 
     const _bookmarks = await getBookmarks(token);
     const bookmarksIds: number[] = _bookmarks.map(
-      (bookmark: any) => bookmark.id,
+      (bookmark: {id: any}) => bookmark.id,
     );
     setBookmarks(bookmarksIds);
   };
