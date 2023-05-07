@@ -76,9 +76,11 @@ const PlacesDisplay: React.FC<Props> = ({
               {
                 width: width,
               },
-              idx !== places?.length - 1 ? {
-                marginRight: s(20),
-              } : null,
+              idx !== places?.length - 1
+                ? {
+                    marginRight: s(20),
+                  }
+                : null,
             ]}
             key={place.id}>
             <TouchableOpacity

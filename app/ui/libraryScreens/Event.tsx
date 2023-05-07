@@ -19,7 +19,7 @@ import {
   getAveragePoint,
   getRegionForCoordinates,
 } from '../../utils/functions/Misc';
-import {MarkerObject} from '../../utils/interfaces/types';
+import {MarkerObject, Place, Category} from '../../utils/interfaces/types';
 import {getEventPlaces} from '../../utils/api/libraryCalls/getEventPlaces';
 
 import Blur from '../components/Blur';
@@ -36,42 +36,48 @@ import {colors} from '../../constants/theme';
 import AddEvent from '../editEventScreens/AddEvent';
 import {floats} from '../../constants/numbers';
 
-const Event = ({navigation, route}: {navigation: any; route: any}) => {
-  const [eventId] = useState(route?.params?.eventData?.id);
-  const [eventTitle] = useState(route?.params?.eventData?.name);
-  const [date] = useState(new Date(route?.params?.eventData?.date)); // this probably doesn't work but whatever
-  const [bookmarks] = useState(route?.params?.bookmarks);
+interface Props {
+  navigation: any;
+  route: any;
+}
+
+const Event: React.FC<Props> = ({navigation, route}) => {
+  const [eventId] = useState<number>(route?.params?.eventData?.id);
+  const [eventTitle] = useState<string>(route?.params?.eventData?.name);
+  const [date] = useState<Date>(new Date(route?.params?.eventData?.date)); // this probably doesn't work but whatever
+  const [bookmarks] = useState<number[]>(route?.params?.bookmarks);
 
   const [latitude, setLatitude] = useState<number>(floats.defaultLatitude);
   const [longitude, setLongitude] = useState<number>(floats.defaultLongitude);
 
-  const [fullEventData, setFullEventData]: [any, any] = useState({});
-  const [placeIdx, setPlaceIdx] = useState(0);
-  const [markers, setMarkers] = useState([]);
+  const [places, setPlaces] = useState<Place[]>([]);
+  const [placeIdx, setPlaceIdx] = useState<number>(0);
+  const [markers, setMarkers] = useState<MarkerObject[]>([]);
 
-  const [editing, setEditing] = useState(false);
-  const [tempTitle, setTempTitle] = useState();
-  const [tempDate, setTempDate] = useState(new Date());
-  const [tempPlaces, setTempPlaces]: [any, any] = useState([]);
-  const [datePickerOpen, setDatePickerOpen] = useState(false);
-  const [backConfirmationOpen, setBackConfirmationOpen] = useState(false);
-  const [selectionIndices, setSelectionIndices]: [number[], any] = useState([]);
+  const [editing, setEditing] = useState<boolean>(false);
+  const [tempTitle, setTempTitle] = useState<string>();
+  const [tempDate, setTempDate] = useState<Date>(new Date());
+  const [tempPlaces, setTempPlaces] = useState<(Place | Category)[]>([]);
+  const [datePickerOpen, setDatePickerOpen] = useState<boolean>(false);
+  const [backConfirmationOpen, setBackConfirmationOpen] =
+    useState<boolean>(false);
+  const [selectionIndices, setSelectionIndices] = useState<number[]>([]);
 
   const insets = useSafeAreaInsets();
-  const bottomSheetRef: any = useRef<BottomSheet>(null);
+  const bottomSheetRef = useRef<BottomSheet>(null);
   const snapPoints = useMemo(
     () => [s(240) + insets.bottom, vs(680) - s(60) - insets.top],
     [insets.top, insets.bottom],
   );
 
-  const addRef: any = useRef(null);
+  const addRef = useRef<any>(null); // any bc typescript bad
 
   useEffect(() => {
     const getEventData = async () => {
       const data = await getEventPlaces(eventId);
-      setFullEventData(data);
+      setPlaces(data?.places);
 
-      const markerArray: any = getMarkerArray(data?.places);
+      const markerArray: MarkerObject[] = getMarkerArray(data?.places);
       setMarkers(markerArray);
 
       const averagePoint = getAveragePoint(markerArray);
@@ -87,7 +93,7 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
     setEditing(true);
     setTempTitle(eventTitle);
     setTempDate(date);
-    setTempPlaces(fullEventData?.places);
+    setTempPlaces(places);
   };
 
   const saveEdits = () => {
@@ -99,13 +105,13 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
   return (
     <View style={styles.container}>
       <MapView style={styles.map} region={getRegionForCoordinates(markers)}>
-        {markers?.length > 0
-          ? markers?.map((marker: MarkerObject, index: number) => (
+        {markers.length > 0
+          ? markers.map((marker: MarkerObject, index: number) => (
               <Marker
                 key={index}
                 coordinate={{
-                  latitude: marker?.latitude,
-                  longitude: marker?.longitude,
+                  latitude: marker.latitude,
+                  longitude: marker.longitude,
                 }}
                 title={marker?.name}
               />
@@ -132,15 +138,18 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
               <View style={headerStyles.texts}>
                 <TextInput
                   onFocus={() =>
-                    Platform.OS === 'android' && bottomSheetRef.current?.close()
+                    Platform.OS === 'android'
+                      ? bottomSheetRef.current?.close()
+                      : null
                   }
                   onBlur={() =>
-                    Platform.OS === 'android' &&
-                    bottomSheetRef.current?.expand()
+                    Platform.OS === 'android'
+                      ? bottomSheetRef.current?.expand()
+                      : null
                   }
                   style={headerStyles.name}
                   value={tempTitle}
-                  onChangeText={(text: any) => setTempTitle(text)}
+                  onChangeText={(text: string) => setTempTitle(text)}
                 />
                 <TouchableOpacity onPress={() => setDatePickerOpen(true)}>
                   <Text
@@ -230,13 +239,13 @@ const Event = ({navigation, route}: {navigation: any; route: any}) => {
             setDestinations={setTempPlaces}
             selectionIndices={selectionIndices}
             setSelectionIndices={setSelectionIndices}
-            onAddPress={addRef?.current?.onAddPress}
+            onAddPress={addRef.current?.onAddPress}
           />
         ) : (
           <SafeAreaView>
             <PlacesDisplay
               navigation={navigation}
-              places={fullEventData?.places}
+              places={places}
               width={s(290)}
               bookmarks={bookmarks}
               index={placeIdx}

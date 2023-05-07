@@ -17,7 +17,6 @@ import {genres} from '../../constants/genres';
 import {floats, integers} from '../../constants/numbers';
 import strings from '../../constants/strings';
 
-import {getEvents} from '../../utils/api/libraryCalls/getEvents';
 import {getBookmarks} from '../../utils/api/shared/getBookmarks';
 import {requestLocations} from '../../utils/api/CreateCalls/requestLocations';
 import {Subcategory} from '../../utils/interfaces/types';
@@ -44,8 +43,8 @@ const Trending: React.FC<Props> = ({navigation}) => {
     const initializeData = async () => {
       const authToken = await EncryptedStorage.getItem('auth_token');
 
-      const bookmarks = await getBookmarks(authToken);
-      const bookmarksIds: number[] = bookmarks.map(
+      const _bookmarks = await getBookmarks(authToken);
+      const bookmarksIds: number[] = _bookmarks.map(
         (bookmark: any) => bookmark.id,
       );
       setBookmarks(bookmarksIds);
@@ -74,7 +73,9 @@ const Trending: React.FC<Props> = ({navigation}) => {
       }
 
       const requestAPI = async (_latitude: number, _longitude: number) => {
-        const categoryIds: number[] = genres[0].categories.map((category: Category) => category.id);
+        const categoryIds: number[] = genres[0].categories.map(
+          (category: Category) => category.id,
+        );
 
         const liveEvents: LiveEvents = await requestLocations(
           categoryIds,
@@ -93,7 +94,7 @@ const Trending: React.FC<Props> = ({navigation}) => {
           setLongitude(position.coords.longitude);
           requestAPI(position.coords.latitude, position.coords.longitude);
         },
-        (error) => {
+        error => {
           console.log(error);
 
           setLatitude(floats.defaultLatitude);
@@ -141,55 +142,54 @@ const Trending: React.FC<Props> = ({navigation}) => {
         </View>
       </SafeAreaView>
       <ScrollView>
-        {genres[0].categories.map(
-          (category: Category, idx: number) =>
-            (eventsData[category.id] &&
-            eventsData[category.id].length > 0) ? (
-              <View key={idx} style={categoryStyles.container}>
-                <View style={categoryStyles.header}>
-                  <Text size="m" weight="b">
-                    {category.name}
-                  </Text>
-                  <TouchableOpacity
-                    onPress={() => {
-                      let defaultSubcategories: Subcategory[] = [];
-                      let hiddenSubCategories: Subcategory[] = [];
+        {genres[0].categories.map((category: Category, idx: number) =>
+          eventsData[category.id] && eventsData[category.id].length > 0 ? (
+            <View key={idx} style={categoryStyles.container}>
+              <View style={categoryStyles.header}>
+                <Text size="m" weight="b">
+                  {category.name}
+                </Text>
+                <TouchableOpacity
+                  onPress={() => {
+                    let defaultSubcategories: Subcategory[] = [];
+                    let hiddenSubCategories: Subcategory[] = [];
 
-                      if(category.subcategories){
-                        if (category.subcategories?.length <= 5) {
-                          defaultSubcategories = category.subcategories;
-                        } else {
-                          defaultSubcategories = category.subcategories?.slice(
-                            0,
-                            5,
-                          );
-                          hiddenSubCategories = category.subcategories?.slice(5);
-                        }
-  
-                        navigation.navigate('LiveCategory', {
-                          subcategories: defaultSubcategories,
-                          hiddenSubCategories,
-                          categoryId: category.id,
-                          categoryName: category.name,
-                          bookmarks,
-                          latitude,
-                          longitude,
-                          radius,
-                        });
+                    if (category.subcategories) {
+                      if (category.subcategories?.length <= 5) {
+                        defaultSubcategories = category.subcategories;
+                      } else {
+                        defaultSubcategories = category.subcategories?.slice(
+                          0,
+                          5,
+                        );
+                        hiddenSubCategories = category.subcategories?.slice(5);
                       }
-                    }}>
-                    <Text size="xs" weight="b" color={colors.accent}>
-                      {strings.trending.seeAll}
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-                <ScrollView
-                  contentContainerStyle={categoryStyles.contentContainer}
-                  style={categoryStyles.scrollView}
-                  horizontal={true}
-                  showsHorizontalScrollIndicator={false}>
-                  {eventsData[category.id]
-                    ? eventsData[category.id].map((event: LiveEvent, jdx: number) => (
+
+                      navigation.navigate('LiveCategory', {
+                        subcategories: defaultSubcategories,
+                        hiddenSubCategories,
+                        categoryId: category.id,
+                        categoryName: category.name,
+                        bookmarks,
+                        latitude,
+                        longitude,
+                        radius,
+                      });
+                    }
+                  }}>
+                  <Text size="xs" weight="b" color={colors.accent}>
+                    {strings.trending.seeAll}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+              <ScrollView
+                contentContainerStyle={categoryStyles.contentContainer}
+                style={categoryStyles.scrollView}
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}>
+                {eventsData[category.id]
+                  ? eventsData[category.id].map(
+                      (event: LiveEvent, jdx: number) => (
                         <TouchableOpacity
                           style={categoryStyles.card}
                           key={jdx}
@@ -207,16 +207,17 @@ const Trending: React.FC<Props> = ({navigation}) => {
                             image={{uri: event.image_url}}
                           />
                         </TouchableOpacity>
-                      ))
-                    : null}
-                </ScrollView>
-                {idx === genres[0].categories.length - 1 ? (
-                  <View style={styles.bottomPadding} />
-                ) : (
-                  <Spacer />
-                )}
-              </View>
-            ) : null,
+                      ),
+                    )
+                  : null}
+              </ScrollView>
+              {idx === genres[0].categories.length - 1 ? (
+                <View style={styles.bottomPadding} />
+              ) : (
+                <Spacer />
+              )}
+            </View>
+          ) : null,
         )}
       </ScrollView>
     </View>
