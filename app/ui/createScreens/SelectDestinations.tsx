@@ -55,7 +55,9 @@ const SelectDestinations: React.FC<Props> = ({navigation, route}) => {
   const [eventTitle, setEventTitle] = useState<string>(
     strings.createTabStack.untitledEvent,
   );
-  const [date, setDate] = useState<string>(moment(new Date()).format('M/D/YYYY'));
+  const [date, setDate] = useState<string>(
+    moment(new Date()).format('M/D/YYYY'),
+  );
   const [datePickerOpen, setDatePickerOpen] = useState<boolean>(false);
   const [saveConfirmationOpen, setSaveConfirmationOpen] =
     useState<boolean>(false);
@@ -221,7 +223,9 @@ const SelectDestinations: React.FC<Props> = ({navigation, route}) => {
               date={moment(date, 'M/D/YYYY').toDate()}
               onConfirm={newDate => {
                 setDatePickerOpen(false);
-                setDate(moment(newDate, 'YYYY-MM-DD HH:mm:ssZ').format('M/D/YYYY'));
+                setDate(
+                  moment(newDate, 'YYYY-MM-DD HH:mm:ssZ').format('M/D/YYYY'),
+                );
               }}
               onCancel={() => {
                 setDatePickerOpen(false);
