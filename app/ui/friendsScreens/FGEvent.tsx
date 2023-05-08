@@ -165,10 +165,10 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
     const token = await EncryptedStorage.getItem('auth_token');
     const response = await removeEvent(group_event_id, token);
 
-    if (!response) {
-      Alert.alert('Error', 'Something went wrong. Please try again.');
-    } else {
+    if (response) {
       navigation.navigate('Friends');
+    } else {
+      Alert.alert('Error', 'Something went wrong. Please try again.');
     }
   };
 

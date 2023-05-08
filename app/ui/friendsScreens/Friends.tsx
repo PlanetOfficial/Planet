@@ -130,11 +130,11 @@ const Friends: React.FC<Props> = ({navigation}) => {
       token,
     );
 
-    if (!response) {
-      Alert.alert('Error', 'Something went wrong. Please try again.');
-    } else {
+    if (response) {
       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
       fetchCurGroupInfo(friendGroups[friendGroup].group.id);
+    } else {
+      Alert.alert('Error', 'Something went wrong. Please try again.');
     }
   };
 
@@ -142,13 +142,13 @@ const Friends: React.FC<Props> = ({navigation}) => {
     const token = await EncryptedStorage.getItem('auth_token');
     const response = await removeEvent(group_event_id, token);
 
-    if (!response) {
-      Alert.alert('Error', 'Something went wrong. Please try again.');
-    } else {
+    if (response) {
       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
       setCurFGEvents(
         curFGEvents.filter((event: Event) => event.id !== group_event_id),
       );
+    } else {
+      Alert.alert('Error', 'Something went wrong. Please try again.');
     }
   };
 
