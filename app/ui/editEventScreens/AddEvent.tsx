@@ -106,6 +106,7 @@ const AddEvent = forwardRef((props: ChildComponentProps, ref) => {
   };
 
   const onCustomSelect = (dest: any) => {
+    // TODO-MVP: implement custom destinations
     console.log(dest);
   };
 

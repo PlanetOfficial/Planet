@@ -82,7 +82,6 @@ const Friends: React.FC<Props> = ({navigation}) => {
 
     const response = await getFGEvents(group_id, token);
     setCurFGEvents(response);
-    console.log(response[0]);
   };
 
   useEffect(() => {

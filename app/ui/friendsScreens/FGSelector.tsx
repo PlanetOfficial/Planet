@@ -17,6 +17,7 @@ import {icons} from '../../constants/images';
 
 import Text from '../components/Text';
 import AButton from '../components/ActionButton';
+import Icon from '../components/Icon';
 
 import {acceptInvite} from '../../utils/api/friendsCalls/acceptInvite';
 import {rejectInvite} from '../../utils/api/friendsCalls/rejectInvite';
@@ -86,6 +87,9 @@ const FGSelector: React.FC<Props> = ({
               {fg.group.name}
             </Text>
           </View>
+          <Icon icon={icons.option} onPress={() => {
+            
+          }}/>
         </TouchableOpacity>
       ))}
       {invitations?.map((invitation: Invitation, idx: number) => (
@@ -125,7 +129,7 @@ const FGSelector: React.FC<Props> = ({
           navigation.navigate('CreateFG');
         }}>
         <View style={styles.plus}>
-          <Image style={styles.plusIcon} source={icons.x} />
+          <Image style={styles.plusIcon} source={icons.plus} />
         </View>
         <View style={styles.texts}>
           <Text>{strings.friends.createPrompt}</Text>
@@ -164,14 +168,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: s(40),
     height: s(40),
-    borderRadius: s(20),
-    borderWidth: s(2),
-    borderColor: colors.accent,
   },
   plusIcon: {
-    width: '40%',
-    height: '40%',
-    transform: [{rotate: '45deg'}],
+    width: '100%',
+    height: '100%',
     tintColor: colors.accent,
   },
   texts: {
@@ -181,8 +181,9 @@ const styles = StyleSheet.create({
   buttonsContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    width: s(120),
     justifyContent: 'space-between',
+    width: s(110),
+    marginLeft: s(10),
   },
 });
 
