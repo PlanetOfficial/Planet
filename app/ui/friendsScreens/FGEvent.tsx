@@ -150,7 +150,7 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
 
   const handleFork = async () => {
     const token = await EncryptedStorage.getItem('auth_token');
-    
+
     const response = await forkEvent(groupEventId, token);
 
     if (response) {

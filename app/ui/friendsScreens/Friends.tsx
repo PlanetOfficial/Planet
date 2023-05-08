@@ -123,7 +123,6 @@ const Friends: React.FC<Props> = ({navigation}) => {
   }, []);
 
   const handleAddEvent = async (user_event_id: number) => {
-
     const token = await EncryptedStorage.getItem('auth_token');
     const response = await makeFGEvent(
       user_event_id,
@@ -141,16 +140,15 @@ const Friends: React.FC<Props> = ({navigation}) => {
 
   const handleRemoveEvent = async (group_event_id: number) => {
     const token = await EncryptedStorage.getItem('auth_token');
-    const response = await removeEvent(
-      group_event_id,
-      token,
-    );
+    const response = await removeEvent(group_event_id, token);
 
     if (!response) {
       Alert.alert('Error', 'Something went wrong. Please try again.');
     } else {
       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-      setCurFGEvents(curFGEvents.filter((event: Event) => event.id !== group_event_id));
+      setCurFGEvents(
+        curFGEvents.filter((event: Event) => event.id !== group_event_id),
+      );
     }
   };
 
