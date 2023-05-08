@@ -1,5 +1,11 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {StyleSheet, View, Text as TextRN, Image, TouchableOpacity} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text as TextRN,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import {s} from 'react-native-size-matters';
 import MapView, {Marker} from 'react-native-maps';
 import {
@@ -91,7 +97,8 @@ const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
               latitudeDelta: floats.defaultLatitudeDelta,
               longitudeDelta: floats.defaultLongitudeDelta,
             });
-            setDestination({ // TODO-MVP: addCustomDest Incomplete
+            setDestination({
+              // TODO-MVP: addCustomDest Incomplete
               category_id: 0,
               category_name: 'Custom Event',
               created_at: 0,
@@ -130,7 +137,8 @@ const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
               onRegionChangeComplete={setRegion}
               onPress={e =>
                 custom && autocompleteRef.current?.getAddressText()
-                  ? setDestination({ // TODO-MVP: addCustomDest Incomplete
+                  ? setDestination({
+                      // TODO-MVP: addCustomDest Incomplete
                       category_id: 0,
                       category_name: 'Custom Event',
                       created_at: 0,
@@ -146,8 +154,12 @@ const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
               }>
               <Marker
                 coordinate={{
-                  latitude: destination?.latitude ? destination?.latitude : floats.defaultLatitude,
-                  longitude: destination?.longitude ? destination?.longitude : floats.defaultLongitude,
+                  latitude: destination?.latitude
+                    ? destination?.latitude
+                    : floats.defaultLatitude,
+                  longitude: destination?.longitude
+                    ? destination?.longitude
+                    : floats.defaultLongitude,
                 }}
               />
             </MapView>
@@ -161,7 +173,7 @@ const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
           disabled={!selected}
           label={strings.library.add}
           onPress={() => {
-            if(destination){
+            if (destination) {
               onClose();
               onSelect(destination);
             }

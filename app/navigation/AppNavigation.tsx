@@ -15,6 +15,7 @@ import Event from '../ui/libraryScreens/Event';
 import FGEvent from '../ui/friendsScreens/FGEvent';
 import Settings from '../ui/profileScreens/Settings';
 import CreateFG from '../ui/friendsScreens/CreateFG';
+import EditFG from '../ui/friendsScreens/EditFG';
 import LiveCategory from '../ui/trendingScreens/LiveCategory';
 import LiveCategorySettings from '../ui/trendingScreens/LiveCategorySettings';
 
@@ -62,6 +63,7 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {fgEventStackScreen()}
           {settingsStackScreen()}
           {createFGStackScreen()}
+          {editFGStackScreen()}
           {liveCategoryStackScreen()}
           {liveCategorySettingsStackScreen()}
           {loginStackScreen()}
@@ -84,6 +86,7 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {fgEventStackScreen()}
           {settingsStackScreen()}
           {createFGStackScreen()}
+          {editFGStackScreen()}
           {liveCategoryStackScreen()}
           {liveCategorySettingsStackScreen()}
         </MainStack.Navigator>
@@ -205,6 +208,16 @@ const createFGStackScreen = () => {
     <MainStack.Screen
       name="CreateFG"
       component={CreateFG}
+      options={{headerShown: false}}
+    />
+  );
+};
+
+const editFGStackScreen = () => {
+  return (
+    <MainStack.Screen
+      name="EditFG"
+      component={EditFG}
       options={{headerShown: false}}
     />
   );

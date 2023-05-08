@@ -87,9 +87,13 @@ const FGSelector: React.FC<Props> = ({
               {fg.group.name}
             </Text>
           </View>
-          <Icon icon={icons.option} onPress={() => {
-            navigation.navigate('EditFG', {friendGroup: fg, refreshOnInviteEvent: refreshOnInviteEvent});
-          }}/>
+          <Icon
+            icon={icons.option}
+            onPress={() => {
+              navigation.navigate('EditFG', {friendGroup: fg});
+              bottomSheetRef.current?.close();
+            }}
+          />
         </TouchableOpacity>
       ))}
       {invitations?.map((invitation: Invitation, idx: number) => (

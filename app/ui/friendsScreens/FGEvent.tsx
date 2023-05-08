@@ -46,7 +46,9 @@ interface Props {
 const FGEvent: React.FC<Props> = ({navigation, route}) => {
   const [groupEventId] = useState<number>(route?.params?.eventData?.id);
   const [eventTitle] = useState<string>(route?.params?.eventData?.name);
-  const [suggester] = useState<{name: string, self: boolean}>(route?.params?.eventData?.suggester_info);
+  const [suggester] = useState<{name: string; self: boolean}>(
+    route?.params?.eventData?.suggester_info,
+  );
   const [date] = useState<string>(
     moment(route?.params?.eventData?.date, 'YYYY-MM-DD').format('M/D/YYYY'),
   );

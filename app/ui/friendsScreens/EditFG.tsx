@@ -4,8 +4,8 @@ import {
   StyleSheet,
   SafeAreaView,
   TextInput,
-  FlatList,
   Alert,
+  ScrollView,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 import EncryptedStorage from 'react-native-encrypted-storage';
@@ -14,27 +14,44 @@ import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 import {icons} from '../../constants/images';
 
-import {createGroup} from '../../utils/api/friendsCalls/createGroup';
+import {editGroup} from '../../utils/api/friendsCalls/editGroup';
+import {leaveGroup} from '../../utils/api/friendsCalls/leaveGroup';
+import {GroupMember} from '../../utils/interfaces/types';
 
 import Icon from '../components/Icon';
 import Text from '../components/Text';
 import AButton from '../components/ActionButton';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import Confirmation from '../editEventScreens/Confirmation';
 
 interface Props {
   navigation: any;
+  route: any;
 }
 
-const CreateFG: React.FC<Props> = ({navigation}) => {
-  const [name, setName] = useState<string>('');
+const CreateFG: React.FC<Props> = ({navigation, route}) => {
+  const [name, setName] = useState<string>(
+    route?.params?.friendGroup.group.name,
+  );
+  const [members] = useState<GroupMember[]>(
+    route?.params?.friendGroup.group_member,
+  );
   const [invite, setInvite] = useState<string>('');
   const [invitations, setInvitations] = useState<string[]>([]);
 
   const inviteRef = React.useRef<TextInput>(null);
 
+  const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
+
   const handleGroupCreation = async () => {
     const token = await EncryptedStorage.getItem('auth_token');
 
-    const responseStatus = await createGroup(name, invitations, token);
+    const responseStatus = await editGroup(
+      name,
+      invitations,
+      route?.params?.friendGroup.group.id,
+      token,
+    );
 
     if (responseStatus) {
       navigation.reset({
@@ -44,7 +61,27 @@ const CreateFG: React.FC<Props> = ({navigation}) => {
 
       navigation.navigate('Friends');
     } else {
-      Alert.alert('Error', 'Invalid Request. Please Try Again');
+      Alert.alert('Error', 'Unable to save. Please Try Again');
+    }
+  };
+
+  const handleGroupLeave = async () => {
+    const token = await EncryptedStorage.getItem('auth_token');
+
+    const responseStatus = await leaveGroup(
+      route?.params?.friendGroup.group.id,
+      token,
+    );
+
+    if (responseStatus) {
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'Friends'}],
+      });
+
+      navigation.navigate('Friends');
+    } else {
+      Alert.alert('Error', 'Unable to leave group. Please Try Again');
     }
   };
 
@@ -59,7 +96,12 @@ const CreateFG: React.FC<Props> = ({navigation}) => {
               onPress={() => navigation.goBack()}
             />
           </View>
-          <Text>{strings.friends.createPrompt}</Text>
+          <Text>{strings.friends.editPrompt}</Text>
+          <TouchableOpacity onPress={() => setShowConfirmation(true)}>
+            <Text size="s" weight="b" color={colors.red}>
+              {strings.friends.leave}
+            </Text>
+          </TouchableOpacity>
         </View>
       </SafeAreaView>
 
@@ -92,42 +134,59 @@ const CreateFG: React.FC<Props> = ({navigation}) => {
         />
       </View>
 
-      <View style={inviteStyles.scrollView}>
-        <FlatList
-          data={invitations}
-          ItemSeparatorComponent={Spacer}
-          renderItem={({item, index}: {item: string; index: number}) => (
-            <View key={index} style={inviteStyles.row}>
+      <ScrollView>
+        {invitations.map((item: string, index: number) => (
+          <View key={index} style={inviteStyles.row}>
+            <Text size="s" weight="l">
+              {item}
+            </Text>
+            <Icon
+              size="s"
+              icon={icons.x}
+              onPress={() => {
+                setInvitations(
+                  invitations.filter((_: string, i: number) => i !== index),
+                );
+              }}
+            />
+          </View>
+        ))}
+        {members.map((member: GroupMember, index: number) => (
+          <View key={index} style={inviteStyles.row}>
+            <View>
               <Text size="s" weight="l">
-                {item}
+                {member.user.name}
               </Text>
-              <Icon
-                size="s"
-                icon={icons.x}
-                onPress={() => {
-                  setInvitations(
-                    invitations.filter((_: string, i: number) => i !== index),
-                  );
-                }}
-              />
+              <Text size="xs" weight="l" color={colors.darkgrey}>
+                {member.user.email}
+              </Text>
             </View>
-          )}
-        />
-      </View>
+          </View>
+        ))}
+      </ScrollView>
 
       <View style={styles.create}>
         <AButton
           size="m"
           disabled={name === ''}
-          label={strings.friends.create}
-          onPress={() => handleGroupCreation()}
+          label={strings.library.save}
+          onPress={handleGroupCreation}
         />
       </View>
+
+      <Confirmation
+        onPress={handleGroupLeave}
+        open={showConfirmation}
+        setOpen={setShowConfirmation}
+        prompt={strings.friends.leavePrompt}
+        leftText={strings.misc.cancel}
+        rightText={strings.friends.leave}
+        rightColor={colors.red}
+        actionOnRight={true}
+      />
     </View>
   );
 };
-
-const Spacer = () => <View style={styles.separator} />;
 
 const styles = StyleSheet.create({
   container: {
@@ -137,15 +196,14 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     width: '100%',
     height: s(40),
     paddingHorizontal: s(20),
     marginBottom: s(20),
   },
   back: {
-    position: 'absolute',
-    left: s(20),
+    marginRight: s(20),
   },
   input: {
     width: s(350),
@@ -180,7 +238,6 @@ const inviteStyles = StyleSheet.create({
     width: s(310),
     marginBottom: s(20),
     borderTopWidth: s(0.5),
-    borderBottomWidth: s(1),
     borderColor: colors.grey,
   },
   input: {
@@ -199,6 +256,9 @@ const inviteStyles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: s(20),
     paddingVertical: s(10),
+    marginHorizontal: s(20),
+    borderBottomWidth: s(0.5),
+    borderColor: colors.grey,
   },
 });
 

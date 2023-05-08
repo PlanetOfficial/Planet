@@ -1,5 +1,5 @@
 import React from 'react';
-import {Alert, Image, StyleSheet, View} from 'react-native';
+import {Image, StyleSheet, View} from 'react-native';
 
 import {s} from 'react-native-size-matters';
 
@@ -7,7 +7,6 @@ import Text from './Text';
 import OptionMenu from './OptionMenu';
 
 import {colors} from '../../constants/theme';
-import strings from '../../constants/strings';
 
 interface Props {
   name: string;
@@ -34,11 +33,7 @@ const EventCard: React.FC<Props> = ({name, info, image, options}) => {
             {info}
           </Text>
         </View>
-        {options? (
-          <OptionMenu
-            options={options}
-          />
-        ) : null}
+        {options ? <OptionMenu options={options} /> : null}
       </View>
     </View>
   );

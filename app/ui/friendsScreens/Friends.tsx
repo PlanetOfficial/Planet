@@ -157,7 +157,10 @@ const Friends: React.FC<Props> = ({navigation}) => {
               icon={icons.notification}
               onPress={() => {
                 // TODO: implement notifications
-                Alert.alert('Notifications', 'Notifications are not implemented yet');
+                Alert.alert(
+                  'Notifications',
+                  'Notifications are not implemented yet',
+                );
               }}
             />
           </View>
@@ -192,7 +195,11 @@ const Friends: React.FC<Props> = ({navigation}) => {
               }}>
               <EventCard
                 name={item.name}
-                info={moment(item.date, 'YYYY-MM-DD').format('M/D/YYYY') + ' • ' + item.suggester_info?.name}
+                info={
+                  moment(item.date, 'YYYY-MM-DD').format('M/D/YYYY') +
+                  ' • ' +
+                  item.suggester_info?.name
+                }
                 image={
                   item.places &&
                   item.places.length > 0 &&
