@@ -26,7 +26,7 @@ const EventCard: React.FC<Props> = ({name, info, image, options}) => {
     <View style={styles.container}>
       <Image style={styles.image} source={image} />
       <View style={styles.header}>
-        <View>
+        <View style={styles.texts}>
           <Text size="m" weight="b">
             {name}
           </Text>
@@ -68,6 +68,12 @@ const styles = StyleSheet.create({
     height: '25%',
     paddingHorizontal: s(10),
     backgroundColor: 'rgba(255, 255, 255, 0.8)',
+  },
+  texts: {
+    flex: 1,
+    justifyContent: 'space-between',
+    height: '75%',
+    marginRight: s(10),
   },
   image: {
     position: 'absolute',

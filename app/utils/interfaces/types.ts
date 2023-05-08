@@ -96,6 +96,9 @@ export interface Event {
     place: Place;
     place_id: number;
   }[];
+  suggester?: {
+    name: string;
+  }
 }
 
 export interface FriendGroup {

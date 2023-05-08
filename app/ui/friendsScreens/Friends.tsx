@@ -82,6 +82,7 @@ const Friends: React.FC<Props> = ({navigation}) => {
 
     const response = await getFGEvents(group_id, token);
     setCurFGEvents(response);
+    console.log(response[0]);
   };
 
   useEffect(() => {
@@ -196,7 +197,7 @@ const Friends: React.FC<Props> = ({navigation}) => {
               }}>
               <EventCard
                 name={item.name}
-                info={item.date}
+                info={item.date + ' • ' + item.suggester?.name}
                 image={
                   item.places &&
                   item.places.length > 0 &&
@@ -218,8 +219,9 @@ const Friends: React.FC<Props> = ({navigation}) => {
                     onPress: () => {
                       // TODO-MVP: remove event
                     },
+                    // TODO-MVP: check if owner
+                    disabled: false,
                     color: colors.red,
-                    disabled: false, // TODO-MVP: only allow the poster to remove their event
                   },
                 ]}
               />
