@@ -201,6 +201,7 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
                 name: strings.main.share,
                 onPress: () => {
                   // TODO: share event
+                  Alert.alert('Share', 'Share is not implemented yet');
                 },
                 color: colors.black,
               },
@@ -340,7 +341,8 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
                       feedbackStyles.commentContainer,
                     ]}
                     onPress={() => {
-                      // TODO: Comment on place
+                      // TODO: comment on place
+                      Alert.alert('Comment', 'Comment is not implemented yet');
                     }}>
                     <Image
                       style={[

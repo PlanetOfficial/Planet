@@ -161,6 +161,7 @@ const Friends: React.FC<Props> = ({navigation}) => {
               icon={icons.notification}
               onPress={() => {
                 // TODO: implement notifications
+                Alert.alert('Notifications', 'Notifications are not implemented yet');
               }}
             />
           </View>
@@ -203,6 +204,24 @@ const Friends: React.FC<Props> = ({navigation}) => {
                     ? {uri: item.places[0]?.place.image_url}
                     : icons.defaultIcon
                 }
+                options={[
+                  {
+                    name: strings.main.share,
+                    onPress: () => {
+                      // TODO: share event
+                      Alert.alert('Share', 'Share is not implemented yet');
+                    },
+                    color: colors.black,
+                  },
+                  {
+                    name: strings.main.remove,
+                    onPress: () => {
+                      // TODO-MVP: remove event
+                    },
+                    color: colors.red,
+                    disabled: false, // TODO-MVP: only allow the poster to remove their event
+                  },
+                ]}
               />
             </TouchableOpacity>
           );

@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   Platform,
+  Alert,
 } from 'react-native';
 
 import {s, vs} from 'react-native-size-matters';
@@ -213,6 +214,7 @@ const Event: React.FC<Props> = ({navigation, route}) => {
                     name: strings.main.share,
                     onPress: () => {
                       // TODO: share event
+                      Alert.alert('Share', 'Share is not implemented yet');
                     },
                     color: colors.black,
                   },

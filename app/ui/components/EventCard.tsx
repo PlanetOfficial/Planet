@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, StyleSheet, View} from 'react-native';
+import {Alert, Image, StyleSheet, View} from 'react-native';
 
 import {s} from 'react-native-size-matters';
 
@@ -13,10 +13,15 @@ interface Props {
   name: string;
   info: string;
   image: Object;
-  option?: boolean;
+  options?: {
+    name: string;
+    onPress: () => void;
+    color: string;
+    disabled?: boolean;
+  }[];
 }
 
-const EventCard: React.FC<Props> = ({name, info, image, option = false}) => {
+const EventCard: React.FC<Props> = ({name, info, image, options}) => {
   return (
     <View style={styles.container}>
       <Image style={styles.image} source={image} />
@@ -29,24 +34,9 @@ const EventCard: React.FC<Props> = ({name, info, image, option = false}) => {
             {info}
           </Text>
         </View>
-        {option ? (
+        {options? (
           <OptionMenu
-            options={[
-              {
-                name: strings.main.share,
-                onPress: () => {
-                  // TODO: share event
-                },
-                color: colors.black,
-              },
-              {
-                name: strings.main.remove,
-                onPress: () => {
-                  // TODO-MVP: remove event
-                },
-                color: colors.red,
-              },
-            ]}
+            options={options}
           />
         ) : null}
       </View>

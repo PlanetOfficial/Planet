@@ -5,6 +5,7 @@ import {
   SafeAreaView,
   FlatList,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import moment from 'moment';
 
@@ -67,7 +68,8 @@ const Library: React.FC<Props> = ({navigation}) => {
             size="m"
             icon={icons.search}
             onPress={() => {
-              navigation.navigate('SearchLibrary');
+              // TODO: implement library search
+              Alert.alert('Search', 'Search is not implemented yet');
             }}
           />
         </View>
@@ -137,7 +139,23 @@ const Library: React.FC<Props> = ({navigation}) => {
                     ? {uri: item.places[0].place.image_url}
                     : icons.defaultIcon
                 }
-                option={true}
+                options={[
+                  {
+                    name: strings.main.share,
+                    onPress: () => {
+                      // TODO: share event
+                      Alert.alert('Share', 'Share is not implemented yet');
+                    },
+                    color: colors.black,
+                  },
+                  {
+                    name: strings.main.remove,
+                    onPress: () => {
+                      // TODO-MVP: remove event
+                    },
+                    color: colors.red,
+                  },
+                ]}
               />
             </TouchableOpacity>
           );
