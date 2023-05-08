@@ -96,8 +96,10 @@ export interface Event {
     place: Place;
     place_id: number;
   }[];
-  suggester?: {
+  suggester: number;
+  suggester_info: {
     name: string;
+    self: boolean;
   }
 }
 

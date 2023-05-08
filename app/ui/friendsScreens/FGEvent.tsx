@@ -46,6 +46,7 @@ interface Props {
 const FGEvent: React.FC<Props> = ({navigation, route}) => {
   const [groupEventId] = useState<number>(route?.params?.eventData?.id);
   const [eventTitle] = useState<string>(route?.params?.eventData?.name);
+  const [suggester] = useState<{name: string, self: boolean}>(route?.params?.eventData?.suggester_info);
   const [date] = useState<string>(
     moment(route?.params?.eventData?.date, 'YYYY-MM-DD').format('M/D/YYYY'),
   );
@@ -192,7 +193,7 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
               {eventTitle}
             </CustomText>
             <CustomText size="xs" weight="l" color={colors.accent}>
-              {date}
+              {date + ' • ' + suggester?.name}
             </CustomText>
           </View>
           <OptionMenu
@@ -217,8 +218,7 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
                 onPress: () => {
                   // TODO-MVP: remove event
                 },
-                // TODO-MVP: check if owner
-                disabled: false,
+                disabled: !suggester?.self,
                 color: colors.red,
               },
             ]}

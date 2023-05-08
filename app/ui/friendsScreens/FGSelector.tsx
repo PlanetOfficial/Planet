@@ -88,7 +88,7 @@ const FGSelector: React.FC<Props> = ({
             </Text>
           </View>
           <Icon icon={icons.option} onPress={() => {
-            
+            navigation.navigate('EditFG', {friendGroup: fg, refreshOnInviteEvent: refreshOnInviteEvent});
           }}/>
         </TouchableOpacity>
       ))}

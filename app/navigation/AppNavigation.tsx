@@ -14,7 +14,7 @@ import Place from '../ui/libraryScreens/Place';
 import Event from '../ui/libraryScreens/Event';
 import FGEvent from '../ui/friendsScreens/FGEvent';
 import Settings from '../ui/profileScreens/Settings';
-import CreateFG from '../ui/friendsScreens/CreateFriendGroup';
+import CreateFG from '../ui/friendsScreens/CreateFG';
 import LiveCategory from '../ui/trendingScreens/LiveCategory';
 import LiveCategorySettings from '../ui/trendingScreens/LiveCategorySettings';
 

@@ -13,6 +13,8 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {s, vs} from 'react-native-size-matters';
 import EncryptedStorage from 'react-native-encrypted-storage';
 
+import moment from 'moment';
+
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 import {icons} from '../../constants/images';
@@ -29,12 +31,6 @@ import {makeFGEvent} from '../../utils/api/friendsCalls/makeFGEvent';
 import {getFGEvents} from '../../utils/api/friendsCalls/getFGEvents';
 import {FriendGroup, Invitation, Event} from '../../utils/interfaces/types';
 import {getBookmarks} from '../../utils/api/shared/getBookmarks';
-
-// TODO-MVP: Add the following functionalities
-// 1. The FG Selector Rows should be slidable, with the following options:
-//    a. Edit (name, members, etc.)
-//    b. Leave
-// 2. Each event should also be slidable, allowing the poster of the event to remove their event.
 
 interface Props {
   navigation: any;
@@ -196,7 +192,7 @@ const Friends: React.FC<Props> = ({navigation}) => {
               }}>
               <EventCard
                 name={item.name}
-                info={item.date + ' • ' + item.suggester?.name}
+                info={moment(item.date, 'YYYY-MM-DD').format('M/D/YYYY') + ' • ' + item.suggester_info?.name}
                 image={
                   item.places &&
                   item.places.length > 0 &&
@@ -218,8 +214,7 @@ const Friends: React.FC<Props> = ({navigation}) => {
                     onPress: () => {
                       // TODO-MVP: remove event
                     },
-                    // TODO-MVP: check if owner
-                    disabled: false,
+                    disabled: !item.suggester_info?.self,
                     color: colors.red,
                   },
                 ]}
