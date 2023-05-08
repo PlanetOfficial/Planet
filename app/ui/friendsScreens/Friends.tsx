@@ -118,9 +118,12 @@ const Friends: React.FC<Props> = ({navigation}) => {
   };
 
   useEffect(() => {
-    initializeData();
+    const unsubscribe = navigation.addListener('focus', () => {
+      initializeData();
+    });
+    return unsubscribe;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [navigation]);
 
   const handleAddEvent = async (user_event_id: number) => {
     const token = await EncryptedStorage.getItem('auth_token');
