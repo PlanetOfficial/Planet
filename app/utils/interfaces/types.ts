@@ -97,3 +97,46 @@ export interface Event {
     place_id: number;
   }[];
 }
+
+export interface FriendGroup {
+  id: number;
+  user_id: number;
+  group: Group;
+}
+
+export interface Group {
+  id: number;
+  name: string;
+  owner: number;
+}
+
+export interface Invitation {
+  id: number;
+  group: Group;
+  inviter: {
+    name: string;
+  };
+}
+
+export interface FGReaction {
+  created_at: number;
+  group_event_place_id: number;
+  id: number;
+  user: {
+    id: number;
+    name: string;
+  };
+}
+
+export interface FGPlace {
+  id: number;
+  name: string;
+  image_url: string;
+  group_event_id: number;
+  group_event_place_id: number;
+  place_id: number;
+  place: Place;
+  category_name: string;
+  likes: FGReaction[];
+  dislikes: FGReaction[];
+}

@@ -79,7 +79,7 @@ const Event: React.FC<Props> = ({navigation, route}) => {
     [insets.top, insets.bottom],
   );
 
-  const addRef = useRef<any>(null); // any bc typescript bad
+  const addRef = useRef<any>(null); // due to forwardRef
 
   useEffect(() => {
     const getEventData = async () => {

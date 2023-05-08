@@ -71,7 +71,7 @@ const SelectDestinations: React.FC<Props> = ({navigation, route}) => {
 
   const insets = useSafeAreaInsets();
 
-  const addRef = useRef<any>(null); // any because of weird typing in custom component
+  const addRef = useRef<any>(null); // due to forwardRef
   const bottomSheetRef = useRef<BottomSheet>(null);
   const snapPoints = useMemo(
     () => [vs(350) - (insets.top + s(35)), vs(680) - (insets.top + s(60))],

@@ -23,7 +23,6 @@ import {icons} from '../../constants/images';
 
 import {getEvents} from '../../utils/api/libraryCalls/getEvents';
 import {getBookmarks} from '../../utils/api/shared/getBookmarks';
-import {filterToUniqueIds} from '../../utils/functions/Misc';
 import {Place, Event} from '../../utils/interfaces/types';
 
 interface Props {
@@ -48,8 +47,7 @@ const Library: React.FC<Props> = ({navigation}) => {
       const authToken = await EncryptedStorage.getItem('auth_token');
 
       const eventsRaw = await getEvents(authToken);
-
-      setEvents(filterToUniqueIds(eventsRaw));
+      setEvents(eventsRaw);
 
       const bookmarks = await getBookmarks(authToken);
       setPlaces(bookmarks);

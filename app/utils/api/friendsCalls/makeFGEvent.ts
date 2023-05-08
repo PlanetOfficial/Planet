@@ -5,11 +5,11 @@ export const makeFGEvent = async (
   group_id: number,
   token: any,
 ) => {
-  // TODO: filter inputs**
+  // TODO-SECURITY: filter inputs**
 
   const response = await fetch(
     DBOpsURL +
-      `/makeFGEvent?user_event_id=${user_event_id}&group_id=${group_id}&authtoken=${token}`,
+      `/friends/createEvent?user_event_id=${user_event_id}&group_id=${group_id}&authtoken=${token}`,
     {
       method: 'POST',
     },

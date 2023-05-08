@@ -59,7 +59,9 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
 
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
-  const handleMeasure = (r: any) => {
+  const handleMeasure = (r: {
+    measureInWindow: (arg0: (x: number, _y: number, w: number) => void) => void;
+  }) => {
     r.measureInWindow((x: number, _y: number, w: number) => {
       if (x < s(10)) {
         setPos(s(10));

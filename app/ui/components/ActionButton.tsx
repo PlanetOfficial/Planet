@@ -8,9 +8,10 @@ import Text from './Text';
 import {colors} from '../../constants/theme';
 
 interface Props {
-  size?: 's' | 'm' | 'l';
+  size?: 'xs' | 's' | 'm' | 'l';
   disabled?: boolean;
   label: string;
+  color?: string;
   onPress: () => void;
 }
 
@@ -18,11 +19,16 @@ const AButton: React.FC<Props> = ({
   size = 'm',
   disabled = false,
   label,
+  color = colors.accent,
   onPress,
 }) => {
   let w: number = s(90);
   let h: number = s(40);
   switch (size) {
+    case 'xs':
+      w = s(50);
+      h = s(25);
+      break;
     case 's':
       w = s(55);
       h = s(30);
@@ -45,7 +51,7 @@ const AButton: React.FC<Props> = ({
     width: w,
     height: h,
     borderRadius: s(10),
-    backgroundColor: disabled ? colors.darkgrey : colors.accent,
+    backgroundColor: disabled ? colors.darkgrey : color,
   };
 
   return (
