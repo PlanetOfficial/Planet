@@ -216,6 +216,7 @@ const Trending: React.FC<Props> = ({navigation}) => {
                           }>
                           <PlaceCard
                             id={event.id}
+                            small={true}
                             name={event.name}
                             info={moment(event.date, 'YYYY-MM-DD').format(
                               'M/D/YYYY',

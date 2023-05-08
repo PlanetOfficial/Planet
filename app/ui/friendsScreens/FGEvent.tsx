@@ -27,6 +27,7 @@ import {likeFGPlace} from '../../utils/api/friendsCalls/likeFGPlace';
 import {dislikeFGPlace} from '../../utils/api/friendsCalls/dislikeFGPlace';
 import {forkEvent} from '../../utils/api/friendsCalls/forkEvent';
 import {MarkerObject, FGReaction, FGPlace} from '../../utils/interfaces/types';
+import {removeEvent} from '../../utils/api/friendsCalls/removeEvent';
 
 import PlaceCard from '../components/PlaceCard';
 import Blur from '../components/Blur';
@@ -160,6 +161,17 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
     }
   };
 
+  const handleRemoveEvent = async (group_event_id: number) => {
+    const token = await EncryptedStorage.getItem('auth_token');
+    const response = await removeEvent(group_event_id, token);
+
+    if (!response) {
+      Alert.alert('Error', 'Something went wrong. Please try again.');
+    } else {
+      navigation.navigate('Friends');
+    }
+  };
+
   const handleReactionInfo = (likes: FGReaction[], dislikes: FGReaction[]) => {
     console.log(likes);
     feedbackBottomSheetRef.current?.present();
@@ -228,9 +240,7 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
               },
               {
                 name: strings.main.remove,
-                onPress: () => {
-                  // TODO-MVP: remove event
-                },
+                onPress: () => handleRemoveEvent(groupEventId),
                 disabled: !suggester?.self,
                 color: colors.red,
               },
