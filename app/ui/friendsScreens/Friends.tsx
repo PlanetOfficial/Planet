@@ -31,6 +31,7 @@ import {getEvents} from '../../utils/api/libraryCalls/getEvents';
 import {makeFGEvent} from '../../utils/api/friendsCalls/makeFGEvent';
 import {getFGEvents} from '../../utils/api/friendsCalls/getFGEvents';
 import {removeEvent} from '../../utils/api/friendsCalls/removeEvent';
+import {forkEvent} from '../../utils/api/friendsCalls/forkEvent';
 import {FriendGroup, Invitation, Event} from '../../utils/interfaces/types';
 import {getBookmarks} from '../../utils/api/shared/getBookmarks';
 
@@ -141,6 +142,18 @@ const Friends: React.FC<Props> = ({navigation}) => {
     }
   };
 
+  const handleFork = async (groupEventId: number) => {
+    const token = await EncryptedStorage.getItem('auth_token');
+
+    const response = await forkEvent(groupEventId, token);
+
+    if (response) {
+      navigation.navigate('Library');
+    } else {
+      Alert.alert('Error', 'Something went wrong. Please try again.');
+    }
+  };
+
   const handleRemoveEvent = async (group_event_id: number) => {
     const token = await EncryptedStorage.getItem('auth_token');
     const response = await removeEvent(group_event_id, token);
@@ -235,6 +248,11 @@ const Friends: React.FC<Props> = ({navigation}) => {
                       Alert.alert('Share', 'Share is not implemented yet');
                     },
                     color: colors.black,
+                  },
+                  {
+                    name: strings.friends.fork,
+                    onPress: () => handleFork(item.id),
+                    color: colors.accent,
                   },
                   {
                     name: strings.main.remove,

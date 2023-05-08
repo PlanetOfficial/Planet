@@ -43,19 +43,22 @@ const Library: React.FC<Props> = ({navigation}) => {
     return item.hasOwnProperty('latitude');
   };
 
+  const initializeData = async () => {
+    const authToken = await EncryptedStorage.getItem('auth_token');
+
+    const eventsRaw = await getEvents(authToken);
+    setEvents(eventsRaw);
+
+    const bookmarks = await getBookmarks(authToken);
+    setPlaces(bookmarks);
+  };
+
   useEffect(() => {
-    const initializeData = async () => {
-      const authToken = await EncryptedStorage.getItem('auth_token');
-
-      const eventsRaw = await getEvents(authToken);
-      setEvents(eventsRaw);
-
-      const bookmarks = await getBookmarks(authToken);
-      setPlaces(bookmarks);
-    };
-
-    initializeData();
-  }, []);
+    const unsubscribe = navigation.addListener('focus', () => {
+      initializeData();
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   return (
     <View style={styles.container}>
