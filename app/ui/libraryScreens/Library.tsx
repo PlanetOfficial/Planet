@@ -151,7 +151,7 @@ const Library: React.FC<Props> = ({navigation}) => {
                   {
                     name: strings.main.remove,
                     onPress: () => {
-                      // TODO-MVP: remove event
+                      // TODO-LAVY: remove event
                     },
                     color: colors.red,
                   },

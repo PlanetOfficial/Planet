@@ -7,6 +7,7 @@ import {
   Pressable,
   FlatList,
   Alert,
+  LayoutAnimation,
 } from 'react-native';
 import {BottomSheetModal} from '@gorhom/bottom-sheet';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -29,6 +30,7 @@ import {getFGsAndInvites} from '../../utils/api/friendsCalls/getFGsAndInvites';
 import {getEvents} from '../../utils/api/libraryCalls/getEvents';
 import {makeFGEvent} from '../../utils/api/friendsCalls/makeFGEvent';
 import {getFGEvents} from '../../utils/api/friendsCalls/getFGEvents';
+import {removeEvent} from '../../utils/api/friendsCalls/removeEvent';
 import {FriendGroup, Invitation, Event} from '../../utils/interfaces/types';
 import {getBookmarks} from '../../utils/api/shared/getBookmarks';
 
@@ -121,6 +123,7 @@ const Friends: React.FC<Props> = ({navigation}) => {
   }, []);
 
   const handleAddEvent = async (user_event_id: number) => {
+
     const token = await EncryptedStorage.getItem('auth_token');
     const response = await makeFGEvent(
       user_event_id,
@@ -130,9 +133,25 @@ const Friends: React.FC<Props> = ({navigation}) => {
 
     if (!response) {
       Alert.alert('Error', 'Something went wrong. Please try again.');
+    } else {
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+      fetchCurGroupInfo(friendGroups[friendGroup].group.id);
     }
+  };
 
-    fetchCurGroupInfo(friendGroups[friendGroup].group.id);
+  const handleRemoveEvent = async (group_event_id: number) => {
+    const token = await EncryptedStorage.getItem('auth_token');
+    const response = await removeEvent(
+      group_event_id,
+      token,
+    );
+
+    if (!response) {
+      Alert.alert('Error', 'Something went wrong. Please try again.');
+    } else {
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+      setCurFGEvents(curFGEvents.filter((event: Event) => event.id !== group_event_id));
+    }
   };
 
   return (
@@ -218,9 +237,7 @@ const Friends: React.FC<Props> = ({navigation}) => {
                   },
                   {
                     name: strings.main.remove,
-                    onPress: () => {
-                      // TODO-MVP: remove event
-                    },
+                    onPress: () => handleRemoveEvent(item.id),
                     disabled: !item.suggester_info?.self,
                     color: colors.red,
                   },

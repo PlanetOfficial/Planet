@@ -98,7 +98,7 @@ const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
               longitudeDelta: floats.defaultLongitudeDelta,
             });
             setDestination({
-              // TODO-MVP: addCustomDest Incomplete
+              // TODO-LAVY: addCustomDest Incomplete
               category_id: 0,
               category_name: 'Custom Event',
               created_at: 0,
@@ -138,7 +138,7 @@ const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
               onPress={e =>
                 custom && autocompleteRef.current?.getAddressText()
                   ? setDestination({
-                      // TODO-MVP: addCustomDest Incomplete
+                      // TODO-LAVY: addCustomDest Incomplete
                       category_id: 0,
                       category_name: 'Custom Event',
                       created_at: 0,

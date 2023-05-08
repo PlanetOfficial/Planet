@@ -112,7 +112,7 @@ const Event: React.FC<Props> = ({navigation, route}) => {
     bottomSheetRef.current?.collapse();
     setEditing(false);
 
-    // TODO-MVP: implement save edits
+    // TODO-LAVY: save edits
   };
 
   return (
@@ -226,7 +226,7 @@ const Event: React.FC<Props> = ({navigation, route}) => {
                   {
                     name: strings.main.remove,
                     onPress: () => {
-                      // TODO-MVP: remove event
+                      // TODO-LAVY: remove event
                     },
                     color: colors.red,
                   },

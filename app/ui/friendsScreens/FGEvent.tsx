@@ -25,6 +25,7 @@ import {
 import {getGroupEventPlaces} from '../../utils/api/friendsCalls/getGroupEventPlaces';
 import {likeFGPlace} from '../../utils/api/friendsCalls/likeFGPlace';
 import {dislikeFGPlace} from '../../utils/api/friendsCalls/dislikeFGPlace';
+import {forkEvent} from '../../utils/api/friendsCalls/forkEvent';
 import {MarkerObject, FGReaction, FGPlace} from '../../utils/interfaces/types';
 
 import PlaceCard from '../components/PlaceCard';
@@ -147,6 +148,18 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
     return result;
   };
 
+  const handleFork = async () => {
+    const token = await EncryptedStorage.getItem('auth_token');
+    
+    const response = await forkEvent(groupEventId, token);
+
+    if (response) {
+      navigation.navigate('Library');
+    } else {
+      Alert.alert('Error', 'Something went wrong. Please try again.');
+    }
+  };
+
   const handleReactionInfo = (likes: FGReaction[], dislikes: FGReaction[]) => {
     console.log(likes);
     feedbackBottomSheetRef.current?.present();
@@ -210,9 +223,7 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
               },
               {
                 name: strings.friends.fork,
-                onPress: () => {
-                  // TODO-MVP: fork event
-                },
+                onPress: handleFork,
                 color: colors.accent,
               },
               {

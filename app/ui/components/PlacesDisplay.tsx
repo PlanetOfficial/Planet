@@ -94,7 +94,6 @@ const PlacesDisplay: React.FC<Props> = ({
               <PlaceCard
                 id={place.id}
                 name={place.name}
-                // TODO-MVP: display more information
                 info={place.category_name}
                 marked={bookmarks.includes(place.id)}
                 image={

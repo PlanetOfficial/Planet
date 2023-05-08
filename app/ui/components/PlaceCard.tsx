@@ -22,6 +22,7 @@ interface Props {
   onUnBookmark?: (placeId: number) => void;
 }
 
+// TODO-NAOTO: display more "info" in the card for every reference
 const PlaceCard: React.FC<Props> = ({
   id,
   name,
