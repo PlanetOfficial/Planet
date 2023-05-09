@@ -43,7 +43,7 @@ const CreateFG: React.FC<Props> = ({navigation, route}) => {
 
   const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
 
-  const handleGroupCreation = async () => {
+  const handleGroupEdit = async () => {
     const token = await EncryptedStorage.getItem('auth_token');
 
     const responseStatus = await editGroup(
@@ -170,7 +170,7 @@ const CreateFG: React.FC<Props> = ({navigation, route}) => {
           size="m"
           disabled={name === ''}
           label={strings.library.save}
-          onPress={handleGroupCreation}
+          onPress={handleGroupEdit}
         />
       </View>
 
