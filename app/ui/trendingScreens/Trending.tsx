@@ -218,9 +218,20 @@ const Trending: React.FC<Props> = ({navigation}) => {
                             id={event.id}
                             small={true}
                             name={event.name}
-                            info={moment(event.date, 'YYYY-MM-DD').format(
-                              'M/D/YYYY',
-                            )}
+                            info={
+                              moment(event.date, 'YYYY-MM-DD').format(
+                                'M/D/YYYY',
+                              ) +
+                              (event.priceRanges[0]
+                                ? ' • ' +
+                                  '$' +
+                                  Math.round(event.priceRanges[0]?.min) +
+                                  (event.priceRanges[0].min !==
+                                  event.priceRanges[0].max
+                                    ? ' - ' + '$' + Math.round(event.priceRanges[0]?.max)
+                                    : '')
+                                : '')
+                            }
                             marked={bookmarks.includes(event.id)}
                             image={{uri: event.image_url}}
                           />

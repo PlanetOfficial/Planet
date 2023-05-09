@@ -77,8 +77,12 @@ export interface LiveEvent {
   latitude: string;
   longitude: string;
   name: string;
-  price: number;
-  rating: number;
+  priceRanges: {
+    min: number;
+    max: number;
+    currency: string;
+    type: string;
+  }[];
 }
 
 export interface LiveEvents {
