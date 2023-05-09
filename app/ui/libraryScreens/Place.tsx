@@ -24,8 +24,6 @@ import {
   displayHours,
 } from '../../utils/functions/Misc';
 
-// TODO-NAOTO: redesign/Refactor Place Screen (Create from ...)
-
 const Place = ({navigation, route}: {navigation: any; route: any}) => {
   const [destination] = useState(route?.params?.destination);
   const [destinationDetails, setDestinationDetails]: any = useState({});
@@ -37,6 +35,7 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
       if (id) {
         const details = await getPlaceDetails(id);
         setDestinationDetails(details);
+        console.log(details);
       }
     };
 
@@ -51,7 +50,7 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={headerStyles.container}>
+      {/* <View style={headerStyles.container}>
         <TouchableOpacity
           style={headerStyles.back}
           onPress={() => navigation.goBack()}>
@@ -216,7 +215,7 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
             </View>
           ) : null}
         </View>
-      </ScrollView>
+      </ScrollView> */}
     </SafeAreaView>
   );
 };

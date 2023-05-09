@@ -20,6 +20,7 @@ interface Props {
   }[];
 }
 
+// TODO: display more info on the card
 const EventCard: React.FC<Props> = ({name, info, image, options}) => {
   return (
     <View style={styles.container}>
