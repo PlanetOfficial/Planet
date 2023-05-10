@@ -24,10 +24,31 @@ import {
   displayHours,
 } from '../../utils/functions/Misc';
 
-const Place = ({navigation, route}: {navigation: any; route: any}) => {
-  const [destination] = useState(route?.params?.destination);
-  const [destinationDetails, setDestinationDetails]: any = useState({});
-  const [category] = useState(route?.params?.category);
+import {Place as PlaceT, PlaceDetail} from '../../utils/interfaces/types';
+
+interface Props {
+  navigation: any;
+  route: any;
+}
+
+const Place: React.FC<Props> = ({navigation, route}) => {
+  const [destination] = useState<PlaceT>(route?.params?.destination);
+  const [destinationDetails, setDestinationDetails] = useState<PlaceDetail>({
+    additionalInfo: '',
+    address: '',
+    dates: {},
+    description: '',
+    hours: [],
+    name: '',
+    phone: '',
+    photos: [],
+    place_name: '',
+    price: '',
+    rating: -1,
+    review_count: -1,
+    url: '',
+  });
+  const [category] = useState<string>(route?.params?.category);
 
   useEffect(() => {
     const initializeDestinationData = async () => {
@@ -43,14 +64,14 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
   }, [destination?.id]);
 
   const handleLinkPress = async () => {
-    if (destinationDetails?.event_url) {
-      await Linking.openURL(destinationDetails?.event_url);
+    if (destinationDetails?.url) {
+      await Linking.openURL(destinationDetails?.url);
     }
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* <View style={headerStyles.container}>
+      <View style={headerStyles.container}>
         <TouchableOpacity
           style={headerStyles.back}
           onPress={() => navigation.goBack()}>
@@ -60,7 +81,7 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
           <Text style={headerStyles.title}>{destination?.name}</Text>
           <Text style={headerStyles.info}>
             {category}
-            {destination?.price ? '・' + destination?.price : null}
+            {destinationDetails?.price ? '・' + destinationDetails?.price : null}
           </Text>
         </View>
       </View>
@@ -69,15 +90,15 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
           <MapView
             style={styles.map}
             initialRegion={{
-              latitude: parseFloat(destination?.latitude),
-              longitude: parseFloat(destination?.longitude),
+              latitude: destination?.latitude,
+              longitude: destination?.longitude,
               latitudeDelta: floats.defaultLatitudeDelta,
               longitudeDelta: floats.defaultLongitudeDelta,
             }}>
             <Marker
               coordinate={{
-                latitude: parseFloat(destination?.latitude),
-                longitude: parseFloat(destination?.longitude),
+                latitude: destination?.latitude,
+                longitude: destination?.longitude,
               }}
             />
           </MapView>
@@ -88,56 +109,15 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
             horizontal={true}
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={styles.imagesContainer}>
-            {destinationDetails?.images?.length > 0 ? (
-              destinationDetails?.images?.map((image: any, index: number) => (
+            {destinationDetails?.photos?.map((image: any, index: number) => (
                 <View key={index}>
                   <Image source={{uri: image}} style={styles.image} />
                 </View>
               ))
-            ) : destination?.image_url ? (
-              <Image
-                source={{uri: destination?.image_url}}
-                style={styles.image}
-              />
-            ) : null}
+            }
           </ScrollView>
           <View style={styles.separator} />
         </>
-        <View>
-          {destinationDetails?.rating >= 0 ||
-          destinationDetails?.reviews?.length > 0 ? (
-            <>
-              <Text style={rnrStyles.title}>
-                {strings.createTabStack.rnr}
-                {':'}
-                {destinationDetails?.rating >= 0 ? (
-                  <>
-                    {' ('}
-                    <Text style={rnrStyles.rating}>
-                      {destinationDetails?.rating}
-                    </Text>
-                    {'/' + strings.misc.maxRating + ')'}
-                  </>
-                ) : null}
-              </Text>
-              <ScrollView
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={rnrStyles.contentContainer}>
-                {destinationDetails?.reviews
-                  ? destinationDetails?.reviews?.map(
-                      (review: any, index: number) => (
-                        <View key={index} style={rnrStyles.review}>
-                          <Text style={rnrStyles.text}>{review?.text}</Text>
-                        </View>
-                      ),
-                    )
-                  : null}
-              </ScrollView>
-              <View style={styles.separator} />
-            </>
-          ) : null}
-        </View>
         <View style={detailStyles.container}>
           <Text style={detailStyles.title}>
             {strings.createTabStack.details}:
@@ -152,13 +132,13 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
               </Text>
             </View>
           ) : null}
-          {destinationDetails?.event_venue_name ? (
+          {destinationDetails?.place_name ? (
             <View style={detailStyles.infoContainer}>
               <Text style={detailStyles.infoTitle}>
                 {strings.createTabStack.venue}:
               </Text>
               <Text style={detailStyles.info}>
-                {destinationDetails?.event_venue_name}
+                {destinationDetails?.place_name}
               </Text>
             </View>
           ) : null}
@@ -168,44 +148,11 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
                 {strings.createTabStack.address}:
               </Text>
               <Text style={detailStyles.info}>
-                {displayAddress(destinationDetails?.address)}
+                {destinationDetails?.address}
               </Text>
             </View>
           ) : null}
-          {destinationDetails?.event_start_info?.localDate &&
-          destinationDetails?.event_start_info?.localTime ? (
-            <View style={detailStyles.infoContainer}>
-              <Text style={detailStyles.infoTitle}>
-                {strings.createTabStack.eventTime}:
-              </Text>
-              <Text style={detailStyles.info}>
-                {convertDateToMMDDYYYY(
-                  destinationDetails?.event_start_info?.localDate,
-                ) + '\n'}
-                {convertTimeTo12Hour(
-                  destinationDetails?.event_start_info?.localTime,
-                )}
-              </Text>
-            </View>
-          ) : null}
-          {destinationDetails?.event_status?.code ? (
-            <View style={detailStyles.infoContainer}>
-              <Text style={detailStyles.infoTitle}>
-                {strings.createTabStack.eventStatus}:
-              </Text>
-              <Text style={detailStyles.info}>
-                {capitalizeFirstLetter(destinationDetails?.event_status?.code)}
-              </Text>
-            </View>
-          ) : null}
-          {destinationDetails?.event_span ? (
-            <View style={detailStyles.infoContainer}>
-              <Text style={detailStyles.info}>
-                {strings.createTabStack.eventSpan}
-              </Text>
-            </View>
-          ) : null}
-          {destinationDetails?.event_url ? (
+          {destinationDetails?.url ? (
             <View style={detailStyles.infoContainer}>
               <TouchableOpacity onPress={() => handleLinkPress()}>
                 <Text style={detailStyles.infoTitle}>
@@ -215,7 +162,7 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
             </View>
           ) : null}
         </View>
-      </ScrollView> */}
+      </ScrollView>
     </SafeAreaView>
   );
 };

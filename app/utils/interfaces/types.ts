@@ -160,3 +160,39 @@ export interface FGPlace {
   likes: FGReaction[];
   dislikes: FGReaction[];
 }
+
+export interface PlaceDetail {
+  additionalInfo: string;
+  address: string[] | string;
+  dates: {
+    spanMultipleDays: boolean;
+    start: {
+      dateTBA: boolean;
+      dateTBD: boolean;
+      dateTime: string;
+      localDate: string;
+      localTime: string;
+      noSpecificTime: boolean;
+      timeTBA: boolean;
+    };
+    status: {
+      code: string;
+    };
+    timezone: string;
+  } | {};
+  description: string;
+  hours: {
+    day: number;
+    end: string;
+    is_overnight: boolean;
+    start: string;
+  }[];
+  name: string;
+  phone: string;
+  photos: string[];
+  place_name: string;
+  price: string;
+  rating: number;
+  review_count: number;
+  url: string;
+}
