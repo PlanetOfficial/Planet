@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef, useMemo} from 'react';
+import React, {useEffect, useState, useRef, useMemo, useCallback} from 'react';
 import {
   View,
   Text,
@@ -6,7 +6,6 @@ import {
   SafeAreaView,
   TouchableOpacity,
   Image,
-  ScrollView,
   Linking,
   Platform,
 } from 'react-native';
@@ -25,13 +24,14 @@ import {
   displayAddress,
   displayHours,
 } from '../../utils/functions/Misc';
+import { ScrollView } from 'react-native-gesture-handler';
 
 import Icon from '../components/Icon';
 import CustomText from '../components/Text';
 import Blur from '../components/Blur';
 
 import {Place as PlaceT, PlaceDetail} from '../../utils/interfaces/types';
-import BottomSheet from '@gorhom/bottom-sheet';
+import BottomSheet, {BottomSheetScrollView} from '@gorhom/bottom-sheet';
 
 interface Props {
   navigation: any;
@@ -59,10 +59,21 @@ const Place: React.FC<Props> = ({navigation, route}) => {
 
   const insets = useSafeAreaInsets();
 
+  const [bottomPad, setBottomPad] = useState<number>(0);
   const bottomSheetRef = useRef<BottomSheet>(null);
   const snapPoints = useMemo(
-    () => [vs(350) - (insets.top + s(35)), vs(680) - (insets.top + s(50))],
+    () => [vs(330) - (insets.top + s(50)), vs(680) - (insets.top + s(50))],
     [insets.top],
+  );
+  const handleSheetChange = useCallback(
+    (_: number, toIndex: number) => {
+      if(toIndex == 1) {
+        setBottomPad(0)
+      } else {
+        setBottomPad(vs(350));
+      }
+    },
+    [],
   );
 
   useEffect(() => {
@@ -123,10 +134,10 @@ const Place: React.FC<Props> = ({navigation, route}) => {
         ref={bottomSheetRef}
         index={0}
         snapPoints={snapPoints}
+        onAnimate={handleSheetChange}
         animateOnMount={Platform.OS === 'ios'}
         enableContentPanningGesture={false}>
-        <SafeAreaView>
-          <ScrollView showsVerticalScrollIndicator={false}>
+          <ScrollView contentContainerStyle={{paddingBottom: bottomPad}} showsVerticalScrollIndicator={false}>
             <ScrollView
               horizontal={true}
               showsHorizontalScrollIndicator={false}
@@ -139,48 +150,67 @@ const Place: React.FC<Props> = ({navigation, route}) => {
                 ),
               )}
             </ScrollView>
-              {destinationDetails?.hours?.length > 0 ? (
-                <View style={detailStyles.infoContainer}>
+            {destinationDetails?.hours?.length > 0 ? (
+              <View style={detailStyles.infoContainer}>
+                <Text style={detailStyles.infoTitle}>
+                  {strings.createTabStack.hours}:
+                </Text>
+                <Text style={detailStyles.info}>
+                  {displayHours(destinationDetails?.hours)}
+                </Text>
+              </View>
+            ) : null}
+            {destinationDetails?.place_name ? (
+              <View style={detailStyles.infoContainer}>
+                <Text style={detailStyles.infoTitle}>
+                  {strings.createTabStack.venue}:
+                </Text>
+                <Text style={detailStyles.info}>
+                  {destinationDetails?.place_name}
+                </Text>
+              </View>
+            ) : null}
+            {destinationDetails?.address ? (
+              <View style={detailStyles.infoContainer}>
+                <Text style={detailStyles.infoTitle}>
+                  {strings.createTabStack.address}:
+                </Text>
+                <Text style={detailStyles.info}>
+                  {destinationDetails?.address}
+                </Text>
+              </View>
+            ) : null}
+            {destinationDetails?.address ? (
+              <View style={detailStyles.infoContainer}>
+                <Text style={detailStyles.infoTitle}>
+                  {strings.createTabStack.address}:
+                </Text>
+                <Text style={detailStyles.info}>
+                  {destinationDetails?.address}
+                </Text>
+              </View>
+            ) : null}
+            {destinationDetails?.address ? (
+              <View style={detailStyles.infoContainer}>
+                <Text style={detailStyles.infoTitle}>
+                  {strings.createTabStack.address}:
+                </Text>
+                <Text style={detailStyles.info}>
+                  {destinationDetails?.address}
+                </Text>
+              </View>
+            ) : null}
+            {destinationDetails?.url ? (
+              <View style={detailStyles.infoContainer}>
+                <TouchableOpacity onPress={() => handleLinkPress()}>
                   <Text style={detailStyles.infoTitle}>
-                    {strings.createTabStack.hours}:
+                    {strings.createTabStack.eventUrl}
                   </Text>
-                  <Text style={detailStyles.info}>
-                    {displayHours(destinationDetails?.hours)}
-                  </Text>
-                </View>
-              ) : null}
-              {destinationDetails?.place_name ? (
-                <View style={detailStyles.infoContainer}>
-                  <Text style={detailStyles.infoTitle}>
-                    {strings.createTabStack.venue}:
-                  </Text>
-                  <Text style={detailStyles.info}>
-                    {destinationDetails?.place_name}
-                  </Text>
-                </View>
-              ) : null}
-              {destinationDetails?.address ? (
-                <View style={detailStyles.infoContainer}>
-                  <Text style={detailStyles.infoTitle}>
-                    {strings.createTabStack.address}:
-                  </Text>
-                  <Text style={detailStyles.info}>
-                    {destinationDetails?.address}
-                  </Text>
-                </View>
-              ) : null}
-              {destinationDetails?.url ? (
-                <View style={detailStyles.infoContainer}>
-                  <TouchableOpacity onPress={() => handleLinkPress()}>
-                    <Text style={detailStyles.infoTitle}>
-                      {strings.createTabStack.eventUrl}
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              ) : null}
+                </TouchableOpacity>
+              </View>
+            ) : null}
           </ScrollView>
-        </SafeAreaView>
-      </BottomSheet>
+        </BottomSheet>
     </View>
   );
 };
