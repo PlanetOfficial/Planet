@@ -106,6 +106,7 @@ const Library: React.FC<Props> = ({navigation}) => {
                 navigation.navigate('Place', {
                   destination: item,
                   category: item.category_name,
+                  bookmarked: places.includes(item),
                 });
               }}>
               <PlaceCard

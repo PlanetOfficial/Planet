@@ -194,6 +194,7 @@ const EditEvent: React.FC<Props> = ({
                       navigation.navigate('Place', {
                         destination: item,
                         category: item.category_name,
+                        bookmarked: bookmarks.includes(item.id),
                       });
                     }}>
                     <PlaceCard

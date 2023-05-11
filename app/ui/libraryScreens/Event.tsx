@@ -43,6 +43,8 @@ import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 import {floats} from '../../constants/numbers';
+import { getBookmarks } from '../../utils/api/shared/getBookmarks';
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 interface Props {
   navigation: any;
@@ -55,7 +57,7 @@ const Event: React.FC<Props> = ({navigation, route}) => {
   const [date] = useState<string>(
     moment(route?.params?.eventData?.date, 'YYYY-MM-DD').format('M/D/YYYY'),
   );
-  const [bookmarks] = useState<number[]>(route?.params?.bookmarks);
+  const [bookmarks, setBookmarks] = useState<number[]>(route?.params?.bookmarks);
 
   const [latitude, setLatitude] = useState<number>(floats.defaultLatitude);
   const [longitude, setLongitude] = useState<number>(floats.defaultLongitude);
@@ -82,23 +84,40 @@ const Event: React.FC<Props> = ({navigation, route}) => {
 
   const addRef = useRef<any>(null); // due to forwardRef
 
+  const getEventData = async () => {
+    const data = await getEventPlaces(eventId);
+    setPlaces(data?.places);
+
+    setSelectionIndices(Array(data?.places?.length).fill(-1));
+
+    const markerArray: MarkerObject[] = getMarkerArray(data?.places);
+    setMarkers(markerArray);
+
+    const averagePoint: Coordinate = getAveragePoint(markerArray);
+    setLatitude(averagePoint.latitude);
+    setLongitude(averagePoint.longitude);
+  };
+
+  const initializeData = async () => {
+    const authToken = await EncryptedStorage.getItem('auth_token');
+    
+    const _bookmarks = await getBookmarks(authToken);
+    const bookmarksIds: number[] = _bookmarks.map(
+      (bookmark: {id: any}) => bookmark.id,
+    );
+    setBookmarks(bookmarksIds);
+    console.log(bookmarksIds);
+
+    await getEventData();
+  };
+
   useEffect(() => {
-    const getEventData = async () => {
-      const data = await getEventPlaces(eventId);
-      setPlaces(data?.places);
-
-      setSelectionIndices(Array(data?.places?.length).fill(-1));
-
-      const markerArray: MarkerObject[] = getMarkerArray(data?.places);
-      setMarkers(markerArray);
-
-      const averagePoint: Coordinate = getAveragePoint(markerArray);
-      setLatitude(averagePoint.latitude);
-      setLongitude(averagePoint.longitude);
-    };
-
-    getEventData();
-  }, [eventId]);
+    const unsubscribe = navigation.addListener('focus', () => {
+      initializeData();
+      getEventData();
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   const beginEdits = () => {
     bottomSheetRef.current?.expand();
@@ -270,6 +289,12 @@ const Event: React.FC<Props> = ({navigation, route}) => {
               bookmarks={bookmarks}
               index={placeIdx}
               setIndex={setPlaceIdx}
+              onBookmark={(id: number) => {
+                setBookmarks([...bookmarks, id]);
+              }}
+              onUnBookmark={(id: number) => {
+                setBookmarks(bookmarks.filter((bookmark: number) => id !== id));
+              }}
             />
           </SafeAreaView>
         )}

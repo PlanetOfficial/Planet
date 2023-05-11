@@ -20,7 +20,8 @@ interface Props {
   info: string;
   marked: boolean;
   image: Object;
-  onUnBookmark?: (placeId: number) => void;
+  onBookmark?: (id: number) => void;
+  onUnBookmark?: (id: number) => void;
 }
 
 // TODO: display more info on the card
@@ -31,6 +32,7 @@ const PlaceCard: React.FC<Props> = ({
   info,
   marked,
   image,
+  onBookmark,
   onUnBookmark,
 }) => {
   const [bookmarked, setBookmarked] = useState<boolean>(marked);
@@ -42,9 +44,14 @@ const PlaceCard: React.FC<Props> = ({
     if (!bookmarked) {
       // switch to bookmarked, so call /bookmark
       responseStatus = await setBookmark(authToken, id);
+
+      if (onBookmark) {
+        onBookmark(id);
+      }
     } else {
       // switch to not bookmarked, so call /unbookmark
       responseStatus = await unbookmark(authToken, id);
+      console.log("unbookmarked!");
 
       if (onUnBookmark) {
         onUnBookmark(id);

@@ -39,6 +39,7 @@ import CustomText from '../components/Text';
 import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
+import { getBookmarks } from '../../utils/api/shared/getBookmarks';
 
 interface Props {
   navigation: any;
@@ -54,7 +55,7 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
   const [date] = useState<string>(
     moment(route?.params?.eventData?.date, 'YYYY-MM-DD').format('M/D/YYYY'),
   );
-  const [bookmarks] = useState<number[]>(route?.params?.bookmarks);
+  const [bookmarks, setBookmarks] = useState<number[]>(route?.params?.bookmarks);
   const [userId, setUserId] = useState<number>(-1);
 
   const [fullEventData, setFullEventData] = useState<{places: FGPlace[]}>({
@@ -105,14 +106,24 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
   };
 
   const initializeData = async () => {
+    const authToken = await EncryptedStorage.getItem('auth_token');
+    
+    const _bookmarks = await getBookmarks(authToken);
+    const bookmarksIds: number[] = _bookmarks.map(
+      (bookmark: {id: any}) => bookmark.id,
+    );
+    setBookmarks(bookmarksIds);
+
     await getEventData();
   };
 
   useEffect(() => {
-    initializeUserId();
-    initializeData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [groupEventId]);
+    const unsubscribe = navigation.addListener('focus', () => {
+      initializeData();
+      initializeUserId();
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   const handlePlaceLike = async (group_event_place_id: number) => {
     const token = await EncryptedStorage.getItem('auth_token');
@@ -289,6 +300,7 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
                     navigation.navigate('Place', {
                       destination: dest,
                       category: dest.category_name,
+                      bookmarked: bookmarks.includes(dest.id),
                     });
                   }}>
                   <PlaceCard

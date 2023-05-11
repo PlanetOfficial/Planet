@@ -59,10 +59,15 @@ const Trending: React.FC<Props> = ({navigation}) => {
       });
 
       setLiveCategories(_liveCategories);
+
+      console.log(bookmarks);
     };
 
-    initializeData();
-  }, []);
+    const unsubscribe = navigation.addListener('focus', () => {
+      initializeData();
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   useEffect(() => {
     const detectLocation = async () => {
@@ -212,6 +217,7 @@ const Trending: React.FC<Props> = ({navigation}) => {
                             navigation.navigate('Place', {
                               destination: event,
                               category: event.category,
+                              bookmarked: bookmarks.includes(event.id),
                             })
                           }>
                           <PlaceCard

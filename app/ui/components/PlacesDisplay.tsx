@@ -17,6 +17,8 @@ interface Props {
   closeDropdown?: () => void;
   index: number;
   setIndex: (index: number) => void;
+  onBookmark: (id: number) => void;
+  onUnBookmark: (id: number) => void;
 }
 
 const PlacesDisplay: React.FC<Props> = ({
@@ -27,6 +29,8 @@ const PlacesDisplay: React.FC<Props> = ({
   closeDropdown,
   index,
   setIndex,
+  onBookmark,
+  onUnBookmark,
 }) => {
   const scrollViewRef = useRef<ScrollView>(null);
 
@@ -89,6 +93,7 @@ const PlacesDisplay: React.FC<Props> = ({
                 navigation.navigate('Place', {
                   destination: place,
                   category: place.category_name,
+                  bookmarked: bookmarks.includes(place.id),
                 });
               }}>
               <PlaceCard
@@ -103,6 +108,8 @@ const PlacesDisplay: React.FC<Props> = ({
                       }
                     : icons.defaultIcon
                 }
+                onBookmark={onBookmark}
+                onUnBookmark={onUnBookmark}
               />
             </TouchableOpacity>
           </View>
