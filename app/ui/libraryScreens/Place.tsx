@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef, useMemo, useCallback} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -7,15 +7,13 @@ import {
   TouchableOpacity,
   Image,
   Linking,
-  Platform,
 } from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
-import {icons} from '../../constants/images';
+import {icons, brands, yelpStars} from '../../constants/images';
 import {colors} from '../../constants/theme';
 import {s, vs} from 'react-native-size-matters';
 import strings from '../../constants/strings';
 import {floats} from '../../constants/numbers';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {getPlaceDetails} from '../../utils/api/shared/getPlaceDetails';
 import {
   capitalizeFirstLetter,
@@ -25,13 +23,12 @@ import {
   displayHours,
 } from '../../utils/functions/Misc';
 import { ScrollView } from 'react-native-gesture-handler';
+import {showLocation} from 'react-native-map-link';
 
 import Icon from '../components/Icon';
 import CustomText from '../components/Text';
-import Blur from '../components/Blur';
 
 import {Place as PlaceT, PlaceDetail} from '../../utils/interfaces/types';
-import BottomSheet, {BottomSheetScrollView} from '@gorhom/bottom-sheet';
 
 interface Props {
   navigation: any;
@@ -39,46 +36,27 @@ interface Props {
 }
 
 const Place: React.FC<Props> = ({navigation, route}) => {
-  const [destination] = useState<PlaceT>(route?.params?.destination);
+  const [destination] = useState<PlaceT>(route.params.destination);
   const [destinationDetails, setDestinationDetails] = useState<PlaceDetail>({
     additionalInfo: '',
-    address: '',
+    address: '', // used
     dates: {},
     description: '',
-    hours: [],
+    hours: [], // used
     name: '', // used
-    phone: '',
-    photos: [],
+    phone: '', // used
+    photos: [], // used
     place_name: '',
     price: '', // used
-    rating: -1,
-    review_count: -1,
-    url: '',
+    rating: -1, // used
+    review_count: -1, // used
+    url: '', // used
   });
-  const [category] = useState<string>(route?.params?.category);
-
-  const insets = useSafeAreaInsets();
-
-  const [bottomPad, setBottomPad] = useState<number>(0);
-  const bottomSheetRef = useRef<BottomSheet>(null);
-  const snapPoints = useMemo(
-    () => [vs(330) - (insets.top + s(50)), vs(680) - (insets.top + s(50))],
-    [insets.top],
-  );
-  const handleSheetChange = useCallback(
-    (_: number, toIndex: number) => {
-      if(toIndex == 1) {
-        setBottomPad(0)
-      } else {
-        setBottomPad(vs(350));
-      }
-    },
-    [],
-  );
+  const [category] = useState<string>(route.params.category);
 
   useEffect(() => {
     const initializeDestinationData = async () => {
-      const id = destination?.id;
+      const id = destination.id;
       if (id) {
         const details = await getPlaceDetails(id);
         setDestinationDetails(details);
@@ -87,130 +65,155 @@ const Place: React.FC<Props> = ({navigation, route}) => {
     };
 
     initializeDestinationData();
-  }, [destination?.id]);
+  }, [destination.id]);
+
+  const handleMapPress = async () => {
+    showLocation({
+      latitude: destination.latitude,
+      longitude: destination.longitude,
+      title: destination.name,
+    })
+  }
+
+  const handleCallPress = async () => {
+    if (destinationDetails.url) {
+      await Linking.openURL(`tel:${destinationDetails.phone ? destinationDetails.phone.replace(/\D/g, "") : ''}`)
+    }
+  };
 
   const handleLinkPress = async () => {
-    if (destinationDetails?.url) {
-      await Linking.openURL(destinationDetails?.url);
+    if (destinationDetails.url) {
+      await Linking.openURL(destinationDetails.url);
     }
   };
 
   return (
     <View style={styles.container}>
-      <MapView
-        style={styles.map}
-        initialRegion={{
-          latitude: destination?.latitude,
-          longitude: destination?.longitude,
-          latitudeDelta: floats.defaultLatitudeDelta,
-          longitudeDelta: floats.defaultLongitudeDelta,
-        }}>
-        <Marker
-          coordinate={{
-            latitude: destination?.latitude,
-            longitude: destination?.longitude,
-          }}
-        />
-      </MapView>
-
-      <Blur height={s(50)} />
-
       <SafeAreaView>
         <View style={headerStyles.container}>
           <Icon size="s" icon={icons.back} onPress={navigation.goBack} />
           <View style={headerStyles.texts}>
-            <CustomText weight="b">{destination?.name}</CustomText>
+            <CustomText weight="b">{destination.name}</CustomText>
             <CustomText size="xs" weight="l" color={colors.accent}>
               {category}
-              {destinationDetails?.price
-                ? '・' + destinationDetails?.price
+              {destinationDetails.price
+                ? '・' + destinationDetails.price
                 : null}
             </CustomText>
           </View>
         </View>
       </SafeAreaView>
 
-      <BottomSheet
-        ref={bottomSheetRef}
-        index={0}
-        snapPoints={snapPoints}
-        onAnimate={handleSheetChange}
-        animateOnMount={Platform.OS === 'ios'}
-        enableContentPanningGesture={false}>
-          <ScrollView contentContainerStyle={{paddingBottom: bottomPad}} showsVerticalScrollIndicator={false}>
-            <ScrollView
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={styles.imagesContainer}>
-              {destinationDetails?.photos?.map(
-                (image: any, index: number) => (
-                  <View key={index}>
-                    <Image source={{uri: image}} style={styles.image} />
-                  </View>
-                ),
-              )}
-            </ScrollView>
-            {destinationDetails?.hours?.length > 0 ? (
-              <View style={detailStyles.infoContainer}>
-                <Text style={detailStyles.infoTitle}>
-                  {strings.createTabStack.hours}:
-                </Text>
-                <Text style={detailStyles.info}>
-                  {displayHours(destinationDetails?.hours)}
-                </Text>
-              </View>
-            ) : null}
-            {destinationDetails?.place_name ? (
-              <View style={detailStyles.infoContainer}>
-                <Text style={detailStyles.infoTitle}>
-                  {strings.createTabStack.venue}:
-                </Text>
-                <Text style={detailStyles.info}>
-                  {destinationDetails?.place_name}
-                </Text>
-              </View>
-            ) : null}
-            {destinationDetails?.address ? (
-              <View style={detailStyles.infoContainer}>
-                <Text style={detailStyles.infoTitle}>
-                  {strings.createTabStack.address}:
-                </Text>
-                <Text style={detailStyles.info}>
-                  {destinationDetails?.address}
-                </Text>
-              </View>
-            ) : null}
-            {destinationDetails?.address ? (
-              <View style={detailStyles.infoContainer}>
-                <Text style={detailStyles.infoTitle}>
-                  {strings.createTabStack.address}:
-                </Text>
-                <Text style={detailStyles.info}>
-                  {destinationDetails?.address}
-                </Text>
-              </View>
-            ) : null}
-            {destinationDetails?.address ? (
-              <View style={detailStyles.infoContainer}>
-                <Text style={detailStyles.infoTitle}>
-                  {strings.createTabStack.address}:
-                </Text>
-                <Text style={detailStyles.info}>
-                  {destinationDetails?.address}
-                </Text>
-              </View>
-            ) : null}
-            {destinationDetails?.url ? (
-              <View style={detailStyles.infoContainer}>
-                <TouchableOpacity onPress={() => handleLinkPress()}>
-                  <Text style={detailStyles.infoTitle}>
-                    {strings.createTabStack.eventUrl}
-                  </Text>
-                </TouchableOpacity>
-              </View>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        {destination.latitude && destination.longitude ? (
+          <MapView
+            style={styles.map}
+            initialRegion={{
+              latitude: destination.latitude,
+              longitude: destination.longitude,
+              latitudeDelta: floats.defaultLatitudeDelta,
+              longitudeDelta: floats.defaultLongitudeDelta,
+            }}>
+            <Marker
+              coordinate={{
+                latitude: destination.latitude,
+                longitude: destination.longitude,
+              }}
+            />
+          </MapView>
+        ) : null}
+        <View style={styles.separator} />
+        <>
+          <ScrollView
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.imagesContainer}>
+            {destinationDetails.photos.length > 0 ? (
+              destinationDetails.photos.map((photo: any, index: number) => (
+                <View key={index}>
+                  <Image source={{uri: photo}} style={styles.image} />
+                </View>
+              ))
+            ) : destination.image_url ? (
+              <Image
+                source={{uri: destination.image_url}}
+                style={styles.image}
+              />
             ) : null}
           </ScrollView>
-        </BottomSheet>
+          <View style={styles.separator} />
+        </>
+          {destinationDetails.rating > 0 ? (
+            <View style={detailStyles.infoContainer}>
+              <View style={detailStyles.row}>
+                <View>
+                  <Text style={detailStyles.infoTitle}>
+                    {strings.createTabStack.rating}:
+                  </Text>
+                  <View style={detailStyles.rating}>
+                    <Image style={detailStyles.stars} source={yelpStars[destinationDetails.rating * 2]} />
+                    <CustomText size="xs" color={colors.darkgrey}>{`Based on ${destinationDetails.review_count} reviews`}</CustomText>
+                  </View>
+                </View>
+                <TouchableOpacity onPress={handleLinkPress}>
+                    <Image style={detailStyles.yelp} source={brands.yelpLogo} />
+                </TouchableOpacity>
+              </View>
+            </View>
+          ) : null}
+          {destinationDetails.hours.length > 0 ? (
+            <View style={detailStyles.infoContainer}>
+              <Text style={detailStyles.infoTitle}>
+                {strings.createTabStack.hours}:
+              </Text>
+              <Text style={detailStyles.info}>
+                {displayHours(destinationDetails.hours)}
+              </Text>
+            </View>
+          ) : null}
+          {destinationDetails.place_name ? (
+            <View style={detailStyles.infoContainer}>
+              <Text style={detailStyles.infoTitle}>
+                {strings.createTabStack.venue}:
+              </Text>
+              <Text style={detailStyles.info}>
+                {destinationDetails.place_name}
+              </Text>
+            </View>
+          ) : null}
+          {destinationDetails.address ? (
+            <View style={detailStyles.infoContainer}>
+              <Text style={detailStyles.infoTitle}>
+                {strings.createTabStack.address}:
+              </Text>
+              <Text style={detailStyles.info}>
+                {destinationDetails.address.replace(/\\n/g, '\n')}
+              </Text>
+            </View>
+          ) : null}
+          {destinationDetails.phone ? (
+            <View style={detailStyles.infoContainer}>
+              <Text style={detailStyles.infoTitle}>
+                {strings.createTabStack.phone}:
+              </Text>
+
+            <TouchableOpacity onPress={handleCallPress}>
+              <Text style={detailStyles.info}>
+                {destinationDetails.phone}
+              </Text>
+            </TouchableOpacity>
+            </View>
+          ) : null}
+          {destinationDetails.url ? (
+            <View style={detailStyles.infoContainer}>
+              <TouchableOpacity onPress={handleLinkPress}>
+                <Text style={detailStyles.infoTitle}>
+                  {strings.createTabStack.eventUrl}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          ) : null}
+      </ScrollView>
     </View>
   );
 };
@@ -220,11 +223,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.white,
   },
-  map: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-  },
   imagesContainer: {
     paddingLeft: s(20),
   },
@@ -232,6 +230,12 @@ const styles = StyleSheet.create({
     marginRight: s(10),
     width: s(160),
     height: s(200),
+    borderRadius: s(10),
+  },
+  map: {
+    height: s(200),
+    marginHorizontal: s(20),
+    marginTop: s(10),
     borderRadius: s(10),
   },
   separator: {
@@ -260,6 +264,22 @@ const headerStyles = StyleSheet.create({
 const detailStyles = StyleSheet.create({
   container: {
     marginBottom: s(50),
+  },
+  rating: {
+    marginTop: s(10),
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  stars: {
+    width: s(132),
+    height: s(24),
+  },
+  yelp: {
+    width: s(75),
+    height: s(29),
   },
   title: {
     marginLeft: s(20),

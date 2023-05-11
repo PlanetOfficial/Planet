@@ -163,7 +163,7 @@ export interface FGPlace {
 
 export interface PlaceDetail {
   additionalInfo: string;
-  address: string[] | string;
+  address: string;
   dates:
     | {
         spanMultipleDays: boolean;
