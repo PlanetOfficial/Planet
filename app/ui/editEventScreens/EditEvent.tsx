@@ -19,6 +19,7 @@ import {icons} from '../../constants/images';
 import {colors} from '../../constants/theme';
 
 import {Place, Category as CategoryT} from '../../utils/interfaces/types';
+import { isPlace } from '../../utils/functions/Misc';
 
 interface Props {
   navigation: any;
@@ -79,10 +80,6 @@ const EditEvent: React.FC<Props> = ({
       ),
     );
     itemRefs.current.delete(destination.id);
-  };
-
-  const isPlace = (destination: Place | CategoryT): destination is Place => {
-    return destination.hasOwnProperty('latitude');
   };
 
   return (

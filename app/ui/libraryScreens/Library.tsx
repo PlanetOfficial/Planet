@@ -25,6 +25,7 @@ import {icons} from '../../constants/images';
 import {getEvents} from '../../utils/api/libraryCalls/getEvents';
 import {getBookmarks} from '../../utils/api/shared/getBookmarks';
 import {Place, Event} from '../../utils/interfaces/types';
+import { isPlace2 } from '../../utils/functions/Misc';
 
 interface Props {
   navigation: any;
@@ -37,10 +38,6 @@ const Library: React.FC<Props> = ({navigation}) => {
 
   const removePlace = (placeId: number) => {
     setPlaces(places.filter((place: Place) => place.id !== placeId));
-  };
-
-  const isPlace = (item: Place | Event): item is Place => {
-    return item.hasOwnProperty('latitude');
   };
 
   const initializeData = async () => {
@@ -99,7 +96,7 @@ const Library: React.FC<Props> = ({navigation}) => {
         keyExtractor={(_: Place | Event, idx: number) => idx.toString()}
         ItemSeparatorComponent={Spacer}
         renderItem={({item}: {item: Place | Event}) => {
-          return isPlace(item) ? (
+          return isPlace2(item) ? (
             <TouchableOpacity
               style={styles.card}
               onPress={() => {

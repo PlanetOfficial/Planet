@@ -21,6 +21,7 @@ import {
   getMarkerArray,
   getAveragePoint,
   getRegionForCoordinates,
+  isPlace,
 } from '../../utils/functions/Misc';
 import {
   MarkerObject,
@@ -43,6 +44,7 @@ import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 import {floats} from '../../constants/numbers';
+import { editEvent } from '../../utils/api/libraryCalls/editEvent';
 
 interface Props {
   navigation: any;
@@ -65,8 +67,8 @@ const Event: React.FC<Props> = ({navigation, route}) => {
   const [markers, setMarkers] = useState<MarkerObject[]>([]);
 
   const [editing, setEditing] = useState<boolean>(false);
-  const [tempTitle, setTempTitle] = useState<string>();
-  const [tempDate, setTempDate] = useState<string>();
+  const [tempTitle, setTempTitle] = useState<string>('');
+  const [tempDate, setTempDate] = useState<string>('');
   const [tempPlaces, setTempPlaces] = useState<(Place | Category)[]>([]);
   const [datePickerOpen, setDatePickerOpen] = useState<boolean>(false);
   const [backConfirmationOpen, setBackConfirmationOpen] =
@@ -108,11 +110,31 @@ const Event: React.FC<Props> = ({navigation, route}) => {
     setTempPlaces(places);
   };
 
-  const saveEdits = () => {
-    bottomSheetRef.current?.collapse();
-    setEditing(false);
+  const saveEdits = async () => {
+    tempPlaces.map((item: Category | Place) => {
+      if (isPlace(item)) {
+        return item.id;
+      } else {
+        console.log(item)
+      }
+    })
 
-    // TODO-LAVY: save edits
+    // const responseStatus = await editEvent(
+    //   tempTitle,
+    //   tempDate,
+    //   tempPlaces.map(item => item.id),
+    //   eventId,
+    // );
+
+    // if (responseStatus) {
+    //   // setPlaces(tempPlaces);
+    //   // setMarkers(getMarkerArray(tempPlaces));
+
+    //   bottomSheetRef.current?.collapse();
+    //   setEditing(false);
+    // } else {
+    //   Alert.alert('Error', 'Something went wrong. Please try again.');
+    // }
   };
 
   return (
@@ -195,6 +217,7 @@ const Event: React.FC<Props> = ({navigation, route}) => {
                 size="m"
                 color={colors.accent}
                 icon={icons.confirm}
+                disabled={tempTitle.length === 0}
                 onPress={saveEdits}
               />
             </>
