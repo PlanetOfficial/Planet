@@ -74,7 +74,7 @@ const SelectDestinations: React.FC<Props> = ({navigation, route}) => {
   const addRef = useRef<any>(null); // due to forwardRef
   const bottomSheetRef = useRef<BottomSheet>(null);
   const snapPoints = useMemo(
-    () => [vs(350) - (insets.top + s(35)), vs(680) - (insets.top + s(60))],
+    () => [vs(400) - (insets.top + s(35)), vs(680) - (insets.top + s(50))],
     [insets.top],
   );
 

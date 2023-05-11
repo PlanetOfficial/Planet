@@ -164,22 +164,24 @@ export interface FGPlace {
 export interface PlaceDetail {
   additionalInfo: string;
   address: string[] | string;
-  dates: {
-    spanMultipleDays: boolean;
-    start: {
-      dateTBA: boolean;
-      dateTBD: boolean;
-      dateTime: string;
-      localDate: string;
-      localTime: string;
-      noSpecificTime: boolean;
-      timeTBA: boolean;
-    };
-    status: {
-      code: string;
-    };
-    timezone: string;
-  } | {};
+  dates:
+    | {
+        spanMultipleDays: boolean;
+        start: {
+          dateTBA: boolean;
+          dateTBD: boolean;
+          dateTime: string;
+          localDate: string;
+          localTime: string;
+          noSpecificTime: boolean;
+          timeTBA: boolean;
+        };
+        status: {
+          code: string;
+        };
+        timezone: string;
+      }
+    | {};
   description: string;
   hours: {
     day: number;

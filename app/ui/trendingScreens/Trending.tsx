@@ -228,7 +228,9 @@ const Trending: React.FC<Props> = ({navigation}) => {
                                   Math.round(event.priceRanges[0]?.min) +
                                   (event.priceRanges[0].min !==
                                   event.priceRanges[0].max
-                                    ? ' - ' + '$' + Math.round(event.priceRanges[0]?.max)
+                                    ? ' - ' +
+                                      '$' +
+                                      Math.round(event.priceRanges[0]?.max)
                                     : '')
                                 : '')
                             }

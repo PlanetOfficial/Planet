@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef, useMemo} from 'react';
 import {
   View,
   Text,
@@ -8,13 +8,15 @@ import {
   Image,
   ScrollView,
   Linking,
+  Platform,
 } from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
 import {icons} from '../../constants/images';
 import {colors} from '../../constants/theme';
+import {s, vs} from 'react-native-size-matters';
 import strings from '../../constants/strings';
 import {floats} from '../../constants/numbers';
-import {s} from 'react-native-size-matters';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {getPlaceDetails} from '../../utils/api/shared/getPlaceDetails';
 import {
   capitalizeFirstLetter,
@@ -24,7 +26,12 @@ import {
   displayHours,
 } from '../../utils/functions/Misc';
 
+import Icon from '../components/Icon';
+import CustomText from '../components/Text';
+import Blur from '../components/Blur';
+
 import {Place as PlaceT, PlaceDetail} from '../../utils/interfaces/types';
+import BottomSheet from '@gorhom/bottom-sheet';
 
 interface Props {
   navigation: any;
@@ -39,16 +46,24 @@ const Place: React.FC<Props> = ({navigation, route}) => {
     dates: {},
     description: '',
     hours: [],
-    name: '',
+    name: '', // used
     phone: '',
     photos: [],
     place_name: '',
-    price: '',
+    price: '', // used
     rating: -1,
     review_count: -1,
     url: '',
   });
   const [category] = useState<string>(route?.params?.category);
+
+  const insets = useSafeAreaInsets();
+
+  const bottomSheetRef = useRef<BottomSheet>(null);
+  const snapPoints = useMemo(
+    () => [vs(350) - (insets.top + s(35)), vs(680) - (insets.top + s(50))],
+    [insets.top],
+  );
 
   useEffect(() => {
     const initializeDestinationData = async () => {
@@ -70,107 +85,115 @@ const Place: React.FC<Props> = ({navigation, route}) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={headerStyles.container}>
-        <TouchableOpacity
-          style={headerStyles.back}
-          onPress={() => navigation.goBack()}>
-          <Image style={headerStyles.icon} source={icons.back} />
-        </TouchableOpacity>
-        <View style={headerStyles.texts}>
-          <Text style={headerStyles.title}>{destination?.name}</Text>
-          <Text style={headerStyles.info}>
-            {category}
-            {destinationDetails?.price ? '・' + destinationDetails?.price : null}
-          </Text>
+    <View style={styles.container}>
+      <MapView
+        style={styles.map}
+        initialRegion={{
+          latitude: destination?.latitude,
+          longitude: destination?.longitude,
+          latitudeDelta: floats.defaultLatitudeDelta,
+          longitudeDelta: floats.defaultLongitudeDelta,
+        }}>
+        <Marker
+          coordinate={{
+            latitude: destination?.latitude,
+            longitude: destination?.longitude,
+          }}
+        />
+      </MapView>
+
+      <Blur height={s(50)} />
+
+      <SafeAreaView>
+        <View style={headerStyles.container}>
+          <Icon size="s" icon={icons.back} onPress={navigation.goBack} />
+          <View style={headerStyles.texts}>
+            <CustomText weight="b">{destination?.name}</CustomText>
+            <CustomText size="xs" weight="l" color={colors.accent}>
+              {category}
+              {destinationDetails?.price
+                ? '・' + destinationDetails?.price
+                : null}
+            </CustomText>
+          </View>
         </View>
-      </View>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        {destination?.latitude && destination?.longitude ? (
-          <MapView
-            style={styles.map}
-            initialRegion={{
-              latitude: destination?.latitude,
-              longitude: destination?.longitude,
-              latitudeDelta: floats.defaultLatitudeDelta,
-              longitudeDelta: floats.defaultLongitudeDelta,
-            }}>
-            <Marker
-              coordinate={{
-                latitude: destination?.latitude,
-                longitude: destination?.longitude,
-              }}
-            />
-          </MapView>
-        ) : null}
-        <View style={styles.separator} />
-        <>
-          <ScrollView
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.imagesContainer}>
-            {destinationDetails?.photos?.map((image: any, index: number) => (
-                <View key={index}>
-                  <Image source={{uri: image}} style={styles.image} />
+      </SafeAreaView>
+
+      <BottomSheet
+        ref={bottomSheetRef}
+        index={0}
+        snapPoints={snapPoints}
+        animateOnMount={Platform.OS === 'ios'}
+        enableContentPanningGesture={false}>
+        <SafeAreaView>
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <ScrollView
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.imagesContainer}>
+              {destinationDetails?.photos?.map(
+                (image: any, index: number) => (
+                  <View key={index}>
+                    <Image source={{uri: image}} style={styles.image} />
+                  </View>
+                ),
+              )}
+            </ScrollView>
+              {destinationDetails?.hours?.length > 0 ? (
+                <View style={detailStyles.infoContainer}>
+                  <Text style={detailStyles.infoTitle}>
+                    {strings.createTabStack.hours}:
+                  </Text>
+                  <Text style={detailStyles.info}>
+                    {displayHours(destinationDetails?.hours)}
+                  </Text>
                 </View>
-              ))
-            }
+              ) : null}
+              {destinationDetails?.place_name ? (
+                <View style={detailStyles.infoContainer}>
+                  <Text style={detailStyles.infoTitle}>
+                    {strings.createTabStack.venue}:
+                  </Text>
+                  <Text style={detailStyles.info}>
+                    {destinationDetails?.place_name}
+                  </Text>
+                </View>
+              ) : null}
+              {destinationDetails?.address ? (
+                <View style={detailStyles.infoContainer}>
+                  <Text style={detailStyles.infoTitle}>
+                    {strings.createTabStack.address}:
+                  </Text>
+                  <Text style={detailStyles.info}>
+                    {destinationDetails?.address}
+                  </Text>
+                </View>
+              ) : null}
+              {destinationDetails?.url ? (
+                <View style={detailStyles.infoContainer}>
+                  <TouchableOpacity onPress={() => handleLinkPress()}>
+                    <Text style={detailStyles.infoTitle}>
+                      {strings.createTabStack.eventUrl}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              ) : null}
           </ScrollView>
-          <View style={styles.separator} />
-        </>
-        <View style={detailStyles.container}>
-          <Text style={detailStyles.title}>
-            {strings.createTabStack.details}:
-          </Text>
-          {destinationDetails?.hours?.length > 0 ? (
-            <View style={detailStyles.infoContainer}>
-              <Text style={detailStyles.infoTitle}>
-                {strings.createTabStack.hours}:
-              </Text>
-              <Text style={detailStyles.info}>
-                {displayHours(destinationDetails?.hours)}
-              </Text>
-            </View>
-          ) : null}
-          {destinationDetails?.place_name ? (
-            <View style={detailStyles.infoContainer}>
-              <Text style={detailStyles.infoTitle}>
-                {strings.createTabStack.venue}:
-              </Text>
-              <Text style={detailStyles.info}>
-                {destinationDetails?.place_name}
-              </Text>
-            </View>
-          ) : null}
-          {destinationDetails?.address ? (
-            <View style={detailStyles.infoContainer}>
-              <Text style={detailStyles.infoTitle}>
-                {strings.createTabStack.address}:
-              </Text>
-              <Text style={detailStyles.info}>
-                {destinationDetails?.address}
-              </Text>
-            </View>
-          ) : null}
-          {destinationDetails?.url ? (
-            <View style={detailStyles.infoContainer}>
-              <TouchableOpacity onPress={() => handleLinkPress()}>
-                <Text style={detailStyles.infoTitle}>
-                  {strings.createTabStack.eventUrl}
-                </Text>
-              </TouchableOpacity>
-            </View>
-          ) : null}
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+        </SafeAreaView>
+      </BottomSheet>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    height: '105%',
+    flex: 1,
     backgroundColor: colors.white,
+  },
+  map: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
   },
   imagesContainer: {
     paddingLeft: s(20),
@@ -179,12 +202,6 @@ const styles = StyleSheet.create({
     marginRight: s(10),
     width: s(160),
     height: s(200),
-    borderRadius: s(10),
-  },
-  map: {
-    height: s(200),
-    marginHorizontal: s(20),
-    marginTop: s(10),
     borderRadius: s(10),
   },
   separator: {
@@ -205,57 +222,8 @@ const headerStyles = StyleSheet.create({
     paddingBottom: s(5),
   },
   texts: {
-    marginLeft: s(10),
-  },
-  title: {
-    fontSize: s(18),
-    fontWeight: '600',
-    color: colors.black,
-  },
-  info: {
-    marginTop: s(5),
-    fontSize: s(14),
-    fontWeight: '600',
-    color: colors.accent,
-  },
-  back: {
-    width: s(18),
-    height: s(18),
-  },
-  icon: {
-    width: '100%',
-    height: '100%',
-    tintColor: colors.black,
-  },
-});
-
-const rnrStyles = StyleSheet.create({
-  contentContainer: {
-    marginLeft: s(20),
-  },
-  title: {
-    marginLeft: s(20),
-    fontSize: s(16),
-    fontWeight: '600',
-    color: colors.black,
-  },
-  rating: {
-    fontSize: s(18),
-    fontWeight: '800',
-    color: colors.accent,
-  },
-  review: {
-    width: s(160),
-    padding: s(10),
-    borderRadius: s(10),
-    backgroundColor: colors.grey,
-    marginRight: s(10),
-    marginTop: s(5),
-  },
-  text: {
-    fontSize: s(12),
-    fontWeight: '500',
-    color: colors.black,
+    flex: 1,
+    marginHorizontal: s(10),
   },
 });
 
