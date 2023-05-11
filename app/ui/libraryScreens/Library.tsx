@@ -5,6 +5,7 @@ import {
   SafeAreaView,
   FlatList,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import moment from 'moment';
 
@@ -42,19 +43,22 @@ const Library: React.FC<Props> = ({navigation}) => {
     return item.hasOwnProperty('latitude');
   };
 
+  const initializeData = async () => {
+    const authToken = await EncryptedStorage.getItem('auth_token');
+
+    const eventsRaw = await getEvents(authToken);
+    setEvents(eventsRaw);
+
+    const bookmarks = await getBookmarks(authToken);
+    setPlaces(bookmarks);
+  };
+
   useEffect(() => {
-    const initializeData = async () => {
-      const authToken = await EncryptedStorage.getItem('auth_token');
-
-      const eventsRaw = await getEvents(authToken);
-      setEvents(eventsRaw);
-
-      const bookmarks = await getBookmarks(authToken);
-      setPlaces(bookmarks);
-    };
-
-    initializeData();
-  }, []);
+    const unsubscribe = navigation.addListener('focus', () => {
+      initializeData();
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   return (
     <View style={styles.container}>
@@ -67,7 +71,8 @@ const Library: React.FC<Props> = ({navigation}) => {
             size="m"
             icon={icons.search}
             onPress={() => {
-              navigation.navigate('SearchLibrary');
+              // TODO: implement library search
+              Alert.alert('Search', 'Search is not implemented yet');
             }}
           />
         </View>
@@ -137,7 +142,23 @@ const Library: React.FC<Props> = ({navigation}) => {
                     ? {uri: item.places[0].place.image_url}
                     : icons.defaultIcon
                 }
-                option={true}
+                options={[
+                  {
+                    name: strings.main.share,
+                    onPress: () => {
+                      // TODO: share event
+                      Alert.alert('Share', 'Share is not implemented yet');
+                    },
+                    color: colors.black,
+                  },
+                  {
+                    name: strings.main.remove,
+                    onPress: () => {
+                      // TODO-LAVY: remove event
+                    },
+                    color: colors.red,
+                  },
+                ]}
               />
             </TouchableOpacity>
           );

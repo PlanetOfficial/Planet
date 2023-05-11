@@ -96,12 +96,28 @@ export interface Event {
     place: Place;
     place_id: number;
   }[];
+  suggester: number;
+  suggester_info: {
+    name: string;
+    self: boolean;
+  };
 }
 
 export interface FriendGroup {
   id: number;
   user_id: number;
   group: Group;
+  group_member: GroupMember[];
+}
+
+export interface GroupMember {
+  user: {
+    name: string;
+    email: string;
+  };
+  group_id: number;
+  id: number;
+  user_id: number;
 }
 
 export interface Group {

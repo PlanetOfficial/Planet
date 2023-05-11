@@ -7,11 +7,14 @@ import {
   Pressable,
   FlatList,
   Alert,
+  LayoutAnimation,
 } from 'react-native';
 import {BottomSheetModal} from '@gorhom/bottom-sheet';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {s, vs} from 'react-native-size-matters';
 import EncryptedStorage from 'react-native-encrypted-storage';
+
+import moment from 'moment';
 
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
@@ -27,14 +30,10 @@ import {getFGsAndInvites} from '../../utils/api/friendsCalls/getFGsAndInvites';
 import {getEvents} from '../../utils/api/libraryCalls/getEvents';
 import {makeFGEvent} from '../../utils/api/friendsCalls/makeFGEvent';
 import {getFGEvents} from '../../utils/api/friendsCalls/getFGEvents';
+import {removeEvent} from '../../utils/api/friendsCalls/removeEvent';
+import {forkEvent} from '../../utils/api/friendsCalls/forkEvent';
 import {FriendGroup, Invitation, Event} from '../../utils/interfaces/types';
 import {getBookmarks} from '../../utils/api/shared/getBookmarks';
-
-// TODO-MVP: Add the following functionalities
-// 1. The FG Selector Rows should be slidable, with the following options:
-//    a. Edit (name, members, etc.)
-//    b. Leave
-// 2. Each event should also be slidable, allowing the poster of the event to remove their event.
 
 interface Props {
   navigation: any;
@@ -99,9 +98,12 @@ const Friends: React.FC<Props> = ({navigation}) => {
       setFriendGroups(responseData.groups);
 
       if (responseData.groups.length > 0) {
-        setFriendGroup(0);
-
-        fetchCurGroupInfo(responseData.groups[0].group.id);
+        if (friendGroup === -1) {
+          setFriendGroup(0);
+          fetchCurGroupInfo(responseData.groups[0].group.id);
+        } else {
+          fetchCurGroupInfo(responseData.groups[friendGroup].group.id);
+        }
       }
     }
 
@@ -120,9 +122,12 @@ const Friends: React.FC<Props> = ({navigation}) => {
   };
 
   useEffect(() => {
-    initializeData();
+    const unsubscribe = navigation.addListener('focus', () => {
+      initializeData();
+    });
+    return unsubscribe;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [navigation, friendGroup]);
 
   const handleAddEvent = async (user_event_id: number) => {
     const token = await EncryptedStorage.getItem('auth_token');
@@ -132,11 +137,38 @@ const Friends: React.FC<Props> = ({navigation}) => {
       token,
     );
 
-    if (!response) {
+    if (response) {
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+      fetchCurGroupInfo(friendGroups[friendGroup].group.id);
+    } else {
       Alert.alert('Error', 'Something went wrong. Please try again.');
     }
+  };
 
-    fetchCurGroupInfo(friendGroups[friendGroup].group.id);
+  const handleFork = async (groupEventId: number) => {
+    const token = await EncryptedStorage.getItem('auth_token');
+
+    const response = await forkEvent(groupEventId, token);
+
+    if (response) {
+      navigation.navigate('Library');
+    } else {
+      Alert.alert('Error', 'Something went wrong. Please try again.');
+    }
+  };
+
+  const handleRemoveEvent = async (group_event_id: number) => {
+    const token = await EncryptedStorage.getItem('auth_token');
+    const response = await removeEvent(group_event_id, token);
+
+    if (response) {
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+      setCurFGEvents(
+        curFGEvents.filter((event: Event) => event.id !== group_event_id),
+      );
+    } else {
+      Alert.alert('Error', 'Something went wrong. Please try again.');
+    }
   };
 
   return (
@@ -161,6 +193,10 @@ const Friends: React.FC<Props> = ({navigation}) => {
               icon={icons.notification}
               onPress={() => {
                 // TODO: implement notifications
+                Alert.alert(
+                  'Notifications',
+                  'Notifications are not implemented yet',
+                );
               }}
             />
           </View>
@@ -195,7 +231,11 @@ const Friends: React.FC<Props> = ({navigation}) => {
               }}>
               <EventCard
                 name={item.name}
-                info={item.date}
+                info={
+                  moment(item.date, 'YYYY-MM-DD').format('M/D/YYYY') +
+                  ' • ' +
+                  item.suggester_info?.name
+                }
                 image={
                   item.places &&
                   item.places.length > 0 &&
@@ -203,6 +243,27 @@ const Friends: React.FC<Props> = ({navigation}) => {
                     ? {uri: item.places[0]?.place.image_url}
                     : icons.defaultIcon
                 }
+                options={[
+                  {
+                    name: strings.main.share,
+                    onPress: () => {
+                      // TODO: share event
+                      Alert.alert('Share', 'Share is not implemented yet');
+                    },
+                    color: colors.black,
+                  },
+                  {
+                    name: strings.friends.fork,
+                    onPress: () => handleFork(item.id),
+                    color: colors.accent,
+                  },
+                  {
+                    name: strings.main.remove,
+                    onPress: () => handleRemoveEvent(item.id),
+                    disabled: !item.suggester_info?.self,
+                    color: colors.red,
+                  },
+                ]}
               />
             </TouchableOpacity>
           );

@@ -7,21 +7,25 @@ import Text from './Text';
 import OptionMenu from './OptionMenu';
 
 import {colors} from '../../constants/theme';
-import strings from '../../constants/strings';
 
 interface Props {
   name: string;
   info: string;
   image: Object;
-  option?: boolean;
+  options?: {
+    name: string;
+    onPress: () => void;
+    color: string;
+    disabled?: boolean;
+  }[];
 }
 
-const EventCard: React.FC<Props> = ({name, info, image, option = false}) => {
+const EventCard: React.FC<Props> = ({name, info, image, options}) => {
   return (
     <View style={styles.container}>
       <Image style={styles.image} source={image} />
       <View style={styles.header}>
-        <View>
+        <View style={styles.texts}>
           <Text size="m" weight="b">
             {name}
           </Text>
@@ -29,26 +33,7 @@ const EventCard: React.FC<Props> = ({name, info, image, option = false}) => {
             {info}
           </Text>
         </View>
-        {option ? (
-          <OptionMenu
-            options={[
-              {
-                name: strings.main.share,
-                onPress: () => {
-                  // TODO: share event
-                },
-                color: colors.black,
-              },
-              {
-                name: strings.main.remove,
-                onPress: () => {
-                  // TODO-MVP: remove event
-                },
-                color: colors.red,
-              },
-            ]}
-          />
-        ) : null}
+        {options ? <OptionMenu options={options} /> : null}
       </View>
     </View>
   );
@@ -78,6 +63,12 @@ const styles = StyleSheet.create({
     height: '25%',
     paddingHorizontal: s(10),
     backgroundColor: 'rgba(255, 255, 255, 0.8)',
+  },
+  texts: {
+    flex: 1,
+    justifyContent: 'space-between',
+    height: '75%',
+    marginRight: s(10),
   },
   image: {
     position: 'absolute',

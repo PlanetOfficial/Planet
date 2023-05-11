@@ -177,6 +177,7 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
                             }>
                             <PlaceCard
                               id={liveEvent.id}
+                              small={true}
                               name={liveEvent.name}
                               info={moment(liveEvent.date, 'YYYY-MM-DD').format(
                                 'M/D/Y',

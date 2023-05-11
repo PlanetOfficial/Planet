@@ -15,6 +15,7 @@ import {unbookmark} from '../../utils/api/shared/unbookmark';
 
 interface Props {
   id: number;
+  small?: boolean;
   name: string;
   info: string;
   marked: boolean;
@@ -22,8 +23,10 @@ interface Props {
   onUnBookmark?: (placeId: number) => void;
 }
 
+// TODO-NAOTO: display more "info" in the card for every reference
 const PlaceCard: React.FC<Props> = ({
   id,
+  small = false,
   name,
   info,
   marked,
@@ -60,7 +63,7 @@ const PlaceCard: React.FC<Props> = ({
       <Image style={styles.image} source={image} />
       <View style={styles.header}>
         <View style={styles.texts}>
-          <Text size="m" weight="b">
+          <Text size={small ? 's' : 'm'} weight="b">
             {name}
           </Text>
           <Text size="xs" weight="l" color={colors.accent}>
@@ -105,6 +108,8 @@ const styles = StyleSheet.create({
   },
   texts: {
     flex: 1,
+    justifyContent: 'space-between',
+    height: '75%',
     marginRight: s(10),
   },
   image: {

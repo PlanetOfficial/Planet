@@ -89,6 +89,8 @@ const strings = {
   },
   friends: {
     createPrompt: 'Create a Friend Group',
+    editPrompt: 'Edit a Friend Group',
+    leavePrompt: 'Are you sure you want to leave this group?',
     editName: 'Edit Name Here',
     promptInvite: 'Invite Friends with email',
     add: 'Add',
@@ -99,6 +101,7 @@ const strings = {
     accept: 'Accept',
     decline: 'Decline',
     fork: 'Fork',
+    leave: 'Leave',
   },
   library: {
     saved: 'Saved',

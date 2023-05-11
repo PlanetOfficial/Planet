@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   Platform,
+  Alert,
 } from 'react-native';
 
 import {s, vs} from 'react-native-size-matters';
@@ -111,7 +112,7 @@ const Event: React.FC<Props> = ({navigation, route}) => {
     bottomSheetRef.current?.collapse();
     setEditing(false);
 
-    // TODO-MVP: implement save edits
+    // TODO-LAVY: save edits
   };
 
   return (
@@ -213,6 +214,7 @@ const Event: React.FC<Props> = ({navigation, route}) => {
                     name: strings.main.share,
                     onPress: () => {
                       // TODO: share event
+                      Alert.alert('Share', 'Share is not implemented yet');
                     },
                     color: colors.black,
                   },
@@ -224,7 +226,7 @@ const Event: React.FC<Props> = ({navigation, route}) => {
                   {
                     name: strings.main.remove,
                     onPress: () => {
-                      // TODO-MVP: remove event
+                      // TODO-LAVY: remove event
                     },
                     color: colors.red,
                   },

@@ -25,7 +25,9 @@ import {
 import {getGroupEventPlaces} from '../../utils/api/friendsCalls/getGroupEventPlaces';
 import {likeFGPlace} from '../../utils/api/friendsCalls/likeFGPlace';
 import {dislikeFGPlace} from '../../utils/api/friendsCalls/dislikeFGPlace';
+import {forkEvent} from '../../utils/api/friendsCalls/forkEvent';
 import {MarkerObject, FGReaction, FGPlace} from '../../utils/interfaces/types';
+import {removeEvent} from '../../utils/api/friendsCalls/removeEvent';
 
 import PlaceCard from '../components/PlaceCard';
 import Blur from '../components/Blur';
@@ -46,6 +48,9 @@ interface Props {
 const FGEvent: React.FC<Props> = ({navigation, route}) => {
   const [groupEventId] = useState<number>(route?.params?.eventData?.id);
   const [eventTitle] = useState<string>(route?.params?.eventData?.name);
+  const [suggester] = useState<{name: string; self: boolean}>(
+    route?.params?.eventData?.suggester_info,
+  );
   const [date] = useState<string>(
     moment(route?.params?.eventData?.date, 'YYYY-MM-DD').format('M/D/YYYY'),
   );
@@ -144,6 +149,29 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
     return result;
   };
 
+  const handleFork = async () => {
+    const token = await EncryptedStorage.getItem('auth_token');
+
+    const response = await forkEvent(groupEventId, token);
+
+    if (response) {
+      navigation.navigate('Library');
+    } else {
+      Alert.alert('Error', 'Something went wrong. Please try again.');
+    }
+  };
+
+  const handleRemoveEvent = async (group_event_id: number) => {
+    const token = await EncryptedStorage.getItem('auth_token');
+    const response = await removeEvent(group_event_id, token);
+
+    if (response) {
+      navigation.navigate('Friends');
+    } else {
+      Alert.alert('Error', 'Something went wrong. Please try again.');
+    }
+  };
+
   const handleReactionInfo = (likes: FGReaction[], dislikes: FGReaction[]) => {
     console.log(likes);
     feedbackBottomSheetRef.current?.present();
@@ -192,7 +220,7 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
               {eventTitle}
             </CustomText>
             <CustomText size="xs" weight="l" color={colors.accent}>
-              {date}
+              {date + ' • ' + suggester?.name}
             </CustomText>
           </View>
           <OptionMenu
@@ -201,23 +229,19 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
                 name: strings.main.share,
                 onPress: () => {
                   // TODO: share event
+                  Alert.alert('Share', 'Share is not implemented yet');
                 },
                 color: colors.black,
               },
               {
                 name: strings.friends.fork,
-                onPress: () => {
-                  // TODO-MVP: fork event
-                },
+                onPress: handleFork,
                 color: colors.accent,
               },
               {
                 name: strings.main.remove,
-                onPress: () => {
-                  // TODO-MVP: remove event
-                },
-                // TODO-MVP: check if owner
-                disabled: false,
+                onPress: () => handleRemoveEvent(groupEventId),
+                disabled: !suggester?.self,
                 color: colors.red,
               },
             ]}
@@ -340,7 +364,8 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
                       feedbackStyles.commentContainer,
                     ]}
                     onPress={() => {
-                      // TODO: Comment on place
+                      // TODO: comment on place
+                      Alert.alert('Comment', 'Comment is not implemented yet');
                     }}>
                     <Image
                       style={[

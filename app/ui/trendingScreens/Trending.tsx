@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Platform,
   PermissionsAndroid,
+  Alert,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 import EncryptedStorage from 'react-native-encrypted-storage';
@@ -126,7 +127,7 @@ const Trending: React.FC<Props> = ({navigation}) => {
           <Text size="xl" weight="b">
             {strings.title.trending}
           </Text>
-          <View style={headerStyles.in}>
+          {/* <View style={headerStyles.in}>
             <Text size="l" weight="b" color={colors.darkgrey}>
               {strings.trending.in}
             </Text>
@@ -140,14 +141,15 @@ const Trending: React.FC<Props> = ({navigation}) => {
             <View style={headerStyles.drop}>
               <Icon size="xs" icon={icons.drop} />
             </View>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
           <View style={headerStyles.search}>
             <Icon
               size="m"
               icon={icons.search}
               onPress={() => {
-                navigation.navigate('SearchLibrary');
+                // TODO: implement trending search
+                Alert.alert('Search', 'Search is not implemented yet.');
               }}
             />
           </View>
@@ -214,6 +216,7 @@ const Trending: React.FC<Props> = ({navigation}) => {
                           }>
                           <PlaceCard
                             id={event.id}
+                            small={true}
                             name={event.name}
                             info={moment(event.date, 'YYYY-MM-DD').format(
                               'M/D/YYYY',

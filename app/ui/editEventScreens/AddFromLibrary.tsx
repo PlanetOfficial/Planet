@@ -40,7 +40,7 @@ const AddFromLibrary: React.FC<Props> = ({onClose, onSelect}) => {
     const initializeData = async () => {
       const authToken = await EncryptedStorage.getItem('auth_token');
 
-      // TODO: Implement filters
+      // TODO: implement filters
 
       const _bookmarks = await getBookmarks(authToken);
       setBookmarks(_bookmarks);

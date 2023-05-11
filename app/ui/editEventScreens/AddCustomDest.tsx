@@ -1,5 +1,11 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {StyleSheet, View, Text, Image, TouchableOpacity} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text as TextRN,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import {s} from 'react-native-size-matters';
 import MapView, {Marker} from 'react-native-maps';
 import {
@@ -12,13 +18,11 @@ import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 import {floats} from '../../constants/numbers';
 
-import CustomText from '../components/Text';
+import Text from '../components/Text';
 import AButton from '../components/ActionButton';
 
 import {GoogleMapsAPIKey} from '../../utils/api/APIConstants';
 import {Place, Region} from '../../utils/interfaces/types';
-
-// TODO-MVP: AddCustomDest Incomplete
 
 interface Props {
   onClose: () => void;
@@ -34,7 +38,7 @@ const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
     longitudeDelta: floats.defaultLongitudeDelta,
   });
 
-  const [destination, setDestination] = useState<any>();
+  const [destination, setDestination] = useState<Place>();
   const [selected, setSelected] = useState<boolean>(false);
   const [custom, setCustom] = useState<boolean>(false);
 
@@ -51,9 +55,9 @@ const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
         }
       }}>
       <View style={headerStyles.container}>
-        <CustomText size="m" weight="b">
+        <Text size="m" weight="b">
           {strings.library.addCustom}
-        </CustomText>
+        </Text>
         <TouchableOpacity style={headerStyles.button} onPress={onClose}>
           <Image style={headerStyles.x} source={icons.x} />
         </TouchableOpacity>
@@ -81,10 +85,7 @@ const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
             }
           },
         }}
-        onPress={(data: any, details = null) => {
-          // As you can see if you turn these logs on, we get much more data than we're using. Maybe store in table?
-          // console.log(data);
-          // console.log(details);
+        onPress={(data, details = null) => {
           if (
             details?.geometry?.location?.lat &&
             details?.geometry?.location?.lng
@@ -97,10 +98,17 @@ const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
               longitudeDelta: floats.defaultLongitudeDelta,
             });
             setDestination({
-              name: data?.structured_formatting?.main_text,
-              address: data?.structured_formatting?.secondary_text,
+              // TODO-LAVY: addCustomDest Incomplete
+              category_id: 0,
+              category_name: 'Custom Event',
+              created_at: 0,
+              id: 0,
+              image_url: '',
               latitude: details?.geometry?.location?.lat,
               longitude: details?.geometry?.location?.lng,
+              name: data?.structured_formatting?.main_text,
+              place_id: '',
+              supplier: 'Custom',
             });
             setCustom(false);
           }
@@ -118,7 +126,7 @@ const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
         {selected ? (
           <>
             {custom ? (
-              <Text style={styles.suggestText}>
+              <Text center={true}>
                 {strings.library.setCustomLocation + ':'}
               </Text>
             ) : null}
@@ -128,25 +136,36 @@ const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
               region={region}
               onRegionChangeComplete={setRegion}
               onPress={e =>
-                custom
+                custom && autocompleteRef.current?.getAddressText()
                   ? setDestination({
-                      name: autocompleteRef.current?.getAddressText(),
-                      address: 'Custom Event',
+                      // TODO-LAVY: addCustomDest Incomplete
+                      category_id: 0,
+                      category_name: 'Custom Event',
+                      created_at: 0,
+                      id: 0,
+                      image_url: '',
                       latitude: e.nativeEvent.coordinate.latitude,
                       longitude: e.nativeEvent.coordinate.longitude,
+                      name: autocompleteRef.current?.getAddressText(),
+                      place_id: '',
+                      supplier: 'Custom',
                     })
                   : null
               }>
               <Marker
                 coordinate={{
-                  latitude: destination?.latitude,
-                  longitude: destination?.longitude,
+                  latitude: destination?.latitude
+                    ? destination?.latitude
+                    : floats.defaultLatitude,
+                  longitude: destination?.longitude
+                    ? destination?.longitude
+                    : floats.defaultLongitude,
                 }}
               />
             </MapView>
           </>
         ) : (
-          <Text style={styles.text}>{strings.library.promptSearch}</Text>
+          <TextRN style={styles.text}>{strings.library.promptSearch}</TextRN>
         )}
       </View>
       <View style={styles.button}>
@@ -154,8 +173,10 @@ const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
           disabled={!selected}
           label={strings.library.add}
           onPress={() => {
-            onClose();
-            onSelect(destination);
+            if (destination) {
+              onClose();
+              onSelect(destination);
+            }
           }}
         />
       </View>
@@ -185,14 +206,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: colors.darkgrey,
     textAlign: 'center',
-  },
-  suggestText: {
-    alignSelf: 'center',
-    fontSize: s(14),
-    fontWeight: '500',
-    color: colors.black,
-    marginTop: -s(5),
-    marginBottom: s(5),
   },
   button: {
     alignItems: 'center',
