@@ -71,8 +71,8 @@ const strings = {
     eventTime: 'Event Time',
     eventStatus: 'Event Status',
     eventSpan: 'Event spans multiple days',
-    eventUrl: 'Tap for more information',
-    openMap: 'Tap to open map',
+    eventUrl: 'Website',
+    openMap: 'Open map',
     moveUp: 'Move Up',
     moveDown: 'Move Down',
     remove: 'Remove',
@@ -108,6 +108,7 @@ const strings = {
     leave: 'Leave',
   },
   library: {
+    createEvent: 'Create an Event',
     saved: 'Saved',
     events: 'Events',
     edit: 'Edit',
@@ -124,6 +125,7 @@ const strings = {
     filter: 'Filter',
     setCustomLocation: 'Set a custom location',
     promptSearch: 'Search for a place or type in a custom destination above',
+    bookmark: 'Bookmark',
   },
   profile: {
     followers: 'followers',

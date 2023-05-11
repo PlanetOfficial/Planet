@@ -8,26 +8,28 @@ import {
   Image,
   Linking,
   Platform,
+  Alert,
 } from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
-import {icons, brands, yelpStars} from '../../constants/images';
-import {colors} from '../../constants/theme';
 import {s} from 'react-native-size-matters';
-import strings from '../../constants/strings';
-import {floats} from '../../constants/numbers';
-import {getPlaceDetails} from '../../utils/api/shared/getPlaceDetails';
-import {
-  capitalizeFirstLetter,
-  convertDateToMMDDYYYY,
-  convertTimeTo12Hour,
-  displayAddress,
-  displayHours,
-} from '../../utils/functions/Misc';
 import {ScrollView} from 'react-native-gesture-handler';
 import {showLocation} from 'react-native-map-link';
 
+
+import strings from '../../constants/strings';
+import {icons, brands, yelpStars} from '../../constants/images';
+import {colors} from '../../constants/theme';
+import {floats} from '../../constants/numbers';
+import {
+  convertDateToMMDDYYYY,
+  convertTimeTo12Hour,
+  displayHours,
+} from '../../utils/functions/Misc';
+import {getPlaceDetails} from '../../utils/api/shared/getPlaceDetails';
+
 import Icon from '../components/Icon';
 import CustomText from '../components/Text';
+import OptionMenu from '../components/OptionMenu';
 
 import {Place as PlaceT, PlaceDetail} from '../../utils/interfaces/types';
 
@@ -108,6 +110,43 @@ const Place: React.FC<Props> = ({navigation, route}) => {
                 : null}
             </CustomText>
           </View>
+          <OptionMenu options={
+            [
+              {
+                name: strings.library.createEvent,
+                onPress: () => {
+                  // TODO-MVP: Create event
+                  Alert.alert('Create Event', 'Coming Soon');
+                },
+                color: colors.accent,
+              },
+              {
+                name: strings.library.bookmark,
+                onPress: () => {
+                  // TODO-MVP: Add bookmark
+                  Alert.alert('Bookmark', 'Coming Soon');
+                },
+                color: colors.accent,
+              },
+              {
+                name: strings.main.share,
+                onPress: () => {
+                  Alert.alert('Share', 'Coming Soon');
+                },
+                color: colors.black,
+              },
+              {
+                name: strings.createTabStack.openMap,
+                onPress: handleMapPress,
+                color: colors.black,
+              },
+              {
+                name: strings.createTabStack.eventUrl,
+                onPress: handleLinkPress,
+                color: colors.black,
+              }
+            ]
+          }/>
         </View>
       </SafeAreaView>
 
@@ -249,24 +288,6 @@ const Place: React.FC<Props> = ({navigation, route}) => {
 
             <TouchableOpacity onPress={handleCallPress}>
               <Text style={detailStyles.info}>{destinationDetails.phone}</Text>
-            </TouchableOpacity>
-          </View>
-        ) : null}
-        {Platform.OS === 'ios' ? (
-          <View style={detailStyles.infoContainer}>
-            <TouchableOpacity onPress={handleMapPress}>
-              <Text style={detailStyles.infoTitle}>
-                {strings.createTabStack.openMap}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        ) : null}
-        {destinationDetails.url ? (
-          <View style={detailStyles.infoContainer}>
-            <TouchableOpacity onPress={handleLinkPress}>
-              <Text style={detailStyles.infoTitle}>
-                {strings.createTabStack.eventUrl}
-              </Text>
             </TouchableOpacity>
           </View>
         ) : null}
