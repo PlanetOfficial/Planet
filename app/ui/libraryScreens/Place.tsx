@@ -63,7 +63,6 @@ const Place: React.FC<Props> = ({navigation, route}) => {
       if (id) {
         const details = await getPlaceDetails(id);
         setDestinationDetails(details);
-        console.log(details.dates);
       }
     };
 
