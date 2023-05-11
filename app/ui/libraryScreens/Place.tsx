@@ -175,6 +175,22 @@ const Place: React.FC<Props> = ({navigation, route}) => {
             </View>
           </View>
         ) : null}
+        {destinationDetails.dates.start?.localDate &&
+          destinationDetails.dates.start?.localTime ? (
+            <View style={detailStyles.infoContainer}>
+              <Text style={detailStyles.infoTitle}>
+                {strings.createTabStack.eventTime}:
+              </Text>
+              <Text style={detailStyles.info}>
+                {convertDateToMMDDYYYY(
+                  destinationDetails.dates.start?.localDate,
+                ) + '\n'}
+                {convertTimeTo12Hour(
+                  destinationDetails?.dates.start?.localTime,
+                )}
+              </Text>
+            </View>
+          ) : null}
         {destinationDetails.hours.length > 0 ? (
           <View style={detailStyles.infoContainer}>
             <Text style={detailStyles.infoTitle}>
