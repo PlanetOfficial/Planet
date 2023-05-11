@@ -98,9 +98,12 @@ const Friends: React.FC<Props> = ({navigation}) => {
       setFriendGroups(responseData.groups);
 
       if (responseData.groups.length > 0) {
-        setFriendGroup(0);
-
-        fetchCurGroupInfo(responseData.groups[0].group.id);
+        if (friendGroup === -1){
+          setFriendGroup(0);
+          fetchCurGroupInfo(responseData.groups[0].group.id);
+        } else {
+          fetchCurGroupInfo(responseData.groups[friendGroup].group.id);
+        }
       }
     }
 
@@ -124,7 +127,7 @@ const Friends: React.FC<Props> = ({navigation}) => {
     });
     return unsubscribe;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [navigation]);
+  }, [navigation, friendGroup]);
 
   const handleAddEvent = async (user_event_id: number) => {
     const token = await EncryptedStorage.getItem('auth_token');
