@@ -98,7 +98,7 @@ const Friends: React.FC<Props> = ({navigation}) => {
       setFriendGroups(responseData.groups);
 
       if (responseData.groups.length > 0) {
-        if (friendGroup === -1){
+        if (friendGroup === -1) {
           setFriendGroup(0);
           fetchCurGroupInfo(responseData.groups[0].group.id);
         } else {
