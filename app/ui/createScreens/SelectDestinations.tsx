@@ -78,16 +78,13 @@ const SelectDestinations: React.FC<Props> = ({navigation, route}) => {
     () => [vs(380) - (insets.top + s(50)), vs(680) - (insets.top + s(50))],
     [insets.top],
   );
-  const handleSheetChange = useCallback(
-    (_: number, toIndex: number) => {
-      if(toIndex == 1) {
-        setBottomPad(0)
-      } else {
-        setBottomPad(vs(300));
-      }
-    },
-    [],
-  );
+  const handleSheetChange = useCallback((_: number, toIndex: number) => {
+    if (toIndex === 1) {
+      setBottomPad(0);
+    } else {
+      setBottomPad(vs(300));
+    }
+  }, []);
 
   const isPlace = (destination: Place | Category): destination is Place => {
     return destination.hasOwnProperty('latitude');

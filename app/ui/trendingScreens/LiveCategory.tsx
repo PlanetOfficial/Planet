@@ -183,7 +183,7 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
                                 moment(event.date, 'YYYY-MM-DD').format(
                                   'M/D/YYYY',
                                 ) +
-                                (event.priceRanges[0]
+                                (event?.priceRanges && event?.priceRanges[0]
                                   ? ' • ' +
                                     '$' +
                                     Math.round(event.priceRanges[0]?.min) +

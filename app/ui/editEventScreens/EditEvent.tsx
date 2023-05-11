@@ -93,7 +93,10 @@ const EditEvent: React.FC<Props> = ({
       data={destinations}
       keyExtractor={(_: Place | CategoryT, index: number) => index.toString()}
       showsVerticalScrollIndicator={false}
-      contentContainerStyle={[styles.flatlist, {paddingBottom: bottomPad + s(20)}]}
+      contentContainerStyle={[
+        styles.flatlist,
+        {paddingBottom: bottomPad + s(20)},
+      ]}
       activationDistance={20}
       onDragBegin={() => {
         setDragging(true);

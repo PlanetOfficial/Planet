@@ -48,7 +48,7 @@ export const brands = {
   yelpLogo: require('../assets/brands/yelp_logo.png'),
   ticketmasterIcon: require('../assets/brands/ticketmaster_icon.png'),
   ticketmasterLogo: require('../assets/brands/ticketmaster_logo.png'),
-}
+};
 
 export const yelpStars = [
   require('../assets/brands/yelp_stars/0.png'),
@@ -62,7 +62,7 @@ export const yelpStars = [
   require('../assets/brands/yelp_stars/4.png'),
   require('../assets/brands/yelp_stars/4.5.png'),
   require('../assets/brands/yelp_stars/5.png'),
-]
+];
 
 export const vectors = {
   blur: require('../assets/vectors/blur.png'),

@@ -30,6 +30,8 @@ const strings = {
     missingFields: 'Fields are missing',
   },
   createTabStack: {
+    description: 'Description',
+    additionalInfo: 'Additional Info',
     phone: 'Phone',
     noPlaces: 'No Places Found',
     milesAbbrev: 'mi',
@@ -70,6 +72,7 @@ const strings = {
     eventStatus: 'Event Status',
     eventSpan: 'Event spans multiple days',
     eventUrl: 'Tap for more information',
+    openMap: 'Tap to open map',
     moveUp: 'Move Up',
     moveDown: 'Move Down',
     remove: 'Remove',
