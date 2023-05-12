@@ -102,6 +102,12 @@ const SelectDestinations: React.FC<Props> = ({navigation, route}) => {
 
       let _destinations: (Place | Category)[] = [];
       let _selectionIndices: number[] = [];
+
+      if(route.params?.theDestination) {
+        _destinations.push(route.params.theDestination);
+        _selectionIndices.push(0);
+      }
+
       categories.forEach((category: Category) => {
         _destinations.push({
           id: category.id,

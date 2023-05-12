@@ -23,29 +23,6 @@ interface AppNavigationProps {
   isLoggedIn: boolean;
 }
 
-const PlanCreationStack = createStackNavigator();
-function CreatePlanStack() {
-  return (
-    <PlanCreationStack.Navigator initialRouteName="Create">
-      <PlanCreationStack.Screen
-        name="MapSelection"
-        component={MapSelection}
-        options={{headerShown: false}}
-      />
-      <PlanCreationStack.Screen
-        name="SelectCategories"
-        component={SelectCategories}
-        options={{headerShown: false}}
-      />
-      <PlanCreationStack.Screen
-        name="SelectDestinations"
-        component={SelectDestinations}
-        options={{headerShown: false}}
-      />
-    </PlanCreationStack.Navigator>
-  );
-}
-
 function TabStack() {
   return <NavBar />;
 }
@@ -57,13 +34,15 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
       <BottomSheetModalProvider>
         <MainStack.Navigator initialRouteName="Main">
           {tabStack()}
-          {createStack()}
           {placeStackScreen()}
           {eventStackScreen()}
           {fgEventStackScreen()}
           {settingsStackScreen()}
           {createFGStackScreen()}
           {editFGStackScreen()}
+          {mapSelectionScreen()}
+          {selectCategoriesScreen()}
+          {selectDestinationsScreen()}
           {liveCategoryStackScreen()}
           {liveCategorySettingsStackScreen()}
           {loginStackScreen()}
@@ -80,13 +59,15 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {signUpStackScreen()}
           {forgetPassStackScreen()}
           {tabStack()}
-          {createStack()}
           {placeStackScreen()}
           {eventStackScreen()}
           {fgEventStackScreen()}
           {settingsStackScreen()}
           {createFGStackScreen()}
           {editFGStackScreen()}
+          {mapSelectionScreen()}
+          {selectCategoriesScreen()}
+          {selectDestinationsScreen()}
           {liveCategoryStackScreen()}
           {liveCategorySettingsStackScreen()}
         </MainStack.Navigator>
@@ -133,11 +114,31 @@ const tabStack = () => {
   );
 };
 
-const createStack = () => {
+const mapSelectionScreen = () => {
   return (
     <MainStack.Screen
-      name="CreateStack"
-      component={CreatePlanStack}
+      name="MapSelection"
+      component={MapSelection}
+      options={{headerShown: false}}
+    />
+  );
+};
+
+const selectCategoriesScreen = () => {
+  return (
+    <MainStack.Screen
+      name="SelectCategories"
+      component={SelectCategories}
+      options={{headerShown: false}}
+    />
+  );
+};
+
+const selectDestinationsScreen = () => {
+  return (
+    <MainStack.Screen
+      name="SelectDestinations"
+      component={SelectDestinations}
       options={{headerShown: false}}
     />
   );

@@ -212,7 +212,6 @@ const Trending: React.FC<Props> = ({navigation}) => {
                           style={categoryStyles.card}
                           key={jdx}
                           onPress={() => {
-                            console.log(bookmarks.includes(event.id));
                             navigation.navigate('Place', {
                               destination: event,
                               category: event.category,

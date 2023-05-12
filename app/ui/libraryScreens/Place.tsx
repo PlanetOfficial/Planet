@@ -138,8 +138,9 @@ const Place: React.FC<Props> = ({navigation, route}) => {
               {
                 name: strings.library.createEvent,
                 onPress: () => {
-                  // TODO-MVP: Create event
-                  Alert.alert('Create Event', 'Coming Soon');
+                  navigation.navigate('MapSelection', {
+                    destination: destination,
+                  });
                 },
                 color: colors.accent,
               },
