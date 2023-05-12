@@ -105,7 +105,7 @@ const AddFromLibrary: React.FC<Props> = ({onClose, onSelect}) => {
                 info={item.category_name}
                 bookmarked={true}
                 setBookmarked={(bookmarked: boolean, id: number) => {
-                  if(!bookmarked){
+                  if (!bookmarked) {
                     setPlaces(places.filter((place: Place) => place.id !== id));
                   }
                 }}

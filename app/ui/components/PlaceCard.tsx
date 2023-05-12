@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Alert, Image, StyleSheet, View} from 'react-native';
 
 import {s} from 'react-native-size-matters';

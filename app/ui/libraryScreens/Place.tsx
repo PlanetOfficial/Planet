@@ -58,7 +58,9 @@ const Place: React.FC<Props> = ({navigation, route}) => {
     url: '',
   });
   const [category] = useState<string>(route.params.category);
-  const [bookmarked, setBookmarked] = useState<boolean>(route?.params?.bookmarked);
+  const [bookmarked, setBookmarked] = useState<boolean>(
+    route?.params?.bookmarked,
+  );
 
   useEffect(() => {
     const initializeDestinationData = async () => {
@@ -131,8 +133,8 @@ const Place: React.FC<Props> = ({navigation, route}) => {
                 : null}
             </CustomText>
           </View>
-          <OptionMenu options={
-            [
+          <OptionMenu
+            options={[
               {
                 name: strings.library.createEvent,
                 onPress: () => {
@@ -142,7 +144,9 @@ const Place: React.FC<Props> = ({navigation, route}) => {
                 color: colors.accent,
               },
               {
-                name: bookmarked? strings.library.unbookmark : strings.library.bookmark,
+                name: bookmarked
+                  ? strings.library.unbookmark
+                  : strings.library.bookmark,
                 onPress: handleBookmark,
                 color: colors.accent,
               },
@@ -162,9 +166,9 @@ const Place: React.FC<Props> = ({navigation, route}) => {
                 name: strings.createTabStack.eventUrl,
                 onPress: handleLinkPress,
                 color: colors.black,
-              }
-            ]
-          }/>
+              },
+            ]}
+          />
         </View>
       </SafeAreaView>
 
@@ -233,21 +237,19 @@ const Place: React.FC<Props> = ({navigation, route}) => {
           </View>
         ) : null}
         {destinationDetails.dates.start?.localDate &&
-          destinationDetails.dates.start?.localTime ? (
-            <View style={detailStyles.infoContainer}>
-              <Text style={detailStyles.infoTitle}>
-                {strings.createTabStack.eventTime}:
-              </Text>
-              <Text style={detailStyles.info}>
-                {convertDateToMMDDYYYY(
-                  destinationDetails.dates.start?.localDate,
-                ) + '\n'}
-                {convertTimeTo12Hour(
-                  destinationDetails?.dates.start?.localTime,
-                )}
-              </Text>
-            </View>
-          ) : null}
+        destinationDetails.dates.start?.localTime ? (
+          <View style={detailStyles.infoContainer}>
+            <Text style={detailStyles.infoTitle}>
+              {strings.createTabStack.eventTime}:
+            </Text>
+            <Text style={detailStyles.info}>
+              {convertDateToMMDDYYYY(
+                destinationDetails.dates.start?.localDate,
+              ) + '\n'}
+              {convertTimeTo12Hour(destinationDetails?.dates.start?.localTime)}
+            </Text>
+          </View>
+        ) : null}
         {destinationDetails.hours.length > 0 ? (
           <View style={detailStyles.infoContainer}>
             <Text style={detailStyles.infoTitle}>

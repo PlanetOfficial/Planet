@@ -281,10 +281,12 @@ const SelectDestinations: React.FC<Props> = ({navigation, route}) => {
           longitude={longitude}
           bookmarks={bookmarks}
           setBookmarked={(bookmarked: boolean, id: number) => {
-            if(bookmarked){
+            if (bookmarked) {
               setBookmarks([...bookmarks, id]);
             } else {
-              setBookmarks(bookmarks.filter((bookmark: number) => bookmark !== id));
+              setBookmarks(
+                bookmarks.filter((bookmark: number) => bookmark !== id),
+              );
             }
           }}
           destinations={destinations}

@@ -211,14 +211,14 @@ const Trending: React.FC<Props> = ({navigation}) => {
                         <TouchableOpacity
                           style={categoryStyles.card}
                           key={jdx}
-                          onPress={() =>{
-                            console.log(bookmarks.includes(event.id))
+                          onPress={() => {
+                            console.log(bookmarks.includes(event.id));
                             navigation.navigate('Place', {
                               destination: event,
                               category: event.category,
                               bookmarked: bookmarks.includes(event.id),
-                            })}
-                          }>
+                            });
+                          }}>
                           <PlaceCard
                             id={event.id}
                             small={true}
@@ -240,11 +240,18 @@ const Trending: React.FC<Props> = ({navigation}) => {
                                 : '')
                             }
                             bookmarked={bookmarks.includes(event.id)}
-                            setBookmarked={(bookmarked: boolean, id: number) => {
-                              if(bookmarked){
+                            setBookmarked={(
+                              bookmarked: boolean,
+                              id: number,
+                            ) => {
+                              if (bookmarked) {
                                 setBookmarks([...bookmarks, id]);
                               } else {
-                                setBookmarks(bookmarks.filter((bookmark: number) => bookmark !== id));
+                                setBookmarks(
+                                  bookmarks.filter(
+                                    (bookmark: number) => bookmark !== id,
+                                  ),
+                                );
                               }
                             }}
                             image={{uri: event.image_url}}

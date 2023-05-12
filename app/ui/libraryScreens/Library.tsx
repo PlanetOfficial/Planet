@@ -34,7 +34,7 @@ const Library: React.FC<Props> = ({navigation}) => {
   const [selectedIndex, setIndex] = useState<number>(0);
   const [places, setPlaces] = useState<Place[]>([]);
   const [events, setEvents] = useState<Event[]>([]);
-  
+
   const isPlace = (item: Place | Event): item is Place => {
     return item.hasOwnProperty('latitude');
   };
@@ -111,7 +111,7 @@ const Library: React.FC<Props> = ({navigation}) => {
                 info={item.category_name}
                 bookmarked={places.includes(item)}
                 setBookmarked={(bookmarked: boolean, id: number) => {
-                  if(!bookmarked){
+                  if (!bookmarked) {
                     setPlaces(places.filter((place: Place) => place.id !== id));
                   }
                 }}

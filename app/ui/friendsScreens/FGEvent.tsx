@@ -39,7 +39,7 @@ import CustomText from '../components/Text';
 import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
-import { getBookmarks } from '../../utils/api/shared/getBookmarks';
+import {getBookmarks} from '../../utils/api/shared/getBookmarks';
 
 interface Props {
   navigation: any;
@@ -55,7 +55,9 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
   const [date] = useState<string>(
     moment(route?.params?.eventData?.date, 'YYYY-MM-DD').format('M/D/YYYY'),
   );
-  const [bookmarks, setBookmarks] = useState<number[]>(route?.params?.bookmarks);
+  const [bookmarks, setBookmarks] = useState<number[]>(
+    route?.params?.bookmarks,
+  );
   const [userId, setUserId] = useState<number>(-1);
 
   const [fullEventData, setFullEventData] = useState<{places: FGPlace[]}>({
@@ -83,19 +85,43 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
     [],
   );
 
-  const initializeUserId = async () => {
-    const idString: string | null = await EncryptedStorage.getItem('user_id');
-    if (!idString) {
-      return;
-    }
+  useEffect(() => {
+    const initializeUserId = async () => {
+      const idString: string | null = await EncryptedStorage.getItem('user_id');
+      if (!idString) {
+        return;
+      }
 
-    const id: number = parseInt(idString, 10);
-    if (Number.isNaN(id)) {
-      return;
-    }
+      const id: number = parseInt(idString, 10);
+      if (Number.isNaN(id)) {
+        return;
+      }
 
-    setUserId(id);
-  };
+      setUserId(id);
+    };
+
+    const initializeData = async () => {
+      const authToken = await EncryptedStorage.getItem('auth_token');
+
+      const _bookmarks = await getBookmarks(authToken);
+      const bookmarksIds: number[] = _bookmarks.map(
+        (bookmark: {id: any}) => bookmark.id,
+      );
+      setBookmarks(bookmarksIds);
+
+      const data = await getGroupEventPlaces(groupEventId);
+      setFullEventData(data);
+
+      const markerArray: MarkerObject[] = getMarkerArray(data?.places);
+      setMarkers(markerArray);
+    };
+
+    const unsubscribe = navigation.addListener('focus', () => {
+      initializeData();
+      initializeUserId();
+    });
+    return unsubscribe;
+  }, [navigation, groupEventId]);
 
   const getEventData = async () => {
     const data = await getGroupEventPlaces(groupEventId);
@@ -104,26 +130,6 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
     const markerArray: MarkerObject[] = getMarkerArray(data?.places);
     setMarkers(markerArray);
   };
-
-  const initializeData = async () => {
-    const authToken = await EncryptedStorage.getItem('auth_token');
-    
-    const _bookmarks = await getBookmarks(authToken);
-    const bookmarksIds: number[] = _bookmarks.map(
-      (bookmark: {id: any}) => bookmark.id,
-    );
-    setBookmarks(bookmarksIds);
-
-    await getEventData();
-  };
-
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      initializeData();
-      initializeUserId();
-    });
-    return unsubscribe;
-  }, [navigation]);
 
   const handlePlaceLike = async (group_event_place_id: number) => {
     const token = await EncryptedStorage.getItem('auth_token');
@@ -309,10 +315,14 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
                     info={dest.category_name}
                     bookmarked={bookmarks.includes(dest.id)}
                     setBookmarked={(bookmarked: boolean, id: number) => {
-                      if(bookmarked){
+                      if (bookmarked) {
                         setBookmarks([...bookmarks, id]);
                       } else {
-                        setBookmarks(bookmarks.filter((bookmark: number) => bookmark !== id));
+                        setBookmarks(
+                          bookmarks.filter(
+                            (bookmark: number) => bookmark !== id,
+                          ),
+                        );
                       }
                     }}
                     image={
