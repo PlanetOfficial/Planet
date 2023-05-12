@@ -8,6 +8,7 @@ import {
   View,
   Platform,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
 import moment from 'moment';
 
@@ -70,6 +71,7 @@ const SelectDestinations: React.FC<Props> = ({navigation, route}) => {
   const [markers, setMarkers] = useState<MarkerObject[]>([]);
 
   const insets = useSafeAreaInsets();
+  const [loading, setLoading] = useState<boolean>(true);
 
   const [bottomPad, setBottomPad] = useState<number>(0);
   const addRef = useRef<any>(null); // due to forwardRef
@@ -123,6 +125,7 @@ const SelectDestinations: React.FC<Props> = ({navigation, route}) => {
       });
       setDestinations(_destinations);
       setSelectionIndices(_selectionIndices);
+      setLoading(false);
     };
 
     loadDestinations();
@@ -280,28 +283,32 @@ const SelectDestinations: React.FC<Props> = ({navigation, route}) => {
         onAnimate={handleSheetChange}
         animateOnMount={Platform.OS === 'ios'}
         enableContentPanningGesture={false}>
-        <EditEvent
-          navigation={navigation}
-          radius={radius}
-          latitude={latitude}
-          longitude={longitude}
-          bookmarks={bookmarks}
-          setBookmarked={(bookmarked: boolean, id: number) => {
-            if (bookmarked) {
-              setBookmarks([...bookmarks, id]);
-            } else {
-              setBookmarks(
-                bookmarks.filter((bookmark: number) => bookmark !== id),
-              );
-            }
-          }}
-          destinations={destinations}
-          setDestinations={setDestinations}
-          selectionIndices={selectionIndices}
-          setSelectionIndices={setSelectionIndices}
-          onAddPress={addRef.current?.onAddPress}
-          bottomPad={bottomPad}
-        />
+        {loading ? (
+        <ActivityIndicator size="small" color={colors.accent} />
+        ) : (
+          <EditEvent
+            navigation={navigation}
+            radius={radius}
+            latitude={latitude}
+            longitude={longitude}
+            bookmarks={bookmarks}
+            setBookmarked={(bookmarked: boolean, id: number) => {
+              if (bookmarked) {
+                setBookmarks([...bookmarks, id]);
+              } else {
+                setBookmarks(
+                  bookmarks.filter((bookmark: number) => bookmark !== id),
+                );
+              }
+            }}
+            destinations={destinations}
+            setDestinations={setDestinations}
+            selectionIndices={selectionIndices}
+            setSelectionIndices={setSelectionIndices}
+            onAddPress={addRef.current?.onAddPress}
+            bottomPad={bottomPad}
+          />
+        )}
       </BottomSheet>
 
       <AddEvent
