@@ -307,7 +307,14 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
                     id={dest.id}
                     name={dest.name}
                     info={dest.category_name}
-                    marked={bookmarks.includes(dest.id)}
+                    bookmarked={bookmarks.includes(dest.id)}
+                    setBookmarked={(bookmarked: boolean, id: number) => {
+                      if(bookmarked){
+                        setBookmarks([...bookmarks, id]);
+                      } else {
+                        setBookmarks(bookmarks.filter((bookmark: number) => bookmark !== id));
+                      }
+                    }}
                     image={
                       dest.image_url
                         ? {

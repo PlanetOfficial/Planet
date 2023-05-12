@@ -27,6 +27,8 @@ import {
   LiveEvents,
   Subcategory,
 } from '../../utils/interfaces/types';
+import { getBookmarks } from '../../utils/api/shared/getBookmarks';
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 interface Props {
   navigation: any;
@@ -39,7 +41,7 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
   const [categoryId] = useState<number>(route?.params?.categoryId);
   const [filters] = useState<FilterT[]>(route?.params?.filters);
   const [categoryName] = useState<string>(route?.params?.categoryName);
-  const [bookmarks] = useState<number[]>(route?.params?.bookmarks);
+  const [bookmarks, setBookmarks] = useState<number[]>(route?.params?.bookmarks);
   const [subcategories, setSubcategories] = useState<Subcategory[]>();
   const [hiddenSubCategories, setHiddenSubCategories] = useState<Subcategory[]>(
     [],
@@ -108,6 +110,23 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
     filterValues,
     filtersInitialized,
   ]);
+
+  useEffect(() => {
+    const initializeBookmark = async () => {
+      const authToken = await EncryptedStorage.getItem('auth_token');
+
+      const _bookmarks = await getBookmarks(authToken);
+      const bookmarksIds: number[] = _bookmarks.map(
+        (bookmark: {id: any}) => bookmark.id,
+      );
+      setBookmarks(bookmarksIds);
+    };
+
+    const unsubscribe = navigation.addListener('focus', () => {
+      initializeBookmark();
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   return (
     <View style={styles.container}>
@@ -196,7 +215,14 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
                                       : '')
                                   : '')
                               }
-                              marked={bookmarks.includes(event.id)}
+                              bookmarked={bookmarks.includes(event.id)}
+                              setBookmarked={(bookmarked: boolean, id: number) => {
+                                if(bookmarked){
+                                  setBookmarks([...bookmarks, id]);
+                                } else {
+                                  setBookmarks(bookmarks.filter((bookmark: number) => bookmark !== id));
+                                }
+                              }}
                               image={{uri: event.image_url}}
                             />
                           </TouchableOpacity>

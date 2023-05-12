@@ -18,10 +18,9 @@ interface Props {
   small?: boolean;
   name: string;
   info: string;
-  marked: boolean;
+  bookmarked: boolean;
+  setBookmarked: (bookmarked: boolean, id: number) => void;
   image: Object;
-  onBookmark?: (id: number) => void;
-  onUnBookmark?: (id: number) => void;
 }
 
 // TODO: display more info on the card
@@ -30,13 +29,10 @@ const PlaceCard: React.FC<Props> = ({
   small = false,
   name,
   info,
-  marked,
+  bookmarked,
+  setBookmarked,
   image,
-  onBookmark,
-  onUnBookmark,
 }) => {
-  const [bookmarked, setBookmarked] = useState<boolean>(marked);
-
   const handleBookmark = async () => {
     const authToken = await EncryptedStorage.getItem('auth_token');
     let responseStatus;
@@ -44,22 +40,13 @@ const PlaceCard: React.FC<Props> = ({
     if (!bookmarked) {
       // switch to bookmarked, so call /bookmark
       responseStatus = await setBookmark(authToken, id);
-
-      if (onBookmark) {
-        onBookmark(id);
-      }
     } else {
       // switch to not bookmarked, so call /unbookmark
       responseStatus = await unbookmark(authToken, id);
-      console.log("unbookmarked!");
-
-      if (onUnBookmark) {
-        onUnBookmark(id);
-      }
     }
 
     if (responseStatus) {
-      setBookmarked(!bookmarked);
+      setBookmarked(!bookmarked, id);
     } else {
       Alert.alert('Error', 'Something went wrong. Please try again.');
     }

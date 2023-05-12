@@ -106,7 +106,6 @@ const Event: React.FC<Props> = ({navigation, route}) => {
       (bookmark: {id: any}) => bookmark.id,
     );
     setBookmarks(bookmarksIds);
-    console.log(bookmarksIds);
 
     await getEventData();
   };
@@ -273,6 +272,13 @@ const Event: React.FC<Props> = ({navigation, route}) => {
             latitude={latitude}
             longitude={longitude}
             bookmarks={bookmarks}
+            setBookmarked={(bookmarked: boolean, id: number) => {
+              if(bookmarked){
+                setBookmarks([...bookmarks, id]);
+              } else {
+                setBookmarks(bookmarks.filter((bookmark: number) => bookmark !== id));
+              }
+            }}
             destinations={tempPlaces}
             setDestinations={setTempPlaces}
             selectionIndices={selectionIndices}
@@ -287,14 +293,15 @@ const Event: React.FC<Props> = ({navigation, route}) => {
               places={places}
               width={s(290)}
               bookmarks={bookmarks}
+              setBookmarked={(bookmarked: boolean, id: number) => {
+                if(bookmarked){
+                  setBookmarks([...bookmarks, id]);
+                } else {
+                  setBookmarks(bookmarks.filter((bookmark: number) => bookmark !== id));
+                }
+              }}
               index={placeIdx}
               setIndex={setPlaceIdx}
-              onBookmark={(id: number) => {
-                setBookmarks([...bookmarks, id]);
-              }}
-              onUnBookmark={(id: number) => {
-                setBookmarks(bookmarks.filter((bookmark: number) => id !== id));
-              }}
             />
           </SafeAreaView>
         )}

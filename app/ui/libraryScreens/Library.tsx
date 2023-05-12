@@ -34,11 +34,7 @@ const Library: React.FC<Props> = ({navigation}) => {
   const [selectedIndex, setIndex] = useState<number>(0);
   const [places, setPlaces] = useState<Place[]>([]);
   const [events, setEvents] = useState<Event[]>([]);
-
-  const removePlace = (placeId: number) => {
-    setPlaces(places.filter((place: Place) => place.id !== placeId));
-  };
-
+  
   const isPlace = (item: Place | Event): item is Place => {
     return item.hasOwnProperty('latitude');
   };
@@ -113,7 +109,12 @@ const Library: React.FC<Props> = ({navigation}) => {
                 id={item.id}
                 name={item.name}
                 info={item.category_name}
-                marked={places.includes(item)}
+                bookmarked={places.includes(item)}
+                setBookmarked={(bookmarked: boolean, id: number) => {
+                  if(!bookmarked){
+                    setPlaces(places.filter((place: Place) => place.id !== id));
+                  }
+                }}
                 image={
                   item.image_url
                     ? {
@@ -121,7 +122,6 @@ const Library: React.FC<Props> = ({navigation}) => {
                       }
                     : icons.defaultIcon
                 }
-                onUnBookmark={removePlace}
               />
             </TouchableOpacity>
           ) : (

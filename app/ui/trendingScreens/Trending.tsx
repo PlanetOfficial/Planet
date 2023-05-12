@@ -59,8 +59,6 @@ const Trending: React.FC<Props> = ({navigation}) => {
       });
 
       setLiveCategories(_liveCategories);
-
-      console.log(bookmarks);
     };
 
     const unsubscribe = navigation.addListener('focus', () => {
@@ -213,12 +211,13 @@ const Trending: React.FC<Props> = ({navigation}) => {
                         <TouchableOpacity
                           style={categoryStyles.card}
                           key={jdx}
-                          onPress={() =>
+                          onPress={() =>{
+                            console.log(bookmarks.includes(event.id))
                             navigation.navigate('Place', {
                               destination: event,
                               category: event.category,
                               bookmarked: bookmarks.includes(event.id),
-                            })
+                            })}
                           }>
                           <PlaceCard
                             id={event.id}
@@ -240,7 +239,14 @@ const Trending: React.FC<Props> = ({navigation}) => {
                                     : '')
                                 : '')
                             }
-                            marked={bookmarks.includes(event.id)}
+                            bookmarked={bookmarks.includes(event.id)}
+                            setBookmarked={(bookmarked: boolean, id: number) => {
+                              if(bookmarked){
+                                setBookmarks([...bookmarks, id]);
+                              } else {
+                                setBookmarks(bookmarks.filter((bookmark: number) => bookmark !== id));
+                              }
+                            }}
                             image={{uri: event.image_url}}
                           />
                         </TouchableOpacity>

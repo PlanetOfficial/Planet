@@ -119,21 +119,28 @@ const SelectDestinations: React.FC<Props> = ({navigation, route}) => {
       setSelectionIndices(_selectionIndices);
     };
 
-    const loadBookmarks = async () => {
-      const authToken = await EncryptedStorage.getItem('auth_token');
-      const response = await getBookmarks(authToken);
-
-      let _bookmarks: number[] = [];
-      response.forEach((bookmark: Place) => {
-        _bookmarks.push(bookmark.id);
-      });
-
-      setBookmarks(_bookmarks);
-    };
-
     loadDestinations();
     loadBookmarks();
   }, [latitude, longitude, radius, categories]);
+
+  const loadBookmarks = async () => {
+    const authToken = await EncryptedStorage.getItem('auth_token');
+    const response = await getBookmarks(authToken);
+
+    let _bookmarks: number[] = [];
+    response.forEach((bookmark: Place) => {
+      _bookmarks.push(bookmark.id);
+    });
+
+    setBookmarks(_bookmarks);
+  };
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      loadBookmarks();
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   useEffect(() => {
     let places: Place[] = [];
@@ -273,6 +280,13 @@ const SelectDestinations: React.FC<Props> = ({navigation, route}) => {
           latitude={latitude}
           longitude={longitude}
           bookmarks={bookmarks}
+          setBookmarked={(bookmarked: boolean, id: number) => {
+            if(bookmarked){
+              setBookmarks([...bookmarks, id]);
+            } else {
+              setBookmarks(bookmarks.filter((bookmark: number) => bookmark !== id));
+            }
+          }}
           destinations={destinations}
           setDestinations={setDestinations}
           selectionIndices={selectionIndices}
