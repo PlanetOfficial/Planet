@@ -111,13 +111,15 @@ const Event: React.FC<Props> = ({navigation, route}) => {
   };
 
   const saveEdits = async () => {
-    tempPlaces.map((item: Category | Place) => {
-      if (isPlace(item)) {
-        return item.id;
-      } else {
-        console.log(item)
-      }
-    })
+    // tempPlaces.map((item: Category | Place) => {
+    //   if (isPlace(item)) {
+    //     return item.id;
+    //   } else {
+    //     console.log(item)
+    //   }
+    // })
+
+    console.log(extractID(tempPlaces));
 
     // const responseStatus = await editEvent(
     //   tempTitle,
@@ -136,6 +138,18 @@ const Event: React.FC<Props> = ({navigation, route}) => {
     //   Alert.alert('Error', 'Something went wrong. Please try again.');
     // }
   };
+
+  const extractID = (places: (Place | Category)[]) => {
+    return places.map((item: Place | Category, index: number) => {
+      if (isPlace(item)) {
+        return item.id;
+      } else {
+        if(item.options){
+          return item.options[selectionIndices[index]].id;
+        }
+      }
+    });
+  }
 
   return (
     <View style={styles.container}>
