@@ -53,8 +53,8 @@ interface Props {
 
 const Event: React.FC<Props> = ({navigation, route}) => {
   const [eventId] = useState<number>(route?.params?.eventData?.id);
-  const [eventTitle] = useState<string>(route?.params?.eventData?.name);
-  const [date] = useState<string>(
+  const [eventTitle, setEventTitle] = useState<string>(route?.params?.eventData?.name);
+  const [date, setDate] = useState<string>(
     moment(route?.params?.eventData?.date, 'YYYY-MM-DD').format('M/D/YYYY'),
   );
   const [bookmarks] = useState<number[]>(route?.params?.bookmarks);
@@ -84,21 +84,21 @@ const Event: React.FC<Props> = ({navigation, route}) => {
 
   const addRef = useRef<any>(null); // due to forwardRef
 
+  const getEventData = async () => {
+    const data = await getEventPlaces(eventId);
+    setPlaces(data.places);
+
+    setSelectionIndices(Array(data?.places?.length).fill(-1));
+
+    const markerArray: MarkerObject[] = getMarkerArray(data.places);
+    setMarkers(markerArray);
+
+    const averagePoint: Coordinate = getAveragePoint(markerArray);
+    setLatitude(averagePoint.latitude);
+    setLongitude(averagePoint.longitude);
+  };
+
   useEffect(() => {
-    const getEventData = async () => {
-      const data = await getEventPlaces(eventId);
-      setPlaces(data?.places);
-
-      setSelectionIndices(Array(data?.places?.length).fill(-1));
-
-      const markerArray: MarkerObject[] = getMarkerArray(data?.places);
-      setMarkers(markerArray);
-
-      const averagePoint: Coordinate = getAveragePoint(markerArray);
-      setLatitude(averagePoint.latitude);
-      setLongitude(averagePoint.longitude);
-    };
-
     getEventData();
   }, [eventId]);
 
@@ -111,44 +111,40 @@ const Event: React.FC<Props> = ({navigation, route}) => {
   };
 
   const saveEdits = async () => {
-    // tempPlaces.map((item: Category | Place) => {
-    //   if (isPlace(item)) {
-    //     return item.id;
-    //   } else {
-    //     console.log(item)
-    //   }
-    // })
+    const placeIds = extractID(tempPlaces);
 
-    console.log(extractID(tempPlaces));
+    const responseStatus = await editEvent(
+      tempTitle,
+      tempDate,
+      placeIds,
+      eventId,
+    );
 
-    // const responseStatus = await editEvent(
-    //   tempTitle,
-    //   tempDate,
-    //   tempPlaces.map(item => item.id),
-    //   eventId,
-    // );
+    if (responseStatus) {
+      // update event data if successful response
+      setEventTitle(tempTitle);
+      setDate(tempDate);
+      getEventData();
 
-    // if (responseStatus) {
-    //   // setPlaces(tempPlaces);
-    //   // setMarkers(getMarkerArray(tempPlaces));
-
-    //   bottomSheetRef.current?.collapse();
-    //   setEditing(false);
-    // } else {
-    //   Alert.alert('Error', 'Something went wrong. Please try again.');
-    // }
+      bottomSheetRef.current?.collapse();
+      setEditing(false);
+    } else {
+      Alert.alert('Error', 'Something went wrong. Please try again.');
+    }
   };
 
-  const extractID = (places: (Place | Category)[]) => {
-    return places.map((item: Place | Category, index: number) => {
+  const extractID = (places: (Place | Category)[]): number[] => {
+    const placeIds = places.map((item: Place | Category, index: number) => {
       if (isPlace(item)) {
         return item.id;
       } else {
-        if(item.options){
-          return item.options[selectionIndices[index]].id;
+        if(item.options && item.options.length > 0) {
+          return item.options[selectionIndices[index]]?.id;
         }
       }
     });
+
+    return placeIds.filter((id: number | undefined) => id !== undefined) as number[];
   }
 
   return (
