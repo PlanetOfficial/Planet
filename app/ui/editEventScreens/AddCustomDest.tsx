@@ -43,6 +43,7 @@ const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
   const [customDestination, setCustomDestination] = useState<CustomPlace>();
   const [selected, setSelected] = useState<boolean>(false);
   const [custom, setCustom] = useState<boolean>(false);
+  const [text, setText] = useState<string>('');
 
   useEffect(() => {
     autocompleteRef.current?.focus();
@@ -91,6 +92,9 @@ const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
         }}
         textInputProps={{
           selectTextOnFocus: true,
+          onChangeText(text) {
+            setText(text);
+          },
           onFocus: () => {
             setCustom(true);
             setSelected(false);
@@ -146,9 +150,9 @@ const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
               region={region}
               onRegionChangeComplete={setRegion}
               onPress={e =>
-                custom && autocompleteRef.current?.getAddressText()
+                custom && text != ''
                   ? setCustomDestination({
-                      name: autocompleteRef.current?.getAddressText(),
+                      name: text,
                       latitude: e.nativeEvent.coordinate.latitude,
                       longitude: e.nativeEvent.coordinate.longitude,
                     })
