@@ -168,8 +168,8 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
               <Text style={detailStyles.infoTitle}>
                 {strings.createTabStack.address}:
               </Text>
-              <Text style={detailStyles.info}>
-                {displayAddress(destinationDetails?.address)}
+              <Text style={detailStyles.info} selectable={true}>
+                {displayAddress(destinationDetails.address)}
               </Text>
             </View>
           ) : null}

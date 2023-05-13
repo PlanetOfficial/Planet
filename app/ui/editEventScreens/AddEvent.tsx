@@ -95,7 +95,7 @@ const AddEvent = forwardRef((props: ChildComponentProps, ref) => {
     setSelectionIndices(_selectionIndices);
   };
 
-  const onLibrarySelect = (destination: Place) => {
+  const onDestinationSelect = (destination: Place) => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     const _destinations: (Place | Category)[] = [...destinations];
     const _selectionIndices: number[] = [...selectionIndices];
@@ -105,10 +105,6 @@ const AddEvent = forwardRef((props: ChildComponentProps, ref) => {
     setSelectionIndices(_selectionIndices);
   };
 
-  const onCustomSelect = (dest: any) => {
-    // TODO-LAVY: implement custom destinations
-    console.log(dest);
-  };
 
   return (
     <>
@@ -165,10 +161,10 @@ const AddEvent = forwardRef((props: ChildComponentProps, ref) => {
           <AddByCategory onClose={onClose} onSelect={onCategorySelect} />
         ) : null}
         {addBottomSheetStatus === 2 ? (
-          <AddFromLibrary onClose={onClose} onSelect={onLibrarySelect} />
+          <AddFromLibrary onClose={onClose} onSelect={onDestinationSelect} />
         ) : null}
         {addBottomSheetStatus === 3 ? (
-          <AddCustomDest onClose={onClose} onSelect={onCustomSelect} />
+          <AddCustomDest onClose={onClose} onSelect={onDestinationSelect} />
         ) : null}
       </BottomSheet>
     </>

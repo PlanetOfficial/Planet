@@ -14,6 +14,13 @@ export interface Place {
   supplier: string;
 }
 
+export interface CustomPlace {
+  name: string;
+  latitude: number;
+  longitude: number;
+  formatted_address?: string | undefined;
+}
+
 export interface Category {
   id: number;
   name: string;
