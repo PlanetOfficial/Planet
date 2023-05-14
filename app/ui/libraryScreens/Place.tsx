@@ -61,7 +61,9 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
           <Text style={headerStyles.title}>{destination?.name}</Text>
           <Text style={headerStyles.info}>
             {category}
-            {destinationDetails?.price ? '・' + destinationDetails?.price : null}
+            {destinationDetails?.price
+              ? '・' + destinationDetails?.price
+              : null}
           </Text>
         </View>
       </View>
