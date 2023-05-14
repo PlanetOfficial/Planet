@@ -83,7 +83,7 @@ const PlacesDisplay: React.FC<Props> = ({
                   }
                 : null,
             ]}
-            key={place.id}>
+            key={idx}>
             <TouchableOpacity
               onPress={() => {
                 navigation.navigate('Place', {

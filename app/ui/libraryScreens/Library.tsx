@@ -26,6 +26,7 @@ import {getEvents} from '../../utils/api/libraryCalls/getEvents';
 import {getBookmarks} from '../../utils/api/shared/getBookmarks';
 import {Place, Event} from '../../utils/interfaces/types';
 import { isPlace2 } from '../../utils/functions/Misc';
+import { removeEvent } from '../../utils/api/libraryCalls/removeEvent';
 
 interface Props {
   navigation: any;
@@ -38,6 +39,10 @@ const Library: React.FC<Props> = ({navigation}) => {
 
   const removePlace = (placeId: number) => {
     setPlaces(places.filter((place: Place) => place.id !== placeId));
+  };
+
+  const removeEventUI = (eventId: number) => {
+    setEvents(events.filter((event: Event) => event.id !== eventId));
   };
 
   const initializeData = async () => {
@@ -56,6 +61,16 @@ const Library: React.FC<Props> = ({navigation}) => {
     });
     return unsubscribe;
   }, [navigation]);
+
+  const handleRemoveEvent = async (event_id: number) => {
+    const response = await removeEvent(event_id);
+
+    if (response) {
+      removeEventUI(event_id);
+    } else {
+      Alert.alert('Error', 'Something went wrong. Please try again.');
+    }
+  }
 
   return (
     <View style={styles.container}>
@@ -150,9 +165,7 @@ const Library: React.FC<Props> = ({navigation}) => {
                   },
                   {
                     name: strings.main.remove,
-                    onPress: () => {
-                      // TODO-LAVY: remove event
-                    },
+                    onPress: () => handleRemoveEvent(item.id),
                     color: colors.red,
                   },
                 ]}

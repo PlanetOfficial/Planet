@@ -45,6 +45,7 @@ import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 import {floats} from '../../constants/numbers';
 import { editEvent } from '../../utils/api/libraryCalls/editEvent';
+import { removeEvent } from '../../utils/api/libraryCalls/removeEvent';
 
 interface Props {
   navigation: any;
@@ -145,6 +146,16 @@ const Event: React.FC<Props> = ({navigation, route}) => {
     });
 
     return placeIds.filter((id: number | undefined) => id !== undefined) as number[];
+  }
+
+  const handleRemoveEvent = async () => {
+    const response = await removeEvent(eventId);
+
+    if (response) {
+      navigation.goBack();
+    } else {
+      Alert.alert('Error', 'Something went wrong. Please try again.');
+    }
   }
 
   return (
@@ -258,9 +269,7 @@ const Event: React.FC<Props> = ({navigation, route}) => {
                   },
                   {
                     name: strings.main.remove,
-                    onPress: () => {
-                      // TODO-LAVY: remove event
-                    },
+                    onPress: handleRemoveEvent,
                     color: colors.red,
                   },
                 ]}
