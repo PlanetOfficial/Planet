@@ -25,8 +25,8 @@ import {icons} from '../../constants/images';
 import {getEvents} from '../../utils/api/libraryCalls/getEvents';
 import {getBookmarks} from '../../utils/api/shared/getBookmarks';
 import {Place, Event} from '../../utils/interfaces/types';
-import { isPlace2 } from '../../utils/functions/Misc';
-import { removeEvent } from '../../utils/api/libraryCalls/removeEvent';
+import {isPlace2} from '../../utils/functions/Misc';
+import {removeEvent} from '../../utils/api/libraryCalls/removeEvent';
 
 interface Props {
   navigation: any;
@@ -70,7 +70,7 @@ const Library: React.FC<Props> = ({navigation}) => {
     } else {
       Alert.alert('Error', 'Something went wrong. Please try again.');
     }
-  }
+  };
 
   return (
     <View style={styles.container}>

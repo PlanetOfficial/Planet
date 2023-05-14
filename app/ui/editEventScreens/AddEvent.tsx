@@ -105,7 +105,6 @@ const AddEvent = forwardRef((props: ChildComponentProps, ref) => {
     setSelectionIndices(_selectionIndices);
   };
 
-
   return (
     <>
       {addOptionsBottomSheetOpen || addBottomSheetStatus !== 0 ? (

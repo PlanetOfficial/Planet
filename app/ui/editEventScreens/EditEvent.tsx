@@ -19,7 +19,7 @@ import {icons} from '../../constants/images';
 import {colors} from '../../constants/theme';
 
 import {Place, Category as CategoryT} from '../../utils/interfaces/types';
-import { isPlace } from '../../utils/functions/Misc';
+import {isPlace} from '../../utils/functions/Misc';
 
 interface Props {
   navigation: any;

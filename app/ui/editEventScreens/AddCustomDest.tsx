@@ -24,7 +24,7 @@ import AButton from '../components/ActionButton';
 
 import {GoogleMapsAPIKey} from '../../utils/api/APIConstants';
 import {CustomPlace, Place, Region} from '../../utils/interfaces/types';
-import { addCustomDestination } from '../../utils/api/shared/addCustomDestination';
+import {addCustomDestination} from '../../utils/api/shared/addCustomDestination';
 
 interface Props {
   onClose: () => void;
@@ -51,7 +51,12 @@ const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
 
   const handleSelection = async () => {
     if (customDestination) {
-      const response: Place | undefined = await addCustomDestination(customDestination.name, customDestination.latitude, customDestination.longitude, customDestination.formatted_address);
+      const response: Place | undefined = await addCustomDestination(
+        customDestination.name,
+        customDestination.latitude,
+        customDestination.longitude,
+        customDestination.formatted_address,
+      );
 
       if (response) {
         onSelect(response);
@@ -61,7 +66,7 @@ const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
 
       onClose();
     }
-  }
+  };
 
   return (
     <View
@@ -92,8 +97,8 @@ const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
         }}
         textInputProps={{
           selectTextOnFocus: true,
-          onChangeText(text) {
-            setText(text);
+          onChangeText(textInput: string) {
+            setText(textInput);
           },
           onFocus: () => {
             setCustom(true);
@@ -150,7 +155,7 @@ const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
               region={region}
               onRegionChangeComplete={setRegion}
               onPress={e =>
-                custom && text != ''
+                custom && text !== ''
                   ? setCustomDestination({
                       name: text,
                       latitude: e.nativeEvent.coordinate.latitude,

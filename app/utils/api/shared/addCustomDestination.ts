@@ -1,11 +1,11 @@
-import { Place } from '../../interfaces/types';
+import {Place} from '../../interfaces/types';
 import {DBOpsURL} from '../APIConstants';
 
 export const addCustomDestination = async (
-    name: String,
-    latitude: number,
-    longitude: number,
-    formatted_address?: string | undefined,
+  name: String,
+  latitude: number,
+  longitude: number,
+  formatted_address?: string | undefined,
 ): Promise<Place | undefined> => {
   // TODO-SECURITY: filter inputs**
 

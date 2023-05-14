@@ -44,8 +44,8 @@ import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 import {floats} from '../../constants/numbers';
-import { editEvent } from '../../utils/api/libraryCalls/editEvent';
-import { removeEvent } from '../../utils/api/libraryCalls/removeEvent';
+import {editEvent} from '../../utils/api/libraryCalls/editEvent';
+import {removeEvent} from '../../utils/api/libraryCalls/removeEvent';
 
 interface Props {
   navigation: any;
@@ -54,7 +54,9 @@ interface Props {
 
 const Event: React.FC<Props> = ({navigation, route}) => {
   const [eventId] = useState<number>(route?.params?.eventData?.id);
-  const [eventTitle, setEventTitle] = useState<string>(route?.params?.eventData?.name);
+  const [eventTitle, setEventTitle] = useState<string>(
+    route?.params?.eventData?.name,
+  );
   const [date, setDate] = useState<string>(
     moment(route?.params?.eventData?.date, 'YYYY-MM-DD').format('M/D/YYYY'),
   );
@@ -101,6 +103,7 @@ const Event: React.FC<Props> = ({navigation, route}) => {
 
   useEffect(() => {
     getEventData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [eventId]);
 
   const beginEdits = () => {
@@ -134,19 +137,21 @@ const Event: React.FC<Props> = ({navigation, route}) => {
     }
   };
 
-  const extractID = (places: (Place | Category)[]): number[] => {
-    const placeIds = places.map((item: Place | Category, index: number) => {
+  const extractID = (editItems: (Place | Category)[]): number[] => {
+    const placeIds = editItems.map((item: Place | Category, index: number) => {
       if (isPlace(item)) {
         return item.id;
       } else {
-        if(item.options && item.options.length > 0) {
+        if (item.options && item.options.length > 0) {
           return item.options[selectionIndices[index]]?.id;
         }
       }
     });
 
-    return placeIds.filter((id: number | undefined) => id !== undefined) as number[];
-  }
+    return placeIds.filter(
+      (id: number | undefined) => id !== undefined,
+    ) as number[];
+  };
 
   const handleRemoveEvent = async () => {
     const response = await removeEvent(eventId);
@@ -156,7 +161,7 @@ const Event: React.FC<Props> = ({navigation, route}) => {
     } else {
       Alert.alert('Error', 'Something went wrong. Please try again.');
     }
-  }
+  };
 
   return (
     <View style={styles.container}>
