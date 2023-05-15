@@ -1,6 +1,11 @@
 import haversine from 'haversine-distance';
 
-import {MarkerObject, Coordinate, WeekDay, PlaceDetail} from '../interfaces/types';
+import {
+  MarkerObject,
+  Coordinate,
+  WeekDay,
+  PlaceDetail,
+} from '../interfaces/types';
 import misc from '../../constants/misc';
 import {floats} from '../../constants/numbers';
 
@@ -244,7 +249,7 @@ export const addDaysToToday = (days: number): string => {
   return currentDate.toISOString().slice(0, 10);
 };
 
-// given an object of destination details from the raw API, return a 
+// given an object of destination details from the raw API, return a
 // PlaceDetail object with undefined values set to their default values
 // and the rest of the values set to the values from the raw API
 export const getPlaceDetail = (rawPlaceDetail: any): PlaceDetail => {
@@ -262,7 +267,7 @@ export const getPlaceDetail = (rawPlaceDetail: any): PlaceDetail => {
     rating: -1,
     review_count: -1,
     url: '',
-  }
+  };
 
   if (rawPlaceDetail?.additionalInfo) {
     templateDetails.additionalInfo = rawPlaceDetail.additionalInfo;
@@ -315,6 +320,6 @@ export const getPlaceDetail = (rawPlaceDetail: any): PlaceDetail => {
   if (rawPlaceDetail?.url) {
     templateDetails.url = rawPlaceDetail.url;
   }
-  
+
   return templateDetails;
-}
+};

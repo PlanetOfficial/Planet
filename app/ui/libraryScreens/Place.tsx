@@ -7,14 +7,12 @@ import {
   TouchableOpacity,
   Image,
   Linking,
-  Platform,
   Alert,
 } from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
 import {s} from 'react-native-size-matters';
 import {ScrollView} from 'react-native-gesture-handler';
 import {showLocation} from 'react-native-map-link';
-
 
 import strings from '../../constants/strings';
 import {icons, brands, yelpStars} from '../../constants/images';
@@ -111,8 +109,8 @@ const Place: React.FC<Props> = ({navigation, route}) => {
                 : null}
             </CustomText>
           </View>
-          <OptionMenu options={
-            [
+          <OptionMenu
+            options={[
               {
                 name: strings.library.createEvent,
                 onPress: () => {
@@ -145,9 +143,9 @@ const Place: React.FC<Props> = ({navigation, route}) => {
                 name: strings.createTabStack.eventUrl,
                 onPress: handleLinkPress,
                 color: colors.black,
-              }
-            ]
-          }/>
+              },
+            ]}
+          />
         </View>
       </SafeAreaView>
 
@@ -216,21 +214,19 @@ const Place: React.FC<Props> = ({navigation, route}) => {
           </View>
         ) : null}
         {destinationDetails.dates.start?.localDate &&
-          destinationDetails.dates.start?.localTime ? (
-            <View style={detailStyles.infoContainer}>
-              <Text style={detailStyles.infoTitle}>
-                {strings.createTabStack.eventTime}:
-              </Text>
-              <Text style={detailStyles.info}>
-                {convertDateToMMDDYYYY(
-                  destinationDetails.dates.start?.localDate,
-                ) + '\n'}
-                {convertTimeTo12Hour(
-                  destinationDetails?.dates.start?.localTime,
-                )}
-              </Text>
-            </View>
-          ) : null}
+        destinationDetails.dates.start?.localTime ? (
+          <View style={detailStyles.infoContainer}>
+            <Text style={detailStyles.infoTitle}>
+              {strings.createTabStack.eventTime}:
+            </Text>
+            <Text style={detailStyles.info}>
+              {convertDateToMMDDYYYY(
+                destinationDetails.dates.start?.localDate,
+              ) + '\n'}
+              {convertTimeTo12Hour(destinationDetails?.dates.start?.localTime)}
+            </Text>
+          </View>
+        ) : null}
         {destinationDetails.hours.length > 0 ? (
           <View style={detailStyles.infoContainer}>
             <Text style={detailStyles.infoTitle}>
