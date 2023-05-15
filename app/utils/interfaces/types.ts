@@ -74,8 +74,8 @@ export interface LiveEvent {
   date: string;
   id: number;
   image_url: string;
-  latitude: string;
-  longitude: string;
+  latitude: number;
+  longitude: number;
   name: string;
   priceRanges: {
     min: number;
