@@ -1,6 +1,6 @@
 import haversine from 'haversine-distance';
 
-import {MarkerObject, Coordinate, WeekDay} from '../interfaces/types';
+import {MarkerObject, Coordinate, WeekDay, PlaceDetail} from '../interfaces/types';
 import misc from '../../constants/misc';
 import {floats} from '../../constants/numbers';
 
@@ -243,3 +243,78 @@ export const addDaysToToday = (days: number): string => {
   currentDate.setDate(currentDate.getDate() + days);
   return currentDate.toISOString().slice(0, 10);
 };
+
+// given an object of destination details from the raw API, return a 
+// PlaceDetail object with undefined values set to their default values
+// and the rest of the values set to the values from the raw API
+export const getPlaceDetail = (rawPlaceDetail: any): PlaceDetail => {
+  let templateDetails: PlaceDetail = {
+    additionalInfo: '',
+    address: '',
+    dates: {},
+    description: '',
+    hours: [],
+    name: '',
+    phone: '',
+    photos: [],
+    place_name: '',
+    price: '',
+    rating: -1,
+    review_count: -1,
+    url: '',
+  }
+
+  if (rawPlaceDetail?.additionalInfo) {
+    templateDetails.additionalInfo = rawPlaceDetail.additionalInfo;
+  }
+
+  if (rawPlaceDetail?.address) {
+    templateDetails.address = rawPlaceDetail.address;
+  }
+
+  if (rawPlaceDetail?.dates) {
+    templateDetails.dates = rawPlaceDetail.dates;
+  }
+
+  if (rawPlaceDetail?.description) {
+    templateDetails.description = rawPlaceDetail.description;
+  }
+
+  if (rawPlaceDetail?.hours) {
+    templateDetails.hours = rawPlaceDetail.hours;
+  }
+
+  if (rawPlaceDetail?.name) {
+    templateDetails.name = rawPlaceDetail.name;
+  }
+
+  if (rawPlaceDetail?.phone) {
+    templateDetails.phone = rawPlaceDetail.phone;
+  }
+
+  if (rawPlaceDetail?.photos) {
+    templateDetails.photos = rawPlaceDetail.photos;
+  }
+
+  if (rawPlaceDetail?.place_name) {
+    templateDetails.place_name = rawPlaceDetail.place_name;
+  }
+
+  if (rawPlaceDetail?.price) {
+    templateDetails.price = rawPlaceDetail.price;
+  }
+
+  if (rawPlaceDetail?.rating) {
+    templateDetails.rating = rawPlaceDetail.rating;
+  }
+
+  if (rawPlaceDetail?.review_count) {
+    templateDetails.review_count = rawPlaceDetail.review_count;
+  }
+
+  if (rawPlaceDetail?.url) {
+    templateDetails.url = rawPlaceDetail.url;
+  }
+  
+  return templateDetails;
+}

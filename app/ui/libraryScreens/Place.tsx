@@ -24,6 +24,7 @@ import {
   convertDateToMMDDYYYY,
   convertTimeTo12Hour,
   displayHours,
+  getPlaceDetail,
 } from '../../utils/functions/Misc';
 import {getPlaceDetails} from '../../utils/api/shared/getPlaceDetails';
 
@@ -62,7 +63,8 @@ const Place: React.FC<Props> = ({navigation, route}) => {
       const id = destination.id;
       if (id) {
         const details = await getPlaceDetails(id);
-        setDestinationDetails(details);
+
+        setDestinationDetails(getPlaceDetail(details));
       }
     };
 
