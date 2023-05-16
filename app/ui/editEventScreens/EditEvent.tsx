@@ -193,13 +193,13 @@ const EditEvent: React.FC<Props> = ({
                     onPress={() => {
                       navigation.navigate('Place', {
                         destination: item,
-                        category: item.category_name,
+                        category: item.category.name,
                       });
                     }}>
                     <PlaceCard
                       id={item.id}
                       name={item.name}
-                      info={item.category_name}
+                      info={item.category.name}
                       marked={bookmarks.includes(item.id)}
                       image={
                         item.image_url

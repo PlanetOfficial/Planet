@@ -1,17 +1,14 @@
 import {ImageSourcePropType} from 'react-native';
 
 export interface Place {
-  category_id: number;
-  category_name: string;
-  created_at: number;
-  id: number;
-  image_url?: string;
-  latitude: number;
-  longitude: number;
-  name: string;
-  place_id: string;
-  subcategory_id?: number;
-  supplier: string;
+  id: number; //
+  name: string; //
+  image_url?: string; //
+  latitude: number; //
+  longitude: number; //
+  category: {
+    name: string;
+  }; //
 }
 
 export interface Category {

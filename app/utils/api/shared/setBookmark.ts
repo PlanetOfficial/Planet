@@ -1,10 +1,8 @@
 import {CustomCallsURL} from '../APIConstants';
 
-export const setBookmark = async (authToken: any, placeId: number) => {
-  // TODO-SECURITY: filter inputs**
-
+export const setBookmark = async (authToken: string, placeId: number): Promise<boolean> => {
   const response = await fetch(
-    CustomCallsURL + `/bookmark/${placeId}?authtoken=${authToken}`,
+    CustomCallsURL + `/places/add/${placeId}?authtoken=${authToken}`,
     {
       method: 'POST',
     },

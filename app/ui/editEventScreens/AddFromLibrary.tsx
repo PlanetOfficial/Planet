@@ -39,6 +39,7 @@ const AddFromLibrary: React.FC<Props> = ({onClose, onSelect}) => {
   useEffect(() => {
     const initializeData = async () => {
       const authToken = await EncryptedStorage.getItem('auth_token');
+      if(!authToken) return;
 
       // TODO: implement filters
 
@@ -102,7 +103,7 @@ const AddFromLibrary: React.FC<Props> = ({onClose, onSelect}) => {
               <PlaceCard
                 id={item.id}
                 name={item.name}
-                info={item.category_name}
+                info={item.category.name}
                 marked={true}
                 image={
                   item.image_url

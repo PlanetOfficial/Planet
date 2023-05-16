@@ -121,6 +121,8 @@ const SelectDestinations: React.FC<Props> = ({navigation, route}) => {
 
     const loadBookmarks = async () => {
       const authToken = await EncryptedStorage.getItem('auth_token');
+      if(!authToken) return;
+
       const response = await getBookmarks(authToken);
 
       let _bookmarks: number[] = [];
@@ -168,6 +170,7 @@ const SelectDestinations: React.FC<Props> = ({navigation, route}) => {
 
     if (placeIds.length > 0) {
       const authToken = await EncryptedStorage.getItem('auth_token');
+      if(!authToken) return;
 
       const responseStatus = await sendEvent(
         eventTitle,

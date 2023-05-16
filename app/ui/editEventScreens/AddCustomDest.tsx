@@ -99,16 +99,14 @@ const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
             });
             setDestination({
               // TODO-LAVY: addCustomDest Incomplete
-              category_id: 0,
-              category_name: 'Custom Event',
-              created_at: 0,
+              category: {
+                name: 'Custom Event',
+              },
               id: 0,
               image_url: '',
               latitude: details?.geometry?.location?.lat,
               longitude: details?.geometry?.location?.lng,
               name: data?.structured_formatting?.main_text,
-              place_id: '',
-              supplier: 'Custom',
             });
             setCustom(false);
           }
@@ -139,16 +137,14 @@ const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
                 custom && autocompleteRef.current?.getAddressText()
                   ? setDestination({
                       // TODO-LAVY: addCustomDest Incomplete
-                      category_id: 0,
-                      category_name: 'Custom Event',
-                      created_at: 0,
+                      category: {
+                        name: 'Custom Event',
+                      },
                       id: 0,
                       image_url: '',
                       latitude: e.nativeEvent.coordinate.latitude,
                       longitude: e.nativeEvent.coordinate.longitude,
                       name: autocompleteRef.current?.getAddressText(),
-                      place_id: '',
-                      supplier: 'Custom',
                     })
                   : null
               }>

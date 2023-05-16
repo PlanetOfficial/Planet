@@ -45,6 +45,7 @@ const Library: React.FC<Props> = ({navigation}) => {
 
   const initializeData = async () => {
     const authToken = await EncryptedStorage.getItem('auth_token');
+    if(!authToken) return;
 
     const eventsRaw = await getEvents(authToken);
     setEvents(eventsRaw);
@@ -105,13 +106,13 @@ const Library: React.FC<Props> = ({navigation}) => {
               onPress={() => {
                 navigation.navigate('Place', {
                   destination: item,
-                  category: item.category_name,
+                  category: item.category.name,
                 });
               }}>
               <PlaceCard
                 id={item.id}
                 name={item.name}
-                info={item.category_name}
+                info={item.category.name}
                 marked={places.includes(item)}
                 image={
                   item.image_url

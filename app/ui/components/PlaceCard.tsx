@@ -37,6 +37,8 @@ const PlaceCard: React.FC<Props> = ({
 
   const handleBookmark = async () => {
     const authToken = await EncryptedStorage.getItem('auth_token');
+    if(!authToken) return;
+    
     let responseStatus;
 
     if (!bookmarked) {

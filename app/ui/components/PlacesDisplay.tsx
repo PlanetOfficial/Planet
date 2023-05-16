@@ -88,13 +88,13 @@ const PlacesDisplay: React.FC<Props> = ({
               onPress={() => {
                 navigation.navigate('Place', {
                   destination: place,
-                  category: place.category_name,
+                  category: place.category.name,
                 });
               }}>
               <PlaceCard
                 id={place.id}
                 name={place.name}
-                info={place.category_name}
+                info={place.category.name}
                 marked={bookmarks.includes(place.id)}
                 image={
                   place.image_url

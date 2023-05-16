@@ -1,14 +1,16 @@
-import {DBOpsURL} from '../APIConstants';
+import {CustomCallsURL} from '../APIConstants';
+import { Place } from '../../interfaces/types';
 
-export const getBookmarks = async (authToken: any) => {
-  // TODO-SECURITY: filter inputs**
-
-  const response = await fetch(DBOpsURL + `/saved?authtoken=${authToken}`, {
-    method: 'GET',
-  });
+export const getBookmarks = async (authToken: string): Promise<Place[]> => {
+  const response = await fetch(
+    CustomCallsURL + `/places?authtoken=${authToken}`,
+    {
+      method: 'GET',
+    },
+  );
 
   if (response?.ok) {
-    const myJson = await response.json(); //extract JSON from the http response
+    const myJson: Place[] = await response.json();
     return myJson;
   } else {
     return [];
