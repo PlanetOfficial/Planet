@@ -284,7 +284,7 @@ const SelectDestinations: React.FC<Props> = ({navigation, route}) => {
         animateOnMount={Platform.OS === 'ios'}
         enableContentPanningGesture={false}>
         {loading ? (
-        <ActivityIndicator size="small" color={colors.accent} />
+          <ActivityIndicator size="small" color={colors.accent} />
         ) : (
           <EditEvent
             navigation={navigation}

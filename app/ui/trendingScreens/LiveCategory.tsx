@@ -114,7 +114,7 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
   ]);
 
   useEffect(() => {
-    const initializeBookmark = async () => {
+    const initializeBookmarks = async () => {
       const authToken = await EncryptedStorage.getItem('auth_token');
 
       const _bookmarks = await getBookmarks(authToken);
@@ -125,7 +125,7 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
     };
 
     const unsubscribe = navigation.addListener('focus', () => {
-      initializeBookmark();
+      initializeBookmarks();
     });
     return unsubscribe;
   }, [navigation]);
