@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 
 import {s, vs} from 'react-native-size-matters';
-import MapView, { Marker } from 'react-native-maps';
+import MapView, {Marker} from 'react-native-maps';
 import {Circle, Svg} from 'react-native-svg';
 import {
   GooglePlacesAutocomplete,
@@ -101,17 +101,17 @@ const MapScreen: React.FC<Props> = ({navigation, route}) => {
       );
     };
 
-    if(theDestination) {
+    if (theDestination) {
       setRegion({
         latitude: theDestination.latitude,
         longitude: theDestination.longitude,
         latitudeDelta: floats.defaultLatitudeDelta,
         longitudeDelta: floats.defaultLongitudeDelta,
-      })
+      });
     } else {
       setCurrentLocation();
     }
-  }, []);
+  }, [theDestination]);
 
   const bottomSheetRef = useRef<BottomSheet>(null);
   const autoCompleteRef = useRef<GooglePlacesAutocompleteRef>(null);
@@ -142,8 +142,7 @@ const MapScreen: React.FC<Props> = ({navigation, route}) => {
           rotateEnabled={false}
           onRegionChange={updateRadius}
           onRegionChangeComplete={setRegion}
-          region={region}
-        >
+          region={region}>
           {theDestination && (
             <Marker
               coordinate={{

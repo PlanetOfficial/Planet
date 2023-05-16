@@ -185,7 +185,8 @@ const Trending: React.FC<Props> = ({navigation}) => {
                             0,
                             5,
                           );
-                          hiddenSubCategories = category.subcategories?.slice(5);
+                          hiddenSubCategories =
+                            category.subcategories?.slice(5);
                         }
 
                         navigation.navigate('LiveCategory', {

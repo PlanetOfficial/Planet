@@ -105,7 +105,7 @@ const SelectDestinations: React.FC<Props> = ({navigation, route}) => {
       let _destinations: (Place | Category)[] = [];
       let _selectionIndices: number[] = [];
 
-      if(route.params?.theDestination) {
+      if (route.params?.theDestination) {
         _destinations.push(route.params.theDestination);
         _selectionIndices.push(0);
       }
@@ -130,7 +130,7 @@ const SelectDestinations: React.FC<Props> = ({navigation, route}) => {
 
     loadDestinations();
     loadBookmarks();
-  }, [latitude, longitude, radius, categories]);
+  }, [latitude, longitude, radius, categories, route.params?.theDestination]);
 
   const loadBookmarks = async () => {
     const authToken = await EncryptedStorage.getItem('auth_token');

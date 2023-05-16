@@ -67,7 +67,9 @@ const SelectCategories: React.FC<Props> = ({navigation, route}) => {
           <Icon
             size="s"
             icon={icons.confirm}
-            disabled={!route?.params?.theDestination && selectedCategories.length === 0}
+            disabled={
+              !route?.params?.theDestination && selectedCategories.length === 0
+            }
             onPress={() => {
               navigation.navigate('SelectDestinations', {
                 selectedCategories: selectedCategories,
