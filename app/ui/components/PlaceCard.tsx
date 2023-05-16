@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Alert, Image, StyleSheet, View} from 'react-native';
 
 import {s} from 'react-native-size-matters';
@@ -18,9 +18,9 @@ interface Props {
   small?: boolean;
   name: string;
   info: string;
-  marked: boolean;
+  bookmarked: boolean;
+  setBookmarked: (bookmarked: boolean, id: number) => void;
   image: Object;
-  onUnBookmark?: (placeId: number) => void;
 }
 
 // TODO: display more info on the card
@@ -29,16 +29,16 @@ const PlaceCard: React.FC<Props> = ({
   small = false,
   name,
   info,
-  marked,
+  bookmarked,
+  setBookmarked,
   image,
-  onUnBookmark,
 }) => {
-  const [bookmarked, setBookmarked] = useState<boolean>(marked);
-
   const handleBookmark = async () => {
     const authToken = await EncryptedStorage.getItem('auth_token');
-    if(!authToken) return;
-    
+    if (!authToken) {
+      return;
+    }
+
     let responseStatus;
 
     if (!bookmarked) {
@@ -47,14 +47,10 @@ const PlaceCard: React.FC<Props> = ({
     } else {
       // switch to not bookmarked, so call /unbookmark
       responseStatus = await unbookmark(authToken, id);
-
-      if (onUnBookmark) {
-        onUnBookmark(id);
-      }
     }
 
     if (responseStatus) {
-      setBookmarked(!bookmarked);
+      setBookmarked(!bookmarked, id);
     } else {
       Alert.alert('Error', 'Something went wrong. Please try again.');
     }

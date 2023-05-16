@@ -35,17 +35,15 @@ const Library: React.FC<Props> = ({navigation}) => {
   const [places, setPlaces] = useState<Place[]>([]);
   const [events, setEvents] = useState<Event[]>([]);
 
-  const removePlace = (placeId: number) => {
-    setPlaces(places.filter((place: Place) => place.id !== placeId));
-  };
-
   const isPlace = (item: Place | Event): item is Place => {
     return item.hasOwnProperty('latitude');
   };
 
   const initializeData = async () => {
     const authToken = await EncryptedStorage.getItem('auth_token');
-    if(!authToken) return;
+    if (!authToken) {
+      return;
+    }
 
     const eventsRaw = await getEvents(authToken);
     setEvents(eventsRaw);
@@ -107,13 +105,19 @@ const Library: React.FC<Props> = ({navigation}) => {
                 navigation.navigate('Place', {
                   destination: item,
                   category: item.category.name,
+                  bookmarked: places.includes(item),
                 });
               }}>
               <PlaceCard
                 id={item.id}
                 name={item.name}
                 info={item.category.name}
-                marked={places.includes(item)}
+                bookmarked={places.includes(item)}
+                setBookmarked={(bookmarked: boolean, id: number) => {
+                  if (!bookmarked) {
+                    setPlaces(places.filter((place: Place) => place.id !== id));
+                  }
+                }}
                 image={
                   item.image_url
                     ? {
@@ -121,7 +125,6 @@ const Library: React.FC<Props> = ({navigation}) => {
                       }
                     : icons.defaultIcon
                 }
-                onUnBookmark={removePlace}
               />
             </TouchableOpacity>
           ) : (

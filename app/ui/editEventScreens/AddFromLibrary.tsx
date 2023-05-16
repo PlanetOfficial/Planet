@@ -34,17 +34,19 @@ const AddFromLibrary: React.FC<Props> = ({onClose, onSelect}) => {
   // const [defaultFilterValues, setDefaultFilterValues] = useState<number[]>([]);
   // const [filtersInitialized, setFiltersInitialized] = useState<boolean>(false);
 
-  const [bookmarks, setBookmarks] = useState<Place[]>([]);
+  const [places, setPlaces] = useState<Place[]>([]);
 
   useEffect(() => {
     const initializeData = async () => {
       const authToken = await EncryptedStorage.getItem('auth_token');
-      if(!authToken) return;
+      if (!authToken) {
+        return;
+      }
 
       // TODO: implement filters
 
       const _bookmarks = await getBookmarks(authToken);
-      setBookmarks(_bookmarks);
+      setPlaces(_bookmarks);
     };
 
     initializeData();
@@ -86,7 +88,7 @@ const AddFromLibrary: React.FC<Props> = ({onClose, onSelect}) => {
       /> */}
 
       <FlatList
-        data={bookmarks}
+        data={places}
         contentContainerStyle={styles.contentContainer}
         initialNumToRender={5}
         keyExtractor={(item: Place) => item.id.toString()}
@@ -104,7 +106,12 @@ const AddFromLibrary: React.FC<Props> = ({onClose, onSelect}) => {
                 id={item.id}
                 name={item.name}
                 info={item.category.name}
-                marked={true}
+                bookmarked={true}
+                setBookmarked={(bookmarked: boolean, id: number) => {
+                  if (!bookmarked) {
+                    setPlaces(places.filter((place: Place) => place.id !== id));
+                  }
+                }}
                 image={
                   item.image_url
                     ? {

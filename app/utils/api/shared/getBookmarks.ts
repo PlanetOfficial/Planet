@@ -1,5 +1,5 @@
 import {CustomCallsURL} from '../APIConstants';
-import { Place } from '../../interfaces/types';
+import {Place} from '../../interfaces/types';
 
 export const getBookmarks = async (authToken: string): Promise<Place[]> => {
   const response = await fetch(

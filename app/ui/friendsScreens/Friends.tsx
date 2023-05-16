@@ -91,7 +91,9 @@ const Friends: React.FC<Props> = ({navigation}) => {
 
   const initializeData = async () => {
     const token = await EncryptedStorage.getItem('auth_token');
-    if(!token) return;
+    if (!token) {
+      return;
+    }
 
     const responseData = await getFGsAndInvites(token);
 

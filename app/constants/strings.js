@@ -126,6 +126,7 @@ const strings = {
     setCustomLocation: 'Set a custom location',
     promptSearch: 'Search for a place or type in a custom destination above',
     bookmark: 'Bookmark',
+    unbookmark: 'Unbookmark',
   },
   profile: {
     followers: 'followers',

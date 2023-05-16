@@ -14,6 +14,7 @@ interface Props {
   places: Place[];
   width: number;
   bookmarks: number[];
+  setBookmarked: (bookmarked: boolean, id: number) => void;
   closeDropdown?: () => void;
   index: number;
   setIndex: (index: number) => void;
@@ -24,6 +25,7 @@ const PlacesDisplay: React.FC<Props> = ({
   places,
   width,
   bookmarks,
+  setBookmarked,
   closeDropdown,
   index,
   setIndex,
@@ -95,7 +97,8 @@ const PlacesDisplay: React.FC<Props> = ({
                 id={place.id}
                 name={place.name}
                 info={place.category.name}
-                marked={bookmarks.includes(place.id)}
+                bookmarked={bookmarks.includes(place.id)}
+                setBookmarked={setBookmarked}
                 image={
                   place.image_url
                     ? {
