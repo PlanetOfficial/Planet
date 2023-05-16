@@ -103,6 +103,9 @@ const Event: React.FC<Props> = ({navigation, route}) => {
 
     const initializeData = async () => {
       const authToken = await EncryptedStorage.getItem('auth_token');
+      if (!authToken) {
+        return;
+      }
 
       const _bookmarks = await getBookmarks(authToken);
       const bookmarksIds: number[] = _bookmarks.map(
