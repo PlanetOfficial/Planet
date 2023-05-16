@@ -31,6 +31,7 @@ interface Props {
   selectionIndices: number[];
   setSelectionIndices: (idx: number[]) => void;
   onAddPress: (idx: number) => void;
+  bottomPad: number;
 }
 
 const EditEvent: React.FC<Props> = ({
@@ -44,6 +45,7 @@ const EditEvent: React.FC<Props> = ({
   selectionIndices,
   setSelectionIndices,
   onAddPress,
+  bottomPad,
 }) => {
   const [dragging, setDragging] = useState<boolean>(false);
   const itemRefs = useRef(new Map());
@@ -91,7 +93,10 @@ const EditEvent: React.FC<Props> = ({
       data={destinations}
       keyExtractor={(_: Place | CategoryT, index: number) => index.toString()}
       showsVerticalScrollIndicator={false}
-      contentContainerStyle={styles.flatlist}
+      contentContainerStyle={[
+        styles.flatlist,
+        {paddingBottom: bottomPad + s(20)},
+      ]}
       activationDistance={20}
       onDragBegin={() => {
         setDragging(true);
@@ -299,7 +304,6 @@ const AddEventSeparator = () => (
 const styles = StyleSheet.create({
   flatlist: {
     paddingTop: s(10),
-    paddingBottom: s(20),
   },
   cardContainer: {
     marginHorizontal: s(30),

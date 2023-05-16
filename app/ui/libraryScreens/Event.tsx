@@ -259,6 +259,7 @@ const Event: React.FC<Props> = ({navigation, route}) => {
             selectionIndices={selectionIndices}
             setSelectionIndices={setSelectionIndices}
             onAddPress={addRef.current?.onAddPress}
+            bottomPad={0}
           />
         ) : (
           <SafeAreaView>

@@ -39,7 +39,30 @@ export const icons = {
   minus: require('../assets/icons/minus.png'),
   hide: require('../assets/icons/hide.png'),
   drop: require('../assets/icons/drop.png'),
+  map: require('../assets/icons/map.png'),
+  telephone: require('../assets/icons/telephone.png'),
 };
+
+export const brands = {
+  yelpIcon: require('../assets/brands/yelp_icon.png'),
+  yelpLogo: require('../assets/brands/yelp_logo.png'),
+  ticketmasterIcon: require('../assets/brands/ticketmaster_icon.png'),
+  ticketmasterLogo: require('../assets/brands/ticketmaster_logo.png'),
+};
+
+export const yelpStars = [
+  require('../assets/brands/yelp_stars/0.png'),
+  require('../assets/brands/yelp_stars/0.png'),
+  require('../assets/brands/yelp_stars/1.png'),
+  require('../assets/brands/yelp_stars/1.5.png'),
+  require('../assets/brands/yelp_stars/2.png'),
+  require('../assets/brands/yelp_stars/2.5.png'),
+  require('../assets/brands/yelp_stars/3.png'),
+  require('../assets/brands/yelp_stars/3.5.png'),
+  require('../assets/brands/yelp_stars/4.png'),
+  require('../assets/brands/yelp_stars/4.5.png'),
+  require('../assets/brands/yelp_stars/5.png'),
+];
 
 export const vectors = {
   blur: require('../assets/vectors/blur.png'),

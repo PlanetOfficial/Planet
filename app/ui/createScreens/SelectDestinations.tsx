@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, {useRef, useEffect, useState, useMemo} from 'react';
+import React, {useRef, useEffect, useState, useMemo, useCallback} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -71,12 +71,20 @@ const SelectDestinations: React.FC<Props> = ({navigation, route}) => {
 
   const insets = useSafeAreaInsets();
 
+  const [bottomPad, setBottomPad] = useState<number>(0);
   const addRef = useRef<any>(null); // due to forwardRef
   const bottomSheetRef = useRef<BottomSheet>(null);
   const snapPoints = useMemo(
-    () => [vs(350) - (insets.top + s(35)), vs(680) - (insets.top + s(60))],
+    () => [vs(380) - (insets.top + s(50)), vs(680) - (insets.top + s(50))],
     [insets.top],
   );
+  const handleSheetChange = useCallback((_: number, toIndex: number) => {
+    if (toIndex === 1) {
+      setBottomPad(0);
+    } else {
+      setBottomPad(vs(300));
+    }
+  }, []);
 
   const isPlace = (destination: Place | Category): destination is Place => {
     return destination.hasOwnProperty('latitude');
@@ -256,6 +264,7 @@ const SelectDestinations: React.FC<Props> = ({navigation, route}) => {
         ref={bottomSheetRef}
         index={0}
         snapPoints={snapPoints}
+        onAnimate={handleSheetChange}
         animateOnMount={Platform.OS === 'ios'}
         enableContentPanningGesture={false}>
         <EditEvent
@@ -269,6 +278,7 @@ const SelectDestinations: React.FC<Props> = ({navigation, route}) => {
           selectionIndices={selectionIndices}
           setSelectionIndices={setSelectionIndices}
           onAddPress={addRef.current?.onAddPress}
+          bottomPad={bottomPad}
         />
       </BottomSheet>
 

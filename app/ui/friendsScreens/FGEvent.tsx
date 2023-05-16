@@ -173,7 +173,6 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
   };
 
   const handleReactionInfo = (likes: FGReaction[], dislikes: FGReaction[]) => {
-    console.log(likes);
     feedbackBottomSheetRef.current?.present();
 
     setCurPlaceLikes(likes);

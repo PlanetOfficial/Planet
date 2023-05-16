@@ -165,25 +165,38 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
                   showsHorizontalScrollIndicator={false}>
                   {liveEvents[subcategory.id]
                     ? liveEvents[subcategory.id].map(
-                        (liveEvent: LiveEvent, jdx: number) => (
+                        (event: LiveEvent, jdx: number) => (
                           <TouchableOpacity
                             style={categoryStyles.card}
                             key={jdx}
                             onPress={() =>
                               navigation.navigate('Place', {
-                                destination: liveEvent,
+                                destination: event,
                                 category: categoryName,
                               })
                             }>
                             <PlaceCard
-                              id={liveEvent.id}
+                              id={event.id}
                               small={true}
-                              name={liveEvent.name}
-                              info={moment(liveEvent.date, 'YYYY-MM-DD').format(
-                                'M/D/Y',
-                              )}
-                              marked={bookmarks.includes(liveEvent.id)}
-                              image={{uri: liveEvent.image_url}}
+                              name={event.name}
+                              info={
+                                moment(event.date, 'YYYY-MM-DD').format(
+                                  'M/D/YYYY',
+                                ) +
+                                (event?.priceRanges && event?.priceRanges[0]
+                                  ? ' • ' +
+                                    '$' +
+                                    Math.round(event.priceRanges[0]?.min) +
+                                    (event.priceRanges[0].min !==
+                                    event.priceRanges[0].max
+                                      ? ' - ' +
+                                        '$' +
+                                        Math.round(event.priceRanges[0]?.max)
+                                      : '')
+                                  : '')
+                              }
+                              marked={bookmarks.includes(event.id)}
+                              image={{uri: event.image_url}}
                             />
                           </TouchableOpacity>
                         ),
