@@ -31,6 +31,7 @@ interface ChildComponentProps {
   latitude: number;
   longitude: number;
   bookmarks: number[];
+  setBookmarked: (bookmark: boolean, id: number) => void;
   category: CategoryT;
   categoryIndex: number;
   destination: Place | CategoryT;
@@ -48,6 +49,7 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
     latitude,
     longitude,
     bookmarks,
+    setBookmarked,
     category,
     categoryIndex,
     destination,
@@ -196,6 +198,7 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
           places={destination.options}
           width={s(290)}
           bookmarks={bookmarks}
+          setBookmarked={setBookmarked}
           closeDropdown={closeDropdown}
           index={selectionIndex}
           setIndex={setSelectionIndex}

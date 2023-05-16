@@ -8,6 +8,7 @@ import {
   Platform,
   PermissionsAndroid,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 import EncryptedStorage from 'react-native-encrypted-storage';
@@ -41,6 +42,7 @@ const Trending: React.FC<Props> = ({navigation}) => {
   const [eventsData, setEventsData] = useState<LiveEvents>([]);
   const [bookmarks, setBookmarks] = useState<number[]>([]);
   const [liveCategories, setLiveCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const initializeData = async () => {
@@ -61,8 +63,11 @@ const Trending: React.FC<Props> = ({navigation}) => {
       setLiveCategories(_liveCategories);
     };
 
-    initializeData();
-  }, []);
+    const unsubscribe = navigation.addListener('focus', () => {
+      initializeData();
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   useEffect(() => {
     const detectLocation = async () => {
@@ -96,6 +101,7 @@ const Trending: React.FC<Props> = ({navigation}) => {
           integers.defaultNumPlaces,
         );
 
+        setLoading(false);
         setEventsData(liveEvents);
       };
 
@@ -155,102 +161,121 @@ const Trending: React.FC<Props> = ({navigation}) => {
           </View>
         </View>
       </SafeAreaView>
-      <ScrollView>
-        {liveCategories?.map((category: Category, idx: number) =>
-          eventsData[category.id] && eventsData[category.id].length > 0 ? (
-            <View key={idx} style={categoryStyles.container}>
-              <View style={categoryStyles.header}>
-                <Text size="m" weight="b">
-                  {category.name}
-                </Text>
-                <TouchableOpacity
-                  onPress={() => {
-                    let defaultSubcategories: Subcategory[] = [];
-                    let hiddenSubCategories: Subcategory[] = [];
-
-                    if (category.subcategories) {
-                      if (category.subcategories.length <= 5) {
-                        defaultSubcategories = category.subcategories;
-                      } else {
-                        defaultSubcategories = category.subcategories?.slice(
-                          0,
-                          5,
-                        );
-                        hiddenSubCategories = category.subcategories?.slice(5);
-                      }
-
-                      navigation.navigate('LiveCategory', {
-                        subcategories: defaultSubcategories,
-                        hiddenSubCategories,
-                        categoryId: category.id,
-                        filters: category.filters,
-                        categoryName: category.name,
-                        bookmarks,
-                        latitude,
-                        longitude,
-                        radius,
-                      });
-                    }
-                  }}>
-                  <Text size="xs" weight="b" color={colors.accent}>
-                    {strings.trending.seeAll}
+      {loading ? (
+        <ActivityIndicator size="small" color={colors.accent} />
+      ) : (
+        <ScrollView>
+          {liveCategories?.map((category: Category, idx: number) =>
+            eventsData[category.id] && eventsData[category.id].length > 0 ? (
+              <View key={idx} style={categoryStyles.container}>
+                <View style={categoryStyles.header}>
+                  <Text size="m" weight="b">
+                    {category.name}
                   </Text>
-                </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => {
+                      let defaultSubcategories: Subcategory[] = [];
+                      let hiddenSubCategories: Subcategory[] = [];
+
+                      if (category.subcategories) {
+                        if (category.subcategories.length <= 5) {
+                          defaultSubcategories = category.subcategories;
+                        } else {
+                          defaultSubcategories = category.subcategories?.slice(
+                            0,
+                            5,
+                          );
+                          hiddenSubCategories = category.subcategories?.slice(5);
+                        }
+
+                        navigation.navigate('LiveCategory', {
+                          subcategories: defaultSubcategories,
+                          hiddenSubCategories,
+                          categoryId: category.id,
+                          filters: category.filters,
+                          categoryName: category.name,
+                          bookmarks,
+                          latitude,
+                          longitude,
+                          radius,
+                        });
+                      }
+                    }}>
+                    <Text size="xs" weight="b" color={colors.accent}>
+                      {strings.trending.seeAll}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+                <ScrollView
+                  contentContainerStyle={categoryStyles.contentContainer}
+                  style={categoryStyles.scrollView}
+                  horizontal={true}
+                  showsHorizontalScrollIndicator={false}>
+                  {eventsData[category.id]
+                    ? eventsData[category.id].map(
+                        (event: LiveEvent, jdx: number) => (
+                          <TouchableOpacity
+                            style={categoryStyles.card}
+                            key={jdx}
+                            onPress={() => {
+                              navigation.navigate('Place', {
+                                destination: event,
+                                category: event.category,
+                                bookmarked: bookmarks.includes(event.id),
+                              });
+                            }}>
+                            <PlaceCard
+                              id={event.id}
+                              small={true}
+                              name={event.name}
+                              info={
+                                moment(event.date, 'YYYY-MM-DD').format(
+                                  'M/D/YYYY',
+                                ) +
+                                (event.priceRanges[0]
+                                  ? ' • ' +
+                                    '$' +
+                                    Math.round(event.priceRanges[0]?.min) +
+                                    (event.priceRanges[0].min !==
+                                    event.priceRanges[0].max
+                                      ? ' - ' +
+                                        '$' +
+                                        Math.round(event.priceRanges[0]?.max)
+                                      : '')
+                                  : '')
+                              }
+                              bookmarked={bookmarks.includes(event.id)}
+                              setBookmarked={(
+                                bookmarked: boolean,
+                                id: number,
+                              ) => {
+                                if (bookmarked) {
+                                  setBookmarks([...bookmarks, id]);
+                                } else {
+                                  setBookmarks(
+                                    bookmarks.filter(
+                                      (bookmark: number) => bookmark !== id,
+                                    ),
+                                  );
+                                }
+                              }}
+                              image={{uri: event.image_url}}
+                            />
+                          </TouchableOpacity>
+                        ),
+                      )
+                    : null}
+                </ScrollView>
+                {idx === liveCategories?.length - 1 ? (
+                  <View style={styles.bottomPadding} />
+                ) : (
+                  <Spacer />
+                )}
               </View>
-              <ScrollView
-                contentContainerStyle={categoryStyles.contentContainer}
-                style={categoryStyles.scrollView}
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}>
-                {eventsData[category.id]
-                  ? eventsData[category.id].map(
-                      (event: LiveEvent, jdx: number) => (
-                        <TouchableOpacity
-                          style={categoryStyles.card}
-                          key={jdx}
-                          onPress={() =>
-                            navigation.navigate('Place', {
-                              destination: event,
-                              category: event.category,
-                            })
-                          }>
-                          <PlaceCard
-                            id={event.id}
-                            small={true}
-                            name={event.name}
-                            info={
-                              moment(event.date, 'YYYY-MM-DD').format(
-                                'M/D/YYYY',
-                              ) +
-                              (event.priceRanges[0]
-                                ? ' • ' +
-                                  '$' +
-                                  Math.round(event.priceRanges[0]?.min) +
-                                  (event.priceRanges[0].min !==
-                                  event.priceRanges[0].max
-                                    ? ' - ' +
-                                      '$' +
-                                      Math.round(event.priceRanges[0]?.max)
-                                    : '')
-                                : '')
-                            }
-                            marked={bookmarks.includes(event.id)}
-                            image={{uri: event.image_url}}
-                          />
-                        </TouchableOpacity>
-                      ),
-                    )
-                  : null}
-              </ScrollView>
-              {idx === liveCategories?.length - 1 ? (
-                <View style={styles.bottomPadding} />
-              ) : (
-                <Spacer />
-              )}
-            </View>
-          ) : null,
-        )}
-      </ScrollView>
+            ) : null,
+          )}
+        </ScrollView>
+      )}
     </View>
   );
 };

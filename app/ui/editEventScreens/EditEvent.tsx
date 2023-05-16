@@ -26,6 +26,7 @@ interface Props {
   latitude: number;
   longitude: number;
   bookmarks: number[];
+  setBookmarked: (bookmarked: boolean, id: number) => void;
   destinations: (Place | CategoryT)[];
   setDestinations: (destinations: (Place | CategoryT)[]) => void;
   selectionIndices: number[];
@@ -40,6 +41,7 @@ const EditEvent: React.FC<Props> = ({
   latitude,
   longitude,
   bookmarks,
+  setBookmarked,
   destinations,
   setDestinations,
   selectionIndices,
@@ -194,13 +196,15 @@ const EditEvent: React.FC<Props> = ({
                       navigation.navigate('Place', {
                         destination: item,
                         category: item.category_name,
+                        bookmarked: bookmarks.includes(item.id),
                       });
                     }}>
                     <PlaceCard
                       id={item.id}
                       name={item.name}
                       info={item.category_name}
-                      marked={bookmarks.includes(item.id)}
+                      bookmarked={bookmarks.includes(item.id)}
+                      setBookmarked={setBookmarked}
                       image={
                         item.image_url
                           ? {
@@ -223,6 +227,7 @@ const EditEvent: React.FC<Props> = ({
                   latitude={latitude}
                   longitude={longitude}
                   bookmarks={bookmarks}
+                  setBookmarked={setBookmarked}
                   category={item}
                   categoryIndex={index}
                   destination={destinations[index]}

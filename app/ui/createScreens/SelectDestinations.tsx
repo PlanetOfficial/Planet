@@ -8,6 +8,7 @@ import {
   View,
   Platform,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
 import moment from 'moment';
 
@@ -70,6 +71,7 @@ const SelectDestinations: React.FC<Props> = ({navigation, route}) => {
   const [markers, setMarkers] = useState<MarkerObject[]>([]);
 
   const insets = useSafeAreaInsets();
+  const [loading, setLoading] = useState<boolean>(true);
 
   const [bottomPad, setBottomPad] = useState<number>(0);
   const addRef = useRef<any>(null); // due to forwardRef
@@ -102,6 +104,12 @@ const SelectDestinations: React.FC<Props> = ({navigation, route}) => {
 
       let _destinations: (Place | Category)[] = [];
       let _selectionIndices: number[] = [];
+
+      if(route.params?.theDestination) {
+        _destinations.push(route.params.theDestination);
+        _selectionIndices.push(0);
+      }
+
       categories.forEach((category: Category) => {
         _destinations.push({
           id: category.id,
@@ -117,23 +125,31 @@ const SelectDestinations: React.FC<Props> = ({navigation, route}) => {
       });
       setDestinations(_destinations);
       setSelectionIndices(_selectionIndices);
-    };
-
-    const loadBookmarks = async () => {
-      const authToken = await EncryptedStorage.getItem('auth_token');
-      const response = await getBookmarks(authToken);
-
-      let _bookmarks: number[] = [];
-      response.forEach((bookmark: Place) => {
-        _bookmarks.push(bookmark.id);
-      });
-
-      setBookmarks(_bookmarks);
+      setLoading(false);
     };
 
     loadDestinations();
     loadBookmarks();
   }, [latitude, longitude, radius, categories]);
+
+  const loadBookmarks = async () => {
+    const authToken = await EncryptedStorage.getItem('auth_token');
+    const response = await getBookmarks(authToken);
+
+    let _bookmarks: number[] = [];
+    response.forEach((bookmark: Place) => {
+      _bookmarks.push(bookmark.id);
+    });
+
+    setBookmarks(_bookmarks);
+  };
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      loadBookmarks();
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   useEffect(() => {
     let places: Place[] = [];
@@ -267,19 +283,32 @@ const SelectDestinations: React.FC<Props> = ({navigation, route}) => {
         onAnimate={handleSheetChange}
         animateOnMount={Platform.OS === 'ios'}
         enableContentPanningGesture={false}>
-        <EditEvent
-          navigation={navigation}
-          radius={radius}
-          latitude={latitude}
-          longitude={longitude}
-          bookmarks={bookmarks}
-          destinations={destinations}
-          setDestinations={setDestinations}
-          selectionIndices={selectionIndices}
-          setSelectionIndices={setSelectionIndices}
-          onAddPress={addRef.current?.onAddPress}
-          bottomPad={bottomPad}
-        />
+        {loading ? (
+        <ActivityIndicator size="small" color={colors.accent} />
+        ) : (
+          <EditEvent
+            navigation={navigation}
+            radius={radius}
+            latitude={latitude}
+            longitude={longitude}
+            bookmarks={bookmarks}
+            setBookmarked={(bookmarked: boolean, id: number) => {
+              if (bookmarked) {
+                setBookmarks([...bookmarks, id]);
+              } else {
+                setBookmarks(
+                  bookmarks.filter((bookmark: number) => bookmark !== id),
+                );
+              }
+            }}
+            destinations={destinations}
+            setDestinations={setDestinations}
+            selectionIndices={selectionIndices}
+            setSelectionIndices={setSelectionIndices}
+            onAddPress={addRef.current?.onAddPress}
+            bottomPad={bottomPad}
+          />
+        )}
       </BottomSheet>
 
       <AddEvent
