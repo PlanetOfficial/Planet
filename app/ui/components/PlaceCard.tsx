@@ -52,7 +52,6 @@ const PlaceCard: React.FC<Props> = ({
     if (responseStatus) {
       setBookmarked(!bookmarked, id);
     } else {
-      console.log(responseStatus);
       Alert.alert('Error', 'Something went wrong. Please try again.');
     }
   };

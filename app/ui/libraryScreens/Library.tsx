@@ -109,7 +109,7 @@ const Library: React.FC<Props> = ({navigation}) => {
                 });
               }}>
               <PlaceCard
-                id={item.id}
+                id={item.place_v2_id}
                 name={item.name}
                 info={item.category.name}
                 bookmarked={places.includes(item)}
