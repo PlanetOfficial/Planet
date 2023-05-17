@@ -11,6 +11,6 @@ export const getPlaceDetails = async (placeId: any) => {
     const myJson = await response.json(); //extract JSON from the http response
     return myJson;
   } else {
-    return [];
+    return {};
   }
 };

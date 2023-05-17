@@ -5,6 +5,7 @@ import {
   Text as TextRN,
   Image,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 import MapView, {Marker} from 'react-native-maps';
@@ -22,11 +23,12 @@ import Text from '../components/Text';
 import AButton from '../components/ActionButton';
 
 import {GoogleMapsAPIKey} from '../../utils/api/APIConstants';
-import {Place, Region} from '../../utils/interfaces/types';
+import {CustomPlace, Place, Region} from '../../utils/interfaces/types';
+import {addCustomDestination} from '../../utils/api/shared/addCustomDestination';
 
 interface Props {
   onClose: () => void;
-  onSelect: (destination: Place) => void;
+  onSelect: (customDestination: Place) => void;
 }
 
 const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
@@ -38,13 +40,33 @@ const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
     longitudeDelta: floats.defaultLongitudeDelta,
   });
 
-  const [destination, setDestination] = useState<Place>();
+  const [customDestination, setCustomDestination] = useState<CustomPlace>();
   const [selected, setSelected] = useState<boolean>(false);
   const [custom, setCustom] = useState<boolean>(false);
+  const [text, setText] = useState<string>('');
 
   useEffect(() => {
     autocompleteRef.current?.focus();
   }, []);
+
+  const handleSelection = async () => {
+    if (customDestination) {
+      const response: Place | undefined = await addCustomDestination(
+        customDestination.name,
+        customDestination.latitude,
+        customDestination.longitude,
+        customDestination.formatted_address,
+      );
+
+      if (response) {
+        onSelect(response);
+      } else {
+        Alert.alert('Error', 'Something went wrong. Please try again.');
+      }
+
+      onClose();
+    }
+  };
 
   return (
     <View
@@ -75,6 +97,9 @@ const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
         }}
         textInputProps={{
           selectTextOnFocus: true,
+          onChangeText(textInput: string) {
+            setText(textInput);
+          },
           onFocus: () => {
             setCustom(true);
             setSelected(false);
@@ -88,7 +113,8 @@ const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
         onPress={(data, details = null) => {
           if (
             details?.geometry?.location?.lat &&
-            details?.geometry?.location?.lng
+            details?.geometry?.location?.lng &&
+            data?.structured_formatting?.main_text
           ) {
             setSelected(true);
             setRegion({
@@ -97,18 +123,11 @@ const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
               latitudeDelta: floats.defaultLatitudeDelta,
               longitudeDelta: floats.defaultLongitudeDelta,
             });
-            setDestination({
-              // TODO-LAVY: addCustomDest Incomplete
-              category_id: 0,
-              category_name: 'Custom Event',
-              created_at: 0,
-              id: 0,
-              image_url: '',
-              latitude: details?.geometry?.location?.lat,
-              longitude: details?.geometry?.location?.lng,
-              name: data?.structured_formatting?.main_text,
-              place_id: '',
-              supplier: 'Custom',
+            setCustomDestination({
+              name: data.structured_formatting.main_text,
+              latitude: details.geometry.location.lat,
+              longitude: details.geometry.location.lng,
+              formatted_address: details?.formatted_address,
             });
             setCustom(false);
           }
@@ -136,29 +155,21 @@ const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
               region={region}
               onRegionChangeComplete={setRegion}
               onPress={e =>
-                custom && autocompleteRef.current?.getAddressText()
-                  ? setDestination({
-                      // TODO-LAVY: addCustomDest Incomplete
-                      category_id: 0,
-                      category_name: 'Custom Event',
-                      created_at: 0,
-                      id: 0,
-                      image_url: '',
+                custom && text !== ''
+                  ? setCustomDestination({
+                      name: text,
                       latitude: e.nativeEvent.coordinate.latitude,
                       longitude: e.nativeEvent.coordinate.longitude,
-                      name: autocompleteRef.current?.getAddressText(),
-                      place_id: '',
-                      supplier: 'Custom',
                     })
                   : null
               }>
               <Marker
                 coordinate={{
-                  latitude: destination?.latitude
-                    ? destination?.latitude
+                  latitude: customDestination?.latitude
+                    ? customDestination?.latitude
                     : floats.defaultLatitude,
-                  longitude: destination?.longitude
-                    ? destination?.longitude
+                  longitude: customDestination?.longitude
+                    ? customDestination?.longitude
                     : floats.defaultLongitude,
                 }}
               />
@@ -172,12 +183,7 @@ const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
         <AButton
           disabled={!selected}
           label={strings.library.add}
-          onPress={() => {
-            if (destination) {
-              onClose();
-              onSelect(destination);
-            }
-          }}
+          onPress={handleSelection}
         />
       </View>
     </View>

@@ -4,6 +4,9 @@ import {
   MarkerObject,
   Coordinate,
   WeekDay,
+  Category,
+  Place,
+  Event,
   PlaceDetail,
 } from '../interfaces/types';
 import misc from '../../constants/misc';
@@ -247,6 +250,20 @@ export const addDaysToToday = (days: number): string => {
   const currentDate = new Date();
   currentDate.setDate(currentDate.getDate() + days);
   return currentDate.toISOString().slice(0, 10);
+};
+
+// given an object, return true if it is a place, false if it is a category
+// Note: a category cannot have a latitude so this is the way to tell a Place from a Category
+export const isPlace = (
+  destination: Place | Category,
+): destination is Place => {
+  return destination.hasOwnProperty('latitude');
+};
+
+// given an object, return true if it is a place, false if it is an event
+// Note: an event cannot have a latitude so this is the way to tell a Place from an Event
+export const isPlace2 = (item: Place | Event): item is Place => {
+  return item.hasOwnProperty('latitude');
 };
 
 // given an object of destination details from the raw API, return a

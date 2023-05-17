@@ -33,6 +33,7 @@ import {sendEvent} from '../../utils/api/CreateCalls/sendEvent';
 import {
   getMarkerArray,
   getRegionForCoordinates,
+  isPlace,
 } from '../../utils/functions/Misc';
 import {MarkerObject} from '../../utils/interfaces/types';
 
@@ -87,10 +88,6 @@ const SelectDestinations: React.FC<Props> = ({navigation, route}) => {
       setBottomPad(vs(300));
     }
   }, []);
-
-  const isPlace = (destination: Place | Category): destination is Place => {
-    return destination.hasOwnProperty('latitude');
-  };
 
   useEffect(() => {
     const loadDestinations = async () => {
@@ -271,6 +268,7 @@ const SelectDestinations: React.FC<Props> = ({navigation, route}) => {
             size="s"
             color={colors.accent}
             icon={icons.confirm}
+            disabled={eventTitle.length === 0}
             onPress={() => setSaveConfirmationOpen(true)}
           />
         </View>

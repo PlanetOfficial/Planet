@@ -21,6 +21,7 @@ import {
   getMarkerArray,
   getAveragePoint,
   getRegionForCoordinates,
+  isPlace,
 } from '../../utils/functions/Misc';
 import {
   MarkerObject,
@@ -43,6 +44,8 @@ import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 import {floats} from '../../constants/numbers';
+import {editEvent} from '../../utils/api/libraryCalls/editEvent';
+import {removeEvent} from '../../utils/api/libraryCalls/removeEvent';
 import {getBookmarks} from '../../utils/api/shared/getBookmarks';
 import EncryptedStorage from 'react-native-encrypted-storage';
 
@@ -53,8 +56,10 @@ interface Props {
 
 const Event: React.FC<Props> = ({navigation, route}) => {
   const [eventId] = useState<number>(route?.params?.eventData?.id);
-  const [eventTitle] = useState<string>(route?.params?.eventData?.name);
-  const [date] = useState<string>(
+  const [eventTitle, setEventTitle] = useState<string>(
+    route?.params?.eventData?.name,
+  );
+  const [date, setDate] = useState<string>(
     moment(route?.params?.eventData?.date, 'YYYY-MM-DD').format('M/D/YYYY'),
   );
   const [bookmarks, setBookmarks] = useState<number[]>(
@@ -69,8 +74,8 @@ const Event: React.FC<Props> = ({navigation, route}) => {
   const [markers, setMarkers] = useState<MarkerObject[]>([]);
 
   const [editing, setEditing] = useState<boolean>(false);
-  const [tempTitle, setTempTitle] = useState<string>();
-  const [tempDate, setTempDate] = useState<string>();
+  const [tempTitle, setTempTitle] = useState<string>('');
+  const [tempDate, setTempDate] = useState<string>('');
   const [tempPlaces, setTempPlaces] = useState<(Place | Category)[]>([]);
   const [datePickerOpen, setDatePickerOpen] = useState<boolean>(false);
   const [backConfirmationOpen, setBackConfirmationOpen] =
@@ -86,21 +91,21 @@ const Event: React.FC<Props> = ({navigation, route}) => {
 
   const addRef = useRef<any>(null); // due to forwardRef
 
+  const getEventData = async () => {
+    const data = await getEventPlaces(eventId);
+    setPlaces(data.places);
+
+    setSelectionIndices(Array(data?.places?.length).fill(-1));
+
+    const markerArray: MarkerObject[] = getMarkerArray(data.places);
+    setMarkers(markerArray);
+
+    const averagePoint: Coordinate = getAveragePoint(markerArray);
+    setLatitude(averagePoint.latitude);
+    setLongitude(averagePoint.longitude);
+  };
+
   useEffect(() => {
-    const getEventData = async () => {
-      const data = await getEventPlaces(eventId);
-      setPlaces(data?.places);
-
-      setSelectionIndices(Array(data?.places?.length).fill(-1));
-
-      const markerArray: MarkerObject[] = getMarkerArray(data?.places);
-      setMarkers(markerArray);
-
-      const averagePoint: Coordinate = getAveragePoint(markerArray);
-      setLatitude(averagePoint.latitude);
-      setLongitude(averagePoint.longitude);
-    };
-
     const initializeData = async () => {
       const authToken = await EncryptedStorage.getItem('auth_token');
 
@@ -117,6 +122,8 @@ const Event: React.FC<Props> = ({navigation, route}) => {
       initializeData();
     });
     return unsubscribe;
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigation, eventId]);
 
   const beginEdits = () => {
@@ -127,11 +134,53 @@ const Event: React.FC<Props> = ({navigation, route}) => {
     setTempPlaces(places);
   };
 
-  const saveEdits = () => {
-    bottomSheetRef.current?.collapse();
-    setEditing(false);
+  const saveEdits = async () => {
+    const placeIds = extractID(tempPlaces);
 
-    // TODO-LAVY: save edits
+    const responseStatus = await editEvent(
+      tempTitle,
+      tempDate,
+      placeIds,
+      eventId,
+    );
+
+    if (responseStatus) {
+      // update event data if successful response
+      setEventTitle(tempTitle);
+      setDate(tempDate);
+      getEventData();
+
+      bottomSheetRef.current?.collapse();
+      setEditing(false);
+    } else {
+      Alert.alert('Error', 'Something went wrong. Please try again.');
+    }
+  };
+
+  const extractID = (editItems: (Place | Category)[]): number[] => {
+    const placeIds = editItems.map((item: Place | Category, index: number) => {
+      if (isPlace(item)) {
+        return item.id;
+      } else {
+        if (item.options && item.options.length > 0) {
+          return item.options[selectionIndices[index]]?.id;
+        }
+      }
+    });
+
+    return placeIds.filter(
+      (id: number | undefined) => id !== undefined,
+    ) as number[];
+  };
+
+  const handleRemoveEvent = async () => {
+    const response = await removeEvent(eventId);
+
+    if (response) {
+      navigation.goBack();
+    } else {
+      Alert.alert('Error', 'Something went wrong. Please try again.');
+    }
   };
 
   return (
@@ -214,6 +263,7 @@ const Event: React.FC<Props> = ({navigation, route}) => {
                 size="m"
                 color={colors.accent}
                 icon={icons.confirm}
+                disabled={tempTitle.length === 0}
                 onPress={saveEdits}
               />
             </>
@@ -244,9 +294,7 @@ const Event: React.FC<Props> = ({navigation, route}) => {
                   },
                   {
                     name: strings.main.remove,
-                    onPress: () => {
-                      // TODO-LAVY: remove event
-                    },
+                    onPress: handleRemoveEvent,
                     color: colors.red,
                   },
                 ]}
