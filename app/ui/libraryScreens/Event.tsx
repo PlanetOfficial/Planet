@@ -46,6 +46,8 @@ import {colors} from '../../constants/theme';
 import {floats} from '../../constants/numbers';
 import {editEvent} from '../../utils/api/libraryCalls/editEvent';
 import {removeEvent} from '../../utils/api/libraryCalls/removeEvent';
+import {getBookmarks} from '../../utils/api/shared/getBookmarks';
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 interface Props {
   navigation: any;
@@ -60,7 +62,9 @@ const Event: React.FC<Props> = ({navigation, route}) => {
   const [date, setDate] = useState<string>(
     moment(route?.params?.eventData?.date, 'YYYY-MM-DD').format('M/D/YYYY'),
   );
-  const [bookmarks] = useState<number[]>(route?.params?.bookmarks);
+  const [bookmarks, setBookmarks] = useState<number[]>(
+    route?.params?.bookmarks,
+  );
 
   const [latitude, setLatitude] = useState<number>(floats.defaultLatitude);
   const [longitude, setLongitude] = useState<number>(floats.defaultLongitude);
@@ -102,9 +106,23 @@ const Event: React.FC<Props> = ({navigation, route}) => {
   };
 
   useEffect(() => {
-    getEventData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [eventId]);
+    const initializeData = async () => {
+      const authToken = await EncryptedStorage.getItem('auth_token');
+
+      const _bookmarks = await getBookmarks(authToken);
+      const bookmarksIds: number[] = _bookmarks.map(
+        (bookmark: {id: any}) => bookmark.id,
+      );
+      setBookmarks(bookmarksIds);
+
+      await getEventData();
+    };
+
+    const unsubscribe = navigation.addListener('focus', () => {
+      initializeData();
+    });
+    return unsubscribe;
+  }, [navigation, eventId]);
 
   const beginEdits = () => {
     bottomSheetRef.current?.expand();
@@ -301,11 +319,21 @@ const Event: React.FC<Props> = ({navigation, route}) => {
             latitude={latitude}
             longitude={longitude}
             bookmarks={bookmarks}
+            setBookmarked={(bookmarked: boolean, id: number) => {
+              if (bookmarked) {
+                setBookmarks([...bookmarks, id]);
+              } else {
+                setBookmarks(
+                  bookmarks.filter((bookmark: number) => bookmark !== id),
+                );
+              }
+            }}
             destinations={tempPlaces}
             setDestinations={setTempPlaces}
             selectionIndices={selectionIndices}
             setSelectionIndices={setSelectionIndices}
             onAddPress={addRef.current?.onAddPress}
+            bottomPad={0}
           />
         ) : (
           <SafeAreaView>
@@ -314,6 +342,15 @@ const Event: React.FC<Props> = ({navigation, route}) => {
               places={places}
               width={s(290)}
               bookmarks={bookmarks}
+              setBookmarked={(bookmarked: boolean, id: number) => {
+                if (bookmarked) {
+                  setBookmarks([...bookmarks, id]);
+                } else {
+                  setBookmarks(
+                    bookmarks.filter((bookmark: number) => bookmark !== id),
+                  );
+                }
+              }}
               index={placeIdx}
               setIndex={setPlaceIdx}
             />

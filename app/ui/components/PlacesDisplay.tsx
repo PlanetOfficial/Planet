@@ -14,6 +14,7 @@ interface Props {
   places: Place[];
   width: number;
   bookmarks: number[];
+  setBookmarked: (bookmarked: boolean, id: number) => void;
   closeDropdown?: () => void;
   index: number;
   setIndex: (index: number) => void;
@@ -24,6 +25,7 @@ const PlacesDisplay: React.FC<Props> = ({
   places,
   width,
   bookmarks,
+  setBookmarked,
   closeDropdown,
   index,
   setIndex,
@@ -89,13 +91,15 @@ const PlacesDisplay: React.FC<Props> = ({
                 navigation.navigate('Place', {
                   destination: place,
                   category: place.category_name,
+                  bookmarked: bookmarks.includes(place.id),
                 });
               }}>
               <PlaceCard
                 id={place.id}
                 name={place.name}
                 info={place.category_name}
-                marked={bookmarks.includes(place.id)}
+                bookmarked={bookmarks.includes(place.id)}
+                setBookmarked={setBookmarked}
                 image={
                   place.image_url
                     ? {

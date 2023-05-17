@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 
 import {s, vs} from 'react-native-size-matters';
-import MapView from 'react-native-maps';
+import MapView, {Marker} from 'react-native-maps';
 import {Circle, Svg} from 'react-native-svg';
 import {
   GooglePlacesAutocomplete,
@@ -35,15 +35,18 @@ import {Region} from '../../utils/interfaces/types';
 
 interface Props {
   navigation: any;
+  route: any;
 }
 
-const MapScreen: React.FC<Props> = ({navigation}) => {
+const MapScreen: React.FC<Props> = ({navigation, route}) => {
   const [region, setRegion] = useState<Region>({
     latitude: floats.defaultLatitude,
     longitude: floats.defaultLongitude,
     latitudeDelta: floats.defaultLatitudeDelta,
     longitudeDelta: floats.defaultLongitudeDelta,
   });
+
+  const theDestination = route?.params?.destination;
 
   const [radius, setRadius] = useState<number>(
     calculateRadius(
@@ -98,8 +101,17 @@ const MapScreen: React.FC<Props> = ({navigation}) => {
       );
     };
 
-    setCurrentLocation();
-  }, []);
+    if (theDestination) {
+      setRegion({
+        latitude: theDestination.latitude,
+        longitude: theDestination.longitude,
+        latitudeDelta: floats.defaultLatitudeDelta,
+        longitudeDelta: floats.defaultLongitudeDelta,
+      });
+    } else {
+      setCurrentLocation();
+    }
+  }, [theDestination]);
 
   const bottomSheetRef = useRef<BottomSheet>(null);
   const autoCompleteRef = useRef<GooglePlacesAutocompleteRef>(null);
@@ -130,8 +142,16 @@ const MapScreen: React.FC<Props> = ({navigation}) => {
           rotateEnabled={false}
           onRegionChange={updateRadius}
           onRegionChangeComplete={setRegion}
-          region={region}
-        />
+          region={region}>
+          {theDestination && (
+            <Marker
+              coordinate={{
+                latitude: theDestination.latitude,
+                longitude: theDestination.longitude,
+              }}
+            />
+          )}
+        </MapView>
         <View pointerEvents={'none'} style={mapStyles.circle}>
           <Svg style={mapStyles.circle}>
             <Circle
@@ -174,6 +194,7 @@ const MapScreen: React.FC<Props> = ({navigation}) => {
                 latitude: region.latitude,
                 longitude: region.longitude,
                 radius: radius,
+                theDestination: theDestination,
               });
             }}
           />

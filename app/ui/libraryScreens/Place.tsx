@@ -6,81 +6,189 @@ import {
   SafeAreaView,
   TouchableOpacity,
   Image,
-  ScrollView,
   Linking,
+  Alert,
 } from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
-import {icons} from '../../constants/images';
-import {colors} from '../../constants/theme';
-import strings from '../../constants/strings';
-import {floats} from '../../constants/numbers';
 import {s} from 'react-native-size-matters';
-import {getPlaceDetails} from '../../utils/api/shared/getPlaceDetails';
+import {ScrollView} from 'react-native-gesture-handler';
+import {showLocation} from 'react-native-map-link';
+import EncryptedStorage from 'react-native-encrypted-storage';
+
+import strings from '../../constants/strings';
+import {icons, brands, yelpStars} from '../../constants/images';
+import {colors} from '../../constants/theme';
+import {floats} from '../../constants/numbers';
+
 import {
-  capitalizeFirstLetter,
   convertDateToMMDDYYYY,
   convertTimeTo12Hour,
-  displayAddress,
   displayHours,
+  getPlaceDetail,
 } from '../../utils/functions/Misc';
+import {getPlaceDetails} from '../../utils/api/shared/getPlaceDetails';
+import {setBookmark} from '../../utils/api/shared/setBookmark';
+import {unbookmark} from '../../utils/api/shared/unbookmark';
 
-// TODO-NAOTO: redesign/Refactor Place Screen (Create from ...)
+import Icon from '../components/Icon';
+import CustomText from '../components/Text';
+import OptionMenu from '../components/OptionMenu';
 
-const Place = ({navigation, route}: {navigation: any; route: any}) => {
-  const [destination] = useState(route?.params?.destination);
-  const [destinationDetails, setDestinationDetails]: any = useState({});
-  const [category] = useState(route?.params?.category);
+import {Place as PlaceT, PlaceDetail} from '../../utils/interfaces/types';
+
+interface Props {
+  navigation: any;
+  route: any;
+}
+
+const Place: React.FC<Props> = ({navigation, route}) => {
+  const [destination] = useState<PlaceT>(route.params.destination);
+  const [destinationDetails, setDestinationDetails] = useState<PlaceDetail>({
+    additionalInfo: '',
+    address: '',
+    dates: {},
+    description: '',
+    hours: [],
+    name: '',
+    phone: '',
+    photos: [],
+    place_name: '',
+    price: '',
+    rating: -1,
+    review_count: -1,
+    url: '',
+  });
+  const [category] = useState<string>(route.params.category);
+  const [bookmarked, setBookmarked] = useState<boolean>(
+    route?.params?.bookmarked,
+  );
 
   useEffect(() => {
     const initializeDestinationData = async () => {
-      const id = destination?.id;
+      const id = destination.id;
       if (id) {
         const details = await getPlaceDetails(id);
-        setDestinationDetails(details);
+
+        setDestinationDetails(getPlaceDetail(details));
       }
     };
 
     initializeDestinationData();
-  }, [destination?.id]);
+  }, [destination.id]);
+
+  const handleMapPress = async () => {
+    showLocation({
+      latitude: destination.latitude,
+      longitude: destination.longitude,
+      title: destination.name,
+    });
+  };
+
+  const handleCallPress = async () => {
+    if (destinationDetails.url) {
+      await Linking.openURL(
+        `tel:${
+          destinationDetails.phone
+            ? destinationDetails.phone.replace(/\D/g, '')
+            : ''
+        }`,
+      );
+    }
+  };
 
   const handleLinkPress = async () => {
-    if (destinationDetails?.event_url) {
-      await Linking.openURL(destinationDetails?.event_url);
+    if (destinationDetails.url) {
+      await Linking.openURL(destinationDetails.url);
+    }
+  };
+
+  const handleBookmark = async () => {
+    const authToken = await EncryptedStorage.getItem('auth_token');
+    let responseStatus;
+
+    if (!bookmarked) {
+      // switch to bookmarked, so call /bookmark
+      responseStatus = await setBookmark(authToken, destination.id);
+    } else {
+      // switch to not bookmarked, so call /unbookmark
+      responseStatus = await unbookmark(authToken, destination.id);
+    }
+
+    if (responseStatus) {
+      setBookmarked(!bookmarked);
+    } else {
+      Alert.alert('Error', 'Something went wrong. Please try again.');
     }
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={headerStyles.container}>
-        <TouchableOpacity
-          style={headerStyles.back}
-          onPress={() => navigation.goBack()}>
-          <Image style={headerStyles.icon} source={icons.back} />
-        </TouchableOpacity>
-        <View style={headerStyles.texts}>
-          <Text style={headerStyles.title}>{destination?.name}</Text>
-          <Text style={headerStyles.info}>
-            {category}
-            {destinationDetails?.price
-              ? '・' + destinationDetails?.price
-              : null}
-          </Text>
+    <View style={styles.container}>
+      <SafeAreaView>
+        <View style={headerStyles.container}>
+          <Icon size="s" icon={icons.back} onPress={navigation.goBack} />
+          <View style={headerStyles.texts}>
+            <CustomText weight="b">{destination.name}</CustomText>
+            <CustomText size="xs" weight="l" color={colors.accent}>
+              {category}
+              {destinationDetails.price
+                ? '・' + destinationDetails.price
+                : null}
+            </CustomText>
+          </View>
+          <OptionMenu
+            options={[
+              {
+                name: strings.library.createEvent,
+                onPress: () => {
+                  navigation.navigate('MapSelection', {
+                    destination: destination,
+                  });
+                },
+                color: colors.accent,
+              },
+              {
+                name: bookmarked
+                  ? strings.library.unbookmark
+                  : strings.library.bookmark,
+                onPress: handleBookmark,
+                color: colors.accent,
+              },
+              {
+                name: strings.main.share,
+                onPress: () => {
+                  Alert.alert('Share', 'Coming Soon');
+                },
+                color: colors.black,
+              },
+              {
+                name: strings.createTabStack.openMap,
+                onPress: handleMapPress,
+                color: colors.black,
+              },
+              {
+                name: strings.createTabStack.eventUrl,
+                onPress: handleLinkPress,
+                color: colors.black,
+              },
+            ]}
+          />
         </View>
-      </View>
+      </SafeAreaView>
+
       <ScrollView showsVerticalScrollIndicator={false}>
-        {destination?.latitude && destination?.longitude ? (
+        {destination.latitude && destination.longitude ? (
           <MapView
             style={styles.map}
             initialRegion={{
-              latitude: parseFloat(destination?.latitude),
-              longitude: parseFloat(destination?.longitude),
+              latitude: destination.latitude,
+              longitude: destination.longitude,
               latitudeDelta: floats.defaultLatitudeDelta,
               longitudeDelta: floats.defaultLongitudeDelta,
             }}>
             <Marker
               coordinate={{
-                latitude: parseFloat(destination?.latitude),
-                longitude: parseFloat(destination?.longitude),
+                latitude: destination.latitude,
+                longitude: destination.longitude,
               }}
             />
           </MapView>
@@ -91,141 +199,129 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
             horizontal={true}
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={styles.imagesContainer}>
-            {destinationDetails?.images?.length > 0 ? (
-              destinationDetails?.images?.map((image: any, index: number) => (
+            {destinationDetails.photos.length > 0 ? (
+              destinationDetails.photos.map((photo: string, index: number) => (
                 <View key={index}>
-                  <Image source={{uri: image}} style={styles.image} />
+                  <Image source={{uri: photo}} style={styles.image} />
                 </View>
               ))
-            ) : destination?.image_url ? (
+            ) : destination.image_url ? (
               <Image
-                source={{uri: destination?.image_url}}
+                source={{uri: destination.image_url}}
                 style={styles.image}
               />
             ) : null}
           </ScrollView>
           <View style={styles.separator} />
         </>
-        <View>
-          {destinationDetails?.rating >= 0 ||
-          destinationDetails?.reviews?.length > 0 ? (
-            <>
-              <Text style={rnrStyles.title}>
-                {strings.createTabStack.rnr}
-                {':'}
-                {destinationDetails?.rating >= 0 ? (
-                  <>
-                    {' ('}
-                    <Text style={rnrStyles.rating}>
-                      {destinationDetails?.rating}
-                    </Text>
-                    {'/' + strings.misc.maxRating + ')'}
-                  </>
-                ) : null}
-              </Text>
-              <ScrollView
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={rnrStyles.contentContainer}>
-                {destinationDetails?.reviews
-                  ? destinationDetails?.reviews?.map(
-                      (review: any, index: number) => (
-                        <View key={index} style={rnrStyles.review}>
-                          <Text style={rnrStyles.text}>{review?.text}</Text>
-                        </View>
-                      ),
-                    )
-                  : null}
-              </ScrollView>
-              <View style={styles.separator} />
-            </>
-          ) : null}
-        </View>
-        <View style={detailStyles.container}>
-          <Text style={detailStyles.title}>
-            {strings.createTabStack.details}:
-          </Text>
-          {destinationDetails?.hours?.length > 0 ? (
-            <View style={detailStyles.infoContainer}>
-              <Text style={detailStyles.infoTitle}>
-                {strings.createTabStack.hours}:
-              </Text>
-              <Text style={detailStyles.info}>
-                {displayHours(destinationDetails?.hours)}
-              </Text>
-            </View>
-          ) : null}
-          {destinationDetails?.event_venue_name ? (
-            <View style={detailStyles.infoContainer}>
-              <Text style={detailStyles.infoTitle}>
-                {strings.createTabStack.venue}:
-              </Text>
-              <Text style={detailStyles.info}>
-                {destinationDetails?.event_venue_name}
-              </Text>
-            </View>
-          ) : null}
-          {destinationDetails?.address ? (
-            <View style={detailStyles.infoContainer}>
-              <Text style={detailStyles.infoTitle}>
-                {strings.createTabStack.address}:
-              </Text>
-              <Text style={detailStyles.info} selectable={true}>
-                {displayAddress(destinationDetails.address)}
-              </Text>
-            </View>
-          ) : null}
-          {destinationDetails?.event_start_info?.localDate &&
-          destinationDetails?.event_start_info?.localTime ? (
-            <View style={detailStyles.infoContainer}>
-              <Text style={detailStyles.infoTitle}>
-                {strings.createTabStack.eventTime}:
-              </Text>
-              <Text style={detailStyles.info}>
-                {convertDateToMMDDYYYY(
-                  destinationDetails?.event_start_info?.localDate,
-                ) + '\n'}
-                {convertTimeTo12Hour(
-                  destinationDetails?.event_start_info?.localTime,
-                )}
-              </Text>
-            </View>
-          ) : null}
-          {destinationDetails?.event_status?.code ? (
-            <View style={detailStyles.infoContainer}>
-              <Text style={detailStyles.infoTitle}>
-                {strings.createTabStack.eventStatus}:
-              </Text>
-              <Text style={detailStyles.info}>
-                {capitalizeFirstLetter(destinationDetails?.event_status?.code)}
-              </Text>
-            </View>
-          ) : null}
-          {destinationDetails?.event_span ? (
-            <View style={detailStyles.infoContainer}>
-              <Text style={detailStyles.info}>
-                {strings.createTabStack.eventSpan}
-              </Text>
-            </View>
-          ) : null}
-          {destinationDetails?.event_url ? (
-            <View style={detailStyles.infoContainer}>
-              <TouchableOpacity onPress={() => handleLinkPress()}>
+        {destinationDetails.rating > 0 ? (
+          <View style={detailStyles.infoContainer}>
+            <View style={detailStyles.row}>
+              <View>
                 <Text style={detailStyles.infoTitle}>
-                  {strings.createTabStack.eventUrl}
+                  {strings.createTabStack.rating}:
                 </Text>
+                <View style={detailStyles.rating}>
+                  <Image
+                    style={detailStyles.stars}
+                    source={yelpStars[destinationDetails.rating * 2]}
+                  />
+                  <CustomText
+                    size="xs"
+                    color={
+                      colors.darkgrey
+                    }>{`Based on ${destinationDetails.review_count} reviews`}</CustomText>
+                </View>
+              </View>
+              <TouchableOpacity onPress={handleLinkPress}>
+                <Image style={detailStyles.yelp} source={brands.yelpLogo} />
               </TouchableOpacity>
             </View>
-          ) : null}
-        </View>
+          </View>
+        ) : null}
+        {destinationDetails.dates.start?.localDate &&
+        destinationDetails.dates.start?.localTime ? (
+          <View style={detailStyles.infoContainer}>
+            <Text style={detailStyles.infoTitle}>
+              {strings.createTabStack.eventTime}:
+            </Text>
+            <Text style={detailStyles.info}>
+              {convertDateToMMDDYYYY(
+                destinationDetails.dates.start?.localDate,
+              ) + '\n'}
+              {convertTimeTo12Hour(destinationDetails?.dates.start?.localTime)}
+            </Text>
+          </View>
+        ) : null}
+        {destinationDetails.hours.length > 0 ? (
+          <View style={detailStyles.infoContainer}>
+            <Text style={detailStyles.infoTitle}>
+              {strings.createTabStack.hours}:
+            </Text>
+            <Text style={detailStyles.info}>
+              {displayHours(destinationDetails.hours)}
+            </Text>
+          </View>
+        ) : null}
+        {destinationDetails.description !== '' ? (
+          <View style={detailStyles.infoContainer}>
+            <Text style={detailStyles.infoTitle}>
+              {strings.createTabStack.description}:
+            </Text>
+            <Text style={detailStyles.info}>
+              {destinationDetails.description}
+            </Text>
+          </View>
+        ) : null}
+        {destinationDetails.additionalInfo !== '' ? (
+          <View style={detailStyles.infoContainer}>
+            <Text style={detailStyles.infoTitle}>
+              {strings.createTabStack.additionalInfo}:
+            </Text>
+            <Text style={detailStyles.info}>
+              {destinationDetails.additionalInfo}
+            </Text>
+          </View>
+        ) : null}
+        {destinationDetails.place_name ? (
+          <View style={detailStyles.infoContainer}>
+            <Text style={detailStyles.infoTitle}>
+              {strings.createTabStack.venue}:
+            </Text>
+            <Text style={detailStyles.info}>
+              {destinationDetails.place_name}
+            </Text>
+          </View>
+        ) : null}
+        {destinationDetails.address ? (
+          <View style={detailStyles.infoContainer}>
+            <Text style={detailStyles.infoTitle}>
+              {strings.createTabStack.address}:
+            </Text>
+            <Text style={detailStyles.info}>
+              {destinationDetails.address.replace(/\\n/g, '\n')}
+            </Text>
+          </View>
+        ) : null}
+        {destinationDetails.phone ? (
+          <View style={detailStyles.infoContainer}>
+            <Text style={detailStyles.infoTitle}>
+              {strings.createTabStack.phone}:
+            </Text>
+
+            <TouchableOpacity onPress={handleCallPress}>
+              <Text style={detailStyles.info}>{destinationDetails.phone}</Text>
+            </TouchableOpacity>
+          </View>
+        ) : null}
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    height: '105%',
+    flex: 1,
     backgroundColor: colors.white,
   },
   imagesContainer: {
@@ -261,63 +357,30 @@ const headerStyles = StyleSheet.create({
     paddingBottom: s(5),
   },
   texts: {
-    marginLeft: s(10),
-  },
-  title: {
-    fontSize: s(18),
-    fontWeight: '600',
-    color: colors.black,
-  },
-  info: {
-    marginTop: s(5),
-    fontSize: s(14),
-    fontWeight: '600',
-    color: colors.accent,
-  },
-  back: {
-    width: s(18),
-    height: s(18),
-  },
-  icon: {
-    width: '100%',
-    height: '100%',
-    tintColor: colors.black,
-  },
-});
-
-const rnrStyles = StyleSheet.create({
-  contentContainer: {
-    marginLeft: s(20),
-  },
-  title: {
-    marginLeft: s(20),
-    fontSize: s(16),
-    fontWeight: '600',
-    color: colors.black,
-  },
-  rating: {
-    fontSize: s(18),
-    fontWeight: '800',
-    color: colors.accent,
-  },
-  review: {
-    width: s(160),
-    padding: s(10),
-    borderRadius: s(10),
-    backgroundColor: colors.grey,
-    marginRight: s(10),
-    marginTop: s(5),
-  },
-  text: {
-    fontSize: s(12),
-    fontWeight: '500',
-    color: colors.black,
+    flex: 1,
+    marginHorizontal: s(10),
   },
 });
 
 const detailStyles = StyleSheet.create({
   container: {
     marginBottom: s(50),
+  },
+  rating: {
+    marginTop: s(10),
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  stars: {
+    width: s(132),
+    height: s(24),
+  },
+  yelp: {
+    width: s(75),
+    height: s(29),
   },
   title: {
     marginLeft: s(20),

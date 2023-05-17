@@ -114,7 +114,7 @@ const Button = (props: any, navigation: any) => (
     onPress={() => {
       navigation.reset({
         index: 0,
-        routes: [{name: 'CreateStack'}],
+        routes: [{name: 'MapSelection'}],
       });
     }}
   />

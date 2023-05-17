@@ -81,11 +81,15 @@ export interface LiveEvent {
   date: string;
   id: number;
   image_url: string;
-  latitude: string;
-  longitude: string;
+  latitude: number;
+  longitude: number;
   name: string;
-  price: number;
-  rating: number;
+  priceRanges: {
+    min: number;
+    max: number;
+    currency: string;
+    type: string;
+  }[];
 }
 
 export interface LiveEvents {
@@ -162,4 +166,25 @@ export interface FGPlace {
   category_name: string;
   likes: FGReaction[];
   dislikes: FGReaction[];
+}
+
+export interface PlaceDetail {
+  additionalInfo: string;
+  address: string;
+  dates: any;
+  description: string;
+  hours: {
+    day: number;
+    end: string;
+    is_overnight: boolean;
+    start: string;
+  }[];
+  name: string;
+  phone: string;
+  photos: string[];
+  place_name: string;
+  price: string;
+  rating: number;
+  review_count: number;
+  url: string;
 }

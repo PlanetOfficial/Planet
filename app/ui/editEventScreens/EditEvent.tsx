@@ -27,11 +27,13 @@ interface Props {
   latitude: number;
   longitude: number;
   bookmarks: number[];
+  setBookmarked: (bookmarked: boolean, id: number) => void;
   destinations: (Place | CategoryT)[];
   setDestinations: (destinations: (Place | CategoryT)[]) => void;
   selectionIndices: number[];
   setSelectionIndices: (idx: number[]) => void;
   onAddPress: (idx: number) => void;
+  bottomPad: number;
 }
 
 const EditEvent: React.FC<Props> = ({
@@ -40,11 +42,13 @@ const EditEvent: React.FC<Props> = ({
   latitude,
   longitude,
   bookmarks,
+  setBookmarked,
   destinations,
   setDestinations,
   selectionIndices,
   setSelectionIndices,
   onAddPress,
+  bottomPad,
 }) => {
   const [dragging, setDragging] = useState<boolean>(false);
   const itemRefs = useRef(new Map());
@@ -88,7 +92,10 @@ const EditEvent: React.FC<Props> = ({
       data={destinations}
       keyExtractor={(_: Place | CategoryT, index: number) => index.toString()}
       showsVerticalScrollIndicator={false}
-      contentContainerStyle={styles.flatlist}
+      contentContainerStyle={[
+        styles.flatlist,
+        {paddingBottom: bottomPad + s(20)},
+      ]}
       activationDistance={20}
       onDragBegin={() => {
         setDragging(true);
@@ -186,13 +193,15 @@ const EditEvent: React.FC<Props> = ({
                       navigation.navigate('Place', {
                         destination: item,
                         category: item.category_name,
+                        bookmarked: bookmarks.includes(item.id),
                       });
                     }}>
                     <PlaceCard
                       id={item.id}
                       name={item.name}
                       info={item.category_name}
-                      marked={bookmarks.includes(item.id)}
+                      bookmarked={bookmarks.includes(item.id)}
+                      setBookmarked={setBookmarked}
                       image={
                         item.image_url
                           ? {
@@ -215,6 +224,7 @@ const EditEvent: React.FC<Props> = ({
                   latitude={latitude}
                   longitude={longitude}
                   bookmarks={bookmarks}
+                  setBookmarked={setBookmarked}
                   category={item}
                   categoryIndex={index}
                   destination={destinations[index]}
@@ -296,7 +306,6 @@ const AddEventSeparator = () => (
 const styles = StyleSheet.create({
   flatlist: {
     paddingTop: s(10),
-    paddingBottom: s(20),
   },
   cardContainer: {
     marginHorizontal: s(30),

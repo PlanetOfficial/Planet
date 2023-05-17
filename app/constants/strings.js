@@ -30,6 +30,9 @@ const strings = {
     missingFields: 'Fields are missing',
   },
   createTabStack: {
+    description: 'Description',
+    additionalInfo: 'Additional Info',
+    phone: 'Phone',
     noPlaces: 'No Places Found',
     milesAbbrev: 'mi',
     planEvent: 'Choose a Location',
@@ -68,7 +71,8 @@ const strings = {
     eventTime: 'Event Time',
     eventStatus: 'Event Status',
     eventSpan: 'Event spans multiple days',
-    eventUrl: 'Tap for more information',
+    eventUrl: 'Website',
+    openMap: 'Open map',
     moveUp: 'Move Up',
     moveDown: 'Move Down',
     remove: 'Remove',
@@ -104,6 +108,7 @@ const strings = {
     leave: 'Leave',
   },
   library: {
+    createEvent: 'Create an Event',
     saved: 'Saved',
     events: 'Events',
     edit: 'Edit',
@@ -120,6 +125,8 @@ const strings = {
     filter: 'Filter',
     setCustomLocation: 'Set a custom location',
     promptSearch: 'Search for a place or type in a custom destination above',
+    bookmark: 'Bookmark',
+    unbookmark: 'Unbookmark',
   },
   profile: {
     followers: 'followers',

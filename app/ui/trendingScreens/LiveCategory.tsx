@@ -27,6 +27,8 @@ import {
   LiveEvents,
   Subcategory,
 } from '../../utils/interfaces/types';
+import {getBookmarks} from '../../utils/api/shared/getBookmarks';
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 interface Props {
   navigation: any;
@@ -39,7 +41,9 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
   const [categoryId] = useState<number>(route?.params?.categoryId);
   const [filters] = useState<FilterT[]>(route?.params?.filters);
   const [categoryName] = useState<string>(route?.params?.categoryName);
-  const [bookmarks] = useState<number[]>(route?.params?.bookmarks);
+  const [bookmarks, setBookmarks] = useState<number[]>(
+    route?.params?.bookmarks,
+  );
   const [subcategories, setSubcategories] = useState<Subcategory[]>();
   const [hiddenSubCategories, setHiddenSubCategories] = useState<Subcategory[]>(
     [],
@@ -109,6 +113,23 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
     filtersInitialized,
   ]);
 
+  useEffect(() => {
+    const initializeBookmarks = async () => {
+      const authToken = await EncryptedStorage.getItem('auth_token');
+
+      const _bookmarks = await getBookmarks(authToken);
+      const bookmarksIds: number[] = _bookmarks.map(
+        (bookmark: {id: any}) => bookmark.id,
+      );
+      setBookmarks(bookmarksIds);
+    };
+
+    const unsubscribe = navigation.addListener('focus', () => {
+      initializeBookmarks();
+    });
+    return unsubscribe;
+  }, [navigation]);
+
   return (
     <View style={styles.container}>
       <SafeAreaView>
@@ -165,25 +186,53 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
                   showsHorizontalScrollIndicator={false}>
                   {liveEvents[subcategory.id]
                     ? liveEvents[subcategory.id].map(
-                        (liveEvent: LiveEvent, jdx: number) => (
+                        (event: LiveEvent, jdx: number) => (
                           <TouchableOpacity
                             style={categoryStyles.card}
                             key={jdx}
                             onPress={() =>
                               navigation.navigate('Place', {
-                                destination: liveEvent,
+                                destination: event,
                                 category: categoryName,
+                                bookmarked: bookmarks.includes(event.id),
                               })
                             }>
                             <PlaceCard
-                              id={liveEvent.id}
+                              id={event.id}
                               small={true}
-                              name={liveEvent.name}
-                              info={moment(liveEvent.date, 'YYYY-MM-DD').format(
-                                'M/D/Y',
-                              )}
-                              marked={bookmarks.includes(liveEvent.id)}
-                              image={{uri: liveEvent.image_url}}
+                              name={event.name}
+                              info={
+                                moment(event.date, 'YYYY-MM-DD').format(
+                                  'M/D/YYYY',
+                                ) +
+                                (event?.priceRanges && event?.priceRanges[0]
+                                  ? ' • ' +
+                                    '$' +
+                                    Math.round(event.priceRanges[0]?.min) +
+                                    (event.priceRanges[0].min !==
+                                    event.priceRanges[0].max
+                                      ? ' - ' +
+                                        '$' +
+                                        Math.round(event.priceRanges[0]?.max)
+                                      : '')
+                                  : '')
+                              }
+                              bookmarked={bookmarks.includes(event.id)}
+                              setBookmarked={(
+                                bookmarked: boolean,
+                                id: number,
+                              ) => {
+                                if (bookmarked) {
+                                  setBookmarks([...bookmarks, id]);
+                                } else {
+                                  setBookmarks(
+                                    bookmarks.filter(
+                                      (bookmark: number) => bookmark !== id,
+                                    ),
+                                  );
+                                }
+                              }}
+                              image={{uri: event.image_url}}
                             />
                           </TouchableOpacity>
                         ),
