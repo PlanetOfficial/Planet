@@ -13,11 +13,13 @@ import MapView, {Marker} from 'react-native-maps';
 import {s} from 'react-native-size-matters';
 import {ScrollView} from 'react-native-gesture-handler';
 import {showLocation} from 'react-native-map-link';
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 import strings from '../../constants/strings';
 import {icons, brands, yelpStars} from '../../constants/images';
 import {colors} from '../../constants/theme';
 import {floats} from '../../constants/numbers';
+
 import {
   convertDateToMMDDYYYY,
   convertTimeTo12Hour,
@@ -25,6 +27,8 @@ import {
   getPlaceDetail,
 } from '../../utils/functions/Misc';
 import {getPlaceDetails} from '../../utils/api/shared/getPlaceDetails';
+import {setBookmark} from '../../utils/api/shared/setBookmark';
+import {unbookmark} from '../../utils/api/shared/unbookmark';
 
 import Icon from '../components/Icon';
 import CustomText from '../components/Text';
@@ -55,6 +59,9 @@ const Place: React.FC<Props> = ({navigation, route}) => {
     url: '',
   });
   const [category] = useState<string>(route.params.category);
+  const [bookmarked, setBookmarked] = useState<boolean>(
+    route?.params?.bookmarked,
+  );
 
   useEffect(() => {
     const initializeDestinationData = async () => {
@@ -95,6 +102,25 @@ const Place: React.FC<Props> = ({navigation, route}) => {
     }
   };
 
+  const handleBookmark = async () => {
+    const authToken = await EncryptedStorage.getItem('auth_token');
+    let responseStatus;
+
+    if (!bookmarked) {
+      // switch to bookmarked, so call /bookmark
+      responseStatus = await setBookmark(authToken, destination.id);
+    } else {
+      // switch to not bookmarked, so call /unbookmark
+      responseStatus = await unbookmark(authToken, destination.id);
+    }
+
+    if (responseStatus) {
+      setBookmarked(!bookmarked);
+    } else {
+      Alert.alert('Error', 'Something went wrong. Please try again.');
+    }
+  };
+
   return (
     <View style={styles.container}>
       <SafeAreaView>
@@ -114,17 +140,17 @@ const Place: React.FC<Props> = ({navigation, route}) => {
               {
                 name: strings.library.createEvent,
                 onPress: () => {
-                  // TODO-MVP: Create event
-                  Alert.alert('Create Event', 'Coming Soon');
+                  navigation.navigate('MapSelection', {
+                    destination: destination,
+                  });
                 },
                 color: colors.accent,
               },
               {
-                name: strings.library.bookmark,
-                onPress: () => {
-                  // TODO-MVP: Add bookmark
-                  Alert.alert('Bookmark', 'Coming Soon');
-                },
+                name: bookmarked
+                  ? strings.library.unbookmark
+                  : strings.library.bookmark,
+                onPress: handleBookmark,
                 color: colors.accent,
               },
               {
