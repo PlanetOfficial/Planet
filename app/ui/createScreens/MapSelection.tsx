@@ -31,7 +31,7 @@ import Blur from '../components/Blur';
 import Text from '../components/Text';
 import Icon from '../components/Icon';
 
-import {Place, Region} from '../../utils/interfaces/types';
+import {Region} from '../../utils/interfaces/types';
 
 interface Props {
   navigation: any;
