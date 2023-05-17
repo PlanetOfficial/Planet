@@ -64,6 +64,8 @@ const Event: React.FC<Props> = ({navigation, route}) => {
   const [latitude, setLatitude] = useState<number>(floats.defaultLatitude);
   const [longitude, setLongitude] = useState<number>(floats.defaultLongitude);
 
+  console.log('places', route?.params?.eventData?.places);
+
   const [places, setPlaces] = useState<Place[]>([]);
   const [placeIdx, setPlaceIdx] = useState<number>(0);
   const [markers, setMarkers] = useState<MarkerObject[]>([]);
@@ -88,12 +90,16 @@ const Event: React.FC<Props> = ({navigation, route}) => {
 
   useEffect(() => {
     const getEventData = async () => {
-      const data = await getEventPlaces(eventId);
-      setPlaces(data?.places);
+      // const data = await getEventPlaces(eventId);
+      setPlaces(route?.params?.eventData?.places);
 
-      setSelectionIndices(Array(data?.places?.length).fill(-1));
+      setSelectionIndices(
+        Array(route?.params?.eventData?.places?.length).fill(-1),
+      );
 
-      const markerArray: MarkerObject[] = getMarkerArray(data?.places);
+      const markerArray: MarkerObject[] = getMarkerArray(
+        route?.eventData?.places,
+      );
       setMarkers(markerArray);
 
       const averagePoint: Coordinate = getAveragePoint(markerArray);

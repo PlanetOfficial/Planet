@@ -58,7 +58,6 @@ const Place: React.FC<Props> = ({navigation, route}) => {
     review_count: -1,
     url: '',
   });
-  const [category] = useState<string>(route.params.category);
   const [bookmarked, setBookmarked] = useState<boolean>(
     route?.params?.bookmarked,
   );
@@ -132,7 +131,7 @@ const Place: React.FC<Props> = ({navigation, route}) => {
           <View style={headerStyles.texts}>
             <CustomText weight="b">{destination.name}</CustomText>
             <CustomText size="xs" weight="l" color={colors.accent}>
-              {category}
+              {destination.category.name}
               {destinationDetails.price
                 ? '・' + destinationDetails.price
                 : null}

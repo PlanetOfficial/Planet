@@ -40,15 +40,17 @@ const Library: React.FC<Props> = ({navigation}) => {
   };
 
   const initializeData = async () => {
-    const authToken = await EncryptedStorage.getItem('auth_token');
+    const authToken: string | null = await EncryptedStorage.getItem(
+      'auth_token',
+    );
     if (!authToken) {
       return;
     }
 
-    const eventsRaw = await getEvents(authToken);
+    const eventsRaw: Event[] = await getEvents(authToken);
     setEvents(eventsRaw);
 
-    const bookmarks = await getBookmarks(authToken);
+    const bookmarks: Place[] = await getBookmarks(authToken);
     setPlaces(bookmarks);
   };
 
@@ -104,12 +106,11 @@ const Library: React.FC<Props> = ({navigation}) => {
               onPress={() => {
                 navigation.navigate('Place', {
                   destination: item,
-                  category: item.category.name,
                   bookmarked: places.includes(item),
                 });
               }}>
               <PlaceCard
-                id={item.place_v2_id}
+                id={item.id}
                 name={item.name}
                 info={item.category.name}
                 bookmarked={places.includes(item)}
@@ -131,6 +132,7 @@ const Library: React.FC<Props> = ({navigation}) => {
             <TouchableOpacity
               style={styles.card}
               onPress={() => {
+                console.log('WhoLE EVENT', item);
                 navigation.navigate('Event', {
                   eventData: item,
                   bookmarks: places.map((place: Place) => place.id),
@@ -142,8 +144,8 @@ const Library: React.FC<Props> = ({navigation}) => {
                 image={
                   item.places &&
                   item.places.length !== 0 &&
-                  item.places[0].place.image_url
-                    ? {uri: item.places[0].place.image_url}
+                  item.places[0].image_url
+                    ? {uri: item.places[0].image_url}
                     : icons.defaultIcon
                 }
                 options={[

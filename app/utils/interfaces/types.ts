@@ -1,14 +1,15 @@
 import {ImageSourcePropType} from 'react-native';
 
 export interface Place {
-  id: number; //
-  name: string; //
-  image_url?: string; //
-  latitude: number; //
-  longitude: number; //
+  id: number;
+  name: string;
+  image_url?: string;
+  place_id: string;
+  latitude: number;
+  longitude: number;
   category: {
     name: string;
-  }; //
+  };
 }
 
 export interface Category {
@@ -87,21 +88,15 @@ export interface LiveEvents {
 }
 
 export interface Event {
-  date: string;
   id: number;
   name: string;
-  places: {
-    created_at: number;
-    event_id: number;
-    id: number;
-    place: Place;
-    place_id: number;
-  }[];
-  suggester: number;
-  suggester_info: {
-    name: string;
-    self: boolean;
-  };
+  date: string;
+  places: Place[];
+  // suggester: number;
+  // suggester_info: {
+  //   name: string;
+  //   self: boolean;
+  // };
 }
 
 export interface FriendGroup {

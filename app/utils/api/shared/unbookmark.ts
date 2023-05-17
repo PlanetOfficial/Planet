@@ -1,11 +1,11 @@
-import {CustomCallsURL} from '../APIConstants';
+import {EndPointsURL} from '../APIConstants';
 
 export const unbookmark = async (
   authToken: string,
   placeId: number,
 ): Promise<boolean> => {
   const response = await fetch(
-    CustomCallsURL + `/places/remove?place_id=${placeId}&authtoken=${authToken}`,
+    EndPointsURL + `/places/remove?place_id=${placeId}&authtoken=${authToken}`,
     {
       method: 'POST',
     },

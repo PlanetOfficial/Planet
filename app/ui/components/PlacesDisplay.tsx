@@ -91,6 +91,7 @@ const PlacesDisplay: React.FC<Props> = ({
                 navigation.navigate('Place', {
                   destination: place,
                   category: place.category.name,
+                  bookmarked: bookmarks.includes(place.id),
                 });
               }}>
               <PlaceCard
