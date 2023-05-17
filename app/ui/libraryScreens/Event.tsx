@@ -122,6 +122,8 @@ const Event: React.FC<Props> = ({navigation, route}) => {
       initializeData();
     });
     return unsubscribe;
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigation, eventId]);
 
   const beginEdits = () => {
