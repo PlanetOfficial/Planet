@@ -139,8 +139,8 @@ const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
           textInput: searchStyles.textInput,
           separator: searchStyles.separator,
         }}
-        renderRow={rowData => <Text>{rowData.description}</Text>}
-      />
+        renderRow={rowData => <Text size='s' weight='l' color={colors.black}>{rowData.description}</Text>}
+        />
       <Image style={searchStyles.icon} source={icons.search} />
       <View style={styles.contentContainer}>
         {selected ? (

@@ -247,7 +247,7 @@ const MapScreen: React.FC<Props> = ({navigation, route}) => {
               textInput: searchStyles.textInput,
               separator: searchStyles.separator,
             }}
-            renderRow={rowData => <Text>{rowData.description}</Text>}
+            renderRow={rowData => <Text size='s' weight='l' color={colors.black}>{rowData.description}</Text>}
           />
           <Image style={searchStyles.icon} source={icons.search} />
         </>
