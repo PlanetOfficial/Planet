@@ -64,6 +64,7 @@ const Settings: React.FC<Props> = ({navigation}) => {
           <TextInput
             placeholder={strings.settings.name}
             style={accountStyles.inputText}
+            placeholderTextColor={colors.darkgrey}
           />
         </View>
         <View style={accountStyles.input}>
@@ -71,6 +72,7 @@ const Settings: React.FC<Props> = ({navigation}) => {
           <TextInput
             placeholder={strings.login.email}
             style={accountStyles.inputText}
+            placeholderTextColor={colors.darkgrey}
           />
         </View>
         <View style={accountStyles.input}>
@@ -78,6 +80,7 @@ const Settings: React.FC<Props> = ({navigation}) => {
           <TextInput
             placeholder={strings.settings.username}
             style={accountStyles.inputText}
+            placeholderTextColor={colors.darkgrey}
           />
         </View>
 
