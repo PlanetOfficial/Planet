@@ -76,6 +76,7 @@ const SignUp = ({navigation}: {navigation: any}) => {
             placeholder={strings.signUp.name}
             value={name}
             onChangeText={text => setName(text)}
+            placeholderTextColor={colors.darkgrey}
           />
         </View>
         <View style={accountStyles.input}>
@@ -89,6 +90,7 @@ const SignUp = ({navigation}: {navigation: any}) => {
             autoCorrect={false}
             keyboardType="email-address"
             textContentType="emailAddress"
+            placeholderTextColor={colors.darkgrey}
           />
         </View>
         <View style={accountStyles.input}>
@@ -98,6 +100,7 @@ const SignUp = ({navigation}: {navigation: any}) => {
             placeholder={strings.login.password}
             value={password}
             onChangeText={text => setPassword(text)}
+            placeholderTextColor={colors.darkgrey}
           />
         </View>
         <View style={accountStyles.input}>
@@ -109,6 +112,7 @@ const SignUp = ({navigation}: {navigation: any}) => {
             placeholder={strings.signUp.confirmPassword}
             value={passwordConfirmed}
             onChangeText={text => setPasswordConfirmed(text)}
+            placeholderTextColor={colors.darkgrey}
           />
         </View>
         <View style={accountStyles.input}>
@@ -120,6 +124,7 @@ const SignUp = ({navigation}: {navigation: any}) => {
             placeholder={strings.signUp.phoneNumber}
             value={phoneNumber}
             onChangeText={text => setPhoneNumber(text)}
+            placeholderTextColor={colors.darkgrey}
           />
         </View>
         <View>{error.length !== 0 ? <Text>{error}</Text> : null}</View>
@@ -142,7 +147,7 @@ const styles = StyleSheet.create({
   footerText: {
     fontSize: 12,
     textAlign: 'center',
-    color: colors.grey,
+    color: colors.black,
   },
 });
 
@@ -193,6 +198,7 @@ const accountStyles = StyleSheet.create({
     height: s(30),
     borderBottomWidth: 1,
     borderBottomColor: colors.darkgrey,
+    color: colors.black,
   },
   signup: {
     marginBottom: s(25),

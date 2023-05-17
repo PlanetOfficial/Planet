@@ -222,6 +222,7 @@ const MapScreen: React.FC<Props> = ({navigation, route}) => {
               onFocus: () => {
                 bottomSheetRef.current?.snapToIndex(1);
               },
+              placeholderTextColor: colors.darkgrey,
             }}
             onPress={(_data, details = null) => {
               // As you can see if you turn these logs on, we get much more data than we're using. Maybe store in table?
@@ -244,9 +245,13 @@ const MapScreen: React.FC<Props> = ({navigation, route}) => {
               container: searchStyles.container,
               textInputContainer: searchStyles.textInputContainer,
               textInput: searchStyles.textInput,
-              row: searchStyles.row,
               separator: searchStyles.separator,
             }}
+            renderRow={(rowData) => (
+              <Text>
+                {rowData.description}
+              </Text>
+            )}
           />
           <Image style={searchStyles.icon} source={icons.search} />
         </>
@@ -319,14 +324,6 @@ const searchStyles = StyleSheet.create({
     fontSize: s(12),
     color: colors.black,
     backgroundColor: 'transparent',
-  },
-  row: {
-    height: s(40),
-    width: s(320),
-    paddingLeft: s(10),
-    color: colors.black,
-    borderTopColor: colors.darkgrey,
-    backgroundColor: colors.white,
   },
   separator: {
     height: 1,

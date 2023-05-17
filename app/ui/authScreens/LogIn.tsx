@@ -65,6 +65,7 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
         autoCorrect={false}
         keyboardType="email-address"
         textContentType="emailAddress"
+        placeholderTextColor={colors.darkgrey}
       />
       <TextInput
         testID="passwordTextInput"
@@ -74,6 +75,7 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
         onChangeText={setPassword}
         secureTextEntry={true}
         textContentType="password"
+        placeholderTextColor={colors.darkgrey}
       />
       <Text
         style={styles.forgotPwd}
@@ -134,6 +136,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: colors.darkgrey,
     backgroundColor: colors.white,
+    color: colors.black,
   },
   forgotPwd: {
     marginTop: vs(7),
@@ -160,6 +163,7 @@ const styles = StyleSheet.create({
   bottomText: {
     fontSize: s(12),
     textAlign: 'center',
+    color: colors.black,
   },
   bottomContainer: {
     flexDirection: 'row',

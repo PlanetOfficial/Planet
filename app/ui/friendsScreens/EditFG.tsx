@@ -121,6 +121,7 @@ const CreateFG: React.FC<Props> = ({navigation, route}) => {
           onChangeText={setInvite}
           value={invite}
           placeholder={strings.friends.promptInvite}
+          placeholderTextColor={colors.darkgrey}
         />
         <AButton
           size="s"

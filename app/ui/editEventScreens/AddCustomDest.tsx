@@ -109,6 +109,7 @@ const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
               setSelected(true);
             }
           },
+          placeholderTextColor: colors.darkgrey,
         }}
         onPress={(data, details = null) => {
           if (
@@ -136,9 +137,13 @@ const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
           container: searchStyles.container,
           textInputContainer: searchStyles.textInputContainer,
           textInput: searchStyles.textInput,
-          row: searchStyles.row,
           separator: searchStyles.separator,
         }}
+        renderRow={(rowData) => (
+          <Text>
+            {rowData.description}
+          </Text>
+        )}
       />
       <Image style={searchStyles.icon} source={icons.search} />
       <View style={styles.contentContainer}>
@@ -263,14 +268,6 @@ const searchStyles = StyleSheet.create({
     fontSize: s(12),
     color: colors.black,
     backgroundColor: 'transparent',
-  },
-  row: {
-    height: s(40),
-    width: s(320),
-    paddingLeft: s(10),
-    color: colors.black,
-    borderTopColor: colors.darkgrey,
-    backgroundColor: colors.white,
   },
   separator: {
     height: 1,
