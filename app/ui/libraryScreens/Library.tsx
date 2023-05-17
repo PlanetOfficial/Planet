@@ -54,7 +54,6 @@ const Library: React.FC<Props> = ({navigation}) => {
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       initializeData();
-      console.log("refreshed")
     });
     return unsubscribe;
   }, [navigation]);
