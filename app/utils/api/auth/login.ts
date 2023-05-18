@@ -1,7 +1,7 @@
 import {UserOpsURL} from '../APIConstants';
 
 export const login = async (email: String, password: String) => {
-  // TODO-SECURITY: filter inputs**
+  
 
   const response = await fetch(
     UserOpsURL + `/auth/login?email=${email}&password=${password}`,

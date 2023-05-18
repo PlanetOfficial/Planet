@@ -5,7 +5,7 @@ export const createGroup = async (
   invitee_emails: Array<String>,
   authToken: any,
 ) => {
-  // TODO-SECURITY: filter inputs**
+  
 
   let emails_string = '';
 

@@ -1,7 +1,7 @@
 import {DBOpsURL} from '../APIConstants';
 
 export const getFGsAndInvites = async (authToken: any) => {
-  // TODO-SECURITY: filter inputs**
+  
 
   const response = await fetch(
     DBOpsURL + `/friends/groupsAndInvites?authtoken=${authToken}`,

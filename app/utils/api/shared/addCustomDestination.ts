@@ -7,7 +7,7 @@ export const addCustomDestination = async (
   longitude: number,
   formatted_address?: string | undefined,
 ): Promise<Place | undefined> => {
-  // TODO-SECURITY: filter inputs**
+  
 
   let address = '';
   if (formatted_address !== undefined) {

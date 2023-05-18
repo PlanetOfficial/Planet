@@ -6,7 +6,7 @@ export const editEvent = async (
   place_ids: number[],
   event_id: number,
 ) => {
-  // TODO-SECURITY: filter inputs**
+  
 
   let placesString = '';
 

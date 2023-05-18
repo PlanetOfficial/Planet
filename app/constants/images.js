@@ -43,72 +43,7 @@ export const icons = {
   telephone: require('../assets/icons/telephone.png'),
 };
 
-export const brands = {
-  yelpIcon: require('../assets/brands/yelp_icon.png'),
-  yelpLogo: require('../assets/brands/yelp_logo.png'),
-  ticketmasterIcon: require('../assets/brands/ticketmaster_icon.png'),
-  ticketmasterLogo: require('../assets/brands/ticketmaster_logo.png'),
-};
-
-export const yelpStars = [
-  require('../assets/brands/yelp_stars/0.png'),
-  require('../assets/brands/yelp_stars/0.png'),
-  require('../assets/brands/yelp_stars/1.png'),
-  require('../assets/brands/yelp_stars/1.5.png'),
-  require('../assets/brands/yelp_stars/2.png'),
-  require('../assets/brands/yelp_stars/2.5.png'),
-  require('../assets/brands/yelp_stars/3.png'),
-  require('../assets/brands/yelp_stars/3.5.png'),
-  require('../assets/brands/yelp_stars/4.png'),
-  require('../assets/brands/yelp_stars/4.5.png'),
-  require('../assets/brands/yelp_stars/5.png'),
-];
-
 export const vectors = {
   blur: require('../assets/vectors/blur.png'),
   login: require('../assets/vectors/login.png'),
 };
-
-export const genreImages = [
-  require('../assets/genres/events.jpg'),
-  require('../assets/genres/restaurants.jpg'),
-  require('../assets/genres/recreational.jpg'),
-  require('../assets/genres/activities.jpg'),
-  require('../assets/genres/shopping.jpg'),
-  require('../assets/genres/outdoors.jpg'),
-];
-
-export const categoryIcons = [
-  require('../assets/categories/concert.png'),
-  require('../assets/categories/sport.png'),
-  require('../assets/categories/arts-theater.png'),
-  require('../assets/categories/fair.png'),
-  require('../assets/categories/restaurant.png'),
-  require('../assets/categories/dessert.png'),
-  require('../assets/categories/cafe.png'),
-  require('../assets/categories/bar.png'),
-  require('../assets/categories/movie-theater.png'),
-  require('../assets/categories/aquarium.png'),
-  require('../assets/categories/museum.png'),
-  require('../assets/categories/zoo.png'),
-  require('../assets/categories/planetarium.png'),
-  require('../assets/categories/night-club.png'),
-  require('../assets/categories/casino.png'),
-  require('../assets/categories/amusement-park.png'),
-  require('../assets/categories/escape-room.png'),
-  require('../assets/categories/bowling-alley.png'),
-  require('../assets/categories/mini-golf.png'),
-  require('../assets/categories/laser-tag.png'),
-  require('../assets/categories/skating-rink.png'),
-  require('../assets/categories/arcade.png'),
-  require('../assets/categories/shopping-center.png'),
-  require('../assets/categories/outlet-store.png'),
-  require('../assets/categories/antique-shop.png'),
-  require('../assets/categories/thrift-store.png'),
-  require('../assets/categories/tourist-attraction.png'),
-  require('../assets/categories/park.png'),
-  require('../assets/categories/hiking-trail.png'),
-  require('../assets/categories/beach.png'),
-  require('../assets/categories/botanical-garden.png'),
-  require('../assets/categories/observatory.png'),
-];

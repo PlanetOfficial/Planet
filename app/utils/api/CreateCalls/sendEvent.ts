@@ -6,7 +6,7 @@ export const sendEvent = async (
   authToken: string | null,
   date: string,
 ) => {
-  // TODO-SECURITY: filter inputs**
+  
 
   let placesString = '';
 

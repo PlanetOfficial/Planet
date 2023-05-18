@@ -1,7 +1,7 @@
 import {DBOpsURL} from '../APIConstants';
 
 export const forkEvent = async (group_event_id: number, authToken: any) => {
-  // TODO-SECURITY: filter inputs**
+  
 
   const response = await fetch(
     DBOpsURL +

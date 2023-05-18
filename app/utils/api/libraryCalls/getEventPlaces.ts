@@ -1,7 +1,7 @@
 import {DBOpsURL} from '../APIConstants';
 
 export const getEventPlaces = async (event_id: number) => {
-  // TODO-SECURITY: filter inputs**
+  
 
   const response = await fetch(DBOpsURL + `/event/${event_id}`, {
     method: 'GET',

@@ -1,7 +1,7 @@
 import {DBOpsURL} from '../APIConstants';
 
 export const acceptInvite = async (invite_id: number, token: any) => {
-  // TODO-SECURITY: filter inputs**
+  
 
   const response = await fetch(
     DBOpsURL +

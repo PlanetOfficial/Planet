@@ -5,7 +5,7 @@ export const makeFGEvent = async (
   group_id: number,
   token: any,
 ) => {
-  // TODO-SECURITY: filter inputs**
+  
 
   const response = await fetch(
     DBOpsURL +
