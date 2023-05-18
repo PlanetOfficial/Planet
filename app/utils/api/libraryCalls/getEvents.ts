@@ -1,7 +1,7 @@
 import {DBOpsURL} from '../APIConstants';
 
 export const getEvents = async (authToken: any) => {
-  // TODO-SECURITY: filter inputs**
+  
 
   const response = await fetch(DBOpsURL + `/history?authtoken=${authToken}`, {
     method: 'GET',

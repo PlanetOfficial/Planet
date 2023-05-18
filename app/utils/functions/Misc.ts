@@ -9,7 +9,6 @@ import {
   Event,
   PlaceDetail,
 } from '../interfaces/types';
-import misc from '../../constants/misc';
 import {floats} from '../../constants/numbers';
 
 /*
@@ -75,25 +74,6 @@ export const getRegionForCoordinates = (points: MarkerObject[]): any => {
     latitudeDelta: latDelta,
     longitudeDelta: lngDelta,
   };
-};
-
-/*
-  Give an array where each element is another array, fetches images
-  from all of this data
-*/
-export const getImagesFromURLs = (places: any[]) => {
-  let images: any = [];
-  if (places && places?.length !== 0) {
-    places.forEach(item => {
-      if (item?.images && item?.images?.length !== 0) {
-        images.push(
-          item?.images[0]?.prefix + misc.imageSize + item?.images[0]?.suffix,
-        );
-      }
-    });
-  }
-
-  return images;
 };
 
 /*

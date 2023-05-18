@@ -10,7 +10,7 @@ export const getCatFiltered = async (
   filters: Filter[],
   filterValues: (number | number[])[],
 ) => {
-  // TODO-SECURITY: filter inputs**
+  
   let subcategoryString = '';
 
   subcategories.forEach(item => {

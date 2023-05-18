@@ -1,7 +1,7 @@
 import {UserOpsURL} from '../APIConstants';
 
 export const signup = async (name: String, email: String, password: String) => {
-  // TODO-SECURITY: filter inputs**
+  
 
   const response = await fetch(
     UserOpsURL +

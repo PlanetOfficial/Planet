@@ -6,7 +6,7 @@ export const editGroup = async (
   id: number,
   authToken: any,
 ) => {
-  // TODO-SECURITY: filter inputs**
+  
 
   let emails_string = '';
 
