@@ -42,15 +42,15 @@ export const getDestination = async (
   }
 };
 
-// TODO-REFACTOR: DOESN'T WORK
 export const postDestination = async (
   name: String,
   latitude: number,
   longitude: number,
+  details: any,
 ): Promise<Place | null> => {
   const response = await fetch(
     EndPointsURL +
-      `/destination?name=${name}&latitude=${latitude}&longitude=${longitude}`,
+      `/destination?name=${name}&latitude=${latitude}&longitude=${longitude}&details=${JSON.stringify(details)}`,
     {
       method: 'POST',
     },

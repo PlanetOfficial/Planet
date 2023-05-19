@@ -50,6 +50,13 @@ export interface Place {
   };
 }
 
+export interface CustomPlace {
+  name: string;
+  latitude: number;
+  longitude: number;
+  details: any;
+}
+
 export interface PlaceDetail {
   description: string;
   address: string;

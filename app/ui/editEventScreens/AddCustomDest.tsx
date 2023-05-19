@@ -24,7 +24,7 @@ import AButton from '../components/ActionButton';
 
 import {GoogleMapsAPIKey} from '../../utils/api/APIConstants';
 import {CustomPlace, Place, Region} from '../../utils/interfaces/types';
-import {addCustomDestination} from '../../utils/api/shared/addCustomDestination';
+import {postDestination} from '../../utils/api/destinationAPI';
 
 interface Props {
   onClose: () => void;
@@ -51,11 +51,11 @@ const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
 
   const handleSelection = async () => {
     if (customDestination) {
-      const response: Place | undefined = await addCustomDestination(
+      const response: Place | null = await postDestination(
         customDestination.name,
         customDestination.latitude,
         customDestination.longitude,
-        customDestination.formatted_address,
+        customDestination.details,
       );
 
       if (response) {
@@ -128,7 +128,7 @@ const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
               name: data.structured_formatting.main_text,
               latitude: details.geometry.location.lat,
               longitude: details.geometry.location.lng,
-              formatted_address: details?.formatted_address,
+              details: details,
             });
             setCustom(false);
           }
@@ -165,6 +165,7 @@ const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
                       name: text,
                       latitude: e.nativeEvent.coordinate.latitude,
                       longitude: e.nativeEvent.coordinate.longitude,
+                      details: null,
                     })
                   : null
               }>
