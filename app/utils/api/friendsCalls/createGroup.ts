@@ -5,8 +5,6 @@ export const createGroup = async (
   invitee_emails: Array<String>,
   authToken: any,
 ) => {
-  
-
   let emails_string = '';
 
   invitee_emails.forEach(item => {

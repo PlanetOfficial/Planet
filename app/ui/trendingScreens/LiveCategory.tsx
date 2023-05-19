@@ -20,7 +20,7 @@ import Text from '../components/Text';
 import Icon from '../components/Icon';
 import Filter from '../editEventScreens/Filter';
 
-import {getCatFiltered} from '../../utils/api/shared/getCatFiltered';
+import {getCatFiltered} from '../../utils/api/CreateCalls/getCatFiltered';
 import {
   Filter as FilterT,
   LiveEvent,

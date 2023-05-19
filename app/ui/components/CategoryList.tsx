@@ -21,7 +21,7 @@ import {
 import {colors} from '../../constants/theme';
 
 import {Genre, Category} from '../../utils/interfaces/types';
-import {getGenres} from '../../utils/api/shared/getGenres';
+import {getGenres} from '../../utils/api/genresAPI';
 
 interface Props {
   onClose?: () => void;

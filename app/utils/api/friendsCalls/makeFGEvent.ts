@@ -5,8 +5,6 @@ export const makeFGEvent = async (
   group_id: number,
   token: any,
 ) => {
-  
-
   const response = await fetch(
     DBOpsURL +
       `/friends/createEvent?user_event_id=${user_event_id}&group_id=${group_id}&authtoken=${token}`,
