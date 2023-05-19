@@ -20,14 +20,14 @@ npx react-native run-ios
 
 5. Copy environment variables (if there are any)
 
+**When adding new libraries, don't forget to '''npx pod-install ios''' if on mac
+Upgrade RN library with npx react-native upgrade
+
 <h1>Commits</h1>
 
-Before making a commit, go to the version control tab of git and double check changed files.
+Before making a commit, go to the version control tab of git in vscode and double check changed files.
 
 <h1>Testing/Cleaning (**required before merging pull requests to main**)</h1>
-
-Make E2E tests for new features and run them
-(see below for Detox instructions)
 
 ```
 npm run lint
@@ -36,32 +36,41 @@ npm run lint -- --fix
 
 Test on android and iOS for functionality.
 
-Check for hard coded constants, try to put them in a separate file.
-do ?. instead of . when appropriate
+Test release build on android (optional):
+
+```
+npx react-native run-android --mode=release
+```
 
 Naming Scheme:
 -TSX files are PascalCase
 -Everything else camelCase
 
-UPDATE LIBRARIES OFTEN!!
+<h1>Deployment</h1>
 
-<h1>Deployment (checklist is incomplete, see official RN guide)</h1>
-Android: 
+1. Update package.json to have correct version
+
+<h3>Android: </h3>
+
+In android/gradle.properties, increment versionCode and update versionName if needed.
+
+Make sure you have the keystore file under android/app
 
 ```
-yarn android-release
+cd android
+./gradlew bundleRelease
 ```
 
-Test on android and iOS constantly!!
+AAB should be generated under android/app/build/outputs/bundle/release. Upload that file
+to the google play store.
 
-**See React Native guide on deploying to app stores
+<h3>iOS: </h3>
 
-**When adding new libraries, don't forget to '''npx pod-install ios''' if on mac
-Upgrade RN library with npx react-native upgrade
+[WRITE IOS CHECKLIST HERE]
 
 ------------
 
-<h1>Detox setup:</h1>
+<h1>Detox setup (INACTIVE CURRENTLY):</h1>
 https://wix.github.io/Detox/docs/introduction/getting-started/
 
 Run this in your terminal (for macs)
