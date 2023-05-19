@@ -39,7 +39,7 @@ import CustomText from '../components/Text';
 import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
-import {getBookmarks} from '../../utils/api/shared/getBookmarks';
+import {getPlaces} from '../../utils/api/placeAPI';
 
 interface Props {
   navigation: any;
@@ -101,13 +101,16 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
     };
 
     const initializeData = async () => {
-      const authToken = await EncryptedStorage.getItem('auth_token');
+      const _places = await getPlaces();
 
-      const _bookmarks = await getBookmarks(authToken);
-      const bookmarksIds: number[] = _bookmarks.map(
-        (bookmark: {id: any}) => bookmark.id,
-      );
-      setBookmarks(bookmarksIds);
+      if (_places) {
+        const bookmarksIds: number[] = _places.map(
+          (bookmark: {id: any}) => bookmark.id,
+        );
+        setBookmarks(bookmarksIds);
+      } else {
+        Alert.alert('Error', 'Unable to load places. Please try again.');
+      }
 
       const data = await getGroupEventPlaces(groupEventId);
       setFullEventData(data);
@@ -139,7 +142,7 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
     if (response) {
       getEventData();
     } else {
-      Alert.alert('Error', 'Something went wrong. Please try again.');
+      Alert.alert('Error', 'Unable to like place. Please try again.');
     }
   };
 
@@ -151,7 +154,7 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
     if (response) {
       getEventData();
     } else {
-      Alert.alert('Error', 'Something went wrong. Please try again.');
+      Alert.alert('Error', 'Unable to dislike place. Please try again.');
     }
   };
 
@@ -174,7 +177,7 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
     if (response) {
       navigation.navigate('Library');
     } else {
-      Alert.alert('Error', 'Something went wrong. Please try again.');
+      Alert.alert('Error', 'Unable to fork event. Please try again.');
     }
   };
 
@@ -185,7 +188,7 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
     if (response) {
       navigation.navigate('Friends');
     } else {
-      Alert.alert('Error', 'Something went wrong. Please try again.');
+      Alert.alert('Error', 'Unable to remove event. Please try again.');
     }
   };
 

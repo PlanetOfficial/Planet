@@ -1,5 +1,6 @@
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {EndPointsURL} from './APIConstants';
+import {Event} from '../interfaces/types';
 
 export const getEvents = async (): Promise<Event[] | null> => {
   const authToken = await EncryptedStorage.getItem('auth_token');

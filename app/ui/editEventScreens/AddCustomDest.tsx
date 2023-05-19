@@ -61,7 +61,7 @@ const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
       if (response) {
         onSelect(response);
       } else {
-        Alert.alert('Error', 'Something went wrong. Please try again.');
+        Alert.alert('Error', 'Unable to add destination. Please try again.');
       }
 
       onClose();

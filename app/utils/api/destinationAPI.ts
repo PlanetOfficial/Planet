@@ -6,7 +6,7 @@ export const getDestinations = async (
   radius: number,
   latitude: number,
   longitude: number,
-  filters: any,
+  filters?: any,
   subcategory_id?: number,
 ): Promise<Place[] | null> => {
   const response = await fetch(
@@ -50,7 +50,9 @@ export const postDestination = async (
 ): Promise<Place | null> => {
   const response = await fetch(
     EndPointsURL +
-      `/destination?name=${name}&latitude=${latitude}&longitude=${longitude}&details=${JSON.stringify(details)}`,
+      `/destination?name=${name}&latitude=${latitude}&longitude=${longitude}&details=${JSON.stringify(
+        details,
+      )}`,
     {
       method: 'POST',
     },

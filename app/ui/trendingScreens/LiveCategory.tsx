@@ -6,6 +6,7 @@ import {
   View,
   StyleSheet,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 
@@ -20,14 +21,13 @@ import Text from '../components/Text';
 import Icon from '../components/Icon';
 import Filter from '../editEventScreens/Filter';
 
-import {getCatFiltered} from '../../utils/api/CreateCalls/getCatFiltered';
+import {getDestinations} from '../../utils/api/destinationAPI';
+import {getPlaces} from '../../utils/api/placeAPI';
 import {
   Filter as FilterT,
-  LiveEvent,
-  LiveEvents,
+  Place,
   Subcategory,
 } from '../../utils/interfaces/types';
-import {getBookmarks} from '../../utils/api/shared/getBookmarks';
 import EncryptedStorage from 'react-native-encrypted-storage';
 
 interface Props {
@@ -39,7 +39,6 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
   const [longitude] = useState<number>(route?.params?.longitude);
   const [latitude] = useState<number>(route?.params?.latitude);
   const [categoryId] = useState<number>(route?.params?.categoryId);
-  const [filters] = useState<FilterT[]>(route?.params?.filters);
   const [categoryName] = useState<string>(route?.params?.categoryName);
   const [bookmarks, setBookmarks] = useState<number[]>(
     route?.params?.bookmarks,
@@ -48,7 +47,7 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
   const [hiddenSubCategories, setHiddenSubCategories] = useState<Subcategory[]>(
     [],
   );
-  const [liveEvents, setLiveEvents] = useState<LiveEvents>({});
+  const [liveEvents, setLiveEvents] = useState<Place>();
   const [loading, setLoading] = useState<boolean>(false);
 
   const ref = useRef<any>(null); // due to forwardRef
@@ -69,7 +68,7 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
         );
 
         setLoading(true);
-        const response = await getCatFiltered(
+        const response = await getDestinations(
           subcategoryIds,
           integers.defaultNumPlaces,
           latitude,
@@ -115,13 +114,16 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
 
   useEffect(() => {
     const initializeBookmarks = async () => {
-      const authToken = await EncryptedStorage.getItem('auth_token');
+      const _places = await getPlaces();
 
-      const _bookmarks = await getBookmarks(authToken);
-      const bookmarksIds: number[] = _bookmarks.map(
-        (bookmark: {id: any}) => bookmark.id,
-      );
-      setBookmarks(bookmarksIds);
+      if (_places) {
+        const bookmarksIds: number[] = _places.map(
+          (bookmark: {id: any}) => bookmark.id,
+        );
+        setBookmarks(bookmarksIds);
+      } else {
+        Alert.alert('Error', 'Unable to load bookmarks. Please try again.');
+      }
     };
 
     const unsubscribe = navigation.addListener('focus', () => {
@@ -176,7 +178,7 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
               <View key={idx} style={categoryStyles.container}>
                 <View style={categoryStyles.header}>
                   <Text size="m" weight="b">
-                    {subcategory.title}
+                    {subcategory.name}
                   </Text>
                 </View>
                 <ScrollView

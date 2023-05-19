@@ -93,7 +93,7 @@ const LiveCategorySettings: React.FC<Props> = ({navigation, route}) => {
                   }}
                 />
                 <View style={categoryStyles.title}>
-                  <Text size="s">{item.title}</Text>
+                  <Text size="s">{item.name}</Text>
                 </View>
                 <TouchableOpacity
                   delayLongPress={1}
@@ -134,7 +134,7 @@ const LiveCategorySettings: React.FC<Props> = ({navigation, route}) => {
                   }}
                 />
                 <View style={categoryStyles.title}>
-                  <Text size="s">{item.title}</Text>
+                  <Text size="s">{item.name}</Text>
                 </View>
               </View>
               <View style={categoryStyles.border} />

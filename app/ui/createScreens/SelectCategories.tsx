@@ -99,7 +99,7 @@ const SelectCategories: React.FC<Props> = ({navigation, route}) => {
             {selectedCategories.length > 0 ? (
               selectedCategories.map((category: Category) => (
                 <View key={category.id} style={styles.category}>
-                  <Image style={styles.icon} source={category.icon} />
+                  <Image style={styles.icon} source={{uri: category.icon}} />
                   <TouchableOpacity
                     style={styles.xButton}
                     onPress={() => removeCategory(category.id)}>

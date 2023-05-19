@@ -7,7 +7,6 @@ import {
   FlatList,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
-import EncryptedStorage from 'react-native-encrypted-storage';
 
 import PlaceCard from '../components/PlaceCard';
 import Text from '../components/Text';
@@ -17,7 +16,7 @@ import strings from '../../constants/strings';
 // import misc from '../../constants/misc';
 import {colors} from '../../constants/theme';
 
-import {getBookmarks} from '../../utils/api/shared/getBookmarks';
+import {getPlaces} from '../../utils/api/placeAPI';
 import {Place} from '../../utils/interfaces/types';
 
 interface Props {
@@ -38,12 +37,14 @@ const AddFromLibrary: React.FC<Props> = ({onClose, onSelect}) => {
 
   useEffect(() => {
     const initializeData = async () => {
-      const authToken = await EncryptedStorage.getItem('auth_token');
-
       // TODO: implement filters
 
-      const _bookmarks = await getBookmarks(authToken);
-      setPlaces(_bookmarks);
+      const _bookmarks = await getPlaces();
+      if (_bookmarks) {
+        setPlaces(_bookmarks);
+      } else {
+        Alert.alert('Error', 'Unable to load bookmarks. Please try again.');
+      }
     };
 
     initializeData();

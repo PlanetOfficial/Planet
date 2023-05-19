@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {
   View,
-  Text,
   StyleSheet,
   SafeAreaView,
   TouchableOpacity,
@@ -13,25 +12,17 @@ import MapView, {Marker} from 'react-native-maps';
 import {s} from 'react-native-size-matters';
 import {ScrollView} from 'react-native-gesture-handler';
 import {showLocation} from 'react-native-map-link';
-import EncryptedStorage from 'react-native-encrypted-storage';
 
 import strings from '../../constants/strings';
-import {icons, brands, yelpStars} from '../../constants/images';
+import {icons} from '../../constants/images';
 import {colors} from '../../constants/theme';
 import {floats} from '../../constants/numbers';
 
-import {
-  convertDateToMMDDYYYY,
-  convertTimeTo12Hour,
-  displayHours,
-  getPlaceDetail,
-} from '../../utils/functions/Misc';
-import {getPlaceDetails} from '../../utils/api/shared/getPlaceDetails';
-import {setBookmark} from '../../utils/api/shared/setBookmark';
-import {unbookmark} from '../../utils/api/shared/unbookmark';
+import {getDestination} from '../../utils/api/destinationAPI';
+import {postPlace, deletePlace} from '../../utils/api/placeAPI';
 
 import Icon from '../components/Icon';
-import CustomText from '../components/Text';
+import Text from '../components/Text';
 import OptionMenu from '../components/OptionMenu';
 
 import {Place as PlaceT, PlaceDetail} from '../../utils/interfaces/types';
@@ -43,21 +34,7 @@ interface Props {
 
 const Place: React.FC<Props> = ({navigation, route}) => {
   const [destination] = useState<PlaceT>(route.params.destination);
-  const [destinationDetails, setDestinationDetails] = useState<PlaceDetail>({
-    additionalInfo: '',
-    address: '',
-    dates: {},
-    description: '',
-    hours: [],
-    name: '',
-    phone: '',
-    photos: [],
-    place_name: '',
-    price: '',
-    rating: -1,
-    review_count: -1,
-    url: '',
-  });
+  const [destinationDetails, setDestinationDetails] = useState<PlaceDetail>();
   const [category] = useState<string>(route.params.category);
   const [bookmarked, setBookmarked] = useState<boolean>(
     route?.params?.bookmarked,
@@ -65,16 +42,20 @@ const Place: React.FC<Props> = ({navigation, route}) => {
 
   useEffect(() => {
     const initializeDestinationData = async () => {
-      const id = destination.id;
-      if (id) {
-        const details = await getPlaceDetails(id);
+      const details: PlaceDetail | null = await getDestination(destination.place_id);
 
-        setDestinationDetails(getPlaceDetail(details));
+      if (details) {
+        setDestinationDetails(details);
+      } else {
+        Alert.alert(
+          'Error',
+          'Unable to load destination details. Please try again.',
+        );
       }
     };
 
     initializeDestinationData();
-  }, [destination.id]);
+  }, [destination.place_id]);
 
   const handleMapPress = async () => {
     showLocation({
@@ -85,7 +66,7 @@ const Place: React.FC<Props> = ({navigation, route}) => {
   };
 
   const handleCallPress = async () => {
-    if (destinationDetails.url) {
+    if (destinationDetails?.url) {
       await Linking.openURL(
         `tel:${
           destinationDetails.phone
@@ -97,27 +78,28 @@ const Place: React.FC<Props> = ({navigation, route}) => {
   };
 
   const handleLinkPress = async () => {
-    if (destinationDetails.url) {
+    if (destinationDetails?.url) {
       await Linking.openURL(destinationDetails.url);
     }
   };
 
   const handleBookmark = async () => {
-    const authToken = await EncryptedStorage.getItem('auth_token');
-    let responseStatus;
-
     if (!bookmarked) {
-      // switch to bookmarked, so call /bookmark
-      responseStatus = await setBookmark(authToken, destination.id);
-    } else {
-      // switch to not bookmarked, so call /unbookmark
-      responseStatus = await unbookmark(authToken, destination.id);
-    }
+      const response: boolean = await postPlace(destination.id);
 
-    if (responseStatus) {
-      setBookmarked(!bookmarked);
+      if (response) {
+        setBookmarked(!bookmarked);
+      } else {
+        Alert.alert('Error', 'Unable to bookmark place. Please try again.');
+      }
     } else {
-      Alert.alert('Error', 'Something went wrong. Please try again.');
+      const response: boolean = await deletePlace(destination.id);
+
+      if (response) {
+        setBookmarked(!bookmarked);
+      } else {
+        Alert.alert('Error', 'Unable to unbookmark place. Please try again.');
+      }
     }
   };
 
@@ -127,13 +109,11 @@ const Place: React.FC<Props> = ({navigation, route}) => {
         <View style={headerStyles.container}>
           <Icon size="s" icon={icons.back} onPress={navigation.goBack} />
           <View style={headerStyles.texts}>
-            <CustomText weight="b">{destination.name}</CustomText>
-            <CustomText size="xs" weight="l" color={colors.accent}>
+            <Text weight="b">{destination.name}</Text>
+            <Text size="xs" weight="l" color={colors.accent}>
               {category}
-              {destinationDetails.price
-                ? '・' + destinationDetails.price
-                : null}
-            </CustomText>
+              {destination?.price ? '・' + destination?.price : null}
+            </Text>
           </View>
           <OptionMenu
             options={[
@@ -199,22 +179,19 @@ const Place: React.FC<Props> = ({navigation, route}) => {
             horizontal={true}
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={styles.imagesContainer}>
-            {destinationDetails.photos.length > 0 ? (
-              destinationDetails.photos.map((photo: string, index: number) => (
+            {destinationDetails?.photos ? (
+              destinationDetails?.photos.map((photo: string, index: number) => (
                 <View key={index}>
                   <Image source={{uri: photo}} style={styles.image} />
                 </View>
               ))
-            ) : destination.image_url ? (
-              <Image
-                source={{uri: destination.image_url}}
-                style={styles.image}
-              />
+            ) : destination?.photo ? (
+              <Image source={{uri: destination.photo}} style={styles.image} />
             ) : null}
           </ScrollView>
           <View style={styles.separator} />
         </>
-        {destinationDetails.rating > 0 ? (
+        {/* {destinationDetails.rating > 0 ? (
           <View style={detailStyles.infoContainer}>
             <View style={detailStyles.row}>
               <View>
@@ -226,11 +203,11 @@ const Place: React.FC<Props> = ({navigation, route}) => {
                     style={detailStyles.stars}
                     source={yelpStars[destinationDetails.rating * 2]}
                   />
-                  <CustomText
+                  <Text
                     size="xs"
                     color={
                       colors.darkgrey
-                    }>{`Based on ${destinationDetails.review_count} reviews`}</CustomText>
+                    }>{`Based on ${destinationDetails.review_count} reviews`}</Text>
                 </View>
               </View>
               <TouchableOpacity onPress={handleLinkPress}>
@@ -302,15 +279,13 @@ const Place: React.FC<Props> = ({navigation, route}) => {
               {destinationDetails.address.replace(/\\n/g, '\n')}
             </Text>
           </View>
-        ) : null}
-        {destinationDetails.phone ? (
+        ) : null} */}
+        {destinationDetails?.phone ? (
           <View style={detailStyles.infoContainer}>
-            <Text style={detailStyles.infoTitle}>
-              {strings.createTabStack.phone}:
-            </Text>
+            <Text>{strings.createTabStack.phone}:</Text>
 
             <TouchableOpacity onPress={handleCallPress}>
-              <Text style={detailStyles.info}>{destinationDetails.phone}</Text>
+              <Text>{destinationDetails.phone}</Text>
             </TouchableOpacity>
           </View>
         ) : null}
