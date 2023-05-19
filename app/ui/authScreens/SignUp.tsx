@@ -127,7 +127,11 @@ const SignUp = ({navigation}: {navigation: any}) => {
             placeholderTextColor={colors.darkgrey}
           />
         </View>
-        <View>{error.length !== 0 ? <Text>{error}</Text> : null}</View>
+        <View>
+          {error.length !== 0 ? (
+            <Text style={styles.error}>{error}</Text>
+          ) : null}
+        </View>
         <TouchableOpacity onPress={() => handleSignUp()}>
           <Text style={accountStyles.signup}>{strings.signUp.signUp}</Text>
         </TouchableOpacity>
@@ -147,6 +151,9 @@ const styles = StyleSheet.create({
   footerText: {
     fontSize: 12,
     textAlign: 'center',
+    color: colors.black,
+  },
+  error: {
     color: colors.black,
   },
 });

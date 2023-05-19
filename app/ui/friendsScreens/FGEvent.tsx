@@ -438,7 +438,7 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
             <View>
               {curPlaceLikes?.map((like: FGReaction, index: number) => (
                 <View key={index}>
-                  <Text>{like.user.name}</Text>
+                  <Text style={styles.reactionNames}>{like.user.name}</Text>
                 </View>
               ))}
             </View>
@@ -452,7 +452,7 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
             <View>
               {curPlaceDislikes?.map((dislike: FGReaction, index: number) => (
                 <View key={index}>
-                  <Text>{dislike.user.name}</Text>
+                  <Text style={styles.reactionNames}>{dislike.user.name}</Text>
                 </View>
               ))}
             </View>
@@ -478,6 +478,9 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  reactionNames: {
+    color: colors.black,
   },
 });
 

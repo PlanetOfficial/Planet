@@ -68,6 +68,7 @@ const CreateFG: React.FC<Props> = ({navigation}) => {
         onChangeText={setName}
         value={name}
         placeholder={strings.friends.editName}
+        placeholderTextColor={colors.darkgrey}
       />
 
       <View style={inviteStyles.header}>
@@ -79,6 +80,7 @@ const CreateFG: React.FC<Props> = ({navigation}) => {
           onChangeText={setInvite}
           value={invite}
           placeholder={strings.friends.promptInvite}
+          placeholderTextColor={colors.darkgrey}
         />
         <AButton
           size="s"

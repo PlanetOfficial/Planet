@@ -82,7 +82,9 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
         onPress={() => navigation.navigate('ForgotPassword')}>
         {strings.login.forgotPassword}
       </Text>
-      <View>{error.length !== 0 ? <Text>{error}</Text> : null}</View>
+      <View>
+        {error.length !== 0 ? <Text style={styles.error}>{error}</Text> : null}
+      </View>
       <View>
         {loading ? (
           <ActivityIndicator size="large" color={colors.accent} />
@@ -173,6 +175,9 @@ const styles = StyleSheet.create({
     color: colors.accent,
     marginLeft: s(8),
     fontWeight: '700',
+  },
+  error: {
+    color: colors.black,
   },
 });
 
