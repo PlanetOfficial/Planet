@@ -172,7 +172,7 @@ const Event: React.FC<Props> = ({navigation, route}) => {
   };
 
   const handleRemoveEvent = async () => {
-    const response : boolean = await deleteEvent(eventId);
+    const response: boolean = await deleteEvent(eventId);
 
     if (response) {
       navigation.goBack();

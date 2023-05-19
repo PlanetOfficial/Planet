@@ -42,7 +42,9 @@ const Place: React.FC<Props> = ({navigation, route}) => {
 
   useEffect(() => {
     const initializeDestinationData = async () => {
-      const details: PlaceDetail | null = await getDestination(destination.place_id);
+      const details: PlaceDetail | null = await getDestination(
+        destination.place_id,
+      );
 
       if (details) {
         setDestinationDetails(details);

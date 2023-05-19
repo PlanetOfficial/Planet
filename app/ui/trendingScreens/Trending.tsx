@@ -45,7 +45,7 @@ const Trending: React.FC<Props> = ({navigation}) => {
 
   useEffect(() => {
     const initializeData = async () => {
-      const _places : Place[] | null = await getPlaces();
+      const _places: Place[] | null = await getPlaces();
 
       if (_places) {
         const bookmarksIds: number[] = _places.map(
@@ -56,7 +56,7 @@ const Trending: React.FC<Props> = ({navigation}) => {
         Alert.alert('Error', 'Unable to load bookmarks. Please try again.');
       }
 
-      const _genres : Genre[] | null = await getGenres();
+      const _genres: Genre[] | null = await getGenres();
       if (_genres) {
         const _liveCategories: Category[] = _genres[0]?.categories;
         setLiveCategories(_liveCategories);

@@ -5,6 +5,7 @@ import {
   Image,
   TouchableOpacity,
   FlatList,
+  Alert,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 
@@ -103,7 +104,7 @@ const AddFromLibrary: React.FC<Props> = ({onClose, onSelect}) => {
               <PlaceCard
                 id={item.id}
                 name={item.name}
-                info={item.category_name}
+                info={item.category.name}
                 bookmarked={true}
                 setBookmarked={(bookmarked: boolean, id: number) => {
                   if (!bookmarked) {
@@ -111,9 +112,9 @@ const AddFromLibrary: React.FC<Props> = ({onClose, onSelect}) => {
                   }
                 }}
                 image={
-                  item.image_url
+                  item.photo
                     ? {
-                        uri: item.image_url,
+                        uri: item.photo,
                       }
                     : icons.defaultIcon
                 }
