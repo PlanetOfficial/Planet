@@ -1,4 +1,4 @@
-import {DBOpsURL} from '../APIConstants';
+import {FriendsURL} from '../APIConstants';
 
 export const createGroup = async (
   name: String,
@@ -12,7 +12,7 @@ export const createGroup = async (
   });
 
   const response = await fetch(
-    DBOpsURL +
+    FriendsURL +
       `/friends/createGroup?${emails_string}&name=${name}&authtoken=${authToken}`,
     {
       method: 'POST',

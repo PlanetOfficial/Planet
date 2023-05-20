@@ -11,9 +11,9 @@ export const getDestinations = async (
 ): Promise<Place[] | null> => {
   const response = await fetch(
     EndPointsURL +
-      `/destination?category_id=${category_id}radius=${radius}&latitude=${latitude}&longitude=${longitude}&filters:${JSON.stringify(
+      `/destination?category_id=${category_id}&radius=${radius}&latitude=${latitude}&longitude=${longitude}&filters=${JSON.stringify(
         filters,
-      )}&subcategory_id=${subcategory_id}`,
+      )}${subcategory_id ? '&subcategory_id=' + subcategory_id : ''}`,
     {
       method: 'GET',
     },
@@ -29,8 +29,9 @@ export const getDestinations = async (
 
 export const getDestination = async (
   placeId: string,
+  supplier: string,
 ): Promise<PlaceDetail | null> => {
-  const response = await fetch(EndPointsURL + `/destination/${placeId}`, {
+  const response = await fetch(EndPointsURL + `/destination/${placeId}?supplier=${supplier}`, {
     method: 'GET',
   });
 

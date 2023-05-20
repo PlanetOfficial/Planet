@@ -1,4 +1,4 @@
-import {DBOpsURL} from '../APIConstants';
+import {FriendsURL} from '../APIConstants';
 
 export const makeFGEvent = async (
   user_event_id: number,
@@ -6,7 +6,7 @@ export const makeFGEvent = async (
   token: any,
 ) => {
   const response = await fetch(
-    DBOpsURL +
+    FriendsURL +
       `/friends/createEvent?user_event_id=${user_event_id}&group_id=${group_id}&authtoken=${token}`,
     {
       method: 'POST',

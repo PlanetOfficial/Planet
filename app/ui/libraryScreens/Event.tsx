@@ -89,12 +89,12 @@ const Event: React.FC<Props> = ({navigation, route}) => {
   const addRef = useRef<any>(null); // due to forwardRef
 
   const getEventData = async () => {
-    setPlaces(route?.eventData?.places);
+    setPlaces(route?.params?.eventData?.places);
 
     setSelectionIndices(Array(route?.eventData?.places?.length).fill(-1));
 
     const markerArray: MarkerObject[] = getMarkerArray(
-      route?.eventData?.places,
+      route?.params?.eventData?.places,
     );
     setMarkers(markerArray);
 

@@ -1,8 +1,8 @@
-import {DBOpsURL} from '../APIConstants';
+import {FriendsURL} from '../APIConstants';
 
 export const acceptInvite = async (invite_id: number, token: any) => {
   const response = await fetch(
-    DBOpsURL +
+    FriendsURL +
       `/friends/acceptInvite?invite_id=${invite_id}&authtoken=${token}`,
     {
       method: 'POST',

@@ -14,21 +14,18 @@ import moment from 'moment';
 
 import {icons} from '../../constants/images';
 import {colors} from '../../constants/theme';
-import {integers} from '../../constants/numbers';
+import {floats} from '../../constants/numbers';
 
 import PlaceCard from '../components/PlaceCard';
 import Text from '../components/Text';
 import Icon from '../components/Icon';
-import Filter from '../editEventScreens/Filter';
 
 import {getDestinations} from '../../utils/api/destinationAPI';
 import {getPlaces} from '../../utils/api/placeAPI';
 import {
-  Filter as FilterT,
   Place,
   Subcategory,
 } from '../../utils/interfaces/types';
-import EncryptedStorage from 'react-native-encrypted-storage';
 
 interface Props {
   navigation: any;
@@ -47,20 +44,14 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
   const [hiddenSubCategories, setHiddenSubCategories] = useState<Subcategory[]>(
     [],
   );
-  const [liveEvents, setLiveEvents] = useState<Place>();
+  const [liveEvents, setLiveEvents] = useState<Map<number, Place[]>>(new Map());
   const [loading, setLoading] = useState<boolean>(false);
 
   const ref = useRef<any>(null); // due to forwardRef
 
-  const [filterValues, setFilterValues] = useState<(number | number[])[]>([]);
-  const [defaultFilterValues, setDefaultFilterValues] = useState<
-    (number | number[])[]
-  >([]);
-  const [filtersInitialized, setFiltersInitialized] = useState<boolean>(false);
-
   useEffect(() => {
     const initializeData = async () => {
-      if (route?.params?.subcategories && filters) {
+      if (route?.params?.subcategories) {
         setSubcategories(route?.params?.subcategories);
 
         const subcategoryIds: number[] = route?.params?.subcategories?.map(
@@ -68,16 +59,28 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
         );
 
         setLoading(true);
-        const response = await getDestinations(
-          subcategoryIds,
-          integers.defaultNumPlaces,
-          latitude,
-          longitude,
-          categoryId,
-          filters,
-          filterValues,
-        );
-        setLiveEvents(response?.places);
+
+        let _liveEvents: Map<number, Place[]> = new Map();
+        for(let i = 0; i < subcategoryIds.length; i++) {
+          const places: Place[] | null = await getDestinations(
+            categoryId,
+            floats.defaultRadius,
+            latitude,
+            longitude,
+            null,
+            subcategoryIds[i],
+          );
+          if (places) {
+            _liveEvents.set(subcategoryIds[i], places);
+          } else {
+            Alert.alert(
+              'Error',
+              'Unable to load live events. Please try again.',
+            );
+          }
+        }
+
+        setLiveEvents(_liveEvents);
         setLoading(false);
       }
 
@@ -86,30 +89,13 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
       }
     };
 
-    const initializeFilterValues = () => {
-      let _defaultFilterValues: (number | number[])[] = [];
-      for (let i = 0; filters && i < filters.length; i++) {
-        _defaultFilterValues.push(filters[i].defaultIdx);
-      }
-      setDefaultFilterValues(_defaultFilterValues);
-      setFilterValues(_defaultFilterValues);
-      setFiltersInitialized(true);
-    };
-
-    if (!filtersInitialized) {
-      initializeFilterValues();
-    } else {
-      initializeData();
-    }
+    initializeData();
   }, [
     categoryId,
     latitude,
     longitude,
     route?.params?.hiddenSubCategories,
     route?.params?.subcategories,
-    filters,
-    filterValues,
-    filtersInitialized,
   ]);
 
   useEffect(() => {
@@ -118,7 +104,7 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
 
       if (_places) {
         const bookmarksIds: number[] = _places.map(
-          (bookmark: {id: any}) => bookmark.id,
+          (bookmark: Place) => bookmark.id,
         );
         setBookmarks(bookmarksIds);
       } else {
@@ -157,24 +143,13 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
           </View>
         </View>
       </SafeAreaView>
-      {filters ? (
-        <Filter
-          ref={ref}
-          filters={filters}
-          currFilters={filterValues}
-          setCurrFilters={setFilterValues}
-          defaultFilterValues={defaultFilterValues}
-        />
-      ) : null}
 
       {loading ? (
         <ActivityIndicator size="small" color={colors.accent} />
       ) : (
         <ScrollView onTouchStart={() => ref.current?.closeDropdown()}>
           {subcategories?.map((subcategory: Subcategory, idx: number) =>
-            liveEvents &&
-            liveEvents[subcategory.id] &&
-            liveEvents[subcategory.id].length > 0 ? (
+            liveEvents?.get(subcategory.id) ? (
               <View key={idx} style={categoryStyles.container}>
                 <View style={categoryStyles.header}>
                   <Text size="m" weight="b">
@@ -186,9 +161,8 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
                   style={categoryStyles.scrollView}
                   horizontal={true}
                   showsHorizontalScrollIndicator={false}>
-                  {liveEvents[subcategory.id]
-                    ? liveEvents[subcategory.id].map(
-                        (event: LiveEvent, jdx: number) => (
+                  {liveEvents?.get(subcategory.id)?.map(
+                        (event: Place, jdx: number) => (
                           <TouchableOpacity
                             style={categoryStyles.card}
                             key={jdx}
@@ -204,18 +178,15 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
                               small={true}
                               name={event.name}
                               info={
-                                moment(event.date, 'YYYY-MM-DD').format(
+                                moment(event.dates?.start, 'YYYY-MM-DD').format(
                                   'M/D/YYYY',
                                 ) +
-                                (event?.priceRanges && event?.priceRanges[0]
+                                (event.priceRanges && event.priceRanges.min
                                   ? ' • ' +
                                     '$' +
-                                    Math.round(event.priceRanges[0]?.min) +
-                                    (event.priceRanges[0].min !==
-                                    event.priceRanges[0].max
-                                      ? ' - ' +
-                                        '$' +
-                                        Math.round(event.priceRanges[0]?.max)
+                                    event.priceRanges.min +
+                                    (event.priceRanges.max
+                                      ? ' - ' + '$' + event.priceRanges.max
                                       : '')
                                   : '')
                               }
@@ -234,12 +205,11 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
                                   );
                                 }
                               }}
-                              image={{uri: event.image_url}}
+                              image={{uri: event.photo}}
                             />
                           </TouchableOpacity>
                         ),
-                      )
-                    : null}
+                      )}
                 </ScrollView>
                 <Spacer />
               </View>

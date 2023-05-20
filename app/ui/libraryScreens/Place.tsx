@@ -35,7 +35,6 @@ interface Props {
 const Place: React.FC<Props> = ({navigation, route}) => {
   const [destination] = useState<PlaceT>(route.params.destination);
   const [destinationDetails, setDestinationDetails] = useState<PlaceDetail>();
-  const [category] = useState<string>(route.params.category);
   const [bookmarked, setBookmarked] = useState<boolean>(
     route?.params?.bookmarked,
   );
@@ -44,6 +43,7 @@ const Place: React.FC<Props> = ({navigation, route}) => {
     const initializeDestinationData = async () => {
       const details: PlaceDetail | null = await getDestination(
         destination.place_id,
+        destination.supplier,
       );
 
       if (details) {
@@ -113,7 +113,7 @@ const Place: React.FC<Props> = ({navigation, route}) => {
           <View style={headerStyles.texts}>
             <Text weight="b">{destination.name}</Text>
             <Text size="xs" weight="l" color={colors.accent}>
-              {category}
+              {destination.category.name}
               {destination?.price ? '・' + destination?.price : null}
             </Text>
           </View>

@@ -1,8 +1,8 @@
-import {DBOpsURL} from '../APIConstants';
+import {FriendsURL} from '../APIConstants';
 
 export const getGroupEventPlaces = async (group_event_id: number) => {
   const response = await fetch(
-    DBOpsURL + `/friends/event?group_event_id=${group_event_id}`,
+    FriendsURL + `/friends/event?group_event_id=${group_event_id}`,
     {
       method: 'GET',
     },

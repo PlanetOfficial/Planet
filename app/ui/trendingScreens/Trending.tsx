@@ -211,7 +211,6 @@ const Trending: React.FC<Props> = ({navigation}) => {
                         onPress={() => {
                           navigation.navigate('Place', {
                             destination: event,
-                            category: event.category,
                             bookmarked: bookmarks.includes(event.id),
                           });
                         }}>

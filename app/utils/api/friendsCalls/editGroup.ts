@@ -1,4 +1,4 @@
-import {DBOpsURL} from '../APIConstants';
+import {FriendsURL} from '../APIConstants';
 
 export const editGroup = async (
   name: String,
@@ -13,7 +13,7 @@ export const editGroup = async (
   });
 
   const response = await fetch(
-    DBOpsURL +
+    FriendsURL +
       `/friends/editGroup?${emails_string}&name=${name}&group_id=${id}&authtoken=${authToken}`,
     {
       method: 'POST',
