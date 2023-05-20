@@ -1,41 +1,72 @@
-import {ImageSourcePropType} from 'react-native';
+export interface Genre {
+  id: number;
+  name: string;
+  image: string;
+  categories: Category[];
+}
+
+export interface Category {
+  id: number;
+  name: string;
+  icon: string;
+  subcategories: Subcategory[];
+  options?: Place[];
+}
+
+export interface Subcategory {
+  id: number;
+  name: string;
+}
+
+export interface Event {
+  id: number;
+  name: string;
+  date: string;
+  places: Place[];
+}
 
 export interface Place {
-  category_id: number;
-  category_name: string;
-  created_at: number;
   id: number;
-  image_url?: string;
+  supplier: string;
+  name: string;
+  photo: string;
+  place_id: string;
   latitude: number;
   longitude: number;
-  name: string;
-  place_id: string;
-  subcategory_id?: number;
-  supplier: string;
+  dates: {
+    start: string;
+    end: string;
+  } | null;
+  priceRanges: {
+    min: number;
+    max: number;
+  } | null;
+  price: number | null;
+  rating: number | null;
+  rating_count: number | null;
+  category: {
+    id: number;
+    name: string;
+  };
 }
 
 export interface CustomPlace {
   name: string;
   latitude: number;
   longitude: number;
-  formatted_address?: string | undefined;
+  details: any;
 }
 
-export interface Category {
-  id: number;
-  name: string;
-  alias: string;
-  genre_id: number;
-  filters?: Filter[];
-  icon: ImageSourcePropType;
-  subcategories?: Subcategory[];
-  options?: Place[];
-}
-
-export interface Subcategory {
-  id: number;
-  title: string;
-  alias: string;
+export interface PlaceDetail {
+  description: string;
+  address: string;
+  phone: string;
+  photos: string[];
+  reviews: any[];
+  hours: any[];
+  url: string;
+  website: string;
+  attributes: string[];
 }
 
 export interface Filter {
@@ -44,13 +75,6 @@ export interface Filter {
   values: (number | string)[];
   text: string;
   defaultIdx: number | number[];
-}
-
-export interface Genre {
-  id: number;
-  name: string;
-  image: ImageSourcePropType;
-  categories: Category[];
 }
 
 export interface Region {
@@ -74,44 +98,6 @@ export interface Coordinate {
 export interface WeekDay {
   day: string;
   hours: string[];
-}
-
-export interface LiveEvent {
-  category: string;
-  date: string;
-  id: number;
-  image_url: string;
-  latitude: number;
-  longitude: number;
-  name: string;
-  priceRanges: {
-    min: number;
-    max: number;
-    currency: string;
-    type: string;
-  }[];
-}
-
-export interface LiveEvents {
-  [categoryIndex: number]: LiveEvent[];
-}
-
-export interface Event {
-  date: string;
-  id: number;
-  name: string;
-  places: {
-    created_at: number;
-    event_id: number;
-    id: number;
-    place: Place;
-    place_id: number;
-  }[];
-  suggester: number;
-  suggester_info: {
-    name: string;
-    self: boolean;
-  };
 }
 
 export interface FriendGroup {
@@ -166,25 +152,4 @@ export interface FGPlace {
   category_name: string;
   likes: FGReaction[];
   dislikes: FGReaction[];
-}
-
-export interface PlaceDetail {
-  additionalInfo: string;
-  address: string;
-  dates: any;
-  description: string;
-  hours: {
-    day: number;
-    end: string;
-    is_overnight: boolean;
-    start: string;
-  }[];
-  name: string;
-  phone: string;
-  photos: string[];
-  place_name: string;
-  price: string;
-  rating: number;
-  review_count: number;
-  url: string;
 }

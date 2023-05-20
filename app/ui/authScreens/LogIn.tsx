@@ -12,7 +12,7 @@ import {s, vs} from 'react-native-size-matters';
 
 import strings from '../../constants/strings';
 
-import {login} from '../../utils/api/auth/login';
+import {login} from '../../utils/api/authAPI';
 import {colors} from '../../constants/theme';
 import {vectors} from '../../constants/images';
 import {cacheUserInfo} from '../../utils/functions/CacheHelpers';

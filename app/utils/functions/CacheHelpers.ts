@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import EncryptedStorage from 'react-native-encrypted-storage';
-import {getUserInfo} from '../api/auth/getUserInfo';
+import {getUserInfo} from '../api/authAPI';
 
 // caches: auth_token, user_id, name
 const cacheStorage = async (authToken: any) => {

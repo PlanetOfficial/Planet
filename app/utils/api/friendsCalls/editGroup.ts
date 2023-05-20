@@ -6,8 +6,6 @@ export const editGroup = async (
   id: number,
   authToken: any,
 ) => {
-  
-
   let emails_string = '';
 
   invitee_emails.forEach(item => {

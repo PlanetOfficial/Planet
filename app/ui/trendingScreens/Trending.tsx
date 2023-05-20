@@ -29,7 +29,7 @@ import {getBookmarks} from '../../utils/api/shared/getBookmarks';
 import {requestLocations} from '../../utils/api/CreateCalls/requestLocations';
 import {Subcategory} from '../../utils/interfaces/types';
 import {Category, LiveEvent, LiveEvents} from '../../utils/interfaces/types';
-import {getGenres} from '../../utils/api/shared/getGenres';
+import {getGenres} from '../../utils/api/genresAPI';
 
 interface Props {
   navigation: any;

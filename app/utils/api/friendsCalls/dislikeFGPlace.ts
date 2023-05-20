@@ -4,8 +4,6 @@ export const dislikeFGPlace = async (
   group_event_place_id: number,
   token: any,
 ) => {
-  
-
   const response = await fetch(
     DBOpsURL +
       `/friends/dislikePlace?group_event_place_id=${group_event_place_id}&authtoken=${token}`,
