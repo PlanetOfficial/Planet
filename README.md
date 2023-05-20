@@ -52,7 +52,7 @@ Naming Scheme:
 
 <h3>Android: </h3>
 
-In android/gradle.properties, increment versionCode and update versionName if needed.
+In android/app/build.gradle, increment versionCode and update versionName if needed.
 
 Make sure you have the keystore file under android/app
 
