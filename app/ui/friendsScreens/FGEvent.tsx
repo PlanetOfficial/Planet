@@ -22,11 +22,10 @@ import {
   getMarkerArray,
   getRegionForCoordinates,
 } from '../../utils/functions/Misc';
-import {getGroupEventPlaces} from '../../utils/api/friendsCalls/getGroupEventPlaces';
 import {likeFGPlace} from '../../utils/api/friendsCalls/likeFGPlace';
 import {dislikeFGPlace} from '../../utils/api/friendsCalls/dislikeFGPlace';
 import {forkEvent} from '../../utils/api/friendsCalls/forkEvent';
-import {MarkerObject, FGReaction, FGPlace} from '../../utils/interfaces/types';
+import {MarkerObject, FGReaction, Place} from '../../utils/interfaces/types';
 import {removeEvent} from '../../utils/api/friendsCalls/removeEvent';
 
 import PlaceCard from '../components/PlaceCard';
@@ -47,10 +46,11 @@ interface Props {
 }
 
 const FGEvent: React.FC<Props> = ({navigation, route}) => {
+  console.log(route?.params?.eventData?.places)
   const [groupEventId] = useState<number>(route?.params?.eventData?.id);
   const [eventTitle] = useState<string>(route?.params?.eventData?.name);
   const [suggester] = useState<{name: string; self: boolean}>(
-    route?.params?.eventData?.suggester_info,
+    route?.params?.eventData?.suggester,
   );
   const [date] = useState<string>(
     moment(route?.params?.eventData?.date, 'YYYY-MM-DD').format('M/D/YYYY'),
@@ -60,9 +60,7 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
   );
   const [userId, setUserId] = useState<number>(-1);
 
-  const [fullEventData, setFullEventData] = useState<{places: FGPlace[]}>({
-    places: [],
-  });
+  const [fullEventData, setFullEventData] = useState<Place[]>();
 
   const [curPlaceLikes, setCurPlaceLikes] = useState<FGReaction[]>([]);
   const [curPlaceDislikes, setCurPlaceDislikes] = useState<FGReaction[]>([]);
@@ -105,17 +103,15 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
 
       if (_places) {
         const bookmarksIds: number[] = _places.map(
-          (bookmark: {id: any}) => bookmark.id,
+          (bookmark: Place) => bookmark.id,
         );
         setBookmarks(bookmarksIds);
       } else {
         Alert.alert('Error', 'Unable to load places. Please try again.');
       }
 
-      const data = await getGroupEventPlaces(groupEventId);
-      setFullEventData(data);
-
-      const markerArray: MarkerObject[] = getMarkerArray(data?.places);
+      setFullEventData(route?.params?.eventData?.places);
+      const markerArray: MarkerObject[] = getMarkerArray(route?.params?.eventData?.places);
       setMarkers(markerArray);
     };
 
@@ -126,22 +122,12 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
     return unsubscribe;
   }, [navigation, groupEventId]);
 
-  const getEventData = async () => {
-    const data = await getGroupEventPlaces(groupEventId);
-    setFullEventData(data);
-
-    const markerArray: MarkerObject[] = getMarkerArray(data?.places);
-    setMarkers(markerArray);
-  };
-
   const handlePlaceLike = async (group_event_place_id: number) => {
     const token = await EncryptedStorage.getItem('auth_token');
 
     const response = await likeFGPlace(group_event_place_id, token);
 
-    if (response) {
-      getEventData();
-    } else {
+    if (!response) {
       Alert.alert('Error', 'Unable to like place. Please try again.');
     }
   };
@@ -151,9 +137,7 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
 
     const response = await dislikeFGPlace(group_event_place_id, token);
 
-    if (response) {
-      getEventData();
-    } else {
+    if (!response) {
       Alert.alert('Error', 'Unable to dislike place. Please try again.');
     }
   };
@@ -231,7 +215,10 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
           <Icon
             size="s"
             icon={icons.back}
-            onPress={() => navigation.navigate('Friends')}
+            onPress={() => {
+              console.log(fullEventData);
+              navigation.navigate('Friends')
+            }}
           />
 
           <View style={headerStyles.texts}>
@@ -293,11 +280,12 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
                 Math.round(event.nativeEvent.contentOffset.x / s(310)),
               )
             }>
-            {fullEventData?.places?.map((dest: FGPlace, idx: number) => (
+            {fullEventData?.map((dest: Place, idx: number) => (
+              dest.likes && dest.dislikes && dest.group_place_id ? (
               <View
                 style={[
                   placesDisplayStyles.card,
-                  idx !== fullEventData?.places?.length - 1
+                  idx !== fullEventData?.length - 1
                     ? {
                         marginRight: s(20),
                       }
@@ -308,14 +296,14 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
                   onPress={() => {
                     navigation.navigate('Place', {
                       destination: dest,
-                      category: dest.category_name,
+                      category: dest.category.name,
                       bookmarked: bookmarks.includes(dest.id),
                     });
                   }}>
                   <PlaceCard
                     id={dest.id}
                     name={dest.name}
-                    info={dest.category_name}
+                    info={dest.category.name}
                     bookmarked={bookmarks.includes(dest.id)}
                     setBookmarked={(bookmarked: boolean, id: number) => {
                       if (bookmarked) {
@@ -329,9 +317,9 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
                       }
                     }}
                     image={
-                      dest.image_url
+                      dest.photo
                         ? {
-                            uri: dest.image_url,
+                            uri: dest.photo,
                           }
                         : icons.defaultIcon
                     }
@@ -343,7 +331,11 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
                       feedbackStyles.iconContainer,
                       feedbackStyles.likeContainer,
                     ]}
-                    onPress={() => handlePlaceLike(dest.group_event_place_id)}>
+                    onPress={() => {
+                      if(dest.group_place_id){
+                        handlePlaceLike(dest.group_place_id)
+                      }
+                    }}>
                     <Image
                       style={[
                         feedbackStyles.icon,
@@ -361,8 +353,11 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
                       feedbackStyles.iconContainer,
                       feedbackStyles.countContainer,
                     ]}
-                    onPress={() =>
-                      handleReactionInfo(dest.likes, dest.dislikes)
+                    onPress={() => {
+                      if(dest.likes && dest.dislikes){
+                        handleReactionInfo(dest.likes, dest.dislikes);
+                      }
+                    }
                     }>
                     <CustomText size="s" color={colors.accent}>
                       {getSign(dest.likes.length - dest.dislikes.length) +
@@ -374,8 +369,11 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
                       feedbackStyles.iconContainer,
                       feedbackStyles.dislikeContainer,
                     ]}
-                    onPress={() =>
-                      handlePlaceDislike(dest.group_event_place_id)
+                    onPress={() => {
+                        if(dest.group_place_id){
+                          handlePlaceDislike(dest.group_place_id)
+                        }
+                      }
                     }>
                     <Image
                       style={[
@@ -411,9 +409,11 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
                   </TouchableOpacity>
                 </View>
               </View>
-            ))}
+            ) : null))}
           </ScrollView>
-          <ScrollIndicator num={fullEventData?.places?.length} idx={placeIdx} />
+          {fullEventData ? (
+            <ScrollIndicator num={fullEventData.length} idx={placeIdx} />
+          ) : null}
         </SafeAreaView>
       </BottomSheet>
 

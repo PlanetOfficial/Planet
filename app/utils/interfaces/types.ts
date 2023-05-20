@@ -23,6 +23,11 @@ export interface Event {
   name: string;
   date: string;
   places: Place[];
+  suggester: {
+    id: number;
+    name: string;
+    self: boolean;
+  }
 }
 
 export interface Place {
@@ -48,6 +53,9 @@ export interface Place {
     id: number;
     name: string;
   };
+  likes?: FGReaction[];
+  dislikes?: FGReaction[];
+  group_place_id?: number;
 }
 
 export interface CustomPlace {
@@ -132,8 +140,6 @@ export interface Invitation {
 }
 
 export interface FGReaction {
-  created_at: number;
-  group_event_place_id: number;
   id: number;
   user: {
     id: number;
@@ -141,15 +147,15 @@ export interface FGReaction {
   };
 }
 
-export interface FGPlace {
-  id: number;
-  name: string;
-  image_url: string;
-  group_event_id: number;
-  group_event_place_id: number;
-  place_id: number;
-  place: Place;
-  category_name: string;
-  likes: FGReaction[];
-  dislikes: FGReaction[];
-}
+// export interface FGPlace {
+//   id: number;
+//   name: string;
+//   image_url: string;
+//   group_event_id: number;
+//   group_event_place_id: number;
+//   place_id: number;
+//   place: Place;
+//   category_name: string;
+//   likes: FGReaction[];
+//   dislikes: FGReaction[];
+// }

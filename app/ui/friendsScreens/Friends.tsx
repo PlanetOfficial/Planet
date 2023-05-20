@@ -247,7 +247,7 @@ const Friends: React.FC<Props> = ({navigation}) => {
                 info={
                   moment(item.date, 'YYYY-MM-DD').format('M/D/YYYY') +
                   ' • ' +
-                  'ME' // item.suggester_info?.name
+                  item.suggester?.name
                 }
                 image={
                   item.places && item.places.length > 0 && item.places[0]?.photo
@@ -271,7 +271,7 @@ const Friends: React.FC<Props> = ({navigation}) => {
                   {
                     name: strings.main.remove,
                     onPress: () => handleRemoveEvent(item.id),
-                    disabled: false, // !item.suggester_info?.self,
+                    disabled: !item.suggester?.self,
                     color: colors.red,
                   },
                 ]}
