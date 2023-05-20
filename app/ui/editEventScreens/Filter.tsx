@@ -349,7 +349,7 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
                             );
                           }}>
                           <Text size="xs" weight="l">
-                            {subcategory.title}
+                            {subcategory.name}
                           </Text>
                         </TouchableOpacity>
                       ),

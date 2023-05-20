@@ -27,13 +27,18 @@ import Text from '../components/Text';
 import AButton from '../components/ActionButton';
 
 import {getFGsAndInvites} from '../../utils/api/friendsCalls/getFGsAndInvites';
-import {getEvents} from '../../utils/api/libraryCalls/getEvents';
 import {makeFGEvent} from '../../utils/api/friendsCalls/makeFGEvent';
 import {getFGEvents} from '../../utils/api/friendsCalls/getFGEvents';
 import {removeEvent} from '../../utils/api/friendsCalls/removeEvent';
 import {forkEvent} from '../../utils/api/friendsCalls/forkEvent';
-import {FriendGroup, Invitation, Event} from '../../utils/interfaces/types';
-import {getBookmarks} from '../../utils/api/shared/getBookmarks';
+import {
+  FriendGroup,
+  Invitation,
+  Event,
+  Place,
+} from '../../utils/interfaces/types';
+import {getEvents} from '../../utils/api/eventAPI';
+import {getPlaces} from '../../utils/api/placeAPI';
 
 interface Props {
   navigation: any;
@@ -111,14 +116,22 @@ const Friends: React.FC<Props> = ({navigation}) => {
       setInvitations(responseData.invites);
     }
 
-    const eventsData = await getEvents(token);
-    setUserEvents(eventsData);
+    const eventsData: Event[] | null = await getEvents();
+    if (eventsData) {
+      setUserEvents(eventsData);
+    } else {
+      Alert.alert('Error', 'Unable to load events. Please try again.');
+    }
 
-    const _bookmarks = await getBookmarks(token);
-    const bookmarksIds: number[] = _bookmarks.map(
-      (bookmark: {id: any}) => bookmark.id,
-    );
-    setBookmarks(bookmarksIds);
+    const _places: Place[] | null = await getPlaces();
+    if (_places) {
+      const bookmarksIds: number[] = _places.map(
+        (bookmark: {id: any}) => bookmark.id,
+      );
+      setBookmarks(bookmarksIds);
+    } else {
+      Alert.alert('Error', 'Unable to load bookmarks. Please try again.');
+    }
   };
 
   useEffect(() => {
@@ -234,13 +247,11 @@ const Friends: React.FC<Props> = ({navigation}) => {
                 info={
                   moment(item.date, 'YYYY-MM-DD').format('M/D/YYYY') +
                   ' • ' +
-                  item.suggester_info?.name
+                  'ME' // item.suggester_info?.name
                 }
                 image={
-                  item.places &&
-                  item.places.length > 0 &&
-                  item.places[0]?.place.image_url
-                    ? {uri: item.places[0]?.place.image_url}
+                  item.places && item.places.length > 0 && item.places[0]?.photo
+                    ? {uri: item.places[0]?.photo}
                     : icons.defaultIcon
                 }
                 options={[
@@ -260,7 +271,7 @@ const Friends: React.FC<Props> = ({navigation}) => {
                   {
                     name: strings.main.remove,
                     onPress: () => handleRemoveEvent(item.id),
-                    disabled: !item.suggester_info?.self,
+                    disabled: false, // !item.suggester_info?.self,
                     color: colors.red,
                   },
                 ]}
@@ -322,8 +333,8 @@ const Friends: React.FC<Props> = ({navigation}) => {
                   image={
                     item.places &&
                     item.places.length !== 0 &&
-                    item.places[0]?.place.image_url
-                      ? {uri: item.places[0]?.place.image_url}
+                    item.places[0]?.photo
+                      ? {uri: item.places[0]?.photo}
                       : icons.defaultIcon
                   }
                 />

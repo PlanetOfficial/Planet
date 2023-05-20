@@ -50,7 +50,7 @@ const FGSelector: React.FC<Props> = ({
     if (response) {
       refreshOnInviteEvent();
     } else {
-      Alert.alert('Error', 'Something went wrong. Please try again.');
+      Alert.alert('Error', 'Unable to accept invite. Please try again');
     }
   };
 
@@ -62,7 +62,7 @@ const FGSelector: React.FC<Props> = ({
     if (response) {
       refreshOnInviteEvent();
     } else {
-      Alert.alert('Error', 'Something went wrong. Please try again.');
+      Alert.alert('Error', 'Unable to reject invite. Please try again');
     }
   };
 

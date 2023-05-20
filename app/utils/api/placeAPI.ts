@@ -2,7 +2,7 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 import {EndPointsURL} from './APIConstants';
 import {Place} from '../interfaces/types';
 
-export const getBookmarks = async (): Promise<Place[] | null> => {
+export const getPlaces = async (): Promise<Place[] | null> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
   const response = await fetch(EndPointsURL + `/place?authtoken=${authToken}`, {
@@ -17,7 +17,7 @@ export const getBookmarks = async (): Promise<Place[] | null> => {
   }
 };
 
-export const postBookmark = async (placeId: number): Promise<boolean> => {
+export const postPlace = async (placeId: number): Promise<boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
   const response = await fetch(
@@ -30,7 +30,7 @@ export const postBookmark = async (placeId: number): Promise<boolean> => {
   return response?.ok;
 };
 
-export const deleteBookmark = async (placeId: number): Promise<boolean> => {
+export const deletePlace = async (placeId: number): Promise<boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
   const response = await fetch(

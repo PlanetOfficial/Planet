@@ -34,12 +34,12 @@ export interface Place {
   latitude: number;
   longitude: number;
   dates: {
-    start: string;
-    end: string;
+    start: string | null;
+    end: string | null;
   } | null;
   priceRanges: {
-    min: number;
-    max: number;
+    min: number | null;
+    max: number | null;
   } | null;
   price: number | null;
   rating: number | null;

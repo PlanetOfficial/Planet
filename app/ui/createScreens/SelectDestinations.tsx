@@ -13,7 +13,6 @@ import {
 import moment from 'moment';
 
 import DatePicker from 'react-native-date-picker';
-import EncryptedStorage from 'react-native-encrypted-storage';
 import {Marker} from 'react-native-maps';
 import MapView from 'react-native-maps';
 import {s, vs} from 'react-native-size-matters';
@@ -27,9 +26,9 @@ import EditEvent from '../editEventScreens/EditEvent';
 import AddEvent from '../editEventScreens/AddEvent';
 import Confirmation from '../editEventScreens/Confirmation';
 
-import {requestLocations} from '../../utils/api/CreateCalls/requestLocations';
-import {getBookmarks} from '../../utils/api/shared/getBookmarks';
-import {sendEvent} from '../../utils/api/CreateCalls/sendEvent';
+import {getPlaces} from '../../utils/api/placeAPI';
+import {postEvent} from '../../utils/api/eventAPI';
+
 import {
   getMarkerArray,
   getRegionForCoordinates,
@@ -38,7 +37,6 @@ import {
 import {MarkerObject} from '../../utils/interfaces/types';
 
 import {colors} from '../../constants/theme';
-import {integers} from '../../constants/numbers';
 import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
 
@@ -91,14 +89,6 @@ const SelectDestinations: React.FC<Props> = ({navigation, route}) => {
 
   useEffect(() => {
     const loadDestinations = async () => {
-      const response = await requestLocations(
-        categories.map((category: Category) => category.id),
-        radius,
-        latitude,
-        longitude,
-        integers.defaultNumPlaces,
-      );
-
       let _destinations: (Place | Category)[] = [];
       let _selectionIndices: number[] = [];
 
@@ -111,12 +101,9 @@ const SelectDestinations: React.FC<Props> = ({navigation, route}) => {
         _destinations.push({
           id: category.id,
           name: category.name,
-          alias: category.alias,
-          genre_id: category.genre_id,
-          filters: category.filters,
           icon: category.icon,
           subcategories: category.subcategories,
-          options: response[category.id],
+          options: [],
         });
         _selectionIndices.push(0);
       });
@@ -130,15 +117,18 @@ const SelectDestinations: React.FC<Props> = ({navigation, route}) => {
   }, [latitude, longitude, radius, categories, route.params?.theDestination]);
 
   const loadBookmarks = async () => {
-    const authToken = await EncryptedStorage.getItem('auth_token');
-    const response = await getBookmarks(authToken);
+    const response: Place[] | null = await getPlaces();
 
-    let _bookmarks: number[] = [];
-    response.forEach((bookmark: Place) => {
-      _bookmarks.push(bookmark.id);
-    });
+    if (response) {
+      let _bookmarks: number[] = [];
+      response.forEach((bookmark: Place) => {
+        _bookmarks.push(bookmark.id);
+      });
 
-    setBookmarks(_bookmarks);
+      setBookmarks(_bookmarks);
+    } else {
+      Alert.alert('Error', 'Unable to load bookmarks. Please try again.');
+    }
   };
 
   useEffect(() => {
@@ -164,7 +154,6 @@ const SelectDestinations: React.FC<Props> = ({navigation, route}) => {
   }, [destinations, selectionIndices]);
 
   const handleSave = async () => {
-    // send destinations to backend
     const placeIds: number[] = [];
     destinations.forEach((destination: Place | Category, index: number) => {
       if (isPlace(destination)) {
@@ -180,19 +169,16 @@ const SelectDestinations: React.FC<Props> = ({navigation, route}) => {
     });
 
     if (placeIds.length > 0) {
-      const authToken = await EncryptedStorage.getItem('auth_token');
-
-      const responseStatus = await sendEvent(
+      const response: boolean = await postEvent(
         eventTitle,
         placeIds,
-        authToken,
         moment(date, 'M/D/YYYY').format('YYYY-MM-DD'),
       );
 
-      if (responseStatus) {
+      if (response) {
         navigation.navigate('TabStack', {screen: 'Library'});
       } else {
-        Alert.alert('Error', 'Something went wrong. Please try again.');
+        Alert.alert('Error', 'Unable to save. Please Try Again');
       }
     }
   };

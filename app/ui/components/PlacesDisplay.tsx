@@ -90,20 +90,20 @@ const PlacesDisplay: React.FC<Props> = ({
               onPress={() => {
                 navigation.navigate('Place', {
                   destination: place,
-                  category: place.category_name,
+                  category: place.category.name,
                   bookmarked: bookmarks.includes(place.id),
                 });
               }}>
               <PlaceCard
                 id={place.id}
                 name={place.name}
-                info={place.category_name}
+                info={place.category.name}
                 bookmarked={bookmarks.includes(place.id)}
                 setBookmarked={setBookmarked}
                 image={
-                  place.image_url
+                  place.photo
                     ? {
-                        uri: place.image_url,
+                        uri: place.photo,
                       }
                     : icons.defaultIcon
                 }

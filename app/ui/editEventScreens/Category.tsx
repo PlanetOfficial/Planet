@@ -23,7 +23,7 @@ import {
   Category as CategoryT,
   Filter as FilterT,
 } from '../../utils/interfaces/types';
-import {requestLocationsSingle} from '../../utils/api/CreateCalls/requestLocationsSingle';
+import {getDestinations} from '../../utils/api/destinationAPI';
 
 interface ChildComponentProps {
   navigation: any;
@@ -146,7 +146,7 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
     <View key={category.id}>
       <View style={styles.header}>
         <View style={styles.categoryIconContainer}>
-          <Image style={styles.categoryIcon} source={category.icon} />
+          <Image style={styles.categoryIcon} source={{uri: category.icon}} />
         </View>
         <View style={styles.headerTitle}>
           <Text>{category.name}</Text>
