@@ -15,10 +15,7 @@ import Text from '../components/Text';
 import OptionMenu from '../components/OptionMenu';
 import PlacesDisplay from '../components/PlacesDisplay';
 
-import {
-  Place,
-  Category as CategoryT,
-} from '../../utils/interfaces/types';
+import {Place, Category as CategoryT} from '../../utils/interfaces/types';
 import {getDestinations} from '../../utils/api/destinationAPI';
 
 interface ChildComponentProps {

@@ -57,7 +57,7 @@ const Place: React.FC<Props> = ({navigation, route}) => {
     };
 
     initializeDestinationData();
-  }, [destination.place_id]);
+  }, [destination.place_id, destination.supplier]);
 
   const handleMapPress = async () => {
     showLocation({

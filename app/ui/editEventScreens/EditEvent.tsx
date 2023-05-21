@@ -19,7 +19,7 @@ import {icons} from '../../constants/images';
 import {colors} from '../../constants/theme';
 
 import {Place, Category as CategoryT} from '../../utils/interfaces/types';
-import {isPlace} from '../../utils/functions/Misc';
+import {getPlaceCardString, isPlace} from '../../utils/functions/Misc';
 
 interface Props {
   navigation: any;
@@ -199,7 +199,7 @@ const EditEvent: React.FC<Props> = ({
                     <PlaceCard
                       id={item.id}
                       name={item.name}
-                      info={item.category.name}
+                      info={getPlaceCardString(item)}
                       bookmarked={bookmarks.includes(item.id)}
                       setBookmarked={setBookmarked}
                       image={

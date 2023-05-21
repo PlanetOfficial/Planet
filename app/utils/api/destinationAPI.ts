@@ -31,9 +31,12 @@ export const getDestination = async (
   placeId: string,
   supplier: string,
 ): Promise<PlaceDetail | null> => {
-  const response = await fetch(EndPointsURL + `/destination/${placeId}?supplier=${supplier}`, {
-    method: 'GET',
-  });
+  const response = await fetch(
+    EndPointsURL + `/destination/${placeId}?supplier=${supplier}`,
+    {
+      method: 'GET',
+    },
+  );
 
   if (response?.ok) {
     const myJson: PlaceDetail = await response.json();

@@ -5,12 +5,9 @@ import {Event} from '../interfaces/types';
 export const getEvents = async (): Promise<Event[] | null> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
-  const response = await fetch(
-    EndPointsURL + `/event?authtoken=${authToken}`,
-    {
-      method: 'GET',
-    },
-  );
+  const response = await fetch(EndPointsURL + `/event?authtoken=${authToken}`, {
+    method: 'GET',
+  });
 
   if (response?.ok) {
     const myJson: Event[] = await response.json();

@@ -27,7 +27,7 @@ export interface Event {
     id: number;
     name: string;
     self: boolean;
-  }
+  };
 }
 
 export interface Place {

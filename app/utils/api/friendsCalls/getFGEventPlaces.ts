@@ -1,9 +1,12 @@
 import {FriendsURL} from '../APIConstants';
 
-export const getFGEvents = async (group_id: number, authToken: any) => {
+export const getFGEventPlaces = async (
+  group_event_id: number,
+  authToken: any,
+) => {
   const response = await fetch(
     FriendsURL +
-      `/friends/fgEvents?group_id=${group_id}&authtoken=${authToken}`,
+      `/friends/fgEventPlaces?group_event_id=${group_event_id}&authtoken=${authToken}`,
     {
       method: 'GET',
     },

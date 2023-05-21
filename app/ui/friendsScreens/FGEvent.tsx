@@ -20,6 +20,7 @@ import moment from 'moment';
 
 import {
   getMarkerArray,
+  getPlaceCardString,
   getRegionForCoordinates,
 } from '../../utils/functions/Misc';
 import {likeFGPlace} from '../../utils/api/friendsCalls/likeFGPlace';
@@ -27,6 +28,8 @@ import {dislikeFGPlace} from '../../utils/api/friendsCalls/dislikeFGPlace';
 import {forkEvent} from '../../utils/api/friendsCalls/forkEvent';
 import {MarkerObject, FGReaction, Place} from '../../utils/interfaces/types';
 import {removeEvent} from '../../utils/api/friendsCalls/removeEvent';
+import {getPlaces} from '../../utils/api/placeAPI';
+import {getFGEventPlaces} from '../../utils/api/friendsCalls/getFGEventPlaces';
 
 import PlaceCard from '../components/PlaceCard';
 import Blur from '../components/Blur';
@@ -38,7 +41,6 @@ import CustomText from '../components/Text';
 import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
-import {getPlaces} from '../../utils/api/placeAPI';
 
 interface Props {
   navigation: any;
@@ -46,7 +48,6 @@ interface Props {
 }
 
 const FGEvent: React.FC<Props> = ({navigation, route}) => {
-  console.log(route?.params?.eventData?.places)
   const [groupEventId] = useState<number>(route?.params?.eventData?.id);
   const [eventTitle] = useState<string>(route?.params?.eventData?.name);
   const [suggester] = useState<{name: string; self: boolean}>(
@@ -111,7 +112,9 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
       }
 
       setFullEventData(route?.params?.eventData?.places);
-      const markerArray: MarkerObject[] = getMarkerArray(route?.params?.eventData?.places);
+      const markerArray: MarkerObject[] = getMarkerArray(
+        route?.params?.eventData?.places,
+      );
       setMarkers(markerArray);
     };
 
@@ -120,14 +123,22 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
       initializeUserId();
     });
     return unsubscribe;
-  }, [navigation, groupEventId]);
+  }, [navigation, groupEventId, route?.params?.eventData?.places]);
+
+  const reloadPlaces = async () => {
+    const token = await EncryptedStorage.getItem('auth_token');
+    const _places = await getFGEventPlaces(groupEventId, token);
+    setFullEventData(_places);
+  };
 
   const handlePlaceLike = async (group_event_place_id: number) => {
     const token = await EncryptedStorage.getItem('auth_token');
 
     const response = await likeFGPlace(group_event_place_id, token);
 
-    if (!response) {
+    if (response) {
+      reloadPlaces();
+    } else {
       Alert.alert('Error', 'Unable to like place. Please try again.');
     }
   };
@@ -137,7 +148,9 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
 
     const response = await dislikeFGPlace(group_event_place_id, token);
 
-    if (!response) {
+    if (response) {
+      reloadPlaces();
+    } else {
       Alert.alert('Error', 'Unable to dislike place. Please try again.');
     }
   };
@@ -215,10 +228,7 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
           <Icon
             size="s"
             icon={icons.back}
-            onPress={() => {
-              console.log(fullEventData);
-              navigation.navigate('Friends')
-            }}
+            onPress={() => navigation.navigate('Friends')}
           />
 
           <View style={headerStyles.texts}>
@@ -280,136 +290,138 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
                 Math.round(event.nativeEvent.contentOffset.x / s(310)),
               )
             }>
-            {fullEventData?.map((dest: Place, idx: number) => (
+            {fullEventData?.map((dest: Place, idx: number) =>
               dest.likes && dest.dislikes && dest.group_place_id ? (
-              <View
-                style={[
-                  placesDisplayStyles.card,
-                  idx !== fullEventData?.length - 1
-                    ? {
-                        marginRight: s(20),
-                      }
-                    : null,
-                ]}
-                key={idx}>
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.navigate('Place', {
-                      destination: dest,
-                      category: dest.category.name,
-                      bookmarked: bookmarks.includes(dest.id),
-                    });
-                  }}>
-                  <PlaceCard
-                    id={dest.id}
-                    name={dest.name}
-                    info={dest.category.name}
-                    bookmarked={bookmarks.includes(dest.id)}
-                    setBookmarked={(bookmarked: boolean, id: number) => {
-                      if (bookmarked) {
-                        setBookmarks([...bookmarks, id]);
-                      } else {
-                        setBookmarks(
-                          bookmarks.filter(
-                            (bookmark: number) => bookmark !== id,
-                          ),
-                        );
-                      }
-                    }}
-                    image={
-                      dest.photo
-                        ? {
-                            uri: dest.photo,
-                          }
-                        : icons.defaultIcon
-                    }
-                  />
-                </TouchableOpacity>
-                <View style={feedbackStyles.container}>
-                  <TouchableOpacity
-                    style={[
-                      feedbackStyles.iconContainer,
-                      feedbackStyles.likeContainer,
-                    ]}
-                    onPress={() => {
-                      if(dest.group_place_id){
-                        handlePlaceLike(dest.group_place_id)
-                      }
-                    }}>
-                    <Image
-                      style={[
-                        feedbackStyles.icon,
-                        {
-                          tintColor: didIReact(dest.likes)
-                            ? colors.accent
-                            : colors.black,
-                        },
-                      ]}
-                      source={icons.like}
-                    />
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={[
-                      feedbackStyles.iconContainer,
-                      feedbackStyles.countContainer,
-                    ]}
-                    onPress={() => {
-                      if(dest.likes && dest.dislikes){
-                        handleReactionInfo(dest.likes, dest.dislikes);
-                      }
-                    }
-                    }>
-                    <CustomText size="s" color={colors.accent}>
-                      {getSign(dest.likes.length - dest.dislikes.length) +
-                        (dest.likes.length - dest.dislikes.length)}
-                    </CustomText>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={[
-                      feedbackStyles.iconContainer,
-                      feedbackStyles.dislikeContainer,
-                    ]}
-                    onPress={() => {
-                        if(dest.group_place_id){
-                          handlePlaceDislike(dest.group_place_id)
+                <View
+                  style={[
+                    placesDisplayStyles.card,
+                    idx !== fullEventData?.length - 1
+                      ? {
+                          marginRight: s(20),
                         }
-                      }
-                    }>
-                    <Image
-                      style={[
-                        feedbackStyles.icon,
-                        {
-                          tintColor: didIReact(dest.dislikes)
-                            ? colors.accent
-                            : colors.black,
-                        },
-                      ]}
-                      source={icons.dislike}
-                    />
-                  </TouchableOpacity>
+                      : null,
+                  ]}
+                  key={idx}>
                   <TouchableOpacity
-                    style={[
-                      feedbackStyles.iconContainer,
-                      feedbackStyles.commentContainer,
-                    ]}
                     onPress={() => {
-                      // TODO: comment on place
-                      Alert.alert('Comment', 'Comment is not implemented yet');
+                      navigation.navigate('Place', {
+                        destination: dest,
+                        category: dest.category.name,
+                        bookmarked: bookmarks.includes(dest.id),
+                      });
                     }}>
-                    <Image
-                      style={[
-                        feedbackStyles.icon,
-                        {
-                          tintColor: colors.black,
-                        },
-                      ]}
-                      source={icons.comment}
+                    <PlaceCard
+                      id={dest.id}
+                      name={dest.name}
+                      info={getPlaceCardString(dest)}
+                      bookmarked={bookmarks.includes(dest.id)}
+                      setBookmarked={(bookmarked: boolean, id: number) => {
+                        if (bookmarked) {
+                          setBookmarks([...bookmarks, id]);
+                        } else {
+                          setBookmarks(
+                            bookmarks.filter(
+                              (bookmark: number) => bookmark !== id,
+                            ),
+                          );
+                        }
+                      }}
+                      image={
+                        dest.photo
+                          ? {
+                              uri: dest.photo,
+                            }
+                          : icons.defaultIcon
+                      }
                     />
-                    <CustomText size="s"> 0</CustomText>
                   </TouchableOpacity>
+                  <View style={feedbackStyles.container}>
+                    <TouchableOpacity
+                      style={[
+                        feedbackStyles.iconContainer,
+                        feedbackStyles.likeContainer,
+                      ]}
+                      onPress={() => {
+                        if (dest.group_place_id) {
+                          handlePlaceLike(dest.group_place_id);
+                        }
+                      }}>
+                      <Image
+                        style={[
+                          feedbackStyles.icon,
+                          {
+                            tintColor: didIReact(dest.likes)
+                              ? colors.accent
+                              : colors.black,
+                          },
+                        ]}
+                        source={icons.like}
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={[
+                        feedbackStyles.iconContainer,
+                        feedbackStyles.countContainer,
+                      ]}
+                      onPress={() => {
+                        if (dest.likes && dest.dislikes) {
+                          handleReactionInfo(dest.likes, dest.dislikes);
+                        }
+                      }}>
+                      <CustomText size="s" color={colors.accent}>
+                        {getSign(dest.likes.length - dest.dislikes.length) +
+                          (dest.likes.length - dest.dislikes.length)}
+                      </CustomText>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={[
+                        feedbackStyles.iconContainer,
+                        feedbackStyles.dislikeContainer,
+                      ]}
+                      onPress={() => {
+                        if (dest.group_place_id) {
+                          handlePlaceDislike(dest.group_place_id);
+                        }
+                      }}>
+                      <Image
+                        style={[
+                          feedbackStyles.icon,
+                          {
+                            tintColor: didIReact(dest.dislikes)
+                              ? colors.accent
+                              : colors.black,
+                          },
+                        ]}
+                        source={icons.dislike}
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={[
+                        feedbackStyles.iconContainer,
+                        feedbackStyles.commentContainer,
+                      ]}
+                      onPress={() => {
+                        // TODO: comment on place
+                        Alert.alert(
+                          'Comment',
+                          'Comment is not implemented yet',
+                        );
+                      }}>
+                      <Image
+                        style={[
+                          feedbackStyles.icon,
+                          {
+                            tintColor: colors.black,
+                          },
+                        ]}
+                        source={icons.comment}
+                      />
+                      <CustomText size="s"> 0</CustomText>
+                    </TouchableOpacity>
+                  </View>
                 </View>
-              </View>
-            ) : null))}
+              ) : null,
+            )}
           </ScrollView>
           {fullEventData ? (
             <ScrollIndicator num={fullEventData.length} idx={placeIdx} />

@@ -10,8 +10,6 @@ import {
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 
-import moment from 'moment';
-
 import {icons} from '../../constants/images';
 import {colors} from '../../constants/theme';
 import {floats} from '../../constants/numbers';
@@ -22,10 +20,8 @@ import Icon from '../components/Icon';
 
 import {getDestinations} from '../../utils/api/destinationAPI';
 import {getPlaces} from '../../utils/api/placeAPI';
-import {
-  Place,
-  Subcategory,
-} from '../../utils/interfaces/types';
+import {Place, Subcategory} from '../../utils/interfaces/types';
+import {getPlaceCardString} from '../../utils/functions/Misc';
 
 interface Props {
   navigation: any;
@@ -61,7 +57,7 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
         setLoading(true);
 
         let _liveEvents: Map<number, Place[]> = new Map();
-        for(let i = 0; i < subcategoryIds.length; i++) {
+        for (let i = 0; i < subcategoryIds.length; i++) {
           const places: Place[] | null = await getDestinations(
             categoryId,
             floats.defaultRadius,
@@ -161,55 +157,40 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
                   style={categoryStyles.scrollView}
                   horizontal={true}
                   showsHorizontalScrollIndicator={false}>
-                  {liveEvents?.get(subcategory.id)?.map(
-                        (event: Place, jdx: number) => (
-                          <TouchableOpacity
-                            style={categoryStyles.card}
-                            key={jdx}
-                            onPress={() =>
-                              navigation.navigate('Place', {
-                                destination: event,
-                                category: categoryName,
-                                bookmarked: bookmarks.includes(event.id),
-                              })
-                            }>
-                            <PlaceCard
-                              id={event.id}
-                              small={true}
-                              name={event.name}
-                              info={
-                                moment(event.dates?.start, 'YYYY-MM-DD').format(
-                                  'M/D/YYYY',
-                                ) +
-                                (event.priceRanges && event.priceRanges.min
-                                  ? ' • ' +
-                                    '$' +
-                                    event.priceRanges.min +
-                                    (event.priceRanges.max
-                                      ? ' - ' + '$' + event.priceRanges.max
-                                      : '')
-                                  : '')
-                              }
-                              bookmarked={bookmarks.includes(event.id)}
-                              setBookmarked={(
-                                bookmarked: boolean,
-                                id: number,
-                              ) => {
-                                if (bookmarked) {
-                                  setBookmarks([...bookmarks, id]);
-                                } else {
-                                  setBookmarks(
-                                    bookmarks.filter(
-                                      (bookmark: number) => bookmark !== id,
-                                    ),
-                                  );
-                                }
-                              }}
-                              image={{uri: event.photo}}
-                            />
-                          </TouchableOpacity>
-                        ),
-                      )}
+                  {liveEvents
+                    ?.get(subcategory.id)
+                    ?.map((event: Place, jdx: number) => (
+                      <TouchableOpacity
+                        style={categoryStyles.card}
+                        key={jdx}
+                        onPress={() =>
+                          navigation.navigate('Place', {
+                            destination: event,
+                            category: categoryName,
+                            bookmarked: bookmarks.includes(event.id),
+                          })
+                        }>
+                        <PlaceCard
+                          id={event.id}
+                          small={true}
+                          name={event.name}
+                          info={getPlaceCardString(event, false)}
+                          bookmarked={bookmarks.includes(event.id)}
+                          setBookmarked={(bookmarked: boolean, id: number) => {
+                            if (bookmarked) {
+                              setBookmarks([...bookmarks, id]);
+                            } else {
+                              setBookmarks(
+                                bookmarks.filter(
+                                  (bookmark: number) => bookmark !== id,
+                                ),
+                              );
+                            }
+                          }}
+                          image={{uri: event.photo}}
+                        />
+                      </TouchableOpacity>
+                    ))}
                 </ScrollView>
                 <Spacer />
               </View>

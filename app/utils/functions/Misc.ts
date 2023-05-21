@@ -9,6 +9,7 @@ import {
   Event,
 } from '../interfaces/types';
 import {floats} from '../../constants/numbers';
+import moment from 'moment';
 
 /*
   Given a point and the longitudeDelta, calculate the radius of the circle (the
@@ -22,6 +23,45 @@ export const calculateRadius = (point1: Coordinate, longitudeDelta: number) => {
   const distance = getDistanceFromCoordinates(point1, point2);
 
   return (6 / 7) * distance;
+};
+
+/*
+  Given a place, return a string to be displayed on the PlaceCard.
+*/
+export const getPlaceCardString = (
+  place: Place,
+  displayCategory: boolean = true,
+): string => {
+  let result = '';
+  if (place.category && displayCategory) {
+    result += place.category.name + ' • ';
+  }
+  if (place.dates && place.dates.start) {
+    result += moment(place.dates.start, 'YYYY-MM-DD').format('M/D/YYYY');
+    if (place.dates.end) {
+      result +=
+        ' - ' +
+        moment(place.dates.end, 'YYYY-MM-DD').format('M/D/YYYY') +
+        ' • ';
+    } else {
+      result += ' • ';
+    }
+  }
+  if (place.priceRanges && place.priceRanges.min) {
+    result += '$' + place.priceRanges.min;
+    if (place.priceRanges.max) {
+      result += ' - ' + '$' + place.priceRanges.max + ' • ';
+    } else {
+      result += ' • ';
+    }
+  }
+  if (place.price) {
+    result += '$'.repeat(place.price) + ' • ';
+  }
+  if (place.rating && place.rating_count) {
+    result += place.rating + ' (' + place.rating_count + ') • ';
+  }
+  return result.slice(0, -3);
 };
 
 /*

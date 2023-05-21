@@ -8,6 +8,7 @@ import ScrollIndicator from '../components/ScrollIndicator';
 import {icons} from '../../constants/images';
 
 import {Place} from '../../utils/interfaces/types';
+import {getPlaceCardString} from '../../utils/functions/Misc';
 
 interface Props {
   navigation: any;
@@ -97,7 +98,7 @@ const PlacesDisplay: React.FC<Props> = ({
               <PlaceCard
                 id={place.id}
                 name={place.name}
-                info={place.category.name}
+                info={getPlaceCardString(place)}
                 bookmarked={bookmarks.includes(place.id)}
                 setBookmarked={setBookmarked}
                 image={

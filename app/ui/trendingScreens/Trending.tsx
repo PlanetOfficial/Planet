@@ -13,8 +13,6 @@ import {
 import {s} from 'react-native-size-matters';
 import Geolocation from '@react-native-community/geolocation';
 
-import moment from 'moment';
-
 import {colors} from '../../constants/theme';
 import {icons} from '../../constants/images';
 import {floats} from '../../constants/numbers';
@@ -29,6 +27,7 @@ import {getDestinations} from '../../utils/api/destinationAPI';
 import {Genre, Place, Subcategory} from '../../utils/interfaces/types';
 import {Category} from '../../utils/interfaces/types';
 import {getGenres} from '../../utils/api/genresAPI';
+import {getPlaceCardString} from '../../utils/functions/Misc';
 
 interface Props {
   navigation: any;
@@ -218,19 +217,7 @@ const Trending: React.FC<Props> = ({navigation}) => {
                           id={event.id}
                           small={true}
                           name={event.name}
-                          info={
-                            moment(event.dates?.start, 'YYYY-MM-DD').format(
-                              'M/D/YYYY',
-                            ) +
-                            (event.priceRanges && event.priceRanges.min
-                              ? ' • ' +
-                                '$' +
-                                event.priceRanges.min +
-                                (event.priceRanges.max
-                                  ? ' - ' + '$' + event.priceRanges.max
-                                  : '')
-                              : '')
-                          }
+                          info={getPlaceCardString(event, false)}
                           bookmarked={bookmarks.includes(event.id)}
                           setBookmarked={(bookmarked: boolean, id: number) => {
                             if (bookmarked) {

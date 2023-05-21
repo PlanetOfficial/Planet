@@ -19,6 +19,7 @@ import {colors} from '../../constants/theme';
 
 import {getPlaces} from '../../utils/api/placeAPI';
 import {Place} from '../../utils/interfaces/types';
+import {getPlaceCardString} from '../../utils/functions/Misc';
 
 interface Props {
   onClose: () => void;
@@ -104,7 +105,7 @@ const AddFromLibrary: React.FC<Props> = ({onClose, onSelect}) => {
               <PlaceCard
                 id={item.id}
                 name={item.name}
-                info={item.category.name}
+                info={getPlaceCardString(item)}
                 bookmarked={true}
                 setBookmarked={(bookmarked: boolean, id: number) => {
                   if (!bookmarked) {

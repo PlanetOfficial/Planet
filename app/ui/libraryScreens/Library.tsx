@@ -24,7 +24,7 @@ import {icons} from '../../constants/images';
 import {getPlaces} from '../../utils/api/placeAPI';
 import {getEvents, deleteEvent} from '../../utils/api/eventAPI';
 import {Place, Event} from '../../utils/interfaces/types';
-import {isPlace2} from '../../utils/functions/Misc';
+import {getPlaceCardString, isPlace2} from '../../utils/functions/Misc';
 
 interface Props {
   navigation: any;
@@ -121,7 +121,7 @@ const Library: React.FC<Props> = ({navigation}) => {
               <PlaceCard
                 id={item.id}
                 name={item.name}
-                info={item.category.name}
+                info={getPlaceCardString(item)}
                 bookmarked={places.includes(item)}
                 setBookmarked={(bookmarked: boolean, id: number) => {
                   if (!bookmarked) {
