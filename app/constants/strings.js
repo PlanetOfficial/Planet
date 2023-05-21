@@ -92,8 +92,8 @@ const strings = {
     settings: 'Settings',
   },
   friends: {
-    createPrompt: 'Create a Friend Group',
-    editPrompt: 'Edit a Friend Group',
+    createPrompt: 'Create a Group',
+    editPrompt: 'Edit a Group',
     leavePrompt: 'Are you sure you want to leave this group?',
     editName: 'Edit Name Here',
     promptInvite: 'Invite Friends with email',
