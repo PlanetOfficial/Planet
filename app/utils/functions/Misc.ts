@@ -59,7 +59,7 @@ export const getPlaceCardString = (
     result += '$'.repeat(place.price) + ' • ';
   }
   if (place.rating && place.rating_count) {
-    result += place.rating + ' (' + place.rating_count + ') • ';
+    result += place.rating + '/5 (' + place.rating_count + ') • ';
   }
   return result.slice(0, -3);
 };

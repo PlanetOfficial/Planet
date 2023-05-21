@@ -25,7 +25,11 @@ import Icon from '../components/Icon';
 import Text from '../components/Text';
 import OptionMenu from '../components/OptionMenu';
 
-import {Place as PlaceT, PlaceDetail} from '../../utils/interfaces/types';
+import {
+  Place as PlaceT,
+  PlaceDetail,
+  Review,
+} from '../../utils/interfaces/types';
 import {getPlaceCardString} from '../../utils/functions/Misc';
 
 interface Props {
@@ -252,12 +256,38 @@ const Place: React.FC<Props> = ({navigation, route}) => {
         destinationDetails.attributes.length > 0 ? (
           <View style={detailStyles.infoContainer}>
             <Text size="s">{strings.createTabStack.attributes}:</Text>
-            {destinationDetails.attributes.map((attribute: string) => (
-              <Text size="xs" weight="l" numberOfLines={10}>
-                {attribute}
-              </Text>
-            ))}
+            {destinationDetails.attributes.map(
+              (attribute: string, index: number) => (
+                <Text key={index} size="xs" weight="l" numberOfLines={10}>
+                  {attribute}
+                </Text>
+              ),
+            )}
           </View>
+        ) : null}
+        {destinationDetails?.reviews &&
+        Array.isArray(destinationDetails?.reviews) &&
+        destinationDetails?.reviews.length > 0 ? (
+          <>
+            <View style={styles.separator} />
+            <ScrollView
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.imagesContainer}>
+              {destinationDetails.reviews.map(
+                (review: Review, index: number) => (
+                  <View key={index} style={detailStyles.reviewContainer}>
+                    <Text size="xs" numberOfLines={15}>
+                      {review.text + ' (' + review.rating + '/5)'}
+                    </Text>
+                    <Text size="xs" color={colors.darkgrey}>
+                      {review.relative_time_description}
+                    </Text>
+                  </View>
+                ),
+              )}
+            </ScrollView>
+          </>
         ) : null}
       </ScrollView>
     </View>
@@ -354,6 +384,13 @@ const detailStyles = StyleSheet.create({
     fontSize: s(13),
     fontWeight: '500',
     color: colors.black,
+  },
+  reviewContainer: {
+    padding: s(10),
+    width: s(180),
+    backgroundColor: colors.grey,
+    borderRadius: s(10),
+    marginRight: s(10),
   },
 });
 
