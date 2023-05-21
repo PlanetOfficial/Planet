@@ -108,6 +108,11 @@ export interface WeekDay {
   hours: string[];
 }
 
+export interface FGsAndInvites {
+  friendsGroups: FriendGroup[];
+  invitations: Invitation[];
+}
+
 export interface FriendGroup {
   id: number;
   user_id: number;

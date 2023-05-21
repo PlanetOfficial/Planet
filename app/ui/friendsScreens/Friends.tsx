@@ -35,6 +35,7 @@ import {
   Invitation,
   Event,
   Place,
+  FGsAndInvites,
 } from '../../utils/interfaces/types';
 import {getEvents} from '../../utils/api/eventAPI';
 import {getPlaces} from '../../utils/api/placeAPI';
@@ -96,23 +97,27 @@ const Friends: React.FC<Props> = ({navigation}) => {
   }, [friendGroup, friendGroups]);
 
   const initializeData = async () => {
-    const responseData = await getFGsAndInvites();
+    const responseData : FGsAndInvites | null = await getFGsAndInvites();
 
-    if (responseData?.groups) {
-      setFriendGroups(responseData.groups);
+    if (responseData?.friendsGroups) {
+      setFriendGroups(responseData.friendsGroups);
 
-      if (responseData.groups.length > 0) {
+      if (responseData.friendsGroups.length > 0) {
         if (friendGroup === -1) {
           setFriendGroup(0);
-          fetchCurGroupInfo(responseData.groups[0].group.id);
+          fetchCurGroupInfo(responseData.friendsGroups[0].group.id);
         } else {
-          fetchCurGroupInfo(responseData.groups[friendGroup].group.id);
+          fetchCurGroupInfo(responseData.friendsGroups[friendGroup].group.id);
         }
       }
+    } else {
+      Alert.alert('Error', 'Unable to load groups. Please try again.');
     }
 
-    if (responseData?.invites) {
-      setInvitations(responseData.invites);
+    if (responseData?.invitations) {
+      setInvitations(responseData.invitations);
+    } else {
+      Alert.alert('Error', 'Unable to load invitations. Please try again.');
     }
 
     const eventsData: Event[] | null = await getEvents();

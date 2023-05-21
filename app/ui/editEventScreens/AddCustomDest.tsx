@@ -50,7 +50,6 @@ const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
   }, []);
 
   const handleSelection = async () => {
-    console.log(customDestination);
     if (customDestination) {
       const response: Place | null = await postDestination(
         customDestination.name,
