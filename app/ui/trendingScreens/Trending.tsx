@@ -79,10 +79,8 @@ const Trending: React.FC<Props> = ({navigation}) => {
           const granted = await PermissionsAndroid.request(
             PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
           );
-          if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-            console.log('Location permission granted.');
-          } else {
-            console.log('Location permission denied.');
+          if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
+            Alert.alert('Error', 'Location permission denied.');
           }
         } catch (err) {
           console.warn(err);
@@ -117,8 +115,6 @@ const Trending: React.FC<Props> = ({navigation}) => {
           requestAPI(position.coords.latitude, position.coords.longitude);
         },
         error => {
-          console.log(error);
-
           setLatitude(floats.defaultLatitude);
           setLongitude(floats.defaultLongitude);
           requestAPI(floats.defaultLatitude, floats.defaultLongitude);

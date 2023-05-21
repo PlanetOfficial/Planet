@@ -62,7 +62,7 @@ export interface CustomPlace {
   name: string;
   latitude: number;
   longitude: number;
-  details: any;
+  place_id: string | null;
 }
 
 export interface PlaceDetail {

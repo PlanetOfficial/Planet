@@ -2,8 +2,8 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 import {FriendsURL} from '../APIConstants';
 
 export const createGroup = async (
-  name: String,
-  invitee_emails: Array<String>,
+  name: string,
+  invitee_emails: string[],
 ): Promise<boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 

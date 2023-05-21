@@ -47,16 +47,14 @@ export const getDestination = async (
 };
 
 export const postDestination = async (
-  name: String,
+  name: string,
   latitude: number,
   longitude: number,
-  details: any,
+  place_id: string | null,
 ): Promise<Place | null> => {
   const response = await fetch(
     EndPointsURL +
-      `/destination?name=${name}&latitude=${latitude}&longitude=${longitude}&details=${JSON.stringify(
-        details,
-      )}`,
+      `/destination?name=${name}&latitude=${latitude}&longitude=${longitude}&place_id=${place_id}`,
     {
       method: 'POST',
     },

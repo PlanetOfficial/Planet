@@ -50,12 +50,13 @@ const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
   }, []);
 
   const handleSelection = async () => {
+    console.log(customDestination);
     if (customDestination) {
       const response: Place | null = await postDestination(
         customDestination.name,
         customDestination.latitude,
         customDestination.longitude,
-        customDestination.details,
+        customDestination.place_id,
       );
 
       if (response) {
@@ -103,6 +104,7 @@ const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
           onFocus: () => {
             setCustom(true);
             setSelected(false);
+            setCustomDestination(undefined);
           },
           onBlur(e) {
             if (e.nativeEvent.text !== '') {
@@ -128,7 +130,7 @@ const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
               name: data.structured_formatting.main_text,
               latitude: details.geometry.location.lat,
               longitude: details.geometry.location.lng,
-              details: details,
+              place_id: details.place_id,
             });
             setCustom(false);
           }
@@ -165,20 +167,18 @@ const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
                       name: text,
                       latitude: e.nativeEvent.coordinate.latitude,
                       longitude: e.nativeEvent.coordinate.longitude,
-                      details: null,
+                      place_id: null
                     })
                   : null
               }>
-              <Marker
-                coordinate={{
-                  latitude: customDestination?.latitude
-                    ? customDestination?.latitude
-                    : floats.defaultLatitude,
-                  longitude: customDestination?.longitude
-                    ? customDestination?.longitude
-                    : floats.defaultLongitude,
-                }}
-              />
+                {customDestination?.latitude && customDestination?.longitude ? ( 
+                <Marker
+                  coordinate={{
+                    latitude: customDestination?.latitude,
+                    longitude: customDestination?.longitude,
+                  }}
+                />
+                ) : null}
             </MapView>
           </>
         ) : (
@@ -187,7 +187,7 @@ const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
       </View>
       <View style={styles.button}>
         <AButton
-          disabled={!selected}
+          disabled={!selected || !customDestination}
           label={strings.library.add}
           onPress={handleSelection}
         />

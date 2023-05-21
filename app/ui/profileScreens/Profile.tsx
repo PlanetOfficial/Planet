@@ -16,7 +16,7 @@ interface Props {
 }
 
 const Profile: React.FC<Props> = ({navigation}) => {
-  const [name, setName] = useState<String>('');
+  const [name, setName] = useState<string>('');
 
   useEffect(() => {
     const initializeData = async () => {

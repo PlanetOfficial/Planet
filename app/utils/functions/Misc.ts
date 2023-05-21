@@ -140,11 +140,11 @@ export const getMarkerArray = (places: Place[]): MarkerObject[] => {
   Given an array of destinations, return latitude and longitude of the
   average of all of the destinations.
 */
-export const getAveragePoint = (places: Place[]): Coordinate => {
+export const getAveragePoint = (places: MarkerObject[]): Coordinate => {
   let latSum = 0;
   let lngSum = 0;
   let count = 0;
-  places?.forEach((place: Place) => {
+  places?.forEach((place: MarkerObject) => {
     if (place && place?.latitude && place?.longitude) {
       latSum += place?.latitude;
       lngSum += place?.longitude;

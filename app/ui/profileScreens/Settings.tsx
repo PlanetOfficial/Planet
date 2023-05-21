@@ -30,7 +30,6 @@ const Settings: React.FC<Props> = ({navigation}) => {
       clearCaches();
     } catch (error) {
       Alert.alert('Error', 'Unable to logout. Please try again.');
-      console.log(error);
     } finally {
       navigation.reset({
         index: 0,

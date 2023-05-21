@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   StyleSheet,
   View,
+  Alert,
 } from 'react-native';
 
 import {s, vs} from 'react-native-size-matters';
@@ -76,9 +77,7 @@ const MapScreen: React.FC<Props> = ({navigation, route}) => {
             PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
           );
           if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-            console.log('Location permission granted.');
-          } else {
-            console.log('Location permission denied.');
+            Alert.alert('Error', 'Location permission denied.');
           }
         } catch (err) {
           console.warn(err);
@@ -96,7 +95,7 @@ const MapScreen: React.FC<Props> = ({navigation, route}) => {
           setRegion(newRegion);
         },
         error => {
-          console.log(error);
+          console.warn(error);
         },
       );
     };
@@ -225,9 +224,6 @@ const MapScreen: React.FC<Props> = ({navigation, route}) => {
               placeholderTextColor: colors.darkgrey,
             }}
             onPress={(_data, details = null) => {
-              // As you can see if you turn these logs on, we get much more data than we're using. Maybe store in table?
-              // console.log(data);
-              // console.log(details);
               bottomSheetRef.current?.snapToIndex(0);
               if (
                 details?.geometry?.location?.lat &&

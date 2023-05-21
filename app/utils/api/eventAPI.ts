@@ -28,7 +28,7 @@ export const postEvent = async (
     EndPointsURL +
       `/event?name=${name}&date=${date}&place_ids=${JSON.stringify(
         place_ids,
-      )}&authToken=${authToken}`,
+      )}&authtoken=${authToken}`,
     {
       method: 'POST',
     },
