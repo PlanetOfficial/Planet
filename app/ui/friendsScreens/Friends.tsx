@@ -97,25 +97,25 @@ const Friends: React.FC<Props> = ({navigation}) => {
   }, [friendGroup, friendGroups]);
 
   const initializeData = async () => {
-    const responseData : FGsAndInvites | null = await getFGsAndInvites();
+    const responseData: FGsAndInvites | null = await getFGsAndInvites();
 
-    if (responseData?.friendsGroups) {
-      setFriendGroups(responseData.friendsGroups);
+    if (responseData?.groups) {
+      setFriendGroups(responseData.groups);
 
-      if (responseData.friendsGroups.length > 0) {
+      if (responseData.groups.length > 0) {
         if (friendGroup === -1) {
           setFriendGroup(0);
-          fetchCurGroupInfo(responseData.friendsGroups[0].group.id);
+          fetchCurGroupInfo(responseData.groups[0].group.id);
         } else {
-          fetchCurGroupInfo(responseData.friendsGroups[friendGroup].group.id);
+          fetchCurGroupInfo(responseData.groups[friendGroup].group.id);
         }
       }
     } else {
       Alert.alert('Error', 'Unable to load groups. Please try again.');
     }
 
-    if (responseData?.invitations) {
-      setInvitations(responseData.invitations);
+    if (responseData?.invites) {
+      setInvitations(responseData.invites);
     } else {
       Alert.alert('Error', 'Unable to load invitations. Please try again.');
     }

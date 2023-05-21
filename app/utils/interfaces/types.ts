@@ -70,11 +70,24 @@ export interface PlaceDetail {
   address: string;
   phone: string;
   photos: string[];
-  reviews: any[];
-  hours: any[];
+  reviews: Review[];
+  hours: string[];
   url: string;
   website: string;
   attributes: string[];
+}
+
+export interface Review {
+  text: string;
+  time: number;
+  rating: number;
+  language: string;
+  author_url: string;
+  translated: boolean;
+  author_name: string;
+  original_language: string;
+  profile_photo_url: string;
+  relative_time_description: string;
 }
 
 export interface Filter {
@@ -103,14 +116,9 @@ export interface Coordinate {
   longitude: number;
 }
 
-export interface WeekDay {
-  day: string;
-  hours: string[];
-}
-
 export interface FGsAndInvites {
-  friendsGroups: FriendGroup[];
-  invitations: Invitation[];
+  groups: FriendGroup[];
+  invites: Invitation[];
 }
 
 export interface FriendGroup {
@@ -151,16 +159,3 @@ export interface FGReaction {
     name: string;
   };
 }
-
-// export interface FGPlace {
-//   id: number;
-//   name: string;
-//   image_url: string;
-//   group_event_id: number;
-//   group_event_place_id: number;
-//   place_id: number;
-//   place: Place;
-//   category_name: string;
-//   likes: FGReaction[];
-//   dislikes: FGReaction[];
-// }

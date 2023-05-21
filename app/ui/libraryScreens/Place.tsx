@@ -25,7 +25,12 @@ import Icon from '../components/Icon';
 import Text from '../components/Text';
 import OptionMenu from '../components/OptionMenu';
 
-import {Place as PlaceT, PlaceDetail} from '../../utils/interfaces/types';
+import {
+  Place as PlaceT,
+  PlaceDetail,
+  Review,
+} from '../../utils/interfaces/types';
+import {getPlaceCardString} from '../../utils/functions/Misc';
 
 interface Props {
   navigation: any;
@@ -85,6 +90,12 @@ const Place: React.FC<Props> = ({navigation, route}) => {
     }
   };
 
+  const handleWebsitePress = async () => {
+    if (destinationDetails?.website) {
+      await Linking.openURL(destinationDetails.website);
+    }
+  };
+
   const handleBookmark = async () => {
     if (!bookmarked) {
       const response: boolean = await postPlace(destination.id);
@@ -113,8 +124,7 @@ const Place: React.FC<Props> = ({navigation, route}) => {
           <View style={headerStyles.texts}>
             <Text weight="b">{destination.name}</Text>
             <Text size="xs" weight="l" color={colors.accent}>
-              {destination.category.name}
-              {destination?.price ? '・' + destination?.price : null}
+              {getPlaceCardString(destination)}
             </Text>
           </View>
           <OptionMenu
@@ -157,7 +167,9 @@ const Place: React.FC<Props> = ({navigation, route}) => {
         </View>
       </SafeAreaView>
 
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.scrollView}>
         {destination.latitude && destination.longitude ? (
           <MapView
             style={styles.map}
@@ -193,103 +205,89 @@ const Place: React.FC<Props> = ({navigation, route}) => {
           </ScrollView>
           <View style={styles.separator} />
         </>
-        {/* {destinationDetails.rating > 0 ? (
+        {destinationDetails?.description ? (
           <View style={detailStyles.infoContainer}>
-            <View style={detailStyles.row}>
-              <View>
-                <Text style={detailStyles.infoTitle}>
-                  {strings.createTabStack.rating}:
-                </Text>
-                <View style={detailStyles.rating}>
-                  <Image
-                    style={detailStyles.stars}
-                    source={yelpStars[destinationDetails.rating * 2]}
-                  />
-                  <Text
-                    size="xs"
-                    color={
-                      colors.darkgrey
-                    }>{`Based on ${destinationDetails.review_count} reviews`}</Text>
-                </View>
-              </View>
-              <TouchableOpacity onPress={handleLinkPress}>
-                <Image style={detailStyles.yelp} source={brands.yelpLogo} />
-              </TouchableOpacity>
-            </View>
-          </View>
-        ) : null}
-        {destinationDetails.dates.start?.localDate &&
-        destinationDetails.dates.start?.localTime ? (
-          <View style={detailStyles.infoContainer}>
-            <Text style={detailStyles.infoTitle}>
-              {strings.createTabStack.eventTime}:
-            </Text>
-            <Text style={detailStyles.info}>
-              {convertDateToMMDDYYYY(
-                destinationDetails.dates.start?.localDate,
-              ) + '\n'}
-              {convertTimeTo12Hour(destinationDetails?.dates.start?.localTime)}
+            <Text size="s">{strings.createTabStack.description}:</Text>
+            <Text size="xs" weight="l" numberOfLines={10}>
+              {destinationDetails?.description}
             </Text>
           </View>
         ) : null}
-        {destinationDetails.hours.length > 0 ? (
+        {destinationDetails?.address ? (
           <View style={detailStyles.infoContainer}>
-            <Text style={detailStyles.infoTitle}>
-              {strings.createTabStack.hours}:
-            </Text>
-            <Text style={detailStyles.info}>
-              {displayHours(destinationDetails.hours)}
+            <Text size="s">{strings.createTabStack.address}:</Text>
+            <Text size="xs" weight="l" numberOfLines={10}>
+              {destinationDetails?.address}
             </Text>
           </View>
         ) : null}
-        {destinationDetails.description !== '' ? (
-          <View style={detailStyles.infoContainer}>
-            <Text style={detailStyles.infoTitle}>
-              {strings.createTabStack.description}:
-            </Text>
-            <Text style={detailStyles.info}>
-              {destinationDetails.description}
-            </Text>
-          </View>
-        ) : null}
-        {destinationDetails.additionalInfo !== '' ? (
-          <View style={detailStyles.infoContainer}>
-            <Text style={detailStyles.infoTitle}>
-              {strings.createTabStack.additionalInfo}:
-            </Text>
-            <Text style={detailStyles.info}>
-              {destinationDetails.additionalInfo}
-            </Text>
-          </View>
-        ) : null}
-        {destinationDetails.place_name ? (
-          <View style={detailStyles.infoContainer}>
-            <Text style={detailStyles.infoTitle}>
-              {strings.createTabStack.venue}:
-            </Text>
-            <Text style={detailStyles.info}>
-              {destinationDetails.place_name}
-            </Text>
-          </View>
-        ) : null}
-        {destinationDetails.address ? (
-          <View style={detailStyles.infoContainer}>
-            <Text style={detailStyles.infoTitle}>
-              {strings.createTabStack.address}:
-            </Text>
-            <Text style={detailStyles.info}>
-              {destinationDetails.address.replace(/\\n/g, '\n')}
-            </Text>
-          </View>
-        ) : null} */}
         {destinationDetails?.phone ? (
           <View style={detailStyles.infoContainer}>
-            <Text>{strings.createTabStack.phone}:</Text>
-
+            <Text size="s">{strings.createTabStack.phone}:</Text>
             <TouchableOpacity onPress={handleCallPress}>
-              <Text>{destinationDetails.phone}</Text>
+              <Text size="xs" weight="l" numberOfLines={10}>
+                {destinationDetails?.address}
+              </Text>
             </TouchableOpacity>
           </View>
+        ) : null}
+        {destinationDetails?.url ? (
+          <View style={detailStyles.infoContainer}>
+            <Text size="s">{strings.createTabStack.url}:</Text>
+            <TouchableOpacity onPress={handleLinkPress}>
+              <Text size="xs" weight="l" numberOfLines={10}>
+                {destinationDetails?.url}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        ) : null}
+        {destinationDetails?.website ? (
+          <View style={detailStyles.infoContainer}>
+            <Text size="s">{strings.createTabStack.website}:</Text>
+            <TouchableOpacity onPress={handleWebsitePress}>
+              <Text size="xs" weight="l" numberOfLines={10}>
+                {destinationDetails?.website}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        ) : null}
+        {destinationDetails?.attributes &&
+        Array.isArray(destinationDetails.attributes) &&
+        destinationDetails.attributes.length > 0 ? (
+          <View style={detailStyles.infoContainer}>
+            <Text size="s">{strings.createTabStack.attributes}:</Text>
+            {destinationDetails.attributes.map(
+              (attribute: string, index: number) => (
+                <Text key={index} size="xs" weight="l" numberOfLines={10}>
+                  {attribute}
+                </Text>
+              ),
+            )}
+          </View>
+        ) : null}
+        {destinationDetails?.reviews &&
+        Array.isArray(destinationDetails?.reviews) &&
+        destinationDetails?.reviews.length > 0 ? (
+          <>
+            <View style={styles.separator} />
+            <ScrollView
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.imagesContainer}>
+              {destinationDetails.reviews.map(
+                (review: Review, index: number) => (
+                  <View key={index} style={detailStyles.reviewContainer}>
+                    <Text size="xs" numberOfLines={15}>
+                      {review.text + ' (' + review.rating + '/5)'}
+                    </Text>
+                    <Text size="xs" color={colors.darkgrey}>
+                      {review.relative_time_description}
+                    </Text>
+                  </View>
+                ),
+              )}
+            </ScrollView>
+          </>
         ) : null}
       </ScrollView>
     </View>
@@ -315,6 +313,9 @@ const styles = StyleSheet.create({
     marginHorizontal: s(20),
     marginTop: s(10),
     borderRadius: s(10),
+  },
+  scrollView: {
+    paddingBottom: s(20),
   },
   separator: {
     borderWidth: 0.5,
@@ -383,6 +384,13 @@ const detailStyles = StyleSheet.create({
     fontSize: s(13),
     fontWeight: '500',
     color: colors.black,
+  },
+  reviewContainer: {
+    padding: s(10),
+    width: s(180),
+    backgroundColor: colors.grey,
+    borderRadius: s(10),
+    marginRight: s(10),
   },
 });
 

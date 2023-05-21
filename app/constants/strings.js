@@ -76,6 +76,9 @@ const strings = {
     moveUp: 'Move Up',
     moveDown: 'Move Down',
     remove: 'Remove',
+    url: 'URL',
+    website: 'Website',
+    attributes: 'Attributes',
   },
   settings: {
     name: 'Name',

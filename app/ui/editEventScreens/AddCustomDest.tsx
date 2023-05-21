@@ -166,18 +166,18 @@ const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
                       name: text,
                       latitude: e.nativeEvent.coordinate.latitude,
                       longitude: e.nativeEvent.coordinate.longitude,
-                      place_id: null
+                      place_id: null,
                     })
                   : null
               }>
-                {customDestination?.latitude && customDestination?.longitude ? ( 
+              {customDestination?.latitude && customDestination?.longitude ? (
                 <Marker
                   coordinate={{
                     latitude: customDestination?.latitude,
                     longitude: customDestination?.longitude,
                   }}
                 />
-                ) : null}
+              ) : null}
             </MapView>
           </>
         ) : (
