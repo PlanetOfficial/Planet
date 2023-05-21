@@ -108,18 +108,11 @@ const Trending: React.FC<Props> = ({navigation}) => {
         setEventsData(_eventsData);
       };
 
-      Geolocation.getCurrentPosition(
-        async position => {
-          setLatitude(position.coords.latitude);
-          setLongitude(position.coords.longitude);
-          requestAPI(position.coords.latitude, position.coords.longitude);
-        },
-        error => {
-          setLatitude(floats.defaultLatitude);
-          setLongitude(floats.defaultLongitude);
-          requestAPI(floats.defaultLatitude, floats.defaultLongitude);
-        },
-      );
+      Geolocation.getCurrentPosition(async position => {
+        setLatitude(position.coords.latitude);
+        setLongitude(position.coords.longitude);
+        requestAPI(position.coords.latitude, position.coords.longitude);
+      });
     };
 
     if (liveCategories?.length > 0) {
