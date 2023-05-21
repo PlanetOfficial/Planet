@@ -126,15 +126,16 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
   }, [navigation, groupEventId, route?.params?.eventData?.places]);
 
   const reloadPlaces = async () => {
-    const token = await EncryptedStorage.getItem('auth_token');
-    const _places = await getFGEventPlaces(groupEventId, token);
-    setFullEventData(_places);
+    const _places = await getFGEventPlaces(groupEventId);
+    if (_places) {
+      setFullEventData(_places);
+    } else {
+      Alert.alert('Error', 'Unable to reload places. Please try again.');
+    }
   };
 
   const handlePlaceLike = async (group_event_place_id: number) => {
-    const token = await EncryptedStorage.getItem('auth_token');
-
-    const response = await likeFGPlace(group_event_place_id, token);
+    const response = await likeFGPlace(group_event_place_id);
 
     if (response) {
       reloadPlaces();
@@ -144,9 +145,7 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
   };
 
   const handlePlaceDislike = async (group_event_place_id: number) => {
-    const token = await EncryptedStorage.getItem('auth_token');
-
-    const response = await dislikeFGPlace(group_event_place_id, token);
+    const response = await dislikeFGPlace(group_event_place_id);
 
     if (response) {
       reloadPlaces();
@@ -167,9 +166,7 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
   };
 
   const handleFork = async () => {
-    const token = await EncryptedStorage.getItem('auth_token');
-
-    const response = await forkEvent(groupEventId, token);
+    const response = await forkEvent(groupEventId);
 
     if (response) {
       navigation.navigate('Library');
@@ -179,8 +176,7 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
   };
 
   const handleRemoveEvent = async (group_event_id: number) => {
-    const token = await EncryptedStorage.getItem('auth_token');
-    const response = await removeEvent(group_event_id, token);
+    const response = await removeEvent(group_event_id);
 
     if (response) {
       navigation.navigate('Friends');

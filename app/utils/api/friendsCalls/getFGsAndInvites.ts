@@ -1,6 +1,9 @@
+import EncryptedStorage from 'react-native-encrypted-storage';
 import {FriendsURL} from '../APIConstants';
 
-export const getFGsAndInvites = async (authToken: any) => {
+export const getFGsAndInvites = async (): Promise<any> => {
+  const authToken = await EncryptedStorage.getItem('auth_token');
+
   const response = await fetch(
     FriendsURL + `/friends/groupsAndInvites?authtoken=${authToken}`,
     {
@@ -12,6 +15,6 @@ export const getFGsAndInvites = async (authToken: any) => {
     const myJson = await response.json();
     return myJson;
   } else {
-    return {};
+    return null;
   }
 };

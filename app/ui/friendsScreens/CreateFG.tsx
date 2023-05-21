@@ -8,7 +8,6 @@ import {
   Alert,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
-import EncryptedStorage from 'react-native-encrypted-storage';
 
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
@@ -32,9 +31,7 @@ const CreateFG: React.FC<Props> = ({navigation}) => {
   const inviteRef = React.useRef<TextInput>(null);
 
   const handleGroupCreation = async () => {
-    const token = await EncryptedStorage.getItem('auth_token');
-
-    const responseStatus = await createGroup(name, invitations, token);
+    const responseStatus = await createGroup(name, invitations);
 
     if (responseStatus) {
       navigation.reset({

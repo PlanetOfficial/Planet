@@ -12,7 +12,6 @@ import {
 import {BottomSheetModal} from '@gorhom/bottom-sheet';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {s, vs} from 'react-native-size-matters';
-import EncryptedStorage from 'react-native-encrypted-storage';
 
 import moment from 'moment';
 
@@ -82,10 +81,12 @@ const Friends: React.FC<Props> = ({navigation}) => {
   }, []);
 
   const fetchCurGroupInfo = async (group_id: number) => {
-    const token = await EncryptedStorage.getItem('auth_token');
-
-    const response = await getFGEvents(group_id, token);
-    setCurFGEvents(response);
+    const response = await getFGEvents(group_id);
+    if (response) {
+      setCurFGEvents(response);
+    } else {
+      Alert.alert('Error', 'Unable to load events. Please try again.');
+    }
   };
 
   useEffect(() => {
@@ -95,9 +96,7 @@ const Friends: React.FC<Props> = ({navigation}) => {
   }, [friendGroup, friendGroups]);
 
   const initializeData = async () => {
-    const token = await EncryptedStorage.getItem('auth_token');
-
-    const responseData = await getFGsAndInvites(token);
+    const responseData = await getFGsAndInvites();
 
     if (responseData?.groups) {
       setFriendGroups(responseData.groups);
@@ -126,7 +125,7 @@ const Friends: React.FC<Props> = ({navigation}) => {
     const _places: Place[] | null = await getPlaces();
     if (_places) {
       const bookmarksIds: number[] = _places.map(
-        (bookmark: {id: any}) => bookmark.id,
+        (bookmark: Place) => bookmark.id,
       );
       setBookmarks(bookmarksIds);
     } else {
@@ -143,11 +142,9 @@ const Friends: React.FC<Props> = ({navigation}) => {
   }, [navigation, friendGroup]);
 
   const handleAddEvent = async (user_event_id: number) => {
-    const token = await EncryptedStorage.getItem('auth_token');
     const response = await makeFGEvent(
       user_event_id,
       friendGroups[friendGroup].group.id,
-      token,
     );
 
     if (response) {
@@ -159,9 +156,7 @@ const Friends: React.FC<Props> = ({navigation}) => {
   };
 
   const handleFork = async (groupEventId: number) => {
-    const token = await EncryptedStorage.getItem('auth_token');
-
-    const response = await forkEvent(groupEventId, token);
+    const response = await forkEvent(groupEventId);
 
     if (response) {
       navigation.navigate('Library');
@@ -171,8 +166,7 @@ const Friends: React.FC<Props> = ({navigation}) => {
   };
 
   const handleRemoveEvent = async (group_event_id: number) => {
-    const token = await EncryptedStorage.getItem('auth_token');
-    const response = await removeEvent(group_event_id, token);
+    const response = await removeEvent(group_event_id);
 
     if (response) {
       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);

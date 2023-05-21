@@ -7,6 +7,7 @@ import {
   Category,
   Place,
   Event,
+  Region,
 } from '../interfaces/types';
 import {floats} from '../../constants/numbers';
 import moment from 'moment';
@@ -75,7 +76,7 @@ export const getDistanceFromCoordinates = (
   return haversine(point1, point2);
 };
 
-export const getRegionForCoordinates = (points: MarkerObject[]): any => {
+export const getRegionForCoordinates = (points: MarkerObject[]): Region => {
   if (!points || points?.length === 0) {
     return {
       latitude: floats.defaultLatitude,
@@ -119,14 +120,14 @@ export const getRegionForCoordinates = (points: MarkerObject[]): any => {
   Given an array of destinations, filter that array into an array of
   MarkerObjects.
 */
-export const getMarkerArray = (places: any): any => {
+export const getMarkerArray = (places: Place[]): MarkerObject[] => {
   let markers: MarkerObject[] = [];
-  places?.forEach((place: any) => {
+  places?.forEach((place: Place) => {
     if (place && place?.name && place?.latitude && place?.longitude) {
       const markerObject = {
         name: place?.name,
-        latitude: parseFloat(place?.latitude),
-        longitude: parseFloat(place?.longitude),
+        latitude: place?.latitude,
+        longitude: place?.longitude,
       };
 
       markers.push(markerObject);
@@ -139,14 +140,14 @@ export const getMarkerArray = (places: any): any => {
   Given an array of destinations, return latitude and longitude of the
   average of all of the destinations.
 */
-export const getAveragePoint = (places: any): Coordinate => {
+export const getAveragePoint = (places: Place[]): Coordinate => {
   let latSum = 0;
   let lngSum = 0;
   let count = 0;
-  places?.forEach((place: any) => {
+  places?.forEach((place: Place) => {
     if (place && place?.latitude && place?.longitude) {
-      latSum += parseFloat(place?.latitude);
-      lngSum += parseFloat(place?.longitude);
+      latSum += place?.latitude;
+      lngSum += place?.longitude;
       count += 1;
     }
   });
