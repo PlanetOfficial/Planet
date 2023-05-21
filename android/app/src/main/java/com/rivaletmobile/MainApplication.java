@@ -29,7 +29,7 @@ public class MainApplication extends Application implements ReactApplication {
         }
 
         @Override
-        protected string getJSMainModuleName() {
+        protected String getJSMainModuleName() {
           return "index";
         }
 

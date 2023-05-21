@@ -12,7 +12,7 @@ public class MainActivity extends ReactActivity {
    * rendering of the component.
    */
   @Override
-  protected string getMainComponentName() {
+  protected String getMainComponentName() {
     return "RivaletMobile";
   }
 
