@@ -57,24 +57,22 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
         setLoading(true);
 
         let _liveEvents: Map<number, Place[]> = new Map();
-        for (let i = 0; i < subcategoryIds.length; i++) {
-          const places: Place[] | null = await getDestinations(
+        const promises = subcategoryIds?.map(async (subcategoryId: number) => {
+          const events: Place[] | null = await getDestinations(
             categoryId,
             floats.defaultRadius,
             latitude,
             longitude,
             null,
-            subcategoryIds[i],
+            subcategoryId
           );
-          if (places) {
-            _liveEvents.set(subcategoryIds[i], places);
+          if (events) {
+            _liveEvents.set(subcategoryId, events);
           } else {
-            Alert.alert(
-              'Error',
-              'Unable to load live events. Please try again.',
-            );
+            Alert.alert('Error', 'Unable to load events. Please try again.');
           }
-        }
+        });
+        await Promise.all(promises);
 
         setLiveEvents(_liveEvents);
         setLoading(false);
@@ -112,7 +110,11 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
       initializeBookmarks();
     });
     return unsubscribe;
-  }, [navigation]);
+  }, [navigation])
+
+  const hasElements = (places: Place[] | undefined) : boolean => {
+    return places!= undefined && Array.isArray(places) && places.length > 0;
+  }
 
   return (
     <View style={styles.container}>
@@ -145,7 +147,7 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
       ) : (
         <ScrollView onTouchStart={() => ref.current?.closeDropdown()}>
           {subcategories?.map((subcategory: Subcategory, idx: number) =>
-            liveEvents?.get(subcategory.id) ? (
+            hasElements(liveEvents?.get(subcategory.id)) ? (
               <View key={idx} style={categoryStyles.container}>
                 <View style={categoryStyles.header}>
                   <Text size="m" weight="b">

@@ -87,10 +87,20 @@ const Trending: React.FC<Props> = ({navigation}) => {
         }
       }
 
+      async function process(id: number, lat: number, lng: number) {
+
+        getDestinations(
+          id,
+          radius,
+          lat,
+          lng,
+        )
+      }
+
       const requestAPI = async (_latitude: number, _longitude: number) => {
         let _eventsData: Map<number, Place[]> = new Map();
-        for (let i = 0; i < liveCategories?.length; i++) {
-          const category: Category = liveCategories[i];
+
+        const promises = liveCategories?.map(async (category: Category) => {
           const events: Place[] | null = await getDestinations(
             category.id,
             radius,
@@ -102,7 +112,8 @@ const Trending: React.FC<Props> = ({navigation}) => {
           } else {
             Alert.alert('Error', 'Unable to load events. Please try again.');
           }
-        }
+        });
+        await Promise.all(promises);
 
         setLoading(false);
         setEventsData(_eventsData);
@@ -151,26 +162,12 @@ const Trending: React.FC<Props> = ({navigation}) => {
                   <Text size="m" weight="b">
                     {category.name}
                   </Text>
+                  {category.subcategories && category.subcategories.length > 0 ? (
                   <TouchableOpacity
                     onPress={() => {
-                      let defaultSubcategories: Subcategory[] = [];
-                      let hiddenSubCategories: Subcategory[] = [];
-
-                      if (category.subcategories) {
-                        if (category.subcategories.length <= 5) {
-                          defaultSubcategories = category.subcategories;
-                        } else {
-                          defaultSubcategories = category.subcategories?.slice(
-                            0,
-                            5,
-                          );
-                          hiddenSubCategories =
-                            category.subcategories?.slice(5);
-                        }
-
                         navigation.navigate('LiveCategory', {
-                          subcategories: defaultSubcategories,
-                          hiddenSubCategories,
+                          subcategories: category.subcategories,
+                          hiddenSubCategories: [],
                           categoryId: category.id,
                           categoryName: category.name,
                           bookmarks,
@@ -178,12 +175,12 @@ const Trending: React.FC<Props> = ({navigation}) => {
                           longitude,
                           radius,
                         });
-                      }
                     }}>
                     <Text size="xs" weight="b" color={colors.accent}>
                       {strings.trending.seeAll}
                     </Text>
                   </TouchableOpacity>
+                  ) : null}
                 </View>
                 <ScrollView
                   contentContainerStyle={categoryStyles.contentContainer}
