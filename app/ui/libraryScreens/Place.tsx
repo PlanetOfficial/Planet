@@ -120,7 +120,7 @@ const Place: React.FC<Props> = ({navigation, route}) => {
     <View style={styles.container}>
       <SafeAreaView>
         <View style={headerStyles.container}>
-          <Icon size="s" icon={icons.back} onPress={navigation.goBack} />
+          <Icon icon={icons.back} onPress={navigation.goBack} />
           <View style={headerStyles.texts}>
             <Text weight="b" numberOfLines={1}>
               {destination.name}

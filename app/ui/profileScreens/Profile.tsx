@@ -38,7 +38,6 @@ const Profile: React.FC<Props> = ({navigation}) => {
             {strings.title.profile}
           </CustomText>
           <Icon
-            size="m"
             icon={icons.settings}
             onPress={() => {
               navigation.navigate('Settings');

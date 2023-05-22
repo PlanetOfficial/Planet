@@ -22,7 +22,7 @@ interface Props {
 }
 
 const Icon: React.FC<Props> = ({
-  size = 'm',
+  size = 's',
   color = colors.black,
   padding = 0,
   disabled = false,
@@ -65,7 +65,13 @@ const Icon: React.FC<Props> = ({
     <TouchableOpacity
       style={ButtonStyles}
       disabled={disabled}
-      onPress={onPress}>
+      onPress={onPress}
+      hitSlop={{
+        left: 10,
+        right: 10,
+        bottom: 10,
+        top: 10,
+      }}>
       <Image source={icon} style={IconStyles} />
     </TouchableOpacity>
   ) : (

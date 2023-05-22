@@ -83,11 +83,7 @@ const CreateFG: React.FC<Props> = ({navigation, route}) => {
       <SafeAreaView>
         <View style={styles.header}>
           <View style={styles.back}>
-            <Icon
-              size="s"
-              icon={icons.back}
-              onPress={() => navigation.goBack()}
-            />
+            <Icon icon={icons.back} onPress={() => navigation.goBack()} />
           </View>
           <Text>{strings.friends.editPrompt}</Text>
           <TouchableOpacity onPress={() => setShowConfirmation(true)}>
@@ -135,7 +131,6 @@ const CreateFG: React.FC<Props> = ({navigation, route}) => {
               {item}
             </Text>
             <Icon
-              size="s"
               icon={icons.x}
               onPress={() => {
                 setInvitations(

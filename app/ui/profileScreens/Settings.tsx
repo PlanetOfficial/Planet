@@ -43,7 +43,6 @@ const Settings: React.FC<Props> = ({navigation}) => {
       <SafeAreaView>
         <View style={styles.header}>
           <Icon
-            size="m"
             icon={icons.back}
             onPress={() => {
               navigation.navigate('Profile');

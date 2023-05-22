@@ -131,7 +131,6 @@ const Trending: React.FC<Props> = ({navigation}) => {
 
           <View style={headerStyles.search}>
             <Icon
-              size="m"
               icon={icons.search}
               onPress={() => {
                 // TODO: implement trending search

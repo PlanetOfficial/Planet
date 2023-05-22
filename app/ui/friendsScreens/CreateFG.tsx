@@ -50,11 +50,7 @@ const CreateFG: React.FC<Props> = ({navigation}) => {
       <SafeAreaView>
         <View style={styles.header}>
           <View style={styles.back}>
-            <Icon
-              size="s"
-              icon={icons.back}
-              onPress={() => navigation.goBack()}
-            />
+            <Icon icon={icons.back} onPress={() => navigation.goBack()} />
           </View>
           <Text>{strings.friends.createPrompt}</Text>
         </View>
@@ -99,7 +95,6 @@ const CreateFG: React.FC<Props> = ({navigation}) => {
                 {item}
               </Text>
               <Icon
-                size="s"
                 icon={icons.x}
                 onPress={() => {
                   setInvitations(

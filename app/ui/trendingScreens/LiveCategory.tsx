@@ -121,7 +121,6 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
       <SafeAreaView>
         <View style={headerStyles.container}>
           <Icon
-            size="m"
             icon={icons.back}
             onPress={() => navigation.navigate('Trending')}
           />

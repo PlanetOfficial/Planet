@@ -75,6 +75,7 @@ const LiveCategorySettings: React.FC<Props> = ({navigation, route}) => {
                   isActive ? categoryStyles.shadow : null,
                 ]}>
                 <Icon
+                  size="m"
                   icon={icons.hide}
                   color={colors.darkgrey}
                   onPress={() => {
@@ -99,7 +100,7 @@ const LiveCategorySettings: React.FC<Props> = ({navigation, route}) => {
                   delayLongPress={1}
                   onLongPress={drag}
                   disabled={isActive}>
-                  <Icon icon={icons.drag} color={colors.darkgrey} />
+                  <Icon size="m" icon={icons.drag} color={colors.darkgrey} />
                 </TouchableOpacity>
               </View>
               <View style={categoryStyles.border} />
@@ -118,6 +119,7 @@ const LiveCategorySettings: React.FC<Props> = ({navigation, route}) => {
             <>
               <View style={categoryStyles.container}>
                 <Icon
+                  size="m"
                   icon={icons.plus}
                   color={colors.accent}
                   onPress={() => {

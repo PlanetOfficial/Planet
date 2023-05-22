@@ -196,7 +196,7 @@ const Friends: React.FC<Props> = ({navigation}) => {
                 : friendGroups[friendGroup]?.group?.name}
             </Text>
             <View style={headerStyles.drop}>
-              <Icon size="xs" icon={icons.drop} />
+              <Icon icon={icons.drop} />
             </View>
           </TouchableOpacity>
           <View style={headerStyles.notification}>
