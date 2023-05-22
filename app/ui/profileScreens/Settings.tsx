@@ -87,9 +87,6 @@ const Settings: React.FC<Props> = ({navigation}) => {
             {strings.settings.resetPassword}
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity>
-          <Text style={accountStyles.upgrade}>{strings.settings.upgrade}</Text>
-        </TouchableOpacity>
         <TouchableOpacity onPress={handleLogout}>
           <Text testID="logoutButton" style={accountStyles.logoutButtonText}>
             {strings.settings.logout}
@@ -149,15 +146,6 @@ const accountStyles = StyleSheet.create({
     color: colors.accent,
     fontSize: s(12),
     fontWeight: '500',
-  },
-  upgrade: {
-    marginBottom: s(25),
-    fontSize: s(16),
-    fontWeight: '800',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    color: colors.white,
-    backgroundColor: colors.accent,
   },
   logoutButtonText: {
     fontSize: s(14),

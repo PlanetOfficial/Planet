@@ -84,7 +84,6 @@ const strings = {
     name: 'Name',
     username: 'UserName',
     resetPassword: 'Reset Password',
-    upgrade: 'Upgrade to Premium',
     logout: 'Log out',
   },
   title: {
