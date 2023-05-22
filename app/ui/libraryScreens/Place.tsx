@@ -170,7 +170,6 @@ const Place: React.FC<Props> = ({navigation, route}) => {
       </SafeAreaView>
 
       <ScrollView
-        showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollView}>
         {destination.latitude && destination.longitude ? (
           <MapView
