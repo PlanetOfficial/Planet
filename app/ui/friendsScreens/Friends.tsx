@@ -241,10 +241,12 @@ const Friends: React.FC<Props> = ({navigation}) => {
           return (
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate('FGEvent', {
-                  eventData: item,
-                  bookmarks: bookmarks,
-                });
+                if (!fgBottomSheetOpen && !addBottomSheetOpen) {
+                  navigation.navigate('FGEvent', {
+                    eventData: item,
+                    bookmarks: bookmarks,
+                  });
+                }
               }}>
               <EventCard
                 name={item.name}
