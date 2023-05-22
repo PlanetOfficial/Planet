@@ -88,14 +88,12 @@ const Event: React.FC<Props> = ({navigation, route}) => {
 
   const addRef = useRef<any>(null); // due to forwardRef
 
-  const getEventData = async () => {
-    setPlaces(route?.params?.eventData?.places);
+  const getEventData = async (places: Place[]) => {
+    setPlaces(places);
 
-    setSelectionIndices(Array(route?.eventData?.places?.length).fill(-1));
+    setSelectionIndices(Array(places.length).fill(-1));
 
-    const markerArray: MarkerObject[] = getMarkerArray(
-      route?.params?.eventData?.places,
-    );
+    const markerArray: MarkerObject[] = getMarkerArray(places);
     setMarkers(markerArray);
 
     const averagePoint: Coordinate = getAveragePoint(markerArray);
@@ -114,7 +112,7 @@ const Event: React.FC<Props> = ({navigation, route}) => {
         Alert.alert('Error', 'Unable to load places. Please try again.');
       }
 
-      await getEventData();
+      await getEventData(route?.params?.eventData?.places);
     };
 
     const unsubscribe = navigation.addListener('focus', () => {
@@ -146,13 +144,27 @@ const Event: React.FC<Props> = ({navigation, route}) => {
     if (response) {
       setEventTitle(tempTitle);
       setDate(tempDate);
-      getEventData();
+      getEventData(extractPlaces(tempPlaces));
 
       bottomSheetRef.current?.collapse();
       setEditing(false);
     } else {
       Alert.alert('Error', 'Unable to save edits. Please try again.');
     }
+  };
+
+  const extractPlaces = (editItems: (Place | Category)[]): Place[] => {
+    const places = editItems.map((item: Place | Category, index: number) => {
+      if (isPlace(item)) {
+        return item;
+      } else {
+        if (item.options && item.options.length >= selectionIndices[index]) {
+          return item.options[selectionIndices[index]];
+        }
+      }
+    });
+
+    return places.filter((place: Place | undefined) => place !== undefined) as Place[];
   };
 
   const extractID = (editItems: (Place | Category)[]): number[] => {
