@@ -27,6 +27,7 @@ const AddByCategory: React.FC<Props> = ({onClose, onSelect}) => {
         </TouchableOpacity>
       </View>
       <CategoryList onClose={onClose} onSelect={onSelect} />
+      <View style={styles.bottomPadding} />
     </View>
   );
 };
@@ -35,6 +36,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.white,
+  },
+  bottomPadding: {
+    paddingBottom: s(50),
   },
 });
 
