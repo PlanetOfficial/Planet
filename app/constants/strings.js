@@ -130,6 +130,8 @@ const strings = {
     promptSearch: 'Search for a place or type in a custom destination above',
     bookmark: 'Bookmark',
     unbookmark: 'Unbookmark',
+    noSaved: 'No Bookmarks',
+    noEvents: 'No Events',
   },
   profile: {
     followers: 'followers',

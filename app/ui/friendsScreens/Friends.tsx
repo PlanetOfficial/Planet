@@ -232,6 +232,10 @@ const Friends: React.FC<Props> = ({navigation}) => {
         keyExtractor={(item: Event) => item.id.toString()}
         ItemSeparatorComponent={Spacer}
         contentContainerStyle={contentStyles.content}
+        ListEmptyComponent={
+          <Text size="m" color={colors.darkgrey} center={true}>
+              {strings.library.noEvents}
+          </Text>}
         renderItem={({item}: {item: Event}) => {
           return (
             <TouchableOpacity
@@ -318,6 +322,11 @@ const Friends: React.FC<Props> = ({navigation}) => {
           keyExtractor={(item: Event) => item.id.toString()}
           ItemSeparatorComponent={Spacer}
           contentContainerStyle={contentStyles.content}
+          ListEmptyComponent={
+            <Text size="m" color={colors.darkgrey} center={true}>
+              {strings.library.noEvents}
+            </Text>
+          }
           renderItem={({item}: {item: Event}) => {
             return (
               <TouchableOpacity

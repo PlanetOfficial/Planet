@@ -107,6 +107,13 @@ const Library: React.FC<Props> = ({navigation}) => {
         initialNumToRender={5}
         keyExtractor={(_: Place | Event, idx: number) => idx.toString()}
         ItemSeparatorComponent={Spacer}
+        ListEmptyComponent={
+          <Text size="m" color={colors.darkgrey} center={true}>
+            {selectedIndex === 0
+              ? strings.library.noSaved
+              : strings.library.noEvents}
+          </Text>
+        }
         renderItem={({item}: {item: Place | Event}) => {
           return isPlace2(item) ? (
             <TouchableOpacity
