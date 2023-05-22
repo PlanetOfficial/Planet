@@ -234,8 +234,9 @@ const Friends: React.FC<Props> = ({navigation}) => {
         contentContainerStyle={contentStyles.content}
         ListEmptyComponent={
           <Text size="m" color={colors.darkgrey} center={true}>
-              {strings.library.noEvents}
-          </Text>}
+            {strings.library.noEvents}
+          </Text>
+        }
         renderItem={({item}: {item: Event}) => {
           return (
             <TouchableOpacity

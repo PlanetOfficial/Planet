@@ -64,7 +64,7 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
             latitude,
             longitude,
             null,
-            subcategoryId
+            subcategoryId,
           );
           if (events) {
             _liveEvents.set(subcategoryId, events);
@@ -110,11 +110,11 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
       initializeBookmarks();
     });
     return unsubscribe;
-  }, [navigation])
+  }, [navigation]);
 
-  const hasElements = (places: Place[] | undefined) : boolean => {
-    return places!= undefined && Array.isArray(places) && places.length > 0;
-  }
+  const hasElements = (places: Place[] | undefined): boolean => {
+    return places !== undefined && Array.isArray(places) && places.length > 0;
+  };
 
   return (
     <View style={styles.container}>

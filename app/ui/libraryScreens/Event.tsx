@@ -88,12 +88,12 @@ const Event: React.FC<Props> = ({navigation, route}) => {
 
   const addRef = useRef<any>(null); // due to forwardRef
 
-  const getEventData = async (places: Place[]) => {
-    setPlaces(places);
+  const getEventData = async (_places: Place[]) => {
+    setPlaces(_places);
 
-    setSelectionIndices(Array(places.length).fill(-1));
+    setSelectionIndices(Array(_places.length).fill(-1));
 
-    const markerArray: MarkerObject[] = getMarkerArray(places);
+    const markerArray: MarkerObject[] = getMarkerArray(_places);
     setMarkers(markerArray);
 
     const averagePoint: Coordinate = getAveragePoint(markerArray);
@@ -154,7 +154,7 @@ const Event: React.FC<Props> = ({navigation, route}) => {
   };
 
   const extractPlaces = (editItems: (Place | Category)[]): Place[] => {
-    const places = editItems.map((item: Place | Category, index: number) => {
+    const _places = editItems.map((item: Place | Category, index: number) => {
       if (isPlace(item)) {
         return item;
       } else {
@@ -164,7 +164,9 @@ const Event: React.FC<Props> = ({navigation, route}) => {
       }
     });
 
-    return places.filter((place: Place | undefined) => place !== undefined) as Place[];
+    return _places.filter(
+      (place: Place | undefined) => place !== undefined,
+    ) as Place[];
   };
 
   const extractID = (editItems: (Place | Category)[]): number[] => {

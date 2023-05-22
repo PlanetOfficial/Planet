@@ -24,7 +24,7 @@ import PlaceCard from '../components/PlaceCard';
 
 import {getPlaces} from '../../utils/api/placeAPI';
 import {getDestinations} from '../../utils/api/destinationAPI';
-import {Genre, Place, Subcategory} from '../../utils/interfaces/types';
+import {Genre, Place} from '../../utils/interfaces/types';
 import {Category} from '../../utils/interfaces/types';
 import {getGenres} from '../../utils/api/genresAPI';
 import {getPlaceCardString} from '../../utils/functions/Misc';
@@ -85,16 +85,6 @@ const Trending: React.FC<Props> = ({navigation}) => {
         } catch (err) {
           console.warn(err);
         }
-      }
-
-      async function process(id: number, lat: number, lng: number) {
-
-        getDestinations(
-          id,
-          radius,
-          lat,
-          lng,
-        )
       }
 
       const requestAPI = async (_latitude: number, _longitude: number) => {
@@ -162,9 +152,10 @@ const Trending: React.FC<Props> = ({navigation}) => {
                   <Text size="m" weight="b">
                     {category.name}
                   </Text>
-                  {category.subcategories && category.subcategories.length > 0 ? (
-                  <TouchableOpacity
-                    onPress={() => {
+                  {category.subcategories &&
+                  category.subcategories.length > 0 ? (
+                    <TouchableOpacity
+                      onPress={() => {
                         navigation.navigate('LiveCategory', {
                           subcategories: category.subcategories,
                           hiddenSubCategories: [],
@@ -175,11 +166,11 @@ const Trending: React.FC<Props> = ({navigation}) => {
                           longitude,
                           radius,
                         });
-                    }}>
-                    <Text size="xs" weight="b" color={colors.accent}>
-                      {strings.trending.seeAll}
-                    </Text>
-                  </TouchableOpacity>
+                      }}>
+                      <Text size="xs" weight="b" color={colors.accent}>
+                        {strings.trending.seeAll}
+                      </Text>
+                    </TouchableOpacity>
                   ) : null}
                 </View>
                 <ScrollView
