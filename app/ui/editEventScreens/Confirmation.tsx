@@ -46,7 +46,7 @@ const Confirmation: React.FC<Props> = ({
         />
         <View style={styles.container}>
           <View style={styles.title}>
-            <Text size="s" numberOfLines={2} center={true}>
+            <Text size="s" center={true}>
               {prompt}
             </Text>
           </View>

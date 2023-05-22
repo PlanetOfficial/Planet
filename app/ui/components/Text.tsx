@@ -21,7 +21,7 @@ const CustomText: React.FC<Props> = ({
   weight = 'r',
   color = colors.black,
   underline = false,
-  numberOfLines = 1,
+  numberOfLines,
   center = false,
 }) => {
   let fontSize: number = s(17);
@@ -69,7 +69,7 @@ const CustomText: React.FC<Props> = ({
   };
 
   return (
-    <Text numberOfLines={numberOfLines} style={textStyles}>
+    <Text numberOfLines={numberOfLines? numberOfLines : undefined} style={textStyles}>
       {children}
     </Text>
   );

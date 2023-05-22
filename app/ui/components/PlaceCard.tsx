@@ -55,10 +55,10 @@ const PlaceCard: React.FC<Props> = ({
       <Image style={styles.image} source={image} />
       <View style={styles.header}>
         <View style={styles.texts}>
-          <Text size={small ? 's' : 'm'} weight="b">
+          <Text size={small ? 's' : 'm'} weight="b" numberOfLines={1}>
             {name}
           </Text>
-          <Text size="xs" weight="l" color={colors.accent}>
+          <Text size="xs" weight="l" color={colors.accent} numberOfLines={1}>
             {info}
           </Text>
         </View>

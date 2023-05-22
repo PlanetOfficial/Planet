@@ -122,8 +122,8 @@ const Place: React.FC<Props> = ({navigation, route}) => {
         <View style={headerStyles.container}>
           <Icon size="s" icon={icons.back} onPress={navigation.goBack} />
           <View style={headerStyles.texts}>
-            <Text weight="b">{destination.name}</Text>
-            <Text size="xs" weight="l" color={colors.accent}>
+            <Text weight="b" numberOfLines={1}>{destination.name}</Text>
+            <Text size="xs" weight="l" color={colors.accent} numberOfLines={1}>
               {getPlaceCardString(destination)}
             </Text>
           </View>
@@ -208,7 +208,7 @@ const Place: React.FC<Props> = ({navigation, route}) => {
         {destinationDetails?.description ? (
           <View style={detailStyles.infoContainer}>
             <Text size="s">{strings.createTabStack.description}:</Text>
-            <Text size="xs" weight="l" numberOfLines={10}>
+            <Text size="xs" weight="l">
               {destinationDetails?.description}
             </Text>
           </View>
@@ -216,7 +216,7 @@ const Place: React.FC<Props> = ({navigation, route}) => {
         {destinationDetails?.address ? (
           <View style={detailStyles.infoContainer}>
             <Text size="s">{strings.createTabStack.address}:</Text>
-            <Text size="xs" weight="l" numberOfLines={10}>
+            <Text size="xs" weight="l">
               {destinationDetails?.address}
             </Text>
           </View>
@@ -225,7 +225,7 @@ const Place: React.FC<Props> = ({navigation, route}) => {
           <View style={detailStyles.infoContainer}>
             <Text size="s">{strings.createTabStack.phone}:</Text>
             <TouchableOpacity onPress={handleCallPress}>
-              <Text size="xs" weight="l" numberOfLines={10}>
+              <Text size="xs" weight="l">
                 {destinationDetails?.address}
               </Text>
             </TouchableOpacity>
@@ -235,7 +235,7 @@ const Place: React.FC<Props> = ({navigation, route}) => {
           <View style={detailStyles.infoContainer}>
             <Text size="s">{strings.createTabStack.url}:</Text>
             <TouchableOpacity onPress={handleLinkPress}>
-              <Text size="xs" weight="l" numberOfLines={10}>
+              <Text size="xs" weight="l">
                 {destinationDetails?.url}
               </Text>
             </TouchableOpacity>
@@ -245,7 +245,7 @@ const Place: React.FC<Props> = ({navigation, route}) => {
           <View style={detailStyles.infoContainer}>
             <Text size="s">{strings.createTabStack.website}:</Text>
             <TouchableOpacity onPress={handleWebsitePress}>
-              <Text size="xs" weight="l" numberOfLines={10}>
+              <Text size="xs" weight="l">
                 {destinationDetails?.website}
               </Text>
             </TouchableOpacity>
@@ -258,7 +258,7 @@ const Place: React.FC<Props> = ({navigation, route}) => {
             <Text size="s">{strings.createTabStack.attributes}:</Text>
             {destinationDetails.attributes.map(
               (attribute: string, index: number) => (
-                <Text key={index} size="xs" weight="l" numberOfLines={10}>
+                <Text key={index} size="xs" weight="l">
                   {attribute}
                 </Text>
               ),
@@ -277,7 +277,7 @@ const Place: React.FC<Props> = ({navigation, route}) => {
               {destinationDetails.reviews.map(
                 (review: Review, index: number) => (
                   <View key={index} style={detailStyles.reviewContainer}>
-                    <Text size="xs" numberOfLines={15}>
+                    <Text size="xs">
                       {review.text + ' (' + review.rating + '/5)'}
                     </Text>
                     <Text size="xs" color={colors.darkgrey}>
