@@ -325,7 +325,7 @@ const Friends: React.FC<Props> = ({navigation}) => {
           contentContainerStyle={contentStyles.content}
           ListEmptyComponent={
             <Text size="m" color={colors.darkgrey} center={true}>
-              {strings.library.noEvents}
+              {strings.library.noEventsAdd}
             </Text>
           }
           renderItem={({item}: {item: Event}) => {

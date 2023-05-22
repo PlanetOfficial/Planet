@@ -132,6 +132,7 @@ const strings = {
     unbookmark: 'Unbookmark',
     noSaved: 'No Bookmarks',
     noEvents: 'No Events',
+    noEventsAdd: 'No events yet, add to one to your library first',
   },
   profile: {
     followers: 'followers',
