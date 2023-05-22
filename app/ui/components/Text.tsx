@@ -69,7 +69,9 @@ const CustomText: React.FC<Props> = ({
   };
 
   return (
-    <Text numberOfLines={numberOfLines? numberOfLines : undefined} style={textStyles}>
+    <Text
+      numberOfLines={numberOfLines ? numberOfLines : undefined}
+      style={textStyles}>
       {children}
     </Text>
   );

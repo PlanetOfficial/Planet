@@ -122,7 +122,9 @@ const Place: React.FC<Props> = ({navigation, route}) => {
         <View style={headerStyles.container}>
           <Icon size="s" icon={icons.back} onPress={navigation.goBack} />
           <View style={headerStyles.texts}>
-            <Text weight="b" numberOfLines={1}>{destination.name}</Text>
+            <Text weight="b" numberOfLines={1}>
+              {destination.name}
+            </Text>
             <Text size="xs" weight="l" color={colors.accent} numberOfLines={1}>
               {getPlaceCardString(destination)}
             </Text>
@@ -277,7 +279,7 @@ const Place: React.FC<Props> = ({navigation, route}) => {
               {destinationDetails.reviews.map(
                 (review: Review, index: number) => (
                   <View key={index} style={detailStyles.reviewContainer}>
-                    <Text size="xs">
+                    <Text size="xs" numberOfLines={20}>
                       {review.text + ' (' + review.rating + '/5)'}
                     </Text>
                     <Text size="xs" color={colors.darkgrey}>
