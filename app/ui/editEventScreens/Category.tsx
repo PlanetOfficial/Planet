@@ -18,7 +18,6 @@ import PlacesDisplay from '../components/PlacesDisplay';
 import {Place, Category as CategoryT} from '../../utils/interfaces/types';
 import {getDestinations} from '../../utils/api/destinationAPI';
 import Filter from './Filter';
-import CategoryList from '../components/CategoryList';
 
 interface ChildComponentProps {
   navigation: any;
@@ -107,8 +106,8 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
 
   useEffect(() => {
     const _filters: (number | number[])[] = [];
-    for(let i = 0; i < category.filters.length; i++) {
-      if(category.filters[i].multi){
+    for (let i = 0; i < category.filters.length; i++) {
+      if (category.filters[i].multi) {
         _filters.push([]);
       } else {
         _filters.push(category.filters[i].defaultIdx);
@@ -116,6 +115,10 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
     }
     setFilters(_filters);
   }, [category.filters]);
+
+  useEffect(() => {
+    setToBeRefreshed(true);
+  }, [filters]);
 
   const isCategory = (item: Place | CategoryT): item is CategoryT => {
     return 'icon' in item;
@@ -155,15 +158,21 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
       </View>
 
       {category.filters && category.filters.length > 0 ? (
-        <Filter filters={category.filters} currFilters={filters} setCurrFilters={setFilters}/>
+        <Filter
+          filters={category.filters}
+          currFilters={filters}
+          setCurrFilters={setFilters}
+        />
       ) : null}
 
       {loading ? (
-        <ActivityIndicator size="small" color={colors.accent} />
-      ) : (isCategory(destination) &&
-      destination.options &&
-      Array.isArray(destination.options) &&
-      destination.options.length > 0 ? (
+        <View style={styles.noPlacesFound}>
+          <ActivityIndicator size="small" color={colors.accent} />
+        </View>
+      ) : isCategory(destination) &&
+        destination.options &&
+        Array.isArray(destination.options) &&
+        destination.options.length > 0 ? (
         <PlacesDisplay
           navigation={navigation}
           places={destination.options}
@@ -180,7 +189,7 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
             {strings.createTabStack.noPlaces}
           </Text>
         </View>
-      ))}
+      )}
     </View>
   );
 });
@@ -211,7 +220,7 @@ const styles = StyleSheet.create({
     tintColor: colors.black,
   },
   noPlacesFound: {
-    height: s(100),
+    height: s(135),
     alignItems: 'center',
     justifyContent: 'center',
   },

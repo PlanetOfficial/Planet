@@ -43,6 +43,8 @@ export const icons = {
   telephone: require('../assets/icons/telephone.png'),
   checked: require('../assets/icons/checked.png'),
   unchecked: require('../assets/icons/unchecked.png'),
+  selected: require('../assets/icons/selected.png'),
+  unselected: require('../assets/icons/unselected.png'),
 };
 
 export const vectors = {

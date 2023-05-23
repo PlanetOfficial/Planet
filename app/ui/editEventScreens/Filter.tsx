@@ -25,11 +25,7 @@ interface ChildComponentProps {
 }
 
 const Filter = forwardRef((props: ChildComponentProps, ref) => {
-  const {
-    filters,
-    currFilters,
-    setCurrFilters,
-  } = props;
+  const {filters, currFilters, setCurrFilters} = props;
 
   useImperativeHandle(ref, () => ({
     closeDropdown,
@@ -72,7 +68,7 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
         newFilters[idx] = [..._option, option];
       }
     } else {
-      newFilters[idx] = option;
+      newFilters[idx] = newFilters[idx] === option ? -1 : option;
     }
     setFilters(newFilters);
   };
@@ -87,19 +83,15 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
     const _filter: number | number[] = currFilters[index];
     if (Array.isArray(_filter)) {
       if (_filter.length === 0) {
-        return strings.filter.none;
+        return '';
       } else {
-        let filterStr: string = filter.options[_filter[0]];
-        if(_filter.length > 1) {
-          filterStr += ' + ' + (_filter.length - 1);
-        }
-        return filterStr;
+        return ` (${_filter.length})`;
       }
     } else {
-      if(_filter === -1) {
-        return strings.filter.none;
+      if (_filter === -1) {
+        return ': ' + strings.filter.none;
       }
-      return filter.options[_filter];
+      return ': ' + filter.options[_filter];
     }
   };
 
@@ -142,11 +134,9 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
               size="xs"
               weight="l"
               color={
-                dropdownStatus === filter.name
-                  ? colors.darkgrey
-                  : colors.black
+                dropdownStatus === filter.name ? colors.darkgrey : colors.black
               }>
-              {filter.name + ': ' + displayFilter(filter, idx)}
+              {filter.name + displayFilter(filter, idx)}
             </Text>
             <View style={styles.chipIcon}>
               <Icon icon={icons.drop} padding={s(3)} />
@@ -158,36 +148,42 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
         dropdownStatus === filter.name && width !== 0 && pos !== 0 ? (
           <View
             key={index}
-            style={[styles.optionContainer, {left: pos, width: width}]}>
+            style={[styles.optionContainer, {left: pos, minWidth: width}]}>
             {filter.options.map((option: string, idx: number) => (
               <View key={idx}>
                 <TouchableOpacity
                   style={styles.option}
                   onPress={() => {
-                    handleOptionPress(
-                      index,
-                      idx,
-                      currFilters,
-                      setCurrFilters,
-                    );
+                    handleOptionPress(index, idx, currFilters, setCurrFilters);
                     if (!Array.isArray(currFilters[index])) {
                       closeDropdown();
                     }
-                  }}>                  
+                  }}>
                   {idx === currFilters[index] ||
                   isSelected(index, idx, currFilters) ? (
                     <Icon
-                      icon={icons.checked}
+                      icon={
+                        Array.isArray(currFilters[index])
+                          ? icons.checked
+                          : icons.selected
+                      }
                       color={colors.accent}
                     />
-                  ) : 
-                  <Icon
-                    icon={icons.unchecked}
-                    color={colors.accent}
-                  />}
-                  <Text size="xs" weight="l">
-                    {option}
-                  </Text>
+                  ) : (
+                    <Icon
+                      icon={
+                        Array.isArray(currFilters[index])
+                          ? icons.unchecked
+                          : icons.unselected
+                      }
+                      color={colors.accent}
+                    />
+                  )}
+                  <View style={styles.paddingLeft}>
+                    <Text size="xs" weight="l">
+                      {option}
+                    </Text>
+                  </View>
                 </TouchableOpacity>
                 {idx !== filter.options.length - 1 ? (
                   <View style={styles.optionSeparator} />
@@ -206,7 +202,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderBottomWidth: 0.5,
     borderColor: colors.grey,
-    zIndex: 1,
+    zIndex: 10,
   },
   contentContainer: {
     paddingLeft: s(20),
@@ -246,15 +242,18 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-    zIndex: 1,
+    zIndex: 10,
   },
   option: {
     flexDirection: 'row',
     alignItems: 'center',
     borderRadius: s(10),
-    paddingLeft: s(10),
+    padding: s(10),
     borderBottomColor: '#ccc',
     backgroundColor: colors.white,
+  },
+  paddingLeft: {
+    paddingLeft: s(10),
   },
   optionSeparator: {
     height: 0.5,
