@@ -118,16 +118,13 @@ const MapScreen: React.FC<Props> = ({navigation, route}) => {
     () => [insets.bottom + s(55), vs(680) - (insets.top + s(50))],
     [insets.bottom, insets.top],
   );
-  const handleSheetChange = useCallback(
-    (_fromIndex: number, toIndex: number) => {
-      if (toIndex === 0) {
-        autoCompleteRef.current?.blur();
-      } else {
-        autoCompleteRef.current?.focus();
-      }
-    },
-    [],
-  );
+  const handleSheetChange = useCallback((_: number, toIndex: number) => {
+    if (toIndex === 0) {
+      autoCompleteRef.current?.blur();
+    } else {
+      autoCompleteRef.current?.focus();
+    }
+  }, []);
 
   return (
     <View style={styles.container}>

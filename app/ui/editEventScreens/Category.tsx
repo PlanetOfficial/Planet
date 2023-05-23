@@ -5,7 +5,13 @@ import React, {
   useRef,
   useEffect,
 } from 'react';
-import {StyleSheet, View, Image, ActivityIndicator} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Image,
+  ActivityIndicator,
+  TouchableOpacity,
+} from 'react-native';
 import {s} from 'react-native-size-matters';
 
 import {colors} from '../../constants/theme';
@@ -15,9 +21,15 @@ import Text from '../components/Text';
 import OptionMenu from '../components/OptionMenu';
 import PlacesDisplay from '../components/PlacesDisplay';
 
-import {Place, Category as CategoryT} from '../../utils/interfaces/types';
+import {
+  Place,
+  Category as CategoryT,
+  Subcategory,
+} from '../../utils/interfaces/types';
 import {getDestinations} from '../../utils/api/destinationAPI';
 import Filter from './Filter';
+import Icon from '../components/Icon';
+import {icons} from '../../constants/images';
 
 interface ChildComponentProps {
   navigation: any;
@@ -68,6 +80,8 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
 
   const [filters, setFilters] = useState<(number | number[])[]>([]);
 
+  const [subcategory, setSubcategory] = useState<Subcategory | null>();
+
   useEffect(() => {
     const loadDestinations = async (categoryId: number) => {
       setLoading(true);
@@ -84,7 +98,8 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
           }
           _filters[filter.name] = filterValues;
         } else {
-          _filters[filter.name] = filters[i] === -1 ? '' : filter.options[filters[i] as number];
+          _filters[filter.name] =
+            filters[i] === -1 ? '' : filter.options[filters[i] as number];
         }
       }
 
@@ -94,6 +109,7 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
         latitude,
         longitude,
         _filters,
+        subcategory ? subcategory.id : undefined,
       );
 
       const _destinations: (Place | CategoryT)[] = [...destinations];
@@ -119,6 +135,9 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
     destinations,
     setDestinations,
     toBeRefreshed,
+    category.filters,
+    filters,
+    subcategory,
   ]);
 
   useEffect(() => {
@@ -135,7 +154,7 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
 
   useEffect(() => {
     setToBeRefreshed(true);
-  }, [filters]);
+  }, [filters, subcategory]);
 
   const isCategory = (item: Place | CategoryT): item is CategoryT => {
     return 'icon' in item;
@@ -147,9 +166,18 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
         <View style={styles.categoryIconContainer}>
           <Image style={styles.categoryIcon} source={{uri: category.icon}} />
         </View>
-        <View style={styles.headerTitle}>
-          <Text>{category.name}</Text>
-        </View>
+        {category.subcategories && category.subcategories.length > 0 ? (
+          <TouchableOpacity style={styles.headerTitle} onPress={() => {}}>
+            <Text>{subcategory ? subcategory.name : category.name}</Text>
+            <View style={styles.drop}>
+              <Icon size="xs" icon={icons.drop} color={colors.accent} />
+            </View>
+          </TouchableOpacity>
+        ) : (
+          <View style={styles.headerTitle}>
+            <Text>{category.name}</Text>
+          </View>
+        )}
         <OptionMenu
           options={[
             {
@@ -218,6 +246,8 @@ const styles = StyleSheet.create({
     marginHorizontal: s(20),
   },
   headerTitle: {
+    flexDirection: 'row',
+    alignItems: 'center',
     marginHorizontal: s(10),
     flex: 1,
   },
@@ -240,6 +270,9 @@ const styles = StyleSheet.create({
     height: s(135),
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  drop: {
+    marginLeft: s(4),
   },
 });
 

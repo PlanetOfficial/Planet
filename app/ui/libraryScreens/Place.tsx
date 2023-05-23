@@ -221,6 +221,16 @@ const Place: React.FC<Props> = ({navigation, route}) => {
             </Text>
           </View>
         ) : null}
+        {destinationDetails?.hours ? (
+          <View style={detailStyles.infoContainer}>
+            <Text size="s">{strings.createTabStack.hours}:</Text>
+            {destinationDetails?.hours.map((hour: string, index: number) => (
+              <Text key={index} size="xs" weight="l">
+                {hour}
+              </Text>
+            ))}
+          </View>
+        ) : null}
         {destinationDetails?.phone ? (
           <View style={detailStyles.infoContainer}>
             <Text size="s">{strings.createTabStack.phone}:</Text>
