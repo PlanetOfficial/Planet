@@ -228,7 +228,7 @@ const Place: React.FC<Props> = ({navigation, route}) => {
             <Text size="s">{strings.createTabStack.phone}:</Text>
             <TouchableOpacity onPress={handleCallPress}>
               <Text size="xs" weight="l">
-                {destinationDetails?.address}
+                {destinationDetails?.phone}
               </Text>
             </TouchableOpacity>
           </View>
