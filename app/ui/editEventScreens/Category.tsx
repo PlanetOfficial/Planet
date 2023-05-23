@@ -5,7 +5,7 @@ import React, {
   useRef,
   useEffect,
 } from 'react';
-import {StyleSheet, View, Image} from 'react-native';
+import {StyleSheet, View, Image, ActivityIndicator} from 'react-native';
 import {s} from 'react-native-size-matters';
 
 import {colors} from '../../constants/theme';
@@ -61,10 +61,13 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
     closeDropdown,
   }));
 
+  const [loading, setLoading] = useState<boolean>(true);
+
   const [toBeRefreshed, setToBeRefreshed] = useState<boolean>(true);
 
   useEffect(() => {
     const loadDestinations = async (categoryId: number) => {
+      setLoading(true);
       setToBeRefreshed(false);
       const response = await getDestinations(
         categoryId,
@@ -79,6 +82,7 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
         _destination.options = response;
         setDestinations(_destinations);
       }
+      setLoading(false);
     };
 
     if (isCategory(destination) && toBeRefreshed) {
@@ -133,10 +137,14 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
           ]}
         />
       </View>
-      {isCategory(destination) &&
-      destination.options &&
-      Array.isArray(destination.options) &&
-      destination.options.length > 0 ? (
+      {loading ? (
+        <View style={styles.noPlacesFound}>
+          <ActivityIndicator size="small" color={colors.accent} />
+        </View>
+      ) : isCategory(destination) &&
+        destination.options &&
+        Array.isArray(destination.options) &&
+        destination.options.length > 0 ? (
         <PlacesDisplay
           navigation={navigation}
           places={destination.options}

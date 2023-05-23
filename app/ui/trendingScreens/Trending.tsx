@@ -141,7 +141,9 @@ const Trending: React.FC<Props> = ({navigation}) => {
         </View>
       </SafeAreaView>
       {loading ? (
-        <ActivityIndicator size="small" color={colors.accent} />
+        <View style={styles.center}>
+          <ActivityIndicator size="small" color={colors.accent} />
+        </View>
       ) : (
         <ScrollView>
           {liveCategories?.map((category: Category, idx: number) =>
@@ -240,6 +242,10 @@ const styles = StyleSheet.create({
   },
   bottomPadding: {
     height: s(20),
+  },
+  center: {
+    height: s(400),
+    justifyContent: 'center',
   },
 });
 

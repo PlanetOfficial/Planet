@@ -14,7 +14,6 @@ import Text from '../components/Text';
 
 import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
-// import misc from '../../constants/misc';
 import {colors} from '../../constants/theme';
 
 import {getPlaces} from '../../utils/api/placeAPI';
@@ -28,12 +27,6 @@ interface Props {
 
 const AddFromLibrary: React.FC<Props> = ({onClose, onSelect}) => {
   const filterRef = useRef<any>(null); // due to forwardRef
-
-  // let filters = misc.libraryFilter;
-
-  // const [filterValues, setFilterValues] = useState<number[]>([]);
-  // const [defaultFilterValues, setDefaultFilterValues] = useState<number[]>([]);
-  // const [filtersInitialized, setFiltersInitialized] = useState<boolean>(false);
 
   const [places, setPlaces] = useState<Place[]>([]);
 
@@ -52,22 +45,6 @@ const AddFromLibrary: React.FC<Props> = ({onClose, onSelect}) => {
     initializeData();
   }, []);
 
-  // useEffect(() => {
-  //   const initializeFilterValues = () => {
-  //     let _defaultFilterValues: number[] = [];
-  //     for (let i = 0; filters && i < filters.length; i++) {
-  //       _defaultFilterValues.push(filters[i].defaultIdx);
-  //     }
-  //     setDefaultFilterValues(_defaultFilterValues);
-  //     setFilterValues(_defaultFilterValues);
-  //     setFiltersInitialized(true);
-  //   };
-
-  //   if (!filtersInitialized) {
-  //     initializeFilterValues();
-  //   }
-  // }, [filters, filtersInitialized]);
-
   return (
     <View style={styles.container}>
       <View style={headerStyles.container}>
@@ -79,14 +56,6 @@ const AddFromLibrary: React.FC<Props> = ({onClose, onSelect}) => {
         </TouchableOpacity>
       </View>
 
-      {/* <Filter
-        ref={filterRef}
-        filters={filters}
-        currFilters={filterValues}
-        setCurrFilters={setFilterValues}
-        defaultFilterValues={defaultFilterValues}
-      /> */}
-
       <FlatList
         data={places}
         contentContainerStyle={styles.contentContainer}
@@ -94,6 +63,13 @@ const AddFromLibrary: React.FC<Props> = ({onClose, onSelect}) => {
         keyExtractor={(item: Place) => item.id.toString()}
         ItemSeparatorComponent={Spacer}
         onTouchStart={() => filterRef.current?.closeDropdown()}
+        ListEmptyComponent={
+          <View style={styles.center}>
+            <Text color={colors.darkgrey} center={true}>
+              {strings.library.noSaved}
+            </Text>
+          </View>
+        }
         renderItem={({item}) => {
           return (
             <TouchableOpacity
@@ -148,6 +124,10 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     width: s(290),
   },
+  center: {
+    height: s(400),
+    justifyContent: 'center',
+  }
 });
 
 const headerStyles = StyleSheet.create({

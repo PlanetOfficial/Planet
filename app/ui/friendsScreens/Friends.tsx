@@ -8,6 +8,7 @@ import {
   FlatList,
   Alert,
   LayoutAnimation,
+  ActivityIndicator,
 } from 'react-native';
 import {BottomSheetModal} from '@gorhom/bottom-sheet';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -71,6 +72,8 @@ const Friends: React.FC<Props> = ({navigation}) => {
     setFgBottomSheetOpen(toIndex === 0);
   }, []);
 
+  const [loading, setLoading] = useState<boolean>(true);
+
   const [addBottomSheetOpen, setAddBottomSheetOpen] = useState<boolean>(false);
   const addBottomSheetRef = useRef<BottomSheetModal>(null);
   const addSnapPoints = useMemo(
@@ -82,12 +85,14 @@ const Friends: React.FC<Props> = ({navigation}) => {
   }, []);
 
   const fetchCurGroupInfo = async (group_id: number) => {
+    setLoading(true);
     const response = await getFGEvents(group_id);
     if (response) {
       setCurFGEvents(response);
     } else {
       Alert.alert('Error', 'Unable to load events. Please try again.');
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -225,67 +230,77 @@ const Friends: React.FC<Props> = ({navigation}) => {
         </View>
       ) : null}
 
-      <FlatList
-        data={curFGEvents}
-        style={contentStyles.container}
-        initialNumToRender={4}
-        keyExtractor={(item: Event) => item.id.toString()}
-        ItemSeparatorComponent={Spacer}
-        contentContainerStyle={contentStyles.content}
-        ListEmptyComponent={
-          <Text size="m" color={colors.darkgrey} center={true}>
-            {strings.library.noEvents}
-          </Text>
-        }
-        renderItem={({item}: {item: Event}) => {
-          return (
-            <TouchableOpacity
-              onPress={() => {
-                if (!fgBottomSheetOpen && !addBottomSheetOpen) {
-                  navigation.navigate('FGEvent', {
-                    eventData: item,
-                    bookmarks: bookmarks,
-                  });
-                }
-              }}>
-              <EventCard
-                name={item.name}
-                info={
-                  moment(item.date, 'YYYY-MM-DD').format('M/D/YYYY') +
-                  ' • ' +
-                  item.suggester?.name
-                }
-                image={
-                  item.places && item.places.length > 0 && item.places[0]?.photo
-                    ? {uri: item.places[0]?.photo}
-                    : icons.defaultIcon
-                }
-                options={[
-                  {
-                    name: strings.main.share,
-                    onPress: () => {
-                      // TODO: share event
-                      Alert.alert('Share', 'Share is not implemented yet');
+      {loading ? (
+        <View style={styles.center}>
+          <ActivityIndicator size="small" color={colors.accent} />
+        </View>
+      ) : (
+        <FlatList
+          data={curFGEvents}
+          style={contentStyles.container}
+          initialNumToRender={4}
+          keyExtractor={(item: Event) => item.id.toString()}
+          ItemSeparatorComponent={Spacer}
+          contentContainerStyle={contentStyles.content}
+          ListEmptyComponent={
+            <View style={styles.center}>
+              <Text size="m" color={colors.darkgrey} center={true}>
+                {strings.library.noEvents}
+              </Text>
+            </View>
+          }
+          renderItem={({item}: {item: Event}) => {
+            return (
+              <TouchableOpacity
+                onPress={() => {
+                  if (!fgBottomSheetOpen && !addBottomSheetOpen) {
+                    navigation.navigate('FGEvent', {
+                      eventData: item,
+                      bookmarks: bookmarks,
+                    });
+                  }
+                }}>
+                <EventCard
+                  name={item.name}
+                  info={
+                    moment(item.date, 'YYYY-MM-DD').format('M/D/YYYY') +
+                    ' • ' +
+                    item.suggester?.name
+                  }
+                  image={
+                    item.places &&
+                    item.places.length > 0 &&
+                    item.places[0]?.photo
+                      ? {uri: item.places[0]?.photo}
+                      : icons.defaultIcon
+                  }
+                  options={[
+                    {
+                      name: strings.main.share,
+                      onPress: () => {
+                        // TODO: share event
+                        Alert.alert('Share', 'Share is not implemented yet');
+                      },
+                      color: colors.black,
                     },
-                    color: colors.black,
-                  },
-                  {
-                    name: strings.friends.fork,
-                    onPress: () => handleFork(item.id),
-                    color: colors.accent,
-                  },
-                  {
-                    name: strings.main.remove,
-                    onPress: () => handleRemoveEvent(item.id),
-                    disabled: !item.suggester?.self,
-                    color: colors.red,
-                  },
-                ]}
-              />
-            </TouchableOpacity>
-          );
-        }}
-      />
+                    {
+                      name: strings.friends.fork,
+                      onPress: () => handleFork(item.id),
+                      color: colors.accent,
+                    },
+                    {
+                      name: strings.main.remove,
+                      onPress: () => handleRemoveEvent(item.id),
+                      disabled: !item.suggester?.self,
+                      color: colors.red,
+                    },
+                  ]}
+                />
+              </TouchableOpacity>
+            );
+          }}
+        />
+      )}
 
       {fgBottomSheetOpen || addBottomSheetOpen ? (
         <Pressable
@@ -326,9 +341,11 @@ const Friends: React.FC<Props> = ({navigation}) => {
           ItemSeparatorComponent={Spacer}
           contentContainerStyle={contentStyles.content}
           ListEmptyComponent={
-            <Text size="m" color={colors.darkgrey} center={true}>
-              {strings.library.noEventsAdd}
-            </Text>
+            <View style={styles.center}>
+              <Text size="m" color={colors.darkgrey} center={true}>
+                {strings.library.noEventsAdd}
+              </Text>
+            </View>
           }
           renderItem={({item}: {item: Event}) => {
             return (
@@ -374,6 +391,10 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  center: {
+    height: s(400),
+    justifyContent: 'center',
   },
 });
 
