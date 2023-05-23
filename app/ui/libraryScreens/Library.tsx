@@ -77,7 +77,6 @@ const Library: React.FC<Props> = ({navigation}) => {
             {strings.title.library}
           </Text>
           <Icon
-            size="m"
             icon={icons.search}
             onPress={() => {
               // TODO: implement library search

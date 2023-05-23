@@ -222,7 +222,6 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
       <SafeAreaView>
         <View style={headerStyles.container}>
           <Icon
-            size="s"
             icon={icons.back}
             onPress={() => navigation.navigate('Friends')}
           />

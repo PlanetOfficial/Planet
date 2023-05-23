@@ -217,7 +217,6 @@ const Event: React.FC<Props> = ({navigation, route}) => {
       <SafeAreaView>
         <View style={headerStyles.container}>
           <Icon
-            size="s"
             icon={icons.back}
             onPress={() =>
               editing
@@ -272,7 +271,6 @@ const Event: React.FC<Props> = ({navigation, route}) => {
                 />
               </View>
               <Icon
-                size="m"
                 color={colors.accent}
                 icon={icons.confirm}
                 disabled={tempTitle.length === 0}

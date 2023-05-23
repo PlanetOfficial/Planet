@@ -83,6 +83,7 @@ const FGSelector: React.FC<Props> = ({
             </Text>
           </View>
           <Icon
+            size="m"
             icon={icons.option}
             onPress={() => {
               navigation.navigate('EditFG', {friendGroup: fg});

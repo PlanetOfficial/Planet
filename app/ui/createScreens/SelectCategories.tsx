@@ -59,13 +59,11 @@ const SelectCategories: React.FC<Props> = ({navigation, route}) => {
       <SafeAreaView>
         <View style={styles.header}>
           <Icon
-            size="s"
             icon={icons.back}
             onPress={() => navigation.navigate('MapSelection')}
           />
           <Text>{strings.createTabStack.selectCategories}</Text>
           <Icon
-            size="s"
             icon={icons.confirm}
             disabled={
               !route?.params?.theDestination && selectedCategories.length === 0
@@ -141,6 +139,7 @@ const styles = StyleSheet.create({
     marginBottom: s(20),
   },
   title: {
+    marginTop: s(15),
     marginLeft: s(20),
     marginBottom: s(10),
   },

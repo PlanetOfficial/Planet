@@ -179,13 +179,11 @@ const MapScreen: React.FC<Props> = ({navigation, route}) => {
       <SafeAreaView>
         <View style={styles.header}>
           <Icon
-            size="s"
             icon={icons.x}
             onPress={() => navigation.navigate('TabStack')}
           />
           <Text>{strings.createTabStack.planEvent}</Text>
           <Icon
-            size="s"
             icon={icons.next}
             disabled={radius > integers.maxRadiusInMeters}
             onPress={() => {

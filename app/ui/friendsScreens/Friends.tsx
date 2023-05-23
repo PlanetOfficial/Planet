@@ -196,7 +196,7 @@ const Friends: React.FC<Props> = ({navigation}) => {
                 : friendGroups[friendGroup]?.group?.name}
             </Text>
             <View style={headerStyles.drop}>
-              <Icon size="xs" icon={icons.drop} />
+              <Icon icon={icons.drop} />
             </View>
           </TouchableOpacity>
           <View style={headerStyles.notification}>
@@ -241,10 +241,12 @@ const Friends: React.FC<Props> = ({navigation}) => {
           return (
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate('FGEvent', {
-                  eventData: item,
-                  bookmarks: bookmarks,
-                });
+                if (!fgBottomSheetOpen && !addBottomSheetOpen) {
+                  navigation.navigate('FGEvent', {
+                    eventData: item,
+                    bookmarks: bookmarks,
+                  });
+                }
               }}>
               <EventCard
                 name={item.name}

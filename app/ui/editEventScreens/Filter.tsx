@@ -188,7 +188,7 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
                 {filter.text + ': ' + displayFilter(filter, idx)}
               </Text>
               <View style={styles.chipIcon}>
-                <Icon size="s" icon={icons.drop} padding={s(3)} />
+                <Icon icon={icons.drop} padding={s(3)} />
               </View>
             </TouchableOpacity>
           ))}
@@ -200,7 +200,6 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
                 </Text>
                 <View style={styles.chipIcon}>
                   <Icon
-                    size="s"
                     icon={icons.x}
                     padding={s(4)}
                     onPress={() =>
