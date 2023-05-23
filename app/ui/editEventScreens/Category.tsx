@@ -46,6 +46,10 @@ interface ChildComponentProps {
   destinations: (Place | CategoryT)[];
   setDestinations: (destinations: (Place | CategoryT)[]) => void;
   onCategoryMove: (idx: number, direction: number) => void;
+  onSubcategoryOpen?: (
+    subcategories: Subcategory[],
+    setSubCategory: (subcategory: Subcategory | null) => void,
+  ) => void;
 }
 
 const Category = forwardRef((props: ChildComponentProps, ref) => {
@@ -64,6 +68,7 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
     destinations,
     setDestinations,
     onCategoryMove,
+    onSubcategoryOpen,
   } = props;
 
   const childRef = useRef<any>(null); // due to forwardRef
@@ -167,7 +172,13 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
           <Image style={styles.categoryIcon} source={{uri: category.icon}} />
         </View>
         {category.subcategories && category.subcategories.length > 0 ? (
-          <TouchableOpacity style={styles.headerTitle} onPress={() => {}}>
+          <TouchableOpacity
+            style={styles.headerTitle}
+            onPress={() =>
+              onSubcategoryOpen
+                ? onSubcategoryOpen(category.subcategories, setSubcategory)
+                : null
+            }>
             <Text>{subcategory ? subcategory.name : category.name}</Text>
             <View style={styles.drop}>
               <Icon size="xs" icon={icons.drop} color={colors.accent} />
