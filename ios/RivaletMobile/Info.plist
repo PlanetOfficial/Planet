@@ -41,7 +41,7 @@
 	<string>Please allow location access if you wish to search for a nearby locations.</string>
 	<key>UIBackgroundModes</key>
 	<array>
-		<string>processing</string>
+		<string>fetch</string>
 		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
