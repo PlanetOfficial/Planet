@@ -41,6 +41,8 @@ export const icons = {
   drop: require('../assets/icons/drop.png'),
   map: require('../assets/icons/map.png'),
   telephone: require('../assets/icons/telephone.png'),
+  checked: require('../assets/icons/checked.png'),
+  unchecked: require('../assets/icons/unchecked.png'),
 };
 
 export const vectors = {

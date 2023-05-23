@@ -145,6 +145,7 @@ const strings = {
     cancel: 'Cancel',
   },
   filter: {
+    none: 'None',
     all: 'All',
     editView: 'Edit View',
     visible: 'Visible',

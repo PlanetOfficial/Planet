@@ -84,6 +84,7 @@ const AddEvent = forwardRef((props: ChildComponentProps, ref) => {
       id: category.id,
       name: category.name,
       icon: category.icon,
+      filters: category.filters,
       subcategories: category.subcategories,
       options: [],
     });

@@ -5,7 +5,7 @@ import React, {
   useRef,
   useEffect,
 } from 'react';
-import {StyleSheet, View, Image} from 'react-native';
+import {StyleSheet, View, Image, ActivityIndicator} from 'react-native';
 import {s} from 'react-native-size-matters';
 
 import {colors} from '../../constants/theme';
@@ -17,6 +17,8 @@ import PlacesDisplay from '../components/PlacesDisplay';
 
 import {Place, Category as CategoryT} from '../../utils/interfaces/types';
 import {getDestinations} from '../../utils/api/destinationAPI';
+import Filter from './Filter';
+import CategoryList from '../components/CategoryList';
 
 interface ChildComponentProps {
   navigation: any;
@@ -63,8 +65,13 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
 
   const [toBeRefreshed, setToBeRefreshed] = useState<boolean>(true);
 
+  const [loading, setLoading] = useState<boolean>(true);
+
+  const [filters, setFilters] = useState<(number | number[])[]>([]);
+
   useEffect(() => {
     const loadDestinations = async (categoryId: number) => {
+      setLoading(true);
       setToBeRefreshed(false);
       const response = await getDestinations(
         categoryId,
@@ -79,6 +86,7 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
         _destination.options = response;
         setDestinations(_destinations);
       }
+      setLoading(false);
     };
 
     if (isCategory(destination) && toBeRefreshed) {
@@ -96,6 +104,18 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
     setDestinations,
     toBeRefreshed,
   ]);
+
+  useEffect(() => {
+    const _filters: (number | number[])[] = [];
+    for(let i = 0; i < category.filters.length; i++) {
+      if(category.filters[i].multi){
+        _filters.push([]);
+      } else {
+        _filters.push(category.filters[i].defaultIdx);
+      }
+    }
+    setFilters(_filters);
+  }, [category.filters]);
 
   const isCategory = (item: Place | CategoryT): item is CategoryT => {
     return 'icon' in item;
@@ -133,7 +153,14 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
           ]}
         />
       </View>
-      {isCategory(destination) &&
+
+      {category.filters && category.filters.length > 0 ? (
+        <Filter filters={category.filters} currFilters={filters} setCurrFilters={setFilters}/>
+      ) : null}
+
+      {loading ? (
+        <ActivityIndicator size="small" color={colors.accent} />
+      ) : (isCategory(destination) &&
       destination.options &&
       Array.isArray(destination.options) &&
       destination.options.length > 0 ? (
@@ -153,7 +180,7 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
             {strings.createTabStack.noPlaces}
           </Text>
         </View>
-      )}
+      ))}
     </View>
   );
 });

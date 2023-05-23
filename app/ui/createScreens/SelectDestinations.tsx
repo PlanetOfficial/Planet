@@ -102,6 +102,7 @@ const SelectDestinations: React.FC<Props> = ({navigation, route}) => {
           id: category.id,
           name: category.name,
           icon: category.icon,
+          filters: category.filters,
           subcategories: category.subcategories,
           options: [],
         });
