@@ -76,7 +76,7 @@ const MapScreen: React.FC<Props> = ({navigation, route}) => {
           const granted = await PermissionsAndroid.request(
             PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
           );
-          if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
             Alert.alert('Error', 'Location permission denied.');
           }
         } catch (err) {
