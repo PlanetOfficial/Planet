@@ -24,9 +24,8 @@ import PlaceCard from '../components/PlaceCard';
 
 import {getPlaces} from '../../utils/api/placeAPI';
 import {getDestinations} from '../../utils/api/destinationAPI';
-import {Genre, Place} from '../../utils/interfaces/types';
-import {Category} from '../../utils/interfaces/types';
-import {getGenres} from '../../utils/api/genresAPI';
+import {getLiveCategories} from '../../utils/api/genresAPI';
+import {Category, Place} from '../../utils/interfaces/types';
 import {getPlaceCardString} from '../../utils/functions/Misc';
 
 interface Props {
@@ -55,9 +54,8 @@ const Trending: React.FC<Props> = ({navigation}) => {
         Alert.alert('Error', 'Unable to load bookmarks. Please try again.');
       }
 
-      const _genres: Genre[] | null = await getGenres();
-      if (_genres) {
-        const _liveCategories: Category[] = _genres[0]?.categories;
+      const _liveCategories: Category[] | null = await getLiveCategories();
+      if (_liveCategories) {
         setLiveCategories(_liveCategories);
       } else {
         Alert.alert('Error', 'Unable to load categories. Please try again.');
