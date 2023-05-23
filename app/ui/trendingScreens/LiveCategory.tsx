@@ -6,29 +6,22 @@ import {
   View,
   StyleSheet,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 
-import moment from 'moment';
-
 import {icons} from '../../constants/images';
 import {colors} from '../../constants/theme';
-import {integers} from '../../constants/numbers';
+import {floats} from '../../constants/numbers';
 
 import PlaceCard from '../components/PlaceCard';
 import Text from '../components/Text';
 import Icon from '../components/Icon';
-import Filter from '../editEventScreens/Filter';
 
-import {getCatFiltered} from '../../utils/api/shared/getCatFiltered';
-import {
-  Filter as FilterT,
-  LiveEvent,
-  LiveEvents,
-  Subcategory,
-} from '../../utils/interfaces/types';
-import {getBookmarks} from '../../utils/api/shared/getBookmarks';
-import EncryptedStorage from 'react-native-encrypted-storage';
+import {getDestinations} from '../../utils/api/destinationAPI';
+import {getPlaces} from '../../utils/api/placeAPI';
+import {Place, Subcategory} from '../../utils/interfaces/types';
+import {getPlaceCardString} from '../../utils/functions/Misc';
 
 interface Props {
   navigation: any;
@@ -39,7 +32,6 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
   const [longitude] = useState<number>(route?.params?.longitude);
   const [latitude] = useState<number>(route?.params?.latitude);
   const [categoryId] = useState<number>(route?.params?.categoryId);
-  const [filters] = useState<FilterT[]>(route?.params?.filters);
   const [categoryName] = useState<string>(route?.params?.categoryName);
   const [bookmarks, setBookmarks] = useState<number[]>(
     route?.params?.bookmarks,
@@ -48,20 +40,14 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
   const [hiddenSubCategories, setHiddenSubCategories] = useState<Subcategory[]>(
     [],
   );
-  const [liveEvents, setLiveEvents] = useState<LiveEvents>({});
+  const [liveEvents, setLiveEvents] = useState<Map<number, Place[]>>(new Map());
   const [loading, setLoading] = useState<boolean>(false);
 
   const ref = useRef<any>(null); // due to forwardRef
 
-  const [filterValues, setFilterValues] = useState<(number | number[])[]>([]);
-  const [defaultFilterValues, setDefaultFilterValues] = useState<
-    (number | number[])[]
-  >([]);
-  const [filtersInitialized, setFiltersInitialized] = useState<boolean>(false);
-
   useEffect(() => {
     const initializeData = async () => {
-      if (route?.params?.subcategories && filters) {
+      if (route?.params?.subcategories) {
         setSubcategories(route?.params?.subcategories);
 
         const subcategoryIds: number[] = route?.params?.subcategories?.map(
@@ -69,16 +55,26 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
         );
 
         setLoading(true);
-        const response = await getCatFiltered(
-          subcategoryIds,
-          integers.defaultNumPlaces,
-          latitude,
-          longitude,
-          categoryId,
-          filters,
-          filterValues,
-        );
-        setLiveEvents(response?.places);
+
+        let _liveEvents: Map<number, Place[]> = new Map();
+        const promises = subcategoryIds?.map(async (subcategoryId: number) => {
+          const events: Place[] | null = await getDestinations(
+            categoryId,
+            floats.defaultRadius,
+            latitude,
+            longitude,
+            null,
+            subcategoryId,
+          );
+          if (events) {
+            _liveEvents.set(subcategoryId, events);
+          } else {
+            Alert.alert('Error', 'Unable to load events. Please try again.');
+          }
+        });
+        await Promise.all(promises);
+
+        setLiveEvents(_liveEvents);
         setLoading(false);
       }
 
@@ -87,41 +83,27 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
       }
     };
 
-    const initializeFilterValues = () => {
-      let _defaultFilterValues: (number | number[])[] = [];
-      for (let i = 0; filters && i < filters.length; i++) {
-        _defaultFilterValues.push(filters[i].defaultIdx);
-      }
-      setDefaultFilterValues(_defaultFilterValues);
-      setFilterValues(_defaultFilterValues);
-      setFiltersInitialized(true);
-    };
-
-    if (!filtersInitialized) {
-      initializeFilterValues();
-    } else {
-      initializeData();
-    }
+    initializeData();
   }, [
     categoryId,
     latitude,
     longitude,
     route?.params?.hiddenSubCategories,
     route?.params?.subcategories,
-    filters,
-    filterValues,
-    filtersInitialized,
   ]);
 
   useEffect(() => {
     const initializeBookmarks = async () => {
-      const authToken = await EncryptedStorage.getItem('auth_token');
+      const _places = await getPlaces();
 
-      const _bookmarks = await getBookmarks(authToken);
-      const bookmarksIds: number[] = _bookmarks.map(
-        (bookmark: {id: any}) => bookmark.id,
-      );
-      setBookmarks(bookmarksIds);
+      if (_places) {
+        const bookmarksIds: number[] = _places.map(
+          (bookmark: Place) => bookmark.id,
+        );
+        setBookmarks(bookmarksIds);
+      } else {
+        Alert.alert('Error', 'Unable to load bookmarks. Please try again.');
+      }
     };
 
     const unsubscribe = navigation.addListener('focus', () => {
@@ -129,6 +111,10 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
     });
     return unsubscribe;
   }, [navigation]);
+
+  const hasElements = (places: Place[] | undefined): boolean => {
+    return places !== undefined && Array.isArray(places) && places.length > 0;
+  };
 
   return (
     <View style={styles.container}>
@@ -155,28 +141,17 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
           </View>
         </View>
       </SafeAreaView>
-      {filters ? (
-        <Filter
-          ref={ref}
-          filters={filters}
-          currFilters={filterValues}
-          setCurrFilters={setFilterValues}
-          defaultFilterValues={defaultFilterValues}
-        />
-      ) : null}
 
       {loading ? (
         <ActivityIndicator size="small" color={colors.accent} />
       ) : (
         <ScrollView onTouchStart={() => ref.current?.closeDropdown()}>
           {subcategories?.map((subcategory: Subcategory, idx: number) =>
-            liveEvents &&
-            liveEvents[subcategory.id] &&
-            liveEvents[subcategory.id].length > 0 ? (
+            hasElements(liveEvents?.get(subcategory.id)) ? (
               <View key={idx} style={categoryStyles.container}>
                 <View style={categoryStyles.header}>
                   <Text size="m" weight="b">
-                    {subcategory.title}
+                    {subcategory.name}
                   </Text>
                 </View>
                 <ScrollView
@@ -184,60 +159,40 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
                   style={categoryStyles.scrollView}
                   horizontal={true}
                   showsHorizontalScrollIndicator={false}>
-                  {liveEvents[subcategory.id]
-                    ? liveEvents[subcategory.id].map(
-                        (event: LiveEvent, jdx: number) => (
-                          <TouchableOpacity
-                            style={categoryStyles.card}
-                            key={jdx}
-                            onPress={() =>
-                              navigation.navigate('Place', {
-                                destination: event,
-                                category: categoryName,
-                                bookmarked: bookmarks.includes(event.id),
-                              })
-                            }>
-                            <PlaceCard
-                              id={event.id}
-                              small={true}
-                              name={event.name}
-                              info={
-                                moment(event.date, 'YYYY-MM-DD').format(
-                                  'M/D/YYYY',
-                                ) +
-                                (event?.priceRanges && event?.priceRanges[0]
-                                  ? ' • ' +
-                                    '$' +
-                                    Math.round(event.priceRanges[0]?.min) +
-                                    (event.priceRanges[0].min !==
-                                    event.priceRanges[0].max
-                                      ? ' - ' +
-                                        '$' +
-                                        Math.round(event.priceRanges[0]?.max)
-                                      : '')
-                                  : '')
-                              }
-                              bookmarked={bookmarks.includes(event.id)}
-                              setBookmarked={(
-                                bookmarked: boolean,
-                                id: number,
-                              ) => {
-                                if (bookmarked) {
-                                  setBookmarks([...bookmarks, id]);
-                                } else {
-                                  setBookmarks(
-                                    bookmarks.filter(
-                                      (bookmark: number) => bookmark !== id,
-                                    ),
-                                  );
-                                }
-                              }}
-                              image={{uri: event.image_url}}
-                            />
-                          </TouchableOpacity>
-                        ),
-                      )
-                    : null}
+                  {liveEvents
+                    ?.get(subcategory.id)
+                    ?.map((event: Place, jdx: number) => (
+                      <TouchableOpacity
+                        style={categoryStyles.card}
+                        key={jdx}
+                        onPress={() =>
+                          navigation.navigate('Place', {
+                            destination: event,
+                            category: categoryName,
+                            bookmarked: bookmarks.includes(event.id),
+                          })
+                        }>
+                        <PlaceCard
+                          id={event.id}
+                          small={true}
+                          name={event.name}
+                          info={getPlaceCardString(event, false)}
+                          bookmarked={bookmarks.includes(event.id)}
+                          setBookmarked={(bookmarked: boolean, id: number) => {
+                            if (bookmarked) {
+                              setBookmarks([...bookmarks, id]);
+                            } else {
+                              setBookmarks(
+                                bookmarks.filter(
+                                  (bookmark: number) => bookmark !== id,
+                                ),
+                              );
+                            }
+                          }}
+                          image={{uri: event.photo}}
+                        />
+                      </TouchableOpacity>
+                    ))}
                 </ScrollView>
                 <Spacer />
               </View>

@@ -124,20 +124,20 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
       return strings.filter.all + ' ' + strings.filter.categories;
     } else if (categoryFilter.length > 2) {
       return (
-        subcategories[categoryFilter[0]].title +
+        subcategories[categoryFilter[0]].name +
         ', ' +
-        subcategories[categoryFilter[1]].title +
+        subcategories[categoryFilter[1]].name +
         ' +' +
         (categoryFilter.length - 2)
       );
     } else if (categoryFilter.length > 1) {
       return (
-        subcategories[categoryFilter[0]].title +
+        subcategories[categoryFilter[0]].name +
         ', ' +
-        subcategories[categoryFilter[1]].title
+        subcategories[categoryFilter[1]].name
       );
     } else {
-      return subcategories[categoryFilter[0]].title;
+      return subcategories[categoryFilter[0]].name;
     }
   };
 
@@ -349,7 +349,7 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
                             );
                           }}>
                           <Text size="xs" weight="l">
-                            {subcategory.title}
+                            {subcategory.name}
                           </Text>
                         </TouchableOpacity>
                       ),

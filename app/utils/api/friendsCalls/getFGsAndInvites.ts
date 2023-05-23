@@ -1,19 +1,21 @@
-import {DBOpsURL} from '../APIConstants';
+import EncryptedStorage from 'react-native-encrypted-storage';
+import {FriendsURL} from '../APIConstants';
+import {FGsAndInvites} from '../../interfaces/types';
 
-export const getFGsAndInvites = async (authToken: any) => {
-  // TODO-SECURITY: filter inputs**
+export const getFGsAndInvites = async (): Promise<FGsAndInvites | null> => {
+  const authToken = await EncryptedStorage.getItem('auth_token');
 
   const response = await fetch(
-    DBOpsURL + `/friends/groupsAndInvites?authtoken=${authToken}`,
+    FriendsURL + `/friends/groupsAndInvites?authtoken=${authToken}`,
     {
       method: 'GET',
     },
   );
 
   if (response?.ok) {
-    const myJson = await response.json(); //extract JSON from the http response
+    const myJson = await response.json();
     return myJson;
   } else {
-    return {};
+    return null;
   }
 };

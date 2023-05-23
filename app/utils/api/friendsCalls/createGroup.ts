@@ -1,11 +1,11 @@
-import {DBOpsURL} from '../APIConstants';
+import EncryptedStorage from 'react-native-encrypted-storage';
+import {FriendsURL} from '../APIConstants';
 
 export const createGroup = async (
-  name: String,
-  invitee_emails: Array<String>,
-  authToken: any,
-) => {
-  // TODO-SECURITY: filter inputs**
+  name: string,
+  invitee_emails: string[],
+): Promise<boolean> => {
+  const authToken = await EncryptedStorage.getItem('auth_token');
 
   let emails_string = '';
 
@@ -14,7 +14,7 @@ export const createGroup = async (
   });
 
   const response = await fetch(
-    DBOpsURL +
+    FriendsURL +
       `/friends/createGroup?${emails_string}&name=${name}&authtoken=${authToken}`,
     {
       method: 'POST',

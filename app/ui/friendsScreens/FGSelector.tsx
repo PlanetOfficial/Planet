@@ -8,7 +8,6 @@ import {
   Alert,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
-import EncryptedStorage from 'react-native-encrypted-storage';
 import {BottomSheetModalMethods} from '@gorhom/bottom-sheet/lib/typescript/types';
 
 import strings from '../../constants/strings';
@@ -43,26 +42,22 @@ const FGSelector: React.FC<Props> = ({
   navigation,
 }) => {
   const handleAcceptInvite = async (invite_id: number) => {
-    const token = await EncryptedStorage.getItem('auth_token');
-
-    const response = await acceptInvite(invite_id, token);
+    const response = await acceptInvite(invite_id);
 
     if (response) {
       refreshOnInviteEvent();
     } else {
-      Alert.alert('Error', 'Something went wrong. Please try again.');
+      Alert.alert('Error', 'Unable to accept invite. Please try again');
     }
   };
 
   const handleRejectInvite = async (invite_id: number) => {
-    const token = await EncryptedStorage.getItem('auth_token');
-
-    const response = await rejectInvite(invite_id, token);
+    const response = await rejectInvite(invite_id);
 
     if (response) {
       refreshOnInviteEvent();
     } else {
-      Alert.alert('Error', 'Something went wrong. Please try again.');
+      Alert.alert('Error', 'Unable to reject invite. Please try again');
     }
   };
 

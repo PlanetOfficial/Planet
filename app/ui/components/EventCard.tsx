@@ -27,10 +27,10 @@ const EventCard: React.FC<Props> = ({name, info, image, options}) => {
       <Image style={styles.image} source={image} />
       <View style={styles.header}>
         <View style={styles.texts}>
-          <Text size="m" weight="b">
+          <Text size="m" weight="b" numberOfLines={1}>
             {name}
           </Text>
-          <Text size="xs" weight="l" color={colors.accent}>
+          <Text size="xs" weight="l" color={colors.accent} numberOfLines={1}>
             {info}
           </Text>
         </View>

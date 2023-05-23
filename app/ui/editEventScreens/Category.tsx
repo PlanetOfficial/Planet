@@ -4,26 +4,19 @@ import React, {
   useImperativeHandle,
   useRef,
   useEffect,
-  useMemo,
 } from 'react';
 import {StyleSheet, View, Image} from 'react-native';
 import {s} from 'react-native-size-matters';
 
 import {colors} from '../../constants/theme';
 import strings from '../../constants/strings';
-import {integers} from '../../constants/numbers';
 
-import Filter from './Filter';
 import Text from '../components/Text';
 import OptionMenu from '../components/OptionMenu';
 import PlacesDisplay from '../components/PlacesDisplay';
 
-import {
-  Place,
-  Category as CategoryT,
-  Filter as FilterT,
-} from '../../utils/interfaces/types';
-import {requestLocationsSingle} from '../../utils/api/CreateCalls/requestLocationsSingle';
+import {Place, Category as CategoryT} from '../../utils/interfaces/types';
+import {getDestinations} from '../../utils/api/destinationAPI';
 
 interface ChildComponentProps {
   navigation: any;
@@ -68,31 +61,16 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
     closeDropdown,
   }));
 
-  let filters: FilterT[] = useMemo(() => {
-    return category.filters ? category.filters : [];
-  }, [category.filters]);
-
-  const [filterValues, setFilterValues] = useState<(number | number[])[]>([]);
-  const [categoryFilter, setCategoryFilter] = useState<number[]>([]);
-  const [defaultFilterValues, setDefaultFilterValues] = useState<
-    (number | number[])[]
-  >([]);
-  const [filtersInitialized, setFiltersInitialized] = useState<boolean>(false);
-  const [toBeRefreshed, setToBeRefreshed] = useState<boolean>(false);
+  const [toBeRefreshed, setToBeRefreshed] = useState<boolean>(true);
 
   useEffect(() => {
     const loadDestinations = async (categoryId: number) => {
       setToBeRefreshed(false);
-      const response = await requestLocationsSingle(
+      const response = await getDestinations(
         categoryId,
         radius,
         latitude,
         longitude,
-        integers.defaultNumPlaces,
-        filters,
-        filterValues,
-        category.subcategories,
-        categoryFilter,
       );
 
       const _destinations: (Place | CategoryT)[] = [...destinations];
@@ -103,38 +81,19 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
       }
     };
 
-    const initializeFilterValues = () => {
-      let _defaultFilterValues: (number | number[])[] = [];
-      for (let i = 0; filters && i < filters.length; i++) {
-        _defaultFilterValues.push(filters[i].defaultIdx);
-      }
-      setDefaultFilterValues(_defaultFilterValues);
-      setFilterValues(_defaultFilterValues);
-      setFiltersInitialized(true);
-      setToBeRefreshed(true);
-    };
-
     if (isCategory(destination) && toBeRefreshed) {
       loadDestinations(category.id);
-    }
-
-    if (!filtersInitialized) {
-      initializeFilterValues();
     }
   }, [
     category.id,
     category.subcategories,
-    categoryFilter,
     categoryIndex,
     latitude,
     longitude,
     radius,
-    filters,
-    filterValues,
     destination,
     destinations,
     setDestinations,
-    filtersInitialized,
     toBeRefreshed,
   ]);
 
@@ -146,7 +105,7 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
     <View key={category.id}>
       <View style={styles.header}>
         <View style={styles.categoryIconContainer}>
-          <Image style={styles.categoryIcon} source={category.icon} />
+          <Image style={styles.categoryIcon} source={{uri: category.icon}} />
         </View>
         <View style={styles.headerTitle}>
           <Text>{category.name}</Text>
@@ -174,21 +133,6 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
           ]}
         />
       </View>
-      {filters.length > 0 ? (
-        <Filter
-          ref={childRef}
-          filters={filters}
-          subcategories={category.subcategories}
-          currFilters={filterValues}
-          setCurrFilters={(_filterValues: (number | number[])[]) => {
-            setToBeRefreshed(true);
-            setFilterValues(_filterValues);
-          }}
-          defaultFilterValues={defaultFilterValues}
-          categoryFilter={categoryFilter}
-          setCategoryFilter={setCategoryFilter}
-        />
-      ) : null}
       {isCategory(destination) &&
       destination.options &&
       Array.isArray(destination.options) &&

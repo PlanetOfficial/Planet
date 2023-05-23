@@ -30,7 +30,7 @@ const createTest2 = () => {
             genre.[genre_id]
             category.[category_id]
         */
-        it('Select some categories from genres', async () => { // TODO: change number of selected categories
+        it('Select some categories from genres', async () => {
             await element(by.id('genre.1')).tap();
             await expect(element(by.id('categoryModalView'))).toBeVisible();
             await element(by.id('category.1')).tap();

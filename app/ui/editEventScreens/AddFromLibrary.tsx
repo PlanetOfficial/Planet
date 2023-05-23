@@ -5,9 +5,9 @@ import {
   Image,
   TouchableOpacity,
   FlatList,
+  Alert,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
-import EncryptedStorage from 'react-native-encrypted-storage';
 
 import PlaceCard from '../components/PlaceCard';
 import Text from '../components/Text';
@@ -17,8 +17,9 @@ import strings from '../../constants/strings';
 // import misc from '../../constants/misc';
 import {colors} from '../../constants/theme';
 
-import {getBookmarks} from '../../utils/api/shared/getBookmarks';
+import {getPlaces} from '../../utils/api/placeAPI';
 import {Place} from '../../utils/interfaces/types';
+import {getPlaceCardString} from '../../utils/functions/Misc';
 
 interface Props {
   onClose: () => void;
@@ -38,12 +39,14 @@ const AddFromLibrary: React.FC<Props> = ({onClose, onSelect}) => {
 
   useEffect(() => {
     const initializeData = async () => {
-      const authToken = await EncryptedStorage.getItem('auth_token');
-
       // TODO: implement filters
 
-      const _bookmarks = await getBookmarks(authToken);
-      setPlaces(_bookmarks);
+      const _bookmarks = await getPlaces();
+      if (_bookmarks) {
+        setPlaces(_bookmarks);
+      } else {
+        Alert.alert('Error', 'Unable to load bookmarks. Please try again.');
+      }
     };
 
     initializeData();
@@ -102,7 +105,7 @@ const AddFromLibrary: React.FC<Props> = ({onClose, onSelect}) => {
               <PlaceCard
                 id={item.id}
                 name={item.name}
-                info={item.category_name}
+                info={getPlaceCardString(item)}
                 bookmarked={true}
                 setBookmarked={(bookmarked: boolean, id: number) => {
                   if (!bookmarked) {
@@ -110,9 +113,9 @@ const AddFromLibrary: React.FC<Props> = ({onClose, onSelect}) => {
                   }
                 }}
                 image={
-                  item.image_url
+                  item.photo
                     ? {
-                        uri: item.image_url,
+                        uri: item.photo,
                       }
                     : icons.defaultIcon
                 }

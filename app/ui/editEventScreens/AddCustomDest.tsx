@@ -24,7 +24,7 @@ import AButton from '../components/ActionButton';
 
 import {GoogleMapsAPIKey} from '../../utils/api/APIConstants';
 import {CustomPlace, Place, Region} from '../../utils/interfaces/types';
-import {addCustomDestination} from '../../utils/api/shared/addCustomDestination';
+import {postDestination} from '../../utils/api/destinationAPI';
 
 interface Props {
   onClose: () => void;
@@ -51,17 +51,17 @@ const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
 
   const handleSelection = async () => {
     if (customDestination) {
-      const response: Place | undefined = await addCustomDestination(
+      const response: Place | null = await postDestination(
         customDestination.name,
         customDestination.latitude,
         customDestination.longitude,
-        customDestination.formatted_address,
+        customDestination.place_id,
       );
 
       if (response) {
         onSelect(response);
       } else {
-        Alert.alert('Error', 'Something went wrong. Please try again.');
+        Alert.alert('Error', 'Unable to add destination. Please try again.');
       }
 
       onClose();
@@ -103,6 +103,7 @@ const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
           onFocus: () => {
             setCustom(true);
             setSelected(false);
+            setCustomDestination(undefined);
           },
           onBlur(e) {
             if (e.nativeEvent.text !== '') {
@@ -128,7 +129,7 @@ const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
               name: data.structured_formatting.main_text,
               latitude: details.geometry.location.lat,
               longitude: details.geometry.location.lng,
-              formatted_address: details?.formatted_address,
+              place_id: details.place_id,
             });
             setCustom(false);
           }
@@ -165,19 +166,18 @@ const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
                       name: text,
                       latitude: e.nativeEvent.coordinate.latitude,
                       longitude: e.nativeEvent.coordinate.longitude,
+                      place_id: null,
                     })
                   : null
               }>
-              <Marker
-                coordinate={{
-                  latitude: customDestination?.latitude
-                    ? customDestination?.latitude
-                    : floats.defaultLatitude,
-                  longitude: customDestination?.longitude
-                    ? customDestination?.longitude
-                    : floats.defaultLongitude,
-                }}
-              />
+              {customDestination?.latitude && customDestination?.longitude ? (
+                <Marker
+                  coordinate={{
+                    latitude: customDestination?.latitude,
+                    longitude: customDestination?.longitude,
+                  }}
+                />
+              ) : null}
             </MapView>
           </>
         ) : (
@@ -186,7 +186,7 @@ const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
       </View>
       <View style={styles.button}>
         <AButton
-          disabled={!selected}
+          disabled={!selected || !customDestination}
           label={strings.library.add}
           onPress={handleSelection}
         />

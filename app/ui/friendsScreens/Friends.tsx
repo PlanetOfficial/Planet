@@ -12,7 +12,6 @@ import {
 import {BottomSheetModal} from '@gorhom/bottom-sheet';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {s, vs} from 'react-native-size-matters';
-import EncryptedStorage from 'react-native-encrypted-storage';
 
 import moment from 'moment';
 
@@ -27,13 +26,19 @@ import Text from '../components/Text';
 import AButton from '../components/ActionButton';
 
 import {getFGsAndInvites} from '../../utils/api/friendsCalls/getFGsAndInvites';
-import {getEvents} from '../../utils/api/libraryCalls/getEvents';
 import {makeFGEvent} from '../../utils/api/friendsCalls/makeFGEvent';
 import {getFGEvents} from '../../utils/api/friendsCalls/getFGEvents';
 import {removeEvent} from '../../utils/api/friendsCalls/removeEvent';
 import {forkEvent} from '../../utils/api/friendsCalls/forkEvent';
-import {FriendGroup, Invitation, Event} from '../../utils/interfaces/types';
-import {getBookmarks} from '../../utils/api/shared/getBookmarks';
+import {
+  FriendGroup,
+  Invitation,
+  Event,
+  Place,
+  FGsAndInvites,
+} from '../../utils/interfaces/types';
+import {getEvents} from '../../utils/api/eventAPI';
+import {getPlaces} from '../../utils/api/placeAPI';
 
 interface Props {
   navigation: any;
@@ -77,10 +82,12 @@ const Friends: React.FC<Props> = ({navigation}) => {
   }, []);
 
   const fetchCurGroupInfo = async (group_id: number) => {
-    const token = await EncryptedStorage.getItem('auth_token');
-
-    const response = await getFGEvents(group_id, token);
-    setCurFGEvents(response);
+    const response = await getFGEvents(group_id);
+    if (response) {
+      setCurFGEvents(response);
+    } else {
+      Alert.alert('Error', 'Unable to load events. Please try again.');
+    }
   };
 
   useEffect(() => {
@@ -90,9 +97,7 @@ const Friends: React.FC<Props> = ({navigation}) => {
   }, [friendGroup, friendGroups]);
 
   const initializeData = async () => {
-    const token = await EncryptedStorage.getItem('auth_token');
-
-    const responseData = await getFGsAndInvites(token);
+    const responseData: FGsAndInvites | null = await getFGsAndInvites();
 
     if (responseData?.groups) {
       setFriendGroups(responseData.groups);
@@ -105,20 +110,32 @@ const Friends: React.FC<Props> = ({navigation}) => {
           fetchCurGroupInfo(responseData.groups[friendGroup].group.id);
         }
       }
+    } else {
+      Alert.alert('Error', 'Unable to load groups. Please try again.');
     }
 
     if (responseData?.invites) {
       setInvitations(responseData.invites);
+    } else {
+      Alert.alert('Error', 'Unable to load invitations. Please try again.');
     }
 
-    const eventsData = await getEvents(token);
-    setUserEvents(eventsData);
+    const eventsData: Event[] | null = await getEvents();
+    if (eventsData) {
+      setUserEvents(eventsData);
+    } else {
+      Alert.alert('Error', 'Unable to load events. Please try again.');
+    }
 
-    const _bookmarks = await getBookmarks(token);
-    const bookmarksIds: number[] = _bookmarks.map(
-      (bookmark: {id: any}) => bookmark.id,
-    );
-    setBookmarks(bookmarksIds);
+    const _places: Place[] | null = await getPlaces();
+    if (_places) {
+      const bookmarksIds: number[] = _places.map(
+        (bookmark: Place) => bookmark.id,
+      );
+      setBookmarks(bookmarksIds);
+    } else {
+      Alert.alert('Error', 'Unable to load bookmarks. Please try again.');
+    }
   };
 
   useEffect(() => {
@@ -130,11 +147,9 @@ const Friends: React.FC<Props> = ({navigation}) => {
   }, [navigation, friendGroup]);
 
   const handleAddEvent = async (user_event_id: number) => {
-    const token = await EncryptedStorage.getItem('auth_token');
     const response = await makeFGEvent(
       user_event_id,
       friendGroups[friendGroup].group.id,
-      token,
     );
 
     if (response) {
@@ -146,9 +161,7 @@ const Friends: React.FC<Props> = ({navigation}) => {
   };
 
   const handleFork = async (groupEventId: number) => {
-    const token = await EncryptedStorage.getItem('auth_token');
-
-    const response = await forkEvent(groupEventId, token);
+    const response = await forkEvent(groupEventId);
 
     if (response) {
       navigation.navigate('Library');
@@ -158,8 +171,7 @@ const Friends: React.FC<Props> = ({navigation}) => {
   };
 
   const handleRemoveEvent = async (group_event_id: number) => {
-    const token = await EncryptedStorage.getItem('auth_token');
-    const response = await removeEvent(group_event_id, token);
+    const response = await removeEvent(group_event_id);
 
     if (response) {
       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
@@ -220,6 +232,11 @@ const Friends: React.FC<Props> = ({navigation}) => {
         keyExtractor={(item: Event) => item.id.toString()}
         ItemSeparatorComponent={Spacer}
         contentContainerStyle={contentStyles.content}
+        ListEmptyComponent={
+          <Text size="m" color={colors.darkgrey} center={true}>
+            {strings.library.noEvents}
+          </Text>
+        }
         renderItem={({item}: {item: Event}) => {
           return (
             <TouchableOpacity
@@ -234,13 +251,11 @@ const Friends: React.FC<Props> = ({navigation}) => {
                 info={
                   moment(item.date, 'YYYY-MM-DD').format('M/D/YYYY') +
                   ' • ' +
-                  item.suggester_info?.name
+                  item.suggester?.name
                 }
                 image={
-                  item.places &&
-                  item.places.length > 0 &&
-                  item.places[0]?.place.image_url
-                    ? {uri: item.places[0]?.place.image_url}
+                  item.places && item.places.length > 0 && item.places[0]?.photo
+                    ? {uri: item.places[0]?.photo}
                     : icons.defaultIcon
                 }
                 options={[
@@ -260,7 +275,7 @@ const Friends: React.FC<Props> = ({navigation}) => {
                   {
                     name: strings.main.remove,
                     onPress: () => handleRemoveEvent(item.id),
-                    disabled: !item.suggester_info?.self,
+                    disabled: !item.suggester?.self,
                     color: colors.red,
                   },
                 ]}
@@ -308,6 +323,11 @@ const Friends: React.FC<Props> = ({navigation}) => {
           keyExtractor={(item: Event) => item.id.toString()}
           ItemSeparatorComponent={Spacer}
           contentContainerStyle={contentStyles.content}
+          ListEmptyComponent={
+            <Text size="m" color={colors.darkgrey} center={true}>
+              {strings.library.noEventsAdd}
+            </Text>
+          }
           renderItem={({item}: {item: Event}) => {
             return (
               <TouchableOpacity
@@ -322,8 +342,8 @@ const Friends: React.FC<Props> = ({navigation}) => {
                   image={
                     item.places &&
                     item.places.length !== 0 &&
-                    item.places[0]?.place.image_url
-                      ? {uri: item.places[0]?.place.image_url}
+                    item.places[0]?.photo
+                      ? {uri: item.places[0]?.photo}
                       : icons.defaultIcon
                   }
                 />

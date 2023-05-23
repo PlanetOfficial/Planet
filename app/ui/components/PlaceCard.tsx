@@ -2,7 +2,6 @@ import React from 'react';
 import {Alert, Image, StyleSheet, View} from 'react-native';
 
 import {s} from 'react-native-size-matters';
-import EncryptedStorage from 'react-native-encrypted-storage';
 
 import Text from '../components/Text';
 import Icon from './Icon';
@@ -10,8 +9,7 @@ import Icon from './Icon';
 import {colors} from '../../constants/theme';
 import {icons} from '../../constants/images';
 
-import {setBookmark} from '../../utils/api/shared/setBookmark';
-import {unbookmark} from '../../utils/api/shared/unbookmark';
+import {postPlace, deletePlace} from '../../utils/api/placeAPI';
 
 interface Props {
   id: number;
@@ -23,7 +21,6 @@ interface Props {
   image: Object;
 }
 
-// TODO: display more info on the card
 const PlaceCard: React.FC<Props> = ({
   id,
   small = false,
@@ -34,21 +31,22 @@ const PlaceCard: React.FC<Props> = ({
   image,
 }) => {
   const handleBookmark = async () => {
-    const authToken = await EncryptedStorage.getItem('auth_token');
-    let responseStatus;
-
     if (!bookmarked) {
-      // switch to bookmarked, so call /bookmark
-      responseStatus = await setBookmark(authToken, id);
-    } else {
-      // switch to not bookmarked, so call /unbookmark
-      responseStatus = await unbookmark(authToken, id);
-    }
+      const response: boolean = await postPlace(id);
 
-    if (responseStatus) {
-      setBookmarked(!bookmarked, id);
+      if (response) {
+        setBookmarked(!bookmarked, id);
+      } else {
+        Alert.alert('Error', 'Unable to bookmark place. Please try again.');
+      }
     } else {
-      Alert.alert('Error', 'Something went wrong. Please try again.');
+      const response: boolean = await deletePlace(id);
+
+      if (response) {
+        setBookmarked(!bookmarked, id);
+      } else {
+        Alert.alert('Error', 'Unable to unbookmark place. Please try again.');
+      }
     }
   };
 
@@ -57,10 +55,10 @@ const PlaceCard: React.FC<Props> = ({
       <Image style={styles.image} source={image} />
       <View style={styles.header}>
         <View style={styles.texts}>
-          <Text size={small ? 's' : 'm'} weight="b">
+          <Text size={small ? 's' : 'm'} weight="b" numberOfLines={1}>
             {name}
           </Text>
-          <Text size="xs" weight="l" color={colors.accent}>
+          <Text size="xs" weight="l" color={colors.accent} numberOfLines={1}>
             {info}
           </Text>
         </View>

@@ -11,7 +11,6 @@ import moment from 'moment';
 
 import {s} from 'react-native-size-matters';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
-import EncryptedStorage from 'react-native-encrypted-storage';
 
 import Text from '../components/Text';
 import Icon from '../components/Icon';
@@ -22,11 +21,10 @@ import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 import {icons} from '../../constants/images';
 
-import {getEvents} from '../../utils/api/libraryCalls/getEvents';
-import {getBookmarks} from '../../utils/api/shared/getBookmarks';
+import {getPlaces} from '../../utils/api/placeAPI';
+import {getEvents, deleteEvent} from '../../utils/api/eventAPI';
 import {Place, Event} from '../../utils/interfaces/types';
-import {isPlace2} from '../../utils/functions/Misc';
-import {removeEvent} from '../../utils/api/libraryCalls/removeEvent';
+import {getPlaceCardString, isPlace2} from '../../utils/functions/Misc';
 
 interface Props {
   navigation: any;
@@ -34,21 +32,24 @@ interface Props {
 
 const Library: React.FC<Props> = ({navigation}) => {
   const [selectedIndex, setIndex] = useState<number>(0);
+
   const [places, setPlaces] = useState<Place[]>([]);
   const [events, setEvents] = useState<Event[]>([]);
 
-  const removeEventUI = (eventId: number) => {
-    setEvents(events.filter((event: Event) => event.id !== eventId));
-  };
-
   const initializeData = async () => {
-    const authToken = await EncryptedStorage.getItem('auth_token');
+    const _places: Place[] | null = await getPlaces();
+    if (_places) {
+      setPlaces(_places);
+    } else {
+      Alert.alert('Error', 'Unable to load places. Please try again.');
+    }
 
-    const eventsRaw = await getEvents(authToken);
-    setEvents(eventsRaw);
-
-    const bookmarks = await getBookmarks(authToken);
-    setPlaces(bookmarks);
+    const _events: Event[] | null = await getEvents();
+    if (_events) {
+      setEvents(_events);
+    } else {
+      Alert.alert('Error', 'Unable to load events. Please try again.');
+    }
   };
 
   useEffect(() => {
@@ -59,12 +60,12 @@ const Library: React.FC<Props> = ({navigation}) => {
   }, [navigation]);
 
   const handleRemoveEvent = async (event_id: number) => {
-    const response = await removeEvent(event_id);
+    const response: boolean = await deleteEvent(event_id);
 
     if (response) {
-      removeEventUI(event_id);
+      setEvents(events.filter((event: Event) => event.id !== event_id));
     } else {
-      Alert.alert('Error', 'Something went wrong. Please try again.');
+      Alert.alert('Error', 'Unable to remove event. Please try again.');
     }
   };
 
@@ -106,6 +107,13 @@ const Library: React.FC<Props> = ({navigation}) => {
         initialNumToRender={5}
         keyExtractor={(_: Place | Event, idx: number) => idx.toString()}
         ItemSeparatorComponent={Spacer}
+        ListEmptyComponent={
+          <Text size="m" color={colors.darkgrey} center={true}>
+            {selectedIndex === 0
+              ? strings.library.noSaved
+              : strings.library.noEvents}
+          </Text>
+        }
         renderItem={({item}: {item: Place | Event}) => {
           return isPlace2(item) ? (
             <TouchableOpacity
@@ -113,27 +121,21 @@ const Library: React.FC<Props> = ({navigation}) => {
               onPress={() => {
                 navigation.navigate('Place', {
                   destination: item,
-                  category: item.category_name,
+                  category: item.category.name,
                   bookmarked: places.includes(item),
                 });
               }}>
               <PlaceCard
                 id={item.id}
                 name={item.name}
-                info={item.category_name}
+                info={getPlaceCardString(item)}
                 bookmarked={places.includes(item)}
                 setBookmarked={(bookmarked: boolean, id: number) => {
                   if (!bookmarked) {
                     setPlaces(places.filter((place: Place) => place.id !== id));
                   }
                 }}
-                image={
-                  item.image_url
-                    ? {
-                        uri: item.image_url,
-                      }
-                    : icons.defaultIcon
-                }
+                image={{uri: item.photo}}
               />
             </TouchableOpacity>
           ) : (
@@ -151,8 +153,8 @@ const Library: React.FC<Props> = ({navigation}) => {
                 image={
                   item.places &&
                   item.places.length !== 0 &&
-                  item.places[0].place.image_url
-                    ? {uri: item.places[0].place.image_url}
+                  item.places[0].photo
+                    ? {uri: item.places[0].photo}
                     : icons.defaultIcon
                 }
                 options={[

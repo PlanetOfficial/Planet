@@ -1,10 +1,10 @@
-import {DBOpsURL} from '../APIConstants';
+import EncryptedStorage from 'react-native-encrypted-storage';
+import {FriendsURL} from '../APIConstants';
 
-export const forkEvent = async (group_event_id: number, authToken: any) => {
-  // TODO-SECURITY: filter inputs**
-
+export const forkEvent = async (group_event_id: number): Promise<boolean> => {
+  const authToken = await EncryptedStorage.getItem('auth_token');
   const response = await fetch(
-    DBOpsURL +
+    FriendsURL +
       `/friends/forkEvent?group_event_id=${group_event_id}&authtoken=${authToken}`,
     {
       method: 'POST',

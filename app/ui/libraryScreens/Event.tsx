@@ -29,7 +29,6 @@ import {
   Category,
   Coordinate,
 } from '../../utils/interfaces/types';
-import {getEventPlaces} from '../../utils/api/libraryCalls/getEventPlaces';
 
 import Blur from '../components/Blur';
 import Text from '../components/Text';
@@ -44,10 +43,8 @@ import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 import {floats} from '../../constants/numbers';
-import {editEvent} from '../../utils/api/libraryCalls/editEvent';
-import {removeEvent} from '../../utils/api/libraryCalls/removeEvent';
-import {getBookmarks} from '../../utils/api/shared/getBookmarks';
-import EncryptedStorage from 'react-native-encrypted-storage';
+import {editEvent, deleteEvent} from '../../utils/api/eventAPI';
+import {getPlaces} from '../../utils/api/placeAPI';
 
 interface Props {
   navigation: any;
@@ -91,13 +88,12 @@ const Event: React.FC<Props> = ({navigation, route}) => {
 
   const addRef = useRef<any>(null); // due to forwardRef
 
-  const getEventData = async () => {
-    const data = await getEventPlaces(eventId);
-    setPlaces(data.places);
+  const getEventData = async (_places: Place[]) => {
+    setPlaces(_places);
 
-    setSelectionIndices(Array(data?.places?.length).fill(-1));
+    setSelectionIndices(Array(_places.length).fill(-1));
 
-    const markerArray: MarkerObject[] = getMarkerArray(data.places);
+    const markerArray: MarkerObject[] = getMarkerArray(_places);
     setMarkers(markerArray);
 
     const averagePoint: Coordinate = getAveragePoint(markerArray);
@@ -107,15 +103,16 @@ const Event: React.FC<Props> = ({navigation, route}) => {
 
   useEffect(() => {
     const initializeData = async () => {
-      const authToken = await EncryptedStorage.getItem('auth_token');
+      const _places: Place[] | null = await getPlaces();
 
-      const _bookmarks = await getBookmarks(authToken);
-      const bookmarksIds: number[] = _bookmarks.map(
-        (bookmark: {id: any}) => bookmark.id,
-      );
-      setBookmarks(bookmarksIds);
+      if (_places) {
+        const bookmarksIds: number[] = _places.map((place: Place) => place.id);
+        setBookmarks(bookmarksIds);
+      } else {
+        Alert.alert('Error', 'Unable to load places. Please try again.');
+      }
 
-      await getEventData();
+      await getEventData(route?.params?.eventData?.places);
     };
 
     const unsubscribe = navigation.addListener('focus', () => {
@@ -137,24 +134,39 @@ const Event: React.FC<Props> = ({navigation, route}) => {
   const saveEdits = async () => {
     const placeIds = extractID(tempPlaces);
 
-    const responseStatus = await editEvent(
+    const response: boolean = await editEvent(
       tempTitle,
       tempDate,
       placeIds,
       eventId,
     );
 
-    if (responseStatus) {
-      // update event data if successful response
+    if (response) {
       setEventTitle(tempTitle);
       setDate(tempDate);
-      getEventData();
+      getEventData(extractPlaces(tempPlaces));
 
       bottomSheetRef.current?.collapse();
       setEditing(false);
     } else {
-      Alert.alert('Error', 'Something went wrong. Please try again.');
+      Alert.alert('Error', 'Unable to save edits. Please try again.');
     }
+  };
+
+  const extractPlaces = (editItems: (Place | Category)[]): Place[] => {
+    const _places = editItems.map((item: Place | Category, index: number) => {
+      if (isPlace(item)) {
+        return item;
+      } else {
+        if (item.options && item.options.length >= selectionIndices[index]) {
+          return item.options[selectionIndices[index]];
+        }
+      }
+    });
+
+    return _places.filter(
+      (place: Place | undefined) => place !== undefined,
+    ) as Place[];
   };
 
   const extractID = (editItems: (Place | Category)[]): number[] => {
@@ -174,12 +186,12 @@ const Event: React.FC<Props> = ({navigation, route}) => {
   };
 
   const handleRemoveEvent = async () => {
-    const response = await removeEvent(eventId);
+    const response: boolean = await deleteEvent(eventId);
 
     if (response) {
       navigation.goBack();
     } else {
-      Alert.alert('Error', 'Something went wrong. Please try again.');
+      Alert.alert('Error', 'Unable to delete event. Please try again.');
     }
   };
 

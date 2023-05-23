@@ -8,7 +8,6 @@ import {
   ScrollView,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
-import EncryptedStorage from 'react-native-encrypted-storage';
 
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
@@ -44,13 +43,10 @@ const CreateFG: React.FC<Props> = ({navigation, route}) => {
   const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
 
   const handleGroupEdit = async () => {
-    const token = await EncryptedStorage.getItem('auth_token');
-
     const responseStatus = await editGroup(
       name,
       invitations,
       route?.params?.friendGroup.group.id,
-      token,
     );
 
     if (responseStatus) {
@@ -66,11 +62,8 @@ const CreateFG: React.FC<Props> = ({navigation, route}) => {
   };
 
   const handleGroupLeave = async () => {
-    const token = await EncryptedStorage.getItem('auth_token');
-
     const responseStatus = await leaveGroup(
       route?.params?.friendGroup.group.id,
-      token,
     );
 
     if (responseStatus) {

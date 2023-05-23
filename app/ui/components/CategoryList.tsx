@@ -7,21 +7,17 @@ import {
   TouchableOpacity,
   Modal,
   Pressable,
+  Alert,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 
 import CustomText from '../components/Text';
 
-import {
-  icons,
-  vectors,
-  genreImages,
-  categoryIcons,
-} from '../../constants/images';
+import {icons, vectors} from '../../constants/images';
 import {colors} from '../../constants/theme';
 
 import {Genre, Category} from '../../utils/interfaces/types';
-import {getGenres} from '../../utils/api/shared/getGenres';
+import {getGenres} from '../../utils/api/genresAPI';
 
 interface Props {
   onClose?: () => void;
@@ -37,16 +33,13 @@ const CategoryList: React.FC<Props> = ({onClose, onSelect}) => {
 
   useEffect(() => {
     const initializeData = async () => {
-      const _genres = await getGenres();
-      // replace empty images with actual images
-      _genres.forEach((genre: Genre) => {
-        genre.image = genreImages[genre.id - 1];
-        genre.categories.forEach((category: Category) => {
-          category.icon = categoryIcons[category.id - 1];
-        });
-      });
+      const _genres: Genre[] | null = await getGenres();
 
-      setGenres(_genres);
+      if (_genres) {
+        setGenres(_genres);
+      } else {
+        Alert.alert('Error', 'Unable to load genres. Please try again.');
+      }
     };
 
     initializeData();
@@ -74,7 +67,7 @@ const CategoryList: React.FC<Props> = ({onClose, onSelect}) => {
             key={genre.id}
             onPress={() => handleGenrePress(genre)}>
             <View style={genreStyles.imageContainer}>
-              <Image style={genreStyles.image} source={genre.image} />
+              <Image style={genreStyles.image} source={{uri: genre.image}} />
               <Image style={genreStyles.blur} source={vectors.blur} />
               <CustomText
                 size="m"
@@ -122,7 +115,7 @@ const CategoryList: React.FC<Props> = ({onClose, onSelect}) => {
                     <View style={categoryStyles.container}>
                       <Image
                         style={categoryStyles.image}
-                        source={category.icon}
+                        source={{uri: category.icon}}
                       />
                       <Text style={categoryStyles.name}>{category.name}</Text>
                     </View>

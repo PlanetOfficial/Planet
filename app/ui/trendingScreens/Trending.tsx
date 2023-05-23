@@ -11,25 +11,23 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
-import EncryptedStorage from 'react-native-encrypted-storage';
 import Geolocation from '@react-native-community/geolocation';
 
-import moment from 'moment';
-
 import {colors} from '../../constants/theme';
-import {categoryIcons, icons} from '../../constants/images';
-import {floats, integers} from '../../constants/numbers';
+import {icons} from '../../constants/images';
+import {floats} from '../../constants/numbers';
 import strings from '../../constants/strings';
 
 import Text from '../components/Text';
 import Icon from '../components/Icon';
 import PlaceCard from '../components/PlaceCard';
 
-import {getBookmarks} from '../../utils/api/shared/getBookmarks';
-import {requestLocations} from '../../utils/api/CreateCalls/requestLocations';
-import {Subcategory} from '../../utils/interfaces/types';
-import {Category, LiveEvent, LiveEvents} from '../../utils/interfaces/types';
-import {getGenres} from '../../utils/api/shared/getGenres';
+import {getPlaces} from '../../utils/api/placeAPI';
+import {getDestinations} from '../../utils/api/destinationAPI';
+import {Genre, Place} from '../../utils/interfaces/types';
+import {Category} from '../../utils/interfaces/types';
+import {getGenres} from '../../utils/api/genresAPI';
+import {getPlaceCardString} from '../../utils/functions/Misc';
 
 interface Props {
   navigation: any;
@@ -39,28 +37,31 @@ const Trending: React.FC<Props> = ({navigation}) => {
   const [latitude, setLatitude] = useState<number>(floats.defaultLatitude);
   const [longitude, setLongitude] = useState<number>(floats.defaultLongitude);
   const [radius] = useState<number>(floats.defaultRadius);
-  const [eventsData, setEventsData] = useState<LiveEvents>([]);
+  const [eventsData, setEventsData] = useState<Map<number, Place[]>>(new Map());
   const [bookmarks, setBookmarks] = useState<number[]>([]);
   const [liveCategories, setLiveCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const initializeData = async () => {
-      const authToken = await EncryptedStorage.getItem('auth_token');
+      const _places: Place[] | null = await getPlaces();
 
-      const _bookmarks = await getBookmarks(authToken);
-      const bookmarksIds: number[] = _bookmarks.map(
-        (bookmark: {id: any}) => bookmark.id,
-      );
-      setBookmarks(bookmarksIds);
+      if (_places) {
+        const bookmarksIds: number[] = _places.map(
+          (bookmark: Place) => bookmark.id,
+        );
+        setBookmarks(bookmarksIds);
+      } else {
+        Alert.alert('Error', 'Unable to load bookmarks. Please try again.');
+      }
 
-      const _genres = await getGenres();
-      const _liveCategories: Category[] = _genres[0]?.categories;
-      _liveCategories?.forEach((category: Category) => {
-        category.icon = categoryIcons[category.id - 1];
-      });
-
-      setLiveCategories(_liveCategories);
+      const _genres: Genre[] | null = await getGenres();
+      if (_genres) {
+        const _liveCategories: Category[] = _genres[0]?.categories;
+        setLiveCategories(_liveCategories);
+      } else {
+        Alert.alert('Error', 'Unable to load categories. Please try again.');
+      }
     };
 
     const unsubscribe = navigation.addListener('focus', () => {
@@ -78,10 +79,8 @@ const Trending: React.FC<Props> = ({navigation}) => {
           const granted = await PermissionsAndroid.request(
             PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
           );
-          if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-            console.log('Location permission granted.');
-          } else {
-            console.log('Location permission denied.');
+          if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
+            Alert.alert('Error', 'Location permission denied.');
           }
         } catch (err) {
           console.warn(err);
@@ -89,36 +88,32 @@ const Trending: React.FC<Props> = ({navigation}) => {
       }
 
       const requestAPI = async (_latitude: number, _longitude: number) => {
-        const categoryIds: number[] = liveCategories?.map(
-          (category: Category) => category.id,
-        );
+        let _eventsData: Map<number, Place[]> = new Map();
 
-        const liveEvents: LiveEvents = await requestLocations(
-          categoryIds,
-          radius,
-          _latitude,
-          _longitude,
-          integers.defaultNumPlaces,
-        );
+        const promises = liveCategories?.map(async (category: Category) => {
+          const events: Place[] | null = await getDestinations(
+            category.id,
+            radius,
+            _latitude,
+            _longitude,
+          );
+          if (events) {
+            _eventsData.set(category.id, events);
+          } else {
+            Alert.alert('Error', 'Unable to load events. Please try again.');
+          }
+        });
+        await Promise.all(promises);
 
         setLoading(false);
-        setEventsData(liveEvents);
+        setEventsData(_eventsData);
       };
 
-      Geolocation.getCurrentPosition(
-        async position => {
-          setLatitude(position.coords.latitude);
-          setLongitude(position.coords.longitude);
-          requestAPI(position.coords.latitude, position.coords.longitude);
-        },
-        error => {
-          console.log(error);
-
-          setLatitude(floats.defaultLatitude);
-          setLongitude(floats.defaultLongitude);
-          requestAPI(floats.defaultLatitude, floats.defaultLongitude);
-        },
-      );
+      Geolocation.getCurrentPosition(async position => {
+        setLatitude(position.coords.latitude);
+        setLongitude(position.coords.longitude);
+        requestAPI(position.coords.latitude, position.coords.longitude);
+      });
     };
 
     if (liveCategories?.length > 0) {
@@ -133,21 +128,6 @@ const Trending: React.FC<Props> = ({navigation}) => {
           <Text size="xl" weight="b">
             {strings.title.trending}
           </Text>
-          {/* <View style={headerStyles.in}>
-            <Text size="l" weight="b" color={colors.darkgrey}>
-              {strings.trending.in}
-            </Text>
-          </View>
-          <TouchableOpacity
-            style={headerStyles.selector}
-            onPress={() => console.log('Switch location')}>
-            <Text size="xl" weight="b" color={colors.accent}>
-              Seattle
-            </Text>
-            <View style={headerStyles.drop}>
-              <Icon size="xs" icon={icons.drop} />
-            </View>
-          </TouchableOpacity> */}
 
           <View style={headerStyles.search}>
             <Icon
@@ -166,106 +146,71 @@ const Trending: React.FC<Props> = ({navigation}) => {
       ) : (
         <ScrollView>
           {liveCategories?.map((category: Category, idx: number) =>
-            eventsData[category.id] && eventsData[category.id].length > 0 ? (
+            eventsData.get(category.id) ? (
               <View key={idx} style={categoryStyles.container}>
                 <View style={categoryStyles.header}>
                   <Text size="m" weight="b">
                     {category.name}
                   </Text>
-                  <TouchableOpacity
-                    onPress={() => {
-                      let defaultSubcategories: Subcategory[] = [];
-                      let hiddenSubCategories: Subcategory[] = [];
-
-                      if (category.subcategories) {
-                        if (category.subcategories.length <= 5) {
-                          defaultSubcategories = category.subcategories;
-                        } else {
-                          defaultSubcategories = category.subcategories?.slice(
-                            0,
-                            5,
-                          );
-                          hiddenSubCategories =
-                            category.subcategories?.slice(5);
-                        }
-
+                  {category.subcategories &&
+                  category.subcategories.length > 0 ? (
+                    <TouchableOpacity
+                      onPress={() => {
                         navigation.navigate('LiveCategory', {
-                          subcategories: defaultSubcategories,
-                          hiddenSubCategories,
+                          subcategories: category.subcategories,
+                          hiddenSubCategories: [],
                           categoryId: category.id,
-                          filters: category.filters,
                           categoryName: category.name,
                           bookmarks,
                           latitude,
                           longitude,
                           radius,
                         });
-                      }
-                    }}>
-                    <Text size="xs" weight="b" color={colors.accent}>
-                      {strings.trending.seeAll}
-                    </Text>
-                  </TouchableOpacity>
+                      }}>
+                      <Text size="xs" weight="b" color={colors.accent}>
+                        {strings.trending.seeAll}
+                      </Text>
+                    </TouchableOpacity>
+                  ) : null}
                 </View>
                 <ScrollView
                   contentContainerStyle={categoryStyles.contentContainer}
                   style={categoryStyles.scrollView}
                   horizontal={true}
                   showsHorizontalScrollIndicator={false}>
-                  {eventsData[category.id]
-                    ? eventsData[category.id].map(
-                        (event: LiveEvent, jdx: number) => (
-                          <TouchableOpacity
-                            style={categoryStyles.card}
-                            key={jdx}
-                            onPress={() => {
-                              navigation.navigate('Place', {
-                                destination: event,
-                                category: event.category,
-                                bookmarked: bookmarks.includes(event.id),
-                              });
-                            }}>
-                            <PlaceCard
-                              id={event.id}
-                              small={true}
-                              name={event.name}
-                              info={
-                                moment(event.date, 'YYYY-MM-DD').format(
-                                  'M/D/YYYY',
-                                ) +
-                                (event.priceRanges[0]
-                                  ? ' • ' +
-                                    '$' +
-                                    Math.round(event.priceRanges[0]?.min) +
-                                    (event.priceRanges[0].min !==
-                                    event.priceRanges[0].max
-                                      ? ' - ' +
-                                        '$' +
-                                        Math.round(event.priceRanges[0]?.max)
-                                      : '')
-                                  : '')
-                              }
-                              bookmarked={bookmarks.includes(event.id)}
-                              setBookmarked={(
-                                bookmarked: boolean,
-                                id: number,
-                              ) => {
-                                if (bookmarked) {
-                                  setBookmarks([...bookmarks, id]);
-                                } else {
-                                  setBookmarks(
-                                    bookmarks.filter(
-                                      (bookmark: number) => bookmark !== id,
-                                    ),
-                                  );
-                                }
-                              }}
-                              image={{uri: event.image_url}}
-                            />
-                          </TouchableOpacity>
-                        ),
-                      )
-                    : null}
+                  {eventsData
+                    .get(category.id)
+                    ?.map((event: Place, jdx: number) => (
+                      <TouchableOpacity
+                        style={categoryStyles.card}
+                        key={jdx}
+                        onPress={() => {
+                          navigation.navigate('Place', {
+                            destination: event,
+                            bookmarked: bookmarks.includes(event.id),
+                          });
+                        }}>
+                        <PlaceCard
+                          id={event.id}
+                          small={true}
+                          name={event.name}
+                          info={getPlaceCardString(event, false)}
+                          bookmarked={bookmarks.includes(event.id)}
+                          setBookmarked={(bookmarked: boolean, id: number) => {
+                            if (bookmarked) {
+                              setBookmarks([...bookmarks, id]);
+                            } else {
+                              setBookmarks(
+                                bookmarks.filter(
+                                  (bookmark: number) => bookmark !== id,
+                                ),
+                              );
+                            }
+                          }}
+                          image={{uri: event.photo}}
+                        />
+                      </TouchableOpacity>
+                    ))}
                 </ScrollView>
                 {idx === liveCategories?.length - 1 ? (
                   <View style={styles.bottomPadding} />

@@ -1,14 +1,14 @@
-import {DBOpsURL} from '../APIConstants';
+import EncryptedStorage from 'react-native-encrypted-storage';
+import {FriendsURL} from '../APIConstants';
 
 export const dislikeFGPlace = async (
   group_event_place_id: number,
-  token: any,
-) => {
-  // TODO-SECURITY: filter inputs**
+): Promise<boolean> => {
+  const authToken = await EncryptedStorage.getItem('auth_token');
 
   const response = await fetch(
-    DBOpsURL +
-      `/friends/dislikePlace?group_event_place_id=${group_event_place_id}&authtoken=${token}`,
+    FriendsURL +
+      `/friends/dislikePlace?group_event_place_id=${group_event_place_id}&authtoken=${authToken}`,
     {
       method: 'POST',
     },
