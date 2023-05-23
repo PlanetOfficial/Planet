@@ -72,11 +72,28 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
     const loadDestinations = async (categoryId: number) => {
       setLoading(true);
       setToBeRefreshed(false);
+
+      const _filters: {[key: string]: string | string[]} = {};
+      for (let i = 0; i < category.filters.length; i++) {
+        const filter = category.filters[i];
+        const _filter = filters[i];
+        if (Array.isArray(_filter)) {
+          const filterValues: string[] = [];
+          for (let j = 0; j < _filter.length; j++) {
+            filterValues.push(filter.options[_filter[j]]);
+          }
+          _filters[filter.name] = filterValues;
+        } else {
+          _filters[filter.name] = filters[i] === -1 ? '' : filter.options[filters[i] as number];
+        }
+      }
+
       const response = await getDestinations(
         categoryId,
         radius,
         latitude,
         longitude,
+        _filters,
       );
 
       const _destinations: (Place | CategoryT)[] = [...destinations];
