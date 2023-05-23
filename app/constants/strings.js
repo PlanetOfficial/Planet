@@ -146,14 +146,9 @@ const strings = {
   },
   filter: {
     none: 'None',
-    all: 'All',
     editView: 'Edit View',
     visible: 'Visible',
     hidden: 'Hidden',
-    categories: 'Categories',
-    filterCategories: 'Filter Categories',
-    clear: 'Clear',
-    apply: 'Apply',
   },
 };
 
