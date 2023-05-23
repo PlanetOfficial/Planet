@@ -13,7 +13,7 @@ export default function App() {
   const [isLoading, setLoading] = useState<boolean>(true);
   const [isLoggedIn, setLoggedIn] = useState<boolean>(false);
 
-  const requestUserPermission = async() => {
+  const requestNotificationPerms = async() => {
     if (Platform.OS === 'android') {
       PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
     } else {
@@ -40,7 +40,7 @@ export default function App() {
       }
 
       setLoading(false);
-      requestUserPermission();
+      requestNotificationPerms();
     };
 
     initialize();
