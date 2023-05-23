@@ -349,6 +349,9 @@ const Event: React.FC<Props> = ({navigation, route}) => {
             onAddPress={addRef.current?.onAddPress}
             bottomPad={0}
             onSubcategoryOpen={selectSubcategoryRef.current?.onSubcategoryOpen}
+            onSubcategorySelect={
+              selectSubcategoryRef.current?.onSubcategorySelect
+            }
           />
         ) : (
           <SafeAreaView>

@@ -18,11 +18,7 @@ import PlaceCard from '../components/PlaceCard';
 import {icons} from '../../constants/images';
 import {colors} from '../../constants/theme';
 
-import {
-  Place,
-  Category as CategoryT,
-  Subcategory,
-} from '../../utils/interfaces/types';
+import {Place, Category as CategoryT} from '../../utils/interfaces/types';
 import {getPlaceCardString, isPlace} from '../../utils/functions/Misc';
 
 interface Props {
@@ -38,10 +34,8 @@ interface Props {
   setSelectionIndices: (idx: number[]) => void;
   onAddPress: (idx: number) => void;
   bottomPad: number;
-  onSubcategoryOpen?: (
-    subcategories: Subcategory[],
-    setSubCategory: (subcategory: Subcategory | null) => void,
-  ) => void;
+  onSubcategoryOpen?: (comp: React.ReactNode) => void;
+  onSubcategorySelect?: () => void;
 }
 
 const EditEvent: React.FC<Props> = ({
@@ -58,6 +52,7 @@ const EditEvent: React.FC<Props> = ({
   onAddPress,
   bottomPad,
   onSubcategoryOpen,
+  onSubcategorySelect,
 }) => {
   const [dragging, setDragging] = useState<boolean>(false);
   const itemRefs = useRef(new Map());
@@ -248,6 +243,7 @@ const EditEvent: React.FC<Props> = ({
                     setDestinations={setDestinations}
                     onCategoryMove={onMove}
                     onSubcategoryOpen={onSubcategoryOpen}
+                    onSubcategorySelect={onSubcategorySelect}
                   />
                 </View>
               )}

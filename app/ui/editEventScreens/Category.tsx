@@ -11,15 +11,19 @@ import {
   Image,
   ActivityIndicator,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 
 import {colors} from '../../constants/theme';
 import strings from '../../constants/strings';
+import {icons} from '../../constants/images';
 
+import Icon from '../components/Icon';
 import Text from '../components/Text';
 import OptionMenu from '../components/OptionMenu';
 import PlacesDisplay from '../components/PlacesDisplay';
+import Filter from './Filter';
 
 import {
   Place,
@@ -27,9 +31,6 @@ import {
   Subcategory,
 } from '../../utils/interfaces/types';
 import {getDestinations} from '../../utils/api/destinationAPI';
-import Filter from './Filter';
-import Icon from '../components/Icon';
-import {icons} from '../../constants/images';
 
 interface ChildComponentProps {
   navigation: any;
@@ -46,10 +47,8 @@ interface ChildComponentProps {
   destinations: (Place | CategoryT)[];
   setDestinations: (destinations: (Place | CategoryT)[]) => void;
   onCategoryMove: (idx: number, direction: number) => void;
-  onSubcategoryOpen?: (
-    subcategories: Subcategory[],
-    setSubCategory: (subcategory: Subcategory | null) => void,
-  ) => void;
+  onSubcategoryOpen?: (comp: React.ReactNode) => void;
+  onSubcategorySelect?: () => void;
 }
 
 const Category = forwardRef((props: ChildComponentProps, ref) => {
@@ -69,6 +68,7 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
     setDestinations,
     onCategoryMove,
     onSubcategoryOpen,
+    onSubcategorySelect,
   } = props;
 
   const childRef = useRef<any>(null); // due to forwardRef
@@ -113,7 +113,7 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
         radius,
         latitude,
         longitude,
-        _filters,
+        _filters ? _filters : undefined,
         subcategory ? subcategory.id : undefined,
       );
 
@@ -176,7 +176,39 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
             style={styles.headerTitle}
             onPress={() =>
               onSubcategoryOpen
-                ? onSubcategoryOpen(category.subcategories, setSubcategory)
+                ? onSubcategoryOpen(
+                    <ScrollView
+                      contentContainerStyle={styles.subcategoryContainer}>
+                      {category.subcategories?.map(
+                        (_subcategory: Subcategory, index: number) => (
+                          <TouchableOpacity
+                            key={index}
+                            style={[
+                              styles.chip,
+                              subcategory === _subcategory
+                                ? {
+                                    backgroundColor: colors.accentLight,
+                                  }
+                                : null,
+                            ]}
+                            onPress={() => {
+                              setSubcategory
+                                ? subcategory === _subcategory
+                                  ? setSubcategory(null)
+                                  : setSubcategory(_subcategory)
+                                : null;
+                              onSubcategorySelect
+                                ? onSubcategorySelect()
+                                : null;
+                            }}>
+                            <Text size="s" weight="l">
+                              {_subcategory.name}
+                            </Text>
+                          </TouchableOpacity>
+                        ),
+                      )}
+                    </ScrollView>,
+                  )
                 : null
             }>
             <Text>{subcategory ? subcategory.name : category.name}</Text>
@@ -284,6 +316,21 @@ const styles = StyleSheet.create({
   },
   drop: {
     marginLeft: s(4),
+  },
+  subcategoryContainer: {
+    paddingHorizontal: s(15),
+    flexWrap: 'wrap',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  chip: {
+    margin: s(5),
+    paddingHorizontal: s(10),
+    paddingVertical: s(5),
+    borderRadius: s(20),
+    borderWidth: 1,
+    borderColor: colors.accent,
   },
 });
 

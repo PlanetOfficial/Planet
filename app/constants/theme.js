@@ -4,5 +4,6 @@ export const colors = {
   grey: '#eeeeee',
   darkgrey: '#aaaaaa',
   accent: '#f36f3f',
+  accentLight: '#f9a67a',
   red: '#ee2e31',
 };

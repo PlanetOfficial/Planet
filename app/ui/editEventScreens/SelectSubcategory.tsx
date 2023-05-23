@@ -6,28 +6,20 @@ import React, {
   forwardRef,
   useImperativeHandle,
 } from 'react';
-import {StyleSheet, View, Pressable, TouchableOpacity} from 'react-native';
+import {StyleSheet, Pressable} from 'react-native';
 
-import {s} from 'react-native-size-matters';
 import {BottomSheetModal} from '@gorhom/bottom-sheet';
 
-import Text from '../components/Text';
-import CButton from '../components/CancelButton';
-import {Subcategory} from '../../utils/interfaces/types';
-
-interface ChildComponentProps {}
-
-const SelectSubcategory = forwardRef((props: ChildComponentProps, ref) => {
-  // const {} = props;
-
+const SelectSubcategory = forwardRef((_prop, ref) => {
   useImperativeHandle(ref, () => ({
     onSubcategoryOpen,
+    onSubcategorySelect,
   }));
 
   const [subcategoryBottomSheetOpen, setSubcategoryBottomSheetOpen] =
     useState<boolean>(false);
   const subcategoryBottomSheetRef = useRef<BottomSheetModal>(null);
-  const subcategorySnapPoints = useMemo(() => [s(260)], []);
+  const subcategorySnapPoints = useMemo(() => ['40%'], []);
   const handleSubcategorySheetChange = useCallback(
     (_: number, toIndex: number) => {
       setSubcategoryBottomSheetOpen(toIndex === 0);
@@ -35,15 +27,17 @@ const SelectSubcategory = forwardRef((props: ChildComponentProps, ref) => {
     [],
   );
 
-  const [subcategories, setSubcategories] = useState<Subcategory[]>();
-  const [setSubcategory, setSetSubcategory] =
-    useState<(subcategory: Subcategory | null) => void>();
+  const [comp, setComp] = useState<React.ReactNode>(null);
 
-  const onSubcategoryOpen = (_subcategories: Subcategory[]): void => {
+  const onSubcategoryOpen = (_comp: React.ReactNode): void => {
     subcategoryBottomSheetRef.current?.present();
     setSubcategoryBottomSheetOpen(true);
-    setSubcategories(_subcategories);
-    setSetSubcategory(setSubcategory);
+    setComp(_comp);
+  };
+
+  const onSubcategorySelect = (): void => {
+    subcategoryBottomSheetRef.current?.close();
+    setSubcategoryBottomSheetOpen(false);
   };
 
   return (
@@ -52,21 +46,7 @@ const SelectSubcategory = forwardRef((props: ChildComponentProps, ref) => {
         ref={subcategoryBottomSheetRef}
         snapPoints={subcategorySnapPoints}
         onAnimate={handleSubcategorySheetChange}>
-        <View>
-          {subcategories?.map((subcategory: Subcategory, index: number) => (
-            <TouchableOpacity
-              key={index}
-              onPress={() => {
-                setSubcategory ? setSubcategory(subcategory) : null;
-                subcategoryBottomSheetRef.current?.close();
-              }}>
-              <Text size="m" weight="r">
-                {subcategory.name}
-              </Text>
-            </TouchableOpacity>
-          ))}
-          <CButton onPress={() => subcategoryBottomSheetRef.current?.close()} />
-        </View>
+        {comp}
       </BottomSheetModal>
 
       {subcategoryBottomSheetOpen ? (

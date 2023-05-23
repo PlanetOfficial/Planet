@@ -25,6 +25,7 @@ import Icon from '../components/Icon';
 import EditEvent from '../editEventScreens/EditEvent';
 import AddEvent from '../editEventScreens/AddEvent';
 import Confirmation from '../editEventScreens/Confirmation';
+import SelectSubcategory from '../editEventScreens/SelectSubcategory';
 
 import {getPlaces} from '../../utils/api/placeAPI';
 import {postEvent} from '../../utils/api/eventAPI';
@@ -72,8 +73,10 @@ const SelectDestinations: React.FC<Props> = ({navigation, route}) => {
   const insets = useSafeAreaInsets();
   const [loading, setLoading] = useState<boolean>(true);
 
-  const [bottomPad, setBottomPad] = useState<number>(0);
   const addRef = useRef<any>(null); // due to forwardRef
+  const selectSubcategoryRef = useRef<any>(null); // due to forwardRef
+
+  const [bottomPad, setBottomPad] = useState<number>(0);
   const bottomSheetRef = useRef<BottomSheet>(null);
   const snapPoints = useMemo(
     () => [vs(380) - (insets.top + s(50)), vs(680) - (insets.top + s(50))],
@@ -290,6 +293,10 @@ const SelectDestinations: React.FC<Props> = ({navigation, route}) => {
             setSelectionIndices={setSelectionIndices}
             onAddPress={addRef.current?.onAddPress}
             bottomPad={bottomPad}
+            onSubcategoryOpen={selectSubcategoryRef.current?.onSubcategoryOpen}
+            onSubcategorySelect={
+              selectSubcategoryRef.current?.onSubcategorySelect
+            }
           />
         )}
       </BottomSheet>
@@ -313,6 +320,8 @@ const SelectDestinations: React.FC<Props> = ({navigation, route}) => {
         rightColor={colors.accent}
         actionOnRight={true}
       />
+
+      <SelectSubcategory ref={selectSubcategoryRef} />
     </View>
   );
 };
