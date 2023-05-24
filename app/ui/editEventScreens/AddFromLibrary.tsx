@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
   center: {
     height: s(400),
     justifyContent: 'center',
-  }
+  },
 });
 
 const headerStyles = StyleSheet.create({
