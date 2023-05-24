@@ -8,6 +8,7 @@ import { Platform } from 'react-native';
 import SplashScreen from './app/ui/otherScreens/!SplashScreen';
 import AppNavigation from './app/navigation/AppNavigation';
 import {updateCaches} from './app/utils/functions/CacheHelpers';
+import { saveTokenToDatabase } from './app/utils/firebase/helpers';
 
 export default function App() {
   const [isLoading, setLoading] = useState<boolean>(true);
@@ -45,12 +46,27 @@ export default function App() {
 
     initialize();
 
+    // handle foreground notifications
     const unsubscribe = messaging().onMessage(async remoteMessage => {
       Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
     });
 
     return unsubscribe;
   }, []);
+
+  useEffect(() => {
+    // Get the device token
+    messaging()
+      .getToken()
+      .then(token => {
+        return saveTokenToDatabase(token);
+      });
+
+    // Listen to whether the token changes
+    return messaging().onTokenRefresh(token => {
+      saveTokenToDatabase(token);
+    });
+  }, [])
 
   const getCorrectStack = () => {
     return <AppNavigation isLoggedIn={isLoggedIn} />;
