@@ -18,8 +18,8 @@ const loginTest = () => {
             await expect(passwordInput).toBeVisible();
             await expect(loginButton).toBeVisible();
     
-            await emailInput.typeText('lavindude@gmail.com') // TODO: store these in .env
-            await passwordInput.typeText('Password123')
+            await emailInput.typeText('test@gmail.com')
+            await passwordInput.typeText('NotThePassword')
             await loginButton.tap();
     
             await expect(element(by.id('trendingScreenView'))).toBeVisible();
