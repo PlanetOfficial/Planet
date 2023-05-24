@@ -222,7 +222,7 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
               )
             }>
             {fullEventData?.map((dest: Place, idx: number) =>
-              dest.likes && dest.dislikes && dest.group_place_id ? (
+              dest.group_place_id ? (
                 <View
                   style={[
                     placesDisplayStyles.card,
