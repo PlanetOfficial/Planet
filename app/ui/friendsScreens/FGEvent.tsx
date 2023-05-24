@@ -202,7 +202,10 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
 
   return (
     <View style={styles.container}>
-      <MapView style={styles.map} region={getRegionForCoordinates(markers)}>
+      <MapView
+        style={styles.map}
+        userInterfaceStyle={'light'}
+        region={getRegionForCoordinates(markers)}>
         {markers?.length > 0
           ? markers?.map((marker: MarkerObject, index: number) => (
               <Marker

@@ -139,6 +139,7 @@ const MapScreen: React.FC<Props> = ({navigation, route}) => {
           showsScale={false}
           showsCompass={false}
           rotateEnabled={false}
+          userInterfaceStyle={'light'}
           onRegionChange={updateRadius}
           onRegionChangeComplete={setRegion}
           region={region}>
