@@ -48,7 +48,7 @@ const Friends: React.FC<Props> = ({navigation}) => {
   const [friendGroup, setFriendGroup] = useState<number>(-1);
 
   const [friendGroups, setFriendGroups] = useState<FriendGroup[]>([]);
-  const [invitations, setInvitations] = useState<Invite[]>([]);
+  const [invites, setInvites] = useState<Invite[]>([]);
 
   const [userEvents, setUserEvents] = useState<Event[]>([]);
   const [curFGEvents, setCurFGEvents] = useState<Event[]>([]);
@@ -59,11 +59,11 @@ const Friends: React.FC<Props> = ({navigation}) => {
   const fgSnapPoints = useMemo(
     () => [
       Math.min(
-        s(70) * (friendGroups.length + invitations.length) + s(120),
+        s(70) * (friendGroups.length + invites.length) + s(120),
         vs(680) - s(60) - insets.top,
       ),
     ],
-    [insets.top, friendGroups.length, invitations.length],
+    [insets.top, friendGroups.length, invites.length],
   );
   const handleFgSheetChange = useCallback((_: number, toIndex: number) => {
     setFgBottomSheetOpen(toIndex === 0);
@@ -119,9 +119,9 @@ const Friends: React.FC<Props> = ({navigation}) => {
     const _invites: Invite[] | null = await getInvites();
 
     if (_invites) {
-      setInvitations(_invites);
+      setInvites(_invites);
     } else {
-      Alert.alert('Error', 'Unable to load invitations. Please try again.');
+      Alert.alert('Error', 'Unable to load invites. Please try again.');
     }
 
     const eventsData: Event[] | null = await getEvents();
@@ -323,7 +323,7 @@ const Friends: React.FC<Props> = ({navigation}) => {
           friendGroup={friendGroup}
           setFriendGroup={setFriendGroup}
           refreshOnInviteEvent={initializeData}
-          invitations={invitations}
+          invites={invites}
           navigation={navigation}
         />
       </BottomSheetModal>

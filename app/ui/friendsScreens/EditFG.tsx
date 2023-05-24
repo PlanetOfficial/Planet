@@ -35,7 +35,7 @@ const CreateFG: React.FC<Props> = ({navigation, route}) => {
     route?.params?.friendGroup.group_member,
   );
   const [invite, setInvite] = useState<string>('');
-  const [invitations, setInvitations] = useState<string[]>([]);
+  const [invites, setInvites] = useState<string[]>([]);
 
   const inviteRef = React.useRef<TextInput>(null);
 
@@ -44,7 +44,7 @@ const CreateFG: React.FC<Props> = ({navigation, route}) => {
   const handleGroupEdit = async () => {
     const responseStatus = await editGroup(
       name,
-      invitations,
+      invites,
       route?.params?.friendGroup.group.id,
     );
 
@@ -116,7 +116,7 @@ const CreateFG: React.FC<Props> = ({navigation, route}) => {
           disabled={invite === ''}
           label={strings.friends.add}
           onPress={() => {
-            setInvitations([...invitations, invite]);
+            setInvites([...invites, invite]);
             setInvite('');
             inviteRef.current?.blur();
           }}
@@ -124,7 +124,7 @@ const CreateFG: React.FC<Props> = ({navigation, route}) => {
       </View>
 
       <ScrollView>
-        {invitations.map((item: string, index: number) => (
+        {invites.map((item: string, index: number) => (
           <View key={index} style={inviteStyles.row}>
             <Text size="s" weight="l">
               {item}
@@ -132,8 +132,8 @@ const CreateFG: React.FC<Props> = ({navigation, route}) => {
             <Icon
               icon={icons.x}
               onPress={() => {
-                setInvitations(
-                  invitations.filter((_: string, i: number) => i !== index),
+                setInvites(
+                  invites.filter((_: string, i: number) => i !== index),
                 );
               }}
             />

@@ -26,12 +26,12 @@ interface Props {
 const CreateFG: React.FC<Props> = ({navigation}) => {
   const [name, setName] = useState<string>('');
   const [invite, setInvite] = useState<string>('');
-  const [invitations, setInvitations] = useState<string[]>([]);
+  const [invites, setInvites] = useState<string[]>([]);
 
   const inviteRef = React.useRef<TextInput>(null);
 
   const handleGroupCreation = async () => {
-    const responseStatus = await postGroup(name, invitations);
+    const responseStatus = await postGroup(name, invites);
 
     if (responseStatus) {
       navigation.reset({
@@ -80,7 +80,7 @@ const CreateFG: React.FC<Props> = ({navigation}) => {
           disabled={invite === ''}
           label={strings.friends.add}
           onPress={() => {
-            setInvitations([...invitations, invite]);
+            setInvites([...invites, invite]);
             setInvite('');
             inviteRef.current?.blur();
           }}
@@ -89,7 +89,7 @@ const CreateFG: React.FC<Props> = ({navigation}) => {
 
       <View style={inviteStyles.scrollView}>
         <FlatList
-          data={invitations}
+          data={invites}
           ItemSeparatorComponent={Spacer}
           renderItem={({item, index}: {item: string; index: number}) => (
             <View key={index} style={inviteStyles.row}>
@@ -99,8 +99,8 @@ const CreateFG: React.FC<Props> = ({navigation}) => {
               <Icon
                 icon={icons.x}
                 onPress={() => {
-                  setInvitations(
-                    invitations.filter((_: string, i: number) => i !== index),
+                  setInvites(
+                    invites.filter((_: string, i: number) => i !== index),
                   );
                 }}
               />

@@ -27,7 +27,7 @@ interface Props {
   friendGroup: number;
   setFriendGroup: (friendGroup: number) => void;
   refreshOnInviteEvent: () => void;
-  invitations: Invite[];
+  invites: Invite[];
   navigation: any;
 }
 
@@ -37,7 +37,7 @@ const FGSelector: React.FC<Props> = ({
   friendGroup,
   setFriendGroup,
   refreshOnInviteEvent,
-  invitations,
+  invites,
   navigation,
 }) => {
   const handleAcceptInvite = async (invite_id: number) => {
@@ -91,14 +91,14 @@ const FGSelector: React.FC<Props> = ({
           />
         </TouchableOpacity>
       ))}
-      {invitations?.map((invitation: Invite, idx: number) => (
+      {invites?.map((invite: Invite, idx: number) => (
         <View key={idx} style={styles.row}>
           <Image style={styles.icon} source={icons.user} />
           <View style={styles.wrap}>
             <View style={styles.texts}>
-              <Text>{invitation.group.name}</Text>
+              <Text>{invite.group.name}</Text>
               <Text size="xs" weight="l" color={colors.darkgrey}>
-                {invitation.inviter.name}
+                {invite.inviter.name}
               </Text>
             </View>
             <View style={styles.buttonsContainer}>
@@ -106,7 +106,7 @@ const FGSelector: React.FC<Props> = ({
                 size="xs"
                 label={strings.friends.accept}
                 onPress={() => {
-                  handleAcceptInvite(invitation.id);
+                  handleAcceptInvite(invite.id);
                 }}
               />
               <AButton
@@ -114,7 +114,7 @@ const FGSelector: React.FC<Props> = ({
                 label={strings.friends.decline}
                 color={colors.darkgrey}
                 onPress={() => {
-                  handleRejectInvite(invitation.id);
+                  handleRejectInvite(invite.id);
                 }}
               />
             </View>

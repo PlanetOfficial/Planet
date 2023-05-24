@@ -104,14 +104,14 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
     return unsubscribe;
   }, [navigation, groupEventId, route?.params?.eventData?.places]);
 
-  const reloadPlaces = async () => {
-    const _places = await getGroupEvent(groupEventId);
-    if (_places) {
-      setFullEventData(_places);
-    } else {
-      Alert.alert('Error', 'Unable to reload places. Please try again.');
-    }
-  };
+  // const reloadPlaces = async () => {
+  //   const _places = await getGroupEvent(groupEventId);
+  //   if (_places) {
+  //     setFullEventData(_places);
+  //   } else {
+  //     Alert.alert('Error', 'Unable to reload places. Please try again.');
+  //   }
+  // };
 
   const handleFork = async () => {
     const response = await forkGroupEvent(groupEventId);
