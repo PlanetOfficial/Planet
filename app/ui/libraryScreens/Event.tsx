@@ -364,7 +364,7 @@ const Event: React.FC<Props> = ({navigation, route}) => {
                   style={styles.card}
                   onPress={() => {
                     navigation.navigate('Place', {
-                      placeData: place,
+                      destination: place,
                       bookmarks: bookmarks,
                     });
                   }}>
