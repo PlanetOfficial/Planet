@@ -32,7 +32,6 @@ export const icons = {
   minus: require('../assets/icons/minus.png'),
   hide: require('../assets/icons/hide.png'),
   drop: require('../assets/icons/drop.png'),
-  map: require('../assets/icons/map.png'),
   checked: require('../assets/icons/checked.png'),
   unchecked: require('../assets/icons/unchecked.png'),
   selected: require('../assets/icons/selected.png'),
