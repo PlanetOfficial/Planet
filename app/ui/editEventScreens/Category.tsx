@@ -79,9 +79,9 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
     closeDropdown,
   }));
 
-  const [toBeRefreshed, setToBeRefreshed] = useState<boolean>(true);
-
   const [loading, setLoading] = useState<boolean>(true);
+
+  const [toBeRefreshed, setToBeRefreshed] = useState<boolean>(true);
 
   const [filters, setFilters] = useState<(number | number[])[]>([]);
 

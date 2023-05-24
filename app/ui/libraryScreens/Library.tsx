@@ -6,6 +6,7 @@ import {
   FlatList,
   TouchableOpacity,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
 import moment from 'moment';
 
@@ -36,7 +37,10 @@ const Library: React.FC<Props> = ({navigation}) => {
   const [places, setPlaces] = useState<Place[]>([]);
   const [events, setEvents] = useState<Event[]>([]);
 
+  const [loading, setLoading] = useState<boolean>(true);
+
   const initializeData = async () => {
+    setLoading(true);
     const _places: Place[] | null = await getPlaces();
     if (_places) {
       setPlaces(_places);
@@ -50,6 +54,7 @@ const Library: React.FC<Props> = ({navigation}) => {
     } else {
       Alert.alert('Error', 'Unable to load events. Please try again.');
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -99,83 +104,93 @@ const Library: React.FC<Props> = ({navigation}) => {
         onTabPress={(index: number) => setIndex(index)}
       />
 
-      <FlatList
-        key={selectedIndex}
-        data={selectedIndex === 0 ? places : events}
-        contentContainerStyle={styles.contentContainer}
-        initialNumToRender={5}
-        keyExtractor={(_: Place | Event, idx: number) => idx.toString()}
-        ItemSeparatorComponent={Spacer}
-        ListEmptyComponent={
-          <Text size="m" color={colors.darkgrey} center={true}>
-            {selectedIndex === 0
-              ? strings.library.noSaved
-              : strings.library.noEvents}
-          </Text>
-        }
-        renderItem={({item}: {item: Place | Event}) => {
-          return isPlace2(item) ? (
-            <TouchableOpacity
-              style={styles.card}
-              onPress={() => {
-                navigation.navigate('Place', {
-                  destination: item,
-                  category: item.category.name,
-                  bookmarked: places.includes(item),
-                });
-              }}>
-              <PlaceCard
-                id={item.id}
-                name={item.name}
-                info={getPlaceCardString(item)}
-                bookmarked={places.includes(item)}
-                setBookmarked={(bookmarked: boolean, id: number) => {
-                  if (!bookmarked) {
-                    setPlaces(places.filter((place: Place) => place.id !== id));
+      {loading ? (
+        <View style={styles.center}>
+          <ActivityIndicator size="small" color={colors.accent} />
+        </View>
+      ) : (
+        <FlatList
+          key={selectedIndex}
+          data={selectedIndex === 0 ? places : events}
+          contentContainerStyle={styles.contentContainer}
+          initialNumToRender={5}
+          keyExtractor={(_: Place | Event, idx: number) => idx.toString()}
+          ItemSeparatorComponent={Spacer}
+          ListEmptyComponent={
+            <View style={styles.center}>
+              <Text size="m" color={colors.darkgrey} center={true}>
+                {selectedIndex === 0
+                  ? strings.library.noSaved
+                  : strings.library.noEvents}
+              </Text>
+            </View>
+          }
+          renderItem={({item}: {item: Place | Event}) => {
+            return isPlace2(item) ? (
+              <TouchableOpacity
+                style={styles.card}
+                onPress={() => {
+                  navigation.navigate('Place', {
+                    destination: item,
+                    category: item.category.name,
+                    bookmarked: places.includes(item),
+                  });
+                }}>
+                <PlaceCard
+                  id={item.id}
+                  name={item.name}
+                  info={getPlaceCardString(item)}
+                  bookmarked={places.includes(item)}
+                  setBookmarked={(bookmarked: boolean, id: number) => {
+                    if (!bookmarked) {
+                      setPlaces(
+                        places.filter((place: Place) => place.id !== id),
+                      );
+                    }
+                  }}
+                  image={{uri: item.photo}}
+                />
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                style={styles.card}
+                onPress={() => {
+                  navigation.navigate('Event', {
+                    eventData: item,
+                    bookmarks: places.map((place: Place) => place.id),
+                  });
+                }}>
+                <EventCard
+                  name={item.name}
+                  info={moment(item.date, 'YYYY-MM-DD').format('M/D/YYYY')}
+                  image={
+                    item.places &&
+                    item.places.length !== 0 &&
+                    item.places[0].photo
+                      ? {uri: item.places[0].photo}
+                      : icons.defaultIcon
                   }
-                }}
-                image={{uri: item.photo}}
-              />
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity
-              style={styles.card}
-              onPress={() => {
-                navigation.navigate('Event', {
-                  eventData: item,
-                  bookmarks: places.map((place: Place) => place.id),
-                });
-              }}>
-              <EventCard
-                name={item.name}
-                info={moment(item.date, 'YYYY-MM-DD').format('M/D/YYYY')}
-                image={
-                  item.places &&
-                  item.places.length !== 0 &&
-                  item.places[0].photo
-                    ? {uri: item.places[0].photo}
-                    : icons.defaultIcon
-                }
-                options={[
-                  {
-                    name: strings.main.share,
-                    onPress: () => {
-                      // TODO: share event
-                      Alert.alert('Share', 'Share is not implemented yet');
+                  options={[
+                    {
+                      name: strings.main.share,
+                      onPress: () => {
+                        // TODO: share event
+                        Alert.alert('Share', 'Share is not implemented yet');
+                      },
+                      color: colors.black,
                     },
-                    color: colors.black,
-                  },
-                  {
-                    name: strings.main.remove,
-                    onPress: () => handleRemoveEvent(item.id),
-                    color: colors.red,
-                  },
-                ]}
-              />
-            </TouchableOpacity>
-          );
-        }}
-      />
+                    {
+                      name: strings.main.remove,
+                      onPress: () => handleRemoveEvent(item.id),
+                      color: colors.red,
+                    },
+                  ]}
+                />
+              </TouchableOpacity>
+            );
+          }}
+        />
+      )}
     </View>
   );
 };
@@ -206,6 +221,10 @@ const styles = StyleSheet.create({
   card: {
     alignSelf: 'center',
     width: s(310),
+  },
+  center: {
+    height: s(400),
+    justifyContent: 'center',
   },
 });
 
