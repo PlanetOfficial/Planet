@@ -2,13 +2,13 @@ import React, {useEffect, useState, useRef, useMemo} from 'react';
 import {
   StyleSheet,
   View,
-  TouchableOpacity,
   SafeAreaView,
   ScrollView,
   Alert,
+  Platform,
 } from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
-import {s} from 'react-native-size-matters';
+import {s, vs} from 'react-native-size-matters';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import BottomSheet from '@gorhom/bottom-sheet';
@@ -17,16 +17,14 @@ import moment from 'moment';
 
 import {
   getMarkerArray,
-  getPlaceCardString,
   getRegionForCoordinates,
 } from '../../utils/functions/Misc';
 import {GroupPlace, MarkerObject, Place} from '../../utils/interfaces/types';
 import {getPlaces} from '../../utils/api/placeAPI';
 import { deleteGroupEvent, forkGroupEvent } from '../../utils/api/groups/eventAPI';
 
-import PlaceCard from '../components/PlaceCard';
+import PlacesDisplay from '../components/PlacesDisplay';
 import Blur from '../components/Blur';
-import ScrollIndicator from '../components/ScrollIndicator';
 import OptionMenu from '../components/OptionMenu';
 import Icon from '../components/Icon';
 import Text from '../components/Text';
@@ -54,14 +52,17 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
   );
   const [userId, setUserId] = useState<number>(-1);
 
-  const [fullEventData, setFullEventData] = useState<GroupPlace[]>();
+  const [groupPlaces, setGroupPlaces] = useState<GroupPlace[]>();
 
   const [placeIdx, setPlaceIdx] = useState<number>(0);
   const [markers, setMarkers] = useState<MarkerObject[]>([]);
 
   const insets = useSafeAreaInsets();
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const snapPoints = useMemo(() => [s(290) + insets.bottom], [insets.bottom]);
+  const snapPoints = useMemo(
+    () => [vs(380) - (insets.top + s(50)), vs(680) - (insets.top + s(50))],
+    [insets.top],
+  );
 
   useEffect(() => {
     const initializeUserId = async () => {
@@ -90,11 +91,11 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
         Alert.alert('Error', 'Unable to load places. Please try again.');
       }
 
-      setFullEventData(route?.params?.eventData?.places);
-      const markerArray: MarkerObject[] = getMarkerArray(
-        route?.params?.eventData?.places,
-      );
-      setMarkers(markerArray);
+      setGroupPlaces(route?.params?.eventData?.destinations);
+      // const markerArray: MarkerObject[] = getMarkerArray(
+      //   route?.params?.eventData?.places,
+      // );
+      // setMarkers(markerArray);
     };
 
     const unsubscribe = navigation.addListener('focus', () => {
@@ -198,82 +199,60 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
 
       <BottomSheet
         ref={bottomSheetRef}
-        index={0}
+        index={1}
         snapPoints={snapPoints}
-        handleStyle={placesDisplayStyles.handle}
-        handleIndicatorStyle={placesDisplayStyles.handleIndicator}
         backgroundStyle={placesDisplayStyles.container}
-        enableContentPanningGesture={false}
-        enableHandlePanningGesture={false}>
-        <SafeAreaView>
-          <ScrollView
-            style={placesDisplayStyles.scrollView}
-            contentContainerStyle={placesDisplayStyles.contentContainer}
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            pagingEnabled={true}
-            scrollEventThrottle={16}
-            snapToInterval={s(310)} // 290 + 20
-            snapToAlignment={'start'}
-            decelerationRate={'fast'}
-            onScroll={event =>
-              setPlaceIdx(
-                Math.round(event.nativeEvent.contentOffset.x / s(310)),
-              )
-            }>
-            {fullEventData?.map((dest: GroupPlace, idx: number) =>
-              dest.group_place_id ? (
-                <View
-                  style={[
-                    placesDisplayStyles.card,
-                    idx !== fullEventData?.length - 1
-                      ? {
-                          marginRight: s(20),
-                        }
-                      : null,
-                  ]}
-                  key={idx}>
-                  <TouchableOpacity
-                    onPress={() => {
-                      navigation.navigate('Place', {
-                        destination: dest,
-                        category: dest.category.name,
-                        bookmarked: bookmarks.includes(dest.id),
-                      });
-                    }}>
-                    <PlaceCard
-                      id={dest.id}
-                      name={dest.name}
-                      info={getPlaceCardString(dest)}
-                      bookmarked={bookmarks.includes(dest.id)}
-                      setBookmarked={(bookmarked: boolean, id: number) => {
-                        if (bookmarked) {
-                          setBookmarks([...bookmarks, id]);
-                        } else {
-                          setBookmarks(
-                            bookmarks.filter(
-                              (bookmark: number) => bookmark !== id,
-                            ),
-                          );
-                        }
-                      }}
-                      image={
-                        dest.photo
-                          ? {
-                              uri: dest.photo,
-                            }
-                          : icons.defaultIcon
-                      }
-                    />
-                  </TouchableOpacity>
+        animateOnMount={Platform.OS === 'ios'}
+        enableContentPanningGesture={false}>
+        <ScrollView contentContainerStyle={styles.scrollView}>
+          {groupPlaces?.map((groupPlace: GroupPlace, idx: number) =>
+            <View key={idx}>
+              <View style={destHeaderStyles.header}>
+                <View style={destHeaderStyles.title}>
+                  <Text>{groupPlace.name}</Text>
                 </View>
-              ) : null,
-            )}
-          </ScrollView>
-          {fullEventData ? (
-            <ScrollIndicator num={fullEventData.length} idx={placeIdx} />
-          ) : null}
-        </SafeAreaView>
+                <OptionMenu
+                  options={[
+                    {
+                      name: 'Summary',
+                      onPress: () => {
+                        Alert.alert('Summary', 'Summary is not implemented yet');
+                      },
+                      color: colors.black,
+                    },
+                    {
+                      name: 'Add Options',
+                      onPress: () => {
+
+                      },
+                      color: colors.accent,
+                    },
+                  ]}
+                />
+              </View>
+              <PlacesDisplay
+                navigation={navigation}
+                places={groupPlace.places}
+                width={s(290)}
+                bookmarks={bookmarks}
+                setBookmarked={(bookmarked: boolean, id: number) => {
+                  if (bookmarked) {
+                    setBookmarks([...bookmarks, id]);
+                  } else {
+                    setBookmarks(
+                      bookmarks.filter(
+                        (bookmark: number) => bookmark !== id,
+                      ),
+                    );
+                  }
+                }}
+                index={placeIdx}
+                setIndex={setPlaceIdx}
+              />
+              {idx !== groupPlaces.length - 1 ? <View style={styles.separater} /> : null}
+            </View>
+          )}
+        </ScrollView>
       </BottomSheet>
     </View>
   );
@@ -295,9 +274,15 @@ const styles = StyleSheet.create({
     height: '100%',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
-  reactionNames: {
-    color: colors.black,
+  scrollView: {
+    paddingVertical: s(15),
   },
+  separater: {
+    height: 0.5,
+    marginHorizontal: s(20),
+    marginVertical: s(15),
+    backgroundColor: colors.grey,
+  }
 });
 
 const headerStyles = StyleSheet.create({
@@ -313,6 +298,21 @@ const headerStyles = StyleSheet.create({
     flex: 1,
     marginHorizontal: s(10),
   },
+});
+
+const destHeaderStyles = StyleSheet.create({
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: s(30),
+    marginBottom: s(5),
+  },
+  title: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginRight: s(10),
+    flex: 1,
+  }
 });
 
 const placesDisplayStyles = StyleSheet.create({

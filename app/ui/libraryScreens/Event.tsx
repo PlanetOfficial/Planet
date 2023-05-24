@@ -7,6 +7,8 @@ import {
   SafeAreaView,
   Platform,
   Alert,
+  ScrollView,
+  LayoutAnimation,
 } from 'react-native';
 
 import {s, vs} from 'react-native-size-matters';
@@ -22,6 +24,7 @@ import {
   getAveragePoint,
   getRegionForCoordinates,
   isPlace,
+  getPlaceCardString,
 } from '../../utils/functions/Misc';
 import {
   MarkerObject,
@@ -46,6 +49,7 @@ import {floats} from '../../constants/numbers';
 import {editEvent, deleteEvent} from '../../utils/api/eventAPI';
 import {getPlaces} from '../../utils/api/placeAPI';
 import SelectSubcategory from '../editEventScreens/SelectSubcategory';
+import PlaceCard from '../components/PlaceCard';
 
 interface Props {
   navigation: any;
@@ -83,8 +87,8 @@ const Event: React.FC<Props> = ({navigation, route}) => {
   const insets = useSafeAreaInsets();
   const bottomSheetRef = useRef<BottomSheet>(null);
   const snapPoints = useMemo(
-    () => [s(240) + insets.bottom, vs(680) - s(60) - insets.top],
-    [insets.top, insets.bottom],
+    () => [vs(300) - (insets.top + s(50)), vs(680) - (insets.top + s(50))],
+    [insets.top],
   );
 
   const addRef = useRef<any>(null); // due to forwardRef
@@ -126,6 +130,7 @@ const Event: React.FC<Props> = ({navigation, route}) => {
   }, [navigation, eventId]);
 
   const beginEdits = () => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     bottomSheetRef.current?.expand();
     setEditing(true);
     setTempTitle(eventTitle);
@@ -134,6 +139,7 @@ const Event: React.FC<Props> = ({navigation, route}) => {
   };
 
   const saveEdits = async () => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     const placeIds = extractID(tempPlaces);
 
     const response: boolean = await editEvent(
@@ -147,8 +153,6 @@ const Event: React.FC<Props> = ({navigation, route}) => {
       setEventTitle(tempTitle);
       setDate(tempDate);
       getEventData(extractPlaces(tempPlaces));
-
-      bottomSheetRef.current?.collapse();
       setEditing(false);
     } else {
       Alert.alert('Error', 'Unable to save edits. Please try again.');
@@ -321,14 +325,12 @@ const Event: React.FC<Props> = ({navigation, route}) => {
 
       <BottomSheet
         ref={bottomSheetRef}
-        index={0}
+        index={1}
         keyboardBehavior="extend"
         android_keyboardInputMode="adjustPan"
         snapPoints={snapPoints}
-        handleStyle={styles.handle}
-        handleIndicatorStyle={styles.handleIndicator}
-        enableContentPanningGesture={false}
-        enableHandlePanningGesture={false}>
+        animateOnMount={Platform.OS === 'ios'}
+        enableContentPanningGesture={false}>
         {editing ? (
           <EditEvent
             navigation={navigation}
@@ -357,25 +359,40 @@ const Event: React.FC<Props> = ({navigation, route}) => {
             }
           />
         ) : (
-          <SafeAreaView>
-            <PlacesDisplay
-              navigation={navigation}
-              places={places}
-              width={s(290)}
-              bookmarks={bookmarks}
-              setBookmarked={(bookmarked: boolean, id: number) => {
-                if (bookmarked) {
-                  setBookmarks([...bookmarks, id]);
-                } else {
-                  setBookmarks(
-                    bookmarks.filter((bookmark: number) => bookmark !== id),
-                  );
-                }
-              }}
-              index={placeIdx}
-              setIndex={setPlaceIdx}
-            />
-          </SafeAreaView>
+          <ScrollView style={styles.scrollView}>
+            {places?.map((place: Place, index: number) => (
+              <View key={index}>
+                <TouchableOpacity
+                  style={styles.card}
+                  onPress={() => {
+                    navigation.navigate('Place', {
+                      placeData: place,
+                      bookmarks: bookmarks,
+                    });
+                  }}>
+                  <PlaceCard
+                    id={place.id}
+                    name={place.name}
+                    info={getPlaceCardString(place)}
+                    bookmarked={bookmarks.includes(place.id)}
+                    setBookmarked={(bookmarked: boolean, id: number) => {
+                      if (bookmarked) {
+                        setBookmarks([...bookmarks, id]);
+                      } else {
+                        setBookmarks(
+                          bookmarks.filter((bookmark: number) => bookmark !== id),
+                        );
+                      }
+                    }}
+                    image={{uri: place.photo}}
+                  />
+                </TouchableOpacity>
+                {index !== places.length - 1 ? (
+                  <View style={styles.separator}/>
+                  ) : null}
+              </View>
+            ))}
+          </ScrollView>
         )}
       </BottomSheet>
 
@@ -414,14 +431,13 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   separator: {
-    width: s(350),
+    marginHorizontal: s(20),
+    marginVertical: (s(39.4) - 0.5) / 2,
+    height: 0.5,
+    backgroundColor: colors.grey,
+  },
+  separatorOnDrag: {
     height: s(39.4),
-  },
-  handle: {
-    paddingTop: 0,
-  },
-  handleIndicator: {
-    height: 0,
   },
   dim: {
     position: 'absolute',
@@ -435,6 +451,13 @@ const styles = StyleSheet.create({
     height: s(240),
     paddingTop: s(20),
   },
+  card: {
+    alignSelf: 'center',
+    width: s(290),
+  },
+  scrollView: {
+    paddingTop: s(10),
+  }
 });
 
 const headerStyles = StyleSheet.create({

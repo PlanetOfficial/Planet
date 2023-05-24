@@ -267,7 +267,7 @@ const SelectDestinations: React.FC<Props> = ({navigation, route}) => {
 
       <BottomSheet
         ref={bottomSheetRef}
-        index={0}
+        index={1}
         snapPoints={snapPoints}
         onAnimate={handleSheetChange}
         animateOnMount={Platform.OS === 'ios'}
