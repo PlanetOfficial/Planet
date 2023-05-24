@@ -60,9 +60,9 @@ const Friends: React.FC<Props> = ({navigation}) => {
   const [curGroupEvents, setCurGroupEvents] = useState<GroupEvent[]>([]);
   const [bookmarks, setBookmarks] = useState<number[]>([]);
 
-  const [fgBottomSheetOpen, setFgBottomSheetOpen] = useState<boolean>(false);
-  const fgBottomSheetRef = useRef<BottomSheetModal>(null);
-  const fgSnapPoints = useMemo(
+  const [groupBottomSheetOpen, setGroupBottomSheetOpen] = useState<boolean>(false);
+  const groupBottomSheetRef = useRef<BottomSheetModal>(null);
+  const groupSnapPoints = useMemo(
     () => [
       Math.min(
         s(70) * (groups.length + invites.length) + s(120),
@@ -71,8 +71,10 @@ const Friends: React.FC<Props> = ({navigation}) => {
     ],
     [insets.top, groups.length, invites.length],
   );
-  const handleFgSheetChange = useCallback((_: number, toIndex: number) => {
-    setFgBottomSheetOpen(toIndex === 0);
+  const handleGroupSheetChange = useCallback((_: number, toIndex: number) => {
+    setGroupBottomSheetOpen(toIndex === 0);
+    setAddBottomSheetOpen(false);
+    addBottomSheetRef.current?.close();
   }, []);
 
   const [loading, setLoading] = useState<boolean>(true);
@@ -85,6 +87,8 @@ const Friends: React.FC<Props> = ({navigation}) => {
   );
   const handleAddSheetChange = useCallback((_: number, toIndex: number) => {
     setAddBottomSheetOpen(toIndex === 0);
+    setGroupBottomSheetOpen(false);
+    groupBottomSheetRef.current?.close();
   }, []);
 
   const fetchCurGroupInfo = async (group_id: number) => {
@@ -100,7 +104,7 @@ const Friends: React.FC<Props> = ({navigation}) => {
 
   useEffect(() => {
     if (group !== -1) {
-      fetchCurGroupInfo(groups[group].group.id);
+      fetchCurGroupInfo(groups[group].id);
     }
   }, [group, groups]);
 
@@ -113,9 +117,9 @@ const Friends: React.FC<Props> = ({navigation}) => {
       if (_groups.length > 0) {
         if (group === -1) {
           setGroup(0);
-          fetchCurGroupInfo(_groups[0].group.id);
+          fetchCurGroupInfo(_groups[0].id);
         } else {
-          fetchCurGroupInfo(_groups[group].group.id);
+          fetchCurGroupInfo(_groups[group].id);
         }
       }
     } else {
@@ -159,12 +163,12 @@ const Friends: React.FC<Props> = ({navigation}) => {
   const handleAddEvent = async (user_event_id: number) => {
     const response = await postGroupEvent(
       user_event_id,
-      groups[group].group.id,
+      groups[group].id,
     );
 
     if (response) {
       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-      fetchCurGroupInfo(groups[group].group.id);
+      fetchCurGroupInfo(groups[group].id);
     } else {
       Alert.alert('Error', 'Something went wrong. Please try again.');
     }
@@ -201,9 +205,9 @@ const Friends: React.FC<Props> = ({navigation}) => {
         <View style={headerStyles.container}>
           <TouchableOpacity
             style={headerStyles.selector}
-            onPress={() => fgBottomSheetRef.current?.present()}>
+            onPress={() => groupBottomSheetRef.current?.present()}>
             <Text size="xl" weight="b">
-              {group === -1 ? strings.title.groups : groups[group]?.group?.name}
+              {group === -1 ? strings.title.groups : groups[group]?.name}
             </Text>
             <View style={headerStyles.drop}>
               <Icon icon={icons.drop} />
@@ -230,7 +234,7 @@ const Friends: React.FC<Props> = ({navigation}) => {
           <AButton
             size="l"
             label={strings.groups.addPrompt}
-            onPress={() => addBottomSheetRef.current?.present()}
+            onPress={() => {addBottomSheetRef.current?.present(); console.log(groupBottomSheetOpen);}}
           />
         </View>
       ) : null}
@@ -258,7 +262,7 @@ const Friends: React.FC<Props> = ({navigation}) => {
             return (
               <TouchableOpacity
                 onPress={() => {
-                  if (!fgBottomSheetOpen && !addBottomSheetOpen) {
+                  if (!groupBottomSheetOpen && !addBottomSheetOpen) {
                     navigation.navigate('GroupEvent', {
                       eventData: item,
                       bookmarks: bookmarks,
@@ -309,24 +313,28 @@ const Friends: React.FC<Props> = ({navigation}) => {
         />
       )}
 
-      {fgBottomSheetOpen || addBottomSheetOpen ? (
+      {groupBottomSheetOpen || addBottomSheetOpen ? (
         <Pressable
           onPress={() => {
-            setFgBottomSheetOpen(false);
-            setAddBottomSheetOpen(false);
-            fgBottomSheetRef.current?.close();
-            addBottomSheetRef.current?.close();
+            if(groupBottomSheetOpen) {
+              setGroupBottomSheetOpen(false);
+              groupBottomSheetRef.current?.close();
+            }
+            if(addBottomSheetOpen) {
+              setAddBottomSheetOpen(false);
+              addBottomSheetRef.current?.close();
+            }
           }}
           style={styles.dim}
         />
       ) : null}
 
       <BottomSheetModal
-        ref={fgBottomSheetRef}
-        snapPoints={fgSnapPoints}
-        onAnimate={handleFgSheetChange}>
+        ref={groupBottomSheetRef}
+        snapPoints={groupSnapPoints}
+        onAnimate={handleGroupSheetChange}>
         <GroupSelector
-          bottomSheetRef={fgBottomSheetRef}
+          bottomSheetRef={groupBottomSheetRef}
           groups={groups}
           group={group}
           setGroup={setGroup}

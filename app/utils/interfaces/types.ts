@@ -135,25 +135,16 @@ export interface Coordinate {
 
 export interface Group {
   id: number;
-  user_id: number;
-  group: Group;
+  name: string;
   group_member: GroupMember[];
 }
 
 export interface GroupMember {
+  id: number;
   user: {
     name: string;
     email: string;
   };
-  group_id: number;
-  id: number;
-  user_id: number;
-}
-
-export interface Group {
-  id: number;
-  name: string;
-  owner: number;
 }
 
 export interface Invite {

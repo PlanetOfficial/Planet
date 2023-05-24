@@ -190,6 +190,15 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
                 color: colors.accent,
               },
               {
+                name: strings.library.edit,
+                onPress: () => {
+                  // TODO: edit group event if owner
+                  Alert.alert('Edit', 'Edit is not implemented yet');
+                },
+                disabled: !suggester?.self,
+                color: colors.black,
+              },
+              {
                 name: strings.main.remove,
                 onPress: () => handleRemoveEvent(groupEventId),
                 disabled: !suggester?.self,

@@ -36,7 +36,7 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {tabStack()}
           {placeStackScreen()}
           {eventStackScreen()}
-          {fgEventStackScreen()}
+          {groupEventStackScreen()}
           {settingsStackScreen()}
           {createGroupStackScreen()}
           {editGroupStackScreen()}
@@ -61,7 +61,7 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {tabStack()}
           {placeStackScreen()}
           {eventStackScreen()}
-          {fgEventStackScreen()}
+          {groupEventStackScreen()}
           {settingsStackScreen()}
           {createGroupStackScreen()}
           {editGroupStackScreen()}
@@ -164,7 +164,7 @@ const eventStackScreen = () => {
   );
 };
 
-const fgEventStackScreen = () => {
+const groupEventStackScreen = () => {
   return (
     <MainStack.Screen
       name="GroupEvent"

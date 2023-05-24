@@ -62,13 +62,13 @@ const GroupSelector: React.FC<Props> = ({
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      {groups?.map((fg: Group, idx: number) => (
+      {groups?.map((_group: Group, idx: number) => (
         <TouchableOpacity
           key={idx}
           style={[
             styles.row,
             {
-              backgroundColor: idx === group ? colors.grey : colors.white,
+              backgroundColor: _group === groups[group] ? colors.grey : colors.white,
             },
           ]}
           onPress={() => {
@@ -77,15 +77,15 @@ const GroupSelector: React.FC<Props> = ({
           }}>
           <Image style={styles.icon} source={icons.user} />
           <View style={styles.texts}>
-            <Text color={idx === group ? colors.accent : colors.black}>
-              {fg.group.name}
+            <Text color={_group === groups[group] ? colors.accent : colors.black}>
+              {_group.name}
             </Text>
           </View>
           <Icon
             size="m"
             icon={icons.option}
             onPress={() => {
-              navigation.navigate('EditGroup', {group: fg});
+              navigation.navigate('EditGroup', {group: _group});
               bottomSheetRef.current?.close();
             }}
           />
