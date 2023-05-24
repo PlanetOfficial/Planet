@@ -9,6 +9,7 @@ export interface Category {
   id: number;
   name: string;
   icon: string;
+  filters: Filter[];
   subcategories: Subcategory[];
   options?: Place[];
 }
@@ -93,9 +94,8 @@ export interface Review {
 export interface Filter {
   name: string;
   options: string[];
-  values: (number | string)[];
-  text: string;
-  defaultIdx: number | number[];
+  multi: boolean;
+  defaultIdx: number;
 }
 
 export interface Region {

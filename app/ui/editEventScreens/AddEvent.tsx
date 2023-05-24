@@ -46,7 +46,7 @@ const AddEvent = forwardRef((props: ChildComponentProps, ref) => {
     [insets.bottom],
   );
   const handleAddOptionsSheetChange = useCallback(
-    (fromIndex: number, toIndex: number) => {
+    (_: number, toIndex: number) => {
       setAddOptionsBottomSheetOpen(toIndex === 0);
     },
     [],
@@ -84,6 +84,7 @@ const AddEvent = forwardRef((props: ChildComponentProps, ref) => {
       id: category.id,
       name: category.name,
       icon: category.icon,
+      filters: category.filters,
       subcategories: category.subcategories,
       options: [],
     });
