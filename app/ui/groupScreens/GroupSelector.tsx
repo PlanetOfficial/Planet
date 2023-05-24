@@ -68,7 +68,8 @@ const GroupSelector: React.FC<Props> = ({
           style={[
             styles.row,
             {
-              backgroundColor: _group === groups[group] ? colors.grey : colors.white,
+              backgroundColor:
+                _group === groups[group] ? colors.grey : colors.white,
             },
           ]}
           onPress={() => {
@@ -77,7 +78,8 @@ const GroupSelector: React.FC<Props> = ({
           }}>
           <Image style={styles.icon} source={icons.user} />
           <View style={styles.texts}>
-            <Text color={_group === groups[group] ? colors.accent : colors.black}>
+            <Text
+              color={_group === groups[group] ? colors.accent : colors.black}>
               {_group.name}
             </Text>
           </View>

@@ -60,7 +60,8 @@ const Friends: React.FC<Props> = ({navigation}) => {
   const [curGroupEvents, setCurGroupEvents] = useState<GroupEvent[]>([]);
   const [bookmarks, setBookmarks] = useState<number[]>([]);
 
-  const [groupBottomSheetOpen, setGroupBottomSheetOpen] = useState<boolean>(false);
+  const [groupBottomSheetOpen, setGroupBottomSheetOpen] =
+    useState<boolean>(false);
   const groupBottomSheetRef = useRef<BottomSheetModal>(null);
   const groupSnapPoints = useMemo(
     () => [
@@ -73,11 +74,7 @@ const Friends: React.FC<Props> = ({navigation}) => {
   );
   const handleGroupSheetChange = useCallback((_: number, toIndex: number) => {
     setGroupBottomSheetOpen(toIndex === 0);
-    setAddBottomSheetOpen(false);
-    addBottomSheetRef.current?.close();
   }, []);
-
-  const [loading, setLoading] = useState<boolean>(true);
 
   const [addBottomSheetOpen, setAddBottomSheetOpen] = useState<boolean>(false);
   const addBottomSheetRef = useRef<BottomSheetModal>(null);
@@ -87,9 +84,9 @@ const Friends: React.FC<Props> = ({navigation}) => {
   );
   const handleAddSheetChange = useCallback((_: number, toIndex: number) => {
     setAddBottomSheetOpen(toIndex === 0);
-    setGroupBottomSheetOpen(false);
-    groupBottomSheetRef.current?.close();
   }, []);
+
+  const [loading, setLoading] = useState<boolean>(true);
 
   const fetchCurGroupInfo = async (group_id: number) => {
     setLoading(true);
@@ -161,10 +158,7 @@ const Friends: React.FC<Props> = ({navigation}) => {
   }, [navigation, group]);
 
   const handleAddEvent = async (user_event_id: number) => {
-    const response = await postGroupEvent(
-      user_event_id,
-      groups[group].id,
-    );
+    const response = await postGroupEvent(user_event_id, groups[group].id);
 
     if (response) {
       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
@@ -234,7 +228,10 @@ const Friends: React.FC<Props> = ({navigation}) => {
           <AButton
             size="l"
             label={strings.groups.addPrompt}
-            onPress={() => {addBottomSheetRef.current?.present(); console.log(groupBottomSheetOpen);}}
+            onPress={() => {
+              addBottomSheetRef.current?.present();
+              console.log(groupBottomSheetOpen);
+            }}
           />
         </View>
       ) : null}
@@ -316,13 +313,11 @@ const Friends: React.FC<Props> = ({navigation}) => {
       {groupBottomSheetOpen || addBottomSheetOpen ? (
         <Pressable
           onPress={() => {
-            if(groupBottomSheetOpen) {
-              setGroupBottomSheetOpen(false);
-              groupBottomSheetRef.current?.close();
+            if (groupBottomSheetOpen) {
+              groupBottomSheetRef.current?.dismiss();
             }
-            if(addBottomSheetOpen) {
-              setAddBottomSheetOpen(false);
-              addBottomSheetRef.current?.close();
+            if (addBottomSheetOpen) {
+              addBottomSheetRef.current?.dismiss();
             }
           }}
           style={styles.dim}
