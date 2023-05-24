@@ -45,6 +45,7 @@ import {colors} from '../../constants/theme';
 import {floats} from '../../constants/numbers';
 import {editEvent, deleteEvent} from '../../utils/api/eventAPI';
 import {getPlaces} from '../../utils/api/placeAPI';
+import SelectSubcategory from '../editEventScreens/SelectSubcategory';
 
 interface Props {
   navigation: any;
@@ -87,6 +88,7 @@ const Event: React.FC<Props> = ({navigation, route}) => {
   );
 
   const addRef = useRef<any>(null); // due to forwardRef
+  const selectSubcategoryRef = useRef<any>(null); // due to forwardRef
 
   const getEventData = async (_places: Place[]) => {
     setPlaces(_places);
@@ -346,6 +348,10 @@ const Event: React.FC<Props> = ({navigation, route}) => {
             setSelectionIndices={setSelectionIndices}
             onAddPress={addRef.current?.onAddPress}
             bottomPad={0}
+            onSubcategoryOpen={selectSubcategoryRef.current?.onSubcategoryOpen}
+            onSubcategorySelect={
+              selectSubcategoryRef.current?.onSubcategorySelect
+            }
           />
         ) : (
           <SafeAreaView>
@@ -388,6 +394,8 @@ const Event: React.FC<Props> = ({navigation, route}) => {
         leftColor={colors.red}
         rightColor={colors.accent}
       />
+
+      <SelectSubcategory ref={selectSubcategoryRef} />
     </View>
   );
 };

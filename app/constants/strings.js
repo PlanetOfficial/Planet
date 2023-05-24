@@ -146,14 +146,10 @@ const strings = {
     cancel: 'Cancel',
   },
   filter: {
-    all: 'All',
+    none: 'None',
     editView: 'Edit View',
     visible: 'Visible',
     hidden: 'Hidden',
-    categories: 'Categories',
-    filterCategories: 'Filter Categories',
-    clear: 'Clear',
-    apply: 'Apply',
   },
 };
 

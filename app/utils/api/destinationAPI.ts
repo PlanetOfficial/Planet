@@ -6,7 +6,7 @@ export const getDestinations = async (
   radius: number,
   latitude: number,
   longitude: number,
-  filters?: any,
+  filters?: {[key: string]: string | string[]},
   subcategory_id?: number,
 ): Promise<Place[] | null> => {
   const response = await fetch(
