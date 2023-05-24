@@ -1,6 +1,6 @@
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {GroupURL} from '../APIConstants';
-import { FriendGroup } from '../../interfaces/types';
+import { Group } from '../../interfaces/types';
 
 export const postGroup = async (
   name: string,
@@ -25,7 +25,7 @@ export const postGroup = async (
   return response?.ok;
 };
 
-export const getGroups = async (): Promise<FriendGroup[] | null> => {
+export const getGroups = async (): Promise<Group[] | null> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
   const response = await fetch(
@@ -36,7 +36,7 @@ export const getGroups = async (): Promise<FriendGroup[] | null> => {
   );
 
   if (response?.ok) {
-    const myJson : FriendGroup[] = await response.json();
+    const myJson : Group[] = await response.json();
     return myJson;
   } else {
     return null;

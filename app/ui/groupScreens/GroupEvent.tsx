@@ -40,7 +40,7 @@ interface Props {
   route: any;
 }
 
-const FGEvent: React.FC<Props> = ({navigation, route}) => {
+const GroupEvent: React.FC<Props> = ({navigation, route}) => {
   const [groupEventId] = useState<number>(route?.params?.eventData?.id);
   const [eventTitle] = useState<string>(route?.params?.eventData?.name);
   const [suggester] = useState<{name: string; self: boolean}>(
@@ -181,7 +181,7 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
                 color: colors.black,
               },
               {
-                name: strings.friends.fork,
+                name: strings.groups.fork,
                 onPress: handleFork,
                 color: colors.accent,
               },
@@ -339,4 +339,4 @@ const placesDisplayStyles = StyleSheet.create({
   },
 });
 
-export default FGEvent;
+export default GroupEvent;

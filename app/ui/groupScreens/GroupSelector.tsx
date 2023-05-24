@@ -19,23 +19,23 @@ import AButton from '../components/ActionButton';
 import Icon from '../components/Icon';
 
 import {acceptInvite, rejectInvite} from '../../utils/api/groups/inviteAPI';
-import {FriendGroup, Invite} from '../../utils/interfaces/types';
+import {Group, Invite} from '../../utils/interfaces/types';
 
 interface Props {
   bottomSheetRef: React.RefObject<BottomSheetModalMethods>;
-  friendGroups: FriendGroup[];
-  friendGroup: number;
-  setFriendGroup: (friendGroup: number) => void;
+  groups: Group[];
+  group: number;
+  setGroup: (group: number) => void;
   refreshOnInviteEvent: () => void;
   invites: Invite[];
   navigation: any;
 }
 
-const FGSelector: React.FC<Props> = ({
+const GroupSelector: React.FC<Props> = ({
   bottomSheetRef,
-  friendGroups,
-  friendGroup,
-  setFriendGroup,
+  groups,
+  group,
+  setGroup,
   refreshOnInviteEvent,
   invites,
   navigation,
@@ -62,22 +62,22 @@ const FGSelector: React.FC<Props> = ({
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      {friendGroups?.map((fg: FriendGroup, idx: number) => (
+      {groups?.map((fg: Group, idx: number) => (
         <TouchableOpacity
           key={idx}
           style={[
             styles.row,
             {
-              backgroundColor: idx === friendGroup ? colors.grey : colors.white,
+              backgroundColor: idx === group ? colors.grey : colors.white,
             },
           ]}
           onPress={() => {
-            setFriendGroup(idx);
+            setGroup(idx);
             bottomSheetRef.current?.close();
           }}>
           <Image style={styles.icon} source={icons.user} />
           <View style={styles.texts}>
-            <Text color={idx === friendGroup ? colors.accent : colors.black}>
+            <Text color={idx === group ? colors.accent : colors.black}>
               {fg.group.name}
             </Text>
           </View>
@@ -85,7 +85,7 @@ const FGSelector: React.FC<Props> = ({
             size="m"
             icon={icons.option}
             onPress={() => {
-              navigation.navigate('EditFG', {friendGroup: fg});
+              navigation.navigate('EditGroup', {group: fg});
               bottomSheetRef.current?.close();
             }}
           />
@@ -104,14 +104,14 @@ const FGSelector: React.FC<Props> = ({
             <View style={styles.buttonsContainer}>
               <AButton
                 size="xs"
-                label={strings.friends.accept}
+                label={strings.groups.accept}
                 onPress={() => {
                   handleAcceptInvite(invite.id);
                 }}
               />
               <AButton
                 size="xs"
-                label={strings.friends.decline}
+                label={strings.groups.decline}
                 color={colors.darkgrey}
                 onPress={() => {
                   handleRejectInvite(invite.id);
@@ -125,13 +125,13 @@ const FGSelector: React.FC<Props> = ({
         style={styles.row}
         onPress={() => {
           bottomSheetRef.current?.close();
-          navigation.navigate('CreateFG');
+          navigation.navigate('CreateGroup');
         }}>
         <View style={styles.plus}>
           <Image style={styles.plusIcon} source={icons.plus} />
         </View>
         <View style={styles.texts}>
-          <Text>{strings.friends.createPrompt}</Text>
+          <Text>{strings.groups.createPrompt}</Text>
         </View>
       </TouchableOpacity>
     </ScrollView>
@@ -186,4 +186,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default FGSelector;
+export default GroupSelector;

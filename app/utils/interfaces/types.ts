@@ -133,7 +133,7 @@ export interface Coordinate {
   longitude: number;
 }
 
-export interface FriendGroup {
+export interface Group {
   id: number;
   user_id: number;
   group: Group;

@@ -9,7 +9,7 @@ import {colors} from '../../constants/theme';
 import {tabIcons} from '../../constants/images';
 
 import Trending from '../trendingScreens/Trending';
-import Friends from '../friendsScreens/Friends';
+import Friends from '../groupScreens/Groups';
 import Library from '../libraryScreens/Library';
 import Profile from '../profileScreens/Profile';
 
@@ -23,7 +23,7 @@ export const NavBar = () => {
         source = focused ? tabIcons.trendingActive : tabIcons.trendingInactive;
         break;
       case 'Friends':
-        source = focused ? tabIcons.friendsActive : tabIcons.friendsInactive;
+        source = focused ? tabIcons.groupsActive : tabIcons.groupsInactive;
         break;
       case 'Library':
         source = focused ? tabIcons.libraryActive : tabIcons.libraryInactive;

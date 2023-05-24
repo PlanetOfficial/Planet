@@ -1,6 +1,6 @@
 export const tabIcons = {
-  friendsActive: require('../assets/tabIcons/friends-active.png'),
-  friendsInactive: require('../assets/tabIcons/friends-inactive.png'),
+  groupsActive: require('../assets/tabIcons/groups-active.png'),
+  groupsInactive: require('../assets/tabIcons/groups-inactive.png'),
   libraryActive: require('../assets/tabIcons/library-active.png'),
   libraryInactive: require('../assets/tabIcons/library-inactive.png'),
   profileActive: require('../assets/tabIcons/profile-active.png'),
