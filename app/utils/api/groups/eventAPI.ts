@@ -1,10 +1,10 @@
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {GroupURL} from '../APIConstants';
-import {Event, GroupPlace} from '../../interfaces/types';
+import {Event, GroupEvent, GroupPlace} from '../../interfaces/types';
 
 export const getGroupEvents = async (
   group_id: number,
-): Promise<Event[] | null> => {
+): Promise<GroupEvent[] | null> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
   const response = await fetch(
@@ -16,7 +16,7 @@ export const getGroupEvents = async (
   );
 
   if (response?.ok) {
-    const myJson : Event[] = await response.json();
+    const myJson : GroupEvent[] = await response.json();
     return myJson;
   } else {
     return null;

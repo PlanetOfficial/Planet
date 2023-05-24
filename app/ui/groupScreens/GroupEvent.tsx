@@ -20,9 +20,9 @@ import {
   getPlaceCardString,
   getRegionForCoordinates,
 } from '../../utils/functions/Misc';
-import {MarkerObject, Place} from '../../utils/interfaces/types';
+import {GroupPlace, MarkerObject, Place} from '../../utils/interfaces/types';
 import {getPlaces} from '../../utils/api/placeAPI';
-import { getGroupEvent, deleteGroupEvent, forkGroupEvent } from '../../utils/api/groups/eventAPI';
+import { deleteGroupEvent, forkGroupEvent } from '../../utils/api/groups/eventAPI';
 
 import PlaceCard from '../components/PlaceCard';
 import Blur from '../components/Blur';
@@ -54,7 +54,7 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
   );
   const [userId, setUserId] = useState<number>(-1);
 
-  const [fullEventData, setFullEventData] = useState<Place[]>();
+  const [fullEventData, setFullEventData] = useState<GroupPlace[]>();
 
   const [placeIdx, setPlaceIdx] = useState<number>(0);
   const [markers, setMarkers] = useState<MarkerObject[]>([]);
@@ -221,7 +221,7 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
                 Math.round(event.nativeEvent.contentOffset.x / s(310)),
               )
             }>
-            {fullEventData?.map((dest: Place, idx: number) =>
+            {fullEventData?.map((dest: GroupPlace, idx: number) =>
               dest.group_place_id ? (
                 <View
                   style={[

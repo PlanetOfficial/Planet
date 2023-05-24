@@ -30,7 +30,7 @@ export interface GroupEvent {
   id: number;
   name: string;
   date: string;
-  places: GroupPlace[];
+  destinations: GroupPlace[];
   suggester: {
     id: number;
     name: string;

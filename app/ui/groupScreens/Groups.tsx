@@ -33,6 +33,7 @@ import {
   Group,
   Invite,
   Event,
+  GroupEvent,
   Place,
 } from '../../utils/interfaces/types';
 import {getEvents} from '../../utils/api/eventAPI';
@@ -51,7 +52,7 @@ const Friends: React.FC<Props> = ({navigation}) => {
   const [invites, setInvites] = useState<Invite[]>([]);
 
   const [userEvents, setUserEvents] = useState<Event[]>([]);
-  const [curGroupEvents, setCurGroupEvents] = useState<Event[]>([]);
+  const [curGroupEvents, setCurGroupEvents] = useState<GroupEvent[]>([]);
   const [bookmarks, setBookmarks] = useState<number[]>([]);
 
   const [fgBottomSheetOpen, setFgBottomSheetOpen] = useState<boolean>(false);
@@ -83,7 +84,7 @@ const Friends: React.FC<Props> = ({navigation}) => {
 
   const fetchCurGroupInfo = async (group_id: number) => {
     setLoading(true);
-    const response = await getGroupEvents(group_id);
+    const response : GroupEvent[] | null = await getGroupEvents(group_id);
     if (response) {
       setCurGroupEvents(response);
     } else {
@@ -180,7 +181,7 @@ const Friends: React.FC<Props> = ({navigation}) => {
     if (response) {
       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
       setCurGroupEvents(
-        curGroupEvents.filter((event: Event) => event.id !== group_event_id),
+        curGroupEvents.filter((event: GroupEvent) => event.id !== group_event_id),
       );
     } else {
       Alert.alert('Error', 'Something went wrong. Please try again.');
@@ -238,7 +239,7 @@ const Friends: React.FC<Props> = ({navigation}) => {
           data={curGroupEvents}
           style={contentStyles.container}
           initialNumToRender={4}
-          keyExtractor={(item: Event) => item.id.toString()}
+          keyExtractor={(item: GroupEvent) => item.id.toString()}
           ItemSeparatorComponent={Spacer}
           contentContainerStyle={contentStyles.content}
           ListEmptyComponent={
@@ -248,7 +249,7 @@ const Friends: React.FC<Props> = ({navigation}) => {
               </Text>
             </View>
           }
-          renderItem={({item}: {item: Event}) => {
+          renderItem={({item}: {item: GroupEvent}) => {
             return (
               <TouchableOpacity
                 onPress={() => {
@@ -267,10 +268,12 @@ const Friends: React.FC<Props> = ({navigation}) => {
                     item.suggester?.name
                   }
                   image={
-                    item.places &&
-                    item.places.length > 0 &&
-                    item.places[0]?.photo
-                      ? {uri: item.places[0]?.photo}
+                    item.destinations &&
+                    item.destinations.length > 0 &&
+                    item.destinations[0].places &&
+                    item.destinations[0].places.length > 0 &&
+                    item.destinations[0].places[0]?.photo
+                      ? {uri: item.destinations[0].places[0]?.photo}
                       : icons.defaultIcon
                   }
                   options={[
