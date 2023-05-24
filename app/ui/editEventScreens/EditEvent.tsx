@@ -34,6 +34,8 @@ interface Props {
   setSelectionIndices: (idx: number[]) => void;
   onAddPress: (idx: number) => void;
   bottomPad: number;
+  onSubcategoryOpen?: (comp: React.ReactNode) => void;
+  onSubcategorySelect?: () => void;
 }
 
 const EditEvent: React.FC<Props> = ({
@@ -49,6 +51,8 @@ const EditEvent: React.FC<Props> = ({
   setSelectionIndices,
   onAddPress,
   bottomPad,
+  onSubcategoryOpen,
+  onSubcategorySelect,
 }) => {
   const [dragging, setDragging] = useState<boolean>(false);
   const itemRefs = useRef(new Map());
@@ -88,169 +92,173 @@ const EditEvent: React.FC<Props> = ({
 
   return (
     // TODO: draggable flat list currently reloads all items on drag, which is not ideal
-    <DraggableFlatList
-      data={destinations}
-      keyExtractor={(_: Place | CategoryT, index: number) => index.toString()}
-      showsVerticalScrollIndicator={false}
-      contentContainerStyle={[
-        styles.flatlist,
-        {paddingBottom: bottomPad + s(20)},
-      ]}
-      activationDistance={20}
-      onDragBegin={() => {
-        setDragging(true);
-        itemRefs.current.forEach(value => {
-          value?.close();
-        });
-        childRefs.current.forEach(value => {
-          value?.closeDropdown();
-        });
-      }}
-      onDragEnd={({
-        data,
-        from,
-        to,
-      }: {
-        data: (Place | CategoryT)[];
-        from: number;
-        to: number;
-      }) => {
-        setDragging(false);
-        setDestinations(data);
-        const _selectionIndices: number[] = [...selectionIndices];
-        const item = _selectionIndices.splice(from, 1)[0];
-        _selectionIndices.splice(to, 0, item);
-        setSelectionIndices(_selectionIndices);
-      }}
-      onScrollBeginDrag={() => {
-        itemRefs.current.forEach(value => {
-          value?.close();
-        });
-        childRefs.current.forEach(value => {
-          value?.closeDropdown();
-        });
-      }}
-      renderItem={({
-        item,
-        getIndex,
-        drag,
-        isActive,
-      }: {
-        item: Place | CategoryT;
-        getIndex: () => number | undefined;
-        drag: () => void;
-        isActive: boolean;
-      }) => {
-        let _index: any = getIndex(); // typescript is so stupid
-        const index: number = _index;
-        return (
-          <View
-            onTouchStart={() => {
-              itemRefs.current.forEach(value => {
-                value?.close();
-              });
-              childRefs.current.forEach((value, key) => {
-                if (key !== item.id) {
-                  value?.closeDropdown();
-                }
-              });
-            }}>
-            {isPlace(item) ? (
-              <View
-                key={item.id}
-                style={[
-                  styles.cardContainer,
-                  dragging && !isActive ? styles.transparent : null,
-                ]}>
-                <SwipeableItem
-                  ref={ref => itemRefs.current.set(item.id, ref)}
-                  overSwipe={s(20)}
-                  item={item}
-                  renderUnderlayLeft={() => (
-                    <View style={styles.removeContainer}>
-                      <TouchableOpacity
-                        disabled={destinations.length === 1}
-                        onPress={() => onRemove(item)}
-                        style={[
-                          styles.removeButton,
-                          destinations.length === 1
+    <>
+      <DraggableFlatList
+        data={destinations}
+        keyExtractor={(_: Place | CategoryT, index: number) => index.toString()}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={[
+          styles.flatlist,
+          {paddingBottom: bottomPad + s(20)},
+        ]}
+        activationDistance={20}
+        onDragBegin={() => {
+          setDragging(true);
+          itemRefs.current.forEach(value => {
+            value?.close();
+          });
+          childRefs.current.forEach(value => {
+            value?.closeDropdown();
+          });
+        }}
+        onDragEnd={({
+          data,
+          from,
+          to,
+        }: {
+          data: (Place | CategoryT)[];
+          from: number;
+          to: number;
+        }) => {
+          setDragging(false);
+          setDestinations(data);
+          const _selectionIndices: number[] = [...selectionIndices];
+          const item = _selectionIndices.splice(from, 1)[0];
+          _selectionIndices.splice(to, 0, item);
+          setSelectionIndices(_selectionIndices);
+        }}
+        onScrollBeginDrag={() => {
+          itemRefs.current.forEach(value => {
+            value?.close();
+          });
+          childRefs.current.forEach(value => {
+            value?.closeDropdown();
+          });
+        }}
+        renderItem={({
+          item,
+          getIndex,
+          drag,
+          isActive,
+        }: {
+          item: Place | CategoryT;
+          getIndex: () => number | undefined;
+          drag: () => void;
+          isActive: boolean;
+        }) => {
+          let _index: any = getIndex(); // typescript is so stupid
+          const index: number = _index;
+          return (
+            <View
+              onTouchStart={() => {
+                itemRefs.current.forEach(value => {
+                  value?.close();
+                });
+                childRefs.current.forEach((value, key) => {
+                  if (key !== item.id) {
+                    value?.closeDropdown();
+                  }
+                });
+              }}>
+              {isPlace(item) ? (
+                <View
+                  key={item.id}
+                  style={[
+                    styles.cardContainer,
+                    dragging && !isActive ? styles.transparent : null,
+                  ]}>
+                  <SwipeableItem
+                    ref={ref => itemRefs.current.set(item.id, ref)}
+                    overSwipe={s(20)}
+                    item={item}
+                    renderUnderlayLeft={() => (
+                      <View style={styles.removeContainer}>
+                        <TouchableOpacity
+                          disabled={destinations.length === 1}
+                          onPress={() => onRemove(item)}
+                          style={[
+                            styles.removeButton,
+                            destinations.length === 1
+                              ? {
+                                  backgroundColor: colors.darkgrey,
+                                }
+                              : null,
+                          ]}>
+                          <Image style={styles.remove} source={icons.remove} />
+                        </TouchableOpacity>
+                      </View>
+                    )}
+                    snapPointsLeft={[s(60)]}>
+                    <TouchableOpacity
+                      style={styles.card}
+                      onLongPress={drag}
+                      delayLongPress={400}
+                      disabled={dragging && !isActive}
+                      onPress={() => {
+                        navigation.navigate('Place', {
+                          destination: item,
+                          category: item.category.name,
+                          bookmarked: bookmarks.includes(item.id),
+                        });
+                      }}>
+                      <PlaceCard
+                        id={item.id}
+                        name={item.name}
+                        info={getPlaceCardString(item)}
+                        bookmarked={bookmarks.includes(item.id)}
+                        setBookmarked={setBookmarked}
+                        image={
+                          item.photo
                             ? {
-                                backgroundColor: colors.darkgrey,
+                                uri: item.photo,
                               }
-                            : null,
-                        ]}>
-                        <Image style={styles.remove} source={icons.remove} />
-                      </TouchableOpacity>
-                    </View>
-                  )}
-                  snapPointsLeft={[s(60)]}>
-                  <TouchableOpacity
-                    style={styles.card}
-                    onLongPress={drag}
-                    delayLongPress={400}
-                    disabled={dragging && !isActive}
-                    onPress={() => {
-                      navigation.navigate('Place', {
-                        destination: item,
-                        category: item.category.name,
-                        bookmarked: bookmarks.includes(item.id),
-                      });
-                    }}>
-                    <PlaceCard
-                      id={item.id}
-                      name={item.name}
-                      info={getPlaceCardString(item)}
-                      bookmarked={bookmarks.includes(item.id)}
-                      setBookmarked={setBookmarked}
-                      image={
-                        item.photo
-                          ? {
-                              uri: item.photo,
-                            }
-                          : icons.defaultIcon
-                      }
-                    />
-                  </TouchableOpacity>
-                </SwipeableItem>
-              </View>
-            ) : (
-              <View
-                key={item.id}
-                style={dragging && !isActive ? styles.transparent : null}>
-                <Category
-                  ref={ref => childRefs.current.set(item.id, ref)}
-                  navigation={navigation}
-                  radius={radius}
-                  latitude={latitude}
-                  longitude={longitude}
-                  bookmarks={bookmarks}
-                  setBookmarked={setBookmarked}
-                  category={item}
-                  categoryIndex={index}
-                  destination={destinations[index]}
-                  selectionIndex={selectionIndices[index]}
-                  setSelectionIndex={(idx: number) => {
-                    const _selectionIndices = [...selectionIndices];
-                    _selectionIndices[index] = idx;
-                    setSelectionIndices(_selectionIndices);
-                  }}
-                  destinations={destinations}
-                  setDestinations={setDestinations}
-                  onCategoryMove={onMove}
-                />
-              </View>
-            )}
-            {dragging ? (
-              <Separator />
-            ) : (
-              <TouchableOpacity onPress={() => onAddPress(index)}>
-                <AddEventSeparator />
-              </TouchableOpacity>
-            )}
-          </View>
-        );
-      }}
-    />
+                            : icons.defaultIcon
+                        }
+                      />
+                    </TouchableOpacity>
+                  </SwipeableItem>
+                </View>
+              ) : (
+                <View
+                  key={item.id}
+                  style={dragging && !isActive ? styles.transparent : null}>
+                  <Category
+                    ref={ref => childRefs.current.set(item.id, ref)}
+                    navigation={navigation}
+                    radius={radius}
+                    latitude={latitude}
+                    longitude={longitude}
+                    bookmarks={bookmarks}
+                    setBookmarked={setBookmarked}
+                    category={item}
+                    categoryIndex={index}
+                    destination={destinations[index]}
+                    selectionIndex={selectionIndices[index]}
+                    setSelectionIndex={(idx: number) => {
+                      const _selectionIndices = [...selectionIndices];
+                      _selectionIndices[index] = idx;
+                      setSelectionIndices(_selectionIndices);
+                    }}
+                    destinations={destinations}
+                    setDestinations={setDestinations}
+                    onCategoryMove={onMove}
+                    onSubcategoryOpen={onSubcategoryOpen}
+                    onSubcategorySelect={onSubcategorySelect}
+                  />
+                </View>
+              )}
+              {dragging ? (
+                <Separator />
+              ) : (
+                <TouchableOpacity onPress={() => onAddPress(index)}>
+                  <AddEventSeparator />
+                </TouchableOpacity>
+              )}
+            </View>
+          );
+        }}
+      />
+    </>
   );
 };
 
@@ -341,6 +349,13 @@ const styles = StyleSheet.create({
     width: '70%',
     height: '70%',
     tintColor: colors.white,
+  },
+  dim: {
+    position: 'absolute',
+    marginTop: -s(100),
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(0,0,0,0.5)',
   },
 });
 

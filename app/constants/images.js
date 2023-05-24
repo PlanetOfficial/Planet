@@ -26,13 +26,18 @@ export const icons = {
   dislike: require('../assets/icons/dislike.png'),
   comment: require('../assets/icons/comment.png'),
   remove: require('../assets/icons/remove.png'),
-  filter: require('../assets/icons/filter.png'),
+  tick: require('../assets/icons/tick.png'),
   option: require('../assets/icons/option.png'),
   drag: require('../assets/icons/drag.png'),
   plus: require('../assets/icons/plus.png'),
   minus: require('../assets/icons/minus.png'),
   hide: require('../assets/icons/hide.png'),
   drop: require('../assets/icons/drop.png'),
+  map: require('../assets/icons/map.png'),
+  checked: require('../assets/icons/checked.png'),
+  unchecked: require('../assets/icons/unchecked.png'),
+  selected: require('../assets/icons/selected.png'),
+  unselected: require('../assets/icons/unselected.png'),
 };
 
 export const vectors = {

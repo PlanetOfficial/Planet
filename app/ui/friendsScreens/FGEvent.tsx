@@ -78,7 +78,7 @@ const FGEvent: React.FC<Props> = ({navigation, route}) => {
   const feedbackBottomSheetRef = useRef<BottomSheetModal>(null);
   const feedbackSnapPoints = useMemo(() => ['40%'], []);
   const handleFeedbackSheetChange = useCallback(
-    (fromIndex: number, toIndex: number) => {
+    (_: number, toIndex: number) => {
       setFeedbackBottomSheetOpen(toIndex === 0);
     },
     [],

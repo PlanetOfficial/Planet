@@ -5,17 +5,31 @@ import React, {
   useRef,
   useEffect,
 } from 'react';
-import {StyleSheet, View, Image} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Image,
+  ActivityIndicator,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
 import {s} from 'react-native-size-matters';
 
 import {colors} from '../../constants/theme';
 import strings from '../../constants/strings';
+import {icons} from '../../constants/images';
 
+import Icon from '../components/Icon';
 import Text from '../components/Text';
 import OptionMenu from '../components/OptionMenu';
 import PlacesDisplay from '../components/PlacesDisplay';
+import Filter from './Filter';
 
-import {Place, Category as CategoryT} from '../../utils/interfaces/types';
+import {
+  Place,
+  Category as CategoryT,
+  Subcategory,
+} from '../../utils/interfaces/types';
 import {getDestinations} from '../../utils/api/destinationAPI';
 
 interface ChildComponentProps {
@@ -33,6 +47,8 @@ interface ChildComponentProps {
   destinations: (Place | CategoryT)[];
   setDestinations: (destinations: (Place | CategoryT)[]) => void;
   onCategoryMove: (idx: number, direction: number) => void;
+  onSubcategoryOpen?: (comp: React.ReactNode) => void;
+  onSubcategorySelect?: () => void;
 }
 
 const Category = forwardRef((props: ChildComponentProps, ref) => {
@@ -51,6 +67,8 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
     destinations,
     setDestinations,
     onCategoryMove,
+    onSubcategoryOpen,
+    onSubcategorySelect,
   } = props;
 
   const childRef = useRef<any>(null); // due to forwardRef
@@ -61,16 +79,42 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
     closeDropdown,
   }));
 
+  const [loading, setLoading] = useState<boolean>(true);
+
   const [toBeRefreshed, setToBeRefreshed] = useState<boolean>(true);
+
+  const [filters, setFilters] = useState<(number | number[])[]>([]);
+
+  const [subcategory, setSubcategory] = useState<Subcategory | null>();
 
   useEffect(() => {
     const loadDestinations = async (categoryId: number) => {
+      setLoading(true);
       setToBeRefreshed(false);
+
+      const _filters: {[key: string]: string | string[]} = {};
+      for (let i = 0; i < category.filters.length; i++) {
+        const filter = category.filters[i];
+        const _filter = filters[i];
+        if (Array.isArray(_filter)) {
+          const filterValues: string[] = [];
+          for (let j = 0; j < _filter.length; j++) {
+            filterValues.push(filter.options[_filter[j]]);
+          }
+          _filters[filter.name] = filterValues;
+        } else {
+          _filters[filter.name] =
+            filters[i] === -1 ? '' : filter.options[filters[i] as number];
+        }
+      }
+
       const response = await getDestinations(
         categoryId,
         radius,
         latitude,
         longitude,
+        _filters ? _filters : undefined,
+        subcategory ? subcategory.id : undefined,
       );
 
       const _destinations: (Place | CategoryT)[] = [...destinations];
@@ -79,6 +123,7 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
         _destination.options = response;
         setDestinations(_destinations);
       }
+      setLoading(false);
     };
 
     if (isCategory(destination) && toBeRefreshed) {
@@ -95,7 +140,26 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
     destinations,
     setDestinations,
     toBeRefreshed,
+    category.filters,
+    filters,
+    subcategory,
   ]);
+
+  useEffect(() => {
+    const _filters: (number | number[])[] = [];
+    for (let i = 0; i < category.filters.length; i++) {
+      if (category.filters[i].multi) {
+        _filters.push([]);
+      } else {
+        _filters.push(category.filters[i].defaultIdx);
+      }
+    }
+    setFilters(_filters);
+  }, [category.filters]);
+
+  useEffect(() => {
+    setToBeRefreshed(true);
+  }, [filters, subcategory]);
 
   const isCategory = (item: Place | CategoryT): item is CategoryT => {
     return 'icon' in item;
@@ -107,9 +171,56 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
         <View style={styles.categoryIconContainer}>
           <Image style={styles.categoryIcon} source={{uri: category.icon}} />
         </View>
-        <View style={styles.headerTitle}>
-          <Text>{category.name}</Text>
-        </View>
+        {category.subcategories && category.subcategories.length > 0 ? (
+          <TouchableOpacity
+            style={styles.headerTitle}
+            onPress={() =>
+              onSubcategoryOpen
+                ? onSubcategoryOpen(
+                    <ScrollView
+                      contentContainerStyle={styles.subcategoryContainer}>
+                      {category.subcategories?.map(
+                        (_subcategory: Subcategory, index: number) => (
+                          <TouchableOpacity
+                            key={index}
+                            style={[
+                              styles.chip,
+                              subcategory === _subcategory
+                                ? {
+                                    backgroundColor: colors.accentLight,
+                                  }
+                                : null,
+                            ]}
+                            onPress={() => {
+                              setSubcategory
+                                ? subcategory === _subcategory
+                                  ? setSubcategory(null)
+                                  : setSubcategory(_subcategory)
+                                : null;
+                              onSubcategorySelect
+                                ? onSubcategorySelect()
+                                : null;
+                            }}>
+                            <Text size="s" weight="l">
+                              {_subcategory.name}
+                            </Text>
+                          </TouchableOpacity>
+                        ),
+                      )}
+                    </ScrollView>,
+                  )
+                : null
+            }>
+            <Text>{subcategory ? subcategory.name : category.name}</Text>
+            <View style={styles.drop}>
+              <Icon size="xs" icon={icons.drop} color={colors.accent} />
+            </View>
+          </TouchableOpacity>
+        ) : (
+          <View style={styles.headerTitle}>
+            <Text>{category.name}</Text>
+          </View>
+        )}
         <OptionMenu
           options={[
             {
@@ -133,10 +244,23 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
           ]}
         />
       </View>
-      {isCategory(destination) &&
-      destination.options &&
-      Array.isArray(destination.options) &&
-      destination.options.length > 0 ? (
+
+      {category.filters && category.filters.length > 0 ? (
+        <Filter
+          filters={category.filters}
+          currFilters={filters}
+          setCurrFilters={setFilters}
+        />
+      ) : null}
+
+      {loading ? (
+        <View style={styles.noPlacesFound}>
+          <ActivityIndicator size="small" color={colors.accent} />
+        </View>
+      ) : isCategory(destination) &&
+        destination.options &&
+        Array.isArray(destination.options) &&
+        destination.options.length > 0 ? (
         <PlacesDisplay
           navigation={navigation}
           places={destination.options}
@@ -165,6 +289,8 @@ const styles = StyleSheet.create({
     marginHorizontal: s(20),
   },
   headerTitle: {
+    flexDirection: 'row',
+    alignItems: 'center',
     marginHorizontal: s(10),
     flex: 1,
   },
@@ -184,9 +310,27 @@ const styles = StyleSheet.create({
     tintColor: colors.black,
   },
   noPlacesFound: {
-    height: s(100),
+    height: s(135),
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  drop: {
+    marginLeft: s(4),
+  },
+  subcategoryContainer: {
+    paddingHorizontal: s(15),
+    flexWrap: 'wrap',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  chip: {
+    margin: s(5),
+    paddingHorizontal: s(10),
+    paddingVertical: s(5),
+    borderRadius: s(20),
+    borderWidth: 1,
+    borderColor: colors.accent,
   },
 });
 

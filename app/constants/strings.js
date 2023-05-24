@@ -97,9 +97,9 @@ const strings = {
     promptSearch: 'Search for a place or type in a custom destination above',
     bookmark: 'Bookmark',
     unbookmark: 'Unbookmark',
-    noSaved: 'No Bookmarks',
-    noEvents: 'No Events',
-    noEventsAdd: 'No events yet, add to one to your library first',
+    noSaved: 'No Places Saved',
+    noEvents: 'No Events yet, \nadd one using the buttom above!',
+    noEventsAdd: 'No events yet, \ncreate one first!',
   },
   profile: {
     followers: 'followers',
@@ -112,14 +112,10 @@ const strings = {
     cancel: 'Cancel',
   },
   filter: {
-    all: 'All',
+    none: 'None',
     editView: 'Edit View',
     visible: 'Visible',
     hidden: 'Hidden',
-    categories: 'Categories',
-    filterCategories: 'Filter Categories',
-    clear: 'Clear',
-    apply: 'Apply',
   },
 };
 

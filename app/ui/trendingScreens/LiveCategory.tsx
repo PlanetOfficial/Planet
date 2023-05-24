@@ -142,7 +142,9 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
       </SafeAreaView>
 
       {loading ? (
-        <ActivityIndicator size="small" color={colors.accent} />
+        <View style={styles.center}>
+          <ActivityIndicator size="small" color={colors.accent} />
+        </View>
       ) : (
         <ScrollView onTouchStart={() => ref.current?.closeDropdown()}>
           {subcategories?.map((subcategory: Subcategory, idx: number) =>
@@ -218,6 +220,10 @@ const styles = StyleSheet.create({
   },
   bottomPadding: {
     height: s(20),
+  },
+  center: {
+    height: s(400),
+    justifyContent: 'center',
   },
 });
 
