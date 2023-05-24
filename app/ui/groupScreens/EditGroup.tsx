@@ -30,7 +30,6 @@ interface Props {
 const CreateGroup: React.FC<Props> = ({navigation, route}) => {
   const [name, setName] = useState<string>(route?.params?.group.name);
   const [members] = useState<GroupMember[]>(route?.params?.group.group_member);
-  console.log(route.params);
   const [invite, setInvite] = useState<string>('');
   const [invites, setInvites] = useState<string[]>([]);
 

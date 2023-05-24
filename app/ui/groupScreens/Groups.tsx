@@ -228,10 +228,7 @@ const Friends: React.FC<Props> = ({navigation}) => {
           <AButton
             size="l"
             label={strings.groups.addPrompt}
-            onPress={() => {
-              addBottomSheetRef.current?.present();
-              console.log(groupBottomSheetOpen);
-            }}
+            onPress={() => addBottomSheetRef.current?.present()}
           />
         </View>
       ) : null}
