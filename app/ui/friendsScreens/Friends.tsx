@@ -21,7 +21,7 @@ import {colors} from '../../constants/theme';
 import {icons} from '../../constants/images';
 
 import EventCard from '../components/EventCard';
-import GroupSelector from './GroupSelector';
+import GroupSelector from './FGSelector';
 import Icon from '../components/Icon';
 import Text from '../components/Text';
 import AButton from '../components/ActionButton';

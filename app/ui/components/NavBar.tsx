@@ -9,7 +9,7 @@ import {colors} from '../../constants/theme';
 import {tabIcons} from '../../constants/images';
 
 import Trending from '../trendingScreens/Trending';
-import Friends from '../groupScreens/Groups';
+import Friends from '../friendsScreens/Friends';
 import Library from '../libraryScreens/Library';
 import Profile from '../profileScreens/Profile';
 
