@@ -63,7 +63,7 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
             floats.defaultRadius,
             latitude,
             longitude,
-            null,
+            undefined,
             subcategoryId,
           );
           if (events) {

@@ -37,6 +37,7 @@ const strings = {
     noCategoriesSelected: 'No Categories Selected',
     selectedCategories: 'Selected Categories',
     untitledEvent: 'Untitled Event',
+    hours: 'Hours',
     address: 'Address',
     price: 'Price',
     eventUrl: 'Website',

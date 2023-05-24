@@ -26,17 +26,14 @@ import Icon from '../components/Icon';
 import Text from '../components/Text';
 import AButton from '../components/ActionButton';
 
-import {getFGsAndInvites} from '../../utils/api/friendsCalls/getFGsAndInvites';
-import {makeFGEvent} from '../../utils/api/friendsCalls/makeFGEvent';
-import {getFGEvents} from '../../utils/api/friendsCalls/getFGEvents';
-import {removeEvent} from '../../utils/api/friendsCalls/removeEvent';
-import {forkEvent} from '../../utils/api/friendsCalls/forkEvent';
+import {getGroupEvents, postGroupEvent, deleteGroupEvent, forkGroupEvent} from '../../utils/api/groups/eventAPI';
+import { getGroups } from '../../utils/api/groups/groupAPI';
+import { getInvites } from '../../utils/api/groups/inviteAPI';
 import {
   FriendGroup,
-  Invitation,
+  Invite,
   Event,
   Place,
-  FGsAndInvites,
 } from '../../utils/interfaces/types';
 import {getEvents} from '../../utils/api/eventAPI';
 import {getPlaces} from '../../utils/api/placeAPI';
@@ -51,7 +48,7 @@ const Friends: React.FC<Props> = ({navigation}) => {
   const [friendGroup, setFriendGroup] = useState<number>(-1);
 
   const [friendGroups, setFriendGroups] = useState<FriendGroup[]>([]);
-  const [invitations, setInvitations] = useState<Invitation[]>([]);
+  const [invitations, setInvitations] = useState<Invite[]>([]);
 
   const [userEvents, setUserEvents] = useState<Event[]>([]);
   const [curFGEvents, setCurFGEvents] = useState<Event[]>([]);
@@ -86,7 +83,7 @@ const Friends: React.FC<Props> = ({navigation}) => {
 
   const fetchCurGroupInfo = async (group_id: number) => {
     setLoading(true);
-    const response = await getFGEvents(group_id);
+    const response = await getGroupEvents(group_id);
     if (response) {
       setCurFGEvents(response);
     } else {
@@ -102,25 +99,27 @@ const Friends: React.FC<Props> = ({navigation}) => {
   }, [friendGroup, friendGroups]);
 
   const initializeData = async () => {
-    const responseData: FGsAndInvites | null = await getFGsAndInvites();
+    const _groups: FriendGroup[] | null = await getGroups();
 
-    if (responseData?.groups) {
-      setFriendGroups(responseData.groups);
+    if (_groups) {
+      setFriendGroups(_groups);
 
-      if (responseData.groups.length > 0) {
+      if (_groups.length > 0) {
         if (friendGroup === -1) {
           setFriendGroup(0);
-          fetchCurGroupInfo(responseData.groups[0].group.id);
+          fetchCurGroupInfo(_groups[0].group.id);
         } else {
-          fetchCurGroupInfo(responseData.groups[friendGroup].group.id);
+          fetchCurGroupInfo(_groups[friendGroup].group.id);
         }
       }
     } else {
       Alert.alert('Error', 'Unable to load groups. Please try again.');
     }
 
-    if (responseData?.invites) {
-      setInvitations(responseData.invites);
+    const _invites: Invite[] | null = await getInvites();
+
+    if (_invites) {
+      setInvitations(_invites);
     } else {
       Alert.alert('Error', 'Unable to load invitations. Please try again.');
     }
@@ -152,7 +151,7 @@ const Friends: React.FC<Props> = ({navigation}) => {
   }, [navigation, friendGroup]);
 
   const handleAddEvent = async (user_event_id: number) => {
-    const response = await makeFGEvent(
+    const response = await postGroupEvent(
       user_event_id,
       friendGroups[friendGroup].group.id,
     );
@@ -166,7 +165,7 @@ const Friends: React.FC<Props> = ({navigation}) => {
   };
 
   const handleFork = async (groupEventId: number) => {
-    const response = await forkEvent(groupEventId);
+    const response = await forkGroupEvent(groupEventId);
 
     if (response) {
       navigation.navigate('Library');
@@ -176,7 +175,7 @@ const Friends: React.FC<Props> = ({navigation}) => {
   };
 
   const handleRemoveEvent = async (group_event_id: number) => {
-    const response = await removeEvent(group_event_id);
+    const response = await deleteGroupEvent(group_event_id);
 
     if (response) {
       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);

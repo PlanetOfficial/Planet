@@ -18,9 +18,8 @@ import Text from '../components/Text';
 import AButton from '../components/ActionButton';
 import Icon from '../components/Icon';
 
-import {acceptInvite} from '../../utils/api/friendsCalls/acceptInvite';
-import {rejectInvite} from '../../utils/api/friendsCalls/rejectInvite';
-import {FriendGroup, Invitation} from '../../utils/interfaces/types';
+import {acceptInvite, rejectInvite} from '../../utils/api/groups/inviteAPI';
+import {FriendGroup, Invite} from '../../utils/interfaces/types';
 
 interface Props {
   bottomSheetRef: React.RefObject<BottomSheetModalMethods>;
@@ -28,7 +27,7 @@ interface Props {
   friendGroup: number;
   setFriendGroup: (friendGroup: number) => void;
   refreshOnInviteEvent: () => void;
-  invitations: Invitation[];
+  invitations: Invite[];
   navigation: any;
 }
 
@@ -92,7 +91,7 @@ const FGSelector: React.FC<Props> = ({
           />
         </TouchableOpacity>
       ))}
-      {invitations?.map((invitation: Invitation, idx: number) => (
+      {invitations?.map((invitation: Invite, idx: number) => (
         <View key={idx} style={styles.row}>
           <Image style={styles.icon} source={icons.user} />
           <View style={styles.wrap}>

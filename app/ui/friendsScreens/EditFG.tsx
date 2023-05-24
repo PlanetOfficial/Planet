@@ -13,8 +13,7 @@ import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 import {icons} from '../../constants/images';
 
-import {editGroup} from '../../utils/api/friendsCalls/editGroup';
-import {leaveGroup} from '../../utils/api/friendsCalls/leaveGroup';
+import {editGroup, leaveGroup} from '../../utils/api/groups/groupAPI';
 import {GroupMember} from '../../utils/interfaces/types';
 
 import Icon from '../components/Icon';

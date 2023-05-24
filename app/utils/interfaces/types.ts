@@ -59,6 +59,10 @@ export interface Place {
   group_place_id?: number;
 }
 
+export interface GroupPlace {
+
+}
+
 export interface CustomPlace {
   name: string;
   latitude: number;
@@ -116,11 +120,6 @@ export interface Coordinate {
   longitude: number;
 }
 
-export interface FGsAndInvites {
-  groups: FriendGroup[];
-  invites: Invitation[];
-}
-
 export interface FriendGroup {
   id: number;
   user_id: number;
@@ -144,7 +143,7 @@ export interface Group {
   owner: number;
 }
 
-export interface Invitation {
+export interface Invite {
   id: number;
   group: Group;
   inviter: {

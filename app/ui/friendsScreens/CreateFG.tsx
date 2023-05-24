@@ -13,7 +13,7 @@ import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 import {icons} from '../../constants/images';
 
-import {createGroup} from '../../utils/api/friendsCalls/createGroup';
+import {postGroup} from '../../utils/api/groups/groupAPI';
 
 import Icon from '../components/Icon';
 import Text from '../components/Text';
@@ -31,7 +31,7 @@ const CreateFG: React.FC<Props> = ({navigation}) => {
   const inviteRef = React.useRef<TextInput>(null);
 
   const handleGroupCreation = async () => {
-    const responseStatus = await createGroup(name, invitations);
+    const responseStatus = await postGroup(name, invitations);
 
     if (responseStatus) {
       navigation.reset({
