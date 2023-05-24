@@ -26,7 +26,6 @@ export const icons = {
   dislike: require('../assets/icons/dislike.png'),
   comment: require('../assets/icons/comment.png'),
   remove: require('../assets/icons/remove.png'),
-  tick: require('../assets/icons/tick.png'),
   option: require('../assets/icons/option.png'),
   drag: require('../assets/icons/drag.png'),
   plus: require('../assets/icons/plus.png'),
