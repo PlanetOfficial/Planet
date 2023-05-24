@@ -36,10 +36,10 @@ const CreateGroup: React.FC<Props> = ({navigation}) => {
     if (responseStatus) {
       navigation.reset({
         index: 0,
-        routes: [{name: 'Friends'}],
+        routes: [{name: 'Groups'}],
       });
 
-      navigation.navigate('Friends');
+      navigation.navigate('Groups');
     } else {
       Alert.alert('Error', 'Invalid Request. Please Try Again');
     }

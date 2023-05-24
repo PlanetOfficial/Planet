@@ -12,10 +12,10 @@ import SelectCategories from '../ui/createScreens/SelectCategories';
 import SelectDestinations from '../ui/createScreens/SelectDestinations';
 import Place from '../ui/libraryScreens/Place';
 import Event from '../ui/libraryScreens/Event';
-import GroupEvent from '../ui/friendsScreens/FGEvent';
+import GroupEvent from '../ui/groupScreens/GroupEvent';
 import Settings from '../ui/profileScreens/Settings';
-import CreateGroup from '../ui/friendsScreens/CreateFG';
-import EditGroup from '../ui/friendsScreens/EditFG';
+import CreateGroup from '../ui/groupScreens/CreateGroup';
+import EditGroup from '../ui/groupScreens/EditGroup';
 import LiveCategory from '../ui/trendingScreens/LiveCategory';
 import LiveCategorySettings from '../ui/trendingScreens/LiveCategorySettings';
 

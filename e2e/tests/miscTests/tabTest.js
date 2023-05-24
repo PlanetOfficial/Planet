@@ -1,7 +1,7 @@
 const tabTest = () => {
     describe('Basic tab test', () => {
         it('friend group screen should render when tapped on groups tab', async () => {
-            await element(by.id('Friends')).tap();
+            await element(by.id('Groups')).tap();
             await expect(element(by.id('groupsScreenView'))).toBeVisible();
         })
     

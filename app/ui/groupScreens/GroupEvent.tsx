@@ -131,7 +131,7 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
     const response = await deleteGroupEvent(group_event_id);
 
     if (response) {
-      navigation.navigate('Friends');
+      navigation.navigate('Groups');
     } else {
       Alert.alert('Error', 'Unable to remove event. Please try again.');
     }
@@ -163,7 +163,7 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
         <View style={headerStyles.container}>
           <Icon
             icon={icons.back}
-            onPress={() => navigation.navigate('Friends')}
+            onPress={() => navigation.navigate('Groups')}
           />
 
           <View style={headerStyles.texts}>

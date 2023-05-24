@@ -21,7 +21,7 @@ import {colors} from '../../constants/theme';
 import {icons} from '../../constants/images';
 
 import EventCard from '../components/EventCard';
-import GroupSelector from './FGSelector';
+import GroupSelector from './GroupSelector';
 import Icon from '../components/Icon';
 import Text from '../components/Text';
 import AButton from '../components/ActionButton';
@@ -48,7 +48,7 @@ interface Props {
   navigation: any;
 }
 
-const Friends: React.FC<Props> = ({navigation}) => {
+const Groups: React.FC<Props> = ({navigation}) => {
   const insets = useSafeAreaInsets();
 
   const [group, setGroup] = useState<number>(-1);
@@ -441,4 +441,4 @@ const contentStyles = StyleSheet.create({
   },
 });
 
-export default Friends;
+export default Groups;
