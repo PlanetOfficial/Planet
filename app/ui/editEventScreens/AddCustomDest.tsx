@@ -157,6 +157,7 @@ const AddCustomDest: React.FC<Props> = ({onClose, onSelect}) => {
             ) : null}
             <MapView
               style={styles.map}
+              userInterfaceStyle={'light'}
               initialRegion={region}
               region={region}
               onRegionChangeComplete={setRegion}

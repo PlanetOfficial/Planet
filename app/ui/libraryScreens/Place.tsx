@@ -173,6 +173,7 @@ const Place: React.FC<Props> = ({navigation, route}) => {
         {destination.latitude && destination.longitude ? (
           <MapView
             style={styles.map}
+            userInterfaceStyle={'light'}
             initialRegion={{
               latitude: destination.latitude,
               longitude: destination.longitude,
