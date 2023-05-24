@@ -83,8 +83,6 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
 
   const [toBeRefreshed, setToBeRefreshed] = useState<boolean>(true);
 
-  const [loading, setLoading] = useState<boolean>(true);
-
   const [filters, setFilters] = useState<(number | number[])[]>([]);
 
   const [subcategory, setSubcategory] = useState<Subcategory | null>();
@@ -246,8 +244,6 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
           ]}
         />
       </View>
-<<<<<<< HEAD
-=======
 
       {category.filters && category.filters.length > 0 ? (
         <Filter
@@ -257,7 +253,6 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
         />
       ) : null}
 
->>>>>>> main
       {loading ? (
         <View style={styles.noPlacesFound}>
           <ActivityIndicator size="small" color={colors.accent} />
