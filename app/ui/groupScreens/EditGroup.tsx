@@ -28,12 +28,8 @@ interface Props {
 }
 
 const CreateGroup: React.FC<Props> = ({navigation, route}) => {
-  const [name, setName] = useState<string>(
-    route?.params?.group.group.name,
-  );
-  const [members] = useState<GroupMember[]>(
-    route?.params?.group.group_member,
-  );
+  const [name, setName] = useState<string>(route?.params?.group.group.name);
+  const [members] = useState<GroupMember[]>(route?.params?.group.group_member);
   const [invite, setInvite] = useState<string>('');
   const [invites, setInvites] = useState<string[]>([]);
 
@@ -61,9 +57,7 @@ const CreateGroup: React.FC<Props> = ({navigation, route}) => {
   };
 
   const handleGroupLeave = async () => {
-    const responseStatus = await leaveGroup(
-      route?.params?.group.group.id,
-    );
+    const responseStatus = await leaveGroup(route?.params?.group.group.id);
 
     if (responseStatus) {
       navigation.reset({

@@ -21,7 +21,10 @@ import {
 } from '../../utils/functions/Misc';
 import {GroupPlace, MarkerObject, Place} from '../../utils/interfaces/types';
 import {getPlaces} from '../../utils/api/placeAPI';
-import { deleteGroupEvent, forkGroupEvent } from '../../utils/api/groups/eventAPI';
+import {
+  deleteGroupEvent,
+  forkGroupEvent,
+} from '../../utils/api/groups/eventAPI';
 
 import PlacesDisplay from '../components/PlacesDisplay';
 import Blur from '../components/Blur';
@@ -103,7 +106,7 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
       initializeUserId();
     });
     return unsubscribe;
-  }, [navigation, groupEventId, route?.params?.eventData?.places]);
+  }, [navigation, groupEventId, route?.params?.eventData?.destinations]);
 
   // const reloadPlaces = async () => {
   //   const _places = await getGroupEvent(groupEventId);
@@ -205,7 +208,7 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
         animateOnMount={Platform.OS === 'ios'}
         enableContentPanningGesture={false}>
         <ScrollView contentContainerStyle={styles.scrollView}>
-          {groupPlaces?.map((groupPlace: GroupPlace, idx: number) =>
+          {groupPlaces?.map((groupPlace: GroupPlace, idx: number) => (
             <View key={idx}>
               <View style={destHeaderStyles.header}>
                 <View style={destHeaderStyles.title}>
@@ -216,15 +219,16 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
                     {
                       name: 'Summary',
                       onPress: () => {
-                        Alert.alert('Summary', 'Summary is not implemented yet');
+                        Alert.alert(
+                          'Summary',
+                          'Summary is not implemented yet',
+                        );
                       },
                       color: colors.black,
                     },
                     {
                       name: 'Add Options',
-                      onPress: () => {
-
-                      },
+                      onPress: () => {},
                       color: colors.accent,
                     },
                   ]}
@@ -240,18 +244,18 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
                     setBookmarks([...bookmarks, id]);
                   } else {
                     setBookmarks(
-                      bookmarks.filter(
-                        (bookmark: number) => bookmark !== id,
-                      ),
+                      bookmarks.filter((bookmark: number) => bookmark !== id),
                     );
                   }
                 }}
                 index={placeIdx}
                 setIndex={setPlaceIdx}
               />
-              {idx !== groupPlaces.length - 1 ? <View style={styles.separater} /> : null}
+              {idx !== groupPlaces.length - 1 ? (
+                <View style={styles.separater} />
+              ) : null}
             </View>
-          )}
+          ))}
         </ScrollView>
       </BottomSheet>
     </View>
@@ -282,7 +286,7 @@ const styles = StyleSheet.create({
     marginHorizontal: s(20),
     marginVertical: s(15),
     backgroundColor: colors.grey,
-  }
+  },
 });
 
 const headerStyles = StyleSheet.create({
@@ -312,7 +316,7 @@ const destHeaderStyles = StyleSheet.create({
     alignItems: 'center',
     marginRight: s(10),
     flex: 1,
-  }
+  },
 });
 
 const placesDisplayStyles = StyleSheet.create({

@@ -5,12 +5,9 @@ import {Invite} from '../../interfaces/types';
 export const getInvites = async (): Promise<Invite[] | null> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
-  const response = await fetch(
-    GroupURL + `/invite?authtoken=${authToken}`,
-    {
-      method: 'GET',
-    },
-  );
+  const response = await fetch(GroupURL + `/invite?authtoken=${authToken}`, {
+    method: 'GET',
+  });
 
   if (response?.ok) {
     const myJson: Invite[] = await response.json();
@@ -24,8 +21,7 @@ export const acceptInvite = async (invite_id: number): Promise<boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
   const response = await fetch(
-    GroupURL +
-      `/invite/accept?invite_id=${invite_id}&authtoken=${authToken}`,
+    GroupURL + `/invite/accept?invite_id=${invite_id}&authtoken=${authToken}`,
     {
       method: 'POST',
     },
@@ -38,8 +34,7 @@ export const rejectInvite = async (invite_id: number): Promise<boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
   const response = await fetch(
-    GroupURL +
-      `/invite/reject?invite_id=${invite_id}&authtoken=${authToken}`,
+    GroupURL + `/invite/reject?invite_id=${invite_id}&authtoken=${authToken}`,
     {
       method: 'POST',
     },

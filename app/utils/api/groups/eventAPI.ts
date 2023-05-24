@@ -1,6 +1,6 @@
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {GroupURL} from '../APIConstants';
-import {Event, GroupEvent, GroupPlace} from '../../interfaces/types';
+import {GroupEvent, GroupPlace} from '../../interfaces/types';
 
 export const getGroupEvents = async (
   group_id: number,
@@ -8,15 +8,14 @@ export const getGroupEvents = async (
   const authToken = await EncryptedStorage.getItem('auth_token');
 
   const response = await fetch(
-    GroupURL +
-      `/event?group_id=${group_id}&authtoken=${authToken}`,
+    GroupURL + `/event?group_id=${group_id}&authtoken=${authToken}`,
     {
       method: 'GET',
     },
   );
 
   if (response?.ok) {
-    const myJson : GroupEvent[] = await response.json();
+    const myJson: GroupEvent[] = await response.json();
     return myJson;
   } else {
     return null;
@@ -29,15 +28,14 @@ export const getGroupEvent = async (
   const authToken = await EncryptedStorage.getItem('auth_token');
 
   const response = await fetch(
-    GroupURL +
-      `/event/${group_event_id}?authtoken=${authToken}`,
+    GroupURL + `/event/${group_event_id}?authtoken=${authToken}`,
     {
       method: 'GET',
     },
   );
 
   if (response?.ok) {
-    const myJson : GroupPlace[] = await response.json();
+    const myJson: GroupPlace[] = await response.json();
     return myJson;
   } else {
     return null;
@@ -61,12 +59,13 @@ export const postGroupEvent = async (
   return response?.ok;
 };
 
-export const deleteGroupEvent = async (group_event_id: number): Promise<boolean> => {
+export const deleteGroupEvent = async (
+  group_event_id: number,
+): Promise<boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
   const response = await fetch(
-    GroupURL +
-      `/event?group_event_id=${group_event_id}&authtoken=${authToken}`,
+    GroupURL + `/event?group_event_id=${group_event_id}&authtoken=${authToken}`,
     {
       method: 'DELETE',
     },
@@ -75,7 +74,9 @@ export const deleteGroupEvent = async (group_event_id: number): Promise<boolean>
   return response?.ok;
 };
 
-export const forkGroupEvent = async (group_event_id: number): Promise<boolean> => {
+export const forkGroupEvent = async (
+  group_event_id: number,
+): Promise<boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
   const response = await fetch(
     GroupURL +
@@ -87,4 +88,3 @@ export const forkGroupEvent = async (group_event_id: number): Promise<boolean> =
 
   return response?.ok;
 };
-

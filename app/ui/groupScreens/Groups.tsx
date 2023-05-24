@@ -26,9 +26,14 @@ import Icon from '../components/Icon';
 import Text from '../components/Text';
 import AButton from '../components/ActionButton';
 
-import {getGroupEvents, postGroupEvent, deleteGroupEvent, forkGroupEvent} from '../../utils/api/groups/eventAPI';
-import { getGroups } from '../../utils/api/groups/groupAPI';
-import { getInvites } from '../../utils/api/groups/inviteAPI';
+import {
+  getGroupEvents,
+  postGroupEvent,
+  deleteGroupEvent,
+  forkGroupEvent,
+} from '../../utils/api/groups/eventAPI';
+import {getGroups} from '../../utils/api/groups/groupAPI';
+import {getInvites} from '../../utils/api/groups/inviteAPI';
 import {
   Group,
   Invite,
@@ -84,7 +89,7 @@ const Friends: React.FC<Props> = ({navigation}) => {
 
   const fetchCurGroupInfo = async (group_id: number) => {
     setLoading(true);
-    const response : GroupEvent[] | null = await getGroupEvents(group_id);
+    const response: GroupEvent[] | null = await getGroupEvents(group_id);
     if (response) {
       setCurGroupEvents(response);
     } else {
@@ -181,7 +186,9 @@ const Friends: React.FC<Props> = ({navigation}) => {
     if (response) {
       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
       setCurGroupEvents(
-        curGroupEvents.filter((event: GroupEvent) => event.id !== group_event_id),
+        curGroupEvents.filter(
+          (event: GroupEvent) => event.id !== group_event_id,
+        ),
       );
     } else {
       Alert.alert('Error', 'Something went wrong. Please try again.');
@@ -196,9 +203,7 @@ const Friends: React.FC<Props> = ({navigation}) => {
             style={headerStyles.selector}
             onPress={() => fgBottomSheetRef.current?.present()}>
             <Text size="xl" weight="b">
-              {group === -1
-                ? strings.title.groups
-                : groups[group]?.group?.name}
+              {group === -1 ? strings.title.groups : groups[group]?.group?.name}
             </Text>
             <View style={headerStyles.drop}>
               <Icon icon={icons.drop} />

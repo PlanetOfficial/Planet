@@ -37,7 +37,6 @@ import Blur from '../components/Blur';
 import Text from '../components/Text';
 import Icon from '../components/Icon';
 import OptionMenu from '../components/OptionMenu';
-import PlacesDisplay from '../components/PlacesDisplay';
 import Confirmation from '../editEventScreens/Confirmation';
 import EditEvent from '../editEventScreens/EditEvent';
 import AddEvent from '../editEventScreens/AddEvent';
@@ -72,7 +71,6 @@ const Event: React.FC<Props> = ({navigation, route}) => {
   const [longitude, setLongitude] = useState<number>(floats.defaultLongitude);
 
   const [places, setPlaces] = useState<Place[]>([]);
-  const [placeIdx, setPlaceIdx] = useState<number>(0);
   const [markers, setMarkers] = useState<MarkerObject[]>([]);
 
   const [editing, setEditing] = useState<boolean>(false);
@@ -380,7 +378,9 @@ const Event: React.FC<Props> = ({navigation, route}) => {
                         setBookmarks([...bookmarks, id]);
                       } else {
                         setBookmarks(
-                          bookmarks.filter((bookmark: number) => bookmark !== id),
+                          bookmarks.filter(
+                            (bookmark: number) => bookmark !== id,
+                          ),
                         );
                       }
                     }}
@@ -388,8 +388,8 @@ const Event: React.FC<Props> = ({navigation, route}) => {
                   />
                 </TouchableOpacity>
                 {index !== places.length - 1 ? (
-                  <View style={styles.separator}/>
-                  ) : null}
+                  <View style={styles.separator} />
+                ) : null}
               </View>
             ))}
           </ScrollView>
@@ -457,7 +457,7 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     paddingTop: s(10),
-  }
+  },
 });
 
 const headerStyles = StyleSheet.create({
