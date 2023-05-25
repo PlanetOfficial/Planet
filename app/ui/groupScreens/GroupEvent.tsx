@@ -10,7 +10,7 @@ import {
 import MapView, {Marker} from 'react-native-maps';
 import {s, vs} from 'react-native-size-matters';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import BottomSheet, {BottomSheetModal} from '@gorhom/bottom-sheet';
+import BottomSheet from '@gorhom/bottom-sheet';
 
 import moment from 'moment';
 
@@ -26,11 +26,8 @@ import {
   User,
 } from '../../utils/interfaces/types';
 import {getPlaces} from '../../utils/api/placeAPI';
-import {
-  deleteGroupEvent,
-  forkGroupEvent,
-  getGroupEvent,
-} from '../../utils/api/groups/eventAPI';
+import {deleteGroupEvent, getGroupEvent} from '../../utils/api/groups/eventAPI';
+import {postEvent} from '../../utils/api/eventAPI';
 
 import AddFromCategory from './AddFromCategory';
 import AddByCategory from '../editEventScreens/AddByCategory';
@@ -69,7 +66,6 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
 
   const [groupPlaces, setGroupPlaces] = useState<GroupPlace[]>();
 
-  const [placeIdx, setPlaceIdx] = useState<number>(0);
   const [markers, setMarkers] = useState<MarkerObject[]>([]);
 
   const [userId, setUserId] = useState<number>();
@@ -90,6 +86,8 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
   const [groupPlace, setGroupPlace] = useState<GroupPlace>();
   const [categoryToSearch, setCategoryToSearch] = useState<Category>();
   const selectSubcategoryRef = useRef<any>(null); // due to forwardRef
+
+  const [selectionIndices, setSelectionIndices] = useState<number[]>([]);
 
   const handleAddOptionsChange = useCallback((_: number, toIndex: number) => {
     if (toIndex === -1) {
@@ -152,16 +150,11 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
         groupEventId,
       );
       if (_groupPlaces) {
+        setSelectionIndices(Array(_groupPlaces.length).fill(0));
         setGroupPlaces(_groupPlaces);
       } else {
         Alert.alert('Error', 'Unable to reload places. Please try again.');
       }
-
-      const selectedPlace: Place[] = route?.params?.eventData?.destinations.map(
-        (gp: GroupPlace) => gp.places[0],
-      );
-      const markerArray: MarkerObject[] = getMarkerArray(selectedPlace);
-      setMarkers(markerArray);
     };
 
     const unsubscribe = navigation.addListener('focus', () => {
@@ -171,22 +164,44 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
     return unsubscribe;
   }, [navigation, groupEventId, route?.params?.eventData?.destinations]);
 
+  useEffect(() => {
+    let places: Place[] = [];
+    groupPlaces?.forEach((_groupPlace: GroupPlace, index: number) => {
+      places.push(_groupPlace.places[selectionIndices[index]]);
+    });
+
+    setMarkers(getMarkerArray(places));
+  }, [groupPlaces, selectionIndices]);
+
   const reloadPlaces = async () => {
-    const _places: GroupPlace[] | null = await getGroupEvent(groupEventId);
-    if (_places) {
-      setGroupPlaces(_places);
+    const _groupPlaces: GroupPlace[] | null = await getGroupEvent(groupEventId);
+
+    if (_groupPlaces) {
+      setSelectionIndices(Array(_groupPlaces.length).fill(0));
+      setGroupPlaces(_groupPlaces);
     } else {
       Alert.alert('Error', 'Unable to reload places. Please try again.');
     }
   };
 
   const handleFork = async () => {
-    const response = await forkGroupEvent(groupEventId);
+    const placeIds: number[] = [];
+    groupPlaces?.forEach((_groupPlace: GroupPlace, index: number) => {
+      placeIds.push(_groupPlace.places[selectionIndices[index]].id);
+    });
 
-    if (response) {
-      navigation.navigate('Library');
-    } else {
-      Alert.alert('Error', 'Unable to copy event. Please try again.');
+    if (placeIds.length > 0) {
+      const response: boolean = await postEvent(
+        eventTitle,
+        placeIds,
+        moment(date, 'M/D/YYYY').format('YYYY-MM-DD'),
+      );
+
+      if (response) {
+        navigation.navigate('TabStack', {screen: 'Library'});
+      } else {
+        Alert.alert('Error', 'Unable to copy event. Please Try Again');
+      }
     }
   };
 
@@ -359,11 +374,14 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
                     );
                   }
                 }}
-                index={placeIdx}
-                setIndex={setPlaceIdx}
+                index={selectionIndices[idx]}
+                setIndex={(index: number) => {
+                  const newSelectionIndices = [...selectionIndices];
+                  newSelectionIndices[idx] = index;
+                  setSelectionIndices(newSelectionIndices);
+                }}
                 displayCategory={false}
                 isGroupPlace={true}
-                // myVote if user has voted on this place
                 myVote={findMyVote(_groupPlace.places)}
               />
               {idx !== groupPlaces.length - 1 ? (

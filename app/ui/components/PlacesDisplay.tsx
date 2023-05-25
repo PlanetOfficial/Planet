@@ -27,8 +27,8 @@ interface Props {
   setIndex: (index: number) => void;
   displayCategory?: boolean;
   displaySuggester?: boolean;
-  isGroupPlace: boolean;
-  myVote: number;
+  isGroupPlace?: boolean;
+  myVote?: number;
 }
 
 const PlacesDisplay: React.FC<Props> = ({

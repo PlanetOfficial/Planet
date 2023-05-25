@@ -73,18 +73,3 @@ export const deleteGroupEvent = async (
 
   return response?.ok;
 };
-
-export const forkGroupEvent = async (
-  group_event_id: number,
-): Promise<boolean> => {
-  const authToken = await EncryptedStorage.getItem('auth_token');
-  const response = await fetch(
-    GroupURL +
-      `/event/fork?group_event_id=${group_event_id}&authtoken=${authToken}`,
-    {
-      method: 'POST',
-    },
-  );
-
-  return response?.ok;
-};
