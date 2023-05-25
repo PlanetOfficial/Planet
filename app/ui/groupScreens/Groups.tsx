@@ -7,7 +7,7 @@ import {
   FlatList,
   Alert,
   LayoutAnimation,
-  ActivityIndicator,
+  RefreshControl,
 } from 'react-native';
 import {BottomSheetModal} from '@gorhom/bottom-sheet';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -218,74 +218,75 @@ const Groups: React.FC<Props> = ({navigation}) => {
         </View>
       ) : null}
 
-      {loading ? (
-        <View style={styles.center}>
-          <ActivityIndicator size="small" color={colors.accent} />
-        </View>
-      ) : (
-        <FlatList
-          data={curGroupEvents}
-          style={contentStyles.container}
-          initialNumToRender={4}
-          keyExtractor={(item: GroupEvent) => item.id.toString()}
-          ItemSeparatorComponent={Spacer}
-          contentContainerStyle={contentStyles.content}
-          ListEmptyComponent={
-            <View style={styles.center}>
-              <Text size="m" color={colors.darkgrey} center={true}>
-                {strings.library.noEvents}
-              </Text>
-            </View>
-          }
-          renderItem={({item}: {item: GroupEvent}) => {
-            return (
-              <TouchableOpacity
-                onPress={() => {
-                  if (!groupBottomSheetOpen && !addBottomSheetOpen) {
-                    navigation.navigate('GroupEvent', {
-                      eventData: item,
-                      bookmarks: bookmarks,
-                    });
-                  }
-                }}>
-                <EventCard
-                  name={item.name}
-                  info={
-                    moment(item.date, 'YYYY-MM-DD').format('M/D/YYYY') +
-                    ' • ' +
-                    item.suggester?.name
-                  }
-                  image={
-                    item.destinations &&
-                    item.destinations.length > 0 &&
-                    item.destinations[0].places &&
-                    item.destinations[0].places.length > 0 &&
-                    item.destinations[0].places[0]?.photo
-                      ? {uri: item.destinations[0].places[0]?.photo}
-                      : icons.defaultIcon
-                  }
-                  options={[
-                    {
-                      name: strings.main.share,
-                      onPress: () => {
-                        // TODO: share event
-                        Alert.alert('Share', 'Share is not implemented yet');
-                      },
-                      color: colors.black,
+      <FlatList
+        data={curGroupEvents}
+        style={contentStyles.container}
+        initialNumToRender={4}
+        keyExtractor={(item: GroupEvent) => item.id.toString()}
+        ItemSeparatorComponent={Spacer}
+        contentContainerStyle={contentStyles.content}
+        refreshControl={
+          <RefreshControl
+            refreshing={loading}
+            onRefresh={() => initializeData()}
+            tintColor={colors.accent}
+          />
+        }
+        ListEmptyComponent={
+          <View style={styles.center}>
+            <Text size="m" color={colors.darkgrey} center={true}>
+              {strings.library.noEvents}
+            </Text>
+          </View>
+        }
+        renderItem={({item}: {item: GroupEvent}) => {
+          return (
+            <TouchableOpacity
+              onPress={() => {
+                if (!groupBottomSheetOpen && !addBottomSheetOpen) {
+                  navigation.navigate('GroupEvent', {
+                    eventData: item,
+                    bookmarks: bookmarks,
+                  });
+                }
+              }}>
+              <EventCard
+                name={item.name}
+                info={
+                  moment(item.date, 'YYYY-MM-DD').format('M/D/YYYY') +
+                  ' • ' +
+                  item.suggester?.name
+                }
+                image={
+                  item.destinations &&
+                  item.destinations.length > 0 &&
+                  item.destinations[0].places &&
+                  item.destinations[0].places.length > 0 &&
+                  item.destinations[0].places[0]?.photo
+                    ? {uri: item.destinations[0].places[0]?.photo}
+                    : icons.defaultIcon
+                }
+                options={[
+                  {
+                    name: strings.main.share,
+                    onPress: () => {
+                      // TODO: share event
+                      Alert.alert('Share', 'Share is not implemented yet');
                     },
-                    {
-                      name: strings.main.remove,
-                      onPress: () => handleRemoveEvent(item.id),
-                      disabled: !item.suggester?.self,
-                      color: colors.red,
-                    },
-                  ]}
-                />
-              </TouchableOpacity>
-            );
-          }}
-        />
-      )}
+                    color: colors.black,
+                  },
+                  {
+                    name: strings.main.remove,
+                    onPress: () => handleRemoveEvent(item.id),
+                    disabled: !item.suggester?.self,
+                    color: colors.red,
+                  },
+                ]}
+              />
+            </TouchableOpacity>
+          );
+        }}
+      />
 
       {groupBottomSheetOpen || addBottomSheetOpen ? (
         <View

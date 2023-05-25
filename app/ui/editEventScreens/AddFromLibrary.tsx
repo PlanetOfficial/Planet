@@ -69,7 +69,7 @@ const AddFromLibrary: React.FC<Props> = ({onClose, onSelect}) => {
             </Text>
           </View>
         }
-        renderItem={({item}) => {
+        renderItem={({item}: {item: Place}) => {
           return (
             <TouchableOpacity
               style={styles.card}

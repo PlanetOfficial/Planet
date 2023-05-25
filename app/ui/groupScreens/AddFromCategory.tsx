@@ -228,7 +228,7 @@ const AddFromCategory = forwardRef((props: ChildComponentProps, ref) => {
               </Text>
             </View>
           }
-          renderItem={({item}) => {
+          renderItem={({item}: {item: Place}) => {
             return (
               <TouchableOpacity
                 style={styles.card}
