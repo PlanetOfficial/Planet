@@ -8,7 +8,7 @@ import { Platform } from 'react-native';
 import SplashScreen from './app/ui/otherScreens/!SplashScreen';
 import AppNavigation from './app/navigation/AppNavigation';
 import {updateCaches} from './app/utils/functions/CacheHelpers';
-import { saveTokenToDatabase } from './app/utils/firebase/helpers';
+import { saveTokenToDatabase } from './app/utils/api/authAPI';
 
 export default function App() {
   const [isLoading, setLoading] = useState<boolean>(true);
