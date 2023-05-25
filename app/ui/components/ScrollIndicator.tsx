@@ -8,9 +8,10 @@ import {colors} from '../../constants/theme';
 interface Props {
   num: number;
   idx: number;
+  special?: number;
 }
 
-const ScrollIndicator: React.FC<Props> = ({num, idx}) => (
+const ScrollIndicator: React.FC<Props> = ({num, idx, special}) => (
   <View style={styles.container}>
     {Array.from(Array(num), (e, i) => (
       <View
@@ -18,7 +19,12 @@ const ScrollIndicator: React.FC<Props> = ({num, idx}) => (
         style={[
           styles.circle,
           {
-            backgroundColor: i === idx ? colors.accent : colors.darkgrey,
+            backgroundColor:
+              i === special
+                ? colors.gold
+                : i === idx
+                ? colors.accent
+                : colors.darkgrey,
           },
         ]}
       />

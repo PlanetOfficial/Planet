@@ -1,5 +1,11 @@
 import React, {useRef, useEffect} from 'react';
-import {StyleSheet, View, TouchableOpacity, ScrollView} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  ScrollView,
+  Alert,
+} from 'react-native';
 import {s} from 'react-native-size-matters';
 
 import PlaceCard from '../components/PlaceCard';
@@ -8,6 +14,7 @@ import ScrollIndicator from '../components/ScrollIndicator';
 import {icons} from '../../constants/images';
 
 import {Place} from '../../utils/interfaces/types';
+import {deleteVote, postVote} from '../../utils/api/groups/otherAPI';
 
 interface Props {
   navigation: any;
@@ -20,6 +27,7 @@ interface Props {
   setIndex: (index: number) => void;
   displayCategory?: boolean;
   displaySuggester?: boolean;
+  isGroupPlace: boolean;
 }
 
 const PlacesDisplay: React.FC<Props> = ({
@@ -32,8 +40,10 @@ const PlacesDisplay: React.FC<Props> = ({
   index,
   setIndex,
   displayCategory = true,
-  displaySuggester = false,
+  isGroupPlace = false,
 }) => {
+  const [voteIndex, setVoteIndex] = React.useState<number>(-1);
+
   const scrollViewRef = useRef<ScrollView>(null);
 
   const scrollToPosition = () => {
@@ -52,6 +62,42 @@ const PlacesDisplay: React.FC<Props> = ({
     scrollToPosition();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const onVote = async (idx: number) => {
+    const group_place_id: number | undefined = places[idx].group_place_id;
+    if (group_place_id) {
+      if (voteIndex === -1) {
+        const response = await postVote(group_place_id);
+        if (response) {
+          setVoteIndex(idx);
+        } else {
+          Alert.alert('Error', 'Unable to vote. Please try again later');
+        }
+      } else if (voteIndex === idx) {
+        const response = await deleteVote(group_place_id);
+        if (response) {
+          setVoteIndex(-1);
+        } else {
+          Alert.alert(
+            'Error',
+            'Unable to delete the vote. Please try again later',
+          );
+        }
+      } else {
+        const _group_place_id: number | undefined =
+          places[voteIndex].group_place_id;
+        if (_group_place_id) {
+          const response1 = await deleteVote(_group_place_id);
+          const repsonse2 = await postVote(group_place_id);
+          if (response1 && repsonse2) {
+            setVoteIndex(idx);
+          } else {
+            Alert.alert('Error', 'Unable to vote. Please try again later');
+          }
+        }
+      }
+    }
+  };
 
   return (
     <>
@@ -110,13 +156,15 @@ const PlacesDisplay: React.FC<Props> = ({
                     : icons.defaultIcon
                 }
                 displayCategory={displayCategory}
-                displaySuggester={displaySuggester}
+                displaySuggester={isGroupPlace}
+                voted={voteIndex === idx}
+                onVote={() => onVote(idx)}
               />
             </TouchableOpacity>
           </View>
         ))}
       </ScrollView>
-      <ScrollIndicator num={places?.length} idx={index} />
+      <ScrollIndicator num={places?.length} idx={index} special={voteIndex} />
     </>
   );
 };

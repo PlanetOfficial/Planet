@@ -6,4 +6,5 @@ export const colors = {
   accent: '#f36f3f',
   accentLight: '#f9a67a',
   red: '#ee2e31',
+  gold: '#ffd700',
 };

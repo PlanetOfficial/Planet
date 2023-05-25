@@ -17,3 +17,29 @@ export const postAlternative = async (
 
   return response?.ok;
 };
+
+export const postVote = async (group_place_id: number): Promise<boolean> => {
+  const authToken = await EncryptedStorage.getItem('auth_token');
+
+  const response = await fetch(
+    GroupURL + `/vote?group_place_id=${group_place_id}&authtoken=${authToken}`,
+    {
+      method: 'POST',
+    },
+  );
+
+  return response?.ok;
+};
+
+export const deleteVote = async (group_place_id: number): Promise<boolean> => {
+  const authToken = await EncryptedStorage.getItem('auth_token');
+
+  const response = await fetch(
+    GroupURL + `/vote?group_place_id=${group_place_id}&authtoken=${authToken}`,
+    {
+      method: 'DELETE',
+    },
+  );
+
+  return response?.ok;
+};

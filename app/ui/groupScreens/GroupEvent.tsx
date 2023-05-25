@@ -10,7 +10,6 @@ import {
 import MapView, {Marker} from 'react-native-maps';
 import {s, vs} from 'react-native-size-matters';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import EncryptedStorage from 'react-native-encrypted-storage';
 import BottomSheet, {BottomSheetModal} from '@gorhom/bottom-sheet';
 
 import moment from 'moment';
@@ -65,7 +64,6 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
     moment(route?.params?.eventData?.date, 'YYYY-MM-DD').format('M/D/YYYY'),
   );
   const [bookmarks, setBookmarks] = useState<Place[]>(route?.params?.bookmarks);
-  const [userId, setUserId] = useState<number>(-1);
 
   const [groupPlaces, setGroupPlaces] = useState<GroupPlace[]>();
 
@@ -123,22 +121,8 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
   };
 
   useEffect(() => {
-    const initializeUserId = async () => {
-      const idString: string | null = await EncryptedStorage.getItem('user_id');
-      if (!idString) {
-        return;
-      }
-
-      const id: number = parseInt(idString, 10);
-      if (Number.isNaN(id)) {
-        return;
-      }
-
-      setUserId(id);
-    };
-
     const initializeData = async () => {
-      const _places = await getPlaces();
+      const _places: Place[] | null = await getPlaces();
 
       if (_places) {
         setBookmarks(_places);
@@ -146,16 +130,24 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
         Alert.alert('Error', 'Unable to load places. Please try again.');
       }
 
-      setGroupPlaces(route?.params?.eventData?.destinations);
-      // const markerArray: MarkerObject[] = getMarkerArray(
-      //   route?.params?.eventData?.places,
-      // );
-      // setMarkers(markerArray);
+      const _groupPlaces: GroupPlace[] | null = await getGroupEvent(
+        groupEventId,
+      );
+      if (_groupPlaces) {
+        setGroupPlaces(_groupPlaces);
+      } else {
+        Alert.alert('Error', 'Unable to reload places. Please try again.');
+      }
+
+      const selectedPlace: Place[] = route?.params?.eventData?.destinations.map(
+        (gp: GroupPlace) => gp.places[0],
+      );
+      const markerArray: MarkerObject[] = getMarkerArray(selectedPlace);
+      setMarkers(markerArray);
     };
 
     const unsubscribe = navigation.addListener('focus', () => {
       initializeData();
-      initializeUserId();
     });
     return unsubscribe;
   }, [navigation, groupEventId, route?.params?.eventData?.destinations]);
@@ -336,7 +328,7 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
                 index={placeIdx}
                 setIndex={setPlaceIdx}
                 displayCategory={false}
-                displaySuggester={true}
+                isGroupPlace={true}
               />
               {idx !== groupPlaces.length - 1 ? (
                 <View style={styles.separater} />

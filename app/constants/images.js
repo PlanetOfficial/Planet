@@ -36,6 +36,8 @@ export const icons = {
   unchecked: require('../assets/icons/unchecked.png'),
   selected: require('../assets/icons/selected.png'),
   unselected: require('../assets/icons/unselected.png'),
+  vote: require('../assets/icons/vote.png'),
+  unvote: require('../assets/icons/unvote.png'),
 };
 
 export const vectors = {

@@ -27,6 +27,8 @@ interface Props {
   small?: boolean;
   displayCategory?: boolean;
   displaySuggester?: boolean;
+  voted?: boolean;
+  onVote?: () => void;
 }
 
 const PlaceCard: React.FC<Props> = ({
@@ -37,6 +39,8 @@ const PlaceCard: React.FC<Props> = ({
   small = false,
   displayCategory = true,
   displaySuggester = false,
+  voted,
+  onVote,
 }) => {
   const handleBookmark = async () => {
     if (!bookmarked) {
@@ -79,6 +83,16 @@ const PlaceCard: React.FC<Props> = ({
           onPress={handleBookmark}
         />
       </View>
+      {voted !== undefined && onVote ? (
+        <View style={styles.vote}>
+          <Icon
+            size="l"
+            onPress={onVote}
+            icon={voted ? icons.unvote : icons.vote}
+            color={colors.accent}
+          />
+        </View>
+      ) : null}
     </View>
   );
 };
@@ -119,6 +133,27 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     borderRadius: s(8),
+  },
+  vote: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    right: s(10),
+    bottom: s(10),
+    width: s(45),
+    height: s(45),
+    borderRadius: s(22.5),
+    backgroundColor: colors.white,
+
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 12,
+    },
+    shadowOpacity: 0.58,
+    shadowRadius: 16.0,
+
+    elevation: 24,
   },
 });
 
