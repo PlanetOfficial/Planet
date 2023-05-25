@@ -20,10 +20,7 @@ export default function App() {
         PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
       );
     } else {
-      const authStatus = await messaging().requestPermission();
-      const enabled =
-        authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-        authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+      await messaging().requestPermission();
     }
   };
 
