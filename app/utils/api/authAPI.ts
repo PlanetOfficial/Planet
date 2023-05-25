@@ -46,7 +46,6 @@ export const saveTokenToDatabase = async (fcm_token: string) => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
   if (!authToken) {
-    console.log('No auth token yet, will not add fcm to firebase.');
     return;
   }
 
@@ -58,9 +57,7 @@ export const saveTokenToDatabase = async (fcm_token: string) => {
     },
   );
 
-  if (response?.ok) {
-    console.log('Successfully saved fcm token for user');
-  } else {
-    console.warn('Error: could not set fcm token for user');
-  }
+  const myJson = await response.json();
+
+  return myJson;
 };

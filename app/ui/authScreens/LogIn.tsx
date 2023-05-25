@@ -46,12 +46,16 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
 
       // save to firebase
       const fcm_token = await messaging().getToken();
-      await saveTokenToDatabase(fcm_token);
+      const tokenResponse = await saveTokenToDatabase(fcm_token);
 
-      navigation.reset({
-        index: 0,
-        routes: [{name: 'TabStack'}],
-      });
+      if (tokenResponse?.ok) {
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'TabStack'}],
+        });
+      } else {
+        setError(tokenResponse?.message);
+      }
     } else {
       setError(response?.message);
     }

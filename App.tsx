@@ -24,10 +24,6 @@ export default function App() {
       const enabled =
         authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
         authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-
-      if (enabled) {
-        console.log('Notifications authorized:', enabled);
-      }
     }
   };
 
