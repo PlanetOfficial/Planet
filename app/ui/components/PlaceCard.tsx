@@ -29,6 +29,8 @@ interface Props {
   displaySuggester?: boolean;
   voted?: boolean;
   onVote?: () => void;
+  mySuggestion?: boolean;
+  onRemoveSuggestion?: () => void;
 }
 
 const PlaceCard: React.FC<Props> = ({
@@ -41,6 +43,8 @@ const PlaceCard: React.FC<Props> = ({
   displaySuggester = false,
   voted,
   onVote,
+  mySuggestion,
+  onRemoveSuggestion,
 }) => {
   const handleBookmark = async () => {
     if (!bookmarked) {
@@ -84,12 +88,22 @@ const PlaceCard: React.FC<Props> = ({
         />
       </View>
       {voted !== undefined && onVote ? (
-        <View style={styles.vote}>
+        <View style={[styles.button, {right: s(10)}]}>
           <Icon
             size="m"
             onPress={onVote}
             icon={voted ? icons.unvote : icons.vote}
             color={colors.accent}
+          />
+        </View>
+      ) : null}
+      {mySuggestion && onRemoveSuggestion ? (
+        <View style={[styles.button, {left: s(10)}]}>
+          <Icon
+            size="m"
+            onPress={onRemoveSuggestion}
+            icon={icons.remove}
+            color={colors.red}
           />
         </View>
       ) : null}
@@ -134,11 +148,10 @@ const styles = StyleSheet.create({
     height: '100%',
     borderRadius: s(8),
   },
-  vote: {
+  button: {
     alignItems: 'center',
     justifyContent: 'center',
     position: 'absolute',
-    right: s(10),
     bottom: s(10),
     width: s(40),
     height: s(40),

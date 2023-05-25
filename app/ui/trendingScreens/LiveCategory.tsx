@@ -59,7 +59,7 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
         const promises = subcategoryIds?.map(async (subcategoryId: number) => {
           const events: Place[] | null = await getDestinations(
             categoryId,
-            floats.defaultRadius,
+            floats.defaultRadiusFar,
             latitude,
             longitude,
             undefined,

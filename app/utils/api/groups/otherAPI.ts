@@ -30,7 +30,7 @@ export const deleteAlternative = async (
       method: 'DELETE',
     },
   );
-  
+
   return response?.ok;
 };
 

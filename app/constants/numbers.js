@@ -8,5 +8,6 @@ export const floats = {
   defaultLongitude: -122.3032,
   defaultLatitudeDelta: 0.0922,
   defaultLongitudeDelta: 0.0421,
-  defaultRadius: 19312, // meters, ~12 miles
+  defaultRadiusFar: 19312, // meters, ~12 miles
+  defaultRadiusNear: 8046, // meters, ~5 miles
 };

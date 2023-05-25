@@ -331,7 +331,7 @@ const Event: React.FC<Props> = ({navigation, route}) => {
         {editing ? (
           <EditEvent
             navigation={navigation}
-            radius={floats.defaultRadius}
+            radius={floats.defaultRadiusNear}
             latitude={latitude}
             longitude={longitude}
             bookmarks={bookmarks}

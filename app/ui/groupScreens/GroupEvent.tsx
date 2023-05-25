@@ -6,11 +6,13 @@ import {
   ScrollView,
   Alert,
   Platform,
+  LayoutAnimation,
 } from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
 import {s, vs} from 'react-native-size-matters';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import BottomSheet from '@gorhom/bottom-sheet';
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 import moment from 'moment';
 
@@ -28,11 +30,13 @@ import {
 import {getPlaces} from '../../utils/api/placeAPI';
 import {deleteGroupEvent, getGroupEvent} from '../../utils/api/groups/eventAPI';
 import {postEvent} from '../../utils/api/eventAPI';
+import {deleteAlternative} from '../../utils/api/groups/otherAPI';
 
 import AddFromCategory from './AddFromCategory';
 import AddByCategory from '../editEventScreens/AddByCategory';
 import AddFromLibrary from '../editEventScreens/AddFromLibrary';
 import AddCustomDest from '../editEventScreens/AddCustomDest';
+import SelectSubcategory from '../editEventScreens/SelectSubcategory';
 
 import PlacesDisplay from '../components/PlacesDisplay';
 import Blur from '../components/Blur';
@@ -45,8 +49,6 @@ import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 import {postAlternative} from '../../utils/api/groups/otherAPI';
 import {floats} from '../../constants/numbers';
-import SelectSubcategory from '../editEventScreens/SelectSubcategory';
-import EncryptedStorage from 'react-native-encrypted-storage';
 
 interface Props {
   navigation: any;
@@ -96,7 +98,7 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
   }, []);
 
   const onAltSelect = async (place: Place) => {
-    addOptionsBottomSheetRef.current?.collapse();
+    addOptionsBottomSheetRef.current?.close();
     setAddOptionsStatus(0);
 
     if (groupPlace) {
@@ -118,7 +120,7 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
   };
 
   const onClose = () => {
-    addOptionsBottomSheetRef.current?.collapse();
+    addOptionsBottomSheetRef.current?.close();
     setAddOptionsStatus(0);
   };
 
@@ -215,7 +217,7 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
     }
   };
 
-  const findMyVote = (places: Place[]) => {
+  const findMyVote = (places: Place[]): number => {
     for (let i = 0; i < places.length; i++) {
       const J: number | undefined = places[i]?.votes?.length;
       if (J) {
@@ -228,6 +230,32 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
       }
     }
     return -1;
+  };
+
+  const findMySuggestions = (places: Place[]): number[] => {
+    const mySuggestions: number[] = [];
+    for (let i = 0; i < places.length; i++) {
+      const _suggester: User | undefined = places[i]?.suggester;
+      if (_suggester && _suggester.id === userId) {
+        mySuggestions.push(i);
+      }
+    }
+    return mySuggestions;
+  };
+
+  const onRemoveSuggestion = async (group_place_id: number | undefined) => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    if (group_place_id) {
+      const response = await deleteAlternative(group_place_id);
+      if (response) {
+        reloadPlaces();
+      } else {
+        Alert.alert(
+          'Error',
+          'Unable to delete the suggestion. Please try again later',
+        );
+      }
+    }
   };
 
   return (
@@ -322,6 +350,7 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
                   options={[
                     {
                       name: `${strings.library.browse} ${_groupPlace.places[0].category.name}s`,
+                      disabled: _groupPlace.places[0].supplier === 'custom',
                       onPress: () => {
                         setAddOptionsStatus(1);
                         setGroupPlace(_groupPlace);
@@ -383,6 +412,8 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
                 displayCategory={false}
                 isGroupPlace={true}
                 myVote={findMyVote(_groupPlace.places)}
+                mySuggestions={findMySuggestions(_groupPlace.places)}
+                onRemoveSuggestion={onRemoveSuggestion}
               />
               {idx !== groupPlaces.length - 1 ? (
                 <View style={styles.separater} />
@@ -411,7 +442,7 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
           <AddFromCategory
             onClose={onClose}
             onSelect={onAltSelect}
-            radius={floats.defaultRadius}
+            radius={floats.defaultRadiusNear}
             latitude={groupPlace.places[0].latitude}
             longitude={groupPlace.places[0].longitude}
             bookmarks={bookmarks.map((bookmark: Place) => bookmark.id)}

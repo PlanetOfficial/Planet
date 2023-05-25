@@ -184,7 +184,10 @@ const EditEvent: React.FC<Props> = ({
                                   }
                                 : null,
                             ]}>
-                            <Image style={styles.remove} source={icons.remove} />
+                            <Image
+                              style={styles.remove}
+                              source={icons.remove}
+                            />
                           </TouchableOpacity>
                         </View>
                       )}

@@ -29,6 +29,8 @@ interface Props {
   displaySuggester?: boolean;
   isGroupPlace?: boolean;
   myVote?: number;
+  mySuggestions?: number[];
+  onRemoveSuggestion?: (group_place_id: number | undefined) => void;
 }
 
 const PlacesDisplay: React.FC<Props> = ({
@@ -43,6 +45,8 @@ const PlacesDisplay: React.FC<Props> = ({
   displayCategory = true,
   isGroupPlace = false,
   myVote = -1,
+  mySuggestions = [],
+  onRemoveSuggestion,
 }) => {
   const [voteIndex, setVoteIndex] = React.useState<number>(myVote);
 
@@ -161,6 +165,12 @@ const PlacesDisplay: React.FC<Props> = ({
                 displaySuggester={isGroupPlace}
                 voted={voteIndex === idx}
                 onVote={() => onVote(idx)}
+                mySuggestion={mySuggestions.includes(idx) && idx !== 0}
+                onRemoveSuggestion={() => {
+                  if (onRemoveSuggestion) {
+                    onRemoveSuggestion(place.group_place_id);
+                  }
+                }}
               />
             </TouchableOpacity>
           </View>

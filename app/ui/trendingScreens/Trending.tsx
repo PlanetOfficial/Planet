@@ -27,10 +27,10 @@ import {getDestinations} from '../../utils/api/destinationAPI';
 import {getLiveCategories} from '../../utils/api/genresAPI';
 import {Category, Place} from '../../utils/interfaces/types';
 
-const Trending = ({navigation} : {navigation: any}) => {
+const Trending = ({navigation}: {navigation: any}) => {
   const [latitude, setLatitude] = useState<number>(floats.defaultLatitude);
   const [longitude, setLongitude] = useState<number>(floats.defaultLongitude);
-  const [radius] = useState<number>(floats.defaultRadius);
+  const [radius] = useState<number>(floats.defaultRadiusFar);
   const [eventsData, setEventsData] = useState<Map<number, Place[]>>(new Map());
   const [bookmarks, setBookmarks] = useState<number[]>([]);
   const [liveCategories, setLiveCategories] = useState<Category[]>([]);
