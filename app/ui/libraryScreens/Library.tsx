@@ -29,9 +29,10 @@ import {isPlace2} from '../../utils/functions/Misc';
 
 interface Props {
   navigation: any;
+  route: any;
 }
 
-const Library: React.FC<Props> = ({navigation}) => {
+const Library: React.FC<Props> = ({navigation, route}) => {
   const [selectedIndex, setIndex] = useState<number>(0);
 
   const [places, setPlaces] = useState<Place[]>([]);
@@ -100,7 +101,7 @@ const Library: React.FC<Props> = ({navigation}) => {
         activeTabTextStyle={sctStyles.activeText}
         borderRadius={0}
         values={[strings.library.saved, strings.library.events]}
-        selectedIndex={selectedIndex}
+        selectedIndex={route?.params?.index || 0}
         onTabPress={(index: number) => setIndex(index)}
       />
 

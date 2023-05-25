@@ -198,7 +198,7 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
       );
 
       if (response) {
-        navigation.navigate('TabStack', {screen: 'Library'});
+        navigation.navigate('Library', {index: 1});
       } else {
         Alert.alert('Error', 'Unable to copy event. Please Try Again');
       }
