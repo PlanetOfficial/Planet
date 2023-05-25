@@ -29,7 +29,6 @@ import {
   getGroupEvents,
   postGroupEvent,
   deleteGroupEvent,
-  forkGroupEvent,
 } from '../../utils/api/groups/eventAPI';
 import {getGroups} from '../../utils/api/groups/groupAPI';
 import {getInvites} from '../../utils/api/groups/inviteAPI';
@@ -164,16 +163,6 @@ const Groups: React.FC<Props> = ({navigation}) => {
     }
   };
 
-  const handleFork = async (groupEventId: number) => {
-    const response = await forkGroupEvent(groupEventId);
-
-    if (response) {
-      navigation.navigate('Library');
-    } else {
-      Alert.alert('Error', 'Something went wrong. Please try again.');
-    }
-  };
-
   const handleRemoveEvent = async (group_event_id: number) => {
     const response = await deleteGroupEvent(group_event_id);
 
@@ -283,11 +272,6 @@ const Groups: React.FC<Props> = ({navigation}) => {
                         Alert.alert('Share', 'Share is not implemented yet');
                       },
                       color: colors.black,
-                    },
-                    {
-                      name: strings.groups.fork,
-                      onPress: () => handleFork(item.id),
-                      color: colors.accent,
                     },
                     {
                       name: strings.main.remove,
