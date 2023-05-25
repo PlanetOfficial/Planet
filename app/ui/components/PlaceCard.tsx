@@ -86,7 +86,7 @@ const PlaceCard: React.FC<Props> = ({
       {voted !== undefined && onVote ? (
         <View style={styles.vote}>
           <Icon
-            size="l"
+            size="m"
             onPress={onVote}
             icon={voted ? icons.unvote : icons.vote}
             color={colors.accent}
@@ -140,9 +140,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: s(10),
     bottom: s(10),
-    width: s(45),
-    height: s(45),
-    borderRadius: s(22.5),
+    width: s(40),
+    height: s(40),
+    borderRadius: s(20),
     backgroundColor: colors.white,
 
     shadowColor: '#000',

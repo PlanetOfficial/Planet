@@ -28,6 +28,7 @@ interface Props {
   displayCategory?: boolean;
   displaySuggester?: boolean;
   isGroupPlace: boolean;
+  myVote: number;
 }
 
 const PlacesDisplay: React.FC<Props> = ({
@@ -41,8 +42,9 @@ const PlacesDisplay: React.FC<Props> = ({
   setIndex,
   displayCategory = true,
   isGroupPlace = false,
+  myVote = -1,
 }) => {
-  const [voteIndex, setVoteIndex] = React.useState<number>(-1);
+  const [voteIndex, setVoteIndex] = React.useState<number>(myVote);
 
   const scrollViewRef = useRef<ScrollView>(null);
 

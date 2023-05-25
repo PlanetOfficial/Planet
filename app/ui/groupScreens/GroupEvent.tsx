@@ -23,6 +23,7 @@ import {
   GroupPlace,
   MarkerObject,
   Place,
+  User,
 } from '../../utils/interfaces/types';
 import {getPlaces} from '../../utils/api/placeAPI';
 import {
@@ -48,6 +49,7 @@ import {colors} from '../../constants/theme';
 import {postAlternative} from '../../utils/api/groups/otherAPI';
 import {floats} from '../../constants/numbers';
 import SelectSubcategory from '../editEventScreens/SelectSubcategory';
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 interface Props {
   navigation: any;
@@ -69,6 +71,8 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
 
   const [placeIdx, setPlaceIdx] = useState<number>(0);
   const [markers, setMarkers] = useState<MarkerObject[]>([]);
+
+  const [userId, setUserId] = useState<number>();
 
   const insets = useSafeAreaInsets();
   const bottomSheetRef = useRef<BottomSheet>(null);
@@ -121,6 +125,20 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
   };
 
   useEffect(() => {
+    const initializeUserId = async () => {
+      const idString: string | null = await EncryptedStorage.getItem('user_id');
+      if (!idString) {
+        return;
+      }
+
+      const id: number = parseInt(idString, 10);
+      if (Number.isNaN(id)) {
+        return;
+      }
+
+      setUserId(id);
+    };
+
     const initializeData = async () => {
       const _places: Place[] | null = await getPlaces();
 
@@ -148,6 +166,7 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
 
     const unsubscribe = navigation.addListener('focus', () => {
       initializeData();
+      initializeUserId();
     });
     return unsubscribe;
   }, [navigation, groupEventId, route?.params?.eventData?.destinations]);
@@ -179,6 +198,21 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
     } else {
       Alert.alert('Error', 'Unable to remove event. Please try again.');
     }
+  };
+
+  const findMyVote = (places: Place[]) => {
+    for (let i = 0; i < places.length; i++) {
+      const J: number | undefined = places[i]?.votes?.length;
+      if (J) {
+        for (let j = 0; j < J; j++) {
+          const votes: User[] | undefined = places[i]?.votes;
+          if (votes && votes[j].id === userId) {
+            return i;
+          }
+        }
+      }
+    }
+    return -1;
   };
 
   return (
@@ -329,6 +363,8 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
                 setIndex={setPlaceIdx}
                 displayCategory={false}
                 isGroupPlace={true}
+                // myVote if user has voted on this place
+                myVote={findMyVote(_groupPlace.places)}
               />
               {idx !== groupPlaces.length - 1 ? (
                 <View style={styles.separater} />
