@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import messaging from '@react-native-firebase/messaging';
 
 import {s} from 'react-native-size-matters';
 
@@ -31,6 +32,8 @@ const Settings: React.FC<Props> = ({navigation}) => {
     } catch (error) {
       Alert.alert('Error', 'Unable to logout. Please try again.');
     } finally {
+      await messaging().deleteToken();
+
       navigation.reset({
         index: 0,
         routes: [{name: 'Login'}],
