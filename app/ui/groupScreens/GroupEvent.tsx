@@ -82,7 +82,7 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
   );
 
   const [addOptionsStatus, setAddOptionsStatus] = useState<number>(0);
-  const addOptionsBottomSheetRef = useRef<BottomSheetModal>(null);
+  const addOptionsBottomSheetRef = useRef<BottomSheet>(null);
   const addOptionsSnapPoints = useMemo(
     () => [vs(680) - s(50) - insets.top],
     [insets.top],
@@ -98,7 +98,7 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
   }, []);
 
   const onAltSelect = async (place: Place) => {
-    addOptionsBottomSheetRef.current?.dismiss();
+    addOptionsBottomSheetRef.current?.collapse();
     setAddOptionsStatus(0);
 
     if (groupPlace) {
@@ -120,7 +120,7 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
   };
 
   const onClose = () => {
-    addOptionsBottomSheetRef.current?.dismiss();
+    addOptionsBottomSheetRef.current?.collapse();
     setAddOptionsStatus(0);
   };
 
@@ -311,7 +311,7 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
                         setAddOptionsStatus(1);
                         setGroupPlace(_groupPlace);
                         setCategoryToSearch(_groupPlace.places[0].category);
-                        addOptionsBottomSheetRef.current?.present();
+                        addOptionsBottomSheetRef.current?.expand();
                       },
                       color: colors.accent,
                     },
@@ -319,7 +319,7 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
                       name: strings.library.browseCategory,
                       onPress: () => {
                         setAddOptionsStatus(2);
-                        addOptionsBottomSheetRef.current?.present();
+                        addOptionsBottomSheetRef.current?.expand();
                         setGroupPlace(_groupPlace);
                       },
                       color: colors.black,
@@ -328,7 +328,7 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
                       name: strings.library.browseLibrary,
                       onPress: () => {
                         setAddOptionsStatus(3);
-                        addOptionsBottomSheetRef.current?.present();
+                        addOptionsBottomSheetRef.current?.expand();
                         setGroupPlace(_groupPlace);
                       },
                       color: colors.black,
@@ -337,7 +337,7 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
                       name: strings.library.browseCustom,
                       onPress: () => {
                         setAddOptionsStatus(4);
-                        addOptionsBottomSheetRef.current?.present();
+                        addOptionsBottomSheetRef.current?.expand();
                         setGroupPlace(_groupPlace);
                       },
                       color: colors.black,
@@ -378,15 +378,15 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
         <View
           style={styles.dim}
           onTouchStart={() => {
-            addOptionsBottomSheetRef.current?.dismiss();
+            addOptionsBottomSheetRef.current?.close();
           }}
         />
       ) : null}
 
-      <SelectSubcategory ref={selectSubcategoryRef} />
-
-      <BottomSheetModal
+      <BottomSheet
+        index={-1}
         ref={addOptionsBottomSheetRef}
+        enablePanDownToClose={true}
         snapPoints={addOptionsSnapPoints}
         onAnimate={handleAddOptionsChange}>
         {addOptionsStatus === 1 && categoryToSearch && groupPlace ? (
@@ -431,7 +431,9 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
         {addOptionsStatus === 4 ? (
           <AddCustomDest onClose={onClose} onSelect={onAltSelect} />
         ) : null}
-      </BottomSheetModal>
+      </BottomSheet>
+
+      <SelectSubcategory ref={selectSubcategoryRef} />
     </View>
   );
 };
