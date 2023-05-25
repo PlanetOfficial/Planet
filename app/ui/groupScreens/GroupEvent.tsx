@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef, useMemo} from 'react';
+import React, {useEffect, useState, useRef, useMemo, useCallback} from 'react';
 import {
   StyleSheet,
   View,
@@ -11,7 +11,7 @@ import MapView, {Marker} from 'react-native-maps';
 import {s, vs} from 'react-native-size-matters';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import EncryptedStorage from 'react-native-encrypted-storage';
-import BottomSheet from '@gorhom/bottom-sheet';
+import BottomSheet, {BottomSheetModal} from '@gorhom/bottom-sheet';
 
 import moment from 'moment';
 
@@ -35,6 +35,7 @@ import Text from '../components/Text';
 import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
+import GroupEventOptions from './GroupEventOptions';
 
 interface Props {
   navigation: any;
@@ -50,9 +51,7 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
   const [date] = useState<string>(
     moment(route?.params?.eventData?.date, 'YYYY-MM-DD').format('M/D/YYYY'),
   );
-  const [bookmarks, setBookmarks] = useState<number[]>(
-    route?.params?.bookmarks,
-  );
+  const [bookmarks, setBookmarks] = useState<Place[]>(route?.params?.bookmarks);
   const [userId, setUserId] = useState<number>(-1);
 
   const [groupPlaces, setGroupPlaces] = useState<GroupPlace[]>();
@@ -66,6 +65,16 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
     () => [vs(380) - (insets.top + s(50)), vs(680) - (insets.top + s(50))],
     [insets.top],
   );
+
+  const [altBottomSheetOpen, setAltBottomSheetOpen] = useState<boolean>(false);
+  const altBottomSheetRef = useRef<BottomSheetModal>(null);
+  const altSnapPoints = useMemo(
+    () => [vs(680) - s(50) - insets.top],
+    [insets.top],
+  );
+  const handleAltSheetChange = useCallback((_: number, toIndex: number) => {
+    setAltBottomSheetOpen(toIndex === 0);
+  }, []);
 
   useEffect(() => {
     const initializeUserId = async () => {
@@ -86,10 +95,7 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
       const _places = await getPlaces();
 
       if (_places) {
-        const bookmarksIds: number[] = _places.map(
-          (bookmark: Place) => bookmark.id,
-        );
-        setBookmarks(bookmarksIds);
+        setBookmarks(_places);
       } else {
         Alert.alert('Error', 'Unable to load places. Please try again.');
       }
@@ -237,7 +243,7 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
                     },
                     {
                       name: 'Add Options',
-                      onPress: () => {},
+                      onPress: () => altBottomSheetRef.current?.present(),
                       color: colors.accent,
                     },
                   ]}
@@ -247,13 +253,13 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
                 navigation={navigation}
                 places={groupPlace.places}
                 width={s(290)}
-                bookmarks={bookmarks}
-                setBookmarked={(bookmarked: boolean, id: number) => {
+                bookmarks={bookmarks.map((bookmark: Place) => bookmark.id)}
+                setBookmarked={(bookmarked: boolean, place: Place) => {
                   if (bookmarked) {
-                    setBookmarks([...bookmarks, id]);
+                    setBookmarks([...bookmarks, place]);
                   } else {
                     setBookmarks(
-                      bookmarks.filter((bookmark: number) => bookmark !== id),
+                      bookmarks.filter((bookmark: Place) => bookmark !== place),
                     );
                   }
                 }}
@@ -267,6 +273,20 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
           ))}
         </ScrollView>
       </BottomSheet>
+
+      {altBottomSheetOpen ? (
+        <View
+          style={styles.dim}
+          onTouchStart={() => altBottomSheetRef.current?.dismiss()}
+        />
+      ) : null}
+
+      <BottomSheetModal
+        ref={altBottomSheetRef}
+        snapPoints={altSnapPoints}
+        onAnimate={handleAltSheetChange}>
+        <GroupEventOptions bottomSheetRef={altBottomSheetRef} />
+      </BottomSheetModal>
     </View>
   );
 };

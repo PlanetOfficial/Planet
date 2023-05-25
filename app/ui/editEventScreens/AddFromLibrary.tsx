@@ -18,7 +18,6 @@ import {colors} from '../../constants/theme';
 
 import {getPlaces} from '../../utils/api/placeAPI';
 import {Place} from '../../utils/interfaces/types';
-import {getPlaceCardString} from '../../utils/functions/Misc';
 
 interface Props {
   onClose: () => void;
@@ -79,13 +78,13 @@ const AddFromLibrary: React.FC<Props> = ({onClose, onSelect}) => {
                 onClose();
               }}>
               <PlaceCard
-                id={item.id}
-                name={item.name}
-                info={getPlaceCardString(item)}
+                place={item}
                 bookmarked={true}
-                setBookmarked={(bookmarked: boolean, id: number) => {
+                setBookmarked={(bookmarked: boolean, place: Place) => {
                   if (!bookmarked) {
-                    setPlaces(places.filter((place: Place) => place.id !== id));
+                    setPlaces(
+                      places.filter((_place: Place) => _place.id !== place.id),
+                    );
                   }
                 }}
                 image={

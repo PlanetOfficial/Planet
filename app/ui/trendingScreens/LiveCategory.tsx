@@ -174,18 +174,18 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
                           })
                         }>
                         <PlaceCard
-                          id={event.id}
-                          small={true}
-                          name={event.name}
-                          info={getPlaceCardString(event, false)}
+                          place={event}
                           bookmarked={bookmarks.includes(event.id)}
-                          setBookmarked={(bookmarked: boolean, id: number) => {
+                          setBookmarked={(
+                            bookmarked: boolean,
+                            place: Place,
+                          ) => {
                             if (bookmarked) {
-                              setBookmarks([...bookmarks, id]);
+                              setBookmarks([...bookmarks, place.id]);
                             } else {
                               setBookmarks(
                                 bookmarks.filter(
-                                  (bookmark: number) => bookmark !== id,
+                                  (bookmark: number) => bookmark !== place.id,
                                 ),
                               );
                             }

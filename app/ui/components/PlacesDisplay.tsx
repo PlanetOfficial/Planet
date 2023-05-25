@@ -8,14 +8,13 @@ import ScrollIndicator from '../components/ScrollIndicator';
 import {icons} from '../../constants/images';
 
 import {Place} from '../../utils/interfaces/types';
-import {getPlaceCardString} from '../../utils/functions/Misc';
 
 interface Props {
   navigation: any;
   places: Place[];
   width: number;
   bookmarks: number[];
-  setBookmarked: (bookmarked: boolean, id: number) => void;
+  setBookmarked: (bookmarked: boolean, place: Place) => void;
   closeDropdown?: () => void;
   index: number;
   setIndex: (index: number) => void;
@@ -96,9 +95,7 @@ const PlacesDisplay: React.FC<Props> = ({
                 });
               }}>
               <PlaceCard
-                id={place.id}
-                name={place.name}
-                info={getPlaceCardString(place)}
+                place={place}
                 bookmarked={bookmarks.includes(place.id)}
                 setBookmarked={setBookmarked}
                 image={

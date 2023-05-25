@@ -38,7 +38,7 @@ interface ChildComponentProps {
   latitude: number;
   longitude: number;
   bookmarks: number[];
-  setBookmarked: (bookmark: boolean, id: number) => void;
+  setBookmarked: (bookmark: boolean, place: Place) => void;
   category: CategoryT;
   categoryIndex: number;
   destination: Place | CategoryT;

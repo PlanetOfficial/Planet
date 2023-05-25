@@ -31,15 +31,15 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     flexDirection: 'row',
     marginTop: s(7),
-    padding: s(7),
+    padding: s(6),
     borderRadius: s(10),
     backgroundColor: colors.grey,
   },
   circle: {
-    marginHorizontal: s(3),
-    width: s(6),
-    height: s(6),
-    borderRadius: s(3),
+    marginHorizontal: s(2),
+    width: s(5.5),
+    height: s(5.5),
+    borderRadius: s(5.5 / 2),
   },
 });
 

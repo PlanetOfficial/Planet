@@ -1,5 +1,11 @@
 import React from 'react';
-import {Alert, Image, StyleSheet, View} from 'react-native';
+import {
+  Alert,
+  Image,
+  ImageSourcePropType,
+  StyleSheet,
+  View,
+} from 'react-native';
 
 import {s} from 'react-native-size-matters';
 
@@ -10,40 +16,40 @@ import {colors} from '../../constants/theme';
 import {icons} from '../../constants/images';
 
 import {postPlace, deletePlace} from '../../utils/api/placeAPI';
+import {Place} from '../../utils/interfaces/types';
+import {getPlaceCardString} from '../../utils/functions/Misc';
 
 interface Props {
-  id: number;
-  small?: boolean;
-  name: string;
-  info: string;
+  place: Place;
   bookmarked: boolean;
-  setBookmarked: (bookmarked: boolean, id: number) => void;
-  image: Object;
+  setBookmarked: (bookmarked: boolean, place: Place) => void;
+  image: ImageSourcePropType;
+  small?: boolean;
+  displayCategory?: boolean;
 }
 
 const PlaceCard: React.FC<Props> = ({
-  id,
-  small = false,
-  name,
-  info,
+  place,
   bookmarked,
   setBookmarked,
   image,
+  small = false,
+  displayCategory = true,
 }) => {
   const handleBookmark = async () => {
     if (!bookmarked) {
-      const response: boolean = await postPlace(id);
+      const response: boolean = await postPlace(place.id);
 
       if (response) {
-        setBookmarked(!bookmarked, id);
+        setBookmarked(!bookmarked, place);
       } else {
         Alert.alert('Error', 'Unable to bookmark place. Please try again.');
       }
     } else {
-      const response: boolean = await deletePlace(id);
+      const response: boolean = await deletePlace(place.id);
 
       if (response) {
-        setBookmarked(!bookmarked, id);
+        setBookmarked(!bookmarked, place);
       } else {
         Alert.alert('Error', 'Unable to unbookmark place. Please try again.');
       }
@@ -56,10 +62,10 @@ const PlaceCard: React.FC<Props> = ({
       <View style={styles.header}>
         <View style={styles.texts}>
           <Text size={small ? 's' : 'm'} weight="b" numberOfLines={1}>
-            {name}
+            {place.name}
           </Text>
           <Text size="xs" weight="l" color={colors.accent} numberOfLines={1}>
-            {info}
+            {getPlaceCardString(place, displayCategory)}
           </Text>
         </View>
         <Icon

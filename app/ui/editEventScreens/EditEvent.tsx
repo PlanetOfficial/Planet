@@ -19,7 +19,7 @@ import {icons} from '../../constants/images';
 import {colors} from '../../constants/theme';
 
 import {Place, Category as CategoryT} from '../../utils/interfaces/types';
-import {getPlaceCardString, isPlace} from '../../utils/functions/Misc';
+import {isPlace} from '../../utils/functions/Misc';
 
 interface Props {
   navigation: any;
@@ -27,7 +27,7 @@ interface Props {
   latitude: number;
   longitude: number;
   bookmarks: number[];
-  setBookmarked: (bookmarked: boolean, id: number) => void;
+  setBookmarked: (bookmarked: boolean, place: Place) => void;
   destinations: (Place | CategoryT)[];
   setDestinations: (destinations: (Place | CategoryT)[]) => void;
   selectionIndices: number[];
@@ -202,9 +202,7 @@ const EditEvent: React.FC<Props> = ({
                         });
                       }}>
                       <PlaceCard
-                        id={item.id}
-                        name={item.name}
-                        info={getPlaceCardString(item)}
+                        place={item}
                         bookmarked={bookmarks.includes(item.id)}
                         setBookmarked={setBookmarked}
                         image={

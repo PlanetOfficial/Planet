@@ -137,14 +137,12 @@ const Library: React.FC<Props> = ({navigation}) => {
                   });
                 }}>
                 <PlaceCard
-                  id={item.id}
-                  name={item.name}
-                  info={getPlaceCardString(item)}
+                  place={item}
                   bookmarked={places.includes(item)}
-                  setBookmarked={(bookmarked: boolean, id: number) => {
+                  setBookmarked={(bookmarked: boolean, _place: Place) => {
                     if (!bookmarked) {
                       setPlaces(
-                        places.filter((place: Place) => place.id !== id),
+                        places.filter((place: Place) => place.id !== _place.id),
                       );
                     }
                   }}

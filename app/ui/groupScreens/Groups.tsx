@@ -4,7 +4,6 @@ import {
   StyleSheet,
   TouchableOpacity,
   SafeAreaView,
-  Pressable,
   FlatList,
   Alert,
   LayoutAnimation,
@@ -308,8 +307,9 @@ const Groups: React.FC<Props> = ({navigation}) => {
       )}
 
       {groupBottomSheetOpen || addBottomSheetOpen ? (
-        <Pressable
-          onPress={() => {
+        <View
+          style={styles.dim}
+          onTouchStart={() => {
             if (groupBottomSheetOpen) {
               groupBottomSheetRef.current?.dismiss();
             }
@@ -317,7 +317,6 @@ const Groups: React.FC<Props> = ({navigation}) => {
               addBottomSheetRef.current?.dismiss();
             }
           }}
-          style={styles.dim}
         />
       ) : null}
 

@@ -24,7 +24,6 @@ import {
   getAveragePoint,
   getRegionForCoordinates,
   isPlace,
-  getPlaceCardString,
 } from '../../utils/functions/Misc';
 import {
   MarkerObject,
@@ -336,12 +335,12 @@ const Event: React.FC<Props> = ({navigation, route}) => {
             latitude={latitude}
             longitude={longitude}
             bookmarks={bookmarks}
-            setBookmarked={(bookmarked: boolean, id: number) => {
+            setBookmarked={(bookmarked: boolean, place: Place) => {
               if (bookmarked) {
-                setBookmarks([...bookmarks, id]);
+                setBookmarks([...bookmarks, place.id]);
               } else {
                 setBookmarks(
-                  bookmarks.filter((bookmark: number) => bookmark !== id),
+                  bookmarks.filter((bookmark: number) => bookmark !== place.id),
                 );
               }
             }}
@@ -366,20 +365,19 @@ const Event: React.FC<Props> = ({navigation, route}) => {
                     navigation.navigate('Place', {
                       destination: place,
                       bookmarks: bookmarks,
+                      bookmarked: bookmarks.includes(place.id),
                     });
                   }}>
                   <PlaceCard
-                    id={place.id}
-                    name={place.name}
-                    info={getPlaceCardString(place)}
+                    place={place}
                     bookmarked={bookmarks.includes(place.id)}
-                    setBookmarked={(bookmarked: boolean, id: number) => {
+                    setBookmarked={(bookmarked: boolean, _place: Place) => {
                       if (bookmarked) {
-                        setBookmarks([...bookmarks, id]);
+                        setBookmarks([...bookmarks, _place.id]);
                       } else {
                         setBookmarks(
                           bookmarks.filter(
-                            (bookmark: number) => bookmark !== id,
+                            (bookmark: number) => bookmark !== _place.id,
                           ),
                         );
                       }

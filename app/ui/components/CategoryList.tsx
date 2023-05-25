@@ -6,7 +6,6 @@ import {
   Image,
   TouchableOpacity,
   Modal,
-  Pressable,
   Alert,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
@@ -83,11 +82,9 @@ const CategoryList: React.FC<Props> = ({onClose, onSelect}) => {
       </View>
       <Modal animationType="fade" transparent={true} visible={modalVisible}>
         <View style={modalStyles.vertCenter}>
-          <Pressable
+          <View
             style={modalStyles.dim}
-            onPress={() => {
-              setModalVisible(false);
-            }}
+            onTouchStart={() => setModalVisible(false)}
           />
           <View style={modalStyles.container}>
             <View style={modalStyles.header}>
