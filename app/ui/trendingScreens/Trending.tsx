@@ -27,11 +27,7 @@ import {getDestinations} from '../../utils/api/destinationAPI';
 import {getLiveCategories} from '../../utils/api/genresAPI';
 import {Category, Place} from '../../utils/interfaces/types';
 
-interface Props {
-  navigation: any;
-}
-
-const Trending: React.FC<Props> = ({navigation}) => {
+const Trending = ({navigation} : {navigation: any}) => {
   const [latitude, setLatitude] = useState<number>(floats.defaultLatitude);
   const [longitude, setLongitude] = useState<number>(floats.defaultLongitude);
   const [radius] = useState<number>(floats.defaultRadius);
