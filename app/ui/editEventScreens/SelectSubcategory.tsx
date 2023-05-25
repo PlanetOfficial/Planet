@@ -44,6 +44,7 @@ const SelectSubcategory = forwardRef((_prop, ref) => {
     <>
       <BottomSheetModal
         ref={subcategoryBottomSheetRef}
+        stackBehavior={'push'}
         snapPoints={subcategorySnapPoints}
         onAnimate={handleSubcategorySheetChange}>
         {comp}

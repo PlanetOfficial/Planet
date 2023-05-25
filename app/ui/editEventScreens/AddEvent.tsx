@@ -157,7 +157,13 @@ const AddEvent = forwardRef((props: ChildComponentProps, ref) => {
         enableContentPanningGesture={false}
         enableHandlePanningGesture={false}>
         {addBottomSheetStatus === 1 ? (
-          <AddByCategory onClose={onClose} onSelect={onCategorySelect} />
+          <AddByCategory
+            onClose={onClose}
+            onSelect={(category: Category) => {
+              onCategorySelect(category);
+              onClose();
+            }}
+          />
         ) : null}
         {addBottomSheetStatus === 2 ? (
           <AddFromLibrary onClose={onClose} onSelect={onDestinationSelect} />

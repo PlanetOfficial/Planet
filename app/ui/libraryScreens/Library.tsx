@@ -25,7 +25,7 @@ import {icons} from '../../constants/images';
 import {getPlaces} from '../../utils/api/placeAPI';
 import {getEvents, deleteEvent} from '../../utils/api/eventAPI';
 import {Place, Event} from '../../utils/interfaces/types';
-import {getPlaceCardString, isPlace2} from '../../utils/functions/Misc';
+import {isPlace2} from '../../utils/functions/Misc';
 
 interface Props {
   navigation: any;

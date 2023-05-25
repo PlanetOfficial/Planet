@@ -26,6 +26,7 @@ interface Props {
   image: ImageSourcePropType;
   small?: boolean;
   displayCategory?: boolean;
+  displaySuggester?: boolean;
 }
 
 const PlaceCard: React.FC<Props> = ({
@@ -35,6 +36,7 @@ const PlaceCard: React.FC<Props> = ({
   image,
   small = false,
   displayCategory = true,
+  displaySuggester = false,
 }) => {
   const handleBookmark = async () => {
     if (!bookmarked) {
@@ -65,7 +67,9 @@ const PlaceCard: React.FC<Props> = ({
             {place.name}
           </Text>
           <Text size="xs" weight="l" color={colors.accent} numberOfLines={1}>
-            {getPlaceCardString(place, displayCategory)}
+            {(displaySuggester
+              ? `${place.suggester?.name.split(' ')[0]} suggested | `
+              : '') + getPlaceCardString(place, displayCategory)}
           </Text>
         </View>
         <Icon

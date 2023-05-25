@@ -57,7 +57,7 @@ const Groups: React.FC<Props> = ({navigation}) => {
 
   const [userEvents, setUserEvents] = useState<Event[]>([]);
   const [curGroupEvents, setCurGroupEvents] = useState<GroupEvent[]>([]);
-  const [bookmarks, setBookmarks] = useState<number[]>([]);
+  const [bookmarks, setBookmarks] = useState<Place[]>([]);
 
   const [groupBottomSheetOpen, setGroupBottomSheetOpen] =
     useState<boolean>(false);
@@ -139,10 +139,7 @@ const Groups: React.FC<Props> = ({navigation}) => {
 
     const _places: Place[] | null = await getPlaces();
     if (_places) {
-      const bookmarksIds: number[] = _places.map(
-        (bookmark: Place) => bookmark.id,
-      );
-      setBookmarks(bookmarksIds);
+      setBookmarks(_places);
     } else {
       Alert.alert('Error', 'Unable to load bookmarks. Please try again.');
     }

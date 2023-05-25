@@ -21,7 +21,6 @@ import Icon from '../components/Icon';
 import {getDestinations} from '../../utils/api/destinationAPI';
 import {getPlaces} from '../../utils/api/placeAPI';
 import {Place, Subcategory} from '../../utils/interfaces/types';
-import {getPlaceCardString} from '../../utils/functions/Misc';
 
 interface Props {
   navigation: any;

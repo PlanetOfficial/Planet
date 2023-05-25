@@ -19,12 +19,23 @@ import {
   getMarkerArray,
   getRegionForCoordinates,
 } from '../../utils/functions/Misc';
-import {GroupPlace, MarkerObject, Place} from '../../utils/interfaces/types';
+import {
+  Category,
+  GroupPlace,
+  MarkerObject,
+  Place,
+} from '../../utils/interfaces/types';
 import {getPlaces} from '../../utils/api/placeAPI';
 import {
   deleteGroupEvent,
   forkGroupEvent,
+  getGroupEvent,
 } from '../../utils/api/groups/eventAPI';
+
+import AddFromCategory from './AddFromCategory';
+import AddByCategory from '../editEventScreens/AddByCategory';
+import AddFromLibrary from '../editEventScreens/AddFromLibrary';
+import AddCustomDest from '../editEventScreens/AddCustomDest';
 
 import PlacesDisplay from '../components/PlacesDisplay';
 import Blur from '../components/Blur';
@@ -35,7 +46,9 @@ import Text from '../components/Text';
 import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
-import GroupEventOptions from './GroupEventOptions';
+import {postAlternative} from '../../utils/api/groups/otherAPI';
+import {floats} from '../../constants/numbers';
+import SelectSubcategory from '../editEventScreens/SelectSubcategory';
 
 interface Props {
   navigation: any;
@@ -66,15 +79,48 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
     [insets.top],
   );
 
-  const [altBottomSheetOpen, setAltBottomSheetOpen] = useState<boolean>(false);
-  const altBottomSheetRef = useRef<BottomSheetModal>(null);
-  const altSnapPoints = useMemo(
+  const [addOptionsStatus, setAddOptionsStatus] = useState<number>(0);
+  const addOptionsBottomSheetRef = useRef<BottomSheetModal>(null);
+  const addOptionsSnapPoints = useMemo(
     () => [vs(680) - s(50) - insets.top],
     [insets.top],
   );
-  const handleAltSheetChange = useCallback((_: number, toIndex: number) => {
-    setAltBottomSheetOpen(toIndex === 0);
+  const [groupPlace, setGroupPlace] = useState<GroupPlace>();
+  const [categoryToSearch, setCategoryToSearch] = useState<Category>();
+  const selectSubcategoryRef = useRef<any>(null); // due to forwardRef
+
+  const handleAddOptionsChange = useCallback((_: number, toIndex: number) => {
+    if (toIndex === -1) {
+      setAddOptionsStatus(0);
+    }
   }, []);
+
+  const onAltSelect = async (place: Place) => {
+    addOptionsBottomSheetRef.current?.dismiss();
+    setAddOptionsStatus(0);
+
+    if (groupPlace) {
+      const response: boolean = await postAlternative(place.id, groupPlace.id);
+      if (response) {
+        reloadPlaces();
+      } else {
+        Alert.alert(
+          'Error',
+          'Unable to add alternative location. Please try again.',
+        );
+      }
+    } else {
+      Alert.alert(
+        'Error',
+        'Unable to add alternative location. Please try again.',
+      );
+    }
+  };
+
+  const onClose = () => {
+    addOptionsBottomSheetRef.current?.dismiss();
+    setAddOptionsStatus(0);
+  };
 
   useEffect(() => {
     const initializeUserId = async () => {
@@ -114,14 +160,14 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
     return unsubscribe;
   }, [navigation, groupEventId, route?.params?.eventData?.destinations]);
 
-  // const reloadPlaces = async () => {
-  //   const _places = await getGroupEvent(groupEventId);
-  //   if (_places) {
-  //     setFullEventData(_places);
-  //   } else {
-  //     Alert.alert('Error', 'Unable to reload places. Please try again.');
-  //   }
-  // };
+  const reloadPlaces = async () => {
+    const _places: GroupPlace[] | null = await getGroupEvent(groupEventId);
+    if (_places) {
+      setGroupPlaces(_places);
+    } else {
+      Alert.alert('Error', 'Unable to reload places. Please try again.');
+    }
+  };
 
   const handleFork = async () => {
     const response = await forkGroupEvent(groupEventId);
@@ -223,35 +269,59 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
         animateOnMount={Platform.OS === 'ios'}
         enableContentPanningGesture={false}>
         <ScrollView contentContainerStyle={styles.scrollView}>
-          {groupPlaces?.map((groupPlace: GroupPlace, idx: number) => (
+          {groupPlaces?.map((_groupPlace: GroupPlace, idx: number) => (
             <View key={idx}>
               <View style={destHeaderStyles.header}>
                 <View style={destHeaderStyles.title}>
-                  <Text>{groupPlace.name}</Text>
+                  <Text>{_groupPlace.name}</Text>
                 </View>
                 <OptionMenu
+                  icon={icons.plus}
+                  iconColor={colors.accent}
                   options={[
                     {
-                      name: 'Summary',
+                      name: `${strings.library.browse} ${_groupPlace.places[0].category.name}s`,
                       onPress: () => {
-                        Alert.alert(
-                          'Summary',
-                          'Summary is not implemented yet',
-                        );
+                        setAddOptionsStatus(1);
+                        setGroupPlace(_groupPlace);
+                        setCategoryToSearch(_groupPlace.places[0].category);
+                        addOptionsBottomSheetRef.current?.present();
+                      },
+                      color: colors.accent,
+                    },
+                    {
+                      name: strings.library.browseCategory,
+                      onPress: () => {
+                        setAddOptionsStatus(2);
+                        addOptionsBottomSheetRef.current?.present();
+                        setGroupPlace(_groupPlace);
                       },
                       color: colors.black,
                     },
                     {
-                      name: 'Add Options',
-                      onPress: () => altBottomSheetRef.current?.present(),
-                      color: colors.accent,
+                      name: strings.library.browseLibrary,
+                      onPress: () => {
+                        setAddOptionsStatus(3);
+                        addOptionsBottomSheetRef.current?.present();
+                        setGroupPlace(_groupPlace);
+                      },
+                      color: colors.black,
+                    },
+                    {
+                      name: strings.library.browseCustom,
+                      onPress: () => {
+                        setAddOptionsStatus(4);
+                        addOptionsBottomSheetRef.current?.present();
+                        setGroupPlace(_groupPlace);
+                      },
+                      color: colors.black,
                     },
                   ]}
                 />
               </View>
               <PlacesDisplay
                 navigation={navigation}
-                places={groupPlace.places}
+                places={_groupPlace.places}
                 width={s(290)}
                 bookmarks={bookmarks.map((bookmark: Place) => bookmark.id)}
                 setBookmarked={(bookmarked: boolean, place: Place) => {
@@ -265,6 +335,8 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
                 }}
                 index={placeIdx}
                 setIndex={setPlaceIdx}
+                displayCategory={false}
+                displaySuggester={true}
               />
               {idx !== groupPlaces.length - 1 ? (
                 <View style={styles.separater} />
@@ -274,18 +346,63 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
         </ScrollView>
       </BottomSheet>
 
-      {altBottomSheetOpen ? (
+      {addOptionsStatus !== 0 ? (
         <View
           style={styles.dim}
-          onTouchStart={() => altBottomSheetRef.current?.dismiss()}
+          onTouchStart={() => {
+            addOptionsBottomSheetRef.current?.dismiss();
+          }}
         />
       ) : null}
 
+      <SelectSubcategory ref={selectSubcategoryRef} />
+
       <BottomSheetModal
-        ref={altBottomSheetRef}
-        snapPoints={altSnapPoints}
-        onAnimate={handleAltSheetChange}>
-        <GroupEventOptions bottomSheetRef={altBottomSheetRef} />
+        ref={addOptionsBottomSheetRef}
+        snapPoints={addOptionsSnapPoints}
+        onAnimate={handleAddOptionsChange}>
+        {addOptionsStatus === 1 && categoryToSearch && groupPlace ? (
+          <AddFromCategory
+            onClose={onClose}
+            onSelect={onAltSelect}
+            radius={floats.defaultRadius}
+            latitude={groupPlace.places[0].latitude}
+            longitude={groupPlace.places[0].longitude}
+            bookmarks={bookmarks.map((bookmark: Place) => bookmark.id)}
+            setBookmarked={(bookmarked: boolean, place: Place) => {
+              if (bookmarked) {
+                setBookmarks([...bookmarks, place]);
+              } else {
+                setBookmarks(
+                  bookmarks.filter((bookmark: Place) => bookmark !== place),
+                );
+              }
+            }}
+            category={categoryToSearch}
+            onSubcategoryOpen={selectSubcategoryRef.current?.onSubcategoryOpen}
+            onSubcategorySelect={
+              selectSubcategoryRef.current?.onSubcategorySelect
+            }
+          />
+        ) : null}
+        {addOptionsStatus === 2 ? (
+          <AddByCategory
+            onClose={() => {
+              onClose();
+              setCategoryToSearch(undefined);
+            }}
+            onSelect={(category: Category) => {
+              setCategoryToSearch(category);
+              setAddOptionsStatus(1);
+            }}
+          />
+        ) : null}
+        {addOptionsStatus === 3 ? (
+          <AddFromLibrary onClose={onClose} onSelect={onAltSelect} />
+        ) : null}
+        {addOptionsStatus === 4 ? (
+          <AddCustomDest onClose={onClose} onSelect={onAltSelect} />
+        ) : null}
       </BottomSheetModal>
     </View>
   );

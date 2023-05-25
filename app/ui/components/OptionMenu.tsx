@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, View, ImageSourcePropType} from 'react-native';
 
 import {s} from 'react-native-size-matters';
 import {Menu, MenuItem, MenuDivider} from 'react-native-material-menu';
@@ -10,6 +10,8 @@ import {colors} from '../../constants/theme';
 import {icons} from '../../constants/images';
 
 interface Props {
+  icon?: ImageSourcePropType;
+  iconColor?: string;
   options: {
     name: string;
     onPress: () => void;
@@ -18,7 +20,11 @@ interface Props {
   }[];
 }
 
-const OptionMenu: React.FC<Props> = ({options}) => {
+const OptionMenu: React.FC<Props> = ({
+  icon,
+  iconColor = colors.black,
+  options,
+}) => {
   const [visible, setVisible] = useState<boolean>(false);
   const [pressed, setPressed] = useState<boolean[]>(
     Array(options.length).fill(false),
@@ -29,7 +35,12 @@ const OptionMenu: React.FC<Props> = ({options}) => {
       style={styles.container}
       visible={visible}
       anchor={
-        <Icon size="m" icon={icons.option} onPress={() => setVisible(true)} />
+        <Icon
+          size="m"
+          icon={icon ? icon : icons.option}
+          onPress={() => setVisible(true)}
+          color={iconColor}
+        />
       }
       onRequestClose={() => setVisible(false)}
       animationDuration={100}>

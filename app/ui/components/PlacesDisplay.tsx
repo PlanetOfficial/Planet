@@ -18,6 +18,8 @@ interface Props {
   closeDropdown?: () => void;
   index: number;
   setIndex: (index: number) => void;
+  displayCategory?: boolean;
+  displaySuggester?: boolean;
 }
 
 const PlacesDisplay: React.FC<Props> = ({
@@ -29,6 +31,8 @@ const PlacesDisplay: React.FC<Props> = ({
   closeDropdown,
   index,
   setIndex,
+  displayCategory = true,
+  displaySuggester = false,
 }) => {
   const scrollViewRef = useRef<ScrollView>(null);
 
@@ -105,6 +109,8 @@ const PlacesDisplay: React.FC<Props> = ({
                       }
                     : icons.defaultIcon
                 }
+                displayCategory={displayCategory}
+                displaySuggester={displaySuggester}
               />
             </TouchableOpacity>
           </View>

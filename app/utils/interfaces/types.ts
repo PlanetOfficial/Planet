@@ -57,12 +57,13 @@ export interface Place {
   price: number | null;
   rating: number | null;
   rating_count: number | null;
-  category: {
-    id: number;
-    name: string;
-  };
+  category: Category;
   group_place_id?: number;
-  votes: Vote[];
+  votes?: Vote[];
+  suggester?: {
+    name: string;
+    email: string;
+  };
 }
 
 export interface GroupPlace {
