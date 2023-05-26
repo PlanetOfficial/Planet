@@ -34,6 +34,8 @@ export const icons = {
   unselected: require('../assets/icons/unselected.png'),
   vote: require('../assets/icons/vote.png'),
   unvote: require('../assets/icons/unvote.png'),
+  roulette: require('../assets/icons/roulette.png'),
+  pointer: require('../assets/icons/pointer.png'),
 };
 
 export const vectors = {

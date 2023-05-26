@@ -7,6 +7,7 @@ import {
   Alert,
   Platform,
   LayoutAnimation,
+  TouchableOpacity,
 } from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
 import {s, vs} from 'react-native-size-matters';
@@ -49,6 +50,7 @@ import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 import {postAlternative} from '../../utils/api/groups/otherAPI';
 import {floats} from '../../constants/numbers';
+import Roulette from '../components/Roulette';
 
 interface Props {
   navigation: any;
@@ -344,50 +346,66 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
                 <View style={destHeaderStyles.title}>
                   <Text>{_groupPlace.name}</Text>
                 </View>
-                <OptionMenu
-                  icon={icons.plus}
-                  iconColor={colors.accent}
-                  options={[
-                    {
-                      name: `${strings.library.browse} ${_groupPlace.places[0].category.name}s`,
-                      disabled: _groupPlace.places[0].supplier === 'custom',
-                      onPress: () => {
-                        setAddOptionsStatus(1);
+                <View style={destHeaderStyles.right}>
+                  <TouchableOpacity style={destHeaderStyles.button}
+                      onPress={() => {
+                        setAddOptionsStatus(5);
                         setGroupPlace(_groupPlace);
-                        setCategoryToSearch(_groupPlace.places[0].category);
                         addOptionsBottomSheetRef.current?.expand();
+                      }}>
+                    <Icon
+                      icon={icons.roulette}
+                      size='s'
+                    />
+                    <Text size='xs'>
+                      {'  ' + strings.library.seeVotes}
+                    </Text>
+                  </TouchableOpacity>
+                  <OptionMenu
+                    icon={icons.plus}
+                    iconColor={colors.accent}
+                    options={[
+                      {
+                        name: `${strings.library.browse} ${_groupPlace.places[0].category.name}s`,
+                        disabled: _groupPlace.places[0].supplier === 'custom',
+                        onPress: () => {
+                          setAddOptionsStatus(1);
+                          setGroupPlace(_groupPlace);
+                          setCategoryToSearch(_groupPlace.places[0].category);
+                          addOptionsBottomSheetRef.current?.expand();
+                        },
+                        color: colors.accent,
                       },
-                      color: colors.accent,
-                    },
-                    {
-                      name: strings.library.browseCategory,
-                      onPress: () => {
-                        setAddOptionsStatus(2);
-                        addOptionsBottomSheetRef.current?.expand();
-                        setGroupPlace(_groupPlace);
+                      {
+                        name: strings.library.browseCategory,
+                        onPress: () => {
+                          setAddOptionsStatus(2);
+                          addOptionsBottomSheetRef.current?.expand();
+                          setGroupPlace(_groupPlace);
+                        },
+                        color: colors.black,
                       },
-                      color: colors.black,
-                    },
-                    {
-                      name: strings.library.browseLibrary,
-                      onPress: () => {
-                        setAddOptionsStatus(3);
-                        addOptionsBottomSheetRef.current?.expand();
-                        setGroupPlace(_groupPlace);
+                      {
+                        name: strings.library.browseLibrary,
+                        onPress: () => {
+                          setAddOptionsStatus(3);
+                          addOptionsBottomSheetRef.current?.expand();
+                          setGroupPlace(_groupPlace);
+                        },
+                        color: colors.black,
                       },
-                      color: colors.black,
-                    },
-                    {
-                      name: strings.library.browseCustom,
-                      onPress: () => {
-                        setAddOptionsStatus(4);
-                        addOptionsBottomSheetRef.current?.expand();
-                        setGroupPlace(_groupPlace);
+                      {
+                        name: strings.library.browseCustom,
+                        onPress: () => {
+                          setAddOptionsStatus(4);
+                          addOptionsBottomSheetRef.current?.expand();
+                          setGroupPlace(_groupPlace);
+                        },
+                        color: colors.black,
                       },
-                      color: colors.black,
-                    },
-                  ]}
-                />
+                    ]}
+                  />
+                </View>
               </View>
               <PlacesDisplay
                 navigation={navigation}
@@ -480,6 +498,11 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
         {addOptionsStatus === 4 ? (
           <AddCustomDest onClose={onClose} onSelect={onAltSelect} />
         ) : null}
+        {addOptionsStatus === 5 ? (
+          groupPlace ? (
+            <Roulette navigation={navigation} groupPlace={groupPlace} />
+          ) : null
+        ) : null}
       </BottomSheet>
 
       <SelectSubcategory ref={selectSubcategoryRef} />
@@ -542,6 +565,20 @@ const destHeaderStyles = StyleSheet.create({
     marginRight: s(10),
     flex: 1,
   },
+  right: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  button: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginRight: s(10),
+    padding: s(5),
+    borderRadius: s(10),
+    borderWidth: 2,
+
+    borderColor: colors.accentLight,
+  }
 });
 
 const placesDisplayStyles = StyleSheet.create({

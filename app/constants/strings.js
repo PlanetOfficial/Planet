@@ -105,6 +105,7 @@ const strings = {
     browseCategory: 'Browse Categories',
     browseLibrary: 'Browse Library',
     browseCustom: 'Browse Custom',
+    seeVotes: 'See Votes',
   },
   profile: {
     followers: 'followers',
