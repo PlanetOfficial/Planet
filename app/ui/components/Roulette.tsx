@@ -12,12 +12,12 @@ import {s} from 'react-native-size-matters';
 
 import {PieChart} from 'react-native-svg-charts';
 import {Svg} from 'react-native-svg';
-import {GroupPlace, Place, User} from '../../utils/interfaces/types';
+import {GroupPlace, Place} from '../../utils/interfaces/types';
 import {colors} from '../../constants/theme';
 import Text from './Text';
 import Icon from './Icon';
-import { icons } from '../../constants/images';
-import { TouchableOpacity } from '@gorhom/bottom-sheet';
+import {icons} from '../../constants/images';
+import {TouchableOpacity} from '@gorhom/bottom-sheet';
 import PlaceCard from './PlaceCard';
 import strings from '../../constants/strings';
 import AButton from './ActionButton';
@@ -30,7 +30,13 @@ interface Props {
   setBookmarked: (bookmark: boolean, place: Place) => void;
 }
 
-const Roulette: React.FC<Props> = ({navigation, groupPlace, onClose, bookmarks, setBookmarked}) => {
+const Roulette: React.FC<Props> = ({
+  navigation,
+  groupPlace,
+  onClose,
+  bookmarks,
+  setBookmarked,
+}) => {
   const rotation = useSharedValue(0);
   const [currentAngle, setCurrentAngle] = useState(rotation.value);
   const startRotation = useSharedValue(0);
@@ -38,16 +44,16 @@ const Roulette: React.FC<Props> = ({navigation, groupPlace, onClose, bookmarks, 
   const [isSpinning, setIsSpinning] = useState(false);
 
   const FLICK_THRESHOLD = 6;
-  const SPIN_VELOCITY = 1000;
-  const SPIN_DURATION = 3000;
+  const SPIN_VELOCITY = 1400;
+  const SPIN_DURATION = 4000;
   const EASING = Easing.bezier(0.23, 0.8, 0.32, 1);
 
   const cx = s(100);
   const cy = s(100);
 
-  const totalVotes = groupPlace.places.map((place: Place) =>
-  place.votes?.length ? place.votes?.length : 0,
-).reduce((a: number, b: number) => a + b, 0);
+  const totalVotes = groupPlace.places
+    .map((place: Place) => (place.votes?.length ? place.votes?.length : 0))
+    .reduce((a: number, b: number) => a + b, 0);
 
   const animatedStyles = useAnimatedStyle(() => {
     return {
@@ -124,107 +130,108 @@ const Roulette: React.FC<Props> = ({navigation, groupPlace, onClose, bookmarks, 
 
   return (
     <>
-    <View style={headerStyles.container}>
-      <Text size="m" weight="b">
-        {groupPlace.name}
-      </Text>
-      <TouchableOpacity style={headerStyles.button} onPress={onClose}>
-        <Image style={headerStyles.x} source={icons.x} />
-      </TouchableOpacity>
-    </View>
-    <SafeAreaView style={styles.container}>
-      <View style={styles.roulette}>
-        <GestureDetector
-          gesture={Gesture.Simultaneous(gestureBegin, gesture, getsureEnd)}>
-          <View style={styles.circleContainer}>
-            <View style={styles.pointer}>
-              <Icon size='xl' icon={icons.pointer} noColor={true}/>
-            </View>
-            <Animated.View style={[styles.circle, animatedStyles]}>
-              <View style={styles.circleContainer}>
-                <Svg width={s(198)} height={s(198)}>
-                  <PieChart
-                    style={{height: s(198)}}
-                    innerRadius={'45%'}
-                    sort={() => 0}
-                    data={groupPlace.places.map((place: Place, index: number) => {
-                      return {
-                        key: index,
-                        value: place.votes?.length,
-                        svg: {
-                          fill: colors.accentShades[
-                            index % colors.accentShades.length
-                          ],
-                        },
-                      };
-                    })}
-                  />
-                </Svg>
-              </View>
-            </Animated.View>
-            <View style={styles.numContainer}>
-              <Text color={colors.accent} size='xl' weight='b'>{place.votes?.length}</Text>
-              <View style={styles.separater} />
-              <Text size='s'>{`${totalVotes} total`}</Text>
-            </View>
-          </View>
-        </GestureDetector>
+      <View style={headerStyles.container}>
+        <Text size="m" weight="b">
+          {groupPlace.name}
+        </Text>
+        <TouchableOpacity style={headerStyles.button} onPress={onClose}>
+          <Image style={headerStyles.x} source={icons.x} />
+        </TouchableOpacity>
       </View>
+      <SafeAreaView style={styles.container}>
+        <TouchableOpacity
+          style={styles.placeCard}
+          onPress={() => {
+            navigation.navigate('Place', {
+              destination: place,
+              bookmarked: bookmarks.includes(place.id),
+            });
+          }}>
+          <PlaceCard
+            place={place}
+            bookmarked={bookmarks.includes(place.id)}
+            setBookmarked={setBookmarked}
+            image={
+              place.photo
+                ? {
+                    uri: place.photo,
+                  }
+                : icons.defaultIcon
+            }
+            displayCategory={false}
+            displaySuggester={true}
+            voters={place.votes}
+          />
+        </TouchableOpacity>
 
-      {/* <View>
+        <View style={styles.roulette}>
+          <GestureDetector
+            gesture={Gesture.Simultaneous(gestureBegin, gesture, getsureEnd)}>
+            <View style={styles.circleContainer}>
+              <View style={styles.pointer}>
+                <Icon size="xl" icon={icons.pointer} noColor={true} />
+              </View>
+              <Animated.View style={[styles.circle, animatedStyles]}>
+                <View style={styles.circleContainer}>
+                  <Svg width={s(198)} height={s(198)}>
+                    <PieChart
+                      style={{height: s(198)}}
+                      innerRadius={'45%'}
+                      sort={() => 0}
+                      data={groupPlace.places.map(
+                        (_place: Place, index: number) => {
+                          return {
+                            key: index,
+                            value: _place.votes?.length,
+                            svg: {
+                              fill: colors.accentShades[
+                                index % colors.accentShades.length
+                              ],
+                            },
+                          };
+                        },
+                      )}
+                    />
+                  </Svg>
+                </View>
+              </Animated.View>
+              <View style={styles.numContainer}>
+                <Text color={colors.accent} size="xl" weight="b">
+                  {place.votes?.length}
+                </Text>
+                <View style={styles.separater} />
+                <Text size="s">{totalVotes + ' ' + strings.library.total}</Text>
+              </View>
+            </View>
+          </GestureDetector>
+        </View>
+
+        {/* <View>
         <Text>Votes:</Text>
         {place.votes?.map((vote: User, index: number) => {
           return <Text key={index}>{vote.name}</Text>;
         })}
       </View> */}
 
-      <AButton
-        label="Spin"
-        disabled={isSpinning}
-        onPress={() => {
-          if(isSpinning){
-            console.log("BAD");
-            return;
-          }
-          runOnJS(setIsSpinning)(true);
-          rotation.value = withTiming(
-            SPIN_VELOCITY + rotation.value,
-            {
-              duration: SPIN_DURATION,
-              easing: EASING,
-            },
-            () => {
-              runOnJS(handleAngle)(rotation.value % 360);
-              runOnJS(setIsSpinning)(false);
-            },
-          );
-        }}
-      />
-
-      <TouchableOpacity
-        style={styles.placeCard}
-        onPress={() => {
-          navigation.navigate('Place', {
-            destination: place,
-            bookmarked: bookmarks.includes(place.id),
-          });
-        }}>
-        <PlaceCard
-          place={place}
-          bookmarked={bookmarks.includes(place.id)}
-          setBookmarked={setBookmarked}
-          image={
-            place.photo
-              ? {
-                  uri: place.photo,
-                }
-              : icons.defaultIcon
-          }
-          displayCategory={false}
-          displaySuggester={true}
+        <AButton
+          label="Spin"
+          disabled={isSpinning}
+          onPress={() => {
+            runOnJS(setIsSpinning)(true);
+            rotation.value = withTiming(
+              (Math.random() + 1) * SPIN_VELOCITY + rotation.value,
+              {
+                duration: SPIN_DURATION,
+                easing: EASING,
+              },
+              () => {
+                runOnJS(handleAngle)(rotation.value % 360);
+                runOnJS(setIsSpinning)(false);
+              },
+            );
+          }}
         />
-      </TouchableOpacity>
-    </SafeAreaView>
+      </SafeAreaView>
     </>
   );
 };
@@ -234,10 +241,9 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'space-between',
+    marginBottom: s(50),
   },
-  roulette: {
-    marginTop: s(20),
-  },
+  roulette: {},
   circle: {
     width: s(200),
     height: s(200),
@@ -271,7 +277,6 @@ const styles = StyleSheet.create({
   },
   placeCard: {
     width: s(310),
-    marginBottom: s(50),
   },
 });
 
@@ -306,7 +311,5 @@ const headerStyles = StyleSheet.create({
     tintColor: colors.black,
   },
 });
-
-
 
 export default Roulette;

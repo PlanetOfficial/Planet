@@ -347,19 +347,15 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
                   <Text>{_groupPlace.name}</Text>
                 </View>
                 <View style={destHeaderStyles.right}>
-                  <TouchableOpacity style={destHeaderStyles.button}
-                      onPress={() => {
-                        setAddOptionsStatus(5);
-                        setGroupPlace(_groupPlace);
-                        addOptionsBottomSheetRef.current?.expand();
-                      }}>
-                    <Icon
-                      icon={icons.roulette}
-                      size='s'
-                    />
-                    <Text size='xs'>
-                      {'  ' + strings.library.seeVotes}
-                    </Text>
+                  <TouchableOpacity
+                    style={destHeaderStyles.button}
+                    onPress={() => {
+                      setAddOptionsStatus(5);
+                      setGroupPlace(_groupPlace);
+                      addOptionsBottomSheetRef.current?.expand();
+                    }}>
+                    <Icon icon={icons.roulette} size="s" />
+                    <Text size="xs">{'  ' + strings.library.seeVotes}</Text>
                   </TouchableOpacity>
                   <OptionMenu
                     icon={icons.plus}
@@ -429,6 +425,7 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
                 }}
                 displayCategory={false}
                 isGroupPlace={true}
+                reload={reloadPlaces}
                 myVote={findMyVote(_groupPlace.places)}
                 mySuggestions={findMySuggestions(_groupPlace.places)}
                 onRemoveSuggestion={onRemoveSuggestion}
@@ -500,18 +497,21 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
         ) : null}
         {addOptionsStatus === 5 ? (
           groupPlace ? (
-            <Roulette navigation={navigation} groupPlace={groupPlace} 
-            onClose={onClose}
-            bookmarks={bookmarks.map((bookmark: Place) => bookmark.id)}
-            setBookmarked={(bookmarked: boolean, place: Place) => {
-              if (bookmarked) {
-                setBookmarks([...bookmarks, place]);
-              } else {
-                setBookmarks(
-                  bookmarks.filter((bookmark: Place) => bookmark !== place),
-                );
-              }
-            }}/>
+            <Roulette
+              navigation={navigation}
+              groupPlace={groupPlace}
+              onClose={onClose}
+              bookmarks={bookmarks.map((bookmark: Place) => bookmark.id)}
+              setBookmarked={(bookmarked: boolean, place: Place) => {
+                if (bookmarked) {
+                  setBookmarks([...bookmarks, place]);
+                } else {
+                  setBookmarks(
+                    bookmarks.filter((bookmark: Place) => bookmark !== place),
+                  );
+                }
+              }}
+            />
           ) : null
         ) : null}
       </BottomSheet>
@@ -589,7 +589,7 @@ const destHeaderStyles = StyleSheet.create({
     borderWidth: 2,
 
     borderColor: colors.accentLight,
-  }
+  },
 });
 
 const placesDisplayStyles = StyleSheet.create({

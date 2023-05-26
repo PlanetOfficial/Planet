@@ -28,6 +28,7 @@ interface Props {
   displayCategory?: boolean;
   displaySuggester?: boolean;
   isGroupPlace?: boolean;
+  reload?: () => void;
   myVote?: number;
   mySuggestions?: number[];
   onRemoveSuggestion?: (group_place_id: number | undefined) => void;
@@ -44,6 +45,7 @@ const PlacesDisplay: React.FC<Props> = ({
   setIndex,
   displayCategory = true,
   isGroupPlace = false,
+  reload,
   myVote = -1,
   mySuggestions = [],
   onRemoveSuggestion,
@@ -101,6 +103,9 @@ const PlacesDisplay: React.FC<Props> = ({
             Alert.alert('Error', 'Unable to vote. Please try again later');
           }
         }
+      }
+      if (reload) {
+        reload();
       }
     }
   };
