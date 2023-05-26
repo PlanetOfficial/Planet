@@ -37,6 +37,7 @@ const strings = {
     noCategoriesSelected: 'No Categories Selected',
     selectedCategories: 'Selected Categories',
     untitledEvent: 'Untitled Event',
+    hours: 'Hours',
     address: 'Address',
     price: 'Price',
     eventUrl: 'Website',
@@ -56,12 +57,12 @@ const strings = {
   },
   title: {
     trending: 'Trending',
-    friends: 'Friends',
+    groups: 'Groups',
     library: 'Library',
     profile: 'Profile',
     settings: 'Settings',
   },
-  friends: {
+  groups: {
     createPrompt: 'Create a Group',
     editPrompt: 'Edit a Group',
     leavePrompt: 'Are you sure you want to leave this group?',
@@ -100,6 +101,12 @@ const strings = {
     noSaved: 'No Places Saved',
     noEvents: 'No Events yet, \nadd one using the buttom above!',
     noEventsAdd: 'No events yet, \ncreate one first!',
+    browse: 'Browse',
+    browseCategory: 'Browse Categories',
+    browseLibrary: 'Browse Library',
+    browseCustom: 'Browse Custom',
+    seeVotes: 'See Votes',
+    total: 'total',
   },
   profile: {
     followers: 'followers',

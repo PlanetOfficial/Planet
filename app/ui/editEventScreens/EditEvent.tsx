@@ -19,7 +19,7 @@ import {icons} from '../../constants/images';
 import {colors} from '../../constants/theme';
 
 import {Place, Category as CategoryT} from '../../utils/interfaces/types';
-import {getPlaceCardString, isPlace} from '../../utils/functions/Misc';
+import {isPlace} from '../../utils/functions/Misc';
 
 interface Props {
   navigation: any;
@@ -27,7 +27,7 @@ interface Props {
   latitude: number;
   longitude: number;
   bookmarks: number[];
-  setBookmarked: (bookmarked: boolean, id: number) => void;
+  setBookmarked: (bookmarked: boolean, place: Place) => void;
   destinations: (Place | CategoryT)[];
   setDestinations: (destinations: (Place | CategoryT)[]) => void;
   selectionIndices: number[];
@@ -146,116 +146,117 @@ const EditEvent: React.FC<Props> = ({
           drag: () => void;
           isActive: boolean;
         }) => {
-          let _index: any = getIndex(); // typescript is so stupid
-          const index: number = _index;
-          return (
-            <View
-              onTouchStart={() => {
-                itemRefs.current.forEach(value => {
-                  value?.close();
-                });
-                childRefs.current.forEach((value, key) => {
-                  if (key !== item.id) {
-                    value?.closeDropdown();
-                  }
-                });
-              }}>
-              {isPlace(item) ? (
-                <View
-                  key={item.id}
-                  style={[
-                    styles.cardContainer,
-                    dragging && !isActive ? styles.transparent : null,
-                  ]}>
-                  <SwipeableItem
-                    ref={ref => itemRefs.current.set(item.id, ref)}
-                    overSwipe={s(20)}
-                    item={item}
-                    renderUnderlayLeft={() => (
-                      <View style={styles.removeContainer}>
-                        <TouchableOpacity
-                          disabled={destinations.length === 1}
-                          onPress={() => onRemove(item)}
-                          style={[
-                            styles.removeButton,
-                            destinations.length === 1
+          const index: number | undefined = getIndex();
+          if (index !== undefined) {
+            return (
+              <View
+                onTouchStart={() => {
+                  itemRefs.current.forEach(value => {
+                    value?.close();
+                  });
+                  childRefs.current.forEach((value, key) => {
+                    if (key !== item.id) {
+                      value?.closeDropdown();
+                    }
+                  });
+                }}>
+                {isPlace(item) ? (
+                  <View
+                    key={item.id}
+                    style={[
+                      styles.cardContainer,
+                      dragging && !isActive ? styles.transparent : null,
+                    ]}>
+                    <SwipeableItem
+                      ref={ref => itemRefs.current.set(item.id, ref)}
+                      overSwipe={s(20)}
+                      item={item}
+                      renderUnderlayLeft={() => (
+                        <View style={styles.removeContainer}>
+                          <TouchableOpacity
+                            disabled={destinations.length === 1}
+                            onPress={() => onRemove(item)}
+                            style={[
+                              styles.removeButton,
+                              destinations.length === 1
+                                ? {
+                                    backgroundColor: colors.darkgrey,
+                                  }
+                                : null,
+                            ]}>
+                            <Image
+                              style={styles.remove}
+                              source={icons.remove}
+                            />
+                          </TouchableOpacity>
+                        </View>
+                      )}
+                      snapPointsLeft={[s(60)]}>
+                      <TouchableOpacity
+                        style={styles.card}
+                        onLongPress={drag}
+                        delayLongPress={400}
+                        disabled={dragging && !isActive}
+                        onPress={() => {
+                          navigation.navigate('Place', {
+                            destination: item,
+                            bookmarked: bookmarks.includes(item.id),
+                          });
+                        }}>
+                        <PlaceCard
+                          place={item}
+                          bookmarked={bookmarks.includes(item.id)}
+                          setBookmarked={setBookmarked}
+                          image={
+                            item.photo
                               ? {
-                                  backgroundColor: colors.darkgrey,
+                                  uri: item.photo,
                                 }
-                              : null,
-                          ]}>
-                          <Image style={styles.remove} source={icons.remove} />
-                        </TouchableOpacity>
-                      </View>
-                    )}
-                    snapPointsLeft={[s(60)]}>
-                    <TouchableOpacity
-                      style={styles.card}
-                      onLongPress={drag}
-                      delayLongPress={400}
-                      disabled={dragging && !isActive}
-                      onPress={() => {
-                        navigation.navigate('Place', {
-                          destination: item,
-                          category: item.category.name,
-                          bookmarked: bookmarks.includes(item.id),
-                        });
-                      }}>
-                      <PlaceCard
-                        id={item.id}
-                        name={item.name}
-                        info={getPlaceCardString(item)}
-                        bookmarked={bookmarks.includes(item.id)}
-                        setBookmarked={setBookmarked}
-                        image={
-                          item.photo
-                            ? {
-                                uri: item.photo,
-                              }
-                            : icons.defaultIcon
-                        }
-                      />
-                    </TouchableOpacity>
-                  </SwipeableItem>
-                </View>
-              ) : (
-                <View
-                  key={item.id}
-                  style={dragging && !isActive ? styles.transparent : null}>
-                  <Category
-                    ref={ref => childRefs.current.set(item.id, ref)}
-                    navigation={navigation}
-                    radius={radius}
-                    latitude={latitude}
-                    longitude={longitude}
-                    bookmarks={bookmarks}
-                    setBookmarked={setBookmarked}
-                    category={item}
-                    categoryIndex={index}
-                    destination={destinations[index]}
-                    selectionIndex={selectionIndices[index]}
-                    setSelectionIndex={(idx: number) => {
-                      const _selectionIndices = [...selectionIndices];
-                      _selectionIndices[index] = idx;
-                      setSelectionIndices(_selectionIndices);
-                    }}
-                    destinations={destinations}
-                    setDestinations={setDestinations}
-                    onCategoryMove={onMove}
-                    onSubcategoryOpen={onSubcategoryOpen}
-                    onSubcategorySelect={onSubcategorySelect}
-                  />
-                </View>
-              )}
-              {dragging ? (
-                <Separator />
-              ) : (
-                <TouchableOpacity onPress={() => onAddPress(index)}>
-                  <AddEventSeparator />
-                </TouchableOpacity>
-              )}
-            </View>
-          );
+                              : icons.defaultIcon
+                          }
+                        />
+                      </TouchableOpacity>
+                    </SwipeableItem>
+                  </View>
+                ) : (
+                  <View
+                    key={item.id}
+                    style={dragging && !isActive ? styles.transparent : null}>
+                    <Category
+                      ref={ref => childRefs.current.set(item.id, ref)}
+                      navigation={navigation}
+                      radius={radius}
+                      latitude={latitude}
+                      longitude={longitude}
+                      bookmarks={bookmarks}
+                      setBookmarked={setBookmarked}
+                      category={item}
+                      categoryIndex={index}
+                      destination={destinations[index]}
+                      selectionIndex={selectionIndices[index]}
+                      setSelectionIndex={(idx: number) => {
+                        const _selectionIndices = [...selectionIndices];
+                        _selectionIndices[index] = idx;
+                        setSelectionIndices(_selectionIndices);
+                      }}
+                      destinations={destinations}
+                      setDestinations={setDestinations}
+                      onCategoryMove={onMove}
+                      onSubcategoryOpen={onSubcategoryOpen}
+                      onSubcategorySelect={onSubcategorySelect}
+                    />
+                  </View>
+                )}
+                {dragging ? (
+                  <Separator />
+                ) : (
+                  <TouchableOpacity onPress={() => onAddPress(index)}>
+                    <AddEventSeparator />
+                  </TouchableOpacity>
+                )}
+              </View>
+            );
+          }
         }}
       />
     </>

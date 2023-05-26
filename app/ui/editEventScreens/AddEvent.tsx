@@ -6,7 +6,7 @@ import React, {
   forwardRef,
   useImperativeHandle,
 } from 'react';
-import {StyleSheet, View, Pressable, LayoutAnimation} from 'react-native';
+import {StyleSheet, View, LayoutAnimation} from 'react-native';
 
 import {s, vs} from 'react-native-size-matters';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -66,7 +66,7 @@ const AddEvent = forwardRef((props: ChildComponentProps, ref) => {
   };
 
   const onAddOptionPress = (idx: number) => {
-    addOptionsBottomSheetRef.current?.close();
+    addOptionsBottomSheetRef.current?.dismiss();
     setAddBottomSheetStatus(idx);
     addBottomSheetRef.current?.snapToIndex(0);
   };
@@ -106,10 +106,10 @@ const AddEvent = forwardRef((props: ChildComponentProps, ref) => {
   return (
     <>
       {addOptionsBottomSheetOpen || addBottomSheetStatus !== 0 ? (
-        <Pressable
+        <View
           style={styles.dim}
-          onPress={() => {
-            addOptionsBottomSheetRef.current?.close();
+          onTouchStart={() => {
+            addOptionsBottomSheetRef.current?.dismiss();
             onClose();
           }}
         />
@@ -142,7 +142,9 @@ const AddEvent = forwardRef((props: ChildComponentProps, ref) => {
             }}
           />
 
-          <CButton onPress={() => addOptionsBottomSheetRef.current?.close()} />
+          <CButton
+            onPress={() => addOptionsBottomSheetRef.current?.dismiss()}
+          />
         </View>
       </BottomSheetModal>
 
@@ -155,7 +157,13 @@ const AddEvent = forwardRef((props: ChildComponentProps, ref) => {
         enableContentPanningGesture={false}
         enableHandlePanningGesture={false}>
         {addBottomSheetStatus === 1 ? (
-          <AddByCategory onClose={onClose} onSelect={onCategorySelect} />
+          <AddByCategory
+            onClose={onClose}
+            onSelect={(category: Category) => {
+              onCategorySelect(category);
+              onClose();
+            }}
+          />
         ) : null}
         {addBottomSheetStatus === 2 ? (
           <AddFromLibrary onClose={onClose} onSelect={onDestinationSelect} />

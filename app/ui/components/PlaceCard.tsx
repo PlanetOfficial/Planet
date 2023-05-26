@@ -1,5 +1,11 @@
 import React from 'react';
-import {Alert, Image, StyleSheet, View} from 'react-native';
+import {
+  Alert,
+  Image,
+  ImageSourcePropType,
+  StyleSheet,
+  View,
+} from 'react-native';
 
 import {s} from 'react-native-size-matters';
 
@@ -10,40 +16,53 @@ import {colors} from '../../constants/theme';
 import {icons} from '../../constants/images';
 
 import {postPlace, deletePlace} from '../../utils/api/placeAPI';
+import {Place, User} from '../../utils/interfaces/types';
+import {getPlaceCardString} from '../../utils/functions/Misc';
+import {TouchableOpacity} from 'react-native';
 
 interface Props {
-  id: number;
-  small?: boolean;
-  name: string;
-  info: string;
+  place: Place;
   bookmarked: boolean;
-  setBookmarked: (bookmarked: boolean, id: number) => void;
-  image: Object;
+  setBookmarked: (bookmarked: boolean, place: Place) => void;
+  image: ImageSourcePropType;
+  small?: boolean;
+  displayCategory?: boolean;
+  displaySuggester?: boolean;
+  voted?: boolean;
+  onVote?: () => void;
+  mySuggestion?: boolean;
+  onRemoveSuggestion?: () => void;
+  voters?: User[];
 }
 
 const PlaceCard: React.FC<Props> = ({
-  id,
-  small = false,
-  name,
-  info,
+  place,
   bookmarked,
   setBookmarked,
   image,
+  small = false,
+  displayCategory = true,
+  displaySuggester = false,
+  voted,
+  onVote,
+  mySuggestion,
+  onRemoveSuggestion,
+  voters,
 }) => {
   const handleBookmark = async () => {
     if (!bookmarked) {
-      const response: boolean = await postPlace(id);
+      const response: boolean = await postPlace(place.id);
 
       if (response) {
-        setBookmarked(!bookmarked, id);
+        setBookmarked(!bookmarked, place);
       } else {
         Alert.alert('Error', 'Unable to bookmark place. Please try again.');
       }
     } else {
-      const response: boolean = await deletePlace(id);
+      const response: boolean = await deletePlace(place.id);
 
       if (response) {
-        setBookmarked(!bookmarked, id);
+        setBookmarked(!bookmarked, place);
       } else {
         Alert.alert('Error', 'Unable to unbookmark place. Please try again.');
       }
@@ -56,10 +75,12 @@ const PlaceCard: React.FC<Props> = ({
       <View style={styles.header}>
         <View style={styles.texts}>
           <Text size={small ? 's' : 'm'} weight="b" numberOfLines={1}>
-            {name}
+            {place.name}
           </Text>
           <Text size="xs" weight="l" color={colors.accent} numberOfLines={1}>
-            {info}
+            {(displaySuggester
+              ? `${place.suggester?.name.split(' ')[0]} suggested | `
+              : '') + getPlaceCardString(place, displayCategory)}
           </Text>
         </View>
         <Icon
@@ -69,6 +90,47 @@ const PlaceCard: React.FC<Props> = ({
           onPress={handleBookmark}
         />
       </View>
+      {voters && voters.length > 0 ? (
+        <View style={styles.voters}>
+          {voters.map((voter: User, index: number) => (
+            <TouchableOpacity
+              key={index}
+              style={[
+                styles.userIcon,
+                index !== voters.length - 1 ? {marginRight: s(5)} : null,
+              ]}
+              onPress={() => Alert.alert(voter.name)}>
+              <Text size="xs" weight="b" color={colors.accent}>
+                {voter.name
+                  .split(' ')
+                  .map((name: string) => name[0])
+                  .join('')
+                  .toUpperCase()}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      ) : null}
+      {voted !== undefined && onVote ? (
+        <View style={[styles.button, {right: s(10)}]}>
+          <Icon
+            size="m"
+            onPress={onVote}
+            icon={voted ? icons.unvote : icons.vote}
+            color={colors.accent}
+          />
+        </View>
+      ) : null}
+      {mySuggestion && onRemoveSuggestion ? (
+        <View style={[styles.button, {left: s(10)}]}>
+          <Icon
+            size="m"
+            onPress={onRemoveSuggestion}
+            icon={icons.remove}
+            color={colors.red}
+          />
+        </View>
+      ) : null}
     </View>
   );
 };
@@ -109,6 +171,44 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     borderRadius: s(8),
+  },
+  button: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    bottom: s(10),
+    width: s(40),
+    height: s(40),
+    borderRadius: s(20),
+    backgroundColor: colors.white,
+
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 12,
+    },
+    shadowOpacity: 0.58,
+    shadowRadius: 16.0,
+
+    elevation: 24,
+  },
+  voters: {
+    flexDirection: 'row',
+    position: 'absolute',
+    bottom: s(5),
+    left: s(5),
+    padding: s(10),
+    height: s(50),
+    borderRadius: s(25),
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+  },
+  userIcon: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: s(30),
+    height: s(30),
+    borderRadius: s(15),
+    backgroundColor: colors.white,
   },
 });
 

@@ -24,11 +24,14 @@ export interface Event {
   name: string;
   date: string;
   places: Place[];
-  suggester: {
-    id: number;
-    name: string;
-    self: boolean;
-  };
+}
+
+export interface GroupEvent {
+  id: number;
+  name: string;
+  date: string;
+  destinations: GroupPlace[];
+  suggester: User;
 }
 
 export interface Place {
@@ -50,13 +53,23 @@ export interface Place {
   price: number | null;
   rating: number | null;
   rating_count: number | null;
-  category: {
-    id: number;
-    name: string;
-  };
-  likes?: FGReaction[];
-  dislikes?: FGReaction[];
+  category: Category;
   group_place_id?: number;
+  votes?: User[];
+  suggester?: User;
+}
+
+export interface GroupPlace {
+  id: number;
+  name: string;
+  places: Place[];
+}
+
+export interface User {
+  id: number;
+  name: string;
+  email: string;
+  self?: boolean;
 }
 
 export interface CustomPlace {
@@ -116,46 +129,19 @@ export interface Coordinate {
   longitude: number;
 }
 
-export interface FGsAndInvites {
-  groups: FriendGroup[];
-  invites: Invitation[];
-}
-
-export interface FriendGroup {
+export interface Group {
   id: number;
-  user_id: number;
-  group: Group;
+  name: string;
   group_member: GroupMember[];
 }
 
 export interface GroupMember {
-  user: {
-    name: string;
-    email: string;
-  };
-  group_id: number;
   id: number;
-  user_id: number;
+  user: User;
 }
 
-export interface Group {
-  id: number;
-  name: string;
-  owner: number;
-}
-
-export interface Invitation {
+export interface Invite {
   id: number;
   group: Group;
-  inviter: {
-    name: string;
-  };
-}
-
-export interface FGReaction {
-  id: number;
-  user: {
-    id: number;
-    name: string;
-  };
+  inviter: User;
 }

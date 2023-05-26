@@ -21,7 +21,6 @@ import Icon from '../components/Icon';
 import {getDestinations} from '../../utils/api/destinationAPI';
 import {getPlaces} from '../../utils/api/placeAPI';
 import {Place, Subcategory} from '../../utils/interfaces/types';
-import {getPlaceCardString} from '../../utils/functions/Misc';
 
 interface Props {
   navigation: any;
@@ -60,10 +59,10 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
         const promises = subcategoryIds?.map(async (subcategoryId: number) => {
           const events: Place[] | null = await getDestinations(
             categoryId,
-            floats.defaultRadius,
+            floats.defaultRadiusFar,
             latitude,
             longitude,
-            null,
+            undefined,
             subcategoryId,
           );
           if (events) {
@@ -169,23 +168,22 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
                         onPress={() =>
                           navigation.navigate('Place', {
                             destination: event,
-                            category: categoryName,
                             bookmarked: bookmarks.includes(event.id),
                           })
                         }>
                         <PlaceCard
-                          id={event.id}
-                          small={true}
-                          name={event.name}
-                          info={getPlaceCardString(event, false)}
+                          place={event}
                           bookmarked={bookmarks.includes(event.id)}
-                          setBookmarked={(bookmarked: boolean, id: number) => {
+                          setBookmarked={(
+                            bookmarked: boolean,
+                            place: Place,
+                          ) => {
                             if (bookmarked) {
-                              setBookmarks([...bookmarks, id]);
+                              setBookmarks([...bookmarks, place.id]);
                             } else {
                               setBookmarks(
                                 bookmarks.filter(
-                                  (bookmark: number) => bookmark !== id,
+                                  (bookmark: number) => bookmark !== place.id,
                                 ),
                               );
                             }

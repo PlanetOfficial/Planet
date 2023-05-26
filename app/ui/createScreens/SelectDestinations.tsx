@@ -267,7 +267,7 @@ const SelectDestinations: React.FC<Props> = ({navigation, route}) => {
 
       <BottomSheet
         ref={bottomSheetRef}
-        index={0}
+        index={1}
         snapPoints={snapPoints}
         onAnimate={handleSheetChange}
         animateOnMount={Platform.OS === 'ios'}
@@ -281,12 +281,12 @@ const SelectDestinations: React.FC<Props> = ({navigation, route}) => {
             latitude={latitude}
             longitude={longitude}
             bookmarks={bookmarks}
-            setBookmarked={(bookmarked: boolean, id: number) => {
+            setBookmarked={(bookmarked: boolean, place: Place) => {
               if (bookmarked) {
-                setBookmarks([...bookmarks, id]);
+                setBookmarks([...bookmarks, place.id]);
               } else {
                 setBookmarks(
-                  bookmarks.filter((bookmark: number) => bookmark !== id),
+                  bookmarks.filter((bookmark: number) => bookmark !== place.id),
                 );
               }
             }}

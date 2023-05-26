@@ -12,10 +12,10 @@ import SelectCategories from '../ui/createScreens/SelectCategories';
 import SelectDestinations from '../ui/createScreens/SelectDestinations';
 import Place from '../ui/libraryScreens/Place';
 import Event from '../ui/libraryScreens/Event';
-import FGEvent from '../ui/friendsScreens/FGEvent';
+import GroupEvent from '../ui/groupScreens/GroupEvent';
 import Settings from '../ui/profileScreens/Settings';
-import CreateFG from '../ui/friendsScreens/CreateFG';
-import EditFG from '../ui/friendsScreens/EditFG';
+import CreateGroup from '../ui/groupScreens/CreateGroup';
+import EditGroup from '../ui/groupScreens/EditGroup';
 import LiveCategory from '../ui/trendingScreens/LiveCategory';
 import LiveCategorySettings from '../ui/trendingScreens/LiveCategorySettings';
 
@@ -36,10 +36,10 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {tabStack()}
           {placeStackScreen()}
           {eventStackScreen()}
-          {fgEventStackScreen()}
+          {groupEventStackScreen()}
           {settingsStackScreen()}
-          {createFGStackScreen()}
-          {editFGStackScreen()}
+          {createGroupStackScreen()}
+          {editGroupStackScreen()}
           {mapSelectionScreen()}
           {selectCategoriesScreen()}
           {selectDestinationsScreen()}
@@ -61,10 +61,10 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {tabStack()}
           {placeStackScreen()}
           {eventStackScreen()}
-          {fgEventStackScreen()}
+          {groupEventStackScreen()}
           {settingsStackScreen()}
-          {createFGStackScreen()}
-          {editFGStackScreen()}
+          {createGroupStackScreen()}
+          {editGroupStackScreen()}
           {mapSelectionScreen()}
           {selectCategoriesScreen()}
           {selectDestinationsScreen()}
@@ -164,11 +164,11 @@ const eventStackScreen = () => {
   );
 };
 
-const fgEventStackScreen = () => {
+const groupEventStackScreen = () => {
   return (
     <MainStack.Screen
-      name="FGEvent"
-      component={FGEvent}
+      name="GroupEvent"
+      component={GroupEvent}
       options={{headerShown: false}}
     />
   );
@@ -204,21 +204,21 @@ const settingsStackScreen = () => {
   );
 };
 
-const createFGStackScreen = () => {
+const createGroupStackScreen = () => {
   return (
     <MainStack.Screen
-      name="CreateFG"
-      component={CreateFG}
+      name="CreateGroup"
+      component={CreateGroup}
       options={{headerShown: false}}
     />
   );
 };
 
-const editFGStackScreen = () => {
+const editGroupStackScreen = () => {
   return (
     <MainStack.Screen
-      name="EditFG"
-      component={EditFG}
+      name="EditGroup"
+      component={EditGroup}
       options={{headerShown: false}}
     />
   );
