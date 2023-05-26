@@ -133,7 +133,6 @@ const Library: React.FC<Props> = ({navigation, route}) => {
                 onPress={() => {
                   navigation.navigate('Place', {
                     destination: item,
-                    category: item.category.name,
                     bookmarked: places.includes(item),
                   });
                 }}>

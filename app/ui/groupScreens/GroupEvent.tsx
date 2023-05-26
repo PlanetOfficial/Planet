@@ -500,7 +500,18 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
         ) : null}
         {addOptionsStatus === 5 ? (
           groupPlace ? (
-            <Roulette navigation={navigation} groupPlace={groupPlace} />
+            <Roulette navigation={navigation} groupPlace={groupPlace} 
+            onClose={onClose}
+            bookmarks={bookmarks.map((bookmark: Place) => bookmark.id)}
+            setBookmarked={(bookmarked: boolean, place: Place) => {
+              if (bookmarked) {
+                setBookmarks([...bookmarks, place]);
+              } else {
+                setBookmarks(
+                  bookmarks.filter((bookmark: Place) => bookmark !== place),
+                );
+              }
+            }}/>
           ) : null
         ) : null}
       </BottomSheet>

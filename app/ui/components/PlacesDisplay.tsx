@@ -146,7 +146,6 @@ const PlacesDisplay: React.FC<Props> = ({
               onPress={() => {
                 navigation.navigate('Place', {
                   destination: place,
-                  category: place.category.name,
                   bookmarked: bookmarks.includes(place.id),
                 });
               }}>

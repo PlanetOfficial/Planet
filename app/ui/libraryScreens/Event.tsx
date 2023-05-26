@@ -364,7 +364,6 @@ const Event: React.FC<Props> = ({navigation, route}) => {
                   onPress={() => {
                     navigation.navigate('Place', {
                       destination: place,
-                      bookmarks: bookmarks,
                       bookmarked: bookmarks.includes(place.id),
                     });
                   }}>
