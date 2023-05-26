@@ -1,6 +1,6 @@
 export const tabIcons = {
-  friendsActive: require('../assets/tabIcons/friends-active.png'),
-  friendsInactive: require('../assets/tabIcons/friends-inactive.png'),
+  groupsActive: require('../assets/tabIcons/groups-active.png'),
+  groupsInactive: require('../assets/tabIcons/groups-inactive.png'),
   libraryActive: require('../assets/tabIcons/library-active.png'),
   libraryInactive: require('../assets/tabIcons/library-inactive.png'),
   profileActive: require('../assets/tabIcons/profile-active.png'),
@@ -22,20 +22,18 @@ export const icons = {
   heart: require('../assets/icons/heart.png'),
   hearted: require('../assets/icons/hearted.png'),
   notification: require('../assets/icons/notification.png'),
-  like: require('../assets/icons/like.png'),
-  dislike: require('../assets/icons/dislike.png'),
-  comment: require('../assets/icons/comment.png'),
   remove: require('../assets/icons/remove.png'),
   option: require('../assets/icons/option.png'),
   drag: require('../assets/icons/drag.png'),
   plus: require('../assets/icons/plus.png'),
-  minus: require('../assets/icons/minus.png'),
   hide: require('../assets/icons/hide.png'),
   drop: require('../assets/icons/drop.png'),
   checked: require('../assets/icons/checked.png'),
   unchecked: require('../assets/icons/unchecked.png'),
   selected: require('../assets/icons/selected.png'),
   unselected: require('../assets/icons/unselected.png'),
+  vote: require('../assets/icons/vote.png'),
+  unvote: require('../assets/icons/unvote.png'),
 };
 
 export const vectors = {

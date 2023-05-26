@@ -6,7 +6,7 @@ import React, {
   forwardRef,
   useImperativeHandle,
 } from 'react';
-import {StyleSheet, Pressable} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 
 import {BottomSheetModal} from '@gorhom/bottom-sheet';
 
@@ -36,7 +36,7 @@ const SelectSubcategory = forwardRef((_prop, ref) => {
   };
 
   const onSubcategorySelect = (): void => {
-    subcategoryBottomSheetRef.current?.close();
+    subcategoryBottomSheetRef.current?.dismiss();
     setSubcategoryBottomSheetOpen(false);
   };
 
@@ -44,17 +44,16 @@ const SelectSubcategory = forwardRef((_prop, ref) => {
     <>
       <BottomSheetModal
         ref={subcategoryBottomSheetRef}
+        stackBehavior={'push'}
         snapPoints={subcategorySnapPoints}
         onAnimate={handleSubcategorySheetChange}>
         {comp}
       </BottomSheetModal>
 
       {subcategoryBottomSheetOpen ? (
-        <Pressable
+        <View
           style={styles.dim}
-          onPress={() => {
-            subcategoryBottomSheetRef.current?.close();
-          }}
+          onTouchStart={() => subcategoryBottomSheetRef.current?.dismiss()}
         />
       ) : null}
     </>

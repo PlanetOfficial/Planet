@@ -4,8 +4,8 @@ import {
   StyleSheet,
   SafeAreaView,
   TextInput,
-  FlatList,
   Alert,
+  ScrollView,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 
@@ -13,35 +13,61 @@ import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 import {icons} from '../../constants/images';
 
-import {createGroup} from '../../utils/api/friendsCalls/createGroup';
+import {editGroup, leaveGroup} from '../../utils/api/groups/groupAPI';
+import {GroupMember} from '../../utils/interfaces/types';
 
 import Icon from '../components/Icon';
 import Text from '../components/Text';
 import AButton from '../components/ActionButton';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import Confirmation from '../editEventScreens/Confirmation';
 
 interface Props {
   navigation: any;
+  route: any;
 }
 
-const CreateFG: React.FC<Props> = ({navigation}) => {
-  const [name, setName] = useState<string>('');
+const CreateGroup: React.FC<Props> = ({navigation, route}) => {
+  const [name, setName] = useState<string>(route?.params?.group.name);
+  const [members] = useState<GroupMember[]>(route?.params?.group.group_member);
   const [invite, setInvite] = useState<string>('');
-  const [invitations, setInvitations] = useState<string[]>([]);
+  const [invites, setInvites] = useState<string[]>([]);
 
   const inviteRef = React.useRef<TextInput>(null);
 
-  const handleGroupCreation = async () => {
-    const responseStatus = await createGroup(name, invitations);
+  const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
+
+  const handleGroupEdit = async () => {
+    const responseStatus = await editGroup(
+      name,
+      invites,
+      route?.params?.group.group.id,
+    );
 
     if (responseStatus) {
       navigation.reset({
         index: 0,
-        routes: [{name: 'Friends'}],
+        routes: [{name: 'Groups'}],
       });
 
-      navigation.navigate('Friends');
+      navigation.navigate('Groups');
     } else {
-      Alert.alert('Error', 'Invalid Request. Please Try Again');
+      Alert.alert('Error', 'Unable to save. Please Try Again');
+    }
+  };
+
+  const handleGroupLeave = async () => {
+    const responseStatus = await leaveGroup(route?.params?.group.id);
+
+    if (responseStatus) {
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'Groups'}],
+      });
+
+      navigation.navigate('Groups');
+    } else {
+      Alert.alert('Error', 'Unable to leave group. Please Try Again');
     }
   };
 
@@ -52,7 +78,12 @@ const CreateFG: React.FC<Props> = ({navigation}) => {
           <View style={styles.back}>
             <Icon icon={icons.back} onPress={() => navigation.goBack()} />
           </View>
-          <Text>{strings.friends.createPrompt}</Text>
+          <Text>{strings.groups.editPrompt}</Text>
+          <TouchableOpacity onPress={() => setShowConfirmation(true)}>
+            <Text size="s" weight="b" color={colors.red}>
+              {strings.groups.leave}
+            </Text>
+          </TouchableOpacity>
         </View>
       </SafeAreaView>
 
@@ -60,8 +91,7 @@ const CreateFG: React.FC<Props> = ({navigation}) => {
         style={styles.input}
         onChangeText={setName}
         value={name}
-        placeholder={strings.friends.editName}
-        placeholderTextColor={colors.darkgrey}
+        placeholder={strings.groups.editName}
       />
 
       <View style={inviteStyles.header}>
@@ -72,56 +102,73 @@ const CreateFG: React.FC<Props> = ({navigation}) => {
           style={inviteStyles.input}
           onChangeText={setInvite}
           value={invite}
-          placeholder={strings.friends.promptInvite}
+          placeholder={strings.groups.promptInvite}
           placeholderTextColor={colors.darkgrey}
         />
         <AButton
           size="s"
           disabled={invite === ''}
-          label={strings.friends.add}
+          label={strings.groups.add}
           onPress={() => {
-            setInvitations([...invitations, invite]);
+            setInvites([...invites, invite]);
             setInvite('');
             inviteRef.current?.blur();
           }}
         />
       </View>
 
-      <View style={inviteStyles.scrollView}>
-        <FlatList
-          data={invitations}
-          ItemSeparatorComponent={Spacer}
-          renderItem={({item, index}: {item: string; index: number}) => (
-            <View key={index} style={inviteStyles.row}>
+      <ScrollView>
+        {invites.map((item: string, index: number) => (
+          <View key={index} style={inviteStyles.row}>
+            <Text size="s" weight="l">
+              {item}
+            </Text>
+            <Icon
+              icon={icons.x}
+              onPress={() => {
+                setInvites(
+                  invites.filter((_: string, i: number) => i !== index),
+                );
+              }}
+            />
+          </View>
+        ))}
+        {members.map((member: GroupMember, index: number) => (
+          <View key={index} style={inviteStyles.row}>
+            <View>
               <Text size="s" weight="l">
-                {item}
+                {member.user.name}
               </Text>
-              <Icon
-                icon={icons.x}
-                onPress={() => {
-                  setInvitations(
-                    invitations.filter((_: string, i: number) => i !== index),
-                  );
-                }}
-              />
+              <Text size="xs" weight="l" color={colors.darkgrey}>
+                {member.user.email}
+              </Text>
             </View>
-          )}
-        />
-      </View>
+          </View>
+        ))}
+      </ScrollView>
 
       <View style={styles.create}>
         <AButton
           size="m"
           disabled={name === ''}
-          label={strings.friends.create}
-          onPress={() => handleGroupCreation()}
+          label={strings.library.save}
+          onPress={handleGroupEdit}
         />
       </View>
+
+      <Confirmation
+        onPress={handleGroupLeave}
+        open={showConfirmation}
+        setOpen={setShowConfirmation}
+        prompt={strings.groups.leavePrompt}
+        leftText={strings.misc.cancel}
+        rightText={strings.groups.leave}
+        rightColor={colors.red}
+        actionOnRight={true}
+      />
     </View>
   );
 };
-
-const Spacer = () => <View style={styles.separator} />;
 
 const styles = StyleSheet.create({
   container: {
@@ -131,15 +178,14 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     width: '100%',
     height: s(40),
     paddingHorizontal: s(20),
     marginBottom: s(20),
   },
   back: {
-    position: 'absolute',
-    left: s(20),
+    marginRight: s(20),
   },
   input: {
     width: s(350),
@@ -174,7 +220,6 @@ const inviteStyles = StyleSheet.create({
     width: s(310),
     marginBottom: s(20),
     borderTopWidth: s(0.5),
-    borderBottomWidth: s(1),
     borderColor: colors.grey,
   },
   input: {
@@ -193,7 +238,10 @@ const inviteStyles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: s(20),
     paddingVertical: s(10),
+    marginHorizontal: s(20),
+    borderBottomWidth: s(0.5),
+    borderColor: colors.grey,
   },
 });
 
-export default CreateFG;
+export default CreateGroup;

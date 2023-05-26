@@ -6,7 +6,6 @@ import {
   Image,
   TouchableOpacity,
   Modal,
-  Pressable,
   Alert,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
@@ -20,11 +19,10 @@ import {Genre, Category} from '../../utils/interfaces/types';
 import {getGenres} from '../../utils/api/genresAPI';
 
 interface Props {
-  onClose?: () => void;
   onSelect: (category: Category) => void;
 }
 
-const CategoryList: React.FC<Props> = ({onClose, onSelect}) => {
+const CategoryList: React.FC<Props> = ({onSelect}) => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [selectedGenre, setSelectedGenre] = useState<string>('');
   const [allCategories, setAllCategories] = useState<Category[]>([]);
@@ -83,11 +81,9 @@ const CategoryList: React.FC<Props> = ({onClose, onSelect}) => {
       </View>
       <Modal animationType="fade" transparent={true} visible={modalVisible}>
         <View style={modalStyles.vertCenter}>
-          <Pressable
+          <View
             style={modalStyles.dim}
-            onPress={() => {
-              setModalVisible(false);
-            }}
+            onTouchStart={() => setModalVisible(false)}
           />
           <View style={modalStyles.container}>
             <View style={modalStyles.header}>
@@ -110,7 +106,6 @@ const CategoryList: React.FC<Props> = ({onClose, onSelect}) => {
                     onPress={() => {
                       onSelect(category);
                       setModalVisible(false);
-                      onClose ? onClose() : null;
                     }}>
                     <View style={categoryStyles.container}>
                       <Image

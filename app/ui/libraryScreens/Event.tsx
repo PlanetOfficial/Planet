@@ -7,6 +7,7 @@ import {
   SafeAreaView,
   Platform,
   Alert,
+  LayoutAnimation,
 } from 'react-native';
 
 import {s, vs} from 'react-native-size-matters';
@@ -34,7 +35,6 @@ import Blur from '../components/Blur';
 import Text from '../components/Text';
 import Icon from '../components/Icon';
 import OptionMenu from '../components/OptionMenu';
-import PlacesDisplay from '../components/PlacesDisplay';
 import Confirmation from '../editEventScreens/Confirmation';
 import EditEvent from '../editEventScreens/EditEvent';
 import AddEvent from '../editEventScreens/AddEvent';
@@ -46,6 +46,8 @@ import {floats} from '../../constants/numbers';
 import {editEvent, deleteEvent} from '../../utils/api/eventAPI';
 import {getPlaces} from '../../utils/api/placeAPI';
 import SelectSubcategory from '../editEventScreens/SelectSubcategory';
+import PlaceCard from '../components/PlaceCard';
+import {FlatList} from 'react-native-gesture-handler';
 
 interface Props {
   navigation: any;
@@ -68,7 +70,6 @@ const Event: React.FC<Props> = ({navigation, route}) => {
   const [longitude, setLongitude] = useState<number>(floats.defaultLongitude);
 
   const [places, setPlaces] = useState<Place[]>([]);
-  const [placeIdx, setPlaceIdx] = useState<number>(0);
   const [markers, setMarkers] = useState<MarkerObject[]>([]);
 
   const [editing, setEditing] = useState<boolean>(false);
@@ -83,8 +84,8 @@ const Event: React.FC<Props> = ({navigation, route}) => {
   const insets = useSafeAreaInsets();
   const bottomSheetRef = useRef<BottomSheet>(null);
   const snapPoints = useMemo(
-    () => [s(240) + insets.bottom, vs(680) - s(60) - insets.top],
-    [insets.top, insets.bottom],
+    () => [vs(300) - (insets.top + s(50)), vs(680) - (insets.top + s(50))],
+    [insets.top],
   );
 
   const addRef = useRef<any>(null); // due to forwardRef
@@ -126,6 +127,7 @@ const Event: React.FC<Props> = ({navigation, route}) => {
   }, [navigation, eventId]);
 
   const beginEdits = () => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     bottomSheetRef.current?.expand();
     setEditing(true);
     setTempTitle(eventTitle);
@@ -134,6 +136,7 @@ const Event: React.FC<Props> = ({navigation, route}) => {
   };
 
   const saveEdits = async () => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     const placeIds = extractID(tempPlaces);
 
     const response: boolean = await editEvent(
@@ -147,8 +150,6 @@ const Event: React.FC<Props> = ({navigation, route}) => {
       setEventTitle(tempTitle);
       setDate(tempDate);
       getEventData(extractPlaces(tempPlaces));
-
-      bottomSheetRef.current?.collapse();
       setEditing(false);
     } else {
       Alert.alert('Error', 'Unable to save edits. Please try again.');
@@ -321,27 +322,25 @@ const Event: React.FC<Props> = ({navigation, route}) => {
 
       <BottomSheet
         ref={bottomSheetRef}
-        index={0}
+        index={1}
         keyboardBehavior="extend"
         android_keyboardInputMode="adjustPan"
         snapPoints={snapPoints}
-        handleStyle={styles.handle}
-        handleIndicatorStyle={styles.handleIndicator}
-        enableContentPanningGesture={false}
-        enableHandlePanningGesture={false}>
+        animateOnMount={Platform.OS === 'ios'}
+        enableContentPanningGesture={false}>
         {editing ? (
           <EditEvent
             navigation={navigation}
-            radius={floats.defaultRadius}
+            radius={floats.defaultRadiusNear}
             latitude={latitude}
             longitude={longitude}
             bookmarks={bookmarks}
-            setBookmarked={(bookmarked: boolean, id: number) => {
+            setBookmarked={(bookmarked: boolean, place: Place) => {
               if (bookmarked) {
-                setBookmarks([...bookmarks, id]);
+                setBookmarks([...bookmarks, place.id]);
               } else {
                 setBookmarks(
-                  bookmarks.filter((bookmark: number) => bookmark !== id),
+                  bookmarks.filter((bookmark: number) => bookmark !== place.id),
                 );
               }
             }}
@@ -357,25 +356,41 @@ const Event: React.FC<Props> = ({navigation, route}) => {
             }
           />
         ) : (
-          <SafeAreaView>
-            <PlacesDisplay
-              navigation={navigation}
-              places={places}
-              width={s(290)}
-              bookmarks={bookmarks}
-              setBookmarked={(bookmarked: boolean, id: number) => {
-                if (bookmarked) {
-                  setBookmarks([...bookmarks, id]);
-                } else {
-                  setBookmarks(
-                    bookmarks.filter((bookmark: number) => bookmark !== id),
-                  );
-                }
-              }}
-              index={placeIdx}
-              setIndex={setPlaceIdx}
-            />
-          </SafeAreaView>
+          <FlatList
+            data={places}
+            initialNumToRender={5}
+            contentContainerStyle={styles.flatList}
+            keyExtractor={(item: Place) => item.id.toString()}
+            ItemSeparatorComponent={Separater}
+            renderItem={({item}: {item: Place}) => (
+              <TouchableOpacity
+                style={styles.card}
+                onPress={() => {
+                  navigation.navigate('Place', {
+                    destination: item,
+                    bookmarks: bookmarks,
+                    bookmarked: bookmarks.includes(item.id),
+                  });
+                }}>
+                <PlaceCard
+                  place={item}
+                  bookmarked={bookmarks.includes(item.id)}
+                  setBookmarked={(bookmarked: boolean, _place: Place) => {
+                    if (bookmarked) {
+                      setBookmarks([...bookmarks, _place.id]);
+                    } else {
+                      setBookmarks(
+                        bookmarks.filter(
+                          (bookmark: number) => bookmark !== _place.id,
+                        ),
+                      );
+                    }
+                  }}
+                  image={item.photo ? {uri: item.photo} : icons.defaultIcon}
+                />
+              </TouchableOpacity>
+            )}
+          />
         )}
       </BottomSheet>
 
@@ -403,6 +418,10 @@ const Event: React.FC<Props> = ({navigation, route}) => {
   );
 };
 
+const Separater = () => {
+  return <View style={styles.separator} />;
+};
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -414,14 +433,13 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   separator: {
-    width: s(350),
+    marginHorizontal: s(20),
+    marginVertical: (s(39.4) - 0.5) / 2,
+    height: 0.5,
+    backgroundColor: colors.grey,
+  },
+  separatorOnDrag: {
     height: s(39.4),
-  },
-  handle: {
-    paddingTop: 0,
-  },
-  handleIndicator: {
-    height: 0,
   },
   dim: {
     position: 'absolute',
@@ -434,6 +452,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: s(240),
     paddingTop: s(20),
+  },
+  card: {
+    alignSelf: 'center',
+    width: s(290),
+  },
+  flatList: {
+    paddingTop: s(10),
   },
 });
 

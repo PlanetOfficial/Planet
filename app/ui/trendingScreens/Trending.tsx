@@ -26,16 +26,11 @@ import {getPlaces} from '../../utils/api/placeAPI';
 import {getDestinations} from '../../utils/api/destinationAPI';
 import {getLiveCategories} from '../../utils/api/genresAPI';
 import {Category, Place} from '../../utils/interfaces/types';
-import {getPlaceCardString} from '../../utils/functions/Misc';
 
-interface Props {
-  navigation: any;
-}
-
-const Trending: React.FC<Props> = ({navigation}) => {
+const Trending = ({navigation}: {navigation: any}) => {
   const [latitude, setLatitude] = useState<number>(floats.defaultLatitude);
   const [longitude, setLongitude] = useState<number>(floats.defaultLongitude);
-  const [radius] = useState<number>(floats.defaultRadius);
+  const [radius] = useState<number>(floats.defaultRadiusFar);
   const [eventsData, setEventsData] = useState<Map<number, Place[]>>(new Map());
   const [bookmarks, setBookmarks] = useState<number[]>([]);
   const [liveCategories, setLiveCategories] = useState<Category[]>([]);
@@ -190,23 +185,25 @@ const Trending: React.FC<Props> = ({navigation}) => {
                           });
                         }}>
                         <PlaceCard
-                          id={event.id}
-                          small={true}
-                          name={event.name}
-                          info={getPlaceCardString(event, false)}
+                          place={event}
                           bookmarked={bookmarks.includes(event.id)}
-                          setBookmarked={(bookmarked: boolean, id: number) => {
+                          setBookmarked={(
+                            bookmarked: boolean,
+                            place: Place,
+                          ) => {
                             if (bookmarked) {
-                              setBookmarks([...bookmarks, id]);
+                              setBookmarks([...bookmarks, place.id]);
                             } else {
                               setBookmarks(
                                 bookmarks.filter(
-                                  (bookmark: number) => bookmark !== id,
+                                  (bookmark: number) => bookmark !== place.id,
                                 ),
                               );
                             }
                           }}
                           image={{uri: event.photo}}
+                          small={true}
+                          displayCategory={false}
                         />
                       </TouchableOpacity>
                     ))}

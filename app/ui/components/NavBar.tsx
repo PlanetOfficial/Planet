@@ -9,7 +9,7 @@ import {colors} from '../../constants/theme';
 import {tabIcons} from '../../constants/images';
 
 import Trending from '../trendingScreens/Trending';
-import Friends from '../friendsScreens/Friends';
+import Groups from '../groupScreens/Groups';
 import Library from '../libraryScreens/Library';
 import Profile from '../profileScreens/Profile';
 
@@ -22,8 +22,8 @@ export const NavBar = () => {
       case 'Trending':
         source = focused ? tabIcons.trendingActive : tabIcons.trendingInactive;
         break;
-      case 'Friends':
-        source = focused ? tabIcons.friendsActive : tabIcons.friendsInactive;
+      case 'Groups':
+        source = focused ? tabIcons.groupsActive : tabIcons.groupsInactive;
         break;
       case 'Library':
         source = focused ? tabIcons.libraryActive : tabIcons.libraryInactive;
@@ -93,7 +93,7 @@ export const NavBar = () => {
           },
         })}>
         <Tab.Screen name="Trending" component={Trending} />
-        <Tab.Screen name="Friends" component={Friends} />
+        <Tab.Screen name="Groups" component={Groups} />
         <Tab.Screen
           name="Create"
           component={ButtonScreen}
