@@ -208,7 +208,7 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
       );
 
       if (response) {
-        navigation.navigate('Library', {index: 1});
+        navigation.navigate('Library');
       } else {
         Alert.alert('Error', 'Unable to copy event. Please Try Again');
       }
