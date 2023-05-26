@@ -112,7 +112,13 @@ const Roulette: React.FC<Props> = ({
 
   const getCurrentPlace = (): Place => {
     const angle = currentAngle < 0 ? 360 + currentAngle : currentAngle;
-    const votes = groupPlace.places.map((place: Place) =>
+    const votes = groupPlace.places.sort((a: Place, b: Place) => {
+      if(a.votes && b.votes){
+        return a.votes?.length - b.votes?.length;
+      } else {
+        return 0;
+      }
+    }).map((place: Place) =>
       place.votes?.length ? place.votes?.length : 0,
     );
 
@@ -177,7 +183,6 @@ const Roulette: React.FC<Props> = ({
                     <PieChart
                       style={{height: s(198)}}
                       innerRadius={'45%'}
-                      sort={() => 0}
                       data={groupPlace.places.map(
                         (_place: Place, index: number) => {
                           return {
