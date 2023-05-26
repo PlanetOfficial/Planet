@@ -188,7 +188,9 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
                               );
                             }
                           }}
+                          small={true}
                           image={{uri: event.photo}}
+                          displayCategory={true}
                         />
                       </TouchableOpacity>
                     ))}
