@@ -6,7 +6,7 @@ import {
   FlatList,
   TouchableOpacity,
   Alert,
-  ActivityIndicator,
+  RefreshControl,
 } from 'react-native';
 import moment from 'moment';
 
@@ -33,7 +33,7 @@ interface Props {
 }
 
 const Library: React.FC<Props> = ({navigation, route}) => {
-  const [selectedIndex, setIndex] = useState<number>(0);
+  const [selectedIndex, setIndex] = useState<number>(-1);
 
   const [places, setPlaces] = useState<Place[]>([]);
   const [events, setEvents] = useState<Event[]>([]);
@@ -101,94 +101,98 @@ const Library: React.FC<Props> = ({navigation, route}) => {
         activeTabTextStyle={sctStyles.activeText}
         borderRadius={0}
         values={[strings.library.saved, strings.library.events]}
-        selectedIndex={route?.params?.index || 0}
+        selectedIndex={
+          selectedIndex === -1 ? route?.params?.index || 0 : selectedIndex
+        }
         onTabPress={(index: number) => setIndex(index)}
       />
 
-      {loading ? (
-        <View style={styles.center}>
-          <ActivityIndicator size="small" color={colors.accent} />
-        </View>
-      ) : (
-        <FlatList
-          key={selectedIndex}
-          data={selectedIndex === 0 ? places : events}
-          contentContainerStyle={styles.contentContainer}
-          initialNumToRender={5}
-          keyExtractor={(_: Place | Event, idx: number) => idx.toString()}
-          ItemSeparatorComponent={Spacer}
-          ListEmptyComponent={
-            <View style={styles.center}>
-              <Text size="m" color={colors.darkgrey} center={true}>
-                {selectedIndex === 0
-                  ? strings.library.noSaved
-                  : strings.library.noEvents}
-              </Text>
-            </View>
-          }
-          renderItem={({item}: {item: Place | Event}) => {
-            return isPlace2(item) ? (
-              <TouchableOpacity
-                style={styles.card}
-                onPress={() => {
-                  navigation.navigate('Place', {
-                    destination: item,
-                    bookmarked: places.includes(item),
-                  });
-                }}>
-                <PlaceCard
-                  place={item}
-                  bookmarked={places.includes(item)}
-                  setBookmarked={(bookmarked: boolean, _place: Place) => {
-                    if (!bookmarked) {
-                      setPlaces(
-                        places.filter((place: Place) => place.id !== _place.id),
-                      );
-                    }
-                  }}
-                  image={{uri: item.photo}}
-                />
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity
-                style={styles.card}
-                onPress={() => {
-                  navigation.navigate('Event', {
-                    eventData: item,
-                    bookmarks: places.map((place: Place) => place.id),
-                  });
-                }}>
-                <EventCard
-                  name={item.name}
-                  info={moment(item.date, 'YYYY-MM-DD').format('M/D/YYYY')}
-                  image={
-                    item.places &&
-                    item.places.length !== 0 &&
-                    item.places[0].photo
-                      ? {uri: item.places[0].photo}
-                      : icons.defaultIcon
+      <FlatList
+        key={selectedIndex}
+        data={selectedIndex === 0 ? places : events}
+        contentContainerStyle={styles.contentContainer}
+        initialNumToRender={5}
+        keyExtractor={(_: Place | Event, idx: number) => idx.toString()}
+        ItemSeparatorComponent={Spacer}
+        refreshControl={
+          <RefreshControl
+            refreshing={loading}
+            onRefresh={() => initializeData()}
+            tintColor={colors.accent}
+          />
+        }
+        ListEmptyComponent={
+          <View style={styles.center}>
+            <Text size="m" color={colors.darkgrey} center={true}>
+              {selectedIndex === 0
+                ? strings.library.noSaved
+                : strings.library.noEvents}
+            </Text>
+          </View>
+        }
+        renderItem={({item}: {item: Place | Event}) => {
+          return isPlace2(item) ? (
+            <TouchableOpacity
+              style={styles.card}
+              onPress={() => {
+                navigation.navigate('Place', {
+                  destination: item,
+                  category: item.category.name,
+                  bookmarked: places.includes(item),
+                });
+              }}>
+              <PlaceCard
+                place={item}
+                bookmarked={places.includes(item)}
+                setBookmarked={(bookmarked: boolean, _place: Place) => {
+                  if (!bookmarked) {
+                    setPlaces(
+                      places.filter((place: Place) => place.id !== _place.id),
+                    );
                   }
-                  options={[
-                    {
-                      name: strings.main.share,
-                      onPress: () => {
-                        // TODO: share event
-                        Alert.alert('Share', 'Share is not implemented yet');
-                      },
-                      color: colors.black,
+                }}
+                image={{uri: item.photo}}
+              />
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              style={styles.card}
+              onPress={() => {
+                navigation.navigate('Event', {
+                  eventData: item,
+                  bookmarks: places.map((place: Place) => place.id),
+                });
+              }}>
+              <EventCard
+                name={item.name}
+                info={moment(item.date, 'YYYY-MM-DD').format('M/D/YYYY')}
+                image={
+                  item.places &&
+                  item.places.length !== 0 &&
+                  item.places[0].photo
+                    ? {uri: item.places[0].photo}
+                    : icons.defaultIcon
+                }
+                options={[
+                  {
+                    name: strings.main.share,
+                    onPress: () => {
+                      // TODO: share event
+                      Alert.alert('Share', 'Share is not implemented yet');
                     },
-                    {
-                      name: strings.main.remove,
-                      onPress: () => handleRemoveEvent(item.id),
-                      color: colors.red,
-                    },
-                  ]}
-                />
-              </TouchableOpacity>
-            );
-          }}
-        />
-      )}
+                    color: colors.black,
+                  },
+                  {
+                    name: strings.main.remove,
+                    onPress: () => handleRemoveEvent(item.id),
+                    color: colors.red,
+                  },
+                ]}
+              />
+            </TouchableOpacity>
+          );
+        }}
+      />
     </View>
   );
 };

@@ -7,7 +7,6 @@ import {
   SafeAreaView,
   Platform,
   Alert,
-  ScrollView,
   LayoutAnimation,
 } from 'react-native';
 
@@ -48,6 +47,7 @@ import {editEvent, deleteEvent} from '../../utils/api/eventAPI';
 import {getPlaces} from '../../utils/api/placeAPI';
 import SelectSubcategory from '../editEventScreens/SelectSubcategory';
 import PlaceCard from '../components/PlaceCard';
+import {FlatList} from 'react-native-gesture-handler';
 
 interface Props {
   navigation: any;
@@ -356,40 +356,41 @@ const Event: React.FC<Props> = ({navigation, route}) => {
             }
           />
         ) : (
-          <ScrollView style={styles.scrollView}>
-            {places?.map((place: Place, index: number) => (
-              <View key={index}>
-                <TouchableOpacity
-                  style={styles.card}
-                  onPress={() => {
-                    navigation.navigate('Place', {
-                      destination: place,
-                      bookmarked: bookmarks.includes(place.id),
-                    });
-                  }}>
-                  <PlaceCard
-                    place={place}
-                    bookmarked={bookmarks.includes(place.id)}
-                    setBookmarked={(bookmarked: boolean, _place: Place) => {
-                      if (bookmarked) {
-                        setBookmarks([...bookmarks, _place.id]);
-                      } else {
-                        setBookmarks(
-                          bookmarks.filter(
-                            (bookmark: number) => bookmark !== _place.id,
-                          ),
-                        );
-                      }
-                    }}
-                    image={{uri: place.photo}}
-                  />
-                </TouchableOpacity>
-                {index !== places.length - 1 ? (
-                  <View style={styles.separator} />
-                ) : null}
-              </View>
-            ))}
-          </ScrollView>
+          <FlatList
+            data={places}
+            initialNumToRender={5}
+            contentContainerStyle={styles.flatList}
+            keyExtractor={(item: Place) => item.id.toString()}
+            ItemSeparatorComponent={Separater}
+            renderItem={({item}: {item: Place}) => (
+              <TouchableOpacity
+                style={styles.card}
+                onPress={() => {
+                  navigation.navigate('Place', {
+                    destination: item,
+                    bookmarks: bookmarks,
+                    bookmarked: bookmarks.includes(item.id),
+                  });
+                }}>
+                <PlaceCard
+                  place={item}
+                  bookmarked={bookmarks.includes(item.id)}
+                  setBookmarked={(bookmarked: boolean, _place: Place) => {
+                    if (bookmarked) {
+                      setBookmarks([...bookmarks, _place.id]);
+                    } else {
+                      setBookmarks(
+                        bookmarks.filter(
+                          (bookmark: number) => bookmark !== _place.id,
+                        ),
+                      );
+                    }
+                  }}
+                  image={item.photo ? {uri: item.photo} : icons.defaultIcon}
+                />
+              </TouchableOpacity>
+            )}
+          />
         )}
       </BottomSheet>
 
@@ -415,6 +416,10 @@ const Event: React.FC<Props> = ({navigation, route}) => {
       <SelectSubcategory ref={selectSubcategoryRef} />
     </View>
   );
+};
+
+const Separater = () => {
+  return <View style={styles.separator} />;
 };
 
 const styles = StyleSheet.create({
@@ -452,7 +457,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     width: s(290),
   },
-  scrollView: {
+  flatList: {
     paddingTop: s(10),
   },
 });

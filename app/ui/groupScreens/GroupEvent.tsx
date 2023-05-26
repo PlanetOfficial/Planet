@@ -3,11 +3,12 @@ import {
   StyleSheet,
   View,
   SafeAreaView,
-  ScrollView,
   Alert,
   Platform,
   LayoutAnimation,
   TouchableOpacity,
+  RefreshControl,
+  FlatList,
 } from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
 import {s, vs} from 'react-native-size-matters';
@@ -80,6 +81,8 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
     () => [vs(380) - (insets.top + s(50)), vs(680) - (insets.top + s(50))],
     [insets.top],
   );
+
+  const [loading, setLoading] = useState<boolean>(true);
 
   const [addOptionsStatus, setAddOptionsStatus] = useState<number>(0);
   const addOptionsBottomSheetRef = useRef<BottomSheet>(null);
@@ -159,6 +162,7 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
       } else {
         Alert.alert('Error', 'Unable to reload places. Please try again.');
       }
+      setLoading(false);
     };
 
     const unsubscribe = navigation.addListener('focus', () => {
@@ -178,6 +182,7 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
   }, [groupPlaces, selectionIndices]);
 
   const reloadPlaces = async () => {
+    setLoading(true);
     const _groupPlaces: GroupPlace[] | null = await getGroupEvent(groupEventId);
 
     if (_groupPlaces) {
@@ -186,6 +191,7 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
     } else {
       Alert.alert('Error', 'Unable to reload places. Please try again.');
     }
+    setLoading(false);
   };
 
   const handleFork = async () => {
@@ -339,73 +345,73 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
         backgroundStyle={placesDisplayStyles.container}
         animateOnMount={Platform.OS === 'ios'}
         enableContentPanningGesture={false}>
-        <ScrollView contentContainerStyle={styles.scrollView}>
-          {groupPlaces?.map((_groupPlace: GroupPlace, idx: number) => (
-            <View key={idx}>
+        <FlatList
+          data={groupPlaces}
+          keyExtractor={(item: GroupPlace) => item.id.toString()}
+          initialNumToRender={5}
+          ItemSeparatorComponent={Separater}
+          contentContainerStyle={styles.flatList}
+          refreshControl={
+            <RefreshControl
+              refreshing={loading}
+              onRefresh={() => reloadPlaces()}
+              tintColor={colors.accent}
+            />
+          }
+          renderItem={({item, index}: {item: GroupPlace; index: number}) => (
+            <>
               <View style={destHeaderStyles.header}>
                 <View style={destHeaderStyles.title}>
-                  <Text>{_groupPlace.name}</Text>
+                  <Text>{item.name}</Text>
                 </View>
-                <View style={destHeaderStyles.right}>
-                  <TouchableOpacity
-                    style={destHeaderStyles.button}
-                    onPress={() => {
-                      setAddOptionsStatus(5);
-                      setGroupPlace(_groupPlace);
-                      addOptionsBottomSheetRef.current?.expand();
-                    }}>
-                    <Icon icon={icons.roulette} size="s" />
-                    <Text size="xs">{'  ' + strings.library.seeVotes}</Text>
-                  </TouchableOpacity>
-                  <OptionMenu
-                    icon={icons.plus}
-                    iconColor={colors.accent}
-                    options={[
-                      {
-                        name: `${strings.library.browse} ${_groupPlace.places[0].category.name}s`,
-                        disabled: _groupPlace.places[0].supplier === 'custom',
-                        onPress: () => {
-                          setAddOptionsStatus(1);
-                          setGroupPlace(_groupPlace);
-                          setCategoryToSearch(_groupPlace.places[0].category);
-                          addOptionsBottomSheetRef.current?.expand();
-                        },
-                        color: colors.accent,
+                <OptionMenu
+                  icon={icons.plus}
+                  iconColor={colors.accent}
+                  options={[
+                    {
+                      name: `${strings.library.browse} ${item.places[0].category.name}s`,
+                      disabled: item.places[0].supplier === 'custom',
+                      onPress: () => {
+                        setAddOptionsStatus(1);
+                        setGroupPlace(item);
+                        setCategoryToSearch(item.places[0].category);
+                        addOptionsBottomSheetRef.current?.expand();
                       },
-                      {
-                        name: strings.library.browseCategory,
-                        onPress: () => {
-                          setAddOptionsStatus(2);
-                          addOptionsBottomSheetRef.current?.expand();
-                          setGroupPlace(_groupPlace);
-                        },
-                        color: colors.black,
+                      color: colors.accent,
+                    },
+                    {
+                      name: strings.library.browseCategory,
+                      onPress: () => {
+                        setAddOptionsStatus(2);
+                        addOptionsBottomSheetRef.current?.expand();
+                        setGroupPlace(item);
                       },
-                      {
-                        name: strings.library.browseLibrary,
-                        onPress: () => {
-                          setAddOptionsStatus(3);
-                          addOptionsBottomSheetRef.current?.expand();
-                          setGroupPlace(_groupPlace);
-                        },
-                        color: colors.black,
+                      color: colors.black,
+                    },
+                    {
+                      name: strings.library.browseLibrary,
+                      onPress: () => {
+                        setAddOptionsStatus(3);
+                        addOptionsBottomSheetRef.current?.expand();
+                        setGroupPlace(item);
                       },
-                      {
-                        name: strings.library.browseCustom,
-                        onPress: () => {
-                          setAddOptionsStatus(4);
-                          addOptionsBottomSheetRef.current?.expand();
-                          setGroupPlace(_groupPlace);
-                        },
-                        color: colors.black,
+                      color: colors.black,
+                    },
+                    {
+                      name: strings.library.browseCustom,
+                      onPress: () => {
+                        setAddOptionsStatus(4);
+                        addOptionsBottomSheetRef.current?.expand();
+                        setGroupPlace(item);
                       },
+                      color: colors.black,
+                    },
                     ]}
                   />
-                </View>
               </View>
               <PlacesDisplay
                 navigation={navigation}
-                places={_groupPlace.places}
+                places={item.places}
                 width={s(290)}
                 bookmarks={bookmarks.map((bookmark: Place) => bookmark.id)}
                 setBookmarked={(bookmarked: boolean, place: Place) => {
@@ -417,25 +423,22 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
                     );
                   }
                 }}
-                index={selectionIndices[idx]}
-                setIndex={(index: number) => {
+                index={selectionIndices[index]}
+                setIndex={(idx: number) => {
                   const newSelectionIndices = [...selectionIndices];
-                  newSelectionIndices[idx] = index;
+                  newSelectionIndices[index] = idx;
                   setSelectionIndices(newSelectionIndices);
                 }}
                 displayCategory={false}
                 isGroupPlace={true}
                 reload={reloadPlaces}
-                myVote={findMyVote(_groupPlace.places)}
-                mySuggestions={findMySuggestions(_groupPlace.places)}
+                myVote={findMyVote(item.places)}
+                mySuggestions={findMySuggestions(item.places)}
                 onRemoveSuggestion={onRemoveSuggestion}
               />
-              {idx !== groupPlaces.length - 1 ? (
-                <View style={styles.separater} />
-              ) : null}
-            </View>
-          ))}
-        </ScrollView>
+            </>
+          )}
+        />
       </BottomSheet>
 
       {addOptionsStatus !== 0 ? (
@@ -521,6 +524,8 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
   );
 };
 
+const Separater = () => <View style={styles.separater} />;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -537,7 +542,7 @@ const styles = StyleSheet.create({
     height: '100%',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
-  scrollView: {
+  flatList: {
     paddingVertical: s(15),
   },
   separater: {
