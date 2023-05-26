@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "1092537734408",
+    "project_id": "rivlet-7af41",
+    "storage_bucket": "rivlet-7af41.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1092537734408:android:35a78d3416b2d1143808bd",
+        "android_client_info": {
+          "package_name": "com.rivaletmobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1092537734408-5s3gn506agm5bqr8v93ftmj4jar6igcd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUBfaOnk2Wl66IpP1L9jDqBvegqKjowT0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1092537734408-5s3gn506agm5bqr8v93ftmj4jar6igcd.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1092537734408-0p351ivecbddmrnok0ok03soj4g5v7au.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.RivaletMobile"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

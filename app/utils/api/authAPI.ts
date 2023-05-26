@@ -1,3 +1,4 @@
+import EncryptedStorage from 'react-native-encrypted-storage';
 import {UserOpsURL} from './APIConstants';
 
 export const login = async (email: string, password: string) => {
@@ -39,4 +40,24 @@ export const getUserInfo = async (authToken: string) => {
   } else {
     return {};
   }
+};
+
+export const saveTokenToDatabase = async (fcm_token: string) => {
+  const authToken = await EncryptedStorage.getItem('auth_token');
+
+  if (!authToken) {
+    return;
+  }
+
+  const response = await fetch(
+    UserOpsURL +
+      `/firebase/updateToken?authtoken=${authToken}&token=${fcm_token}`,
+    {
+      method: 'POST',
+    },
+  );
+
+  const myJson = await response.json();
+
+  return myJson;
 };
