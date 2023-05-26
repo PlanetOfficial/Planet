@@ -386,7 +386,7 @@ const Event: React.FC<Props> = ({navigation, route}) => {
                       );
                     }
                   }}
-                  image={{uri: item.photo}}
+                  image={item.photo ? {uri: item.photo} : icons.defaultIcon}
                 />
               </TouchableOpacity>
             )}
