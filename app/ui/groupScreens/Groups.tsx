@@ -91,10 +91,10 @@ const Groups: React.FC<Props> = ({navigation}) => {
     const response: GroupEvent[] | null = await getGroupEvents(group_id);
     if (response) {
       setCurGroupEvents(response);
+      setLoading(false);
     } else {
       Alert.alert('Error', 'Unable to load events. Please try again.');
     }
-    setLoading(false);
   };
 
   useEffect(() => {
@@ -104,6 +104,8 @@ const Groups: React.FC<Props> = ({navigation}) => {
   }, [group, groups]);
 
   const initializeData = async () => {
+    setLoading(true);
+
     const _groups: Group[] | null = await getGroups();
 
     if (_groups) {
@@ -142,6 +144,7 @@ const Groups: React.FC<Props> = ({navigation}) => {
     } else {
       Alert.alert('Error', 'Unable to load bookmarks. Please try again.');
     }
+    setLoading(false);
   };
 
   useEffect(() => {
