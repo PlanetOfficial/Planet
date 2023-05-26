@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef, useMemo} from 'react';
+import React, {useEffect, useState, useRef, useMemo, useCallback} from 'react';
 import {
   StyleSheet,
   View,
@@ -6,12 +6,13 @@ import {
   ScrollView,
   Alert,
   Platform,
+  LayoutAnimation,
 } from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
 import {s, vs} from 'react-native-size-matters';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import EncryptedStorage from 'react-native-encrypted-storage';
 import BottomSheet from '@gorhom/bottom-sheet';
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 import moment from 'moment';
 
@@ -19,12 +20,23 @@ import {
   getMarkerArray,
   getRegionForCoordinates,
 } from '../../utils/functions/Misc';
-import {GroupPlace, MarkerObject, Place} from '../../utils/interfaces/types';
-import {getPlaces} from '../../utils/api/placeAPI';
 import {
-  deleteGroupEvent,
-  forkGroupEvent,
-} from '../../utils/api/groups/eventAPI';
+  Category,
+  GroupPlace,
+  MarkerObject,
+  Place,
+  User,
+} from '../../utils/interfaces/types';
+import {getPlaces} from '../../utils/api/placeAPI';
+import {deleteGroupEvent, getGroupEvent} from '../../utils/api/groups/eventAPI';
+import {postEvent} from '../../utils/api/eventAPI';
+import {deleteAlternative} from '../../utils/api/groups/otherAPI';
+
+import AddFromCategory from './AddFromCategory';
+import AddByCategory from '../editEventScreens/AddByCategory';
+import AddFromLibrary from '../editEventScreens/AddFromLibrary';
+import AddCustomDest from '../editEventScreens/AddCustomDest';
+import SelectSubcategory from '../editEventScreens/SelectSubcategory';
 
 import PlacesDisplay from '../components/PlacesDisplay';
 import Blur from '../components/Blur';
@@ -35,6 +47,8 @@ import Text from '../components/Text';
 import {icons} from '../../constants/images';
 import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
+import {postAlternative} from '../../utils/api/groups/otherAPI';
+import {floats} from '../../constants/numbers';
 
 interface Props {
   navigation: any;
@@ -50,15 +64,13 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
   const [date] = useState<string>(
     moment(route?.params?.eventData?.date, 'YYYY-MM-DD').format('M/D/YYYY'),
   );
-  const [bookmarks, setBookmarks] = useState<number[]>(
-    route?.params?.bookmarks,
-  );
-  const [userId, setUserId] = useState<number>(-1);
+  const [bookmarks, setBookmarks] = useState<Place[]>(route?.params?.bookmarks);
 
   const [groupPlaces, setGroupPlaces] = useState<GroupPlace[]>();
 
-  const [placeIdx, setPlaceIdx] = useState<number>(0);
   const [markers, setMarkers] = useState<MarkerObject[]>([]);
+
+  const [userId, setUserId] = useState<number>();
 
   const insets = useSafeAreaInsets();
   const bottomSheetRef = useRef<BottomSheet>(null);
@@ -66,6 +78,51 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
     () => [vs(380) - (insets.top + s(50)), vs(680) - (insets.top + s(50))],
     [insets.top],
   );
+
+  const [addOptionsStatus, setAddOptionsStatus] = useState<number>(0);
+  const addOptionsBottomSheetRef = useRef<BottomSheet>(null);
+  const addOptionsSnapPoints = useMemo(
+    () => [vs(680) - s(50) - insets.top],
+    [insets.top],
+  );
+  const [groupPlace, setGroupPlace] = useState<GroupPlace>();
+  const [categoryToSearch, setCategoryToSearch] = useState<Category>();
+  const selectSubcategoryRef = useRef<any>(null); // due to forwardRef
+
+  const [selectionIndices, setSelectionIndices] = useState<number[]>([]);
+
+  const handleAddOptionsChange = useCallback((_: number, toIndex: number) => {
+    if (toIndex === -1) {
+      setAddOptionsStatus(0);
+    }
+  }, []);
+
+  const onAltSelect = async (place: Place) => {
+    addOptionsBottomSheetRef.current?.close();
+    setAddOptionsStatus(0);
+
+    if (groupPlace) {
+      const response: boolean = await postAlternative(place.id, groupPlace.id);
+      if (response) {
+        reloadPlaces();
+      } else {
+        Alert.alert(
+          'Error',
+          'Unable to add alternative location. Please try again.',
+        );
+      }
+    } else {
+      Alert.alert(
+        'Error',
+        'Unable to add alternative location. Please try again.',
+      );
+    }
+  };
+
+  const onClose = () => {
+    addOptionsBottomSheetRef.current?.close();
+    setAddOptionsStatus(0);
+  };
 
   useEffect(() => {
     const initializeUserId = async () => {
@@ -83,22 +140,23 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
     };
 
     const initializeData = async () => {
-      const _places = await getPlaces();
+      const _places: Place[] | null = await getPlaces();
 
       if (_places) {
-        const bookmarksIds: number[] = _places.map(
-          (bookmark: Place) => bookmark.id,
-        );
-        setBookmarks(bookmarksIds);
+        setBookmarks(_places);
       } else {
         Alert.alert('Error', 'Unable to load places. Please try again.');
       }
 
-      setGroupPlaces(route?.params?.eventData?.destinations);
-      // const markerArray: MarkerObject[] = getMarkerArray(
-      //   route?.params?.eventData?.places,
-      // );
-      // setMarkers(markerArray);
+      const _groupPlaces: GroupPlace[] | null = await getGroupEvent(
+        groupEventId,
+      );
+      if (_groupPlaces) {
+        setSelectionIndices(Array(_groupPlaces.length).fill(0));
+        setGroupPlaces(_groupPlaces);
+      } else {
+        Alert.alert('Error', 'Unable to reload places. Please try again.');
+      }
     };
 
     const unsubscribe = navigation.addListener('focus', () => {
@@ -108,22 +166,44 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
     return unsubscribe;
   }, [navigation, groupEventId, route?.params?.eventData?.destinations]);
 
-  // const reloadPlaces = async () => {
-  //   const _places = await getGroupEvent(groupEventId);
-  //   if (_places) {
-  //     setFullEventData(_places);
-  //   } else {
-  //     Alert.alert('Error', 'Unable to reload places. Please try again.');
-  //   }
-  // };
+  useEffect(() => {
+    let places: Place[] = [];
+    groupPlaces?.forEach((_groupPlace: GroupPlace, index: number) => {
+      places.push(_groupPlace.places[selectionIndices[index]]);
+    });
+
+    setMarkers(getMarkerArray(places));
+  }, [groupPlaces, selectionIndices]);
+
+  const reloadPlaces = async () => {
+    const _groupPlaces: GroupPlace[] | null = await getGroupEvent(groupEventId);
+
+    if (_groupPlaces) {
+      setSelectionIndices(Array(_groupPlaces.length).fill(0));
+      setGroupPlaces(_groupPlaces);
+    } else {
+      Alert.alert('Error', 'Unable to reload places. Please try again.');
+    }
+  };
 
   const handleFork = async () => {
-    const response = await forkGroupEvent(groupEventId);
+    const placeIds: number[] = [];
+    groupPlaces?.forEach((_groupPlace: GroupPlace, index: number) => {
+      placeIds.push(_groupPlace.places[selectionIndices[index]].id);
+    });
 
-    if (response) {
-      navigation.navigate('Library');
-    } else {
-      Alert.alert('Error', 'Unable to copy event. Please try again.');
+    if (placeIds.length > 0) {
+      const response: boolean = await postEvent(
+        eventTitle,
+        placeIds,
+        moment(date, 'M/D/YYYY').format('YYYY-MM-DD'),
+      );
+
+      if (response) {
+        navigation.navigate('Library', {index: 1});
+      } else {
+        Alert.alert('Error', 'Unable to copy event. Please Try Again');
+      }
     }
   };
 
@@ -134,6 +214,47 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
       navigation.navigate('Groups');
     } else {
       Alert.alert('Error', 'Unable to remove event. Please try again.');
+    }
+  };
+
+  const findMyVote = (places: Place[]): number => {
+    for (let i = 0; i < places.length; i++) {
+      const J: number | undefined = places[i]?.votes?.length;
+      if (J) {
+        for (let j = 0; j < J; j++) {
+          const votes: User[] | undefined = places[i]?.votes;
+          if (votes && votes[j].id === userId) {
+            return i;
+          }
+        }
+      }
+    }
+    return -1;
+  };
+
+  const findMySuggestions = (places: Place[]): number[] => {
+    const mySuggestions: number[] = [];
+    for (let i = 0; i < places.length; i++) {
+      const _suggester: User | undefined = places[i]?.suggester;
+      if (_suggester && _suggester.id === userId) {
+        mySuggestions.push(i);
+      }
+    }
+    return mySuggestions;
+  };
+
+  const onRemoveSuggestion = async (group_place_id: number | undefined) => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    if (group_place_id) {
+      const response = await deleteAlternative(group_place_id);
+      if (response) {
+        reloadPlaces();
+      } else {
+        Alert.alert(
+          'Error',
+          'Unable to delete the suggestion. Please try again later',
+        );
+      }
     }
   };
 
@@ -217,48 +338,82 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
         animateOnMount={Platform.OS === 'ios'}
         enableContentPanningGesture={false}>
         <ScrollView contentContainerStyle={styles.scrollView}>
-          {groupPlaces?.map((groupPlace: GroupPlace, idx: number) => (
+          {groupPlaces?.map((_groupPlace: GroupPlace, idx: number) => (
             <View key={idx}>
               <View style={destHeaderStyles.header}>
                 <View style={destHeaderStyles.title}>
-                  <Text>{groupPlace.name}</Text>
+                  <Text>{_groupPlace.name}</Text>
                 </View>
                 <OptionMenu
+                  icon={icons.plus}
+                  iconColor={colors.accent}
                   options={[
                     {
-                      name: 'Summary',
+                      name: `${strings.library.browse} ${_groupPlace.places[0].category.name}s`,
+                      disabled: _groupPlace.places[0].supplier === 'custom',
                       onPress: () => {
-                        Alert.alert(
-                          'Summary',
-                          'Summary is not implemented yet',
-                        );
+                        setAddOptionsStatus(1);
+                        setGroupPlace(_groupPlace);
+                        setCategoryToSearch(_groupPlace.places[0].category);
+                        addOptionsBottomSheetRef.current?.expand();
+                      },
+                      color: colors.accent,
+                    },
+                    {
+                      name: strings.library.browseCategory,
+                      onPress: () => {
+                        setAddOptionsStatus(2);
+                        addOptionsBottomSheetRef.current?.expand();
+                        setGroupPlace(_groupPlace);
                       },
                       color: colors.black,
                     },
                     {
-                      name: 'Add Options',
-                      onPress: () => {},
-                      color: colors.accent,
+                      name: strings.library.browseLibrary,
+                      onPress: () => {
+                        setAddOptionsStatus(3);
+                        addOptionsBottomSheetRef.current?.expand();
+                        setGroupPlace(_groupPlace);
+                      },
+                      color: colors.black,
+                    },
+                    {
+                      name: strings.library.browseCustom,
+                      onPress: () => {
+                        setAddOptionsStatus(4);
+                        addOptionsBottomSheetRef.current?.expand();
+                        setGroupPlace(_groupPlace);
+                      },
+                      color: colors.black,
                     },
                   ]}
                 />
               </View>
               <PlacesDisplay
                 navigation={navigation}
-                places={groupPlace.places}
+                places={_groupPlace.places}
                 width={s(290)}
-                bookmarks={bookmarks}
-                setBookmarked={(bookmarked: boolean, id: number) => {
+                bookmarks={bookmarks.map((bookmark: Place) => bookmark.id)}
+                setBookmarked={(bookmarked: boolean, place: Place) => {
                   if (bookmarked) {
-                    setBookmarks([...bookmarks, id]);
+                    setBookmarks([...bookmarks, place]);
                   } else {
                     setBookmarks(
-                      bookmarks.filter((bookmark: number) => bookmark !== id),
+                      bookmarks.filter((bookmark: Place) => bookmark !== place),
                     );
                   }
                 }}
-                index={placeIdx}
-                setIndex={setPlaceIdx}
+                index={selectionIndices[idx]}
+                setIndex={(index: number) => {
+                  const newSelectionIndices = [...selectionIndices];
+                  newSelectionIndices[idx] = index;
+                  setSelectionIndices(newSelectionIndices);
+                }}
+                displayCategory={false}
+                isGroupPlace={true}
+                myVote={findMyVote(_groupPlace.places)}
+                mySuggestions={findMySuggestions(_groupPlace.places)}
+                onRemoveSuggestion={onRemoveSuggestion}
               />
               {idx !== groupPlaces.length - 1 ? (
                 <View style={styles.separater} />
@@ -267,6 +422,67 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
           ))}
         </ScrollView>
       </BottomSheet>
+
+      {addOptionsStatus !== 0 ? (
+        <View
+          style={styles.dim}
+          onTouchStart={() => {
+            addOptionsBottomSheetRef.current?.close();
+          }}
+        />
+      ) : null}
+
+      <BottomSheet
+        index={-1}
+        ref={addOptionsBottomSheetRef}
+        enablePanDownToClose={true}
+        snapPoints={addOptionsSnapPoints}
+        onAnimate={handleAddOptionsChange}>
+        {addOptionsStatus === 1 && categoryToSearch && groupPlace ? (
+          <AddFromCategory
+            onClose={onClose}
+            onSelect={onAltSelect}
+            radius={floats.defaultRadiusNear}
+            latitude={groupPlace.places[0].latitude}
+            longitude={groupPlace.places[0].longitude}
+            bookmarks={bookmarks.map((bookmark: Place) => bookmark.id)}
+            setBookmarked={(bookmarked: boolean, place: Place) => {
+              if (bookmarked) {
+                setBookmarks([...bookmarks, place]);
+              } else {
+                setBookmarks(
+                  bookmarks.filter((bookmark: Place) => bookmark !== place),
+                );
+              }
+            }}
+            category={categoryToSearch}
+            onSubcategoryOpen={selectSubcategoryRef.current?.onSubcategoryOpen}
+            onSubcategorySelect={
+              selectSubcategoryRef.current?.onSubcategorySelect
+            }
+          />
+        ) : null}
+        {addOptionsStatus === 2 ? (
+          <AddByCategory
+            onClose={() => {
+              onClose();
+              setCategoryToSearch(undefined);
+            }}
+            onSelect={(category: Category) => {
+              setCategoryToSearch(category);
+              setAddOptionsStatus(1);
+            }}
+          />
+        ) : null}
+        {addOptionsStatus === 3 ? (
+          <AddFromLibrary onClose={onClose} onSelect={onAltSelect} />
+        ) : null}
+        {addOptionsStatus === 4 ? (
+          <AddCustomDest onClose={onClose} onSelect={onAltSelect} />
+        ) : null}
+      </BottomSheet>
+
+      <SelectSubcategory ref={selectSubcategoryRef} />
     </View>
   );
 };

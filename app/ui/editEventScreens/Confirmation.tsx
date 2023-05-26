@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  Modal,
-  Pressable,
-} from 'react-native';
+import {StyleSheet, View, TouchableOpacity, Modal} from 'react-native';
 
 import {s} from 'react-native-size-matters';
 
@@ -38,12 +32,7 @@ const Confirmation: React.FC<Props> = ({
   return (
     <Modal animationType="fade" transparent={true} visible={open}>
       <View style={styles.vertCenter}>
-        <Pressable
-          style={styles.dim}
-          onPress={() => {
-            setOpen(false);
-          }}
-        />
+        <View style={styles.dim} onTouchStart={() => setOpen(false)} />
         <View style={styles.container}>
           <View style={styles.title}>
             <Text size="s" center={true}>

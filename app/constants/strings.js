@@ -101,6 +101,10 @@ const strings = {
     noSaved: 'No Places Saved',
     noEvents: 'No Events yet, \nadd one using the buttom above!',
     noEventsAdd: 'No events yet, \ncreate one first!',
+    browse: 'Browse',
+    browseCategory: 'Browse Categories',
+    browseLibrary: 'Browse Library',
+    browseCustom: 'Browse Custom',
   },
   profile: {
     followers: 'followers',

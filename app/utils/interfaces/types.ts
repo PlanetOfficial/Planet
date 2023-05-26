@@ -31,11 +31,7 @@ export interface GroupEvent {
   name: string;
   date: string;
   destinations: GroupPlace[];
-  suggester: {
-    id: number;
-    name: string;
-    self: boolean;
-  };
+  suggester: User;
 }
 
 export interface Place {
@@ -57,12 +53,10 @@ export interface Place {
   price: number | null;
   rating: number | null;
   rating_count: number | null;
-  category: {
-    id: number;
-    name: string;
-  };
+  category: Category;
   group_place_id?: number;
-  votes: Vote[];
+  votes?: User[];
+  suggester?: User;
 }
 
 export interface GroupPlace {
@@ -71,9 +65,11 @@ export interface GroupPlace {
   places: Place[];
 }
 
-export interface Vote {
+export interface User {
+  id: number;
   name: string;
   email: string;
+  self?: boolean;
 }
 
 export interface CustomPlace {
@@ -141,16 +137,11 @@ export interface Group {
 
 export interface GroupMember {
   id: number;
-  user: {
-    name: string;
-    email: string;
-  };
+  user: User;
 }
 
 export interface Invite {
   id: number;
   group: Group;
-  inviter: {
-    name: string;
-  };
+  inviter: User;
 }

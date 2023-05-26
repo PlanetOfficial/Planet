@@ -1,5 +1,11 @@
 import React, {useRef, useEffect} from 'react';
-import {StyleSheet, View, TouchableOpacity, ScrollView} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  ScrollView,
+  Alert,
+} from 'react-native';
 import {s} from 'react-native-size-matters';
 
 import PlaceCard from '../components/PlaceCard';
@@ -8,17 +14,23 @@ import ScrollIndicator from '../components/ScrollIndicator';
 import {icons} from '../../constants/images';
 
 import {Place} from '../../utils/interfaces/types';
-import {getPlaceCardString} from '../../utils/functions/Misc';
+import {deleteVote, postVote} from '../../utils/api/groups/otherAPI';
 
 interface Props {
   navigation: any;
   places: Place[];
   width: number;
   bookmarks: number[];
-  setBookmarked: (bookmarked: boolean, id: number) => void;
+  setBookmarked: (bookmarked: boolean, place: Place) => void;
   closeDropdown?: () => void;
   index: number;
   setIndex: (index: number) => void;
+  displayCategory?: boolean;
+  displaySuggester?: boolean;
+  isGroupPlace?: boolean;
+  myVote?: number;
+  mySuggestions?: number[];
+  onRemoveSuggestion?: (group_place_id: number | undefined) => void;
 }
 
 const PlacesDisplay: React.FC<Props> = ({
@@ -30,7 +42,14 @@ const PlacesDisplay: React.FC<Props> = ({
   closeDropdown,
   index,
   setIndex,
+  displayCategory = true,
+  isGroupPlace = false,
+  myVote = -1,
+  mySuggestions = [],
+  onRemoveSuggestion,
 }) => {
+  const [voteIndex, setVoteIndex] = React.useState<number>(myVote);
+
   const scrollViewRef = useRef<ScrollView>(null);
 
   const scrollToPosition = () => {
@@ -49,6 +68,42 @@ const PlacesDisplay: React.FC<Props> = ({
     scrollToPosition();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const onVote = async (idx: number) => {
+    const group_place_id: number | undefined = places[idx].group_place_id;
+    if (group_place_id) {
+      if (voteIndex === -1) {
+        const response = await postVote(group_place_id);
+        if (response) {
+          setVoteIndex(idx);
+        } else {
+          Alert.alert('Error', 'Unable to vote. Please try again later');
+        }
+      } else if (voteIndex === idx) {
+        const response = await deleteVote(group_place_id);
+        if (response) {
+          setVoteIndex(-1);
+        } else {
+          Alert.alert(
+            'Error',
+            'Unable to delete the vote. Please try again later',
+          );
+        }
+      } else {
+        const _group_place_id: number | undefined =
+          places[voteIndex].group_place_id;
+        if (_group_place_id) {
+          const response1 = await deleteVote(_group_place_id);
+          const repsonse2 = await postVote(group_place_id);
+          if (response1 && repsonse2) {
+            setVoteIndex(idx);
+          } else {
+            Alert.alert('Error', 'Unable to vote. Please try again later');
+          }
+        }
+      }
+    }
+  };
 
   return (
     <>
@@ -96,9 +151,7 @@ const PlacesDisplay: React.FC<Props> = ({
                 });
               }}>
               <PlaceCard
-                id={place.id}
-                name={place.name}
-                info={getPlaceCardString(place)}
+                place={place}
                 bookmarked={bookmarks.includes(place.id)}
                 setBookmarked={setBookmarked}
                 image={
@@ -108,12 +161,22 @@ const PlacesDisplay: React.FC<Props> = ({
                       }
                     : icons.defaultIcon
                 }
+                displayCategory={displayCategory}
+                displaySuggester={isGroupPlace}
+                voted={isGroupPlace ? voteIndex === idx : undefined}
+                onVote={isGroupPlace ? () => onVote(idx) : undefined}
+                mySuggestion={mySuggestions.includes(idx) && idx !== 0}
+                onRemoveSuggestion={() => {
+                  if (onRemoveSuggestion) {
+                    onRemoveSuggestion(place.group_place_id);
+                  }
+                }}
               />
             </TouchableOpacity>
           </View>
         ))}
       </ScrollView>
-      <ScrollIndicator num={places?.length} idx={index} />
+      <ScrollIndicator num={places?.length} idx={index} special={voteIndex} />
     </>
   );
 };

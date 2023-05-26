@@ -4,7 +4,6 @@ import {
   StyleSheet,
   TouchableOpacity,
   SafeAreaView,
-  Pressable,
   FlatList,
   Alert,
   LayoutAnimation,
@@ -30,7 +29,6 @@ import {
   getGroupEvents,
   postGroupEvent,
   deleteGroupEvent,
-  forkGroupEvent,
 } from '../../utils/api/groups/eventAPI';
 import {getGroups} from '../../utils/api/groups/groupAPI';
 import {getInvites} from '../../utils/api/groups/inviteAPI';
@@ -58,7 +56,7 @@ const Groups: React.FC<Props> = ({navigation}) => {
 
   const [userEvents, setUserEvents] = useState<Event[]>([]);
   const [curGroupEvents, setCurGroupEvents] = useState<GroupEvent[]>([]);
-  const [bookmarks, setBookmarks] = useState<number[]>([]);
+  const [bookmarks, setBookmarks] = useState<Place[]>([]);
 
   const [groupBottomSheetOpen, setGroupBottomSheetOpen] =
     useState<boolean>(false);
@@ -140,10 +138,7 @@ const Groups: React.FC<Props> = ({navigation}) => {
 
     const _places: Place[] | null = await getPlaces();
     if (_places) {
-      const bookmarksIds: number[] = _places.map(
-        (bookmark: Place) => bookmark.id,
-      );
-      setBookmarks(bookmarksIds);
+      setBookmarks(_places);
     } else {
       Alert.alert('Error', 'Unable to load bookmarks. Please try again.');
     }
@@ -163,16 +158,6 @@ const Groups: React.FC<Props> = ({navigation}) => {
     if (response) {
       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
       fetchCurGroupInfo(groups[group].id);
-    } else {
-      Alert.alert('Error', 'Something went wrong. Please try again.');
-    }
-  };
-
-  const handleFork = async (groupEventId: number) => {
-    const response = await forkGroupEvent(groupEventId);
-
-    if (response) {
-      navigation.navigate('Library');
     } else {
       Alert.alert('Error', 'Something went wrong. Please try again.');
     }
@@ -289,11 +274,6 @@ const Groups: React.FC<Props> = ({navigation}) => {
                       color: colors.black,
                     },
                     {
-                      name: strings.groups.fork,
-                      onPress: () => handleFork(item.id),
-                      color: colors.accent,
-                    },
-                    {
                       name: strings.main.remove,
                       onPress: () => handleRemoveEvent(item.id),
                       disabled: !item.suggester?.self,
@@ -308,8 +288,9 @@ const Groups: React.FC<Props> = ({navigation}) => {
       )}
 
       {groupBottomSheetOpen || addBottomSheetOpen ? (
-        <Pressable
-          onPress={() => {
+        <View
+          style={styles.dim}
+          onTouchStart={() => {
             if (groupBottomSheetOpen) {
               groupBottomSheetRef.current?.dismiss();
             }
@@ -317,7 +298,6 @@ const Groups: React.FC<Props> = ({navigation}) => {
               addBottomSheetRef.current?.dismiss();
             }
           }}
-          style={styles.dim}
         />
       ) : null}
 

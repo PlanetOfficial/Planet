@@ -74,7 +74,7 @@ const GroupSelector: React.FC<Props> = ({
           ]}
           onPress={() => {
             setGroup(idx);
-            bottomSheetRef.current?.close();
+            bottomSheetRef.current?.dismiss();
           }}>
           <Image style={styles.icon} source={icons.user} />
           <View style={styles.texts}>
@@ -88,7 +88,7 @@ const GroupSelector: React.FC<Props> = ({
             icon={icons.option}
             onPress={() => {
               navigation.navigate('EditGroup', {group: _group});
-              bottomSheetRef.current?.close();
+              bottomSheetRef.current?.dismiss();
             }}
           />
         </TouchableOpacity>
@@ -126,7 +126,7 @@ const GroupSelector: React.FC<Props> = ({
       <TouchableOpacity
         style={styles.row}
         onPress={() => {
-          bottomSheetRef.current?.close();
+          bottomSheetRef.current?.dismiss();
           navigation.navigate('CreateGroup');
         }}>
         <View style={styles.plus}>

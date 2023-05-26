@@ -12,6 +12,8 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   ScrollView,
+  Alert,
+  FlatList,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 
@@ -21,54 +23,37 @@ import {icons} from '../../constants/images';
 
 import Icon from '../components/Icon';
 import Text from '../components/Text';
-import OptionMenu from '../components/OptionMenu';
-import PlacesDisplay from '../components/PlacesDisplay';
-import Filter from './Filter';
+import Filter from '../editEventScreens/Filter';
 
-import {
-  Place,
-  Category as CategoryT,
-  Subcategory,
-} from '../../utils/interfaces/types';
+import {Place, Category, Subcategory} from '../../utils/interfaces/types';
 import {getDestinations} from '../../utils/api/destinationAPI';
+import PlaceCard from '../components/PlaceCard';
 
 interface ChildComponentProps {
-  navigation: any;
   radius: number;
   latitude: number;
   longitude: number;
   bookmarks: number[];
   setBookmarked: (bookmark: boolean, place: Place) => void;
-  category: CategoryT;
-  categoryIndex: number;
-  destination: Place | CategoryT;
-  selectionIndex: number;
-  setSelectionIndex: (idx: number) => void;
-  destinations: (Place | CategoryT)[];
-  setDestinations: (destinations: (Place | CategoryT)[]) => void;
-  onCategoryMove: (idx: number, direction: number) => void;
+  category: Category;
   onSubcategoryOpen?: (comp: React.ReactNode) => void;
   onSubcategorySelect?: () => void;
+  onClose: () => void;
+  onSelect: (place: Place) => void;
 }
 
-const Category = forwardRef((props: ChildComponentProps, ref) => {
+const AddFromCategory = forwardRef((props: ChildComponentProps, ref) => {
   const {
-    navigation,
     radius,
     latitude,
     longitude,
     bookmarks,
     setBookmarked,
     category,
-    categoryIndex,
-    destination,
-    selectionIndex,
-    setSelectionIndex,
-    destinations,
-    setDestinations,
-    onCategoryMove,
     onSubcategoryOpen,
     onSubcategorySelect,
+    onClose,
+    onSelect,
   } = props;
 
   const childRef = useRef<any>(null); // due to forwardRef
@@ -86,6 +71,8 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
   const [filters, setFilters] = useState<(number | number[])[]>([]);
 
   const [subcategory, setSubcategory] = useState<Subcategory | null>();
+
+  const [destinations, setDestinations] = useState<Place[]>();
 
   useEffect(() => {
     const loadDestinations = async (categoryId: number) => {
@@ -117,28 +104,23 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
         subcategory ? subcategory.id : undefined,
       );
 
-      const _destinations: (Place | CategoryT)[] = [...destinations];
-      const _destination: Place | CategoryT = _destinations[categoryIndex];
-      if (isCategory(_destination) && response !== null) {
-        _destination.options = response;
-        setDestinations(_destinations);
+      if (response) {
+        setDestinations(response);
+      } else {
+        Alert.alert('Error', 'Unable to load destinations. Please try again.');
       }
       setLoading(false);
     };
 
-    if (isCategory(destination) && toBeRefreshed) {
+    if (toBeRefreshed) {
       loadDestinations(category.id);
     }
   }, [
     category.id,
     category.subcategories,
-    categoryIndex,
     latitude,
     longitude,
     radius,
-    destination,
-    destinations,
-    setDestinations,
     toBeRefreshed,
     category.filters,
     filters,
@@ -160,10 +142,6 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
   useEffect(() => {
     setToBeRefreshed(true);
   }, [filters, subcategory]);
-
-  const isCategory = (item: Place | CategoryT): item is CategoryT => {
-    return 'icon' in item;
-  };
 
   return (
     <View key={category.id}>
@@ -221,28 +199,6 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
             <Text>{category.name}</Text>
           </View>
         )}
-        <OptionMenu
-          options={[
-            {
-              name: strings.createTabStack.moveUp,
-              onPress: () => onCategoryMove(categoryIndex, -1),
-              color: colors.black,
-              disabled: categoryIndex === 0,
-            },
-            {
-              name: strings.createTabStack.moveDown,
-              onPress: () => onCategoryMove(categoryIndex, 1),
-              color: colors.black,
-              disabled: categoryIndex === destinations.length - 1,
-            },
-            {
-              name: strings.main.remove,
-              onPress: () => onCategoryMove(categoryIndex, 0),
-              color: colors.red,
-              disabled: destinations.length === 1,
-            },
-          ]}
-        />
       </View>
 
       {category.filters && category.filters.length > 0 ? (
@@ -257,30 +213,51 @@ const Category = forwardRef((props: ChildComponentProps, ref) => {
         <View style={styles.noPlacesFound}>
           <ActivityIndicator size="small" color={colors.accent} />
         </View>
-      ) : isCategory(destination) &&
-        destination.options &&
-        Array.isArray(destination.options) &&
-        destination.options.length > 0 ? (
-        <PlacesDisplay
-          navigation={navigation}
-          places={destination.options}
-          width={s(290)}
-          bookmarks={bookmarks}
-          setBookmarked={setBookmarked}
-          closeDropdown={closeDropdown}
-          index={selectionIndex}
-          setIndex={setSelectionIndex}
-        />
       ) : (
-        <View style={styles.noPlacesFound}>
-          <Text size="m" color={colors.darkgrey}>
-            {strings.createTabStack.noPlaces}
-          </Text>
-        </View>
+        <FlatList
+          data={destinations}
+          contentContainerStyle={styles.contentContainer}
+          initialNumToRender={5}
+          keyExtractor={(item: Place) => item.id.toString()}
+          ItemSeparatorComponent={Spacer}
+          onTouchStart={() => childRef.current?.closeDropdown()}
+          ListEmptyComponent={
+            <View style={styles.center}>
+              <Text color={colors.darkgrey} center={true}>
+                {strings.library.noSaved}
+              </Text>
+            </View>
+          }
+          renderItem={({item}) => {
+            return (
+              <TouchableOpacity
+                style={styles.card}
+                onPress={() => {
+                  onSelect(item);
+                  onClose();
+                }}>
+                <PlaceCard
+                  place={item}
+                  bookmarked={bookmarks.includes(item.id)}
+                  setBookmarked={setBookmarked}
+                  image={
+                    item.photo
+                      ? {
+                          uri: item.photo,
+                        }
+                      : icons.defaultIcon
+                  }
+                />
+              </TouchableOpacity>
+            );
+          }}
+        />
       )}
     </View>
   );
 });
+
+const Spacer = () => <View style={styles.separator} />;
 
 const styles = StyleSheet.create({
   header: {
@@ -332,6 +309,24 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.accent,
   },
+  contentContainer: {
+    paddingTop: s(20),
+    paddingBottom: s(40),
+  },
+  separator: {
+    borderWidth: 0.5,
+    borderColor: colors.grey,
+    marginVertical: s(10),
+    marginHorizontal: s(20),
+  },
+  card: {
+    alignSelf: 'center',
+    width: s(290),
+  },
+  center: {
+    height: s(400),
+    justifyContent: 'center',
+  },
 });
 
-export default Category;
+export default AddFromCategory;
