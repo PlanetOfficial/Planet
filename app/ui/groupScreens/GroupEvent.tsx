@@ -6,7 +6,9 @@ import {
   Alert,
   Platform,
   LayoutAnimation,
+  TouchableOpacity,
   RefreshControl,
+  FlatList,
 } from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
 import {s, vs} from 'react-native-size-matters';
@@ -49,7 +51,7 @@ import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 import {postAlternative} from '../../utils/api/groups/otherAPI';
 import {floats} from '../../constants/numbers';
-import {FlatList} from 'react-native-gesture-handler';
+import Roulette from '../components/Roulette';
 
 interface Props {
   navigation: any;
@@ -404,8 +406,8 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
                       },
                       color: colors.black,
                     },
-                  ]}
-                />
+                    ]}
+                  />
               </View>
               <PlacesDisplay
                 navigation={navigation}
@@ -429,6 +431,7 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
                 }}
                 displayCategory={false}
                 isGroupPlace={true}
+                reload={reloadPlaces}
                 myVote={findMyVote(item.places)}
                 mySuggestions={findMySuggestions(item.places)}
                 onRemoveSuggestion={onRemoveSuggestion}
@@ -495,6 +498,25 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
         {addOptionsStatus === 4 ? (
           <AddCustomDest onClose={onClose} onSelect={onAltSelect} />
         ) : null}
+        {addOptionsStatus === 5 ? (
+          groupPlace ? (
+            <Roulette
+              navigation={navigation}
+              groupPlace={groupPlace}
+              onClose={onClose}
+              bookmarks={bookmarks.map((bookmark: Place) => bookmark.id)}
+              setBookmarked={(bookmarked: boolean, place: Place) => {
+                if (bookmarked) {
+                  setBookmarks([...bookmarks, place]);
+                } else {
+                  setBookmarks(
+                    bookmarks.filter((bookmark: Place) => bookmark !== place),
+                  );
+                }
+              }}
+            />
+          ) : null
+        ) : null}
       </BottomSheet>
 
       <SelectSubcategory ref={selectSubcategoryRef} />
@@ -558,6 +580,20 @@ const destHeaderStyles = StyleSheet.create({
     alignItems: 'center',
     marginRight: s(10),
     flex: 1,
+  },
+  right: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  button: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginRight: s(10),
+    padding: s(5),
+    borderRadius: s(10),
+    borderWidth: 2,
+
+    borderColor: colors.accentLight,
   },
 });
 

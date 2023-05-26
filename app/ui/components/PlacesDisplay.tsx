@@ -28,6 +28,7 @@ interface Props {
   displayCategory?: boolean;
   displaySuggester?: boolean;
   isGroupPlace?: boolean;
+  reload?: () => void;
   myVote?: number;
   mySuggestions?: number[];
   onRemoveSuggestion?: (group_place_id: number | undefined) => void;
@@ -44,6 +45,7 @@ const PlacesDisplay: React.FC<Props> = ({
   setIndex,
   displayCategory = true,
   isGroupPlace = false,
+  reload,
   myVote = -1,
   mySuggestions = [],
   onRemoveSuggestion,
@@ -102,6 +104,9 @@ const PlacesDisplay: React.FC<Props> = ({
           }
         }
       }
+      if (reload) {
+        reload();
+      }
     }
   };
 
@@ -146,7 +151,6 @@ const PlacesDisplay: React.FC<Props> = ({
               onPress={() => {
                 navigation.navigate('Place', {
                   destination: place,
-                  category: place.category.name,
                   bookmarked: bookmarks.includes(place.id),
                 });
               }}>
@@ -163,9 +167,11 @@ const PlacesDisplay: React.FC<Props> = ({
                 }
                 displayCategory={displayCategory}
                 displaySuggester={isGroupPlace}
+                mySuggestion={
+                  mySuggestions.includes(idx) && places.length !== 1
+                }
                 voted={isGroupPlace ? voteIndex === idx : undefined}
                 onVote={isGroupPlace ? () => onVote(idx) : undefined}
-                mySuggestion={mySuggestions.includes(idx) && idx !== 0}
                 onRemoveSuggestion={() => {
                   if (onRemoveSuggestion) {
                     onRemoveSuggestion(place.group_place_id);

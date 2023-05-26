@@ -168,7 +168,6 @@ const LiveCategory: React.FC<Props> = ({navigation, route}) => {
                         onPress={() =>
                           navigation.navigate('Place', {
                             destination: event,
-                            category: categoryName,
                             bookmarked: bookmarks.includes(event.id),
                           })
                         }>

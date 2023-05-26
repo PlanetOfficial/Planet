@@ -16,8 +16,9 @@ import {colors} from '../../constants/theme';
 import {icons} from '../../constants/images';
 
 import {postPlace, deletePlace} from '../../utils/api/placeAPI';
-import {Place} from '../../utils/interfaces/types';
+import {Place, User} from '../../utils/interfaces/types';
 import {getPlaceCardString} from '../../utils/functions/Misc';
+import {TouchableOpacity} from 'react-native';
 
 interface Props {
   place: Place;
@@ -31,6 +32,7 @@ interface Props {
   onVote?: () => void;
   mySuggestion?: boolean;
   onRemoveSuggestion?: () => void;
+  voters?: User[];
 }
 
 const PlaceCard: React.FC<Props> = ({
@@ -45,6 +47,7 @@ const PlaceCard: React.FC<Props> = ({
   onVote,
   mySuggestion,
   onRemoveSuggestion,
+  voters,
 }) => {
   const handleBookmark = async () => {
     if (!bookmarked) {
@@ -87,6 +90,27 @@ const PlaceCard: React.FC<Props> = ({
           onPress={handleBookmark}
         />
       </View>
+      {voters && voters.length > 0 ? (
+        <View style={styles.voters}>
+          {voters.map((voter: User, index: number) => (
+            <TouchableOpacity
+              key={index}
+              style={[
+                styles.userIcon,
+                index !== voters.length - 1 ? {marginRight: s(5)} : null,
+              ]}
+              onPress={() => Alert.alert(voter.name)}>
+              <Text size="xs" weight="b" color={colors.accent}>
+                {voter.name
+                  .split(' ')
+                  .map((name: string) => name[0])
+                  .join('')
+                  .toUpperCase()}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      ) : null}
       {voted !== undefined && onVote ? (
         <View style={[styles.button, {right: s(10)}]}>
           <Icon
@@ -167,6 +191,24 @@ const styles = StyleSheet.create({
     shadowRadius: 16.0,
 
     elevation: 24,
+  },
+  voters: {
+    flexDirection: 'row',
+    position: 'absolute',
+    bottom: s(5),
+    left: s(5),
+    padding: s(10),
+    height: s(50),
+    borderRadius: s(25),
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+  },
+  userIcon: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: s(30),
+    height: s(30),
+    borderRadius: s(15),
+    backgroundColor: colors.white,
   },
 });
 

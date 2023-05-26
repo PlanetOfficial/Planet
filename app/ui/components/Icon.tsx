@@ -13,8 +13,9 @@ import {s} from 'react-native-size-matters';
 import {colors} from '../../constants/theme';
 
 interface Props {
-  size?: 'xs' | 's' | 'm' | 'l';
+  size?: 'xs' | 's' | 'm' | 'l' | 'xl';
   color?: string;
+  noColor?: boolean;
   padding?: number;
   disabled?: boolean;
   icon: ImageSourcePropType;
@@ -24,6 +25,7 @@ interface Props {
 const Icon: React.FC<Props> = ({
   size = 's',
   color = colors.black,
+  noColor = false,
   padding = 0,
   disabled = false,
   icon,
@@ -43,6 +45,9 @@ const Icon: React.FC<Props> = ({
     case 'l':
       z = s(24);
       break;
+    case 'xl':
+      z = s(32);
+      break;
     default:
       break;
   }
@@ -58,7 +63,7 @@ const Icon: React.FC<Props> = ({
   const IconStyles: ImageStyle = {
     width: '100%',
     height: '100%',
-    tintColor: disabled ? colors.darkgrey : color,
+    tintColor: noColor ? undefined : disabled ? colors.darkgrey : color,
   };
 
   return onPress ? (

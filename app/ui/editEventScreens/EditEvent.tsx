@@ -200,7 +200,6 @@ const EditEvent: React.FC<Props> = ({
                         onPress={() => {
                           navigation.navigate('Place', {
                             destination: item,
-                            category: item.category.name,
                             bookmarked: bookmarks.includes(item.id),
                           });
                         }}>
