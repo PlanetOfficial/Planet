@@ -47,10 +47,10 @@ const CreateGroup: React.FC<Props> = ({navigation, route}) => {
     if (responseStatus) {
       navigation.reset({
         index: 0,
-        routes: [{name: 'Friends'}],
+        routes: [{name: 'Groups'}],
       });
 
-      navigation.navigate('Friends');
+      navigation.navigate('Groups');
     } else {
       Alert.alert('Error', 'Unable to save. Please Try Again');
     }
@@ -62,10 +62,10 @@ const CreateGroup: React.FC<Props> = ({navigation, route}) => {
     if (responseStatus) {
       navigation.reset({
         index: 0,
-        routes: [{name: 'Friends'}],
+        routes: [{name: 'Groups'}],
       });
 
-      navigation.navigate('Friends');
+      navigation.navigate('Groups');
     } else {
       Alert.alert('Error', 'Unable to leave group. Please Try Again');
     }
