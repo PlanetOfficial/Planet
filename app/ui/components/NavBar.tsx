@@ -23,7 +23,7 @@ export const NavBar = () => {
         source = focused ? tabIcons.trendingActive : tabIcons.trendingInactive;
         break;
       case 'Friends':
-        source = focused ? tabIcons.friendsActive : tabIcons.friendsInactive;
+        source = focused ? tabIcons.groupsActive : tabIcons.groupsInactive;
         break;
       case 'Library':
         source = focused ? tabIcons.libraryActive : tabIcons.libraryInactive;

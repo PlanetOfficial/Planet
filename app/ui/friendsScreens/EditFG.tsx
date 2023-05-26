@@ -13,8 +13,7 @@ import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 import {icons} from '../../constants/images';
 
-import {editGroup} from '../../utils/api/friendsCalls/editGroup';
-import {leaveGroup} from '../../utils/api/friendsCalls/leaveGroup';
+import {editGroup, leaveGroup} from '../../utils/api/groups/groupAPI';
 import {GroupMember} from '../../utils/interfaces/types';
 
 import Icon from '../components/Icon';
@@ -28,15 +27,11 @@ interface Props {
   route: any;
 }
 
-const CreateFG: React.FC<Props> = ({navigation, route}) => {
-  const [name, setName] = useState<string>(
-    route?.params?.friendGroup.group.name,
-  );
-  const [members] = useState<GroupMember[]>(
-    route?.params?.friendGroup.group_member,
-  );
+const CreateGroup: React.FC<Props> = ({navigation, route}) => {
+  const [name, setName] = useState<string>(route?.params?.group.name);
+  const [members] = useState<GroupMember[]>(route?.params?.group.group_member);
   const [invite, setInvite] = useState<string>('');
-  const [invitations, setInvitations] = useState<string[]>([]);
+  const [invites, setInvites] = useState<string[]>([]);
 
   const inviteRef = React.useRef<TextInput>(null);
 
@@ -45,8 +40,8 @@ const CreateFG: React.FC<Props> = ({navigation, route}) => {
   const handleGroupEdit = async () => {
     const responseStatus = await editGroup(
       name,
-      invitations,
-      route?.params?.friendGroup.group.id,
+      invites,
+      route?.params?.group.group.id,
     );
 
     if (responseStatus) {
@@ -62,9 +57,7 @@ const CreateFG: React.FC<Props> = ({navigation, route}) => {
   };
 
   const handleGroupLeave = async () => {
-    const responseStatus = await leaveGroup(
-      route?.params?.friendGroup.group.id,
-    );
+    const responseStatus = await leaveGroup(route?.params?.group.id);
 
     if (responseStatus) {
       navigation.reset({
@@ -85,10 +78,10 @@ const CreateFG: React.FC<Props> = ({navigation, route}) => {
           <View style={styles.back}>
             <Icon icon={icons.back} onPress={() => navigation.goBack()} />
           </View>
-          <Text>{strings.friends.editPrompt}</Text>
+          <Text>{strings.groups.editPrompt}</Text>
           <TouchableOpacity onPress={() => setShowConfirmation(true)}>
             <Text size="s" weight="b" color={colors.red}>
-              {strings.friends.leave}
+              {strings.groups.leave}
             </Text>
           </TouchableOpacity>
         </View>
@@ -98,7 +91,7 @@ const CreateFG: React.FC<Props> = ({navigation, route}) => {
         style={styles.input}
         onChangeText={setName}
         value={name}
-        placeholder={strings.friends.editName}
+        placeholder={strings.groups.editName}
       />
 
       <View style={inviteStyles.header}>
@@ -109,15 +102,15 @@ const CreateFG: React.FC<Props> = ({navigation, route}) => {
           style={inviteStyles.input}
           onChangeText={setInvite}
           value={invite}
-          placeholder={strings.friends.promptInvite}
+          placeholder={strings.groups.promptInvite}
           placeholderTextColor={colors.darkgrey}
         />
         <AButton
           size="s"
           disabled={invite === ''}
-          label={strings.friends.add}
+          label={strings.groups.add}
           onPress={() => {
-            setInvitations([...invitations, invite]);
+            setInvites([...invites, invite]);
             setInvite('');
             inviteRef.current?.blur();
           }}
@@ -125,7 +118,7 @@ const CreateFG: React.FC<Props> = ({navigation, route}) => {
       </View>
 
       <ScrollView>
-        {invitations.map((item: string, index: number) => (
+        {invites.map((item: string, index: number) => (
           <View key={index} style={inviteStyles.row}>
             <Text size="s" weight="l">
               {item}
@@ -133,8 +126,8 @@ const CreateFG: React.FC<Props> = ({navigation, route}) => {
             <Icon
               icon={icons.x}
               onPress={() => {
-                setInvitations(
-                  invitations.filter((_: string, i: number) => i !== index),
+                setInvites(
+                  invites.filter((_: string, i: number) => i !== index),
                 );
               }}
             />
@@ -167,9 +160,9 @@ const CreateFG: React.FC<Props> = ({navigation, route}) => {
         onPress={handleGroupLeave}
         open={showConfirmation}
         setOpen={setShowConfirmation}
-        prompt={strings.friends.leavePrompt}
+        prompt={strings.groups.leavePrompt}
         leftText={strings.misc.cancel}
-        rightText={strings.friends.leave}
+        rightText={strings.groups.leave}
         rightColor={colors.red}
         actionOnRight={true}
       />
@@ -251,4 +244,4 @@ const inviteStyles = StyleSheet.create({
   },
 });
 
-export default CreateFG;
+export default CreateGroup;

@@ -24,6 +24,13 @@ export interface Event {
   name: string;
   date: string;
   places: Place[];
+}
+
+export interface GroupEvent {
+  id: number;
+  name: string;
+  date: string;
+  destinations: GroupPlace[];
   suggester: {
     id: number;
     name: string;
@@ -54,9 +61,19 @@ export interface Place {
     id: number;
     name: string;
   };
-  likes?: FGReaction[];
-  dislikes?: FGReaction[];
   group_place_id?: number;
+  votes: Vote[];
+}
+
+export interface GroupPlace {
+  id: number;
+  name: string;
+  places: Place[];
+}
+
+export interface Vote {
+  name: string;
+  email: string;
 }
 
 export interface CustomPlace {
@@ -116,46 +133,24 @@ export interface Coordinate {
   longitude: number;
 }
 
-export interface FGsAndInvites {
-  groups: FriendGroup[];
-  invites: Invitation[];
-}
-
-export interface FriendGroup {
+export interface Group {
   id: number;
-  user_id: number;
-  group: Group;
+  name: string;
   group_member: GroupMember[];
 }
 
 export interface GroupMember {
+  id: number;
   user: {
     name: string;
     email: string;
   };
-  group_id: number;
-  id: number;
-  user_id: number;
 }
 
-export interface Group {
-  id: number;
-  name: string;
-  owner: number;
-}
-
-export interface Invitation {
+export interface Invite {
   id: number;
   group: Group;
   inviter: {
-    name: string;
-  };
-}
-
-export interface FGReaction {
-  id: number;
-  user: {
-    id: number;
     name: string;
   };
 }

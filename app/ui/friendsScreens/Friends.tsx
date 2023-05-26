@@ -21,22 +21,25 @@ import {colors} from '../../constants/theme';
 import {icons} from '../../constants/images';
 
 import EventCard from '../components/EventCard';
-import FGSelector from './FGSelector';
+import GroupSelector from './FGSelector';
 import Icon from '../components/Icon';
 import Text from '../components/Text';
 import AButton from '../components/ActionButton';
 
-import {getFGsAndInvites} from '../../utils/api/friendsCalls/getFGsAndInvites';
-import {makeFGEvent} from '../../utils/api/friendsCalls/makeFGEvent';
-import {getFGEvents} from '../../utils/api/friendsCalls/getFGEvents';
-import {removeEvent} from '../../utils/api/friendsCalls/removeEvent';
-import {forkEvent} from '../../utils/api/friendsCalls/forkEvent';
 import {
-  FriendGroup,
-  Invitation,
+  getGroupEvents,
+  postGroupEvent,
+  deleteGroupEvent,
+  forkGroupEvent,
+} from '../../utils/api/groups/eventAPI';
+import {getGroups} from '../../utils/api/groups/groupAPI';
+import {getInvites} from '../../utils/api/groups/inviteAPI';
+import {
+  Group,
+  Invite,
   Event,
+  GroupEvent,
   Place,
-  FGsAndInvites,
 } from '../../utils/interfaces/types';
 import {getEvents} from '../../utils/api/eventAPI';
 import {getPlaces} from '../../utils/api/placeAPI';
@@ -48,31 +51,30 @@ interface Props {
 const Friends: React.FC<Props> = ({navigation}) => {
   const insets = useSafeAreaInsets();
 
-  const [friendGroup, setFriendGroup] = useState<number>(-1);
+  const [group, setGroup] = useState<number>(-1);
 
-  const [friendGroups, setFriendGroups] = useState<FriendGroup[]>([]);
-  const [invitations, setInvitations] = useState<Invitation[]>([]);
+  const [groups, setGroups] = useState<Group[]>([]);
+  const [invites, setInvites] = useState<Invite[]>([]);
 
   const [userEvents, setUserEvents] = useState<Event[]>([]);
-  const [curFGEvents, setCurFGEvents] = useState<Event[]>([]);
+  const [curGroupEvents, setCurGroupEvents] = useState<GroupEvent[]>([]);
   const [bookmarks, setBookmarks] = useState<number[]>([]);
 
-  const [fgBottomSheetOpen, setFgBottomSheetOpen] = useState<boolean>(false);
-  const fgBottomSheetRef = useRef<BottomSheetModal>(null);
-  const fgSnapPoints = useMemo(
+  const [groupBottomSheetOpen, setGroupBottomSheetOpen] =
+    useState<boolean>(false);
+  const groupBottomSheetRef = useRef<BottomSheetModal>(null);
+  const groupSnapPoints = useMemo(
     () => [
       Math.min(
-        s(70) * (friendGroups.length + invitations.length) + s(120),
+        s(70) * (groups.length + invites.length) + s(120),
         vs(680) - s(60) - insets.top,
       ),
     ],
-    [insets.top, friendGroups.length, invitations.length],
+    [insets.top, groups.length, invites.length],
   );
-  const handleFgSheetChange = useCallback((_: number, toIndex: number) => {
-    setFgBottomSheetOpen(toIndex === 0);
+  const handleGroupSheetChange = useCallback((_: number, toIndex: number) => {
+    setGroupBottomSheetOpen(toIndex === 0);
   }, []);
-
-  const [loading, setLoading] = useState<boolean>(true);
 
   const [addBottomSheetOpen, setAddBottomSheetOpen] = useState<boolean>(false);
   const addBottomSheetRef = useRef<BottomSheetModal>(null);
@@ -84,11 +86,13 @@ const Friends: React.FC<Props> = ({navigation}) => {
     setAddBottomSheetOpen(toIndex === 0);
   }, []);
 
+  const [loading, setLoading] = useState<boolean>(true);
+
   const fetchCurGroupInfo = async (group_id: number) => {
     setLoading(true);
-    const response = await getFGEvents(group_id);
+    const response: GroupEvent[] | null = await getGroupEvents(group_id);
     if (response) {
-      setCurFGEvents(response);
+      setCurGroupEvents(response);
     } else {
       Alert.alert('Error', 'Unable to load events. Please try again.');
     }
@@ -96,33 +100,35 @@ const Friends: React.FC<Props> = ({navigation}) => {
   };
 
   useEffect(() => {
-    if (friendGroup !== -1) {
-      fetchCurGroupInfo(friendGroups[friendGroup].group.id);
+    if (group !== -1) {
+      fetchCurGroupInfo(groups[group].id);
     }
-  }, [friendGroup, friendGroups]);
+  }, [group, groups]);
 
   const initializeData = async () => {
-    const responseData: FGsAndInvites | null = await getFGsAndInvites();
+    const _groups: Group[] | null = await getGroups();
 
-    if (responseData?.groups) {
-      setFriendGroups(responseData.groups);
+    if (_groups) {
+      setGroups(_groups);
 
-      if (responseData.groups.length > 0) {
-        if (friendGroup === -1) {
-          setFriendGroup(0);
-          fetchCurGroupInfo(responseData.groups[0].group.id);
+      if (_groups.length > 0) {
+        if (group === -1) {
+          setGroup(0);
+          fetchCurGroupInfo(_groups[0].id);
         } else {
-          fetchCurGroupInfo(responseData.groups[friendGroup].group.id);
+          fetchCurGroupInfo(_groups[group].id);
         }
       }
     } else {
       Alert.alert('Error', 'Unable to load groups. Please try again.');
     }
 
-    if (responseData?.invites) {
-      setInvitations(responseData.invites);
+    const _invites: Invite[] | null = await getInvites();
+
+    if (_invites) {
+      setInvites(_invites);
     } else {
-      Alert.alert('Error', 'Unable to load invitations. Please try again.');
+      Alert.alert('Error', 'Unable to load invites. Please try again.');
     }
 
     const eventsData: Event[] | null = await getEvents();
@@ -149,24 +155,21 @@ const Friends: React.FC<Props> = ({navigation}) => {
     });
     return unsubscribe;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [navigation, friendGroup]);
+  }, [navigation, group]);
 
   const handleAddEvent = async (user_event_id: number) => {
-    const response = await makeFGEvent(
-      user_event_id,
-      friendGroups[friendGroup].group.id,
-    );
+    const response = await postGroupEvent(user_event_id, groups[group].id);
 
     if (response) {
       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-      fetchCurGroupInfo(friendGroups[friendGroup].group.id);
+      fetchCurGroupInfo(groups[group].id);
     } else {
       Alert.alert('Error', 'Something went wrong. Please try again.');
     }
   };
 
   const handleFork = async (groupEventId: number) => {
-    const response = await forkEvent(groupEventId);
+    const response = await forkGroupEvent(groupEventId);
 
     if (response) {
       navigation.navigate('Library');
@@ -176,12 +179,14 @@ const Friends: React.FC<Props> = ({navigation}) => {
   };
 
   const handleRemoveEvent = async (group_event_id: number) => {
-    const response = await removeEvent(group_event_id);
+    const response = await deleteGroupEvent(group_event_id);
 
     if (response) {
       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-      setCurFGEvents(
-        curFGEvents.filter((event: Event) => event.id !== group_event_id),
+      setCurGroupEvents(
+        curGroupEvents.filter(
+          (event: GroupEvent) => event.id !== group_event_id,
+        ),
       );
     } else {
       Alert.alert('Error', 'Something went wrong. Please try again.');
@@ -194,11 +199,9 @@ const Friends: React.FC<Props> = ({navigation}) => {
         <View style={headerStyles.container}>
           <TouchableOpacity
             style={headerStyles.selector}
-            onPress={() => fgBottomSheetRef.current?.present()}>
+            onPress={() => groupBottomSheetRef.current?.present()}>
             <Text size="xl" weight="b">
-              {friendGroup === -1
-                ? strings.title.friends
-                : friendGroups[friendGroup]?.group?.name}
+              {group === -1 ? strings.title.groups : groups[group]?.name}
             </Text>
             <View style={headerStyles.drop}>
               <Icon icon={icons.drop} />
@@ -220,11 +223,11 @@ const Friends: React.FC<Props> = ({navigation}) => {
         </View>
       </SafeAreaView>
 
-      {friendGroup !== -1 ? (
+      {group !== -1 ? (
         <View style={styles.addButton}>
           <AButton
             size="l"
-            label={strings.friends.addPrompt}
+            label={strings.groups.addPrompt}
             onPress={() => addBottomSheetRef.current?.present()}
           />
         </View>
@@ -236,10 +239,10 @@ const Friends: React.FC<Props> = ({navigation}) => {
         </View>
       ) : (
         <FlatList
-          data={curFGEvents}
+          data={curGroupEvents}
           style={contentStyles.container}
           initialNumToRender={4}
-          keyExtractor={(item: Event) => item.id.toString()}
+          keyExtractor={(item: GroupEvent) => item.id.toString()}
           ItemSeparatorComponent={Spacer}
           contentContainerStyle={contentStyles.content}
           ListEmptyComponent={
@@ -249,12 +252,12 @@ const Friends: React.FC<Props> = ({navigation}) => {
               </Text>
             </View>
           }
-          renderItem={({item}: {item: Event}) => {
+          renderItem={({item}: {item: GroupEvent}) => {
             return (
               <TouchableOpacity
                 onPress={() => {
-                  if (!fgBottomSheetOpen && !addBottomSheetOpen) {
-                    navigation.navigate('FGEvent', {
+                  if (!groupBottomSheetOpen && !addBottomSheetOpen) {
+                    navigation.navigate('GroupEvent', {
                       eventData: item,
                       bookmarks: bookmarks,
                     });
@@ -268,10 +271,12 @@ const Friends: React.FC<Props> = ({navigation}) => {
                     item.suggester?.name
                   }
                   image={
-                    item.places &&
-                    item.places.length > 0 &&
-                    item.places[0]?.photo
-                      ? {uri: item.places[0]?.photo}
+                    item.destinations &&
+                    item.destinations.length > 0 &&
+                    item.destinations[0].places &&
+                    item.destinations[0].places.length > 0 &&
+                    item.destinations[0].places[0]?.photo
+                      ? {uri: item.destinations[0].places[0]?.photo}
                       : icons.defaultIcon
                   }
                   options={[
@@ -284,7 +289,7 @@ const Friends: React.FC<Props> = ({navigation}) => {
                       color: colors.black,
                     },
                     {
-                      name: strings.friends.fork,
+                      name: strings.groups.fork,
                       onPress: () => handleFork(item.id),
                       color: colors.accent,
                     },
@@ -302,29 +307,31 @@ const Friends: React.FC<Props> = ({navigation}) => {
         />
       )}
 
-      {fgBottomSheetOpen || addBottomSheetOpen ? (
+      {groupBottomSheetOpen || addBottomSheetOpen ? (
         <Pressable
           onPress={() => {
-            setFgBottomSheetOpen(false);
-            setAddBottomSheetOpen(false);
-            fgBottomSheetRef.current?.close();
-            addBottomSheetRef.current?.close();
+            if (groupBottomSheetOpen) {
+              groupBottomSheetRef.current?.dismiss();
+            }
+            if (addBottomSheetOpen) {
+              addBottomSheetRef.current?.dismiss();
+            }
           }}
           style={styles.dim}
         />
       ) : null}
 
       <BottomSheetModal
-        ref={fgBottomSheetRef}
-        snapPoints={fgSnapPoints}
-        onAnimate={handleFgSheetChange}>
-        <FGSelector
-          bottomSheetRef={fgBottomSheetRef}
-          friendGroups={friendGroups}
-          friendGroup={friendGroup}
-          setFriendGroup={setFriendGroup}
+        ref={groupBottomSheetRef}
+        snapPoints={groupSnapPoints}
+        onAnimate={handleGroupSheetChange}>
+        <GroupSelector
+          bottomSheetRef={groupBottomSheetRef}
+          groups={groups}
+          group={group}
+          setGroup={setGroup}
           refreshOnInviteEvent={initializeData}
-          invitations={invitations}
+          invites={invites}
           navigation={navigation}
         />
       </BottomSheetModal>

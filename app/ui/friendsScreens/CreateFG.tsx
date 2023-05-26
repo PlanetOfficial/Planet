@@ -13,7 +13,7 @@ import strings from '../../constants/strings';
 import {colors} from '../../constants/theme';
 import {icons} from '../../constants/images';
 
-import {createGroup} from '../../utils/api/friendsCalls/createGroup';
+import {postGroup} from '../../utils/api/groups/groupAPI';
 
 import Icon from '../components/Icon';
 import Text from '../components/Text';
@@ -23,15 +23,15 @@ interface Props {
   navigation: any;
 }
 
-const CreateFG: React.FC<Props> = ({navigation}) => {
+const CreateGroup: React.FC<Props> = ({navigation}) => {
   const [name, setName] = useState<string>('');
   const [invite, setInvite] = useState<string>('');
-  const [invitations, setInvitations] = useState<string[]>([]);
+  const [invites, setInvites] = useState<string[]>([]);
 
   const inviteRef = React.useRef<TextInput>(null);
 
   const handleGroupCreation = async () => {
-    const responseStatus = await createGroup(name, invitations);
+    const responseStatus = await postGroup(name, invites);
 
     if (responseStatus) {
       navigation.reset({
@@ -52,7 +52,7 @@ const CreateFG: React.FC<Props> = ({navigation}) => {
           <View style={styles.back}>
             <Icon icon={icons.back} onPress={() => navigation.goBack()} />
           </View>
-          <Text>{strings.friends.createPrompt}</Text>
+          <Text>{strings.groups.createPrompt}</Text>
         </View>
       </SafeAreaView>
 
@@ -60,7 +60,7 @@ const CreateFG: React.FC<Props> = ({navigation}) => {
         style={styles.input}
         onChangeText={setName}
         value={name}
-        placeholder={strings.friends.editName}
+        placeholder={strings.groups.editName}
         placeholderTextColor={colors.darkgrey}
       />
 
@@ -72,15 +72,15 @@ const CreateFG: React.FC<Props> = ({navigation}) => {
           style={inviteStyles.input}
           onChangeText={setInvite}
           value={invite}
-          placeholder={strings.friends.promptInvite}
+          placeholder={strings.groups.promptInvite}
           placeholderTextColor={colors.darkgrey}
         />
         <AButton
           size="s"
           disabled={invite === ''}
-          label={strings.friends.add}
+          label={strings.groups.add}
           onPress={() => {
-            setInvitations([...invitations, invite]);
+            setInvites([...invites, invite]);
             setInvite('');
             inviteRef.current?.blur();
           }}
@@ -89,7 +89,7 @@ const CreateFG: React.FC<Props> = ({navigation}) => {
 
       <View style={inviteStyles.scrollView}>
         <FlatList
-          data={invitations}
+          data={invites}
           ItemSeparatorComponent={Spacer}
           renderItem={({item, index}: {item: string; index: number}) => (
             <View key={index} style={inviteStyles.row}>
@@ -99,8 +99,8 @@ const CreateFG: React.FC<Props> = ({navigation}) => {
               <Icon
                 icon={icons.x}
                 onPress={() => {
-                  setInvitations(
-                    invitations.filter((_: string, i: number) => i !== index),
+                  setInvites(
+                    invites.filter((_: string, i: number) => i !== index),
                   );
                 }}
               />
@@ -113,7 +113,7 @@ const CreateFG: React.FC<Props> = ({navigation}) => {
         <AButton
           size="m"
           disabled={name === ''}
-          label={strings.friends.create}
+          label={strings.groups.create}
           onPress={() => handleGroupCreation()}
         />
       </View>
@@ -196,4 +196,4 @@ const inviteStyles = StyleSheet.create({
   },
 });
 
-export default CreateFG;
+export default CreateGroup;

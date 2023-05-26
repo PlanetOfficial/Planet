@@ -37,6 +37,7 @@ const strings = {
     noCategoriesSelected: 'No Categories Selected',
     selectedCategories: 'Selected Categories',
     untitledEvent: 'Untitled Event',
+    hours: 'Hours',
     address: 'Address',
     price: 'Price',
     eventUrl: 'Website',
@@ -56,12 +57,12 @@ const strings = {
   },
   title: {
     trending: 'Trending',
-    friends: 'Friends',
+    groups: 'Groups',
     library: 'Library',
     profile: 'Profile',
     settings: 'Settings',
   },
-  friends: {
+  groups: {
     createPrompt: 'Create a Group',
     editPrompt: 'Edit a Group',
     leavePrompt: 'Are you sure you want to leave this group?',
