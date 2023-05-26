@@ -112,15 +112,15 @@ const Roulette: React.FC<Props> = ({
 
   const getCurrentPlace = (): Place => {
     const angle = currentAngle < 0 ? 360 + currentAngle : currentAngle;
-    const votes = groupPlace.places.sort((a: Place, b: Place) => {
-      if(a.votes && b.votes){
-        return a.votes?.length - b.votes?.length;
-      } else {
-        return 0;
-      }
-    }).map((place: Place) =>
-      place.votes?.length ? place.votes?.length : 0,
-    );
+    const votes = groupPlace.places
+      .sort((a: Place, b: Place) => {
+        if (a.votes && b.votes) {
+          return a.votes?.length - b.votes?.length;
+        } else {
+          return 0;
+        }
+      })
+      .map((place: Place) => (place.votes?.length ? place.votes?.length : 0));
 
     let voteIndex = Math.floor(angle / (360 / totalVotes));
     for (let i = 0; i < votes.length; i++) {

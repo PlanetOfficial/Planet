@@ -169,7 +169,9 @@ const PlacesDisplay: React.FC<Props> = ({
                 displaySuggester={isGroupPlace}
                 voted={voteIndex === idx}
                 onVote={() => onVote(idx)}
-                mySuggestion={mySuggestions.includes(idx) && places.length !== 1}
+                mySuggestion={
+                  mySuggestions.includes(idx) && places.length !== 1
+                }
                 onRemoveSuggestion={() => {
                   if (onRemoveSuggestion) {
                     onRemoveSuggestion(place.group_place_id);
