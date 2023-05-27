@@ -8,6 +8,7 @@ import {
   LayoutAnimation,
   RefreshControl,
   FlatList,
+  TouchableOpacity,
 } from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
 import {s, vs} from 'react-native-size-matters';
@@ -363,6 +364,17 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
                 <View style={destHeaderStyles.title}>
                   <Text>{item.name}</Text>
                 </View>
+                <View style={destHeaderStyles.right}>
+                <TouchableOpacity
+                  style={destHeaderStyles.button}
+                  onPress={() => {
+                    setAddOptionsStatus(5);
+                    setGroupPlace(item);
+                    addOptionsBottomSheetRef.current?.expand();
+                  }}>
+                  <Icon icon={icons.roulette} size="s" />
+                  <Text size="xs">{'  ' + strings.library.seeVotes}</Text>
+                </TouchableOpacity>
                 <OptionMenu
                   icon={icons.plus}
                   iconColor={colors.accent}
@@ -407,6 +419,7 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
                     },
                   ]}
                 />
+                </View>
               </View>
               <PlacesDisplay
                 navigation={navigation}
