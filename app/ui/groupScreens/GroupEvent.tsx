@@ -6,7 +6,6 @@ import {
   Alert,
   Platform,
   LayoutAnimation,
-  TouchableOpacity,
   RefreshControl,
   FlatList,
 } from 'react-native';
@@ -406,8 +405,8 @@ const GroupEvent: React.FC<Props> = ({navigation, route}) => {
                       },
                       color: colors.black,
                     },
-                    ]}
-                  />
+                  ]}
+                />
               </View>
               <PlacesDisplay
                 navigation={navigation}
