@@ -9,10 +9,11 @@ import {
   Image,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
+import messaging from '@react-native-firebase/messaging';
 
 import strings from '../../constants/strings';
 
-import {signup} from '../../utils/api/authAPI';
+import {saveTokenToDatabase, signup} from '../../utils/api/authAPI';
 import {colors} from '../../constants/theme';
 import {icons} from '../../constants/images';
 import {cacheUserInfo} from '../../utils/functions/CacheHelpers';
@@ -50,6 +51,11 @@ const SignUp = ({navigation}: {navigation: any}) => {
     if (response?.authToken) {
       // successful login
       await cacheUserInfo(response?.authToken);
+
+      // save to firebase
+      const fcm_token = await messaging().getToken();
+      await saveTokenToDatabase(fcm_token);
+
       navigation.reset({
         index: 0,
         routes: [{name: 'TabStack'}],

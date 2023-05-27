@@ -39,6 +39,11 @@
 	<string>Please allow location access if you wish to search for a nearby locations.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Please allow location access if you wish to search for a nearby locations.</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>remote-notification</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen.storyboard</string>
 	<key>UIRequiredDeviceCapabilities</key>
