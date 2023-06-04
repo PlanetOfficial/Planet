@@ -4,10 +4,10 @@ import {View, Text, StyleSheet, Dimensions} from 'react-native';
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
-const SignUp = () => {
+const Home = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Too Bad</Text>
+      <Text style={styles.text}>Coming Soon</Text>
     </View>
   );
 };
@@ -17,6 +17,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    width: screenWidth,
+    height: screenHeight,
   },
   text: {
     fontSize: 20,
@@ -24,4 +26,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignUp;
+export default Home;

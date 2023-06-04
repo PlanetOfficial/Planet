@@ -7,7 +7,7 @@ const screenHeight = Dimensions.get('window').height;
 const SignUp = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Too Bad</Text>
+      <Text style={styles.text}>Coming Soon</Text>
     </View>
   );
 };
@@ -17,6 +17,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    width: screenWidth,
+    height: screenHeight,
   },
   text: {
     fontSize: 20,
