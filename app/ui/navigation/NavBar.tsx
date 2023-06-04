@@ -118,7 +118,7 @@ export const NavBar = () => {
         <Tab.Screen name="Home" component={Home} />
         <Tab.Screen name="Search" component={Search} />
         <Tab.Screen
-          name="Create"
+          name="Plus"
           component={ButtonScreen}
           options={({navigation}) => ({
             tabBarButton: props => Button(props, navigation),
@@ -135,7 +135,7 @@ const Button = (
   props:
     | BottomTabBarButtonProps
     | (JSX.IntrinsicAttributes & PressableProps & React.RefAttributes<View>),
-  navigation: any,
+  navigation: { navigate: (arg0: string) => void; },
 ) => (
   <Pressable
     {...props}

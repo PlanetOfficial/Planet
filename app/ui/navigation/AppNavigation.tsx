@@ -95,7 +95,10 @@ const createScreen = () => {
     <MainStack.Screen
       name="Create"
       component={Create}
-      options={{headerShown: false}}
+      options={{
+        headerShown: false,
+        presentation: 'modal',
+      }}
     />
   );
 };
