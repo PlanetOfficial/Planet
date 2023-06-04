@@ -63,7 +63,8 @@ export const NavBar = () => {
             ]}
             source={source}
           />
-          <Text style={[styles.name, focused ? styles.bold : undefined]}>
+          <Text
+            style={[styles.name, focused ? styles.bold : undefined]}>
             {name}
           </Text>
         </View>
@@ -134,17 +135,12 @@ const Button = (
   props:
     | BottomTabBarButtonProps
     | (JSX.IntrinsicAttributes & PressableProps & React.RefAttributes<View>),
-  navigation: {
-    reset: (arg0: {index: number; routes: {name: string}[]}) => void;
-  },
+  navigation: any,
 ) => (
   <Pressable
     {...props}
     onPress={() => {
-      navigation.reset({
-        index: 0,
-        routes: [{name: 'Create'}],
-      });
+      navigation.navigate('Create');
     }}
   />
 );

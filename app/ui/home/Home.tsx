@@ -1,13 +1,10 @@
 import React from 'react';
-import {View, Text, StyleSheet, Dimensions} from 'react-native';
-
-const screenWidth = Dimensions.get('window').width;
-const screenHeight = Dimensions.get('window').height;
+import {View, Text, StyleSheet} from 'react-native';
 
 const Home = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Coming Soon</Text>
+      <Text style={styles.text}>Home</Text>
     </View>
   );
 };
@@ -17,9 +14,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    width: screenWidth,
-    height: screenHeight,
-    backgroundColor: 'white',
   },
   text: {
     fontSize: 20,
