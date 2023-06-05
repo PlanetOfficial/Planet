@@ -9,7 +9,7 @@ import {
 
 import {s} from 'react-native-size-matters';
 
-import Text from '../components/Text';
+import Text from './Text';
 import Icon from './Icon';
 
 import {colors} from '../../constants/colors';

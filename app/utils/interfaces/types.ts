@@ -1,23 +1,31 @@
 export interface Genre {
   id: number;
   name: string;
-  image: string;
   categories: Category[];
 }
 
 export interface Category {
   id: number;
   name: string;
-  icon: string;
-  filters: Filter[];
-  subcategories: Subcategory[];
-  options?: Place[];
+  alias: string;
+  supplier: string;
+  filter: Filter[];
+  icon: Image;
 }
 
-export interface Subcategory {
-  id: number;
+export interface Image {
+  path: string;
   name: string;
+  size: number;
+  mime: string;
+  meta: {
+    width: number;
+    height: number;
+  };
+  url: string;
 }
+
+//////
 
 export interface Event {
   id: number;

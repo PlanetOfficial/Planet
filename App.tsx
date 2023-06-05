@@ -7,7 +7,10 @@ import {Platform} from 'react-native';
 
 import SplashScreen from './app/ui/navigation/SplashScreen';
 import AppNavigation from './app/ui/navigation/AppNavigation';
-import {updateCaches} from './app/utils/functions/CacheHelpers';
+import {
+  cacheCategories,
+  updateCaches,
+} from './app/utils/functions/CacheHelpers';
 import {saveTokenToDatabase} from './app/utils/api/authAPI';
 
 export default function App() {
@@ -34,6 +37,8 @@ export default function App() {
       } else {
         setLoggedIn(false);
       }
+
+      await cacheCategories();
 
       setLoading(false);
       requestNotificationPerms();

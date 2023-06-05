@@ -7,7 +7,7 @@ import NavBar from './NavBar';
 import LoginScreen from '../authScreens/LogIn';
 import SignUp from '../authScreens/SignUp';
 import ForgotPassword from '../authScreens/!ForgotPwd';
-import Create from '../create/Create';
+import Create from '../createScreens/Create';
 
 interface AppNavigationProps {
   isLoggedIn: boolean;

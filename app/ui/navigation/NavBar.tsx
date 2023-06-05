@@ -17,10 +17,10 @@ import {
 
 import colors from '../../constants/colors';
 
-import Home from '../home/Home';
-import Search from '../search/Search';
-import Library from '../library/Library';
-import Profile from '../profile/Profile';
+import Home from '../homeScreens/Home';
+import Search from '../searchScreens/Search';
+import Library from '../libraryScreens/Library';
+import Profile from '../profileScreens/Profile';
 
 const Tab = createBottomTabNavigator();
 
@@ -63,8 +63,7 @@ export const NavBar = () => {
             ]}
             source={source}
           />
-          <Text
-            style={[styles.name, focused ? styles.bold : undefined]}>
+          <Text style={[styles.name, focused ? styles.bold : undefined]}>
             {name}
           </Text>
         </View>
@@ -135,7 +134,7 @@ const Button = (
   props:
     | BottomTabBarButtonProps
     | (JSX.IntrinsicAttributes & PressableProps & React.RefAttributes<View>),
-  navigation: { navigate: (arg0: string) => void; },
+  navigation: {navigate: (arg0: string) => void},
 ) => (
   <Pressable
     {...props}
@@ -165,7 +164,7 @@ const styles = StyleSheet.create({
     color: colors.darkgrey,
   },
   bold: {
-    fontWeight: '500',
+    fontWeight: '700',
   },
   button: {
     position: 'absolute',
