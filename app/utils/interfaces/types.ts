@@ -13,6 +13,20 @@ export interface Category {
   icon: Image;
 }
 
+export interface Place {
+  id: number;
+  supplier: string;
+  name: string;
+  photo: string;
+  place_id: string;
+  latitude: number;
+  longitude: number;
+  price: number;
+  rating: number;
+  rating_count: number;
+  category_name: string;
+}
+
 export interface Image {
   path: string;
   name: string;
@@ -23,6 +37,11 @@ export interface Image {
     height: number;
   };
   url: string;
+}
+
+export interface Coordinate {
+  latitude: number;
+  longitude: number;
 }
 
 //////
@@ -40,31 +59,6 @@ export interface GroupEvent {
   date: string;
   destinations: GroupPlace[];
   suggester: User;
-}
-
-export interface Place {
-  id: number;
-  supplier: string;
-  name: string;
-  photo: string;
-  place_id: string;
-  latitude: number;
-  longitude: number;
-  dates: {
-    start: string | null;
-    end: string | null;
-  } | null;
-  priceRanges: {
-    min: number | null;
-    max: number | null;
-  } | null;
-  price: number | null;
-  rating: number | null;
-  rating_count: number | null;
-  category: Category;
-  group_place_id?: number;
-  votes?: User[];
-  suggester?: User;
 }
 
 export interface GroupPlace {
@@ -128,11 +122,6 @@ export interface Region {
 
 export interface MarkerObject {
   name: string;
-  latitude: number;
-  longitude: number;
-}
-
-export interface Coordinate {
   latitude: number;
   longitude: number;
 }

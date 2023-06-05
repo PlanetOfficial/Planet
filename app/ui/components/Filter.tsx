@@ -9,8 +9,8 @@ import {
 
 import {s} from 'react-native-size-matters';
 
-import {icons} from '../../constants/icons';
-import {colors} from '../../constants/colors';
+import icons from '../../constants/icons';
+import colors from '../../constants/colors';
 import strings from '../../constants/strings';
 
 import Text from '../components/Text';

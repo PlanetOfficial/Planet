@@ -10,12 +10,14 @@ import {
 
 import {s} from 'react-native-size-matters';
 
-import {colors} from '../../constants/colors';
+import colors from '../../constants/colors';
+import styles from '../../constants/styles';
 
 interface Props {
   size?: 'xs' | 's' | 'm' | 'l' | 'xl';
   color?: string;
   noColor?: boolean;
+  button?: boolean;
   padding?: number;
   disabled?: boolean;
   icon: ImageSourcePropType;
@@ -26,6 +28,7 @@ const Icon: React.FC<Props> = ({
   size = 's',
   color = colors.black,
   noColor = false,
+  button = false,
   padding = 0,
   disabled = false,
   icon,
@@ -55,9 +58,11 @@ const Icon: React.FC<Props> = ({
   const ButtonStyles: ViewStyle = {
     alignItems: 'center',
     justifyContent: 'center',
-    width: z,
-    height: z,
-    padding: padding,
+    width: button ? 2 * z : z,
+    height: button ? 2 * z : z,
+    padding: button ? z / 2 : padding,
+    backgroundColor: button ? colors.white : undefined,
+    borderRadius: button ? z / 2 : undefined,
   };
 
   const IconStyles: ImageStyle = {
@@ -68,7 +73,7 @@ const Icon: React.FC<Props> = ({
 
   return onPress ? (
     <TouchableOpacity
-      style={ButtonStyles}
+      style={[ButtonStyles, button ? styles.shadow : undefined]}
       disabled={disabled}
       onPress={onPress}
       hitSlop={{

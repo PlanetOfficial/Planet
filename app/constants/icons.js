@@ -8,6 +8,7 @@ const icons = {
   checked: require('../assets/icons/checked.png'),
   close: require('../assets/icons/close.png'),
   drag: require('../assets/icons/drag.png'),
+  drop: require('../assets/icons/drop.png'),
   friends: require('../assets/icons/friends.png'),
   heart: require('../assets/icons/heart.png'),
   hearted: require('../assets/icons/hearted.png'),

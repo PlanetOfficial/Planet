@@ -7,18 +7,28 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.white,
   },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
   scrollView: {
     paddingBottom: s(20),
+  },
+  center: {
+    paddingTop: s(50),
+    alignItems: 'center',
   },
   separator: {
     marginLeft: s(20),
     height: 0.5,
     backgroundColor: colors.grey,
+  },
+  shadow: {
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+
+    elevation: 3,
   },
 });
 

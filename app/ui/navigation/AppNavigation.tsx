@@ -8,6 +8,7 @@ import LoginScreen from '../authScreens/LogIn';
 import SignUp from '../authScreens/SignUp';
 import ForgotPassword from '../authScreens/!ForgotPwd';
 import Create from '../createScreens/Create';
+import SearchByCategory from '../searchScreens/SearchByCategory';
 
 interface AppNavigationProps {
   isLoggedIn: boolean;
@@ -28,6 +29,7 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {signUpStackScreen()}
           {forgetPassStackScreen()}
           {createScreen()}
+          {searchByCategoryScreen()}
         </MainStack.Navigator>
       </BottomSheetModalProvider>
     </NavigationContainer>
@@ -40,6 +42,7 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {forgetPassStackScreen()}
           {tabStack()}
           {createScreen()}
+          {searchByCategoryScreen()}
         </MainStack.Navigator>
       </BottomSheetModalProvider>
     </NavigationContainer>
@@ -98,6 +101,18 @@ const createScreen = () => {
       options={{
         headerShown: false,
         presentation: 'modal',
+      }}
+    />
+  );
+};
+
+const searchByCategoryScreen = () => {
+  return (
+    <MainStack.Screen
+      name="SearchByCategory"
+      component={SearchByCategory}
+      options={{
+        headerShown: false,
       }}
     />
   );

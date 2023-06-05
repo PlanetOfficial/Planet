@@ -7,13 +7,12 @@ import {
   ScrollView,
   FlatList,
   Image,
+  TouchableOpacity,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {s} from 'react-native-size-matters';
 
 import colors from '../../constants/colors';
-import icons from '../../constants/icons';
-import strings from '../../constants/strings';
 import styles from '../../constants/styles';
 
 import Text from '../components/Text';
@@ -55,9 +54,12 @@ const Search = ({navigation}: {navigation: any}) => {
               showsHorizontalScrollIndicator={false}
               contentContainerStyle={categoryStyles.scrollView}>
               {item.categories.map((category: Category) => (
-                <View
+                <TouchableOpacity
                   key={category.id}
-                  style={categoryStyles.categoryContainer}>
+                  style={categoryStyles.categoryContainer}
+                  onPress={() => {
+                    navigation.navigate('SearchByCategory', {category});
+                  }}>
                   <View style={categoryStyles.iconContainer}>
                     <Image
                       style={categoryStyles.icon}
@@ -67,7 +69,7 @@ const Search = ({navigation}: {navigation: any}) => {
                   <Text size="xs" weight="l" center={true}>
                     {category.name}
                   </Text>
-                </View>
+                </TouchableOpacity>
               ))}
             </ScrollView>
           </View>
@@ -94,7 +96,7 @@ const categoryStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     width: s(75),
-    height: s(75),
+    height: s(70),
     overflow: 'visible',
   },
   iconContainer: {
