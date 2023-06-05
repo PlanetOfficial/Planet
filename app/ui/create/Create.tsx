@@ -4,9 +4,13 @@ import {View, Text, StyleSheet} from 'react-native';
 const Create = ({navigation}: {navigation: any}) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.text} onPress={() => {
-        navigation.goBack();
-      }}>Create</Text>
+      <Text
+        style={styles.text}
+        onPress={() => {
+          navigation.goBack();
+        }}>
+        Create
+      </Text>
     </View>
   );
 };

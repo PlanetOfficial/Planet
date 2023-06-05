@@ -14,7 +14,7 @@ import {
   BottomTabBarButtonProps,
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 import colors from '../../constants/colors';
 
@@ -66,8 +66,7 @@ export const NavBar = () => {
             ]}
             source={source}
           />
-          <Text
-            style={[styles.name, focused ? styles.bold : undefined]}>
+          <Text style={[styles.name, focused ? styles.bold : undefined]}>
             {name}
           </Text>
         </View>
@@ -139,7 +138,7 @@ const Button = (
   props:
     | BottomTabBarButtonProps
     | (JSX.IntrinsicAttributes & PressableProps & React.RefAttributes<View>),
-  navigation: { navigate: (arg0: string) => void; },
+  navigation: {navigate: (arg0: string) => void},
 ) => (
   <Pressable
     {...props}
