@@ -13,7 +13,7 @@ export interface Category {
   icon: Image;
 }
 
-export interface Place {
+export interface Poi {
   id: number;
   supplier: string;
   name: string;
@@ -21,6 +21,7 @@ export interface Place {
   place_id: string;
   latitude: number;
   longitude: number;
+  vicinity: string;
   price: number;
   rating: number;
   rating_count: number;
@@ -50,7 +51,7 @@ export interface Event {
   id: number;
   name: string;
   date: string;
-  places: Place[];
+  places: Poi[];
 }
 
 export interface GroupEvent {
@@ -64,7 +65,7 @@ export interface GroupEvent {
 export interface GroupPlace {
   id: number;
   name: string;
-  places: Place[];
+  places: Poi[];
 }
 
 export interface User {

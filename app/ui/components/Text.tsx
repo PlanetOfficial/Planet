@@ -30,7 +30,7 @@ const Text: React.FC<Props> = ({
       fontSize = s(11);
       break;
     case 's':
-      fontSize = s(14);
+      fontSize = s(15);
       break;
     case 'm':
       fontSize = s(17);

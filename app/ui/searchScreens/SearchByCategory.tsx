@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback, useRef} from 'react';
 import {
   View,
   StyleSheet,
@@ -21,11 +21,12 @@ import {defaultParams} from '../../constants/numbers';
 import Text from '../components/Text';
 import Separator from '../components/Separator';
 
-import {Coordinate, Place} from '../../utils/interfaces/types';
+import {Coordinate, Poi} from '../../utils/interfaces/types';
 import {getPois} from '../../utils/api/poiOperations/poiAPI';
 import Geolocation from '@react-native-community/geolocation';
 import Icon from '../components/Icon';
 import Filter from '../components/Filter';
+import PoiCard from '../components/PoiCard';
 
 const SearchByCategory = ({
   navigation,
@@ -36,13 +37,15 @@ const SearchByCategory = ({
 }) => {
   const {category} = route.params;
 
-  const [places, setPlaces] = useState<Place[]>([]);
+  const [places, setPlaces] = useState<Poi[]>([]);
 
   const [filters, setFilters] = useState<(number | number[])[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [refreshing, setRefreshing] = useState<boolean>(false);
 
-  const setCurrentLocation = async () : Promise<Coordinate | null> => {
+  const filterRef = useRef<any>(null); // due to forwardRef
+
+  const setCurrentLocation = async (): Promise<Coordinate | null> => {
     if (Platform.OS === 'ios') {
       Geolocation.requestAuthorization();
     } else if (Platform.OS === 'android') {
@@ -63,7 +66,7 @@ const SearchByCategory = ({
         const coordinate: Coordinate = {
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
-        }
+        };
 
         return coordinate;
       },
@@ -74,7 +77,7 @@ const SearchByCategory = ({
     return null;
   };
 
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     setRefreshing(true);
     const coordinate: Coordinate | null = await setCurrentLocation();
 
@@ -108,7 +111,7 @@ const SearchByCategory = ({
     }
     setRefreshing(false);
     setLoading(false);
-  };
+  }, [category, filters]);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -116,7 +119,7 @@ const SearchByCategory = ({
     });
 
     return unsubscribe;
-  }, [navigation]);
+  }, [navigation, loadData]);
 
   useEffect(() => {
     const _filters: (number | number[])[] = [];
@@ -128,11 +131,11 @@ const SearchByCategory = ({
       }
     }
     setFilters(_filters);
-  }, [category.filters]);
+  }, [category.filter]);
 
   useEffect(() => {
     loadData();
-  }, [filters]);
+  }, [filters, loadData]);
 
   return (
     <View style={styles.container}>
@@ -159,6 +162,7 @@ const SearchByCategory = ({
 
       {category.filter && category.filter.length > 0 ? (
         <Filter
+          ref={filterRef}
           filters={category.filter}
           currFilters={filters}
           setCurrFilters={setFilters}
@@ -172,13 +176,15 @@ const SearchByCategory = ({
       ) : (
         <FlatList
           data={places}
-          renderItem={({item}: {item: Place}) => {
+          onTouchStart={() => filterRef.current?.closeDropdown()}
+          renderItem={({item}: {item: Poi}) => {
             return (
-              <TouchableOpacity
-                onPress={() => {
-                  console.log('hi');
-                }}>
-                <Text>{item.name}</Text>
+              <TouchableOpacity onPress={() => {}}>
+                <PoiCard
+                  poi={item}
+                  bookmarked={true}
+                  setBookmarked={() => {}}
+                />
               </TouchableOpacity>
             );
           }}
@@ -188,7 +194,7 @@ const SearchByCategory = ({
             </View>
           }
           ItemSeparatorComponent={Separator}
-          keyExtractor={(item: Place) => item.id.toString()}
+          keyExtractor={(item: Poi) => item.id.toString()}
           refreshControl={
             <RefreshControl
               refreshing={refreshing}
