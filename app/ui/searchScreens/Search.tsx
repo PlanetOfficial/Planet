@@ -60,7 +60,7 @@ const Search = ({navigation}: {navigation: any}) => {
                   onPress={() => {
                     navigation.navigate('SearchByCategory', {category});
                   }}>
-                  <View style={categoryStyles.iconContainer}>
+                  <View style={[categoryStyles.iconContainer, styles.shadow]}>
                     <Image
                       style={categoryStyles.icon}
                       source={{uri: category.icon.url}}
@@ -83,14 +83,15 @@ const Search = ({navigation}: {navigation: any}) => {
 
 const categoryStyles = StyleSheet.create({
   container: {
-    paddingVertical: s(15),
+    paddingVertical: s(10),
   },
   header: {
     paddingHorizontal: s(20),
-    paddingBottom: s(15),
+    paddingBottom: s(10),
   },
   scrollView: {
     paddingHorizontal: s(20),
+    paddingVertical: s(5),
   },
   categoryContainer: {
     alignItems: 'center',
@@ -105,12 +106,11 @@ const categoryStyles = StyleSheet.create({
     width: s(50),
     height: s(50),
     borderRadius: s(25),
-    borderWidth: s(1),
-    borderColor: colors.black,
+    backgroundColor: colors.white,
   },
   icon: {
-    width: '70%',
-    height: '70%',
+    width: '60%',
+    height: '60%',
   },
 });
 

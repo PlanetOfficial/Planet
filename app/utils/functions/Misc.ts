@@ -4,12 +4,11 @@ import {
   MarkerObject,
   Coordinate,
   Category,
-  Place,
+  Poi,
   Event,
   Region,
 } from '../interfaces/types';
-import {floats} from '../../constants/numbers';
-import moment from 'moment';
+import {conversion, defaultParams} from '../../constants/numbers';
 
 /*
   Given a point and the longitudeDelta, calculate the radius of the circle (the
@@ -26,62 +25,23 @@ export const calculateRadius = (point1: Coordinate, longitudeDelta: number) => {
 };
 
 /*
-  Given a place, return a string to be displayed on the PlaceCard.
-*/
-export const getPlaceCardString = (
-  place: Place,
-  displayCategory: boolean = true,
-): string => {
-  let result = '';
-  if (place.category && displayCategory) {
-    result += place.category.name + ' • ';
-  }
-  if (place.dates && place.dates.start) {
-    result += moment(place.dates.start, 'YYYY-MM-DD').format('M/D/YYYY');
-    if (place.dates.end) {
-      result +=
-        ' - ' +
-        moment(place.dates.end, 'YYYY-MM-DD').format('M/D/YYYY') +
-        ' • ';
-    } else {
-      result += ' • ';
-    }
-  }
-  if (place.priceRanges && place.priceRanges.min) {
-    result += '$' + place.priceRanges.min;
-    if (place.priceRanges.max) {
-      result += ' - ' + '$' + place.priceRanges.max + ' • ';
-    } else {
-      result += ' • ';
-    }
-  }
-  if (place.price) {
-    result += '$'.repeat(place.price) + ' • ';
-  }
-  if (place.rating && place.rating_count) {
-    result += place.rating + '/5 (' + place.rating_count + ') • ';
-  }
-  return result.slice(0, -3);
-};
-
-/*
-  Calculates the distance in meters given two points in terms of latitude
+  Calculates the distance in miles given two points in terms of latitude
   and longitude.
 */
 export const getDistanceFromCoordinates = (
   point1: Coordinate,
   point2: Coordinate,
 ) => {
-  return haversine(point1, point2);
+  return haversine(point1, point2) / conversion.milesToMeters;
 };
 
 export const getRegionForCoordinates = (points: MarkerObject[]): Region => {
   if (!points || points?.length === 0) {
     return {
-      latitude: floats.defaultLatitude,
-      longitude: floats.defaultLongitude,
-      latitudeDelta: floats.defaultLatitudeDelta,
-      longitudeDelta: floats.defaultLongitudeDelta,
+      latitude: defaultParams.defaultLatitude,
+      longitude: defaultParams.defaultLongitude,
+      latitudeDelta: defaultParams.defaultLatitudeDelta,
+      longitudeDelta: defaultParams.defaultLongitudeDelta,
     };
   }
 
@@ -119,9 +79,9 @@ export const getRegionForCoordinates = (points: MarkerObject[]): Region => {
   Given an array of destinations, filter that array into an array of
   MarkerObjects.
 */
-export const getMarkerArray = (places: Place[]): MarkerObject[] => {
+export const getMarkerArray = (places: Poi[]): MarkerObject[] => {
   let markers: MarkerObject[] = [];
-  places?.forEach((place: Place) => {
+  places?.forEach((place: Poi) => {
     if (place && place?.name && place?.latitude && place?.longitude) {
       const markerObject = {
         name: place?.name,
@@ -158,14 +118,12 @@ export const getAveragePoint = (places: MarkerObject[]): Coordinate => {
 
 // given an object, return true if it is a place, false if it is a category
 // Note: a category cannot have a latitude so this is the way to tell a Place from a Category
-export const isPlace = (
-  destination: Place | Category,
-): destination is Place => {
+export const isPlace = (destination: Poi | Category): destination is Poi => {
   return destination.hasOwnProperty('latitude');
 };
 
 // given an object, return true if it is a place, false if it is an event
 // Note: an event cannot have a latitude so this is the way to tell a Place from an Event
-export const isPlace2 = (item: Place | Event): item is Place => {
+export const isPlace2 = (item: Poi | Event): item is Poi => {
   return item.hasOwnProperty('latitude');
 };

@@ -4,19 +4,29 @@ import {StyleSheet, View, Image} from 'react-native';
 import {s} from 'react-native-size-matters';
 
 import colors from '../../constants/colors';
+import strings from '../../constants/strings';
 
-import {Poi} from '../../utils/interfaces/types';
+import {Category, Coordinate, Poi} from '../../utils/interfaces/types';
 import Icon from './Icon';
 import icons from '../../constants/icons';
 import Text from './Text';
+import {getDistanceFromCoordinates} from '../../utils/functions/Misc';
 
 interface Props {
   poi: Poi;
   bookmarked: boolean;
   setBookmarked: (bookmarked: boolean, poi: Poi) => void;
+  userLocation: Coordinate;
+  category: Category;
 }
 
-const PoiCard: React.FC<Props> = ({poi, bookmarked, setBookmarked}) => {
+const PoiCard: React.FC<Props> = ({
+  poi,
+  bookmarked,
+  setBookmarked,
+  userLocation,
+  category,
+}) => {
   const handleBookmark = async () => {
     // if (!bookmarked) {
     //   const response: boolean = await postPlace(place.id);
@@ -38,10 +48,15 @@ const PoiCard: React.FC<Props> = ({poi, bookmarked, setBookmarked}) => {
   const getAddressString = (): string => {
     let poiString: string = '';
 
-    // calculate the distance between the user and the poi
+    if (poi.latitude && poi.longitude) {
+      poiString += `${getDistanceFromCoordinates(
+        {latitude: poi.latitude, longitude: poi.longitude},
+        userLocation,
+      ).toFixed(1)} ${strings.main.milesAbbrev}`;
+    }
 
     if (poi.vicinity) {
-      poiString += poi.vicinity;
+      poiString += '・' + poi.vicinity;
     }
 
     return poiString;
@@ -51,7 +66,7 @@ const PoiCard: React.FC<Props> = ({poi, bookmarked, setBookmarked}) => {
     let poiString: string = '';
 
     if (poi.rating && poi.rating_count) {
-      poiString += `★${poi.rating}  (${poi.rating_count})`;
+      poiString += `★ ${poi.rating}  (${poi.rating_count})`;
     }
 
     if (poi.price) {
@@ -64,13 +79,17 @@ const PoiCard: React.FC<Props> = ({poi, bookmarked, setBookmarked}) => {
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
-        <Image style={styles.image} source={{uri: poi.photo}} />
+        <Image
+          style={styles.image}
+          source={{uri: poi.photo ? poi.photo : category.icon.url}}
+          resizeMode={poi.photo ? 'cover' : 'contain'}
+        />
       </View>
       <View style={styles.infoContainer}>
         <Text size="s" numberOfLines={1}>
           {poi.name}
         </Text>
-        <Text size="xs" weight="l" color={colors.darkgrey}>
+        <Text size="xs" weight="l" color={colors.darkgrey} numberOfLines={1}>
           {getAddressString()}
         </Text>
         <Text size="xs" color={colors.darkgrey}>

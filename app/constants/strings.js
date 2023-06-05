@@ -4,6 +4,7 @@ const strings = {
     share: 'Share',
     remove: 'Remove',
     dash: '-',
+    milesAbbrev: 'mi',
   },
   login: {
     login: 'Login',

@@ -38,6 +38,10 @@ const SearchByCategory = ({
   const {category} = route.params;
 
   const [places, setPlaces] = useState<Poi[]>([]);
+  const [userLocation, setUserLocation] = useState<Coordinate>({
+    latitude: defaultParams.defaultLatitude,
+    longitude: defaultParams.defaultLongitude,
+  });
 
   const [filters, setFilters] = useState<(number | number[])[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -45,7 +49,7 @@ const SearchByCategory = ({
 
   const filterRef = useRef<any>(null); // due to forwardRef
 
-  const setCurrentLocation = async (): Promise<Coordinate | null> => {
+  const setCurrentLocation = async (): Promise<Coordinate> => {
     if (Platform.OS === 'ios') {
       Geolocation.requestAuthorization();
     } else if (Platform.OS === 'android') {
@@ -61,25 +65,29 @@ const SearchByCategory = ({
       }
     }
 
+    let coordinate: Coordinate = {
+      latitude: defaultParams.defaultLatitude,
+      longitude: defaultParams.defaultLongitude,
+    };
+
     Geolocation.getCurrentPosition(
       position => {
-        const coordinate: Coordinate = {
+        coordinate = {
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
         };
-
-        return coordinate;
       },
       error => {
         console.warn(error);
       },
     );
-    return null;
+    setUserLocation(coordinate);
+    return coordinate;
   };
 
   const loadData = useCallback(async () => {
     setRefreshing(true);
-    const coordinate: Coordinate | null = await setCurrentLocation();
+    const coordinate: Coordinate = await setCurrentLocation();
 
     const _filters: {[key: string]: string | string[]} = {};
     for (let i = 0; i < category.filter.length; i++) {
@@ -100,8 +108,8 @@ const SearchByCategory = ({
     const data = await getPois(
       category,
       defaultParams.defaultRadius,
-      coordinate ? coordinate.latitude : defaultParams.defaultLatitude,
-      coordinate ? coordinate.longitude : defaultParams.defaultLongitude,
+      coordinate.latitude,
+      coordinate.longitude,
       _filters ? _filters : undefined,
     );
     if (data) {
@@ -184,6 +192,8 @@ const SearchByCategory = ({
                   poi={item}
                   bookmarked={true}
                   setBookmarked={() => {}}
+                  userLocation={userLocation}
+                  category={category}
                 />
               </TouchableOpacity>
             );

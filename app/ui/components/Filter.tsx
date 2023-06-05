@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     borderBottomWidth: 0.5,
-    borderColor: colors.grey,
+    borderColor: colors.lightgrey,
     zIndex: 10,
   },
   contentContainer: {

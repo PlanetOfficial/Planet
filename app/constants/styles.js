@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
   separator: {
     marginLeft: s(20),
     height: 0.5,
-    backgroundColor: colors.grey,
+    backgroundColor: colors.lightgrey,
   },
   shadow: {
     shadowColor: '#000',
