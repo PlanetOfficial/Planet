@@ -5,8 +5,8 @@ import messaging from '@react-native-firebase/messaging';
 import {Alert, PermissionsAndroid} from 'react-native';
 import {Platform} from 'react-native';
 
-import SplashScreen from './app/ui/otherScreens/!SplashScreen';
-import AppNavigation from './app/navigation/AppNavigation';
+import SplashScreen from './app/ui/navigation/SplashScreen';
+import AppNavigation from './app/ui/navigation/AppNavigation';
 import {updateCaches} from './app/utils/functions/CacheHelpers';
 import {saveTokenToDatabase} from './app/utils/api/authAPI';
 

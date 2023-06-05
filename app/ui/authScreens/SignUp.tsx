@@ -14,8 +14,8 @@ import messaging from '@react-native-firebase/messaging';
 import strings from '../../constants/strings';
 
 import {saveTokenToDatabase, signup} from '../../utils/api/authAPI';
-import {colors} from '../../constants/theme';
-import {icons} from '../../constants/images';
+import colors from '../../constants/colors';
+import icons from '../../constants/icons';
 import {cacheUserInfo} from '../../utils/functions/CacheHelpers';
 
 const SignUp = ({navigation}: {navigation: any}) => {

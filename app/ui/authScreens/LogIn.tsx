@@ -6,7 +6,6 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  Image,
 } from 'react-native';
 import {s, vs} from 'react-native-size-matters';
 import messaging from '@react-native-firebase/messaging';
@@ -14,8 +13,7 @@ import messaging from '@react-native-firebase/messaging';
 import strings from '../../constants/strings';
 
 import {login, saveTokenToDatabase} from '../../utils/api/authAPI';
-import {colors} from '../../constants/theme';
-import {vectors} from '../../constants/images';
+import colors from '../../constants/colors';
 import {cacheUserInfo} from '../../utils/functions/CacheHelpers';
 
 const LoginScreen = ({navigation}: {navigation: any}) => {
@@ -59,7 +57,6 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
 
   return (
     <View testID="loginScreenView" style={styles.container}>
-      <Image style={styles.background} source={vectors.login} />
       <Text style={styles.title}>{strings.main.rivalet}</Text>
       <TextInput
         testID="emailTextInput"
