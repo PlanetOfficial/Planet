@@ -9,6 +9,7 @@ import SignUp from '../authScreens/SignUp';
 import ForgotPassword from '../authScreens/!ForgotPwd';
 import Create from '../createScreens/Create';
 import SearchByCategory from '../searchScreens/SearchByCategory';
+import PoiDetail from '../otherScreens/PoiDetail';
 
 interface AppNavigationProps {
   isLoggedIn: boolean;
@@ -30,6 +31,7 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {forgetPassStackScreen()}
           {createScreen()}
           {searchByCategoryScreen()}
+          {poiDetailScreen()}
         </MainStack.Navigator>
       </BottomSheetModalProvider>
     </NavigationContainer>
@@ -43,6 +45,7 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {tabStack()}
           {createScreen()}
           {searchByCategoryScreen()}
+          {poiDetailScreen()}
         </MainStack.Navigator>
       </BottomSheetModalProvider>
     </NavigationContainer>
@@ -111,6 +114,18 @@ const searchByCategoryScreen = () => {
     <MainStack.Screen
       name="SearchByCategory"
       component={SearchByCategory}
+      options={{
+        headerShown: false,
+      }}
+    />
+  );
+};
+
+const poiDetailScreen = () => {
+  return (
+    <MainStack.Screen
+      name="PoiDetail"
+      component={PoiDetail}
       options={{
         headerShown: false,
       }}

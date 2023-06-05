@@ -14,6 +14,7 @@ const icons = {
   hearted: require('../assets/icons/hearted.png'),
   map: require('../assets/icons/map.png'),
   more: require('../assets/icons/more.png'),
+  option: require('../assets/icons/option.png'),
   question: require('../assets/icons/question.png'),
   roulette: require('../assets/icons/roulette.png'),
   selected: require('../assets/icons/selected.png'),

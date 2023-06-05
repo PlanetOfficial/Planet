@@ -8,15 +8,13 @@ import {
   Linking,
   Alert,
 } from 'react-native';
-import MapView, {Marker} from 'react-native-maps';
 import {s} from 'react-native-size-matters';
 import {ScrollView} from 'react-native-gesture-handler';
 import {showLocation} from 'react-native-map-link';
 
 import strings from '../../constants/strings';
-import {icons} from '../../constants/icons';
-import {colors} from '../../constants/colors';
-import {floats} from '../../constants/numbers';
+import icons from '../../constants/icons';
+import colors from '../../constants/colors';
 
 import {getDestination} from '../../utils/api/destinationAPI';
 import {postPlace, deletePlace} from '../../utils/api/placeAPI';
@@ -25,12 +23,7 @@ import Icon from '../components/Icon';
 import Text from '../components/Text';
 import OptionMenu from '../components/OptionMenu';
 
-import {
-  Place as PlaceT,
-  PlaceDetail,
-  Review,
-} from '../../utils/interfaces/types';
-import {getPlaceCardString} from '../../utils/functions/Misc';
+import {Poi, PlaceDetail, Review} from '../../utils/interfaces/types';
 
 interface Props {
   navigation: any;
@@ -38,7 +31,7 @@ interface Props {
 }
 
 const Place: React.FC<Props> = ({navigation, route}) => {
-  const [destination] = useState<PlaceT>(route.params.destination);
+  const [destination] = useState<Poi>(route.params.poi);
   const [destinationDetails, setDestinationDetails] = useState<PlaceDetail>();
   const [bookmarked, setBookmarked] = useState<boolean>(
     route?.params?.bookmarked,
@@ -126,7 +119,7 @@ const Place: React.FC<Props> = ({navigation, route}) => {
               {destination.name}
             </Text>
             <Text size="xs" weight="l" color={colors.accent} numberOfLines={1}>
-              {getPlaceCardString(destination)}
+              {/* {getPlaceCardString(destination)} */}
             </Text>
           </View>
           <OptionMenu
@@ -170,25 +163,6 @@ const Place: React.FC<Props> = ({navigation, route}) => {
       </SafeAreaView>
 
       <ScrollView contentContainerStyle={styles.scrollView}>
-        {destination.latitude && destination.longitude ? (
-          <MapView
-            style={styles.map}
-            userInterfaceStyle={'light'}
-            initialRegion={{
-              latitude: destination.latitude,
-              longitude: destination.longitude,
-              latitudeDelta: floats.defaultLatitudeDelta,
-              longitudeDelta: floats.defaultLongitudeDelta,
-            }}>
-            <Marker
-              coordinate={{
-                latitude: destination.latitude,
-                longitude: destination.longitude,
-              }}
-            />
-          </MapView>
-        ) : null}
-        <View style={styles.separator} />
         <>
           <ScrollView
             horizontal={true}

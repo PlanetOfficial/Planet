@@ -1,28 +1,7 @@
 import haversine from 'haversine-distance';
 
-import {
-  MarkerObject,
-  Coordinate,
-  Category,
-  Poi,
-  Event,
-  Region,
-} from '../interfaces/types';
+import {MarkerObject, Coordinate, Poi, Region} from '../interfaces/types';
 import {conversion, defaultParams} from '../../constants/numbers';
-
-/*
-  Given a point and the longitudeDelta, calculate the radius of the circle (the
-  point is the center of the circle)
-*/
-export const calculateRadius = (point1: Coordinate, longitudeDelta: number) => {
-  const point2 = {
-    latitude: point1.latitude,
-    longitude: point1.longitude + longitudeDelta / 2,
-  };
-  const distance = getDistanceFromCoordinates(point1, point2);
-
-  return (6 / 7) * distance;
-};
 
 /*
   Calculates the distance in miles given two points in terms of latitude
@@ -114,16 +93,4 @@ export const getAveragePoint = (places: MarkerObject[]): Coordinate => {
     latitude: latSum / count,
     longitude: lngSum / count,
   };
-};
-
-// given an object, return true if it is a place, false if it is a category
-// Note: a category cannot have a latitude so this is the way to tell a Place from a Category
-export const isPlace = (destination: Poi | Category): destination is Poi => {
-  return destination.hasOwnProperty('latitude');
-};
-
-// given an object, return true if it is a place, false if it is an event
-// Note: an event cannot have a latitude so this is the way to tell a Place from an Event
-export const isPlace2 = (item: Poi | Event): item is Poi => {
-  return item.hasOwnProperty('latitude');
 };

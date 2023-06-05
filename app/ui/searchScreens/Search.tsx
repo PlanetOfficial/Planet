@@ -87,6 +87,7 @@ const categoryStyles = StyleSheet.create({
   },
   header: {
     paddingHorizontal: s(20),
+    paddingTop: s(5),
     paddingBottom: s(10),
   },
   scrollView: {

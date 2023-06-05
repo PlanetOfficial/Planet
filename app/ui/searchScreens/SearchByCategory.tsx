@@ -187,7 +187,13 @@ const SearchByCategory = ({
           onTouchStart={() => filterRef.current?.closeDropdown()}
           renderItem={({item}: {item: Poi}) => {
             return (
-              <TouchableOpacity onPress={() => {}}>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate('PoiDetail', {
+                    poi: item,
+                    bookmarked: false,
+                  })
+                }>
                 <PoiCard
                   poi={item}
                   bookmarked={true}
