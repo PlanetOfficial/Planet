@@ -161,10 +161,11 @@ const styles = StyleSheet.create({
     marginTop: s(5),
     fontSize: s(9),
     fontWeight: '400',
+    fontFamily: 'Lato',
     color: colors.darkgrey,
   },
   bold: {
-    fontWeight: '600',
+    fontWeight: '500',
   },
   button: {
     position: 'absolute',
