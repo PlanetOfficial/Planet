@@ -144,7 +144,6 @@ const Search = ({navigation}: {navigation: any}) => {
             textInput: searchStyles.textInput,
             separator: searchStyles.separator,
           }}
-          keepResultsAfterBlur={true}
           renderRow={rowData => (
             <View style={searchStyles.row}>
               <Text size="s" weight="r" color={colors.black}>
