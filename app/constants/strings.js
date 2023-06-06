@@ -1,6 +1,6 @@
 const strings = {
   main: {
-    rivalet: 'Rivlet',
+    appName: 'Planet',
     share: 'Share',
     none: 'None',
     save: 'Save',
@@ -54,6 +54,8 @@ const strings = {
     noResultsFound: 'No Results Found',
     noResultsFoundDescription: 'Try searching for something else',
     setLocation: 'Set Location',
+    tooFar: 'Radius too large',
+    tooFarMessage: 'Please select a smaller radius',
   },
   // createTabStack: {
   //   description: 'Description',

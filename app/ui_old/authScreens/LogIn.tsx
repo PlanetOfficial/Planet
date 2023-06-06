@@ -60,7 +60,7 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
   return (
     <View testID="loginScreenView" style={styles.container}>
       <Image style={styles.background} source={vectors.login} />
-      <Text style={styles.title}>{strings.main.rivalet}</Text>
+      <Text style={styles.title}>{strings.main.appName}</Text>
       <TextInput
         testID="emailTextInput"
         style={styles.input}

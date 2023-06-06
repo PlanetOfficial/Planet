@@ -13,7 +13,7 @@ import Text from './Text';
 import {Category, Coordinate, Poi} from '../../utils/types';
 import {getDistanceFromCoordinates} from '../../utils/Misc';
 import {bookmark} from '../../utils/api/bookmarkAPI';
-import {conversion} from '../../constants/numbers';
+import numbers from '../../constants/numbers';
 
 interface Props {
   poi: Poi;
@@ -48,7 +48,7 @@ const PoiCard: React.FC<Props> = ({poi, bookmarked, location, category}) => {
         getDistanceFromCoordinates(
           {latitude: poi.latitude, longitude: poi.longitude},
           location,
-        ) / conversion.milesToMeters
+        ) / numbers.milesToMeters
       ).toFixed(1)} ${strings.main.milesAbbrev}`;
     }
 

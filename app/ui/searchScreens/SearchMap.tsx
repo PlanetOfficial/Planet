@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {Alert, StyleSheet, TouchableOpacity, View} from 'react-native';
 
 import {s} from 'react-native-size-matters';
 import MapView from 'react-native-maps';
@@ -7,6 +7,7 @@ import {Circle, Svg} from 'react-native-svg';
 
 import colors from '../../constants/colors';
 import strings from '../../constants/strings';
+import numbers from '../../constants/numbers';
 
 import Text from '../components/Text';
 import Blur from '../components/Blur';
@@ -66,22 +67,28 @@ const SearchMap = ({navigation, route}: {navigation: any; route: any}) => {
         <Text>{strings.search.setLocation}</Text>
         <TouchableOpacity
           style={styles.done}
-          onPress={() =>
-            navigation.navigate('SearchCategory', {
-              category: route.params.category,
-              location: {
+          onPress={() => {
+            const radius = calculateRadius(
+              {
                 latitude: region.latitude,
                 longitude: region.longitude,
               },
-              radius: calculateRadius(
-                {
+              region.longitudeDelta,
+            );
+
+            if (radius <= numbers.maxRadius) {
+              navigation.navigate('SearchCategory', {
+                category: route.params.category,
+                location: {
                   latitude: region.latitude,
                   longitude: region.longitude,
                 },
-                region.longitudeDelta,
-              ),
-            })
-          }>
+                radius,
+              });
+            } else {
+              Alert.alert(strings.search.tooFar, strings.search.tooFarMessage);
+            }
+          }}>
           <Text size="s" color={colors.accent}>
             {strings.main.done}
           </Text>

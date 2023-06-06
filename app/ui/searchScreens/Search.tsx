@@ -23,7 +23,7 @@ import {
 
 import colors from '../../constants/colors';
 import styles from '../../constants/styles';
-import {defaultParams} from '../../constants/numbers';
+import numbers from '../../constants/numbers';
 
 import Text from '../components/Text';
 import Separator from '../components/Separator';
@@ -145,7 +145,7 @@ const Search = ({navigation}: {navigation: any}) => {
             separator: searchStyles.separator,
           }}
           renderRow={rowData => (
-            <View style={searchStyles.row}>
+            <View>
               <Text size="s" weight="r" color={colors.black}>
                 {rowData.structured_formatting.main_text}
               </Text>
@@ -183,7 +183,7 @@ const Search = ({navigation}: {navigation: any}) => {
                       navigation.navigate('SearchCategory', {
                         category,
                         location,
-                        radius: defaultParams.defaultRadius,
+                        radius: numbers.defaultRadius,
                       });
                     }}>
                     <View style={[categoryStyles.iconContainer, styles.shadow]}>
@@ -252,6 +252,7 @@ const searchStyles = StyleSheet.create({
     marginHorizontal: s(20),
   },
   text: {
+    padding: 0,
     fontSize: s(14),
     fontWeight: '700',
     width: '100%',
@@ -266,15 +267,11 @@ const searchStyles = StyleSheet.create({
     marginVertical: s(5),
   },
   textInput: {
-    paddingVertical: 0,
     marginLeft: s(15),
     paddingLeft: s(10),
-    marginBottom: 0,
-    height: s(25),
     fontSize: s(12),
     color: colors.black,
     backgroundColor: 'transparent',
-    borderWidth: 1,
   },
   separator: {
     height: 0.5,
@@ -293,7 +290,6 @@ const searchStyles = StyleSheet.create({
     marginTop: s(10),
     marginLeft: -s(67),
   },
-  row: {},
 });
 
 export default Search;
