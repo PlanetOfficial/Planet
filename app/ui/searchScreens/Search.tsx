@@ -58,7 +58,7 @@ const Search = ({navigation}: {navigation: any}) => {
                   key={category.id}
                   style={categoryStyles.categoryContainer}
                   onPress={() => {
-                    navigation.navigate('SearchByCategory', {category});
+                    navigation.navigate('SearchCategory', {category});
                   }}>
                   <View style={[categoryStyles.iconContainer, styles.shadow]}>
                     <Image

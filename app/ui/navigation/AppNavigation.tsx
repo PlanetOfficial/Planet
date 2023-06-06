@@ -8,7 +8,8 @@ import LoginScreen from '../authScreens/LogIn';
 import SignUp from '../authScreens/SignUp';
 import ForgotPassword from '../authScreens/!ForgotPwd';
 import Create from '../createScreens/Create';
-import SearchByCategory from '../searchScreens/SearchByCategory';
+import SearchCategory from '../searchScreens/SearchCategory';
+import SearchMap from '../searchScreens/SearchMap';
 import PoiDetail from '../otherScreens/PoiDetail';
 
 interface AppNavigationProps {
@@ -30,7 +31,8 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {signUpStackScreen()}
           {forgetPassStackScreen()}
           {createScreen()}
-          {searchByCategoryScreen()}
+          {searchCategoryScreen()}
+          {searchMapScreen()}
           {poiDetailScreen()}
         </MainStack.Navigator>
       </BottomSheetModalProvider>
@@ -44,7 +46,8 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {forgetPassStackScreen()}
           {tabStack()}
           {createScreen()}
-          {searchByCategoryScreen()}
+          {searchCategoryScreen()}
+          {searchMapScreen()}
           {poiDetailScreen()}
         </MainStack.Navigator>
       </BottomSheetModalProvider>
@@ -109,17 +112,29 @@ const createScreen = () => {
   );
 };
 
-const searchByCategoryScreen = () => {
+const searchCategoryScreen = () => {
   return (
     <MainStack.Screen
-      name="SearchByCategory"
-      component={SearchByCategory}
+      name="SearchCategory"
+      component={SearchCategory}
       options={{
         headerShown: false,
       }}
     />
   );
 };
+
+const searchMapScreen = () => {
+  return (
+    <MainStack.Screen
+      name="SearchMap"
+      component={SearchMap}
+      options={{
+        headerShown: false,
+      }}
+    />
+  );
+}
 
 const poiDetailScreen = () => {
   return (

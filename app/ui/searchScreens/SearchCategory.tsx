@@ -28,7 +28,7 @@ import Icon from '../components/Icon';
 import Filter from '../components/Filter';
 import PoiCard from '../components/PoiCard';
 
-const SearchByCategory = ({
+const SearchCategory = ({
   navigation,
   route,
 }: {
@@ -158,12 +158,7 @@ const SearchByCategory = ({
           <Icon
             icon={icons.map}
             button={true}
-            onPress={() =>
-              Alert.alert(
-                'Sorry!',
-                'Map search will be implemented post-beta :D',
-              )
-            }
+            onPress={() => navigation.navigate('SearchMap')}
           />
         </View>
       </SafeAreaView>
@@ -229,10 +224,10 @@ const headerStyles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-
+    
     paddingHorizontal: s(20),
     marginVertical: s(10),
   },
 });
 
-export default SearchByCategory;
+export default SearchCategory;

@@ -1,5 +1,5 @@
 import {PoiAPIURL} from '../APIConstants';
-import {Category, Place} from '../../interfaces/types';
+import {Category, Poi} from '../../interfaces/types';
 
 export const getPois = async (
   category: Category,
@@ -7,7 +7,7 @@ export const getPois = async (
   latitude: number,
   longitude: number,
   filters?: {[key: string]: string | string[]},
-): Promise<Place[] | null> => {
+): Promise<Poi[] | null> => {
   const response = await fetch(
     PoiAPIURL +
       `/poi?category=${JSON.stringify(
@@ -21,7 +21,7 @@ export const getPois = async (
   );
 
   if (response?.ok) {
-    const myJson: Place[] = await response.json();
+    const myJson: Poi[] = await response.json();
     return myJson;
   } else {
     return null;
