@@ -14,6 +14,7 @@ import {
   BottomTabBarButtonProps,
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 import colors from '../../constants/colors';
 
@@ -25,6 +26,8 @@ import Profile from '../profileScreens/Profile';
 const Tab = createBottomTabNavigator();
 
 export const NavBar = () => {
+  const insets = useSafeAreaInsets();
+
   const getIcon = (name: string, focused: boolean) => {
     let source: number;
     switch (name) {
@@ -109,6 +112,7 @@ export const NavBar = () => {
             borderTopWidth: 0.5,
             borderTopColor: colors.lightgrey,
             backgroundColor: colors.white,
+            height: s(50) + insets.bottom,
           },
           tabBarIcon: ({focused}) => {
             return getIcon(route.name, focused);
