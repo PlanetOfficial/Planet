@@ -57,6 +57,15 @@ const strings = {
     tooFar: 'Radius too large',
     tooFarMessage: 'Please select a smaller radius',
   },
+  greeting: {
+    welcome: 'Welcome',
+    morning: 'Good Morning',
+    afternoon: 'Good Afternoon',
+    evening: 'Good Evening',
+  },
+  friends: {
+    friends: 'Friends',
+  },
   // createTabStack: {
   //   description: 'Description',
   //   phone: 'Phone',

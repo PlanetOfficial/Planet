@@ -11,6 +11,7 @@ import Create from '../createScreens/Create';
 import SearchCategory from '../searchScreens/SearchCategory';
 import SearchMap from '../searchScreens/SearchMap';
 import PoiDetail from '../otherScreens/PoiDetail';
+import Friends from '../otherScreens/Friends';
 
 interface AppNavigationProps {
   isLoggedIn: boolean;
@@ -34,6 +35,7 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {searchCategoryScreen()}
           {searchMapScreen()}
           {poiDetailScreen()}
+          {friendsScreen()}
         </MainStack.Navigator>
       </BottomSheetModalProvider>
     </NavigationContainer>
@@ -49,6 +51,7 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {searchCategoryScreen()}
           {searchMapScreen()}
           {poiDetailScreen()}
+          {friendsScreen()}
         </MainStack.Navigator>
       </BottomSheetModalProvider>
     </NavigationContainer>
@@ -143,6 +146,18 @@ const poiDetailScreen = () => {
     <MainStack.Screen
       name="PoiDetail"
       component={PoiDetail}
+      options={{
+        headerShown: false,
+      }}
+    />
+  );
+};
+
+const friendsScreen = () => {
+  return (
+    <MainStack.Screen
+      name="Friends"
+      component={Friends}
       options={{
         headerShown: false,
       }}

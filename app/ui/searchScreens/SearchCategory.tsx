@@ -1,7 +1,6 @@
 import React, {useEffect, useState, useCallback, useRef} from 'react';
 import {
   View,
-  StyleSheet,
   SafeAreaView,
   Alert,
   FlatList,
@@ -9,7 +8,6 @@ import {
   RefreshControl,
   ActivityIndicator,
 } from 'react-native';
-import {s} from 'react-native-size-matters';
 
 import colors from '../../constants/colors';
 import icons from '../../constants/icons';
@@ -96,7 +94,7 @@ const SearchCategory = ({navigation, route}: {navigation: any; route: any}) => {
   return (
     <View style={styles.container}>
       <SafeAreaView>
-        <View style={headerStyles.container}>
+        <View style={styles.header}>
           <Icon
             size="m"
             icon={icons.back}
@@ -175,16 +173,5 @@ const SearchCategory = ({navigation, route}: {navigation: any; route: any}) => {
     </View>
   );
 };
-
-const headerStyles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-
-    paddingHorizontal: s(20),
-    marginVertical: s(10),
-  },
-});
 
 export default SearchCategory;

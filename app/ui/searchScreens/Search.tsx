@@ -22,16 +22,16 @@ import {
 } from 'react-native-google-places-autocomplete';
 
 import colors from '../../constants/colors';
-import styles from '../../constants/styles';
+import icons from '../../constants/icons';
 import numbers from '../../constants/numbers';
+import strings from '../../constants/strings';
+import styles from '../../constants/styles';
 
 import Text from '../components/Text';
 import Separator from '../components/Separator';
 
 import {GoogleMapsAPIKey} from '../../utils/api/APIConstants';
 import {Category, Coordinate, Genre} from '../../utils/types';
-import strings from '../../constants/strings';
-import icons from '../../constants/icons';
 
 const Search = ({navigation}: {navigation: any}) => {
   const [genres, setGenres] = useState<Genre[]>([]);

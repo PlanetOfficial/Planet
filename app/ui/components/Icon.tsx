@@ -60,7 +60,7 @@ const Icon: React.FC<Props> = ({
     justifyContent: 'center',
     width: button ? 2 * z : z,
     height: button ? 2 * z : z,
-    padding: button ? z / 2 : padding,
+    padding: padding + (button ? z / 2 : 0),
     backgroundColor: button ? colors.white : undefined,
     borderRadius: button ? z / 2 : undefined,
   };

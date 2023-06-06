@@ -14,6 +14,14 @@ const styles = StyleSheet.create({
     paddingTop: s(50),
     alignItems: 'center',
   },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+
+    paddingHorizontal: s(20),
+    marginVertical: s(10),
+  },
   separator: {
     marginLeft: s(20),
     height: 0.5,
