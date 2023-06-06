@@ -23,6 +23,7 @@ import {getPois} from '../../utils/api/poiOperations/poiAPI';
 import Icon from '../components/Icon';
 import Filter from '../components/Filter';
 import PoiCard from '../components/PoiCard';
+import strings from '../../constants/strings';
 
 const SearchCategory = ({navigation, route}: {navigation: any; route: any}) => {
   const {category, location, radius} = route.params;
@@ -153,7 +154,11 @@ const SearchCategory = ({navigation, route}: {navigation: any; route: any}) => {
           }}
           ListEmptyComponent={
             <View style={styles.center}>
-              <Text>No places found</Text>
+              <Text>{strings.search.noResultsFound}</Text>
+              <Text> </Text>
+              <Text size="s" color={colors.darkgrey}>
+                {strings.search.noResultsFoundDescription}
+              </Text>
             </View>
           }
           ItemSeparatorComponent={Separator}

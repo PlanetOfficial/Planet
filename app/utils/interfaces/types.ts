@@ -28,68 +28,7 @@ export interface Poi {
   category_name: string;
 }
 
-export interface Image {
-  path: string;
-  name: string;
-  size: number;
-  mime: string;
-  meta: {
-    width: number;
-    height: number;
-  };
-  url: string;
-}
-
-export interface Coordinate {
-  latitude: number;
-  longitude: number;
-}
-
-export interface Region {
-  latitude: number;
-  longitude: number;
-  latitudeDelta: number;
-  longitudeDelta: number;
-}
-
-//////
-
-export interface Event {
-  id: number;
-  name: string;
-  date: string;
-  places: Poi[];
-}
-
-export interface GroupEvent {
-  id: number;
-  name: string;
-  date: string;
-  destinations: GroupPlace[];
-  suggester: User;
-}
-
-export interface GroupPlace {
-  id: number;
-  name: string;
-  places: Poi[];
-}
-
-export interface User {
-  id: number;
-  name: string;
-  email: string;
-  self?: boolean;
-}
-
-export interface CustomPlace {
-  name: string;
-  latitude: number;
-  longitude: number;
-  place_id: string | null;
-}
-
-export interface PlaceDetail {
+export interface PoiDetail {
   description: string;
   address: string;
   phone: string;
@@ -121,25 +60,67 @@ export interface Filter {
   defaultIdx: number;
 }
 
-export interface MarkerObject {
+export interface Image {
+  path: string;
   name: string;
+  size: number;
+  mime: string;
+  meta: {
+    width: number;
+    height: number;
+  };
+  url: string;
+}
+
+export interface Coordinate {
   latitude: number;
   longitude: number;
 }
 
-export interface Group {
-  id: number;
-  name: string;
-  group_member: GroupMember[];
+export interface Region {
+  latitude: number;
+  longitude: number;
+  latitudeDelta: number;
+  longitudeDelta: number;
 }
 
-export interface GroupMember {
-  id: number;
-  user: User;
-}
+// export interface Event {
+//   id: number;
+//   name: string;
+//   date: string;
+//   places: Poi[];
+// }
 
-export interface Invite {
-  id: number;
-  group: Group;
-  inviter: User;
-}
+// export interface GroupEvent {
+//   id: number;
+//   name: string;
+//   date: string;
+//   destinations: GroupPlace[];
+//   suggester: User;
+// }
+
+// export interface GroupPlace {
+//   id: number;
+//   name: string;
+//   places: Poi[];
+// }
+
+// export interface User {
+//   id: number;
+//   name: string;
+//   email: string;
+//   self?: boolean;
+// }
+
+// export interface CustomPlace {
+//   name: string;
+//   latitude: number;
+//   longitude: number;
+//   place_id: string | null;
+// }
+
+// export interface MarkerObject {
+//   name: string;
+//   latitude: number;
+//   longitude: number;
+// }

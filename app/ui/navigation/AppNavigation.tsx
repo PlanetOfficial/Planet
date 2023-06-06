@@ -132,6 +132,7 @@ const searchMapScreen = () => {
       options={{
         headerShown: false,
         presentation: 'modal',
+        gestureEnabled: false,
       }}
     />
   );

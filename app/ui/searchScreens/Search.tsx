@@ -17,12 +17,12 @@ import {s} from 'react-native-size-matters';
 
 import colors from '../../constants/colors';
 import styles from '../../constants/styles';
+import {defaultParams} from '../../constants/numbers';
 
 import Text from '../components/Text';
 import Separator from '../components/Separator';
 
 import {Category, Coordinate, Genre} from '../../utils/interfaces/types';
-import {defaultParams} from '../../constants/numbers';
 
 const Search = ({navigation}: {navigation: any}) => {
   const [genres, setGenres] = useState<Genre[]>([]);

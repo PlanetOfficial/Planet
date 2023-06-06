@@ -6,14 +6,16 @@ import MapView from 'react-native-maps';
 import {Circle, Svg} from 'react-native-svg';
 
 import colors from '../../constants/colors';
+import strings from '../../constants/strings';
 
-import {Region} from '../../utils/interfaces/types';
 import Text from '../components/Text';
 import Blur from '../components/Blur';
+
 import {
   calculateRadius,
   getRegionFromPointAndDistance,
 } from '../../utils/functions/Misc';
+import {Region} from '../../utils/interfaces/types';
 
 const SearchMap = ({navigation, route}: {navigation: any; route: any}) => {
   const [region, setRegion] = useState<Region>(
@@ -64,7 +66,7 @@ const SearchMap = ({navigation, route}: {navigation: any; route: any}) => {
       <Blur height={s(40)} />
 
       <View style={styles.header}>
-        <Text>Set Location</Text>
+        <Text>{strings.search.setLocation}</Text>
         <TouchableOpacity
           style={styles.done}
           onPress={() =>
@@ -84,7 +86,7 @@ const SearchMap = ({navigation, route}: {navigation: any; route: any}) => {
             })
           }>
           <Text size="s" color={colors.accent}>
-            Done
+            {strings.main.done}
           </Text>
         </TouchableOpacity>
       </View>

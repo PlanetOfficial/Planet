@@ -89,7 +89,7 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
       }
     } else {
       if (_filter === -1) {
-        return ': ' + strings.filter.none;
+        return ': ' + strings.main.none;
       }
       return ': ' + filter.options[_filter];
     }

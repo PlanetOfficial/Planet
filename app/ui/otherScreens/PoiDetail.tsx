@@ -23,18 +23,18 @@ import Icon from '../components/Icon';
 import Text from '../components/Text';
 import OptionMenu from '../components/OptionMenu';
 
-import {Poi, PlaceDetail, Review} from '../../utils/interfaces/types';
+import {Poi, PoiDetail, Review} from '../../utils/interfaces/types';
 
 const Place = ({navigation, route}: {navigation: any; route: any}) => {
   const [destination] = useState<Poi>(route.params.poi);
-  const [destinationDetails, setDestinationDetails] = useState<PlaceDetail>();
+  const [destinationDetails, setDestinationDetails] = useState<PoiDetail>();
   const [bookmarked, setBookmarked] = useState<boolean>(
     route?.params?.bookmarked,
   );
 
   useEffect(() => {
     const initializeDestinationData = async () => {
-      const details: PlaceDetail | null = await getDestination(
+      const details: PoiDetail | null = await getDestination(
         destination.place_id,
         destination.supplier,
       );
@@ -120,7 +120,7 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
           <OptionMenu
             options={[
               {
-                name: strings.library.createEvent,
+                name: strings.poi.createEvent,
                 onPress: () => {
                   navigation.navigate('MapSelection', {
                     destination: destination,
@@ -130,8 +130,8 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
               },
               {
                 name: bookmarked
-                  ? strings.library.unbookmark
-                  : strings.library.bookmark,
+                  ? strings.poi.unbookmark
+                  : strings.poi.bookmark,
                 onPress: handleBookmark,
                 color: colors.accent,
               },
@@ -143,12 +143,12 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
                 color: colors.black,
               },
               {
-                name: strings.createTabStack.openMap,
+                name: strings.poi.openMap,
                 onPress: handleMapPress,
                 color: colors.black,
               },
               {
-                name: strings.createTabStack.eventUrl,
+                name: strings.poi.eventUrl,
                 onPress: handleLinkPress,
                 color: colors.black,
               },
@@ -177,7 +177,7 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
         </>
         {destinationDetails?.description ? (
           <View style={detailStyles.infoContainer}>
-            <Text size="s">{strings.createTabStack.description}:</Text>
+            <Text size="s">{strings.poi.description}:</Text>
             <Text size="xs" weight="l">
               {destinationDetails?.description}
             </Text>
@@ -185,7 +185,7 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
         ) : null}
         {destinationDetails?.address ? (
           <View style={detailStyles.infoContainer}>
-            <Text size="s">{strings.createTabStack.address}:</Text>
+            <Text size="s">{strings.poi.address}:</Text>
             <Text size="xs" weight="l">
               {destinationDetails?.address}
             </Text>
@@ -193,7 +193,7 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
         ) : null}
         {destinationDetails?.hours ? (
           <View style={detailStyles.infoContainer}>
-            <Text size="s">{strings.createTabStack.hours}:</Text>
+            <Text size="s">{strings.poi.hours}:</Text>
             {destinationDetails?.hours.map((hour: string, index: number) => (
               <Text key={index} size="xs" weight="l">
                 {hour}
@@ -203,7 +203,7 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
         ) : null}
         {destinationDetails?.phone ? (
           <View style={detailStyles.infoContainer}>
-            <Text size="s">{strings.createTabStack.phone}:</Text>
+            <Text size="s">{strings.poi.phone}:</Text>
             <TouchableOpacity onPress={handleCallPress}>
               <Text size="xs" weight="l">
                 {destinationDetails?.phone}
@@ -213,7 +213,7 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
         ) : null}
         {destinationDetails?.url ? (
           <View style={detailStyles.infoContainer}>
-            <Text size="s">{strings.createTabStack.url}:</Text>
+            <Text size="s">{strings.poi.url}:</Text>
             <TouchableOpacity onPress={handleLinkPress}>
               <Text size="xs" weight="l">
                 {destinationDetails?.url}
@@ -223,7 +223,7 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
         ) : null}
         {destinationDetails?.website ? (
           <View style={detailStyles.infoContainer}>
-            <Text size="s">{strings.createTabStack.website}:</Text>
+            <Text size="s">{strings.poi.website}:</Text>
             <TouchableOpacity onPress={handleWebsitePress}>
               <Text size="xs" weight="l">
                 {destinationDetails?.website}
@@ -235,7 +235,7 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
         Array.isArray(destinationDetails.attributes) &&
         destinationDetails.attributes.length > 0 ? (
           <View style={detailStyles.infoContainer}>
-            <Text size="s">{strings.createTabStack.attributes}:</Text>
+            <Text size="s">{strings.poi.attributes}:</Text>
             {destinationDetails.attributes.map(
               (attribute: string, index: number) => (
                 <Text key={index} size="xs" weight="l">
