@@ -20,7 +20,7 @@ import {Poi} from '../../utils/types';
 import {getPois} from '../../utils/api/poiAPI';
 import Icon from '../components/Icon';
 import Filter from '../components/Filter';
-import PoiCard from '../components/PoiCard';
+import PoiCard from '../components/PoiRow';
 import strings from '../../constants/strings';
 
 const SearchCategory = ({navigation, route}: {navigation: any; route: any}) => {
