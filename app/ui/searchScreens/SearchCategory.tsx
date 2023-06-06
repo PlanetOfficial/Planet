@@ -14,7 +14,6 @@ import {s} from 'react-native-size-matters';
 import colors from '../../constants/colors';
 import icons from '../../constants/icons';
 import styles from '../../constants/styles';
-import {defaultParams} from '../../constants/numbers';
 
 import Text from '../components/Text';
 import Separator from '../components/Separator';
@@ -26,10 +25,9 @@ import Filter from '../components/Filter';
 import PoiCard from '../components/PoiCard';
 
 const SearchCategory = ({navigation, route}: {navigation: any; route: any}) => {
-  const {category, location} = route.params;
+  const {category, location, radius} = route.params;
 
   const [places, setPlaces] = useState<Poi[]>([]);
-
   const [filters, setFilters] = useState<(number | number[])[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [refreshing, setRefreshing] = useState<boolean>(false);
@@ -56,7 +54,7 @@ const SearchCategory = ({navigation, route}: {navigation: any; route: any}) => {
 
     const data = await getPois(
       category,
-      defaultParams.defaultRadius,
+      radius,
       location.latitude,
       location.longitude,
       _filters ? _filters : undefined,
@@ -64,11 +62,11 @@ const SearchCategory = ({navigation, route}: {navigation: any; route: any}) => {
     if (data) {
       setPlaces(data);
     } else {
-      Alert.alert('Error', 'Unable to load genres. Please try again.');
+      Alert.alert('Error', 'Unable to load places. Please try again.');
     }
     setRefreshing(false);
     setLoading(false);
-  }, [category, filters, location.latitude, location.longitude]);
+  }, [category, filters, location.latitude, location.longitude, radius]);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -109,8 +107,9 @@ const SearchCategory = ({navigation, route}: {navigation: any; route: any}) => {
             button={true}
             onPress={() =>
               navigation.navigate('SearchMap', {
-                latitude: location?.latitude,
-                longitude: location?.longitude,
+                category,
+                location,
+                radius,
               })
             }
           />

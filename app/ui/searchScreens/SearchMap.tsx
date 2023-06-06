@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 
 import {s} from 'react-native-size-matters';
@@ -8,17 +8,23 @@ import {Circle, Svg} from 'react-native-svg';
 import colors from '../../constants/colors';
 
 import {Region} from '../../utils/interfaces/types';
-import {defaultParams} from '../../constants/numbers';
 import Text from '../components/Text';
 import Blur from '../components/Blur';
+import {
+  calculateRadius,
+  getRegionFromPointAndDistance,
+} from '../../utils/functions/Misc';
 
 const SearchMap = ({navigation, route}: {navigation: any; route: any}) => {
-  const [region, setRegion] = useState<Region>({
-    latitude: route.params.latitude,
-    longitude: route.params.longitude,
-    latitudeDelta: defaultParams.defaultLatitudeDelta,
-    longitudeDelta: defaultParams.defaultLongitudeDelta,
-  });
+  const [region, setRegion] = useState<Region>(
+    getRegionFromPointAndDistance(route.params.location, route.params.radius),
+  );
+
+  useEffect(() => {
+    setRegion(
+      getRegionFromPointAndDistance(route.params.location, route.params.radius),
+    );
+  }, [route.params.location, route.params.radius]);
 
   return (
     <>
@@ -33,6 +39,12 @@ const SearchMap = ({navigation, route}: {navigation: any; route: any}) => {
           rotateEnabled={true}
           userInterfaceStyle={'light'}
           onRegionChangeComplete={setRegion}
+          mapPadding={{
+            top: s(40),
+            right: 0,
+            bottom: 0,
+            left: 0,
+          }}
         />
         <View pointerEvents={'none'} style={styles.circle}>
           <Svg style={styles.circle}>
@@ -53,8 +65,27 @@ const SearchMap = ({navigation, route}: {navigation: any; route: any}) => {
 
       <View style={styles.header}>
         <Text>Set Location</Text>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Text>Done</Text>
+        <TouchableOpacity
+          style={styles.done}
+          onPress={() =>
+            navigation.navigate('SearchCategory', {
+              category: route.params.category,
+              location: {
+                latitude: region.latitude,
+                longitude: region.longitude,
+              },
+              radius: calculateRadius(
+                {
+                  latitude: region.latitude,
+                  longitude: region.longitude,
+                },
+                region.longitudeDelta,
+              ),
+            })
+          }>
+          <Text size="s" color={colors.accent}>
+            Done
+          </Text>
         </TouchableOpacity>
       </View>
     </>
@@ -86,6 +117,10 @@ const styles = StyleSheet.create({
     height: s(40),
 
     paddingHorizontal: s(20),
+  },
+  done: {
+    position: 'absolute',
+    right: s(20),
   },
 });
 

@@ -7,5 +7,5 @@ export const defaultParams = {
   defaultLongitude: -122.3032,
   defaultLatitudeDelta: 0.0922,
   defaultLongitudeDelta: 0.0421,
-  defaultRadius: 5000,
+  defaultRadius: 1000,
 };

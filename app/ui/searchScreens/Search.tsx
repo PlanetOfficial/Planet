@@ -22,6 +22,7 @@ import Text from '../components/Text';
 import Separator from '../components/Separator';
 
 import {Category, Coordinate, Genre} from '../../utils/interfaces/types';
+import {defaultParams} from '../../constants/numbers';
 
 const Search = ({navigation}: {navigation: any}) => {
   const [genres, setGenres] = useState<Genre[]>([]);
@@ -92,7 +93,11 @@ const Search = ({navigation}: {navigation: any}) => {
                   key={category.id}
                   style={categoryStyles.categoryContainer}
                   onPress={() => {
-                    navigation.navigate('SearchCategory', {category, location});
+                    navigation.navigate('SearchCategory', {
+                      category,
+                      location,
+                      radius: defaultParams.defaultRadius,
+                    });
                   }}>
                   <View style={[categoryStyles.iconContainer, styles.shadow]}>
                     <Image
