@@ -15,7 +15,7 @@ import CustomText from './Text';
 import {icons, vectors} from '../../constants/icons';
 import {colors} from '../../constants/colors';
 
-import {Genre, Category} from '../../utils/interfaces/types';
+import {Genre, Category} from '../../utils/types';
 import {getGenres} from '../../utils/api/genresAPI';
 
 interface Props {

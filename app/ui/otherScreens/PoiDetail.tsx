@@ -16,17 +16,15 @@ import strings from '../../constants/strings';
 import icons from '../../constants/icons';
 import colors from '../../constants/colors';
 
-import {getDestination} from '../../utils/api/destinationAPI';
-import {postPlace, deletePlace} from '../../utils/api/placeAPI';
-
 import Icon from '../components/Icon';
 import Text from '../components/Text';
 import OptionMenu from '../components/OptionMenu';
 
-import {Poi, PoiDetail, Review} from '../../utils/interfaces/types';
+import {Poi, PoiDetail, Review} from '../../utils/types';
+import {getPoi, postPoi} from '../../utils/api/poiAPI';
 
-const Place = ({navigation, route}: {navigation: any; route: any}) => {
-  const [destination] = useState<Poi>(route.params.poi);
+const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
+  const [destination, setDestination] = useState<Poi>(route.params.poi);
   const [destinationDetails, setDestinationDetails] = useState<PoiDetail>();
   const [bookmarked, setBookmarked] = useState<boolean>(
     route?.params?.bookmarked,
@@ -34,29 +32,43 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
 
   useEffect(() => {
     const initializeDestinationData = async () => {
-      const details: PoiDetail | null = await getDestination(
-        destination.place_id,
-        destination.supplier,
-      );
-
-      if (details) {
-        setDestinationDetails(details);
+      if (route.params?.place_id) {
+        const result = await postPoi(route.params.place_id);
+        if (result) {
+          setDestination(result.poi);
+          setDestinationDetails(result.poiDetail);
+          setBookmarked(false);
+        } else {
+          Alert.alert(
+            'Error',
+            'Unable to load destination details. Please try again.',
+          );
+        }
       } else {
-        Alert.alert(
-          'Error',
-          'Unable to load destination details. Please try again.',
+        const details: PoiDetail | null = await getPoi(
+          destination.place_id,
+          destination.supplier,
         );
+
+        if (details) {
+          setDestinationDetails(details);
+        } else {
+          Alert.alert(
+            'Error',
+            'Unable to load destination details. Please try again.',
+          );
+        }
       }
     };
 
     initializeDestinationData();
-  }, [destination.place_id, destination.supplier]);
+  }, [destination?.place_id, destination?.supplier, route.params.place_id]);
 
   const handleMapPress = async () => {
     showLocation({
-      latitude: destination.latitude,
-      longitude: destination.longitude,
-      title: destination.name,
+      latitude: destination?.latitude,
+      longitude: destination?.longitude,
+      title: destination?.name,
     });
   };
 
@@ -84,25 +96,25 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
     }
   };
 
-  const handleBookmark = async () => {
-    if (!bookmarked) {
-      const response: boolean = await postPlace(destination.id);
+  // const handleBookmark = async () => {
+  //   if (!bookmarked) {
+  //     const response: boolean = await postPlace(destination?.id);
 
-      if (response) {
-        setBookmarked(!bookmarked);
-      } else {
-        Alert.alert('Error', 'Unable to bookmark place. Please try again.');
-      }
-    } else {
-      const response: boolean = await deletePlace(destination.id);
+  //     if (response) {
+  //       setBookmarked(!bookmarked);
+  //     } else {
+  //       Alert.alert('Error', 'Unable to bookmark place. Please try again.');
+  //     }
+  //   } else {
+  //     const response: boolean = await deletePlace(destination?.id);
 
-      if (response) {
-        setBookmarked(!bookmarked);
-      } else {
-        Alert.alert('Error', 'Unable to unbookmark place. Please try again.');
-      }
-    }
-  };
+  //     if (response) {
+  //       setBookmarked(!bookmarked);
+  //     } else {
+  //       Alert.alert('Error', 'Unable to unbookmark place. Please try again.');
+  //     }
+  //   }
+  // };
 
   return (
     <View style={styles.container}>
@@ -111,7 +123,7 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
           <Icon icon={icons.back} onPress={navigation.goBack} />
           <View style={headerStyles.texts}>
             <Text weight="b" numberOfLines={1}>
-              {destination.name}
+              {destination?.name}
             </Text>
             <Text size="xs" weight="l" color={colors.accent} numberOfLines={1}>
               {/* {getPlaceCardString(destination)} */}
@@ -132,7 +144,7 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
                 name: bookmarked
                   ? strings.poi.unbookmark
                   : strings.poi.bookmark,
-                onPress: handleBookmark,
+                onPress: () => {},
                 color: colors.accent,
               },
               {
@@ -170,7 +182,7 @@ const Place = ({navigation, route}: {navigation: any; route: any}) => {
                 </View>
               ))
             ) : destination?.photo ? (
-              <Image source={{uri: destination.photo}} style={styles.image} />
+              <Image source={{uri: destination?.photo}} style={styles.image} />
             ) : null}
           </ScrollView>
           <View style={styles.separator} />
@@ -374,4 +386,4 @@ const detailStyles = StyleSheet.create({
   },
 });
 
-export default Place;
+export default PoiDetailPage;

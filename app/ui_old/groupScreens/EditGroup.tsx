@@ -14,7 +14,7 @@ import {colors} from '../../constants/colors';
 import {icons} from '../../constants/icons';
 
 import {editGroup, leaveGroup} from '../../utils/api/groups/groupAPI';
-import {GroupMember} from '../../utils/interfaces/types';
+import {GroupMember} from '../../utils/types';
 
 import Icon from '../components/Icon';
 import Text from '../components/Text';

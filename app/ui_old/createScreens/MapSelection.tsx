@@ -32,7 +32,7 @@ import Blur from '../components/Blur';
 import Text from '../components/Text';
 import Icon from '../components/Icon';
 
-import {Region} from '../../utils/interfaces/types';
+import {Region} from '../../utils/types';
 
 interface Props {
   navigation: any;

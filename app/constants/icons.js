@@ -17,6 +17,7 @@ const icons = {
   option: require('../assets/icons/option.png'),
   question: require('../assets/icons/question.png'),
   roulette: require('../assets/icons/roulette.png'),
+  search: require('../assets/tabIcons/search-2.png'),
   selected: require('../assets/icons/selected.png'),
   settings: require('../assets/icons/settings.png'),
   unchecked: require('../assets/icons/unchecked.png'),

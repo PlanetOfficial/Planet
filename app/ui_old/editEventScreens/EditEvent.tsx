@@ -18,7 +18,7 @@ import PlaceCard from '../components/PlaceCard';
 import {icons} from '../../constants/icons';
 import {colors} from '../../constants/colors';
 
-import {Place, Category as CategoryT} from '../../utils/interfaces/types';
+import {Place, Category as CategoryT} from '../../utils/types';
 import {isPlace} from '../../utils/functions/Misc';
 
 interface Props {

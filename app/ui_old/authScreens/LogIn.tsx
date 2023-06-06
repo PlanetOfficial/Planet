@@ -16,7 +16,7 @@ import strings from '../../constants/strings';
 import {login, saveTokenToDatabase} from '../../utils/api/authAPI';
 import {colors} from '../../constants/colors';
 import {vectors} from '../../constants/icons';
-import {cacheUserInfo} from '../../utils/functions/CacheHelpers';
+import {cacheUserInfo} from '../../utils/CacheHelpers';
 
 const LoginScreen = ({navigation}: {navigation: any}) => {
   const [email, setEmail] = useState<string>('');

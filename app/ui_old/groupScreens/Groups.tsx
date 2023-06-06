@@ -32,13 +32,7 @@ import {
 } from '../../utils/api/groups/eventAPI';
 import {getGroups} from '../../utils/api/groups/groupAPI';
 import {getInvites} from '../../utils/api/groups/inviteAPI';
-import {
-  Group,
-  Invite,
-  Event,
-  GroupEvent,
-  Place,
-} from '../../utils/interfaces/types';
+import {Group, Invite, Event, GroupEvent, Place} from '../../utils/types';
 import {getEvents} from '../../utils/api/eventAPI';
 import {getPlaces} from '../../utils/api/placeAPI';
 

@@ -18,8 +18,8 @@ import styles from '../../constants/styles';
 import Text from '../components/Text';
 import Separator from '../components/Separator';
 
-import {Poi} from '../../utils/interfaces/types';
-import {getPois} from '../../utils/api/poiOperations/poiAPI';
+import {Poi} from '../../utils/types';
+import {getPois} from '../../utils/api/poiAPI';
 import Icon from '../components/Icon';
 import Filter from '../components/Filter';
 import PoiCard from '../components/PoiCard';

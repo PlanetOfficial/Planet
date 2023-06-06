@@ -13,7 +13,7 @@ import strings from '../../constants/strings';
 import Text from '../components/Text';
 import Icon from '../components/Icon';
 
-import {Subcategory} from '../../utils/interfaces/types';
+import {Subcategory} from '../../utils/types';
 
 interface Props {
   navigation: any;

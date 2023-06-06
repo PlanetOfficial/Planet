@@ -19,7 +19,7 @@ import AButton from '../components/ActionButton';
 import Icon from '../components/Icon';
 
 import {acceptInvite, rejectInvite} from '../../utils/api/groups/inviteAPI';
-import {Group, Invite} from '../../utils/interfaces/types';
+import {Group, Invite} from '../../utils/types';
 
 interface Props {
   bottomSheetRef: React.RefObject<BottomSheetModalMethods>;

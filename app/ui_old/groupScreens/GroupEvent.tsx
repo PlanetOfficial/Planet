@@ -28,7 +28,7 @@ import {
   MarkerObject,
   Place,
   User,
-} from '../../utils/interfaces/types';
+} from '../../utils/types';
 import {getPlaces} from '../../utils/api/placeAPI';
 import {deleteGroupEvent, getGroupEvent} from '../../utils/api/groups/eventAPI';
 import {postEvent} from '../../utils/api/eventAPI';

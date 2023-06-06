@@ -17,7 +17,7 @@ import strings from '../../constants/strings';
 import {colors} from '../../constants/colors';
 
 import {getPlaces} from '../../utils/api/placeAPI';
-import {Place} from '../../utils/interfaces/types';
+import {Place} from '../../utils/types';
 
 interface Props {
   onClose: () => void;

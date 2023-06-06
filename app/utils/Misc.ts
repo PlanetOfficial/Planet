@@ -1,6 +1,6 @@
 import haversine from 'haversine-distance';
 
-import {Coordinate} from '../interfaces/types';
+import {Coordinate} from './types';
 
 /*
   Given a point and the longitudeDelta, calculate the radius of the circle (the

@@ -13,7 +13,7 @@ import ScrollIndicator from '../components/ScrollIndicator';
 
 import {icons} from '../../constants/icons';
 
-import {Place} from '../../utils/interfaces/types';
+import {Place} from '../../utils/types';
 import {deleteVote, postVote} from '../../utils/api/groups/otherAPI';
 
 interface Props {

@@ -16,7 +16,7 @@ import strings from '../../constants/strings';
 import {saveTokenToDatabase, signup} from '../../utils/api/authAPI';
 import colors from '../../constants/colors';
 import icons from '../../constants/icons';
-import {cacheUserInfo} from '../../utils/functions/CacheHelpers';
+import {cacheUserInfo} from '../../utils/CacheHelpers';
 
 const SignUp = ({navigation}: {navigation: any}) => {
   const [name, setName] = useState<string>('');

@@ -10,9 +10,9 @@ import icons from '../../constants/icons';
 import Icon from './Icon';
 import Text from './Text';
 
-import {Category, Coordinate, Poi} from '../../utils/interfaces/types';
-import {getDistanceFromCoordinates} from '../../utils/functions/Misc';
-import {bookmark} from '../../utils/api/poiOperations/bookmarkAPI';
+import {Category, Coordinate, Poi} from '../../utils/types';
+import {getDistanceFromCoordinates} from '../../utils/Misc';
+import {bookmark} from '../../utils/api/bookmarkAPI';
 import {conversion} from '../../constants/numbers';
 
 interface Props {

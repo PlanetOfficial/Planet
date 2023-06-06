@@ -25,7 +25,7 @@ import PlaceCard from '../components/PlaceCard';
 import {getPlaces} from '../../utils/api/placeAPI';
 import {getDestinations} from '../../utils/api/destinationAPI';
 import {getLiveCategories} from '../../utils/api/genresAPI';
-import {Category, Place} from '../../utils/interfaces/types';
+import {Category, Place} from '../../utils/types';
 
 const Trending = ({navigation}: {navigation: any}) => {
   const [latitude, setLatitude] = useState<number>(floats.defaultLatitude);

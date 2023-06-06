@@ -11,11 +11,8 @@ import strings from '../../constants/strings';
 import Text from '../components/Text';
 import Blur from '../components/Blur';
 
-import {
-  calculateRadius,
-  getRegionFromPointAndDistance,
-} from '../../utils/functions/Misc';
-import {Region} from '../../utils/interfaces/types';
+import {calculateRadius, getRegionFromPointAndDistance} from '../../utils/Misc';
+import {Region} from '../../utils/types';
 
 const SearchMap = ({navigation, route}: {navigation: any; route: any}) => {
   const [region, setRegion] = useState<Region>(
