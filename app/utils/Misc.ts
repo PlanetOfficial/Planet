@@ -1,6 +1,8 @@
 import haversine from 'haversine-distance';
 
 import {Coordinate} from './types';
+import Geolocation from '@react-native-community/geolocation';
+import {Platform, PermissionsAndroid, Alert} from 'react-native';
 
 /*
   Given a point and the longitudeDelta, calculate the radius of the circle (the
@@ -50,4 +52,32 @@ export const getDistanceFromCoordinates = (
   point2: Coordinate,
 ) => {
   return haversine(point1, point2);
+};
+
+/*
+  Retrieves the user's current location based on their device's GPS.
+*/
+export const fetchUserLocation = async (): Promise<Coordinate> => {
+  if (Platform.OS === 'ios') {
+    Geolocation.requestAuthorization();
+  } else if (Platform.OS === 'android') {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      );
+      if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
+        Alert.alert('Error', 'Location permission denied.');
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  }
+  return new Promise(res => {
+    Geolocation.getCurrentPosition(position =>
+      res({
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+      }),
+    );
+  });
 };

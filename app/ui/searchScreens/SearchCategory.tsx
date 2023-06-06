@@ -20,8 +20,8 @@ import {Poi} from '../../utils/types';
 import {getPois} from '../../utils/api/poiAPI';
 import Icon from '../components/Icon';
 import Filter from '../components/Filter';
-import PoiCard from '../components/PoiRow';
 import strings from '../../constants/strings';
+import PoiRow from '../components/PoiRow';
 
 const SearchCategory = ({navigation, route}: {navigation: any; route: any}) => {
   const {category, location, radius} = route.params;
@@ -141,7 +141,7 @@ const SearchCategory = ({navigation, route}: {navigation: any; route: any}) => {
                     bookmarked: false,
                   })
                 }>
-                <PoiCard
+                <PoiRow
                   poi={item}
                   bookmarked={true}
                   location={location}

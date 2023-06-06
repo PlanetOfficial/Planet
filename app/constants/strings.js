@@ -13,6 +13,7 @@ const strings = {
     next: 'Next',
     back: 'Back',
     search: 'Search',
+    seeAll: 'See All',
     milesAbbrev: 'mi',
     dash: '-',
   },

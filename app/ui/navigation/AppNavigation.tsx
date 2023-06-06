@@ -12,6 +12,7 @@ import SearchCategory from '../searchScreens/SearchCategory';
 import SearchMap from '../searchScreens/SearchMap';
 import PoiDetail from '../otherScreens/PoiDetail';
 import Friends from '../otherScreens/Friends';
+import Explore from '../homeScreens/Explore';
 
 interface AppNavigationProps {
   isLoggedIn: boolean;
@@ -36,6 +37,7 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {searchMapScreen()}
           {poiDetailScreen()}
           {friendsScreen()}
+          {exploreScreen()}
         </MainStack.Navigator>
       </BottomSheetModalProvider>
     </NavigationContainer>
@@ -52,6 +54,7 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {searchMapScreen()}
           {poiDetailScreen()}
           {friendsScreen()}
+          {exploreScreen()}
         </MainStack.Navigator>
       </BottomSheetModalProvider>
     </NavigationContainer>
@@ -158,6 +161,18 @@ const friendsScreen = () => {
     <MainStack.Screen
       name="Friends"
       component={Friends}
+      options={{
+        headerShown: false,
+      }}
+    />
+  );
+};
+
+const exploreScreen = () => {
+  return (
+    <MainStack.Screen
+      name="Explore"
+      component={Explore}
       options={{
         headerShown: false,
       }}

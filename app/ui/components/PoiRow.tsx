@@ -19,7 +19,7 @@ interface Props {
   poi: Poi;
   bookmarked: boolean;
   location?: Coordinate;
-  category: Category;
+  category?: Category;
 }
 
 const PoiRow: React.FC<Props> = ({poi, bookmarked, location, category}) => {
@@ -78,7 +78,7 @@ const PoiRow: React.FC<Props> = ({poi, bookmarked, location, category}) => {
       <View style={styles.imageContainer}>
         <Image
           style={styles.image}
-          source={{uri: poi.photo ? poi.photo : category.icon.url}}
+          source={{uri: poi.photo ? poi.photo : category?.icon.url}}
           resizeMode={poi.photo ? 'cover' : 'contain'}
         />
       </View>

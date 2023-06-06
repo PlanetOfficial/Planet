@@ -8,12 +8,9 @@ import {
   FlatList,
   Image,
   TouchableOpacity,
-  PermissionsAndroid,
-  Platform,
   LayoutAnimation,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Geolocation from '@react-native-community/geolocation';
 import {s} from 'react-native-size-matters';
 import {
   GooglePlaceData,
@@ -32,6 +29,7 @@ import Separator from '../components/Separator';
 
 import {GoogleMapsAPIKey} from '../../utils/api/APIConstants';
 import {Category, Coordinate, Genre} from '../../utils/types';
+import {fetchUserLocation} from '../../utils/Misc';
 
 const Search = ({navigation}: {navigation: any}) => {
   const [genres, setGenres] = useState<Genre[]>([]);
@@ -39,35 +37,6 @@ const Search = ({navigation}: {navigation: any}) => {
 
   const autocompleteRef = useRef<GooglePlacesAutocompleteRef>(null);
   const [searching, setSearching] = useState<boolean>(false);
-
-  const fetchUserLocation = async (): Promise<Coordinate> => {
-    if (Platform.OS === 'ios') {
-      Geolocation.requestAuthorization();
-    } else if (Platform.OS === 'android') {
-      try {
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        );
-        if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
-          Alert.alert('Error', 'Location permission denied.');
-        }
-      } catch (err) {
-        console.warn(err);
-      }
-    }
-    return new Promise(res => {
-      Geolocation.getCurrentPosition(position => {
-        setLocation({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-        });
-        res({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-        });
-      });
-    });
-  };
 
   const initializeData = async () => {
     const data = await AsyncStorage.getItem('genres');
@@ -79,9 +48,9 @@ const Search = ({navigation}: {navigation: any}) => {
   };
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
+    const unsubscribe = navigation.addListener('focus', async () => {
       initializeData();
-      fetchUserLocation();
+      setLocation(await fetchUserLocation());
     });
 
     return unsubscribe;

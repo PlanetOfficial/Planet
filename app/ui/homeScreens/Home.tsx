@@ -1,9 +1,8 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   StyleSheet,
   SafeAreaView,
-  Alert,
   ScrollView,
   FlatList,
   TouchableOpacity,
@@ -18,11 +17,22 @@ import styles from '../../constants/styles';
 import Text from '../components/Text';
 import Icon from '../components/Icon';
 import Separator from '../components/Separator';
-
-import {Poi} from '../../utils/types';
 import PoiCard from '../components/PoiCard';
 
+import {Coordinate, Poi} from '../../utils/types';
+import {fetchUserLocation} from '../../utils/Misc';
+
 const Home = ({navigation}: {navigation: any}) => {
+  const [location, setLocation] = useState<Coordinate>();
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', async () => {
+      setLocation(await fetchUserLocation());
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
   const GetGreetings = () => {
     const myDate = new Date();
     const hours = myDate.getHours();
@@ -55,6 +65,18 @@ const Home = ({navigation}: {navigation: any}) => {
           <View style={homeStyles.container}>
             <View style={homeStyles.header}>
               <Text>{item.name}</Text>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate('Explore', {
+                    name: item.name,
+                    pois: item.pois,
+                    location: location,
+                  })
+                }>
+                <Text size="s" color={colors.accent}>
+                  {strings.main.seeAll}
+                </Text>
+              </TouchableOpacity>
             </View>
             <ScrollView
               horizontal={true}
@@ -65,7 +87,7 @@ const Home = ({navigation}: {navigation: any}) => {
                   key={poi.id}
                   style={homeStyles.cardContainer}
                   onPress={() => {
-                    Alert.alert('Coming soon!', 'This feature is coming soon!');
+                    navigation.navigate('PoiDetail', {poi: poi});
                   }}>
                   <PoiCard poi={poi} bookmarked={false} />
                 </TouchableOpacity>
@@ -85,9 +107,12 @@ const homeStyles = StyleSheet.create({
     paddingVertical: s(10),
   },
   header: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    justifyContent: 'space-between',
     paddingHorizontal: s(20),
     paddingTop: s(5),
-    paddingBottom: s(10),
+    paddingBottom: s(5),
   },
   scrollView: {
     paddingLeft: s(20),
@@ -118,12 +143,12 @@ const temp_data = [
     pois: [
       {
         id: 1,
-        supplier: 'whoknows',
-        name: 'Poi 1',
+        supplier: 'google',
+        name: 'Cafe on the Ave',
         photo: 'https://picsum.photos/200',
-        place_id: '123',
-        latitude: 0,
-        longitude: 0,
+        place_id: 'ChIJXeaxcAwVkFQRMyvOL6psoX0',
+        latitude: 47.618834,
+        longitude: -122.3250644,
         vicinity: '123 Main St',
         price: 3,
         rating: 4.5,
@@ -132,26 +157,26 @@ const temp_data = [
       },
       {
         id: 2,
-        supplier: 'whoknows',
-        name: 'Poi 2',
+        supplier: 'google',
+        name: 'Poke mon go',
         photo: 'https://picsum.photos/200',
-        place_id: '123',
-        latitude: 0,
-        longitude: 0,
+        place_id: 'ChIJXeaxcAwVkFQRMyvOL6psoX0',
+        latitude: 47.618834,
+        longitude: -122.3250644,
         vicinity: '123 Main St',
-        price: 4,
-        rating: 4.5,
-        rating_count: 10000,
+        price: 1,
+        rating: 3.5,
+        rating_count: 13845,
         category_name: 'Category 1',
       },
       {
         id: 3,
-        supplier: 'whoknows',
+        supplier: 'google',
         name: 'Poi 3',
         photo: 'https://picsum.photos/200',
-        place_id: '123',
-        latitude: 0,
-        longitude: 0,
+        place_id: 'ChIJXeaxcAwVkFQRMyvOL6psoX0',
+        latitude: 47.618834,
+        longitude: -122.3250644,
         vicinity: '123 Main St',
         price: 4,
         rating: 4.5,
@@ -166,12 +191,12 @@ const temp_data = [
     pois: [
       {
         id: 1,
-        supplier: 'whoknows',
+        supplier: 'google',
         name: 'Local Point',
         photo: 'https://picsum.photos/200',
-        place_id: '123',
-        latitude: 0,
-        longitude: 0,
+        place_id: 'ChIJXeaxcAwVkFQRMyvOL6psoX0',
+        latitude: 47.618834,
+        longitude: -122.3250644,
         vicinity: '123 Main St',
         price: 2,
         rating: 4.3,
@@ -180,12 +205,12 @@ const temp_data = [
       },
       {
         id: 2,
-        supplier: 'whoknows',
+        supplier: 'google',
         name: 'Center Table',
         photo: 'https://picsum.photos/200',
-        place_id: '123',
-        latitude: 0,
-        longitude: 0,
+        place_id: 'ChIJXeaxcAwVkFQRMyvOL6psoX0',
+        latitude: 47.618834,
+        longitude: -122.3250644,
         vicinity: '123 Main St',
         price: 4,
         rating: 4.5,
@@ -194,12 +219,12 @@ const temp_data = [
       },
       {
         id: 3,
-        supplier: 'whoknows',
+        supplier: 'google',
         name: 'Poi 3',
         photo: 'https://picsum.photos/200',
-        place_id: '123',
-        latitude: 0,
-        longitude: 0,
+        place_id: 'ChIJXeaxcAwVkFQRMyvOL6psoX0',
+        latitude: 47.618834,
+        longitude: -122.3250644,
         vicinity: '123 Main St',
         price: 5,
         rating: 4.5,
@@ -214,12 +239,12 @@ const temp_data = [
     pois: [
       {
         id: 1,
-        supplier: 'whoknows',
+        supplier: 'google',
         name: 'Local Point',
         photo: 'https://picsum.photos/200',
-        place_id: '123',
-        latitude: 0,
-        longitude: 0,
+        place_id: 'ChIJXeaxcAwVkFQRMyvOL6psoX0',
+        latitude: 47.618834,
+        longitude: -122.3250644,
         vicinity: '123 Main St',
         price: 2,
         rating: 4.3,
@@ -228,12 +253,12 @@ const temp_data = [
       },
       {
         id: 2,
-        supplier: 'whoknows',
+        supplier: 'google',
         name: 'Center Table',
         photo: 'https://picsum.photos/200',
-        place_id: '123',
-        latitude: 0,
-        longitude: 0,
+        place_id: 'ChIJXeaxcAwVkFQRMyvOL6psoX0',
+        latitude: 47.618834,
+        longitude: -122.3250644,
         vicinity: '123 Main St',
         price: 4,
         rating: 4.5,
@@ -242,12 +267,12 @@ const temp_data = [
       },
       {
         id: 3,
-        supplier: 'whoknows',
+        supplier: 'google',
         name: 'Poi 3',
         photo: 'https://picsum.photos/200',
-        place_id: '123',
-        latitude: 0,
-        longitude: 0,
+        place_id: 'ChIJXeaxcAwVkFQRMyvOL6psoX0',
+        latitude: 47.618834,
+        longitude: -122.3250644,
         vicinity: '123 Main St',
         price: 5,
         rating: 4.5,
