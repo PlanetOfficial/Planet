@@ -131,10 +131,11 @@ const searchMapScreen = () => {
       component={SearchMap}
       options={{
         headerShown: false,
+        presentation: 'modal',
       }}
     />
   );
-}
+};
 
 const poiDetailScreen = () => {
   return (

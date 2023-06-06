@@ -1,44 +1,39 @@
 import React, {useState} from 'react';
-import {
-  StyleSheet,
-  View,
-} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 
 import {s} from 'react-native-size-matters';
 import MapView from 'react-native-maps';
 import {Circle, Svg} from 'react-native-svg';
 
 import colors from '../../constants/colors';
-import {defaultParams} from '../../constants/numbers';
 
 import {Region} from '../../utils/interfaces/types';
+import {defaultParams} from '../../constants/numbers';
+import Text from '../components/Text';
+import Blur from '../components/Blur';
 
-interface Props {
-  navigation: any;
-  route: any;
-}
-
-const SearchMap: React.FC<Props> = ({navigation, route}) => {
+const SearchMap = ({navigation, route}: {navigation: any; route: any}) => {
   const [region, setRegion] = useState<Region>({
-    latitude: defaultParams.defaultLatitude,
-    longitude: defaultParams.defaultLongitude,
+    latitude: route.params.latitude,
+    longitude: route.params.longitude,
     latitudeDelta: defaultParams.defaultLatitudeDelta,
     longitudeDelta: defaultParams.defaultLongitudeDelta,
   });
 
   return (
-    <View style={styles.container}>
+    <>
+      <View style={styles.container}>
         <MapView
           style={styles.map}
           initialRegion={region}
           showsUserLocation={true}
+          showsMyLocationButton={true}
           showsScale={true}
           showsCompass={true}
-          rotateEnabled={false}
-          showsMyLocationButton={true}
+          rotateEnabled={true}
           userInterfaceStyle={'light'}
           onRegionChangeComplete={setRegion}
-          region={region}/>
+        />
         <View pointerEvents={'none'} style={styles.circle}>
           <Svg style={styles.circle}>
             <Circle
@@ -52,7 +47,17 @@ const SearchMap: React.FC<Props> = ({navigation, route}) => {
             />
           </Svg>
         </View>
-    </View>
+      </View>
+
+      <Blur height={s(40)} />
+
+      <View style={styles.header}>
+        <Text>Set Location</Text>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Text>Done</Text>
+        </TouchableOpacity>
+      </View>
+    </>
   );
 };
 
@@ -71,6 +76,16 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: s(300),
     height: s(300),
+  },
+  header: {
+    position: 'absolute',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: s(350),
+    height: s(40),
+
+    paddingHorizontal: s(20),
   },
 });
 

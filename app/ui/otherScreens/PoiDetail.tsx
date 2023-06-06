@@ -25,12 +25,7 @@ import OptionMenu from '../components/OptionMenu';
 
 import {Poi, PlaceDetail, Review} from '../../utils/interfaces/types';
 
-interface Props {
-  navigation: any;
-  route: any;
-}
-
-const Place: React.FC<Props> = ({navigation, route}) => {
+const Place = ({navigation, route}: {navigation: any; route: any}) => {
   const [destination] = useState<Poi>(route.params.poi);
   const [destinationDetails, setDestinationDetails] = useState<PlaceDetail>();
   const [bookmarked, setBookmarked] = useState<boolean>(

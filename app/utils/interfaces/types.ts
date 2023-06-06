@@ -45,6 +45,13 @@ export interface Coordinate {
   longitude: number;
 }
 
+export interface Region {
+  latitude: number;
+  longitude: number;
+  latitudeDelta: number;
+  longitudeDelta: number;
+}
+
 //////
 
 export interface Event {
@@ -112,13 +119,6 @@ export interface Filter {
   options: string[];
   multi: boolean;
   defaultIdx: number;
-}
-
-export interface Region {
-  latitude: number;
-  longitude: number;
-  latitudeDelta: number;
-  longitudeDelta: number;
 }
 
 export interface MarkerObject {

@@ -1,57 +1,51 @@
 import React from 'react';
-import {StyleSheet, View, Image} from 'react-native';
+import {StyleSheet, View, Image, Alert} from 'react-native';
 
 import {s} from 'react-native-size-matters';
 
 import colors from '../../constants/colors';
 import strings from '../../constants/strings';
+import icons from '../../constants/icons';
+
+import Icon from './Icon';
+import Text from './Text';
 
 import {Category, Coordinate, Poi} from '../../utils/interfaces/types';
-import Icon from './Icon';
-import icons from '../../constants/icons';
-import Text from './Text';
 import {getDistanceFromCoordinates} from '../../utils/functions/Misc';
+import {bookmark} from '../../utils/api/poiOperations/bookmarkAPI';
 
 interface Props {
   poi: Poi;
   bookmarked: boolean;
-  setBookmarked: (bookmarked: boolean, poi: Poi) => void;
-  userLocation: Coordinate;
+  location?: Coordinate;
   category: Category;
 }
 
-const PoiCard: React.FC<Props> = ({
-  poi,
-  bookmarked,
-  setBookmarked,
-  userLocation,
-  category,
-}) => {
+const PoiCard: React.FC<Props> = ({poi, bookmarked, location, category}) => {
   const handleBookmark = async () => {
-    // if (!bookmarked) {
-    //   const response: boolean = await postPlace(place.id);
-    //   if (response) {
-    //     setBookmarked(!bookmarked, place);
-    //   } else {
-    //     Alert.alert('Error', 'Unable to bookmark place. Please try again.');
-    //   }
-    // } else {
-    //   const response: boolean = await deletePlace(place.id);
-    //   if (response) {
-    //     setBookmarked(!bookmarked, place);
-    //   } else {
-    //     Alert.alert('Error', 'Unable to unbookmark place. Please try again.');
-    //   }
-    // }
+    const response: boolean = await bookmark(poi);
+    if (!bookmarked) {
+      if (response) {
+        console.log('bookmarked');
+      } else {
+        Alert.alert('Error', 'Unable to bookmark place. Please try again.');
+      }
+    } else {
+      if (response) {
+        console.log('unbookmarked');
+      } else {
+        Alert.alert('Error', 'Unable to unbookmark place. Please try again.');
+      }
+    }
   };
 
   const getAddressString = (): string => {
     let poiString: string = '';
 
-    if (poi.latitude && poi.longitude) {
+    if (poi.latitude && poi.longitude && location) {
       poiString += `${getDistanceFromCoordinates(
         {latitude: poi.latitude, longitude: poi.longitude},
-        userLocation,
+        location,
       ).toFixed(1)} ${strings.main.milesAbbrev}`;
     }
 

@@ -5,8 +5,6 @@ import {
   SafeAreaView,
   Alert,
   FlatList,
-  Platform,
-  PermissionsAndroid,
   TouchableOpacity,
   RefreshControl,
   ActivityIndicator,
@@ -21,27 +19,16 @@ import {defaultParams} from '../../constants/numbers';
 import Text from '../components/Text';
 import Separator from '../components/Separator';
 
-import {Coordinate, Poi} from '../../utils/interfaces/types';
+import {Poi} from '../../utils/interfaces/types';
 import {getPois} from '../../utils/api/poiOperations/poiAPI';
-import Geolocation from '@react-native-community/geolocation';
 import Icon from '../components/Icon';
 import Filter from '../components/Filter';
 import PoiCard from '../components/PoiCard';
 
-const SearchCategory = ({
-  navigation,
-  route,
-}: {
-  navigation: any;
-  route: any;
-}) => {
-  const {category} = route.params;
+const SearchCategory = ({navigation, route}: {navigation: any; route: any}) => {
+  const {category, location} = route.params;
 
   const [places, setPlaces] = useState<Poi[]>([]);
-  const [userLocation, setUserLocation] = useState<Coordinate>({
-    latitude: defaultParams.defaultLatitude,
-    longitude: defaultParams.defaultLongitude,
-  });
 
   const [filters, setFilters] = useState<(number | number[])[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -49,46 +36,8 @@ const SearchCategory = ({
 
   const filterRef = useRef<any>(null); // due to forwardRef
 
-  const setCurrentLocation = async (): Promise<Coordinate> => {
-    if (Platform.OS === 'ios') {
-      Geolocation.requestAuthorization();
-    } else if (Platform.OS === 'android') {
-      try {
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        );
-        if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
-          Alert.alert('Error', 'Location permission denied.');
-        }
-      } catch (err) {
-        console.warn(err);
-      }
-    }
-
-    let coordinate: Coordinate = {
-      latitude: defaultParams.defaultLatitude,
-      longitude: defaultParams.defaultLongitude,
-    };
-
-    Geolocation.getCurrentPosition(
-      position => {
-        coordinate = {
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-        };
-      },
-      error => {
-        console.warn(error);
-      },
-    );
-    setUserLocation(coordinate);
-    return coordinate;
-  };
-
   const loadData = useCallback(async () => {
     setRefreshing(true);
-    const coordinate: Coordinate = await setCurrentLocation();
-
     const _filters: {[key: string]: string | string[]} = {};
     for (let i = 0; i < category.filter.length; i++) {
       const filter = category.filter[i];
@@ -108,8 +57,8 @@ const SearchCategory = ({
     const data = await getPois(
       category,
       defaultParams.defaultRadius,
-      coordinate.latitude,
-      coordinate.longitude,
+      location.latitude,
+      location.longitude,
       _filters ? _filters : undefined,
     );
     if (data) {
@@ -119,7 +68,7 @@ const SearchCategory = ({
     }
     setRefreshing(false);
     setLoading(false);
-  }, [category, filters]);
+  }, [category, filters, location.latitude, location.longitude]);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -158,7 +107,12 @@ const SearchCategory = ({
           <Icon
             icon={icons.map}
             button={true}
-            onPress={() => navigation.navigate('SearchMap')}
+            onPress={() =>
+              navigation.navigate('SearchMap', {
+                latitude: location?.latitude,
+                longitude: location?.longitude,
+              })
+            }
           />
         </View>
       </SafeAreaView>
@@ -192,8 +146,7 @@ const SearchCategory = ({
                 <PoiCard
                   poi={item}
                   bookmarked={true}
-                  setBookmarked={() => {}}
-                  userLocation={userLocation}
+                  location={location}
                   category={category}
                 />
               </TouchableOpacity>
@@ -224,7 +177,7 @@ const headerStyles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    
+
     paddingHorizontal: s(20),
     marginVertical: s(10),
   },
