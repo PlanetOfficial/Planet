@@ -5,12 +5,13 @@ import {PoiAPIURL} from './api/APIConstants';
 
 /*
  * Data we cache:
- * - auth token
+ * - auth_token
  * - user_id
  * - name
  * - categories
  */
 
+// caches categories
 export const cacheCategories = async () => {
   const response = await fetch(PoiAPIURL + '/category', {
     method: 'GET',
@@ -23,8 +24,9 @@ export const cacheCategories = async () => {
   }
 };
 
+// caches auth_token, user_id, and name
 export const cacheUserInfo = async (authToken: string) => {
-  // start with clear caches
+  // start with clear caches (for user storage)
   clearCaches();
 
   // set auth token into encrypted storage
@@ -37,6 +39,7 @@ export const updateCaches = async (authToken: string) => {
   await cacheStorage(authToken);
 };
 
+// clears auth_token, user_id, and name from cache
 export const clearCaches = async () => {
   if (await EncryptedStorage.getItem('auth_token')) {
     EncryptedStorage.removeItem('auth_token');
@@ -44,6 +47,10 @@ export const clearCaches = async () => {
 
   if (await AsyncStorage.getItem('name')) {
     AsyncStorage.removeItem('name');
+  }
+
+  if (await AsyncStorage.getItem('user_id')) {
+    AsyncStorage.removeItem('user_id');
   }
 };
 
