@@ -3,7 +3,6 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 import {getUserInfo} from './api/authAPI';
 import {PoiAPIURL} from './api/APIConstants';
 
-// caches: auth_token, user_id, name
 const cacheStorage = async (authToken: string) => {
   const response = await getUserInfo(authToken);
   let name = '';
@@ -17,7 +16,6 @@ const cacheStorage = async (authToken: string) => {
     await EncryptedStorage.setItem('user_id', '');
   }
 
-  // set name and other info into async storage
   await AsyncStorage.setItem('name', name);
 };
 
@@ -34,10 +32,8 @@ export const cacheCategories = async () => {
 };
 
 export const cacheUserInfo = async (authToken: string) => {
-  // start with clear caches
   clearCaches();
 
-  // set auth token into encrypted storage
   await EncryptedStorage.setItem('auth_token', authToken);
 
   await cacheStorage(authToken);
