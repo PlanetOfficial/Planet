@@ -25,7 +25,7 @@ export const getRegionFromPointAndDistance = (
   point: Coordinate,
   distance: number,
 ) => {
-  const earthRadius = 6378137;
+  const earthRadius = 6378137; // Radius of the Earth in meters
   const angularDistance = ((7 / 6) * distance) / earthRadius;
   const newLongitude =
     point.longitude +

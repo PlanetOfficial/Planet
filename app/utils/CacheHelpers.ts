@@ -3,21 +3,13 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 import {getUserInfo} from './api/authAPI';
 import {PoiAPIURL} from './api/APIConstants';
 
-const cacheStorage = async (authToken: string) => {
-  const response = await getUserInfo(authToken);
-  let name = '';
-  if (response?.name) {
-    name = response.name;
-  }
-
-  if (response?.id) {
-    await EncryptedStorage.setItem('user_id', response.id.toString());
-  } else {
-    await EncryptedStorage.setItem('user_id', '');
-  }
-
-  await AsyncStorage.setItem('name', name);
-};
+/*
+ * Data we cache:
+ * - auth token
+ * - user_id
+ * - name
+ * - categories
+ */
 
 export const cacheCategories = async () => {
   const response = await fetch(PoiAPIURL + '/category', {
@@ -32,8 +24,10 @@ export const cacheCategories = async () => {
 };
 
 export const cacheUserInfo = async (authToken: string) => {
+  // start with clear caches
   clearCaches();
 
+  // set auth token into encrypted storage
   await EncryptedStorage.setItem('auth_token', authToken);
 
   await cacheStorage(authToken);
@@ -51,4 +45,21 @@ export const clearCaches = async () => {
   if (await AsyncStorage.getItem('name')) {
     AsyncStorage.removeItem('name');
   }
+};
+
+const cacheStorage = async (authToken: string) => {
+  const response = await getUserInfo(authToken);
+  let name = '';
+  if (response?.name) {
+    name = response.name;
+  }
+
+  if (response?.id) {
+    await EncryptedStorage.setItem('user_id', response.id.toString());
+  } else {
+    await EncryptedStorage.setItem('user_id', '');
+  }
+
+  // set name and other info into async storage
+  await AsyncStorage.setItem('name', name);
 };
