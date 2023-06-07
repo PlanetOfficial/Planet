@@ -12,7 +12,7 @@ import {s} from 'react-native-size-matters';
 
 import {PieChart} from 'react-native-svg-charts';
 import {Svg} from 'react-native-svg';
-import {GroupPlace, Place} from '../../utils/interfaces/types';
+import {GroupPlace, Place} from '../../utils/types';
 import {colors} from '../../constants/colors';
 import Text from './Text';
 import Icon from './Icon';

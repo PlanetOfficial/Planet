@@ -24,7 +24,7 @@ import {icons} from '../../constants/icons';
 
 import {getPlaces} from '../../utils/api/placeAPI';
 import {getEvents, deleteEvent} from '../../utils/api/eventAPI';
-import {Place, Event} from '../../utils/interfaces/types';
+import {Place, Event} from '../../utils/types';
 import {isPlace2} from '../../utils/functions/Misc';
 
 interface Props {

@@ -25,11 +25,7 @@ import OptionMenu from '../components/OptionMenu';
 import PlacesDisplay from '../components/PlacesDisplay';
 import Filter from './Filter';
 
-import {
-  Place,
-  Category as CategoryT,
-  Subcategory,
-} from '../../utils/interfaces/types';
+import {Place, Category as CategoryT, Subcategory} from '../../utils/types';
 import {getDestinations} from '../../utils/api/destinationAPI';
 
 interface ChildComponentProps {

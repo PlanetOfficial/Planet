@@ -23,7 +23,7 @@ import Text from '../components/Text';
 import AButton from '../components/ActionButton';
 
 import {GoogleMapsAPIKey} from '../../utils/api/APIConstants';
-import {CustomPlace, Place, Region} from '../../utils/interfaces/types';
+import {CustomPlace, Place, Region} from '../../utils/types';
 import {postDestination} from '../../utils/api/destinationAPI';
 
 interface Props {

@@ -24,7 +24,7 @@ import {calculateRadius} from '../../utils/functions/Misc';
 import {GoogleMapsAPIKey} from '../../utils/api/APIConstants';
 
 import {colors} from '../../constants/colors';
-import {floats, integers} from '../../constants/numbers';
+import numbers, {floats, integers} from '../../constants/numbers';
 import {icons} from '../../constants/icons';
 import strings from '../../constants/strings';
 
@@ -32,7 +32,7 @@ import Blur from '../components/Blur';
 import Text from '../components/Text';
 import Icon from '../components/Icon';
 
-import {Region} from '../../utils/interfaces/types';
+import {Region} from '../../utils/types';
 
 interface Props {
   navigation: any;
@@ -166,7 +166,7 @@ const MapScreen: React.FC<Props> = ({navigation, route}) => {
           style={[mapStyles.rIndContainer, {bottom: insets.bottom + s(55)}]}>
           <Text size="s">{strings.createTabStack.radius + ': '}</Text>
           <Text size="s" weight="b" color={colors.accent}>
-            {(radius / integers.milesToMeters).toFixed(1)}
+            {(radius / numbers.milesToMeters).toFixed(1)}
           </Text>
           <Text size="s">{' ' + strings.createTabStack.milesAbbrev}</Text>
         </View>

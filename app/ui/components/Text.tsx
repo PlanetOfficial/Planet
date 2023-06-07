@@ -1,9 +1,9 @@
 import React from 'react';
-import {Text, TextStyle} from 'react-native';
+import {Text as RNText, TextStyle} from 'react-native';
 
 import {s} from 'react-native-size-matters';
 
-import {colors} from '../../constants/colors';
+import colors from '../../constants/colors';
 
 interface Props {
   children: React.ReactNode;
@@ -15,7 +15,7 @@ interface Props {
   center?: boolean;
 }
 
-const CustomText: React.FC<Props> = ({
+const Text: React.FC<Props> = ({
   children,
   size = 'm',
   weight = 'r',
@@ -27,34 +27,34 @@ const CustomText: React.FC<Props> = ({
   let fontSize: number = s(17);
   switch (size) {
     case 'xs':
-      fontSize = s(11);
+      fontSize = s(10);
       break;
     case 's':
-      fontSize = s(14);
+      fontSize = s(13);
       break;
     case 'm':
-      fontSize = s(17);
+      fontSize = s(16);
       break;
     case 'l':
-      fontSize = s(20);
+      fontSize = s(19);
       break;
     case 'xl':
-      fontSize = s(24);
+      fontSize = s(22);
       break;
     default:
       break;
   }
 
-  let fontWeight: '500' | '600' | '700' = '600';
+  let fontWeight: '400' | '700' | '800' = '700';
   switch (weight) {
     case 'l':
-      fontWeight = '500';
+      fontWeight = '400';
       break;
     case 'r':
-      fontWeight = '600';
+      fontWeight = '700';
       break;
     case 'b':
-      fontWeight = '700';
+      fontWeight = '800';
       break;
     default:
       break;
@@ -66,15 +66,16 @@ const CustomText: React.FC<Props> = ({
     fontWeight,
     textDecorationLine: underline ? 'underline' : 'none',
     textAlign: center ? 'center' : 'left',
+    fontFamily: 'Lato',
   };
 
   return (
-    <Text
+    <RNText
       numberOfLines={numberOfLines ? numberOfLines : undefined}
       style={textStyles}>
       {children}
-    </Text>
+    </RNText>
   );
 };
 
-export default CustomText;
+export default Text;

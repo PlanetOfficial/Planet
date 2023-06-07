@@ -19,7 +19,7 @@ import {colors} from '../../constants/colors';
 import {icons} from '../../constants/icons';
 import strings from '../../constants/strings';
 
-import {clearCaches} from '../../utils/functions/CacheHelpers';
+import {clearCaches} from '../../utils/CacheHelpers';
 
 interface Props {
   navigation: any;

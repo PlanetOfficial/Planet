@@ -7,7 +7,12 @@ import NavBar from './NavBar';
 import LoginScreen from '../authScreens/LogIn';
 import SignUp from '../authScreens/SignUp';
 import ForgotPassword from '../authScreens/!ForgotPwd';
-import Create from '../create/Create';
+import Create from '../createScreens/Create';
+import SearchCategory from '../searchScreens/SearchCategory';
+import SearchMap from '../searchScreens/SearchMap';
+import PoiDetail from '../otherScreens/PoiDetail';
+import Friends from '../otherScreens/Friends';
+import Explore from '../homeScreens/Explore';
 
 interface AppNavigationProps {
   isLoggedIn: boolean;
@@ -28,6 +33,11 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {signUpStackScreen()}
           {forgetPassStackScreen()}
           {createScreen()}
+          {searchCategoryScreen()}
+          {searchMapScreen()}
+          {poiDetailScreen()}
+          {friendsScreen()}
+          {exploreScreen()}
         </MainStack.Navigator>
       </BottomSheetModalProvider>
     </NavigationContainer>
@@ -40,6 +50,11 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {forgetPassStackScreen()}
           {tabStack()}
           {createScreen()}
+          {searchCategoryScreen()}
+          {searchMapScreen()}
+          {poiDetailScreen()}
+          {friendsScreen()}
+          {exploreScreen()}
         </MainStack.Navigator>
       </BottomSheetModalProvider>
     </NavigationContainer>
@@ -98,6 +113,68 @@ const createScreen = () => {
       options={{
         headerShown: false,
         presentation: 'modal',
+      }}
+    />
+  );
+};
+
+const searchCategoryScreen = () => {
+  return (
+    <MainStack.Screen
+      name="SearchCategory"
+      component={SearchCategory}
+      options={{
+        headerShown: false,
+      }}
+    />
+  );
+};
+
+const searchMapScreen = () => {
+  return (
+    <MainStack.Screen
+      name="SearchMap"
+      component={SearchMap}
+      options={{
+        headerShown: false,
+        presentation: 'modal',
+        gestureEnabled: false,
+      }}
+    />
+  );
+};
+
+const poiDetailScreen = () => {
+  return (
+    <MainStack.Screen
+      name="PoiDetail"
+      component={PoiDetail}
+      options={{
+        headerShown: false,
+      }}
+    />
+  );
+};
+
+const friendsScreen = () => {
+  return (
+    <MainStack.Screen
+      name="Friends"
+      component={Friends}
+      options={{
+        headerShown: false,
+      }}
+    />
+  );
+};
+
+const exploreScreen = () => {
+  return (
+    <MainStack.Screen
+      name="Explore"
+      component={Explore}
+      options={{
+        headerShown: false,
       }}
     />
   );

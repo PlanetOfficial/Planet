@@ -8,67 +8,67 @@ import {
   Linking,
   Alert,
 } from 'react-native';
-import MapView, {Marker} from 'react-native-maps';
 import {s} from 'react-native-size-matters';
 import {ScrollView} from 'react-native-gesture-handler';
 import {showLocation} from 'react-native-map-link';
 
 import strings from '../../constants/strings';
-import {icons} from '../../constants/icons';
-import {colors} from '../../constants/colors';
-import {floats} from '../../constants/numbers';
-
-import {getDestination} from '../../utils/api/destinationAPI';
-import {postPlace, deletePlace} from '../../utils/api/placeAPI';
+import icons from '../../constants/icons';
+import colors from '../../constants/colors';
 
 import Icon from '../components/Icon';
 import Text from '../components/Text';
 import OptionMenu from '../components/OptionMenu';
 
-import {
-  Place as PlaceT,
-  PlaceDetail,
-  Review,
-} from '../../utils/interfaces/types';
-import {getPlaceCardString} from '../../utils/functions/Misc';
+import {Poi, PoiDetail, Review} from '../../utils/types';
+import {getPoi, postPoi} from '../../utils/api/poiAPI';
 
-interface Props {
-  navigation: any;
-  route: any;
-}
-
-const Place: React.FC<Props> = ({navigation, route}) => {
-  const [destination] = useState<PlaceT>(route.params.destination);
-  const [destinationDetails, setDestinationDetails] = useState<PlaceDetail>();
+const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
+  const [destination, setDestination] = useState<Poi>(route.params.poi);
+  const [destinationDetails, setDestinationDetails] = useState<PoiDetail>();
   const [bookmarked, setBookmarked] = useState<boolean>(
     route?.params?.bookmarked,
   );
 
   useEffect(() => {
     const initializeDestinationData = async () => {
-      const details: PlaceDetail | null = await getDestination(
-        destination.place_id,
-        destination.supplier,
-      );
-
-      if (details) {
-        setDestinationDetails(details);
+      if (route.params?.place_id) {
+        const result = await postPoi(route.params.place_id);
+        if (result) {
+          setDestination(result.poi);
+          setDestinationDetails(result.poiDetail);
+          setBookmarked(false);
+        } else {
+          Alert.alert(
+            'Error',
+            'Unable to load destination details. Please try again.',
+          );
+        }
       } else {
-        Alert.alert(
-          'Error',
-          'Unable to load destination details. Please try again.',
+        const details: PoiDetail | null = await getPoi(
+          destination.place_id,
+          destination.supplier,
         );
+
+        if (details) {
+          setDestinationDetails(details);
+        } else {
+          Alert.alert(
+            'Error',
+            'Unable to load destination details. Please try again.',
+          );
+        }
       }
     };
 
     initializeDestinationData();
-  }, [destination.place_id, destination.supplier]);
+  }, [destination?.place_id, destination?.supplier, route.params.place_id]);
 
   const handleMapPress = async () => {
     showLocation({
-      latitude: destination.latitude,
-      longitude: destination.longitude,
-      title: destination.name,
+      latitude: destination?.latitude,
+      longitude: destination?.longitude,
+      title: destination?.name,
     });
   };
 
@@ -96,25 +96,25 @@ const Place: React.FC<Props> = ({navigation, route}) => {
     }
   };
 
-  const handleBookmark = async () => {
-    if (!bookmarked) {
-      const response: boolean = await postPlace(destination.id);
+  // const handleBookmark = async () => {
+  //   if (!bookmarked) {
+  //     const response: boolean = await postPlace(destination?.id);
 
-      if (response) {
-        setBookmarked(!bookmarked);
-      } else {
-        Alert.alert('Error', 'Unable to bookmark place. Please try again.');
-      }
-    } else {
-      const response: boolean = await deletePlace(destination.id);
+  //     if (response) {
+  //       setBookmarked(!bookmarked);
+  //     } else {
+  //       Alert.alert('Error', 'Unable to bookmark place. Please try again.');
+  //     }
+  //   } else {
+  //     const response: boolean = await deletePlace(destination?.id);
 
-      if (response) {
-        setBookmarked(!bookmarked);
-      } else {
-        Alert.alert('Error', 'Unable to unbookmark place. Please try again.');
-      }
-    }
-  };
+  //     if (response) {
+  //       setBookmarked(!bookmarked);
+  //     } else {
+  //       Alert.alert('Error', 'Unable to unbookmark place. Please try again.');
+  //     }
+  //   }
+  // };
 
   return (
     <View style={styles.container}>
@@ -123,16 +123,16 @@ const Place: React.FC<Props> = ({navigation, route}) => {
           <Icon icon={icons.back} onPress={navigation.goBack} />
           <View style={headerStyles.texts}>
             <Text weight="b" numberOfLines={1}>
-              {destination.name}
+              {destination?.name}
             </Text>
             <Text size="xs" weight="l" color={colors.accent} numberOfLines={1}>
-              {getPlaceCardString(destination)}
+              {/* {getPlaceCardString(destination)} */}
             </Text>
           </View>
           <OptionMenu
             options={[
               {
-                name: strings.library.createEvent,
+                name: strings.poi.createEvent,
                 onPress: () => {
                   navigation.navigate('MapSelection', {
                     destination: destination,
@@ -142,9 +142,9 @@ const Place: React.FC<Props> = ({navigation, route}) => {
               },
               {
                 name: bookmarked
-                  ? strings.library.unbookmark
-                  : strings.library.bookmark,
-                onPress: handleBookmark,
+                  ? strings.poi.unbookmark
+                  : strings.poi.bookmark,
+                onPress: () => {},
                 color: colors.accent,
               },
               {
@@ -155,12 +155,12 @@ const Place: React.FC<Props> = ({navigation, route}) => {
                 color: colors.black,
               },
               {
-                name: strings.createTabStack.openMap,
+                name: strings.poi.openMap,
                 onPress: handleMapPress,
                 color: colors.black,
               },
               {
-                name: strings.createTabStack.eventUrl,
+                name: strings.poi.eventUrl,
                 onPress: handleLinkPress,
                 color: colors.black,
               },
@@ -170,25 +170,6 @@ const Place: React.FC<Props> = ({navigation, route}) => {
       </SafeAreaView>
 
       <ScrollView contentContainerStyle={styles.scrollView}>
-        {destination.latitude && destination.longitude ? (
-          <MapView
-            style={styles.map}
-            userInterfaceStyle={'light'}
-            initialRegion={{
-              latitude: destination.latitude,
-              longitude: destination.longitude,
-              latitudeDelta: floats.defaultLatitudeDelta,
-              longitudeDelta: floats.defaultLongitudeDelta,
-            }}>
-            <Marker
-              coordinate={{
-                latitude: destination.latitude,
-                longitude: destination.longitude,
-              }}
-            />
-          </MapView>
-        ) : null}
-        <View style={styles.separator} />
         <>
           <ScrollView
             horizontal={true}
@@ -201,14 +182,14 @@ const Place: React.FC<Props> = ({navigation, route}) => {
                 </View>
               ))
             ) : destination?.photo ? (
-              <Image source={{uri: destination.photo}} style={styles.image} />
+              <Image source={{uri: destination?.photo}} style={styles.image} />
             ) : null}
           </ScrollView>
           <View style={styles.separator} />
         </>
         {destinationDetails?.description ? (
           <View style={detailStyles.infoContainer}>
-            <Text size="s">{strings.createTabStack.description}:</Text>
+            <Text size="s">{strings.poi.description}:</Text>
             <Text size="xs" weight="l">
               {destinationDetails?.description}
             </Text>
@@ -216,7 +197,7 @@ const Place: React.FC<Props> = ({navigation, route}) => {
         ) : null}
         {destinationDetails?.address ? (
           <View style={detailStyles.infoContainer}>
-            <Text size="s">{strings.createTabStack.address}:</Text>
+            <Text size="s">{strings.poi.address}:</Text>
             <Text size="xs" weight="l">
               {destinationDetails?.address}
             </Text>
@@ -224,7 +205,7 @@ const Place: React.FC<Props> = ({navigation, route}) => {
         ) : null}
         {destinationDetails?.hours ? (
           <View style={detailStyles.infoContainer}>
-            <Text size="s">{strings.createTabStack.hours}:</Text>
+            <Text size="s">{strings.poi.hours}:</Text>
             {destinationDetails?.hours.map((hour: string, index: number) => (
               <Text key={index} size="xs" weight="l">
                 {hour}
@@ -234,7 +215,7 @@ const Place: React.FC<Props> = ({navigation, route}) => {
         ) : null}
         {destinationDetails?.phone ? (
           <View style={detailStyles.infoContainer}>
-            <Text size="s">{strings.createTabStack.phone}:</Text>
+            <Text size="s">{strings.poi.phone}:</Text>
             <TouchableOpacity onPress={handleCallPress}>
               <Text size="xs" weight="l">
                 {destinationDetails?.phone}
@@ -244,7 +225,7 @@ const Place: React.FC<Props> = ({navigation, route}) => {
         ) : null}
         {destinationDetails?.url ? (
           <View style={detailStyles.infoContainer}>
-            <Text size="s">{strings.createTabStack.url}:</Text>
+            <Text size="s">{strings.poi.url}:</Text>
             <TouchableOpacity onPress={handleLinkPress}>
               <Text size="xs" weight="l">
                 {destinationDetails?.url}
@@ -254,7 +235,7 @@ const Place: React.FC<Props> = ({navigation, route}) => {
         ) : null}
         {destinationDetails?.website ? (
           <View style={detailStyles.infoContainer}>
-            <Text size="s">{strings.createTabStack.website}:</Text>
+            <Text size="s">{strings.poi.website}:</Text>
             <TouchableOpacity onPress={handleWebsitePress}>
               <Text size="xs" weight="l">
                 {destinationDetails?.website}
@@ -266,7 +247,7 @@ const Place: React.FC<Props> = ({navigation, route}) => {
         Array.isArray(destinationDetails.attributes) &&
         destinationDetails.attributes.length > 0 ? (
           <View style={detailStyles.infoContainer}>
-            <Text size="s">{strings.createTabStack.attributes}:</Text>
+            <Text size="s">{strings.poi.attributes}:</Text>
             {destinationDetails.attributes.map(
               (attribute: string, index: number) => (
                 <Text key={index} size="xs" weight="l">
@@ -405,4 +386,4 @@ const detailStyles = StyleSheet.create({
   },
 });
 
-export default Place;
+export default PoiDetailPage;

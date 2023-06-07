@@ -35,13 +35,13 @@ import {
   getRegionForCoordinates,
   isPlace,
 } from '../../utils/functions/Misc';
-import {MarkerObject} from '../../utils/interfaces/types';
+import {MarkerObject} from '../../utils/types';
 
 import {colors} from '../../constants/colors';
 import {icons} from '../../constants/icons';
 import strings from '../../constants/strings';
 
-import {Place, Category} from '../../utils/interfaces/types';
+import {Place, Category} from '../../utils/types';
 
 interface Props {
   navigation: any;

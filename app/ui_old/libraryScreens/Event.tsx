@@ -24,12 +24,7 @@ import {
   getRegionForCoordinates,
   isPlace,
 } from '../../utils/functions/Misc';
-import {
-  MarkerObject,
-  Place,
-  Category,
-  Coordinate,
-} from '../../utils/interfaces/types';
+import {MarkerObject, Place, Category, Coordinate} from '../../utils/types';
 
 import Blur from '../components/Blur';
 import Text from '../components/Text';

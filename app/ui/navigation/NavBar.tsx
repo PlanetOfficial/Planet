@@ -18,10 +18,10 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 import colors from '../../constants/colors';
 
-import Home from '../home/Home';
-import Search from '../search/Search';
-import Library from '../library/Library';
-import Profile from '../profile/Profile';
+import Home from '../homeScreens/Home';
+import Search from '../searchScreens/Search';
+import Library from '../libraryScreens/Library';
+import Profile from '../profileScreens/Profile';
 
 const Tab = createBottomTabNavigator();
 
@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
     color: colors.darkgrey,
   },
   bold: {
-    fontWeight: '500',
+    fontWeight: '700',
   },
   button: {
     position: 'absolute',

@@ -20,7 +20,7 @@ import AddCustomDest from '../editEventScreens/AddCustomDest';
 
 import strings from '../../constants/strings';
 
-import {Place, Category} from '../../utils/interfaces/types';
+import {Place, Category} from '../../utils/types';
 
 interface ChildComponentProps {
   destinations: (Place | Category)[];

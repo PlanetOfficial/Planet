@@ -18,7 +18,7 @@ import Text from '../components/Text';
 import Icon from '../components/Icon';
 import CategoryList from '../components/CategoryList';
 
-import {Category} from '../../utils/interfaces/types';
+import {Category} from '../../utils/types';
 
 interface Props {
   navigation: any;

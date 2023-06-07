@@ -9,14 +9,14 @@ import {
 
 import {s} from 'react-native-size-matters';
 
-import {icons} from '../../constants/icons';
-import {colors} from '../../constants/colors';
+import icons from '../../constants/icons';
+import colors from '../../constants/colors';
 import strings from '../../constants/strings';
 
 import Text from '../components/Text';
 import Icon from '../components/Icon';
 
-import {Filter as FilterT} from '../../utils/interfaces/types';
+import {Filter as FilterT} from '../../utils/types';
 
 interface ChildComponentProps {
   filters: FilterT[];
@@ -89,7 +89,7 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
       }
     } else {
       if (_filter === -1) {
-        return ': ' + strings.filter.none;
+        return ': ' + strings.main.none;
       }
       return ': ' + filter.options[_filter];
     }
@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     borderBottomWidth: 0.5,
-    borderColor: colors.grey,
+    borderColor: colors.lightgrey,
     zIndex: 10,
   },
   contentContainer: {

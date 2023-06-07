@@ -25,7 +25,7 @@ import Icon from '../components/Icon';
 import Text from '../components/Text';
 import Filter from '../editEventScreens/Filter';
 
-import {Place, Category, Subcategory} from '../../utils/interfaces/types';
+import {Place, Category, Subcategory} from '../../utils/types';
 import {getDestinations} from '../../utils/api/destinationAPI';
 import PlaceCard from '../components/PlaceCard';
 
