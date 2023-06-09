@@ -103,7 +103,7 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
         <Text style={styles.bottomText}>{strings.login.noAccount}</Text>
         <Text
           style={styles.bottomTextLink}
-          onPress={() => navigation.navigate('SignUp')}>
+          onPress={() => navigation.navigate('SignUpName')}>
           {strings.login.signUp}
         </Text>
       </View>

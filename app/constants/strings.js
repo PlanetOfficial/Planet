@@ -27,14 +27,23 @@ const strings = {
     missingInfo: 'Missing email or password',
   },
   signUp: {
-    name: 'Name',
+    firstName: 'First Name',
+    lastName: 'Last Name',
     confirmPassword: 'Confirm Password',
+    username: 'Username',
     phoneNumber: 'Phone Number',
+    age: 'Age',
+    sendCode: 'Send Code',
+    code: 'Code',
+    verifyCode: 'Verify Code',
     signUp: 'Sign Up',
+    inputLong: 'Inputs are too long',
+    passwordShort: 'Password is too short',
     termsAgreement:
       "By signing up, you agree to Rivalet's Terms and Conditions and Privacy Policy.",
     passwordsMatch: 'Passwords are not the same',
     missingFields: 'Fields are missing',
+    improveExperience: 'Help us improve your experience by filling out this optional information',
   },
   poi: {
     createEvent: 'Create an Event',
@@ -75,6 +84,9 @@ const strings = {
     noBookmarksFound: 'No Bookmarks Found',
     noBookmarksFoundDescription: 'Try bookmarking something',
   },
+  optionArrays: {
+    genders: ['Male', 'Female', 'Other', 'Prefer not to say'],
+  }
 };
 
 export default strings;
