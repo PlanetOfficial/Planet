@@ -1,3 +1,11 @@
+export interface UserInfo {
+  id: number;
+  created_at: string;
+  first_name: string;
+  last_name: string;
+  username: string;
+}
+
 export interface Genre {
   id: number;
   name: string;

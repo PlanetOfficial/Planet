@@ -5,7 +5,10 @@ import {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 
 import NavBar from './NavBar';
 import LoginScreen from '../authScreens/LogIn';
-import SignUp from '../authScreens/SignUp';
+import SignUpName from '../authScreens/SignUpName';
+import SignUpCreds from '../authScreens/SignUpCreds';
+import SignUpPhone from '../authScreens/SignUpPhone';
+import SignUpInfo from '../authScreens/SignUpInfo';
 import ForgotPassword from '../authScreens/!ForgotPwd';
 import Create from '../createScreens/Create';
 import SearchCategory from '../searchScreens/SearchCategory';
@@ -31,7 +34,10 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
         <MainStack.Navigator initialRouteName="Main">
           {tabStack()}
           {loginStackScreen()}
-          {signUpStackScreen()}
+          {signUpNameStackScreen()}
+          {signUpCredsStackScreen()}
+          {signUpPhoneStackScreen()}
+          {signUpInfoStackScreen()}
           {forgetPassStackScreen()}
           {createScreen()}
           {searchCategoryScreen()}
@@ -48,7 +54,10 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
       <BottomSheetModalProvider>
         <MainStack.Navigator initialRouteName="Main">
           {loginStackScreen()}
-          {signUpStackScreen()}
+          {signUpNameStackScreen()}
+          {signUpCredsStackScreen()}
+          {signUpPhoneStackScreen()}
+          {signUpInfoStackScreen()}
           {forgetPassStackScreen()}
           {tabStack()}
           {createScreen()}
@@ -78,11 +87,41 @@ const loginStackScreen = () => {
   );
 };
 
-const signUpStackScreen = () => {
+const signUpNameStackScreen = () => {
   return (
     <MainStack.Screen
-      name="SignUp"
-      component={SignUp}
+      name="SignUpName"
+      component={SignUpName}
+      options={{headerShown: false}}
+    />
+  );
+};
+
+const signUpCredsStackScreen = () => {
+  return (
+    <MainStack.Screen
+      name="SignUpCreds"
+      component={SignUpCreds}
+      options={{headerShown: false}}
+    />
+  );
+};
+
+const signUpPhoneStackScreen = () => {
+  return (
+    <MainStack.Screen
+      name="SignUpPhone"
+      component={SignUpPhone}
+      options={{headerShown: false}}
+    />
+  );
+};
+
+const signUpInfoStackScreen = () => {
+  return (
+    <MainStack.Screen
+      name="SignUpInfo"
+      component={SignUpInfo}
       options={{headerShown: false}}
     />
   );
