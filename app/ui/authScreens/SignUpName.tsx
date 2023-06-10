@@ -64,6 +64,7 @@ const SignUpName = ({navigation}: {navigation: any}) => {
           <Text>{error}</Text>
         ) : null}
       </View>
+      <Text style={styles.footerText}>{strings.signUp.termsAgreement}</Text>
     </SafeAreaView>
   );
 };

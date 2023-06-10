@@ -36,6 +36,11 @@ const styles = StyleSheet.create({
     height: 0.5,
     backgroundColor: colors.lightgrey,
   },
+  footerText: {
+    fontSize: 12,
+    textAlign: 'center',
+    color: colors.black,
+  },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',

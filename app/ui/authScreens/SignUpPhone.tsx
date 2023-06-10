@@ -41,7 +41,10 @@ const SignUpPhone = ({navigation}: {navigation: any}) => {
 
     // TODO: call API and verify code for user
 
-    navigation.navigate('SignUpInfo');
+    navigation.reset({
+      index: 0,
+      routes: [{name: 'SignUpInfo'}],
+    });
   };
 
   return (

@@ -85,7 +85,7 @@ const strings = {
     noBookmarksFoundDescription: 'Try bookmarking something',
   },
   optionArrays: {
-    genders: ['Male', 'Female', 'Other', 'Prefer not to say'],
+    genders: ['Male', 'Female', 'Other', 'Rather not say'],
   }
 };
 

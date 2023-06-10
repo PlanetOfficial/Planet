@@ -13,7 +13,7 @@ const SignUpCreds = ({navigation, route}: {navigation: any; route: any}) => {
   const [firstName] = useState<string>(route.params.firstName);
   const [lastName] = useState<string>(route.params.lastName);
 
-  const [username, setUsername] = useState<string>('');
+  const [username, setUsername] = useState<string>(firstName + lastName);
   const [password, setPassword] = useState<string>('');
   const [passwordConfirm, setPasswordConfirm] = useState<string>('');
 
@@ -49,7 +49,10 @@ const SignUpCreds = ({navigation, route}: {navigation: any; route: any}) => {
 
     // TODO: POST to API here**
 
-    navigation.navigate('SignUpPhone');
+    navigation.reset({
+      index: 0,
+      routes: [{name: 'SignUpPhone'}],
+    });
   };
 
   return (
