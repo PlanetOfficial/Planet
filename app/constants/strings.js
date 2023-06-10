@@ -9,6 +9,7 @@ const strings = {
     discard: 'Discard',
     edit: 'Edit',
     remove: 'Remove',
+    rename: 'Rename',
     add: 'Add',
     create: 'Create',
     next: 'Next',
@@ -84,6 +85,7 @@ const strings = {
     addDestination: 'Add a Destination',
     moveUp: 'Move Up',
     moveDown: 'Move Down',
+    renamePrompt: 'Enter a new name for this destination:',
   },
 };
 

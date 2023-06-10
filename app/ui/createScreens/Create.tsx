@@ -12,6 +12,7 @@ import {
 import {s} from 'react-native-size-matters';
 import DatePicker from 'react-native-date-picker';
 import {Svg, Line, Circle} from 'react-native-svg';
+import prompt from 'react-native-prompt-android';
 
 import moment from 'moment';
 
@@ -165,6 +166,29 @@ const Create = ({navigation, route}: {navigation: any; route: any}) => {
                         },
                         color: colors.red,
                       },
+                      {
+                        name: strings.main.rename,
+                        onPress: () => {
+                          prompt(
+                            strings.main.rename,
+                            strings.event.renamePrompt,
+                            [
+                             {text: 'Cancel', style: 'cancel'},
+                             {text: 'Save', onPress: name => {
+                              const _destinations = [...destinations];
+                              _destinations[index].category_name = name;
+                              setDestinations(_destinations);
+                             }},
+                            ],
+                            {
+                                type: 'plain-text',
+                                cancelable: false,
+                                defaultValue: destination.category_name,
+                            }
+                        );
+                        },
+                        color: colors.black,
+                      }
                     ]}
                   />
                 </View>
@@ -275,10 +299,11 @@ const createStyles = StyleSheet.create({
   },
   title: {
     fontSize: s(16),
-    fontWeight: '500',
+    fontWeight: '700',
     fontFamily: 'Lato',
     textDecorationLine: 'underline',
     marginBottom: s(3),
+    padding: 0,
   },
   addButton: {
     alignItems: 'center',
