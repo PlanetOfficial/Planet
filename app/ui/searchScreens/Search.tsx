@@ -26,12 +26,20 @@ import styles from '../../constants/styles';
 
 import Text from '../components/Text';
 import Separator from '../components/Separator';
+import PoiRow from '../components/PoiRow';
+import Icon from '../components/Icon';
 
 import {GoogleMapsAPIKey} from '../../utils/api/APIConstants';
-import {Category, Coordinate, Genre} from '../../utils/types';
 import {fetchUserLocation} from '../../utils/Misc';
+import {Category, Coordinate, Genre, Poi} from '../../utils/types';
 
-const Search = ({navigation}: {navigation: any}) => {
+const Search = ({
+  navigation,
+  isCreate = false,
+}: {
+  navigation: any;
+  isCreate?: boolean;
+}) => {
   const [genres, setGenres] = useState<Genre[]>([]);
   const [location, setLocation] = useState<Coordinate>();
 
@@ -58,7 +66,10 @@ const Search = ({navigation}: {navigation: any}) => {
 
   const handleSelection = async (data: GooglePlaceData) => {
     if (data) {
-      navigation.navigate('PoiDetail', {place_id: data.place_id});
+      navigation.navigate('PoiDetail', {
+        place_id: data.place_id,
+        isCreate: isCreate,
+      });
     } else {
       Alert.alert('Error', 'Unable to retrieve destination. Please try again.');
     }
@@ -67,6 +78,16 @@ const Search = ({navigation}: {navigation: any}) => {
   return (
     <View style={styles.container}>
       <SafeAreaView style={searchStyles.header}>
+        {isCreate && !searching ? (
+          <View style={searchStyles.x}>
+            <Icon
+              icon={icons.close}
+              onPress={() => {
+                navigation.goBack();
+              }}
+            />
+          </View>
+        ) : null}
         <Image style={searchStyles.icon} source={icons.search} />
         <GooglePlacesAutocomplete
           ref={autocompleteRef}
@@ -100,7 +121,6 @@ const Search = ({navigation}: {navigation: any}) => {
           }}
           onPress={handleSelection}
           styles={{
-            container: searchStyles.container,
             textInputContainer: [
               searchStyles.textInputContainer,
               styles.shadow,
@@ -133,18 +153,17 @@ const Search = ({navigation}: {navigation: any}) => {
         ) : null}
       </SafeAreaView>
       {!searching ? (
-        <FlatList
-          data={genres}
-          renderItem={({item}: {item: Genre}) => (
-            <View style={categoryStyles.container}>
+        <ScrollView>
+          {genres.map((genre: Genre, index: number) => (
+            <View key={genre.id}>
               <View style={categoryStyles.header}>
-                <Text>{item.name}</Text>
+                <Text>{genre.name}</Text>
               </View>
               <ScrollView
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={categoryStyles.scrollView}>
-                {item.categories.map((category: Category) => (
+                {genre.categories.map((category: Category) => (
                   <TouchableOpacity
                     key={category.id}
                     style={categoryStyles.categoryContainer}
@@ -153,6 +172,7 @@ const Search = ({navigation}: {navigation: any}) => {
                         category,
                         location,
                         radius: numbers.defaultRadius,
+                        isCreate: isCreate,
                       });
                     }}>
                     <View style={[categoryStyles.iconContainer, styles.shadow]}>
@@ -167,21 +187,52 @@ const Search = ({navigation}: {navigation: any}) => {
                   </TouchableOpacity>
                 ))}
               </ScrollView>
+              {index !== genres.length - 1 ? <Separator /> : null}
             </View>
-          )}
-          ItemSeparatorComponent={Separator}
-          keyExtractor={(item: Genre) => item.id.toString()}
-        />
-      ) : null}
+          ))}
+        </ScrollView>
+      ) : (
+        <>
+          <View style={categoryStyles.header}>
+            <Text>{strings.profile.bookmarks}</Text>
+          </View>
+          <FlatList
+            data={[]}
+            renderItem={({item}: {item: Poi}) => {
+              return (
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate('PoiDetail', {
+                      poi: item,
+                      bookmarked: false,
+                      isCreate: isCreate,
+                    })
+                  }>
+                  <PoiRow poi={item} bookmarked={true} location={location} />
+                </TouchableOpacity>
+              );
+            }}
+            ListEmptyComponent={
+              <View style={styles.center}>
+                <Text>{strings.profile.noBookmarksFound}</Text>
+                <Text> </Text>
+                <Text size="s" color={colors.darkgrey}>
+                  {strings.profile.noBookmarksFoundDescription}
+                </Text>
+              </View>
+            }
+            ItemSeparatorComponent={Separator}
+            keyExtractor={(item: Poi) => item.id.toString()}
+          />
+        </>
+      )}
     </View>
   );
 };
 
 const categoryStyles = StyleSheet.create({
-  container: {
-    paddingVertical: s(10),
-  },
   header: {
+    marginTop: s(10),
     paddingHorizontal: s(20),
     paddingTop: s(5),
     paddingBottom: s(10),
@@ -189,6 +240,7 @@ const categoryStyles = StyleSheet.create({
   scrollView: {
     paddingHorizontal: s(20),
     paddingVertical: s(5),
+    marginBottom: s(10),
   },
   categoryContainer: {
     alignItems: 'center',
@@ -214,10 +266,7 @@ const categoryStyles = StyleSheet.create({
 const searchStyles = StyleSheet.create({
   header: {
     flexDirection: 'row',
-  },
-  container: {
-    flex: 0,
-    width: s(310),
+    alignItems: 'center',
     marginHorizontal: s(20),
   },
   text: {
@@ -247,17 +296,18 @@ const searchStyles = StyleSheet.create({
     backgroundColor: colors.lightgrey,
   },
   icon: {
-    marginTop: s(12.5),
-    marginLeft: s(27),
+    marginLeft: s(10),
     width: s(15),
     height: s(15),
-    marginRight: -s(42),
+    marginRight: -s(25),
     tintColor: colors.darkgrey,
     zIndex: 5,
   },
   cancel: {
-    marginTop: s(10),
     marginLeft: -s(67),
+  },
+  x: {
+    marginRight: s(15),
   },
 });
 
