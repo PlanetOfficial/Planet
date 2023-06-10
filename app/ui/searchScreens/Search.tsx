@@ -45,6 +45,7 @@ const Search = ({
 
   const autocompleteRef = useRef<GooglePlacesAutocompleteRef>(null);
   const [searching, setSearching] = useState<boolean>(false);
+  const [searchText, setSearchText] = useState<string>('');
 
   const initializeData = async () => {
     const data = await AsyncStorage.getItem('genres');
@@ -77,80 +78,86 @@ const Search = ({
 
   return (
     <View style={styles.container}>
-      <SafeAreaView style={searchStyles.header}>
-        {isCreate && !searching ? (
-          <View style={searchStyles.x}>
-            <Icon
-              icon={icons.close}
-              onPress={() => {
-                navigation.goBack();
-              }}
-            />
-          </View>
-        ) : null}
-        <Image style={searchStyles.icon} source={icons.search} />
-        <GooglePlacesAutocomplete
-          ref={autocompleteRef}
-          placeholder={strings.search.search}
-          disableScroll={true}
-          isRowScrollable={false}
-          minLength={3}
-          enablePoweredByContainer={false}
-          fetchDetails={false}
-          query={{
-            key: GoogleMapsAPIKey,
-            language: 'en',
-          }}
-          textInputProps={{
-            selectTextOnFocus: true,
-            style: searchStyles.text,
-            autoCapitalize: 'none',
-            onFocus: () => {
-              LayoutAnimation.configureNext(
-                LayoutAnimation.create(200, 'easeInEaseOut', 'opacity'),
-              );
-              setSearching(true);
-            },
-            onBlur() {
-              LayoutAnimation.configureNext(
-                LayoutAnimation.create(100, 'easeInEaseOut', 'opacity'),
-              );
-              setSearching(false);
-            },
-            placeholderTextColor: colors.darkgrey,
-          }}
-          onPress={handleSelection}
-          styles={{
-            textInputContainer: [
-              searchStyles.textInputContainer,
-              styles.shadow,
-              searching
-                ? {
-                    width: s(250),
-                  }
-                : null,
-            ],
-            textInput: searchStyles.textInput,
-            separator: searchStyles.separator,
-          }}
-          renderRow={rowData => (
-            <View>
-              <Text size="s" weight="r" color={colors.black}>
-                {rowData.structured_formatting.main_text}
-              </Text>
-              <Text size="xs" weight="l" color={colors.darkgrey}>
-                {rowData.structured_formatting.secondary_text}
-              </Text>
+      <SafeAreaView>
+        <View style={searchStyles.header}>
+          {isCreate && !searching ? (
+            <View style={searchStyles.x}>
+              <Icon
+                icon={icons.close}
+                onPress={() => {
+                  navigation.goBack();
+                }}
+              />
             </View>
-          )}
-        />
-        {searching ? (
-          <TouchableOpacity
-            style={searchStyles.cancel}
-            onPress={() => autocompleteRef.current?.blur()}>
-            <Text>{strings.main.cancel}</Text>
-          </TouchableOpacity>
-        ) : null}
+          ) : null}
+          <GooglePlacesAutocomplete
+            ref={autocompleteRef}
+            placeholder={strings.search.search}
+            disableScroll={true}
+            isRowScrollable={false}
+            enablePoweredByContainer={false}
+            fetchDetails={false}
+            query={{
+              key: GoogleMapsAPIKey,
+              language: 'en',
+            }}
+            textInputProps={{
+              selectTextOnFocus: true,
+              style: searchStyles.text,
+              autoCapitalize: 'none',
+              onFocus: () => {
+                LayoutAnimation.configureNext(
+                  LayoutAnimation.create(200, 'easeInEaseOut', 'opacity'),
+                );
+                setSearching(true);
+              },
+              onBlur() {
+                LayoutAnimation.configureNext(
+                  LayoutAnimation.create(100, 'easeInEaseOut', 'opacity'),
+                );
+                setSearching(false);
+              },
+              placeholderTextColor: colors.darkgrey,
+              onChangeText: text => {
+                setSearchText(text);
+              },
+            }}
+            onPress={handleSelection}
+            styles={{
+              textInputContainer: [
+                searchStyles.textInputContainer,
+                styles.shadow,
+                searching
+                  ? {
+                      width: s(250),
+                    }
+                  : null,
+              ],
+              textInput: searchStyles.textInput,
+              separator: searchStyles.separator,
+            }}
+            renderLeftButton={() => (
+              <Image style={searchStyles.icon} source={icons.search} />
+            )}
+            renderRow={rowData => (
+              <View>
+                <Text size="s" weight="r" color={colors.black}>
+                  {rowData.structured_formatting.main_text}
+                </Text>
+                <Text size="xs" weight="l" color={colors.darkgrey}>
+                  {rowData.structured_formatting.secondary_text}
+                </Text>
+              </View>
+            )}
+          />
+          {searching ? (
+            <TouchableOpacity
+              style={searchStyles.cancel}
+              onPress={() => autocompleteRef.current?.blur()}>
+              <Text>{strings.main.cancel}</Text>
+            </TouchableOpacity>
+          ) : null}
+        </View>
       </SafeAreaView>
       {!searching ? (
         <ScrollView>
@@ -191,7 +198,7 @@ const Search = ({
             </View>
           ))}
         </ScrollView>
-      ) : (
+      ) : searchText.length === 0 ? (
         <>
           <View style={categoryStyles.header}>
             <Text>{strings.profile.bookmarks}</Text>
@@ -225,7 +232,7 @@ const Search = ({
             keyExtractor={(item: Poi) => item.id.toString()}
           />
         </>
-      )}
+      ) : null}
     </View>
   );
 };
@@ -271,10 +278,10 @@ const searchStyles = StyleSheet.create({
   },
   text: {
     padding: 0,
+    paddingLeft: s(30),
     fontSize: s(14),
     fontWeight: '700',
     width: '100%',
-    paddingLeft: s(32),
     fontFamily: 'Lato',
   },
   textInputContainer: {
@@ -296,15 +303,20 @@ const searchStyles = StyleSheet.create({
     backgroundColor: colors.lightgrey,
   },
   icon: {
-    marginLeft: s(10),
+    marginTop: s(7.5),
+    marginLeft: s(8),
+    marginRight: s(-23),
     width: s(15),
     height: s(15),
-    marginRight: -s(25),
     tintColor: colors.darkgrey,
     zIndex: 5,
   },
   cancel: {
-    marginLeft: -s(67),
+    position: 'absolute',
+    top: s(5),
+    right: 0,
+    height: s(30),
+    justifyContent: 'center',
   },
   x: {
     marginRight: s(15),

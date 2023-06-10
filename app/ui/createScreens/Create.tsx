@@ -48,7 +48,7 @@ const Create = ({navigation, route}: {navigation: any; route: any}) => {
 
       navigation.setParams({destination: undefined});
     }
-  }, [navigation, route.params?.destination, destinations]);
+  }, [navigation, route.params?.destination, destinations, insertionIndex]);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', addDestination);
@@ -129,7 +129,7 @@ const Create = ({navigation, route}: {navigation: any; route: any}) => {
             button={true}
             padding={-2}
             onPress={() => {
-
+              // TODO: Navigate to friends tab
             }}
           />
         </View>
@@ -173,22 +173,25 @@ const Create = ({navigation, route}: {navigation: any; route: any}) => {
                             strings.main.rename,
                             strings.event.renamePrompt,
                             [
-                             {text: 'Cancel', style: 'cancel'},
-                             {text: 'Save', onPress: name => {
-                              const _destinations = [...destinations];
-                              _destinations[index].category_name = name;
-                              setDestinations(_destinations);
-                             }},
+                              {text: 'Cancel', style: 'cancel'},
+                              {
+                                text: 'Save',
+                                onPress: name => {
+                                  const _destinations = [...destinations];
+                                  _destinations[index].category_name = name;
+                                  setDestinations(_destinations);
+                                },
+                              },
                             ],
                             {
-                                type: 'plain-text',
-                                cancelable: false,
-                                defaultValue: destination.category_name,
-                            }
-                        );
+                              type: 'plain-text',
+                              cancelable: false,
+                              defaultValue: destination.category_name,
+                            },
+                          );
                         },
                         color: colors.black,
-                      }
+                      },
                     ]}
                   />
                 </View>
@@ -217,7 +220,7 @@ const Create = ({navigation, route}: {navigation: any; route: any}) => {
           style={[createStyles.addButton, styles.shadow]}
           onPress={() => {
             setInsertionIndex(0);
-            navigation.navigate('CreateSearch')
+            navigation.navigate('CreateSearch');
           }}>
           <Text size="l" weight="b" color={colors.accent}>
             {strings.event.addDestination}
@@ -236,7 +239,9 @@ const Create = ({navigation, route}: {navigation: any; route: any}) => {
           },
         ]}
         disabled={!destinations || destinations.length === 0}
-        onPress={() => console.log('save')}>
+        onPress={() => {
+          // TODO: Save
+        }}>
         <Text size="l" weight="b" color={colors.white}>
           {strings.main.save}
         </Text>
