@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -35,19 +35,25 @@ const Create = ({navigation, route}: {navigation: any; route: any}) => {
   const [datePickerOpen, setDatePickerOpen] = useState<boolean>(false);
 
   const [destinations, setDestinations] = useState<Poi[]>();
+  const [insertionIndex, setInsertionIndex] = useState<number>(0);
+
+  const addDestination = useCallback(() => {
+    const destination = route.params?.destination;
+
+    if (destination) {
+      const _destinations = destinations ? [...destinations] : [];
+      _destinations.splice(insertionIndex, 0, destination);
+      setDestinations(_destinations);
+
+      navigation.setParams({destination: undefined});
+    }
+  }, [navigation, route.params?.destination, destinations]);
 
   useEffect(() => {
-    if (!route.params?.destination) {
-      return;
-    }
-    console.log(route.params?.destination);
-    let _destinations = destinations ? destinations : [];
-    _destinations.push(route.params?.destination);
-    setDestinations(_destinations);
-    console.log(_destinations);
-    console.log(destinations);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [route.params?.destination]);
+    const unsubscribe = navigation.addListener('focus', addDestination);
+
+    return unsubscribe;
+  }, [navigation, addDestination]);
 
   const onMove = (idx: number, direction: number) => {
     if (!destinations) {
@@ -122,19 +128,17 @@ const Create = ({navigation, route}: {navigation: any; route: any}) => {
             button={true}
             padding={-2}
             onPress={() => {
-              console.log(destinations);
-              console.log(destinations?.length);
-              console.log(route.params?.destination);
+
             }}
           />
         </View>
       </SafeAreaView>
       {destinations && destinations?.length > 0 ? (
-        <ScrollView>
+        <ScrollView contentContainerStyle={createStyles.scrollView}>
           {destinations.map((destination: Poi, index: number) => (
             <View key={index}>
-              <View style={destinationStyles.container}>
-                <View style={destinationStyles.header}>
+              <View style={createStyles.destination}>
+                <View style={createStyles.destinationHeader}>
                   <Text>{destination.category_name}</Text>
                   <OptionMenu
                     options={[
@@ -176,6 +180,7 @@ const Create = ({navigation, route}: {navigation: any; route: any}) => {
               </View>
               <TouchableOpacity
                 onPress={() => {
+                  setInsertionIndex(index + 1);
                   navigation.navigate('CreateSearch');
                 }}>
                 <AddEventSeparator />
@@ -186,7 +191,10 @@ const Create = ({navigation, route}: {navigation: any; route: any}) => {
       ) : (
         <TouchableOpacity
           style={[createStyles.addButton, styles.shadow]}
-          onPress={() => navigation.navigate('CreateSearch')}>
+          onPress={() => {
+            setInsertionIndex(0);
+            navigation.navigate('CreateSearch')
+          }}>
           <Text size="l" weight="b" color={colors.accent}>
             {strings.event.addDestination}
           </Text>
@@ -206,7 +214,7 @@ const Create = ({navigation, route}: {navigation: any; route: any}) => {
         disabled={!destinations || destinations.length === 0}
         onPress={() => console.log('save')}>
         <Text size="l" weight="b" color={colors.white}>
-          {destinations?.length}
+          {strings.main.save}
         </Text>
       </TouchableOpacity>
     </View>
@@ -288,14 +296,14 @@ const createStyles = StyleSheet.create({
     paddingVertical: s(12.5),
     borderRadius: s(10),
   },
-});
-
-const destinationStyles = StyleSheet.create({
-  container: {
+  scrollView: {
+    paddingBottom: s(100),
+  },
+  destination: {
     marginHorizontal: s(20),
     marginBottom: s(10),
   },
-  header: {
+  destinationHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingVertical: s(10),
