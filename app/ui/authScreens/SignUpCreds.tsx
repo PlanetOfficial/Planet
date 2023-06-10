@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import {View, StyleSheet, SafeAreaView, Text, TextInput, TouchableOpacity} from 'react-native';
+
 import colors from '../../constants/colors';
 import styles from '../../constants/styles';
 import strings from '../../constants/strings';
+import { signup } from '../../utils/api/authAPI';
 
 /*
  * route params:
@@ -19,7 +21,7 @@ const SignUpCreds = ({navigation, route}: {navigation: any; route: any}) => {
 
   const [error, setError] = useState<string>('');
 
-  const handleNext = () => {
+  const handleNext = async () => {
     setError('');
 
     if (username.length === 0 || password.length === 0 || passwordConfirm.length === 0) {
@@ -47,12 +49,16 @@ const SignUpCreds = ({navigation, route}: {navigation: any; route: any}) => {
       return;
     }
 
-    // TODO: POST to API here**
-
-    navigation.reset({
-      index: 0,
-      routes: [{name: 'SignUpPhone'}],
-    });
+    const response = await signup(firstName, lastName, username, password);
+    
+    if (response?.authToken) {
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'SignUpPhone', params: {authToken: response?.authToken}}],
+      });
+    } else {
+      setError(response?.message);
+    }
   };
 
   return (

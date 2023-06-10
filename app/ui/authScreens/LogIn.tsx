@@ -12,12 +12,12 @@ import messaging from '@react-native-firebase/messaging';
 
 import strings from '../../constants/strings';
 
-import {login, saveTokenToDatabase} from '../../utils/api/authAPI';
+import {isVerified, login, saveTokenToDatabase} from '../../utils/api/authAPI';
 import colors from '../../constants/colors';
 import {cacheUserInfo} from '../../utils/CacheHelpers';
 
 const LoginScreen = ({navigation}: {navigation: any}) => {
-  const [email, setEmail] = useState<string>('');
+  const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
   const [error, setError] = useState<string>('');
@@ -29,16 +29,27 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
     setError('');
 
     // display an error if one of the fields are missing
-    if (email.length === 0 || password.length === 0) {
+    if (username.length === 0 || password.length === 0) {
       setError(strings.login.missingInfo);
       return;
     }
 
     setLoading(true);
-    const response = await login(email, password);
+    const response = await login(username, password);
     setLoading(false);
 
     if (response?.authToken) {
+      // check if verified
+      const verifiedResponse = await isVerified(response.authToken);
+      if (!verifiedResponse) {
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'SignUpPhone', params: {authToken: response.authToken}}],
+        });
+
+        return;
+      }
+
       // successful login
       await cacheUserInfo(response?.authToken);
 
@@ -59,15 +70,12 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
     <View testID="loginScreenView" style={styles.container}>
       <Text style={styles.title}>{strings.main.appName}</Text>
       <TextInput
-        testID="emailTextInput"
         style={styles.input}
-        placeholder={strings.login.email}
-        value={email}
-        onChangeText={setEmail}
+        placeholder={strings.login.username}
+        value={username}
+        onChangeText={setUsername}
         autoCapitalize="none"
         autoCorrect={false}
-        keyboardType="email-address"
-        textContentType="emailAddress"
         placeholderTextColor={colors.darkgrey}
       />
       <TextInput

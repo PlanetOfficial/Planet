@@ -1,24 +1,26 @@
 import React, { useState } from 'react';
 import {View, StyleSheet, SafeAreaView, Text, TouchableOpacity, TextInput} from 'react-native';
 import PhoneInput from 'react-phone-number-input/react-native-input';
+import { E164Number } from 'libphonenumber-js/types';
 
 import colors from '../../constants/colors';
 import styles from '../../constants/styles';
 import strings from '../../constants/strings';
-import { E164Number } from 'libphonenumber-js/types';
+import { sendCode, verifyCode } from '../../utils/api/authAPI';
 
 /*
  * route params:
- * - 
+ * - authToken: string
  */
-const SignUpPhone = ({navigation}: {navigation: any}) => {
-  // TODO: have userId at this point?
+const SignUpPhone = ({navigation, route}: {navigation: any; route: any}) => {
+  const [authToken] = useState<string>(route.params.authToken);
+  
   const [phoneNumber, setPhoneNumber] = useState<E164Number | undefined>();
   const [code, setCode] = useState<string>('');
 
   const [error, setError] = useState<string>('');
 
-  const handleSendCode = () => {
+  const handleSendCode = async () => {
     setError('');
 
     if (phoneNumber === undefined || phoneNumber.length === 0) {
@@ -26,12 +28,14 @@ const SignUpPhone = ({navigation}: {navigation: any}) => {
       return;
     }
 
-    // TODO: call API to send a code
+    const response = await sendCode(authToken, phoneNumber);
 
-    
+    if (!response) {
+      setError(strings.signUp.codeSendFailed);
+    }
   };
 
-  const handleVerifyCode = () => {
+  const handleVerifyCode = async () => {
     setError('');
 
     if (code.length === 0) {
@@ -39,12 +43,16 @@ const SignUpPhone = ({navigation}: {navigation: any}) => {
       return;
     }
 
-    // TODO: call API and verify code for user
+    const response = await verifyCode(authToken, code);
 
-    navigation.reset({
-      index: 0,
-      routes: [{name: 'SignUpInfo'}],
-    });
+    if (response) {
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'SignUpInfo', params: {authToken: authToken}}],
+      });
+    } else {
+      setError(strings.signUp.codeVerifyFailed);
+    }
   };
 
   return (

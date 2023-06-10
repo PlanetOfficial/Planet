@@ -1,9 +1,10 @@
 import EncryptedStorage from 'react-native-encrypted-storage';
-import {UserOpsURL} from './APIConstants';
+import {UserAPIURL} from './APIConstants';
+import { UserInfo } from '../types';
 
-export const login = async (email: string, password: string) => {
+export const login = async (username: string, password: string) => {
   const response = await fetch(
-    UserOpsURL + `/auth/login?email=${email}&password=${password}`,
+    UserAPIURL + `/auth/login?username=${username}&password=${password}`,
     {
       method: 'POST',
     },
@@ -14,10 +15,10 @@ export const login = async (email: string, password: string) => {
   return myJson;
 };
 
-export const signup = async (name: string, email: string, password: string) => {
+export const signup = async (first_name: string, last_name: string, username: string, password: string) => {
   const response = await fetch(
-    UserOpsURL +
-      `/auth/signup?name=${name}&email=${email}&password=${password}`,
+    UserAPIURL +
+      `/auth/signup?first_name=${first_name}&last_name=${last_name}&username=${username}&password=${password}`,
     {
       method: 'POST',
     },
@@ -28,8 +29,41 @@ export const signup = async (name: string, email: string, password: string) => {
   return myJson;
 };
 
-export const getUserInfo = async (authToken: string) => {
-  const response = await fetch(UserOpsURL + `/auth/me?authtoken=${authToken}`, {
+export const sendCode = async (authToken: string, phone_number: string) => {
+  const response = await fetch(
+    UserAPIURL + `/auth/sendCode?phone_number=${phone_number}&authtoken=${authToken}`,
+    {
+      method: 'POST',
+    },
+  );
+
+  return response.ok;
+};
+
+export const verifyCode = async (authToken: string, code: string) => {
+  const response = await fetch(
+    UserAPIURL + `/auth/verifyCode?code=${code}&authtoken=${authToken}`,
+    {
+      method: 'POST',
+    },
+  );
+
+  return response.ok;
+};
+
+export const sendMoreInfo = async (authToken: string, age: string, gender: string) => {
+  const response = await fetch(
+    UserAPIURL + `/auth/moreInfo?authtoken=${authToken}&age=${age}&gender=${gender}`,
+    {
+      method: 'POST',
+    },
+  );
+
+  return response.ok;
+}
+
+export const getUserInfo = async (authToken: string): Promise<UserInfo | undefined> => {
+  const response = await fetch(UserAPIURL + `/auth/me?authtoken=${authToken}`, {
     method: 'GET',
   });
 
@@ -38,8 +72,21 @@ export const getUserInfo = async (authToken: string) => {
 
     return myJson;
   } else {
-    return {};
+    return undefined;
   }
+};
+
+export const isVerified = async (authToken: string) => {
+  const response = await fetch(
+    UserAPIURL + `/auth/isVerified?authtoken=${authToken}`,
+    {
+      method: 'GET',
+    },
+  );
+
+  const myJson = await response.json();
+
+  return myJson?.verified;
 };
 
 export const saveTokenToDatabase = async (fcm_token: string) => {
@@ -50,7 +97,7 @@ export const saveTokenToDatabase = async (fcm_token: string) => {
   }
 
   const response = await fetch(
-    UserOpsURL +
+    UserAPIURL +
       `/firebase/updateToken?authtoken=${authToken}&token=${fcm_token}`,
     {
       method: 'POST',
