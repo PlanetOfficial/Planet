@@ -7,7 +7,9 @@ import {PoiAPIURL} from './api/APIConstants';
  * Data we cache:
  * - auth_token
  * - user_id
- * - name
+ * - first_name
+ * - last_name
+ * - username
  * - categories
  */
 
@@ -24,7 +26,7 @@ export const cacheCategories = async () => {
   }
 };
 
-// caches auth_token, user_id, and name
+// caches auth_token, user_id, first_name, last_name, and username
 export const cacheUserInfo = async (authToken: string) => {
   // start with clear caches (for user storage)
   clearCaches();
@@ -32,41 +34,50 @@ export const cacheUserInfo = async (authToken: string) => {
   // set auth token into encrypted storage
   await EncryptedStorage.setItem('auth_token', authToken);
 
-  await cacheStorage(authToken);
+  // stores the rest
+  return await cacheStorage(authToken);
 };
 
 export const updateCaches = async (authToken: string) => {
   await cacheStorage(authToken);
 };
 
-// clears auth_token, user_id, and name from cache
+// clears auth_token, user_id, first_name, last_name, and username from cache
 export const clearCaches = async () => {
   if (await EncryptedStorage.getItem('auth_token')) {
-    EncryptedStorage.removeItem('auth_token');
+    await EncryptedStorage.removeItem('auth_token');
   }
 
-  if (await AsyncStorage.getItem('name')) {
-    AsyncStorage.removeItem('name');
+  if (await EncryptedStorage.getItem('user_id')) {
+    await EncryptedStorage.removeItem('user_id');
   }
 
-  if (await AsyncStorage.getItem('user_id')) {
-    AsyncStorage.removeItem('user_id');
+  if (await AsyncStorage.getItem('first_name')) {
+    AsyncStorage.removeItem('first_name');
+  }
+
+  if (await AsyncStorage.getItem('last_name')) {
+    AsyncStorage.removeItem('last_name');
+  }
+
+  if (await AsyncStorage.getItem('username')) {
+    AsyncStorage.removeItem('username');
   }
 };
 
 const cacheStorage = async (authToken: string) => {
   const response = await getUserInfo(authToken);
-  let name = '';
-  if (response?.name) {
-    name = response.name;
+
+  if (response === undefined) {
+    return false;
   }
 
-  if (response?.id) {
-    await EncryptedStorage.setItem('user_id', response.id.toString());
-  } else {
-    await EncryptedStorage.setItem('user_id', '');
-  }
+  await EncryptedStorage.setItem('user_id', response.id.toString());
 
   // set name and other info into async storage
-  await AsyncStorage.setItem('name', name);
+  await AsyncStorage.setItem('first_name', response.first_name);
+  await AsyncStorage.setItem('last_name', response.last_name);
+  await AsyncStorage.setItem('username', response.username);
+
+  return true;
 };
