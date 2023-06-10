@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  Alert,
 } from 'react-native';
 import {s, vs} from 'react-native-size-matters';
 import messaging from '@react-native-firebase/messaging';
@@ -52,8 +53,11 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
         return;
       }
 
-      // successful login
-      await cacheUserInfo(response?.authToken);
+      const cacheSuccess = await cacheUserInfo(response?.authToken);
+      if (!cacheSuccess) {
+        Alert.alert('Something went wrong. Please try again.');
+        return;
+      }
 
       // save to firebase
       const fcm_token = await messaging().getToken();
