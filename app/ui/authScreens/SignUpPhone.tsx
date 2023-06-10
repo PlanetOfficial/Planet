@@ -1,12 +1,18 @@
-import React, { useState } from 'react';
-import {View, StyleSheet, SafeAreaView, Text, TouchableOpacity, TextInput} from 'react-native';
+import React, {useState} from 'react';
+import {
+  View,
+  SafeAreaView,
+  Text,
+  TouchableOpacity,
+  TextInput,
+} from 'react-native';
 import PhoneInput from 'react-phone-number-input/react-native-input';
-import { E164Number } from 'libphonenumber-js/types';
+import {E164Number} from 'libphonenumber-js/types';
 
 import colors from '../../constants/colors';
 import styles from '../../constants/styles';
 import strings from '../../constants/strings';
-import { sendCode, verifyCode } from '../../utils/api/authAPI';
+import {sendCode, verifyCode} from '../../utils/api/authAPI';
 
 /*
  * route params:
@@ -14,7 +20,7 @@ import { sendCode, verifyCode } from '../../utils/api/authAPI';
  */
 const SignUpPhone = ({navigation, route}: {navigation: any; route: any}) => {
   const [authToken] = useState<string>(route.params.authToken);
-  
+
   const [phoneNumber, setPhoneNumber] = useState<E164Number | undefined>();
   const [code, setCode] = useState<string>('');
 
@@ -84,11 +90,7 @@ const SignUpPhone = ({navigation, route}: {navigation: any; route: any}) => {
         <Text>{strings.signUp.verifyCode}</Text>
       </TouchableOpacity>
 
-      <View>
-        {error.length !== 0 ? (
-          <Text>{error}</Text>
-        ) : null}
-      </View>
+      <View>{error.length !== 0 ? <Text>{error}</Text> : null}</View>
     </SafeAreaView>
   );
 };

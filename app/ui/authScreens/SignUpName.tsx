@@ -1,5 +1,12 @@
-import React, { useState } from 'react';
-import {View, StyleSheet, SafeAreaView, TouchableOpacity, Text, Image, TextInput} from 'react-native';
+import React, {useState} from 'react';
+import {
+  View,
+  SafeAreaView,
+  TouchableOpacity,
+  Text,
+  Image,
+  TextInput,
+} from 'react-native';
 import colors from '../../constants/colors';
 import styles from '../../constants/styles';
 import icons from '../../constants/icons';
@@ -59,11 +66,7 @@ const SignUpName = ({navigation}: {navigation: any}) => {
       <TouchableOpacity onPress={() => handleNext()}>
         <Text>{strings.main.next}</Text>
       </TouchableOpacity>
-      <View>
-        {error.length !== 0 ? (
-          <Text>{error}</Text>
-        ) : null}
-      </View>
+      <View>{error.length !== 0 ? <Text>{error}</Text> : null}</View>
       <Text style={styles.footerText}>{strings.signUp.termsAgreement}</Text>
     </SafeAreaView>
   );

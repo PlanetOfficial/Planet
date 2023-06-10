@@ -45,7 +45,8 @@ const strings = {
       "By signing up, you agree to Rivalet's Terms and Conditions and Privacy Policy.",
     passwordsMatch: 'Passwords are not the same',
     missingFields: 'Fields are missing',
-    improveExperience: 'Help us improve your experience by filling out this optional information',
+    improveExperience:
+      'Help us improve your experience by filling out this optional information',
   },
   poi: {
     createEvent: 'Create an Event',
@@ -88,7 +89,7 @@ const strings = {
   },
   optionArrays: {
     genders: ['Male', 'Female', 'Other', 'Rather not say'],
-  }
+  },
 };
 
 export default strings;

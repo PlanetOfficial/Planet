@@ -9,7 +9,7 @@ import styles from '../../constants/styles';
 
 import Text from '../components/Text';
 import Icon from '../components/Icon';
-import { clearCaches } from '../../utils/CacheHelpers';
+import {clearCaches} from '../../utils/CacheHelpers';
 
 const Settings = ({navigation}: {navigation: any}) => {
   const handleLogout = async () => {

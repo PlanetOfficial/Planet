@@ -1,13 +1,20 @@
-import React, { useState } from 'react';
-import {View, StyleSheet, SafeAreaView, Text, TextInput, TouchableOpacity, Alert} from 'react-native';
+import React, {useState} from 'react';
+import {
+  View,
+  SafeAreaView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
 import SelectDropdown from 'react-native-select-dropdown';
 import messaging from '@react-native-firebase/messaging';
 
 import colors from '../../constants/colors';
 import styles from '../../constants/styles';
 import strings from '../../constants/strings';
-import { saveTokenToDatabase, sendMoreInfo } from '../../utils/api/authAPI';
-import { cacheUserInfo } from '../../utils/CacheHelpers';
+import {saveTokenToDatabase, sendMoreInfo} from '../../utils/api/authAPI';
+import {cacheUserInfo} from '../../utils/CacheHelpers';
 
 /*
  * route params:
@@ -57,7 +64,7 @@ const SignUpInfo = ({navigation, route}: {navigation: any; route: any}) => {
           value={age}
           onChangeText={text => {
             if (!isNaN(Number(text))) {
-              setAge(text)
+              setAge(text);
             }
           }}
           placeholderTextColor={colors.darkgrey}
@@ -66,8 +73,8 @@ const SignUpInfo = ({navigation, route}: {navigation: any; route: any}) => {
       <View style={styles.inputContainer}>
         <SelectDropdown
           data={strings.optionArrays.genders}
-          onSelect={(selectedItem, index) => {
-            setGender(selectedItem)
+          onSelect={selectedItem => {
+            setGender(selectedItem);
           }}
         />
       </View>

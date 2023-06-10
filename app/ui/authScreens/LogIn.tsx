@@ -44,7 +44,9 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
       if (!verifiedResponse) {
         navigation.reset({
           index: 0,
-          routes: [{name: 'SignUpPhone', params: {authToken: response.authToken}}],
+          routes: [
+            {name: 'SignUpPhone', params: {authToken: response.authToken}},
+          ],
         });
 
         return;

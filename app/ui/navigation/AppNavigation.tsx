@@ -105,7 +105,7 @@ const signUpCredsStackScreen = () => {
       options={{headerShown: false}}
     />
   );
-}
+};
 
 const signUpPhoneStackScreen = () => {
   return (
@@ -115,7 +115,7 @@ const signUpPhoneStackScreen = () => {
       options={{headerShown: false}}
     />
   );
-}
+};
 
 const signUpInfoStackScreen = () => {
   return (
@@ -125,7 +125,7 @@ const signUpInfoStackScreen = () => {
       options={{headerShown: false}}
     />
   );
-}
+};
 
 const forgetPassStackScreen = () => {
   return (
