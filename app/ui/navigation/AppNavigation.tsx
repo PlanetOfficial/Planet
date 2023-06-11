@@ -256,11 +256,11 @@ const CreateSearchScreen = () => {
   );
 };
 
-function verticalAnimation({
+const verticalAnimation = ({
   current,
   inverted,
   layouts: {screen},
-}: StackCardInterpolationProps): StackCardInterpolatedStyle {
+}: StackCardInterpolationProps): StackCardInterpolatedStyle => {
   const translateFocused = Animated.multiply(
     current.progress.interpolate({
       inputRange: [0, 1],
