@@ -12,6 +12,7 @@ import Text from './Text';
 
 import {Poi} from '../../utils/types';
 import {bookmark} from '../../utils/api/bookmarkAPI';
+import { getInfoString } from '../../utils/Misc';
 
 interface Props {
   poi: Poi;
@@ -36,28 +37,6 @@ const PoiCard: React.FC<Props> = ({poi, bookmarked}) => {
     }
   };
 
-  const getInfoString = (): string => {
-    let poiString: string = '';
-
-    if (poi.rating && poi.rating_count) {
-      poiString += `★ ${poi.rating}  (${
-        poi.rating_count > 1000
-          ? (poi.rating_count / 1000).toFixed(0) + 'k'
-          : poi.rating_count
-      })`;
-    }
-
-    if (poi.rating && poi.rating_count && poi.price) {
-      poiString += '・';
-    }
-
-    if (poi.price) {
-      poiString += '$'.repeat(poi.price);
-    }
-
-    return poiString;
-  };
-
   return (
     <View style={[cardStyles.container, styles.shadow]}>
       <Image style={cardStyles.image} source={{uri: poi.photo}} />
@@ -67,7 +46,7 @@ const PoiCard: React.FC<Props> = ({poi, bookmarked}) => {
             {poi.name}
           </Text>
           <Text size="xs" color={colors.darkgrey} numberOfLines={1}>
-            {getInfoString()}
+            {getInfoString(poi)}
           </Text>
         </View>
         <Icon

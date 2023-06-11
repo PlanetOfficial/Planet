@@ -1,6 +1,6 @@
 import haversine from 'haversine-distance';
 
-import {Coordinate} from './types';
+import {Coordinate, Poi} from './types';
 import Geolocation from '@react-native-community/geolocation';
 import {Platform, PermissionsAndroid, Alert} from 'react-native';
 
@@ -80,4 +80,27 @@ export const fetchUserLocation = async (): Promise<Coordinate> => {
       }),
     );
   });
+};
+
+
+export const getInfoString = (poi: Poi): string => {
+  let poiString: string = '';
+
+  if (poi.rating && poi.rating_count) {
+    poiString += `★ ${poi.rating}  (${
+      poi.rating_count > 1000
+        ? (poi.rating_count / 1000).toFixed(0) + 'k'
+        : poi.rating_count
+    })`;
+  }
+
+  if (poi.rating && poi.rating_count && poi.price) {
+    poiString += '・';
+  }
+
+  if (poi.price) {
+    poiString += '$'.repeat(poi.price);
+  }
+
+  return poiString;
 };
