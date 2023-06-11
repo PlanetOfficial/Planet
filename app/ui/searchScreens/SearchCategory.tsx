@@ -24,7 +24,10 @@ import strings from '../../constants/strings';
 import PoiRow from '../components/PoiRow';
 
 const SearchCategory = ({navigation, route}: {navigation: any; route: any}) => {
-  const {category, location, radius} = route.params;
+  const [category] = useState<any>(route.params.category);
+  const [location] = useState<any>(route.params.location);
+  const [radius] = useState<number>(route.params.radius);
+  const [isCreate] = useState<boolean>(route.params.isCreate);
 
   const [places, setPlaces] = useState<Poi[]>([]);
   const [filters, setFilters] = useState<(number | number[])[]>([]);
@@ -139,6 +142,7 @@ const SearchCategory = ({navigation, route}: {navigation: any; route: any}) => {
                   navigation.navigate('PoiDetail', {
                     poi: item,
                     bookmarked: false,
+                    isCreate: isCreate,
                   })
                 }>
                 <PoiRow

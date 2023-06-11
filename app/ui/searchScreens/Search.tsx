@@ -26,17 +26,26 @@ import styles from '../../constants/styles';
 
 import Text from '../components/Text';
 import Separator from '../components/Separator';
+import PoiRow from '../components/PoiRow';
+import Icon from '../components/Icon';
 
 import {GoogleMapsAPIKey} from '../../utils/api/APIConstants';
-import {Category, Coordinate, Genre} from '../../utils/types';
 import {fetchUserLocation} from '../../utils/Misc';
+import {Category, Coordinate, Genre, Poi} from '../../utils/types';
 
-const Search = ({navigation}: {navigation: any}) => {
+const Search = ({
+  navigation,
+  isCreate = false,
+}: {
+  navigation: any;
+  isCreate?: boolean;
+}) => {
   const [genres, setGenres] = useState<Genre[]>([]);
   const [location, setLocation] = useState<Coordinate>();
 
   const autocompleteRef = useRef<GooglePlacesAutocompleteRef>(null);
   const [searching, setSearching] = useState<boolean>(false);
+  const [searchText, setSearchText] = useState<string>('');
 
   const initializeData = async () => {
     const data = await AsyncStorage.getItem('genres');
@@ -58,7 +67,10 @@ const Search = ({navigation}: {navigation: any}) => {
 
   const handleSelection = async (data: GooglePlaceData) => {
     if (data) {
-      navigation.navigate('PoiDetail', {place_id: data.place_id});
+      navigation.navigate('PoiDetail', {
+        place_id: data.place_id,
+        isCreate: isCreate,
+      });
     } else {
       Alert.alert('Error', 'Unable to retrieve destination. Please try again.');
     }
@@ -66,85 +78,99 @@ const Search = ({navigation}: {navigation: any}) => {
 
   return (
     <View style={styles.container}>
-      <SafeAreaView style={searchStyles.header}>
-        <Image style={searchStyles.icon} source={icons.search} />
-        <GooglePlacesAutocomplete
-          ref={autocompleteRef}
-          placeholder={strings.search.search}
-          disableScroll={true}
-          isRowScrollable={false}
-          minLength={3}
-          enablePoweredByContainer={false}
-          fetchDetails={false}
-          query={{
-            key: GoogleMapsAPIKey,
-            language: 'en',
-          }}
-          textInputProps={{
-            selectTextOnFocus: true,
-            style: searchStyles.text,
-            autoCapitalize: 'none',
-            onFocus: () => {
-              LayoutAnimation.configureNext(
-                LayoutAnimation.create(200, 'easeInEaseOut', 'opacity'),
-              );
-              setSearching(true);
-            },
-            onBlur() {
-              LayoutAnimation.configureNext(
-                LayoutAnimation.create(100, 'easeInEaseOut', 'opacity'),
-              );
-              setSearching(false);
-            },
-            placeholderTextColor: colors.darkgrey,
-          }}
-          onPress={handleSelection}
-          styles={{
-            container: searchStyles.container,
-            textInputContainer: [
-              searchStyles.textInputContainer,
-              styles.shadow,
-              searching
-                ? {
-                    width: s(250),
-                  }
-                : null,
-            ],
-            textInput: searchStyles.textInput,
-            separator: searchStyles.separator,
-          }}
-          renderRow={rowData => (
-            <View>
-              <Text size="s" weight="r" color={colors.black}>
-                {rowData.structured_formatting.main_text}
-              </Text>
-              <Text size="xs" weight="l" color={colors.darkgrey}>
-                {rowData.structured_formatting.secondary_text}
-              </Text>
+      <SafeAreaView>
+        <View style={searchStyles.header}>
+          {isCreate && !searching ? (
+            <View style={searchStyles.x}>
+              <Icon
+                icon={icons.close}
+                onPress={() => {
+                  navigation.goBack();
+                }}
+              />
             </View>
-          )}
-        />
-        {searching ? (
-          <TouchableOpacity
-            style={searchStyles.cancel}
-            onPress={() => autocompleteRef.current?.blur()}>
-            <Text>{strings.main.cancel}</Text>
-          </TouchableOpacity>
-        ) : null}
+          ) : null}
+          <GooglePlacesAutocomplete
+            ref={autocompleteRef}
+            placeholder={strings.search.search}
+            disableScroll={true}
+            isRowScrollable={false}
+            enablePoweredByContainer={false}
+            fetchDetails={false}
+            query={{
+              key: GoogleMapsAPIKey,
+              language: 'en',
+            }}
+            textInputProps={{
+              selectTextOnFocus: true,
+              style: searchStyles.text,
+              autoCapitalize: 'none',
+              onFocus: () => {
+                LayoutAnimation.configureNext(
+                  LayoutAnimation.create(200, 'easeInEaseOut', 'opacity'),
+                );
+                setSearching(true);
+              },
+              onBlur() {
+                LayoutAnimation.configureNext(
+                  LayoutAnimation.create(100, 'easeInEaseOut', 'opacity'),
+                );
+                setSearching(false);
+              },
+              placeholderTextColor: colors.darkgrey,
+              onChangeText: text => {
+                setSearchText(text);
+              },
+            }}
+            onPress={handleSelection}
+            styles={{
+              textInputContainer: [
+                searchStyles.textInputContainer,
+                styles.shadow,
+                searching
+                  ? {
+                      width: s(250),
+                    }
+                  : null,
+              ],
+              textInput: searchStyles.textInput,
+              separator: searchStyles.separator,
+            }}
+            renderLeftButton={() => (
+              <Image style={searchStyles.icon} source={icons.search} />
+            )}
+            renderRow={rowData => (
+              <View>
+                <Text size="s" weight="r" color={colors.black}>
+                  {rowData.structured_formatting.main_text}
+                </Text>
+                <Text size="xs" weight="l" color={colors.darkgrey}>
+                  {rowData.structured_formatting.secondary_text}
+                </Text>
+              </View>
+            )}
+          />
+          {searching ? (
+            <TouchableOpacity
+              style={searchStyles.cancel}
+              onPress={() => autocompleteRef.current?.blur()}>
+              <Text>{strings.main.cancel}</Text>
+            </TouchableOpacity>
+          ) : null}
+        </View>
       </SafeAreaView>
       {!searching ? (
-        <FlatList
-          data={genres}
-          renderItem={({item}: {item: Genre}) => (
-            <View style={categoryStyles.container}>
+        <ScrollView>
+          {genres.map((genre: Genre, index: number) => (
+            <View key={genre.id}>
               <View style={categoryStyles.header}>
-                <Text>{item.name}</Text>
+                <Text>{genre.name}</Text>
               </View>
               <ScrollView
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={categoryStyles.scrollView}>
-                {item.categories.map((category: Category) => (
+                {genre.categories.map((category: Category) => (
                   <TouchableOpacity
                     key={category.id}
                     style={categoryStyles.categoryContainer}
@@ -153,6 +179,7 @@ const Search = ({navigation}: {navigation: any}) => {
                         category,
                         location,
                         radius: numbers.defaultRadius,
+                        isCreate: isCreate,
                       });
                     }}>
                     <View style={[categoryStyles.iconContainer, styles.shadow]}>
@@ -167,21 +194,52 @@ const Search = ({navigation}: {navigation: any}) => {
                   </TouchableOpacity>
                 ))}
               </ScrollView>
+              {index !== genres.length - 1 ? <Separator /> : null}
             </View>
-          )}
-          ItemSeparatorComponent={Separator}
-          keyExtractor={(item: Genre) => item.id.toString()}
-        />
+          ))}
+        </ScrollView>
+      ) : searchText.length === 0 ? (
+        <>
+          <View style={categoryStyles.header}>
+            <Text>{strings.profile.bookmarks}</Text>
+          </View>
+          <FlatList
+            data={[]}
+            renderItem={({item}: {item: Poi}) => {
+              return (
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate('PoiDetail', {
+                      poi: item,
+                      bookmarked: false,
+                      isCreate: isCreate,
+                    })
+                  }>
+                  <PoiRow poi={item} bookmarked={true} location={location} />
+                </TouchableOpacity>
+              );
+            }}
+            ListEmptyComponent={
+              <View style={styles.center}>
+                <Text>{strings.profile.noBookmarksFound}</Text>
+                <Text> </Text>
+                <Text size="s" color={colors.darkgrey}>
+                  {strings.profile.noBookmarksFoundDescription}
+                </Text>
+              </View>
+            }
+            ItemSeparatorComponent={Separator}
+            keyExtractor={(item: Poi) => item.id.toString()}
+          />
+        </>
       ) : null}
     </View>
   );
 };
 
 const categoryStyles = StyleSheet.create({
-  container: {
-    paddingVertical: s(10),
-  },
   header: {
+    marginTop: s(10),
     paddingHorizontal: s(20),
     paddingTop: s(5),
     paddingBottom: s(10),
@@ -189,6 +247,7 @@ const categoryStyles = StyleSheet.create({
   scrollView: {
     paddingHorizontal: s(20),
     paddingVertical: s(5),
+    marginBottom: s(10),
   },
   categoryContainer: {
     alignItems: 'center',
@@ -214,18 +273,15 @@ const categoryStyles = StyleSheet.create({
 const searchStyles = StyleSheet.create({
   header: {
     flexDirection: 'row',
-  },
-  container: {
-    flex: 0,
-    width: s(310),
+    alignItems: 'center',
     marginHorizontal: s(20),
   },
   text: {
     padding: 0,
+    paddingLeft: s(30),
     fontSize: s(14),
     fontWeight: '700',
     width: '100%',
-    paddingLeft: s(32),
     fontFamily: 'Lato',
   },
   textInputContainer: {
@@ -247,17 +303,23 @@ const searchStyles = StyleSheet.create({
     backgroundColor: colors.lightgrey,
   },
   icon: {
-    marginTop: s(12.5),
-    marginLeft: s(27),
+    marginTop: s(7.5),
+    marginLeft: s(8),
+    marginRight: s(-23),
     width: s(15),
     height: s(15),
-    marginRight: -s(42),
     tintColor: colors.darkgrey,
     zIndex: 5,
   },
   cancel: {
-    marginTop: s(10),
-    marginLeft: -s(67),
+    position: 'absolute',
+    top: s(5),
+    right: 0,
+    height: s(30),
+    justifyContent: 'center',
+  },
+  x: {
+    marginRight: s(15),
   },
 });
 
