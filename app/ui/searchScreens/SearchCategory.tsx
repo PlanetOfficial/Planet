@@ -22,6 +22,7 @@ import Icon from '../components/Icon';
 import Filter from '../components/Filter';
 import strings from '../../constants/strings';
 import PoiRow from '../components/PoiRow';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SearchCategory = ({navigation, route}: {navigation: any; route: any}) => {
   const {category, location, radius} = route.params;
@@ -32,6 +33,8 @@ const SearchCategory = ({navigation, route}: {navigation: any; route: any}) => {
   const [refreshing, setRefreshing] = useState<boolean>(false);
 
   const filterRef = useRef<any>(null); // due to forwardRef
+
+  const [bookmarks, setBookmarks] = useState<Poi[]>([]);
 
   const loadData = useCallback(async () => {
     setRefreshing(true);
@@ -67,8 +70,18 @@ const SearchCategory = ({navigation, route}: {navigation: any; route: any}) => {
     setLoading(false);
   }, [category, filters, location.latitude, location.longitude, radius]);
 
+  const initializeData = async () => {
+    const _bookmarks = await AsyncStorage.getItem('bookmarks');
+    if (_bookmarks) {
+      setBookmarks(JSON.parse(_bookmarks));
+    } else {
+      Alert.alert('Error', 'Unable to load bookmarks. Please try again.');
+    }
+  };
+
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
+      initializeData();
       loadData();
     });
 
@@ -143,7 +156,7 @@ const SearchCategory = ({navigation, route}: {navigation: any; route: any}) => {
                 }>
                 <PoiRow
                   poi={item}
-                  bookmarked={true}
+                  bookmarked={bookmarks.some((bookmark) => bookmark.id === item.id)}
                   location={location}
                   category={category}
                 />

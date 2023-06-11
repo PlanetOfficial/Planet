@@ -28,7 +28,7 @@ import Text from '../components/Text';
 import Separator from '../components/Separator';
 
 import {GoogleMapsAPIKey} from '../../utils/api/APIConstants';
-import {Category, Coordinate, Genre} from '../../utils/types';
+import {Category, Coordinate, Genre, Poi} from '../../utils/types';
 import {fetchUserLocation} from '../../utils/Misc';
 
 const Search = ({navigation}: {navigation: any}) => {
