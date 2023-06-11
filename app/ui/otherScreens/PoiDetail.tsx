@@ -97,27 +97,7 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
       await Linking.openURL(destinationDetails.website);
     }
   };
-
-  // const handleBookmark = async () => {
-  //   if (!bookmarked) {
-  //     const response: boolean = await postPlace(destination?.id);
-
-  //     if (response) {
-  //       setBookmarked(!bookmarked);
-  //     } else {
-  //       Alert.alert('Error', 'Unable to bookmark place. Please try again.');
-  //     }
-  //   } else {
-  //     const response: boolean = await deletePlace(destination?.id);
-
-  //     if (response) {
-  //       setBookmarked(!bookmarked);
-  //     } else {
-  //       Alert.alert('Error', 'Unable to unbookmark place. Please try again.');
-  //     }
-  //   }
-  // };
-
+  
   return (
     <View style={styles.container}>
       <SafeAreaView>

@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, Image, Alert} from 'react-native';
+import {StyleSheet, View, Image} from 'react-native';
 
 import {s} from 'react-native-size-matters';
 
@@ -11,14 +11,19 @@ import Icon from './Icon';
 import Text from './Text';
 
 import {Poi} from '../../utils/types';
+<<<<<<< HEAD
 import {bookmark} from '../../utils/api/bookmarkAPI';
 import {getInfoString} from '../../utils/Misc';
+=======
+>>>>>>> feature/bookmarks
 
 interface Props {
   poi: Poi;
   bookmarked: boolean;
+  handleBookmark: (poi: Poi) => void;
 }
 
+<<<<<<< HEAD
 const PoiCard: React.FC<Props> = ({poi, bookmarked}) => {
   const handleBookmark = async () => {
     const response: boolean = await bookmark(poi);
@@ -35,6 +40,29 @@ const PoiCard: React.FC<Props> = ({poi, bookmarked}) => {
         Alert.alert('Error', 'Unable to unbookmark place. Please try again.');
       }
     }
+=======
+const PoiCard: React.FC<Props> = ({poi, bookmarked, handleBookmark}) => {
+  const getInfoString = (): string => {
+    let poiString: string = '';
+
+    if (poi.rating && poi.rating_count) {
+      poiString += `★ ${poi.rating}  (${
+        poi.rating_count > 1000
+          ? (poi.rating_count / 1000).toFixed(0) + 'k'
+          : poi.rating_count
+      })`;
+    }
+
+    if (poi.rating && poi.rating_count && poi.price) {
+      poiString += '・';
+    }
+
+    if (poi.price) {
+      poiString += '$'.repeat(poi.price);
+    }
+
+    return poiString;
+>>>>>>> feature/bookmarks
   };
 
   return (
@@ -53,7 +81,7 @@ const PoiCard: React.FC<Props> = ({poi, bookmarked}) => {
           size="m"
           icon={bookmarked ? icons.bookmarked : icons.bookmark}
           color={bookmarked ? colors.accent : colors.black}
-          onPress={handleBookmark}
+          onPress={() => handleBookmark(poi)}
         />
       </View>
     </View>

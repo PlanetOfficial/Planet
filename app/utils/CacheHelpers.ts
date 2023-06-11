@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {getUserInfo} from './api/authAPI';
 import {PoiAPIURL} from './api/APIConstants';
+import {getBookmarks} from './api/bookmarkAPI';
 
 /*
  * Data we cache:
@@ -23,6 +24,15 @@ export const cacheCategories = async () => {
     await AsyncStorage.setItem('genres', JSON.stringify(await response.json()));
   } else {
     console.warn('Failed to cache categories');
+  }
+};
+
+export const cacheBookmarks = async () => {
+  const response = await getBookmarks();
+  if (response) {
+    await AsyncStorage.setItem('bookmarks', JSON.stringify(response));
+  } else {
+    console.warn('Failed to cache bookmarks');
   }
 };
 

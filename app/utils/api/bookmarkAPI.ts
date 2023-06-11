@@ -5,6 +5,8 @@ import {Poi} from '../types';
 export const getBookmarks = async (): Promise<Poi[] | null> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
+  console.log(authToken);
+
   const response = await fetch(PoiAPIURL + `/bookmark?authtoken=${authToken}`, {
     method: 'GET',
   });

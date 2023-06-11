@@ -1,8 +1,17 @@
+import {Platform, PermissionsAndroid, Alert} from 'react-native';
+import Geolocation from '@react-native-community/geolocation';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import haversine from 'haversine-distance';
 
 import {Coordinate, Poi} from './types';
+<<<<<<< HEAD
 import Geolocation from '@react-native-community/geolocation';
 import {Platform, PermissionsAndroid, Alert} from 'react-native';
+=======
+
+import {bookmark} from './api/bookmarkAPI';
+>>>>>>> feature/bookmarks
 
 /*
   Given a point and the longitudeDelta, calculate the radius of the circle (the
@@ -82,6 +91,7 @@ export const fetchUserLocation = async (): Promise<Coordinate> => {
   });
 };
 
+<<<<<<< HEAD
 export const getInfoString = (poi: Poi): string => {
   let poiString: string = '';
 
@@ -102,4 +112,28 @@ export const getInfoString = (poi: Poi): string => {
   }
 
   return poiString;
+=======
+/*
+  Bookmark/unbookmark a POI: sends API request, update local state, and update AsyncStorage.
+*/
+export const handleBookmark = async (
+  poi: Poi,
+  bookmarks: Poi[],
+  setBookmarks: (pois: Poi[]) => void,
+) => {
+  const response = await bookmark(poi);
+  if (response) {
+    const _bookmarks = [...bookmarks];
+    const idx = _bookmarks.findIndex(_bookmark => _bookmark.id === poi.id);
+    if (idx === -1) {
+      _bookmarks.unshift(poi);
+    } else {
+      _bookmarks.splice(idx, 1);
+    }
+    setBookmarks(_bookmarks);
+    AsyncStorage.setItem('bookmarks', JSON.stringify(_bookmarks));
+  } else {
+    Alert.alert('Error', 'Unable to update bookmarks. Please try again.');
+  }
+>>>>>>> feature/bookmarks
 };
