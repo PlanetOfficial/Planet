@@ -82,7 +82,6 @@ export const fetchUserLocation = async (): Promise<Coordinate> => {
   });
 };
 
-
 export const getInfoString = (poi: Poi): string => {
   let poiString: string = '';
 

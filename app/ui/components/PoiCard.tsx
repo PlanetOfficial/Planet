@@ -12,7 +12,7 @@ import Text from './Text';
 
 import {Poi} from '../../utils/types';
 import {bookmark} from '../../utils/api/bookmarkAPI';
-import { getInfoString } from '../../utils/Misc';
+import {getInfoString} from '../../utils/Misc';
 
 interface Props {
   poi: Poi;

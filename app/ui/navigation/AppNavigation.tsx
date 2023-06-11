@@ -294,6 +294,6 @@ const verticalAnimation = ({
     overlayStyle: {opacity: overlayOpacity},
     shadowStyle: {shadowOpacity},
   };
-}
+};
 
 export default AppNavigation;

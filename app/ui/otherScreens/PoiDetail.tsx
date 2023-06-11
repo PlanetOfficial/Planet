@@ -30,6 +30,8 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
     route?.params?.bookmarked,
   );
 
+  const [isCreate] = useState<boolean>(route.params.isCreate);
+
   useEffect(() => {
     const initializeDestinationData = async () => {
       if (route.params?.place_id) {
@@ -169,9 +171,10 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
                 onPress: () => {
                   navigation.navigate('Create', {
                     destination: destination,
-                  });},
+                  });
+                },
                 color: colors.black,
-                disabled: !route.params?.isCreate,
+                disabled: !isCreate,
               },
             ]}
           />
