@@ -105,8 +105,10 @@ const SignUpCreds = ({navigation, route}: {navigation: any; route: any}) => {
           style={localStyles.input}
           placeholder={strings.signUp.username}
           value={username}
-          onChangeText={text => setUsername(text)}
+          onChangeText={text => setUsername(text.toLowerCase())}
           placeholderTextColor={colors.darkgrey}
+          autoCapitalize="none"
+          autoCorrect={false}
         />
       </View>
       <View style={localStyles.inputContainer}>
@@ -135,7 +137,11 @@ const SignUpCreds = ({navigation, route}: {navigation: any; route: any}) => {
           secureTextEntry={true}
         />
       </View>
-      {error.length !== 0 ? <Text weight='l' center={true} color={colors.red}>{error}</Text> : null}
+      {error.length !== 0 ? (
+        <Text weight="l" center={true} color={colors.red}>
+          {error}
+        </Text>
+      ) : null}
       <TouchableOpacity
         style={[
           localStyles.button,
@@ -169,7 +175,7 @@ const localStyles = StyleSheet.create({
   },
   prompt: {
     width: s(100),
-  },  
+  },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
