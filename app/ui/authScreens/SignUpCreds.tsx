@@ -2,14 +2,20 @@ import React, {useState} from 'react';
 import {
   View,
   SafeAreaView,
-  Text,
   TextInput,
   TouchableOpacity,
+  StyleSheet,
 } from 'react-native';
+import {s} from 'react-native-size-matters';
 
+import Icon from '../components/Icon';
+import Text from '../components/Text';
+
+import icons from '../../constants/icons';
 import colors from '../../constants/colors';
 import styles from '../../constants/styles';
 import strings from '../../constants/strings';
+
 import {signup} from '../../utils/api/authAPI';
 
 /*
@@ -74,10 +80,24 @@ const SignUpCreds = ({navigation, route}: {navigation: any; route: any}) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
+    <SafeAreaView>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>{strings.login.signUp}</Text>
+        <Icon
+          size="m"
+          icon={icons.back}
+          onPress={() => navigation.goBack()}
+        />
       </View>
+    </SafeAreaView>
+
+    <View style={localStyles.promptContainer}>
+      <Text size="l" weight="l" center={true}>
+        {strings.signUp.credPrompt}
+      </Text>
+    </View>
+
+    
       <View style={styles.inputContainer}>
         <Text>{strings.signUp.username}: </Text>
         <TextInput
@@ -111,8 +131,37 @@ const SignUpCreds = ({navigation, route}: {navigation: any; route: any}) => {
         <Text>{strings.main.next}</Text>
       </TouchableOpacity>
       <View>{error.length !== 0 ? <Text>{error}</Text> : null}</View>
-    </SafeAreaView>
+    </View>
   );
 };
+
+const localStyles = StyleSheet.create({
+  promptContainer: {
+    margin: s(40),
+    paddingHorizontal: s(20),
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    marginVertical: s(30),
+    marginHorizontal: s(50),
+  },
+  input: {
+    flex: 1,
+    borderBottomWidth: 1,
+    borderColor: colors.darkgrey,
+    marginHorizontal: s(5),
+    paddingHorizontal: s(10),
+    paddingVertical: s(5),
+  },
+  button: {
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: s(50),
+    width: s(150),
+    height: s(50),
+    borderRadius: s(25),
+  },
+});
 
 export default SignUpCreds;

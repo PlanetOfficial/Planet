@@ -3,73 +3,98 @@ import {
   View,
   SafeAreaView,
   TouchableOpacity,
-  Text,
-  Image,
   TextInput,
+  StyleSheet,
 } from 'react-native';
+import {s} from 'react-native-size-matters';
+
+import Icon from '../components/Icon';
+import Text from '../components/Text';
+
 import colors from '../../constants/colors';
-import styles from '../../constants/styles';
 import icons from '../../constants/icons';
 import strings from '../../constants/strings';
+import styles from '../../constants/styles';
 
 const SignUpName = ({navigation}: {navigation: any}) => {
   const [firstName, setFirstName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
 
-  const [error, setError] = useState<string>('');
-
-  const handleNext = () => {
-    setError('');
-
-    if (firstName.length === 0 || lastName.length === 0) {
-      setError(strings.signUp.missingFields);
-      return;
-    }
-
-    if (firstName.length + lastName.length > 100) {
-      setError(strings.signUp.inputLong);
-      return;
-    }
-
-    navigation.navigate('SignUpCreds', {
-      firstName: firstName,
-      lastName: lastName,
-    });
-  };
-
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>{strings.login.signUp}</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-          <Image style={styles.headerIcon} source={icons.x} />
-        </TouchableOpacity>
+    <View style={styles.container}>
+      <SafeAreaView>
+        <View style={styles.header}>
+          <Icon
+            size="m"
+            icon={icons.back}
+            onPress={() => navigation.goBack()}
+          />
+        </View>
+      </SafeAreaView>
+
+      <View style={localStyles.promptContainer}>
+        <Text size="l" weight="l" center={true}>
+          {strings.signUp.namePrompt}
+        </Text>
       </View>
-      <View style={styles.inputContainer}>
-        <Text>{strings.signUp.firstName}: </Text>
+
+      <View style={localStyles.inputContainer}>
         <TextInput
+          style={localStyles.input}
           placeholder={strings.signUp.firstName}
           value={firstName}
           onChangeText={text => setFirstName(text)}
           placeholderTextColor={colors.darkgrey}
         />
-      </View>
-      <View style={styles.inputContainer}>
-        <Text>{strings.signUp.lastName}: </Text>
         <TextInput
+          style={localStyles.input}
           placeholder={strings.signUp.lastName}
           value={lastName}
           onChangeText={text => setLastName(text)}
           placeholderTextColor={colors.darkgrey}
         />
       </View>
-      <TouchableOpacity onPress={() => handleNext()}>
-        <Text>{strings.main.next}</Text>
+      <TouchableOpacity
+        style={[localStyles.button, {backgroundColor: (firstName.length === 0 || lastName.length === 0) ? colors.darkgrey : colors.accent}]}
+        disabled={firstName.length === 0 || lastName.length === 0}
+        onPress={() =>
+          navigation.navigate('SignUpCreds', {
+            firstName: firstName,
+            lastName: lastName,
+          })
+        }>
+        <Text weight="b" color={colors.white}>{strings.main.next}</Text>
       </TouchableOpacity>
-      <View>{error.length !== 0 ? <Text>{error}</Text> : null}</View>
-      <Text style={styles.footerText}>{strings.signUp.termsAgreement}</Text>
-    </SafeAreaView>
+    </View>
   );
 };
+
+const localStyles = StyleSheet.create({
+  promptContainer: {
+    margin: s(40),
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    marginVertical: s(30),
+    marginHorizontal: s(50),
+  },
+  input: {
+    flex: 1,
+    borderBottomWidth: 1,
+    borderColor: colors.darkgrey,
+    marginHorizontal: s(5),
+    paddingHorizontal: s(10),
+    paddingVertical: s(5),
+  },
+  button: {
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: s(50),
+    width: s(150),
+    height: s(50),
+    borderRadius: s(25),
+  },
+});
 
 export default SignUpName;

@@ -27,8 +27,10 @@ const strings = {
     missingInfo: 'Missing email or password',
   },
   signUp: {
-    firstName: 'First Name',
-    lastName: 'Last Name',
+    namePrompt: 'First, please tell us your name:',
+    firstName: 'First',
+    lastName: 'Last',
+    credPrompt: 'Now, choose your username and password:',
     confirmPassword: 'Confirm Password',
     username: 'Username',
     phoneNumber: 'Phone Number',
