@@ -8,7 +8,6 @@ import {Platform} from 'react-native';
 import SplashScreen from './app/ui/navigation/SplashScreen';
 import AppNavigation from './app/ui/navigation/AppNavigation';
 import {
-  cacheBookmarks,
   cacheCategories,
   updateCaches,
 } from './app/utils/CacheHelpers';
@@ -40,7 +39,6 @@ export default function App() {
       }
 
       await cacheCategories();
-      await cacheBookmarks();
 
       setLoading(false);
       requestNotificationPerms();

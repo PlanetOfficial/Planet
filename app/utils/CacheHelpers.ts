@@ -12,6 +12,7 @@ import {getBookmarks} from './api/bookmarkAPI';
  * - last_name
  * - username
  * - categories
+ * - bookmarks
  */
 
 // caches categories
@@ -27,6 +28,7 @@ export const cacheCategories = async () => {
   }
 };
 
+// caches bookmarks
 export const cacheBookmarks = async () => {
   const response = await getBookmarks();
   if (response) {
@@ -36,7 +38,7 @@ export const cacheBookmarks = async () => {
   }
 };
 
-// caches auth_token, user_id, first_name, last_name, and username
+// caches auth_token, user_id, first_name, last_name, username, bookmarks
 export const cacheUserInfo = async (authToken: string) => {
   // start with clear caches (for user storage)
   clearCaches();
@@ -44,7 +46,10 @@ export const cacheUserInfo = async (authToken: string) => {
   // set auth token into encrypted storage
   await EncryptedStorage.setItem('auth_token', authToken);
 
-  // stores the rest
+  // caches bookmarks
+  await cacheBookmarks();
+
+  // stores other info
   return await cacheStorage(authToken);
 };
 
@@ -52,7 +57,7 @@ export const updateCaches = async (authToken: string) => {
   await cacheStorage(authToken);
 };
 
-// clears auth_token, user_id, first_name, last_name, and username from cache
+// clears auth_token, user_id, first_name, last_name, username, bookmarks from cache
 export const clearCaches = async () => {
   if (await EncryptedStorage.getItem('auth_token')) {
     await EncryptedStorage.removeItem('auth_token');
@@ -72,6 +77,10 @@ export const clearCaches = async () => {
 
   if (await AsyncStorage.getItem('username')) {
     AsyncStorage.removeItem('username');
+  }
+
+  if (await AsyncStorage.getItem('bookmarks')) {
+    AsyncStorage.removeItem('bookmarks');
   }
 };
 
