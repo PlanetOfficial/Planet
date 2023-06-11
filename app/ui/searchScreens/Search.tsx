@@ -133,9 +133,6 @@ const Search = ({
             }}
             onPress={handleSelection}
             styles={{
-              container: {
-                borderWidth: 1,
-              },
               textInputContainer: [
                 searchStyles.textInputContainer,
                 styles.shadow,
@@ -216,6 +213,8 @@ const Search = ({
             <Text>{strings.profile.bookmarks}</Text>
           </View>
           <FlatList
+            contentContainerStyle={searchStyles.flatList}
+            keyboardShouldPersistTaps={'always'}
             data={bookmarks}
             renderItem={({item}: {item: Poi}) => {
               return (
@@ -339,6 +338,9 @@ const searchStyles = StyleSheet.create({
   },
   x: {
     marginRight: s(15),
+  },
+  flatList: {
+    paddingBottom: s(250),
   },
 });
 
