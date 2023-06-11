@@ -7,7 +7,11 @@ import {Platform} from 'react-native';
 
 import SplashScreen from './app/ui/navigation/SplashScreen';
 import AppNavigation from './app/ui/navigation/AppNavigation';
-import {cacheBookmarks, cacheCategories, updateCaches} from './app/utils/CacheHelpers';
+import {
+  cacheBookmarks,
+  cacheCategories,
+  updateCaches,
+} from './app/utils/CacheHelpers';
 import {saveTokenToDatabase} from './app/utils/api/authAPI';
 
 export default function App() {

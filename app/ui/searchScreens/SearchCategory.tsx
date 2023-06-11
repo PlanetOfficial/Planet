@@ -8,21 +8,22 @@ import {
   RefreshControl,
   ActivityIndicator,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import colors from '../../constants/colors';
 import icons from '../../constants/icons';
 import styles from '../../constants/styles';
+import strings from '../../constants/strings';
 
 import Text from '../components/Text';
 import Separator from '../components/Separator';
-
-import {Poi} from '../../utils/types';
-import {getPois} from '../../utils/api/poiAPI';
 import Icon from '../components/Icon';
 import Filter from '../components/Filter';
-import strings from '../../constants/strings';
 import PoiRow from '../components/PoiRow';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import {getPois} from '../../utils/api/poiAPI';
+import {handleBookmark} from '../../utils/Misc';
+import {Poi} from '../../utils/types';
 
 const SearchCategory = ({navigation, route}: {navigation: any; route: any}) => {
   const {category, location, radius, isCreate} = route.params;
@@ -122,6 +123,7 @@ const SearchCategory = ({navigation, route}: {navigation: any; route: any}) => {
                 category,
                 location,
                 radius,
+                isCreate,
               })
             }
           />
@@ -157,7 +159,12 @@ const SearchCategory = ({navigation, route}: {navigation: any; route: any}) => {
                 }>
                 <PoiRow
                   poi={item}
-                  bookmarked={bookmarks.some((bookmark) => bookmark.id === item.id)}
+                  bookmarked={bookmarks.some(
+                    bookmark => bookmark.id === item.id,
+                  )}
+                  handleBookmark={(poi: Poi) =>
+                    handleBookmark(poi, bookmarks, setBookmarks)
+                  }
                   location={location}
                   category={category}
                 />

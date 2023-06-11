@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, Image, Alert} from 'react-native';
+import {StyleSheet, View, Image} from 'react-native';
 
 import {s} from 'react-native-size-matters';
 
@@ -11,31 +11,14 @@ import Icon from './Icon';
 import Text from './Text';
 
 import {Poi} from '../../utils/types';
-import {bookmark} from '../../utils/api/bookmarkAPI';
 
 interface Props {
   poi: Poi;
   bookmarked: boolean;
+  handleBookmark: (poi: Poi) => void;
 }
 
-const PoiCard: React.FC<Props> = ({poi, bookmarked}) => {
-  const handleBookmark = async () => {
-    const response: boolean = await bookmark(poi);
-    if (!bookmarked) {
-      if (response) {
-        console.log('bookmarked');
-      } else {
-        Alert.alert('Error', 'Unable to bookmark place. Please try again.');
-      }
-    } else {
-      if (response) {
-        console.log('unbookmarked');
-      } else {
-        Alert.alert('Error', 'Unable to unbookmark place. Please try again.');
-      }
-    }
-  };
-
+const PoiCard: React.FC<Props> = ({poi, bookmarked, handleBookmark}) => {
   const getInfoString = (): string => {
     let poiString: string = '';
 
@@ -74,7 +57,7 @@ const PoiCard: React.FC<Props> = ({poi, bookmarked}) => {
           size="m"
           icon={bookmarked ? icons.bookmarked : icons.bookmark}
           color={bookmarked ? colors.accent : colors.black}
-          onPress={handleBookmark}
+          onPress={() => handleBookmark(poi)}
         />
       </View>
     </View>

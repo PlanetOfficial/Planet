@@ -27,6 +27,8 @@ import Icon from '../components/Icon';
 import {Poi} from '../../utils/types';
 import PoiCardXL from '../components/PoiCardXL';
 import OptionMenu from '../components/OptionMenu';
+import {handleBookmark} from '../../utils/Misc';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Create = ({navigation, route}: {navigation: any; route: any}) => {
   const [eventTitle, setEventTitle] = React.useState(strings.event.untitled);
@@ -37,6 +39,8 @@ const Create = ({navigation, route}: {navigation: any; route: any}) => {
 
   const [destinations, setDestinations] = useState<Poi[]>();
   const [insertionIndex, setInsertionIndex] = useState<number>(0);
+
+  const [bookmarks, setBookmarks] = useState<Poi[]>([]);
 
   const addDestination = useCallback(() => {
     const destination = route.params?.destination;
@@ -55,6 +59,23 @@ const Create = ({navigation, route}: {navigation: any; route: any}) => {
 
     return unsubscribe;
   }, [navigation, addDestination]);
+
+  const loadBookmarks = async () => {
+    const _bookmarks = await AsyncStorage.getItem('bookmarks');
+    if (_bookmarks) {
+      setBookmarks(JSON.parse(_bookmarks));
+    } else {
+      Alert.alert('Error', 'Unable to load bookmarks. Please try again.');
+    }
+  };
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      loadBookmarks();
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   const onMove = (idx: number, direction: number) => {
     if (!destinations) {
@@ -202,7 +223,15 @@ const Create = ({navigation, route}: {navigation: any; route: any}) => {
                       bookmarked: false,
                     })
                   }>
-                  <PoiCardXL poi={destination} bookmarked={true} />
+                  <PoiCardXL
+                    poi={destination}
+                    bookmarked={bookmarks.some(
+                      bookmark => bookmark.id === destination.id,
+                    )}
+                    handleBookmark={(poi: Poi) =>
+                      handleBookmark(poi, bookmarks, setBookmarks)
+                    }
+                  />
                 </TouchableOpacity>
               </View>
               <TouchableOpacity

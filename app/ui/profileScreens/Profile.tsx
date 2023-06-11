@@ -21,7 +21,7 @@ import Icon from '../components/Icon';
 import PoiRow from '../components/PoiRow';
 import Separator from '../components/Separator';
 
-import {fetchUserLocation} from '../../utils/Misc';
+import {fetchUserLocation, handleBookmark} from '../../utils/Misc';
 import {Coordinate, Poi} from '../../utils/types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -34,15 +34,28 @@ const Profile = ({navigation}: {navigation: any}) => {
   const [lastName, setLastName] = useState<string>('');
   const [username, setUsername] = useState<string>('');
 
+  const [bookmarks, setBookmarks] = useState<Poi[]>([]);
+
+  const initializeData = async () => {
+    setLocation(await fetchUserLocation());
+    const _firstName = await AsyncStorage.getItem('first_name');
+    const _lastName = await AsyncStorage.getItem('last_name');
+    const _username = await AsyncStorage.getItem('username');
+    setFirstName(_firstName || '');
+    setLastName(_lastName || '');
+    setUsername(_username || '');
+
+    const _bookmarks = await AsyncStorage.getItem('bookmarks');
+    if (_bookmarks) {
+      setBookmarks(JSON.parse(_bookmarks));
+    } else {
+      Alert.alert('Error', 'Unable to load bookmarks. Please try again.');
+    }
+  };
+
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', async () => {
-      setLocation(await fetchUserLocation());
-      const _firstName = await AsyncStorage.getItem('first_name');
-      const _lastName = await AsyncStorage.getItem('last_name');
-      const _username = await AsyncStorage.getItem('username');
-      setFirstName(_firstName || '');
-      setLastName(_lastName || '');
-      setUsername(_username || '');
+      initializeData();
     });
 
     return unsubscribe;
@@ -97,7 +110,7 @@ const Profile = ({navigation}: {navigation: any}) => {
         }}
       />
       <FlatList
-        data={[]}
+        data={bookmarks}
         renderItem={({item}: {item: Poi}) => {
           return (
             <TouchableOpacity
@@ -107,7 +120,14 @@ const Profile = ({navigation}: {navigation: any}) => {
                   bookmarked: false,
                 })
               }>
-              <PoiRow poi={item} bookmarked={true} location={location} />
+              <PoiRow
+                poi={item}
+                bookmarked={true}
+                location={location}
+                handleBookmark={(poi: Poi) =>
+                  handleBookmark(poi, bookmarks, setBookmarks)
+                }
+              />
             </TouchableOpacity>
           );
         }}
