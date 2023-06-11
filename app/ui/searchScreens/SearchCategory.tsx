@@ -25,7 +25,7 @@ import PoiRow from '../components/PoiRow';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SearchCategory = ({navigation, route}: {navigation: any; route: any}) => {
-  const {category, location, radius} = route.params;
+  const {category, location, radius, isCreate} = route.params;
 
   const [places, setPlaces] = useState<Poi[]>([]);
   const [filters, setFilters] = useState<(number | number[])[]>([]);
@@ -152,6 +152,7 @@ const SearchCategory = ({navigation, route}: {navigation: any; route: any}) => {
                   navigation.navigate('PoiDetail', {
                     poi: item,
                     bookmarked: false,
+                    isCreate: isCreate,
                   })
                 }>
                 <PoiRow

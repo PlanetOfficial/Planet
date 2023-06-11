@@ -1,6 +1,10 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
+import {
+  StackCardInterpolatedStyle,
+  StackCardInterpolationProps,
+  createStackNavigator,
+} from '@react-navigation/stack';
 import {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 
 import NavBar from './NavBar';
@@ -11,12 +15,14 @@ import SignUpPhone from '../authScreens/SignUpPhone';
 import SignUpInfo from '../authScreens/SignUpInfo';
 import ForgotPassword from '../authScreens/!ForgotPwd';
 import Create from '../createScreens/Create';
+import CreateSearch from '../createScreens/CreateSearch';
 import SearchCategory from '../searchScreens/SearchCategory';
 import SearchMap from '../searchScreens/SearchMap';
 import PoiDetail from '../otherScreens/PoiDetail';
 import Friends from '../otherScreens/Friends';
 import Explore from '../homeScreens/Explore';
 import Settings from '../profileScreens/Settings';
+import {Animated} from 'react-native';
 
 interface AppNavigationProps {
   isLoggedIn: boolean;
@@ -26,12 +32,12 @@ function TabStack() {
   return <NavBar />;
 }
 
-const MainStack = createStackNavigator();
+const Stack = createStackNavigator();
 const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
   return isLoggedIn ? (
     <NavigationContainer>
       <BottomSheetModalProvider>
-        <MainStack.Navigator initialRouteName="Main">
+        <Stack.Navigator initialRouteName="Main">
           {tabStack()}
           {loginStackScreen()}
           {signUpNameStackScreen()}
@@ -39,35 +45,37 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {signUpPhoneStackScreen()}
           {signUpInfoStackScreen()}
           {forgetPassStackScreen()}
-          {createScreen()}
           {searchCategoryScreen()}
           {searchMapScreen()}
           {poiDetailScreen()}
           {friendsScreen()}
           {exploreScreen()}
           {settingsScreen()}
-        </MainStack.Navigator>
+          {createScreen()}
+          {CreateSearchScreen()}
+        </Stack.Navigator>
       </BottomSheetModalProvider>
     </NavigationContainer>
   ) : (
     <NavigationContainer>
       <BottomSheetModalProvider>
-        <MainStack.Navigator initialRouteName="Main">
+        <Stack.Navigator initialRouteName="Main">
+          {tabStack()}
           {loginStackScreen()}
           {signUpNameStackScreen()}
           {signUpCredsStackScreen()}
           {signUpPhoneStackScreen()}
           {signUpInfoStackScreen()}
           {forgetPassStackScreen()}
-          {tabStack()}
-          {createScreen()}
           {searchCategoryScreen()}
           {searchMapScreen()}
           {poiDetailScreen()}
           {friendsScreen()}
           {exploreScreen()}
           {settingsScreen()}
-        </MainStack.Navigator>
+          {createScreen()}
+          {CreateSearchScreen()}
+        </Stack.Navigator>
       </BottomSheetModalProvider>
     </NavigationContainer>
   );
@@ -79,7 +87,7 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
 
 const loginStackScreen = () => {
   return (
-    <MainStack.Screen
+    <Stack.Screen
       name="Login"
       component={LoginScreen}
       options={{headerShown: false}}
@@ -89,7 +97,7 @@ const loginStackScreen = () => {
 
 const signUpNameStackScreen = () => {
   return (
-    <MainStack.Screen
+    <Stack.Screen
       name="SignUpName"
       component={SignUpName}
       options={{headerShown: false}}
@@ -99,7 +107,7 @@ const signUpNameStackScreen = () => {
 
 const signUpCredsStackScreen = () => {
   return (
-    <MainStack.Screen
+    <Stack.Screen
       name="SignUpCreds"
       component={SignUpCreds}
       options={{headerShown: false}}
@@ -109,7 +117,7 @@ const signUpCredsStackScreen = () => {
 
 const signUpPhoneStackScreen = () => {
   return (
-    <MainStack.Screen
+    <Stack.Screen
       name="SignUpPhone"
       component={SignUpPhone}
       options={{headerShown: false}}
@@ -119,7 +127,7 @@ const signUpPhoneStackScreen = () => {
 
 const signUpInfoStackScreen = () => {
   return (
-    <MainStack.Screen
+    <Stack.Screen
       name="SignUpInfo"
       component={SignUpInfo}
       options={{headerShown: false}}
@@ -129,7 +137,7 @@ const signUpInfoStackScreen = () => {
 
 const forgetPassStackScreen = () => {
   return (
-    <MainStack.Screen
+    <Stack.Screen
       name="ForgotPassword"
       component={ForgotPassword}
       options={{headerShown: false}}
@@ -139,7 +147,7 @@ const forgetPassStackScreen = () => {
 
 const tabStack = () => {
   return (
-    <MainStack.Screen
+    <Stack.Screen
       name="TabStack"
       component={TabStack}
       options={{headerShown: false}}
@@ -147,22 +155,9 @@ const tabStack = () => {
   );
 };
 
-const createScreen = () => {
-  return (
-    <MainStack.Screen
-      name="Create"
-      component={Create}
-      options={{
-        headerShown: false,
-        presentation: 'modal',
-      }}
-    />
-  );
-};
-
 const searchCategoryScreen = () => {
   return (
-    <MainStack.Screen
+    <Stack.Screen
       name="SearchCategory"
       component={SearchCategory}
       options={{
@@ -174,7 +169,7 @@ const searchCategoryScreen = () => {
 
 const searchMapScreen = () => {
   return (
-    <MainStack.Screen
+    <Stack.Screen
       name="SearchMap"
       component={SearchMap}
       options={{
@@ -188,7 +183,7 @@ const searchMapScreen = () => {
 
 const poiDetailScreen = () => {
   return (
-    <MainStack.Screen
+    <Stack.Screen
       name="PoiDetail"
       component={PoiDetail}
       options={{
@@ -200,11 +195,12 @@ const poiDetailScreen = () => {
 
 const friendsScreen = () => {
   return (
-    <MainStack.Screen
+    <Stack.Screen
       name="Friends"
       component={Friends}
       options={{
         headerShown: false,
+        presentation: 'modal',
       }}
     />
   );
@@ -212,7 +208,7 @@ const friendsScreen = () => {
 
 const exploreScreen = () => {
   return (
-    <MainStack.Screen
+    <Stack.Screen
       name="Explore"
       component={Explore}
       options={{
@@ -224,7 +220,7 @@ const exploreScreen = () => {
 
 const settingsScreen = () => {
   return (
-    <MainStack.Screen
+    <Stack.Screen
       name="Settings"
       component={Settings}
       options={{
@@ -234,4 +230,70 @@ const settingsScreen = () => {
   );
 };
 
+const createScreen = () => {
+  return (
+    <Stack.Screen
+      name="Create"
+      component={Create}
+      options={{
+        headerShown: false,
+        cardStyleInterpolator: verticalAnimation,
+      }}
+    />
+  );
+};
+
+const CreateSearchScreen = () => {
+  return (
+    <Stack.Screen
+      name="CreateSearch"
+      component={CreateSearch}
+      options={{
+        headerShown: false,
+        cardStyleInterpolator: verticalAnimation,
+      }}
+    />
+  );
+};
+
 export default AppNavigation;
+
+function verticalAnimation({
+  current,
+  inverted,
+  layouts: {screen},
+}: StackCardInterpolationProps): StackCardInterpolatedStyle {
+  const translateFocused = Animated.multiply(
+    current.progress.interpolate({
+      inputRange: [0, 1],
+      outputRange: [screen.height, 0],
+      extrapolate: 'clamp',
+    }),
+    inverted,
+  );
+
+  const overlayOpacity = current.progress.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, 0.07],
+    extrapolate: 'clamp',
+  });
+
+  const shadowOpacity = current.progress.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, 0.3],
+    extrapolate: 'clamp',
+  });
+
+  return {
+    cardStyle: {
+      transform: [
+        // Translation for the animation of the current card
+        {translateY: translateFocused},
+        // Translation for the animation of the card in back
+        {translateY: 0},
+      ],
+    },
+    overlayStyle: {opacity: overlayOpacity},
+    shadowStyle: {shadowOpacity},
+  };
+}
