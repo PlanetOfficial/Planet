@@ -55,7 +55,15 @@ const SignUpName = ({navigation}: {navigation: any}) => {
         />
       </View>
       <TouchableOpacity
-        style={[localStyles.button, {backgroundColor: (firstName.length === 0 || lastName.length === 0) ? colors.darkgrey : colors.accent}]}
+        style={[
+          localStyles.button,
+          {
+            backgroundColor:
+              firstName.length === 0 || lastName.length === 0
+                ? colors.darkgrey
+                : colors.accent,
+          },
+        ]}
         disabled={firstName.length === 0 || lastName.length === 0}
         onPress={() =>
           navigation.navigate('SignUpCreds', {
@@ -63,7 +71,9 @@ const SignUpName = ({navigation}: {navigation: any}) => {
             lastName: lastName,
           })
         }>
-        <Text weight="b" color={colors.white}>{strings.main.next}</Text>
+        <Text weight="b" color={colors.white}>
+          {strings.main.next}
+        </Text>
       </TouchableOpacity>
     </View>
   );
@@ -85,6 +95,7 @@ const localStyles = StyleSheet.create({
     marginHorizontal: s(5),
     paddingHorizontal: s(10),
     paddingVertical: s(5),
+    fontFamily: 'Lato',
   },
   button: {
     alignSelf: 'center',

@@ -111,7 +111,9 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
           {loading ? (
             <ActivityIndicator size="small" color={colors.white} />
           ) : (
-            <Text weight="b" color={colors.white}>{strings.login.login}</Text>
+            <Text weight="b" color={colors.white}>
+              {strings.login.login}
+            </Text>
           )}
         </TouchableOpacity>
         <View>

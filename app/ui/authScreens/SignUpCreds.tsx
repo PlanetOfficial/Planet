@@ -81,35 +81,40 @@ const SignUpCreds = ({navigation, route}: {navigation: any; route: any}) => {
 
   return (
     <View style={styles.container}>
-    <SafeAreaView>
-      <View style={styles.header}>
-        <Icon
-          size="m"
-          icon={icons.back}
-          onPress={() => navigation.goBack()}
-        />
+      <SafeAreaView>
+        <View style={styles.header}>
+          <Icon
+            size="m"
+            icon={icons.back}
+            onPress={() => navigation.goBack()}
+          />
+        </View>
+      </SafeAreaView>
+
+      <View style={localStyles.promptContainer}>
+        <Text size="l" weight="l" center={true}>
+          {strings.signUp.credPrompt}
+        </Text>
       </View>
-    </SafeAreaView>
 
-    <View style={localStyles.promptContainer}>
-      <Text size="l" weight="l" center={true}>
-        {strings.signUp.credPrompt}
-      </Text>
-    </View>
-
-    
-      <View style={styles.inputContainer}>
-        <Text>{strings.signUp.username}: </Text>
+      <View style={localStyles.inputContainer}>
+        <View style={localStyles.prompt}>
+          <Text weight="l">{strings.signUp.username}: </Text>
+        </View>
         <TextInput
+          style={localStyles.input}
           placeholder={strings.signUp.username}
           value={username}
           onChangeText={text => setUsername(text)}
           placeholderTextColor={colors.darkgrey}
         />
       </View>
-      <View style={styles.inputContainer}>
-        <Text>{strings.login.password}: </Text>
+      <View style={localStyles.inputContainer}>
+        <View style={localStyles.prompt}>
+          <Text weight="l">{strings.login.password}: </Text>
+        </View>
         <TextInput
+          style={localStyles.input}
           placeholder={strings.login.password}
           value={password}
           onChangeText={text => setPassword(text)}
@@ -117,9 +122,12 @@ const SignUpCreds = ({navigation, route}: {navigation: any; route: any}) => {
           secureTextEntry={true}
         />
       </View>
-      <View style={styles.inputContainer}>
-        <Text>{strings.signUp.confirmPassword}: </Text>
+      <View style={localStyles.inputContainer}>
+        <View style={localStyles.prompt}>
+          <Text weight="l">{strings.signUp.confirmPassword}: </Text>
+        </View>
         <TextInput
+          style={localStyles.input}
           placeholder={strings.signUp.confirmPassword}
           value={passwordConfirm}
           onChangeText={text => setPasswordConfirm(text)}
@@ -127,10 +135,29 @@ const SignUpCreds = ({navigation, route}: {navigation: any; route: any}) => {
           secureTextEntry={true}
         />
       </View>
-      <TouchableOpacity onPress={() => handleNext()}>
-        <Text>{strings.main.next}</Text>
+      {error.length !== 0 ? <Text weight='l' center={true} color={colors.red}>{error}</Text> : null}
+      <TouchableOpacity
+        style={[
+          localStyles.button,
+          {
+            backgroundColor:
+              username.length === 0 ||
+              password.length === 0 ||
+              password !== passwordConfirm
+                ? colors.darkgrey
+                : colors.accent,
+          },
+        ]}
+        disabled={
+          username.length === 0 ||
+          password.length === 0 ||
+          password !== passwordConfirm
+        }
+        onPress={() => handleNext()}>
+        <Text weight="b" color={colors.white}>
+          {strings.main.next}
+        </Text>
       </TouchableOpacity>
-      <View>{error.length !== 0 ? <Text>{error}</Text> : null}</View>
     </View>
   );
 };
@@ -140,8 +167,12 @@ const localStyles = StyleSheet.create({
     margin: s(40),
     paddingHorizontal: s(20),
   },
+  prompt: {
+    width: s(100),
+  },  
   inputContainer: {
     flexDirection: 'row',
+    alignItems: 'center',
     marginVertical: s(30),
     marginHorizontal: s(50),
   },
@@ -152,12 +183,13 @@ const localStyles = StyleSheet.create({
     marginHorizontal: s(5),
     paddingHorizontal: s(10),
     paddingVertical: s(5),
+    fontFamily: 'Lato',
   },
   button: {
     alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: s(50),
+    marginTop: s(30),
     width: s(150),
     height: s(50),
     borderRadius: s(25),
