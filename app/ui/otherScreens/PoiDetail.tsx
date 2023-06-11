@@ -30,14 +30,7 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
     route?.params?.bookmarked,
   );
 
-  const [addVar, setAddVar] = useState<boolean>(false);
-  useEffect(() => {
-    if (addVar === true) {
-      navigation.navigate('Create', {
-        destination: destination,
-      });
-    }
-  }, [addVar, navigation, destination]);
+  const [isCreate] = useState<boolean>(route.params.isCreate);
 
   useEffect(() => {
     const initializeDestinationData = async () => {
@@ -155,9 +148,13 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
               },
               {
                 name: 'add',
-                onPress: () => setAddVar(true),
+                onPress: () => {
+                  navigation.navigate('Create', {
+                    destination: destination,
+                  });
+                },
                 color: colors.black,
-                disabled: !route.params?.isCreate,
+                disabled: !isCreate,
               },
             ]}
           />

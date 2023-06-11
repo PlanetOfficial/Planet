@@ -256,13 +256,11 @@ const CreateSearchScreen = () => {
   );
 };
 
-export default AppNavigation;
-
-function verticalAnimation({
+const verticalAnimation = ({
   current,
   inverted,
   layouts: {screen},
-}: StackCardInterpolationProps): StackCardInterpolatedStyle {
+}: StackCardInterpolationProps): StackCardInterpolatedStyle => {
   const translateFocused = Animated.multiply(
     current.progress.interpolate({
       inputRange: [0, 1],
@@ -296,4 +294,6 @@ function verticalAnimation({
     overlayStyle: {opacity: overlayOpacity},
     shadowStyle: {shadowOpacity},
   };
-}
+};
+
+export default AppNavigation;
