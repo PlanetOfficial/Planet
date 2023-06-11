@@ -256,8 +256,6 @@ const CreateSearchScreen = () => {
   );
 };
 
-export default AppNavigation;
-
 function verticalAnimation({
   current,
   inverted,
@@ -297,3 +295,5 @@ function verticalAnimation({
     shadowStyle: {shadowOpacity},
   };
 }
+
+export default AppNavigation;
