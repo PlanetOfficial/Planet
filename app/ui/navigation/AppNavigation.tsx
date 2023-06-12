@@ -39,12 +39,6 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
       <BottomSheetModalProvider>
         <Stack.Navigator initialRouteName="Main">
           {tabStack()}
-          {loginStackScreen()}
-          {signUpNameStackScreen()}
-          {signUpCredsStackScreen()}
-          {signUpPhoneStackScreen()}
-          {signUpInfoStackScreen()}
-          {forgetPassStackScreen()}
           {searchCategoryScreen()}
           {searchMapScreen()}
           {poiDetailScreen()}
@@ -52,7 +46,13 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {exploreScreen()}
           {settingsScreen()}
           {createScreen()}
-          {CreateSearchScreen()}
+          {createSearchScreen()}
+          {loginStackScreen()}
+          {signUpNameStackScreen()}
+          {signUpCredsStackScreen()}
+          {signUpPhoneStackScreen()}
+          {signUpInfoStackScreen()}
+          {forgetPassStackScreen()}
         </Stack.Navigator>
       </BottomSheetModalProvider>
     </NavigationContainer>
@@ -60,13 +60,13 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
     <NavigationContainer>
       <BottomSheetModalProvider>
         <Stack.Navigator initialRouteName="Main">
-          {tabStack()}
           {loginStackScreen()}
           {signUpNameStackScreen()}
           {signUpCredsStackScreen()}
           {signUpPhoneStackScreen()}
           {signUpInfoStackScreen()}
           {forgetPassStackScreen()}
+          {tabStack()}
           {searchCategoryScreen()}
           {searchMapScreen()}
           {poiDetailScreen()}
@@ -74,7 +74,7 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {exploreScreen()}
           {settingsScreen()}
           {createScreen()}
-          {CreateSearchScreen()}
+          {createSearchScreen()}
         </Stack.Navigator>
       </BottomSheetModalProvider>
     </NavigationContainer>
@@ -243,7 +243,7 @@ const createScreen = () => {
   );
 };
 
-const CreateSearchScreen = () => {
+const createSearchScreen = () => {
   return (
     <Stack.Screen
       name="CreateSearch"
