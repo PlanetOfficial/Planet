@@ -6,20 +6,19 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  Image,
+  Alert,
 } from 'react-native';
 import {s, vs} from 'react-native-size-matters';
 import messaging from '@react-native-firebase/messaging';
 
 import strings from '../../constants/strings';
 
-import {login, saveTokenToDatabase} from '../../utils/api/authAPI';
-import {colors} from '../../constants/theme';
-import {vectors} from '../../constants/images';
-import {cacheUserInfo} from '../../utils/functions/CacheHelpers';
+import {isVerified, login, saveTokenToDatabase} from '../../utils/api/authAPI';
+import colors from '../../constants/colors';
+import {cacheUserInfo} from '../../utils/CacheHelpers';
 
 const LoginScreen = ({navigation}: {navigation: any}) => {
-  const [email, setEmail] = useState<string>('');
+  const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
   const [error, setError] = useState<string>('');
@@ -31,18 +30,34 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
     setError('');
 
     // display an error if one of the fields are missing
-    if (email.length === 0 || password.length === 0) {
+    if (username.length === 0 || password.length === 0) {
       setError(strings.login.missingInfo);
       return;
     }
 
     setLoading(true);
-    const response = await login(email, password);
+    const response = await login(username, password);
     setLoading(false);
 
     if (response?.authToken) {
-      // successful login
-      await cacheUserInfo(response?.authToken);
+      // check if verified
+      const verifiedResponse = await isVerified(response.authToken);
+      if (!verifiedResponse) {
+        navigation.reset({
+          index: 0,
+          routes: [
+            {name: 'SignUpPhone', params: {authToken: response.authToken}},
+          ],
+        });
+
+        return;
+      }
+
+      const cacheSuccess = await cacheUserInfo(response?.authToken);
+      if (!cacheSuccess) {
+        Alert.alert('Something went wrong. Please try again.');
+        return;
+      }
 
       // save to firebase
       const fcm_token = await messaging().getToken();
@@ -59,18 +74,14 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
 
   return (
     <View testID="loginScreenView" style={styles.container}>
-      <Image style={styles.background} source={vectors.login} />
-      <Text style={styles.title}>{strings.main.rivalet}</Text>
+      <Text style={styles.title}>{strings.main.appName}</Text>
       <TextInput
-        testID="emailTextInput"
         style={styles.input}
-        placeholder={strings.login.email}
-        value={email}
-        onChangeText={setEmail}
+        placeholder={strings.login.username}
+        value={username}
+        onChangeText={setUsername}
         autoCapitalize="none"
         autoCorrect={false}
-        keyboardType="email-address"
-        textContentType="emailAddress"
         placeholderTextColor={colors.darkgrey}
       />
       <TextInput
@@ -106,7 +117,7 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
         <Text style={styles.bottomText}>{strings.login.noAccount}</Text>
         <Text
           style={styles.bottomTextLink}
-          onPress={() => navigation.navigate('SignUp')}>
+          onPress={() => navigation.navigate('SignUpName')}>
           {strings.login.signUp}
         </Text>
       </View>

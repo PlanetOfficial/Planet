@@ -5,9 +5,9 @@ import messaging from '@react-native-firebase/messaging';
 import {Alert, PermissionsAndroid} from 'react-native';
 import {Platform} from 'react-native';
 
-import SplashScreen from './app/ui/otherScreens/!SplashScreen';
-import AppNavigation from './app/navigation/AppNavigation';
-import {updateCaches} from './app/utils/functions/CacheHelpers';
+import SplashScreen from './app/ui/navigation/SplashScreen';
+import AppNavigation from './app/ui/navigation/AppNavigation';
+import {cacheCategories, updateCaches} from './app/utils/CacheHelpers';
 import {saveTokenToDatabase} from './app/utils/api/authAPI';
 
 export default function App() {
@@ -34,6 +34,8 @@ export default function App() {
       } else {
         setLoggedIn(false);
       }
+
+      await cacheCategories();
 
       setLoading(false);
       requestNotificationPerms();

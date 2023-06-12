@@ -6,8 +6,8 @@ import {Menu, MenuItem, MenuDivider} from 'react-native-material-menu';
 
 import Text from './Text';
 import Icon from './Icon';
-import {colors} from '../../constants/theme';
-import {icons} from '../../constants/images';
+import colors from '../../constants/colors';
+import icons from '../../constants/icons';
 
 interface Props {
   icon?: ImageSourcePropType;
