@@ -40,13 +40,6 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
       <BottomSheetModalProvider>
         <Stack.Navigator initialRouteName="Main">
           {tabStack()}
-          {loginStackScreen()}
-          {signUpNameStackScreen()}
-          {signUpCredsStackScreen()}
-          {signUpPhoneStackScreen()}
-          {verifyPhoneStackScreen()}
-          {signUpInfoStackScreen()}
-          {forgetPassStackScreen()}
           {searchCategoryScreen()}
           {searchMapScreen()}
           {poiDetailScreen()}
@@ -55,6 +48,13 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {settingsScreen()}
           {createScreen()}
           {createSearchScreen()}
+          {loginStackScreen()}
+          {signUpNameStackScreen()}
+          {signUpCredsStackScreen()}
+          {signUpPhoneStackScreen()}
+          {verifyPhoneStackScreen()}
+          {signUpInfoStackScreen()}
+          {forgetPassStackScreen()}
         </Stack.Navigator>
       </BottomSheetModalProvider>
     </NavigationContainer>
