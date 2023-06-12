@@ -97,7 +97,7 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
       await Linking.openURL(destinationDetails.website);
     }
   };
-  
+
   return (
     <View style={styles.container}>
       <SafeAreaView>

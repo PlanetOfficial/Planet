@@ -12,9 +12,9 @@ export const postEvent = async (
 
   const response = await fetch(
     EventAPIURL +
-      `/event?poi_ids=${JSON.stringify(
-        poi_ids,
-      )}&names=${JSON.stringify(names)}&name=${name}&datetime=${datetime}&members=${JSON.stringify(
+      `/event?poi_ids=${JSON.stringify(poi_ids)}&names=${JSON.stringify(
+        names,
+      )}&name=${name}&datetime=${datetime}&members=${JSON.stringify(
         members,
       )}&authtoken=${authToken}`,
     {

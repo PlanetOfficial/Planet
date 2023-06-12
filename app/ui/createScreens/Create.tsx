@@ -29,7 +29,7 @@ import PoiCardXL from '../components/PoiCardXL';
 import OptionMenu from '../components/OptionMenu';
 import {handleBookmark} from '../../utils/Misc';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { postEvent } from '../../utils/api/eventAPI';
+import {postEvent} from '../../utils/api/eventAPI';
 
 const Create = ({navigation, route}: {navigation: any; route: any}) => {
   const [eventTitle, setEventTitle] = React.useState(strings.event.untitled);
@@ -93,7 +93,7 @@ const Create = ({navigation, route}: {navigation: any; route: any}) => {
   };
 
   const onSave = async () => {
-    if(!destinations){
+    if (!destinations) {
       return;
     }
 

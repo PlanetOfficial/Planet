@@ -20,7 +20,6 @@ interface Props {
 }
 
 const PoiCardXL: React.FC<Props> = ({poi, bookmarked, handleBookmark}) => {
-
   return (
     <View style={[cardStyles.container, styles.shadow]}>
       <Image style={cardStyles.image} source={{uri: poi.photo}} />
