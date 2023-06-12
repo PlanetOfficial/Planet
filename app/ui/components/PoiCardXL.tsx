@@ -19,16 +19,14 @@ interface Props {
   handleBookmark: (poi: Poi) => void;
 }
 
-const PoiCard: React.FC<Props> = ({poi, bookmarked, handleBookmark}) => {
+const PoiCardXL: React.FC<Props> = ({poi, bookmarked, handleBookmark}) => {
   return (
     <View style={[cardStyles.container, styles.shadow]}>
       <Image style={cardStyles.image} source={{uri: poi.photo}} />
-      <View style={cardStyles.footer}>
+      <View style={cardStyles.header}>
         <View style={cardStyles.infoContainer}>
-          <Text size="s" numberOfLines={1}>
-            {poi.name}
-          </Text>
-          <Text size="xs" color={colors.darkgrey} numberOfLines={1}>
+          <Text numberOfLines={1}>{poi.name}</Text>
+          <Text size="xs" color={colors.accent} numberOfLines={1}>
             {getInfoString(poi)}
           </Text>
         </View>
@@ -45,30 +43,32 @@ const PoiCard: React.FC<Props> = ({poi, bookmarked, handleBookmark}) => {
 
 const cardStyles = StyleSheet.create({
   container: {
-    width: s(140),
-    height: s(180),
+    width: s(310),
+    height: s(200),
     borderRadius: s(10),
     backgroundColor: colors.white,
   },
   image: {
+    position: 'absolute',
     width: '100%',
-    height: s(140),
-    borderTopLeftRadius: s(10),
-    borderTopRightRadius: s(10),
+    height: '100%',
+    borderRadius: s(10),
   },
-  footer: {
+  header: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: s(7),
-    height: s(40),
+    paddingHorizontal: s(15),
+    width: '100%',
+    height: s(45),
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
   },
   infoContainer: {
     flex: 1,
     justifyContent: 'space-between',
     height: s(40),
-    paddingVertical: s(4),
+    paddingVertical: s(2),
   },
 });
 
-export default PoiCard;
+export default PoiCardXL;

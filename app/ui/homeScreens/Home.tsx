@@ -87,9 +87,18 @@ const Home = ({navigation}: {navigation: any}) => {
                   key={poi.id}
                   style={homeStyles.cardContainer}
                   onPress={() => {
-                    navigation.navigate('PoiDetail', {poi: poi});
+                    navigation.navigate('PoiDetail', {
+                      poi: poi,
+                      bookmarked: false,
+                    });
                   }}>
-                  <PoiCard poi={poi} bookmarked={false} />
+                  <PoiCard
+                    poi={poi}
+                    bookmarked={false}
+                    handleBookmark={(p: Poi) => {
+                      console.log('TODO: handle bookmark: ', p.name);
+                    }}
+                  />
                 </TouchableOpacity>
               ))}
             </ScrollView>

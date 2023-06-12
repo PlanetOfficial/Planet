@@ -30,6 +30,8 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
     route?.params?.bookmarked,
   );
 
+  const [isCreate] = useState<boolean>(route.params.isCreate);
+
   useEffect(() => {
     const initializeDestinationData = async () => {
       if (route.params?.place_id) {
@@ -96,26 +98,6 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
     }
   };
 
-  // const handleBookmark = async () => {
-  //   if (!bookmarked) {
-  //     const response: boolean = await postPlace(destination?.id);
-
-  //     if (response) {
-  //       setBookmarked(!bookmarked);
-  //     } else {
-  //       Alert.alert('Error', 'Unable to bookmark place. Please try again.');
-  //     }
-  //   } else {
-  //     const response: boolean = await deletePlace(destination?.id);
-
-  //     if (response) {
-  //       setBookmarked(!bookmarked);
-  //     } else {
-  //       Alert.alert('Error', 'Unable to unbookmark place. Please try again.');
-  //     }
-  //   }
-  // };
-
   return (
     <View style={styles.container}>
       <SafeAreaView>
@@ -163,6 +145,16 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
                 name: strings.poi.eventUrl,
                 onPress: handleLinkPress,
                 color: colors.black,
+              },
+              {
+                name: 'add',
+                onPress: () => {
+                  navigation.navigate('Create', {
+                    destination: destination,
+                  });
+                },
+                color: colors.black,
+                disabled: !isCreate,
               },
             ]}
           />

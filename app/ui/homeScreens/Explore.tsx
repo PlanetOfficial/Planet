@@ -55,7 +55,14 @@ const Explore = ({navigation, route}: {navigation: any; route: any}) => {
                   bookmarked: false,
                 })
               }>
-              <PoiRow poi={item} bookmarked={true} location={location} />
+              <PoiRow
+                poi={item}
+                bookmarked={true}
+                location={location}
+                handleBookmark={(poi: Poi) =>
+                  console.log('TODO: handle bookmark: ', poi.name)
+                }
+              />
             </TouchableOpacity>
           );
         }}

@@ -6,8 +6,10 @@ const strings = {
     save: 'Save',
     done: 'Done',
     cancel: 'Cancel',
+    discard: 'Discard',
     edit: 'Edit',
-    delete: 'Delete',
+    remove: 'Remove',
+    rename: 'Rename',
     add: 'Add',
     create: 'Create',
     next: 'Next',
@@ -16,6 +18,7 @@ const strings = {
     seeAll: 'See All',
     milesAbbrev: 'mi',
     dash: '-',
+    warning: 'Warning',
   },
   login: {
     login: 'Login',
@@ -93,6 +96,15 @@ const strings = {
     settings: 'Settings',
     noBookmarksFound: 'No Bookmarks Found',
     noBookmarksFoundDescription: 'Try bookmarking something',
+  },
+  event: {
+    untitled: 'Untitled Event',
+    backConfirmation:
+      'Are you sure you want to go back? Your event will not be saved.',
+    addDestination: 'Add a Destination',
+    moveUp: 'Move Up',
+    moveDown: 'Move Down',
+    renamePrompt: 'Enter a new name for this destination:',
   },
 };
 

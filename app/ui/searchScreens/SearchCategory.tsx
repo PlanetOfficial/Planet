@@ -8,23 +8,25 @@ import {
   RefreshControl,
   ActivityIndicator,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import colors from '../../constants/colors';
 import icons from '../../constants/icons';
 import styles from '../../constants/styles';
+import strings from '../../constants/strings';
 
 import Text from '../components/Text';
 import Separator from '../components/Separator';
-
-import {Poi} from '../../utils/types';
-import {getPois} from '../../utils/api/poiAPI';
 import Icon from '../components/Icon';
 import Filter from '../components/Filter';
-import strings from '../../constants/strings';
 import PoiRow from '../components/PoiRow';
 
+import {getPois} from '../../utils/api/poiAPI';
+import {handleBookmark} from '../../utils/Misc';
+import {Poi} from '../../utils/types';
+
 const SearchCategory = ({navigation, route}: {navigation: any; route: any}) => {
-  const {category, location, radius} = route.params;
+  const {category, location, radius, isCreate} = route.params;
 
   const [places, setPlaces] = useState<Poi[]>([]);
   const [filters, setFilters] = useState<(number | number[])[]>([]);
@@ -32,6 +34,8 @@ const SearchCategory = ({navigation, route}: {navigation: any; route: any}) => {
   const [refreshing, setRefreshing] = useState<boolean>(false);
 
   const filterRef = useRef<any>(null); // due to forwardRef
+
+  const [bookmarks, setBookmarks] = useState<Poi[]>([]);
 
   const loadData = useCallback(async () => {
     setRefreshing(true);
@@ -67,8 +71,18 @@ const SearchCategory = ({navigation, route}: {navigation: any; route: any}) => {
     setLoading(false);
   }, [category, filters, location.latitude, location.longitude, radius]);
 
+  const initializeData = async () => {
+    const _bookmarks = await AsyncStorage.getItem('bookmarks');
+    if (_bookmarks) {
+      setBookmarks(JSON.parse(_bookmarks));
+    } else {
+      Alert.alert('Error', 'Unable to load bookmarks. Please try again.');
+    }
+  };
+
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
+      initializeData();
       loadData();
     });
 
@@ -109,6 +123,7 @@ const SearchCategory = ({navigation, route}: {navigation: any; route: any}) => {
                 category,
                 location,
                 radius,
+                isCreate,
               })
             }
           />
@@ -139,11 +154,17 @@ const SearchCategory = ({navigation, route}: {navigation: any; route: any}) => {
                   navigation.navigate('PoiDetail', {
                     poi: item,
                     bookmarked: false,
+                    isCreate: isCreate,
                   })
                 }>
                 <PoiRow
                   poi={item}
-                  bookmarked={true}
+                  bookmarked={bookmarks.some(
+                    bookmark => bookmark.id === item.id,
+                  )}
+                  handleBookmark={(poi: Poi) =>
+                    handleBookmark(poi, bookmarks, setBookmarks)
+                  }
                   location={location}
                   category={category}
                 />

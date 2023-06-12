@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, Image, Alert} from 'react-native';
+import {StyleSheet, View, Image} from 'react-native';
 
 import {s} from 'react-native-size-matters';
 
@@ -12,34 +12,23 @@ import Text from './Text';
 
 import {Category, Coordinate, Poi} from '../../utils/types';
 import {getDistanceFromCoordinates} from '../../utils/Misc';
-import {bookmark} from '../../utils/api/bookmarkAPI';
 import numbers from '../../constants/numbers';
 
 interface Props {
   poi: Poi;
   bookmarked: boolean;
+  handleBookmark: (poi: Poi) => void;
   location?: Coordinate;
   category?: Category;
 }
 
-const PoiRow: React.FC<Props> = ({poi, bookmarked, location, category}) => {
-  const handleBookmark = async () => {
-    const response: boolean = await bookmark(poi);
-    if (!bookmarked) {
-      if (response) {
-        console.log('bookmarked');
-      } else {
-        Alert.alert('Error', 'Unable to bookmark place. Please try again.');
-      }
-    } else {
-      if (response) {
-        console.log('unbookmarked');
-      } else {
-        Alert.alert('Error', 'Unable to unbookmark place. Please try again.');
-      }
-    }
-  };
-
+const PoiRow: React.FC<Props> = ({
+  poi,
+  bookmarked,
+  handleBookmark,
+  location,
+  category,
+}) => {
   const getAddressString = (): string => {
     let poiString: string = '';
 
@@ -78,7 +67,13 @@ const PoiRow: React.FC<Props> = ({poi, bookmarked, location, category}) => {
       <View style={styles.imageContainer}>
         <Image
           style={styles.image}
-          source={{uri: poi.photo ? poi.photo : category?.icon.url}}
+          source={
+            poi.photo
+              ? {uri: poi.photo}
+              : category
+              ? {uri: category.icon.url}
+              : icons.close
+          } // TODO: replace with default image
           resizeMode={poi.photo ? 'cover' : 'contain'}
         />
       </View>
@@ -97,7 +92,7 @@ const PoiRow: React.FC<Props> = ({poi, bookmarked, location, category}) => {
         size="l"
         icon={bookmarked ? icons.bookmarked : icons.bookmark}
         color={bookmarked ? colors.accent : colors.black}
-        onPress={handleBookmark}
+        onPress={() => handleBookmark(poi)}
       />
     </View>
   );
