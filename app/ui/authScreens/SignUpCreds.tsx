@@ -2,14 +2,20 @@ import React, {useState} from 'react';
 import {
   View,
   SafeAreaView,
-  Text,
   TextInput,
   TouchableOpacity,
+  StyleSheet,
 } from 'react-native';
+import {s} from 'react-native-size-matters';
 
+import Icon from '../components/Icon';
+import Text from '../components/Text';
+
+import icons from '../../constants/icons';
 import colors from '../../constants/colors';
 import styles from '../../constants/styles';
 import strings from '../../constants/strings';
+
 import {signup} from '../../utils/api/authAPI';
 
 /*
@@ -21,7 +27,9 @@ const SignUpCreds = ({navigation, route}: {navigation: any; route: any}) => {
   const [firstName] = useState<string>(route.params.firstName);
   const [lastName] = useState<string>(route.params.lastName);
 
-  const [username, setUsername] = useState<string>(firstName + lastName);
+  const [username, setUsername] = useState<string>(
+    firstName.toLowerCase() + lastName.toLowerCase(),
+  );
   const [password, setPassword] = useState<string>('');
   const [passwordConfirm, setPasswordConfirm] = useState<string>('');
 
@@ -65,7 +73,7 @@ const SignUpCreds = ({navigation, route}: {navigation: any; route: any}) => {
       navigation.reset({
         index: 0,
         routes: [
-          {name: 'SignUpPhone', params: {authToken: response?.authToken}},
+          {name: 'SignUpPhone', params: {authToken: response.authToken}},
         ],
       });
     } else {
@@ -74,22 +82,43 @@ const SignUpCreds = ({navigation, route}: {navigation: any; route: any}) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>{strings.login.signUp}</Text>
+    <View style={styles.container}>
+      <SafeAreaView>
+        <View style={styles.header}>
+          <Icon
+            size="m"
+            icon={icons.back}
+            onPress={() => navigation.goBack()}
+          />
+        </View>
+      </SafeAreaView>
+
+      <View style={localStyles.promptContainer}>
+        <Text size="l" weight="l" center={true}>
+          {strings.signUp.credPrompt}
+        </Text>
       </View>
-      <View style={styles.inputContainer}>
-        <Text>{strings.signUp.username}: </Text>
+
+      <View style={localStyles.inputContainer}>
+        <View style={localStyles.prompt}>
+          <Text weight="l">{strings.signUp.username}: </Text>
+        </View>
         <TextInput
+          style={localStyles.input}
           placeholder={strings.signUp.username}
           value={username}
-          onChangeText={text => setUsername(text)}
+          onChangeText={text => setUsername(text.toLowerCase())}
           placeholderTextColor={colors.darkgrey}
+          autoCapitalize="none"
+          autoCorrect={false}
         />
       </View>
-      <View style={styles.inputContainer}>
-        <Text>{strings.login.password}: </Text>
+      <View style={localStyles.inputContainer}>
+        <View style={localStyles.prompt}>
+          <Text weight="l">{strings.login.password}: </Text>
+        </View>
         <TextInput
+          style={localStyles.input}
           placeholder={strings.login.password}
           value={password}
           onChangeText={text => setPassword(text)}
@@ -97,9 +126,12 @@ const SignUpCreds = ({navigation, route}: {navigation: any; route: any}) => {
           secureTextEntry={true}
         />
       </View>
-      <View style={styles.inputContainer}>
-        <Text>{strings.signUp.confirmPassword}: </Text>
+      <View style={localStyles.inputContainer}>
+        <View style={localStyles.prompt}>
+          <Text weight="l">{strings.signUp.confirmPassword}: </Text>
+        </View>
         <TextInput
+          style={localStyles.input}
           placeholder={strings.signUp.confirmPassword}
           value={passwordConfirm}
           onChangeText={text => setPasswordConfirm(text)}
@@ -107,12 +139,69 @@ const SignUpCreds = ({navigation, route}: {navigation: any; route: any}) => {
           secureTextEntry={true}
         />
       </View>
-      <TouchableOpacity onPress={() => handleNext()}>
-        <Text>{strings.main.next}</Text>
+      {error.length !== 0 ? (
+        <Text weight="l" center={true} color={colors.red}>
+          {error}
+        </Text>
+      ) : null}
+      <TouchableOpacity
+        style={[
+          localStyles.button,
+          {
+            backgroundColor:
+              username.length === 0 ||
+              password.length === 0 ||
+              password !== passwordConfirm
+                ? colors.darkgrey
+                : colors.accent,
+          },
+        ]}
+        disabled={
+          username.length === 0 ||
+          password.length === 0 ||
+          password !== passwordConfirm
+        }
+        onPress={() => handleNext()}>
+        <Text weight="b" color={colors.white}>
+          {strings.signUp.signUp}
+        </Text>
       </TouchableOpacity>
-      <View>{error.length !== 0 ? <Text>{error}</Text> : null}</View>
-    </SafeAreaView>
+    </View>
   );
 };
+
+const localStyles = StyleSheet.create({
+  promptContainer: {
+    margin: s(40),
+    paddingHorizontal: s(20),
+  },
+  prompt: {
+    width: s(100),
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: s(30),
+    marginHorizontal: s(50),
+  },
+  input: {
+    flex: 1,
+    borderBottomWidth: 1,
+    borderColor: colors.darkgrey,
+    marginHorizontal: s(5),
+    paddingHorizontal: s(10),
+    paddingVertical: s(5),
+    fontFamily: 'Lato',
+  },
+  button: {
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: s(30),
+    width: s(150),
+    height: s(50),
+    borderRadius: s(25),
+  },
+});
 
 export default SignUpCreds;

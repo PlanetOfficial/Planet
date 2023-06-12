@@ -12,6 +12,7 @@ import LoginScreen from '../authScreens/LogIn';
 import SignUpName from '../authScreens/SignUpName';
 import SignUpCreds from '../authScreens/SignUpCreds';
 import SignUpPhone from '../authScreens/SignUpPhone';
+import VerifyPhone from '../authScreens/VerifyPhone';
 import SignUpInfo from '../authScreens/SignUpInfo';
 import ForgotPassword from '../authScreens/!ForgotPwd';
 import Create from '../createScreens/Create';
@@ -51,6 +52,7 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {signUpNameStackScreen()}
           {signUpCredsStackScreen()}
           {signUpPhoneStackScreen()}
+          {verifyPhoneStackScreen()}
           {signUpInfoStackScreen()}
           {forgetPassStackScreen()}
         </Stack.Navigator>
@@ -64,6 +66,7 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {signUpNameStackScreen()}
           {signUpCredsStackScreen()}
           {signUpPhoneStackScreen()}
+          {verifyPhoneStackScreen()}
           {signUpInfoStackScreen()}
           {forgetPassStackScreen()}
           {tabStack()}
@@ -120,6 +123,16 @@ const signUpPhoneStackScreen = () => {
     <Stack.Screen
       name="SignUpPhone"
       component={SignUpPhone}
+      options={{headerShown: false}}
+    />
+  );
+};
+
+const verifyPhoneStackScreen = () => {
+  return (
+    <Stack.Screen
+      name="VerifyPhone"
+      component={VerifyPhone}
       options={{headerShown: false}}
     />
   );

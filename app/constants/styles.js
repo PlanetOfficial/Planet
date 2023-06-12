@@ -36,19 +36,6 @@ const styles = StyleSheet.create({
     height: 0.5,
     backgroundColor: colors.lightgrey,
   },
-  footerText: {
-    fontSize: 12,
-    textAlign: 'center',
-    color: colors.black,
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: s(40),
-    paddingLeft: s(5),
-    width: s(300),
-    height: s(30),
-  },
   shadow: {
     shadowColor: '#000',
     shadowOffset: {
