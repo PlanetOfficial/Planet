@@ -73,7 +73,7 @@ const SignUpCreds = ({navigation, route}: {navigation: any; route: any}) => {
       navigation.reset({
         index: 0,
         routes: [
-          {name: 'SignUpPhone', params: {authToken: response?.authToken}},
+          {name: 'SignUpPhone', params: {authToken: response.authToken}},
         ],
       });
     } else {
