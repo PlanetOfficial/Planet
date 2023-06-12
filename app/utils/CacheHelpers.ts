@@ -46,7 +46,6 @@ export const cacheUserInfo = async (authToken: string) => {
   // set auth token into encrypted storage
   await EncryptedStorage.setItem('auth_token', authToken);
 
-  // caches bookmarks
   await cacheBookmarks();
 
   // stores other info
