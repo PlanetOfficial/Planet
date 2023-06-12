@@ -71,8 +71,9 @@ const VerifyPhone = ({navigation, route}: {navigation: any; route: any}) => {
         <TextInput
           style={localStyles.input}
           value={code}
-          onChangeText={text => 
-            setCode(text.replace(/[^0-9]/g, '').substring(0, 6))}
+          onChangeText={text =>
+            setCode(text.replace(/[^0-9]/g, '').substring(0, 6))
+          }
           placeholderTextColor={colors.darkgrey}
           keyboardType="number-pad"
         />
@@ -87,10 +88,10 @@ const VerifyPhone = ({navigation, route}: {navigation: any; route: any}) => {
           localStyles.button,
           {
             backgroundColor:
-              code.length === 0 ? colors.darkgrey : colors.accent,
+              code.length !== 6 ? colors.darkgrey : colors.accent,
           },
         ]}
-        disabled={code.length === 0}
+        disabled={code.length !== 6}
         onPress={() => handleVerifyCode()}>
         <Text weight="b" color={colors.white}>
           {strings.signUp.sendCode}

@@ -33,6 +33,8 @@ const strings = {
     credPrompt: 'Now, choose your username and password:',
     confirmPassword: 'Confirm Password',
     username: 'Username',
+    signUpSuccess: 'You have successfully signed up!',
+    verifySuccess: 'Phone number has been verified!',
     phonePrompt: 'Next, please enter your phone number:',
     phoneNumber: 'Phone Number',
     verifyPrompt: 'Please enter the 6 digit code we sent you:',
@@ -50,7 +52,8 @@ const strings = {
     passwordsMatch: 'Passwords are not the same',
     missingFields: 'Fields are missing',
     improveExperience:
-      'Help us improve your experience by filling out this optional information',
+      'Lastly, help us improve your experience by filling out the following:',
+    enjoy: 'Enjoy!',
   },
   poi: {
     createEvent: 'Create an Event',
@@ -90,9 +93,6 @@ const strings = {
     settings: 'Settings',
     noBookmarksFound: 'No Bookmarks Found',
     noBookmarksFoundDescription: 'Try bookmarking something',
-  },
-  optionArrays: {
-    genders: ['Male', 'Female', 'Other', 'Rather not say'],
   },
 };
 

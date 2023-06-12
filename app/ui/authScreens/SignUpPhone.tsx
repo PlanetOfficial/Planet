@@ -6,10 +6,7 @@ import {s} from 'react-native-size-matters';
 import {E164Number} from 'libphonenumber-js/types';
 
 import Text from '../components/Text';
-import Icon from '../components/Icon';
-
 import colors from '../../constants/colors';
-import icons from '../../constants/icons';
 import strings from '../../constants/strings';
 import styles from '../../constants/styles';
 
@@ -46,12 +43,10 @@ const SignUpPhone = ({navigation, route}: {navigation: any; route: any}) => {
   return (
     <View style={styles.container}>
       <SafeAreaView>
-        <View style={styles.header}>
-          <Icon
-            size="m"
-            icon={icons.back}
-            onPress={() => navigation.goBack()}
-          />
+        <View style={localStyles.messageContainer}>
+          <Text size="l" center={true}>
+            {strings.signUp.signUpSuccess}
+          </Text>
         </View>
       </SafeAreaView>
 
@@ -93,6 +88,9 @@ const SignUpPhone = ({navigation, route}: {navigation: any; route: any}) => {
 };
 
 const localStyles = StyleSheet.create({
+  messageContainer: {
+    margin: s(20),
+  },
   promptContainer: {
     margin: s(40),
     paddingHorizontal: s(20),

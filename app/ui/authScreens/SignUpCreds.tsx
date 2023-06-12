@@ -27,7 +27,9 @@ const SignUpCreds = ({navigation, route}: {navigation: any; route: any}) => {
   const [firstName] = useState<string>(route.params.firstName);
   const [lastName] = useState<string>(route.params.lastName);
 
-  const [username, setUsername] = useState<string>(firstName + lastName);
+  const [username, setUsername] = useState<string>(
+    firstName.toLowerCase() + lastName.toLowerCase(),
+  );
   const [password, setPassword] = useState<string>('');
   const [passwordConfirm, setPasswordConfirm] = useState<string>('');
 
@@ -161,7 +163,7 @@ const SignUpCreds = ({navigation, route}: {navigation: any; route: any}) => {
         }
         onPress={() => handleNext()}>
         <Text weight="b" color={colors.white}>
-          {strings.main.next}
+          {strings.signUp.signUp}
         </Text>
       </TouchableOpacity>
     </View>
