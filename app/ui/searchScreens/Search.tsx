@@ -30,7 +30,7 @@ import PoiRow from '../components/PoiRow';
 import Icon from '../components/Icon';
 
 import {GoogleMapsAPIKey} from '../../utils/api/APIConstants';
-import {fetchUserLocation} from '../../utils/Misc';
+import {fetchUserLocation, handleBookmark} from '../../utils/Misc';
 import {Category, Coordinate, Genre, Poi} from '../../utils/types';
 
 const Search = ({
@@ -47,12 +47,21 @@ const Search = ({
   const [searching, setSearching] = useState<boolean>(false);
   const [searchText, setSearchText] = useState<string>('');
 
+  const [bookmarks, setBookmarks] = useState<Poi[]>([]);
+
   const initializeData = async () => {
     const data = await AsyncStorage.getItem('genres');
     if (data) {
       setGenres(JSON.parse(data));
     } else {
       Alert.alert('Error', 'Unable to load genres. Please try again.');
+    }
+
+    const _bookmarks = await AsyncStorage.getItem('bookmarks');
+    if (_bookmarks) {
+      setBookmarks(JSON.parse(_bookmarks));
+    } else {
+      Alert.alert('Error', 'Unable to load bookmarks. Please try again.');
     }
   };
 
@@ -204,7 +213,9 @@ const Search = ({
             <Text>{strings.profile.bookmarks}</Text>
           </View>
           <FlatList
-            data={[]}
+            contentContainerStyle={searchStyles.flatList}
+            keyboardShouldPersistTaps={'always'}
+            data={bookmarks}
             renderItem={({item}: {item: Poi}) => {
               return (
                 <TouchableOpacity
@@ -215,7 +226,14 @@ const Search = ({
                       isCreate: isCreate,
                     })
                   }>
-                  <PoiRow poi={item} bookmarked={true} location={location} />
+                  <PoiRow
+                    poi={item}
+                    bookmarked={true}
+                    location={location}
+                    handleBookmark={(poi: Poi) =>
+                      handleBookmark(poi, bookmarks, setBookmarks)
+                    }
+                  />
                 </TouchableOpacity>
               );
             }}
@@ -320,6 +338,9 @@ const searchStyles = StyleSheet.create({
   },
   x: {
     marginRight: s(15),
+  },
+  flatList: {
+    paddingBottom: s(250),
   },
 });
 

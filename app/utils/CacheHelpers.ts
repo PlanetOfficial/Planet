@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {getUserInfo} from './api/authAPI';
 import {PoiAPIURL} from './api/APIConstants';
+import {getBookmarks} from './api/bookmarkAPI';
 
 /*
  * Data we cache:
@@ -11,6 +12,7 @@ import {PoiAPIURL} from './api/APIConstants';
  * - last_name
  * - username
  * - categories
+ * - bookmarks
  */
 
 // caches categories
@@ -26,7 +28,17 @@ export const cacheCategories = async () => {
   }
 };
 
-// caches auth_token, user_id, first_name, last_name, and username
+// caches bookmarks
+export const cacheBookmarks = async () => {
+  const response = await getBookmarks();
+  if (response) {
+    await AsyncStorage.setItem('bookmarks', JSON.stringify(response));
+  } else {
+    console.warn('Failed to cache bookmarks');
+  }
+};
+
+// caches auth_token, user_id, first_name, last_name, username, bookmarks
 export const cacheUserInfo = async (authToken: string) => {
   // start with clear caches (for user storage)
   clearCaches();
@@ -34,7 +46,9 @@ export const cacheUserInfo = async (authToken: string) => {
   // set auth token into encrypted storage
   await EncryptedStorage.setItem('auth_token', authToken);
 
-  // stores the rest
+  await cacheBookmarks();
+
+  // stores other info
   return await cacheStorage(authToken);
 };
 
@@ -42,7 +56,7 @@ export const updateCaches = async (authToken: string) => {
   await cacheStorage(authToken);
 };
 
-// clears auth_token, user_id, first_name, last_name, and username from cache
+// clears auth_token, user_id, first_name, last_name, username, bookmarks from cache
 export const clearCaches = async () => {
   if (await EncryptedStorage.getItem('auth_token')) {
     await EncryptedStorage.removeItem('auth_token');
@@ -62,6 +76,10 @@ export const clearCaches = async () => {
 
   if (await AsyncStorage.getItem('username')) {
     AsyncStorage.removeItem('username');
+  }
+
+  if (await AsyncStorage.getItem('bookmarks')) {
+    AsyncStorage.removeItem('bookmarks');
   }
 };
 

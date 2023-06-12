@@ -92,7 +92,13 @@ const Home = ({navigation}: {navigation: any}) => {
                       bookmarked: false,
                     });
                   }}>
-                  <PoiCard poi={poi} bookmarked={false} />
+                  <PoiCard
+                    poi={poi}
+                    bookmarked={false}
+                    handleBookmark={(p: Poi) => {
+                      console.log('TODO: handle bookmark: ', p.name);
+                    }}
+                  />
                 </TouchableOpacity>
               ))}
             </ScrollView>
