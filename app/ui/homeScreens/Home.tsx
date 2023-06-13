@@ -90,6 +90,7 @@ const Home = ({navigation}: {navigation: any}) => {
                     navigation.navigate('PoiDetail', {
                       poi: poi,
                       bookmarked: false,
+                      mode: 'none'
                     });
                   }}>
                   <PoiCard

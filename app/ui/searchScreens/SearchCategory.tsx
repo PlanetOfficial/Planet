@@ -153,7 +153,9 @@ const SearchCategory = ({navigation, route}: {navigation: any; route: any}) => {
                 onPress={() =>
                   navigation.navigate('PoiDetail', {
                     poi: item,
-                    bookmarked: false,
+                    bookmarked: bookmarks.some(
+                      bookmark => bookmark.id === item.id,
+                    ),
                     mode: mode,
                   })
                 }>

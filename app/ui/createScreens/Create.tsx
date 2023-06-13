@@ -237,7 +237,10 @@ const Create = ({navigation, route}: {navigation: any; route: any}) => {
                   onPress={() =>
                     navigation.navigate('PoiDetail', {
                       poi: destination,
-                      bookmarked: false,
+                      bookmarked: bookmarks.some(
+                        bookmark => bookmark.id === destination.id,
+                      ),
+                      mode: 'none'
                     })
                   }>
                   <PoiCardXL

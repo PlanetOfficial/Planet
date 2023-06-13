@@ -52,7 +52,8 @@ const Explore = ({navigation, route}: {navigation: any; route: any}) => {
               onPress={() =>
                 navigation.navigate('PoiDetail', {
                   poi: item,
-                  bookmarked: false,
+                  bookmarked: true,
+                  mode: 'none'
                 })
               }>
               <PoiRow

@@ -174,7 +174,10 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
                 onPress={() =>
                   navigation.navigate('PoiDetail', {
                     poi: item.suggestions[0].poi,
-                    bookmarked: false,
+                    bookmarked: bookmarks.some(
+                      bookmark => bookmark.id === item.suggestions[0].poi.id,
+                    ),
+                    mode: 'none'
                   })
                 }>
                 <PoiCardXL
@@ -201,7 +204,10 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
                           onPress={() =>
                             navigation.navigate('PoiDetail', {
                               poi: suggestion.poi,
-                              bookmarked: false,
+                              bookmarked: bookmarks.some(
+                                bookmark => bookmark.id === suggestion.poi.id,
+                              ),
+                              mode: 'none'
                             })
                           }>
                           <PoiCardXS poi={suggestion.poi} />
@@ -252,7 +258,7 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
 const localStyles = StyleSheet.create({
   texts: {
     flex: 1,
-    paddingHorizontal: s(20),
+    paddingHorizontal: s(10),
   },
   destination: {
     marginHorizontal: s(20),

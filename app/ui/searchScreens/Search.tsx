@@ -222,7 +222,7 @@ const Search = ({
                   onPress={() =>
                     navigation.navigate('PoiDetail', {
                       poi: item,
-                      bookmarked: false,
+                      bookmarked: true,
                       mode: mode,
                     })
                   }>

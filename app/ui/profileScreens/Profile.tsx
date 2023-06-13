@@ -117,7 +117,8 @@ const Profile = ({navigation}: {navigation: any}) => {
               onPress={() =>
                 navigation.navigate('PoiDetail', {
                   poi: item,
-                  bookmarked: false,
+                  bookmarked: true,
+                  mode: 'none'
                 })
               }>
               <PoiRow
