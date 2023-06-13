@@ -1,9 +1,9 @@
 export interface UserInfo {
   id: number;
-  created_at: string;
   first_name: string;
   last_name: string;
   username: string;
+  icon: Image;
 }
 
 export interface Genre {
@@ -66,6 +66,38 @@ export interface Filter {
   options: string[];
   multi: boolean;
   defaultIdx: number;
+}
+
+export interface Event {
+  id: number;
+  name: string;
+  datetime: string;
+  members: UserInfo[];
+  created_by: UserInfo;
+  photo: string;
+  vicinity: string;
+}
+
+export interface EventDetail {
+  id: number;
+  name: string;
+  datetime: string;
+  members: UserInfo[];
+  destinations: Destination[];
+  created_by: UserInfo;
+}
+
+export interface Destination {
+  id: number;
+  name: string;
+  suggestions: Suggestion[];
+}
+
+export interface Suggestion {
+  id: number;
+  is_primary: boolean;
+  poi: Poi;
+  votes: UserInfo[];
 }
 
 export interface Image {

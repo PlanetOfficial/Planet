@@ -98,6 +98,7 @@ const strings = {
     noBookmarksFoundDescription: 'Try bookmarking something',
   },
   event: {
+    yourEvents: 'Your Events',
     untitled: 'Untitled Event',
     backConfirmation:
       'Are you sure you want to go back? Your event will not be saved.',
@@ -105,6 +106,12 @@ const strings = {
     moveUp: 'Move Up',
     moveDown: 'Move Down',
     renamePrompt: 'Enter a new name for this destination:',
+    noEventsFound: 'No Events Found',
+    noEventsFoundDescription:
+      'Try creating an event from the plus button below',
+  },
+  notifications: {
+    notifications: 'Notifications',
   },
 };
 

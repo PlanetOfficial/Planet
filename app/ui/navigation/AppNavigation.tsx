@@ -22,6 +22,8 @@ import SearchMap from '../searchScreens/SearchMap';
 import PoiDetail from '../otherScreens/PoiDetail';
 import Friends from '../otherScreens/Friends';
 import Explore from '../homeScreens/Explore';
+import Event from '../libraryScreens/Event';
+import Notifications from '../libraryScreens/Notifications';
 import Settings from '../profileScreens/Settings';
 import {Animated} from 'react-native';
 
@@ -48,6 +50,8 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {settingsScreen()}
           {createScreen()}
           {createSearchScreen()}
+          {eventScreen()}
+          {notificationsScreen()}
           {loginStackScreen()}
           {signUpNameStackScreen()}
           {signUpCredsStackScreen()}
@@ -78,6 +82,8 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {settingsScreen()}
           {createScreen()}
           {createSearchScreen()}
+          {eventScreen()}
+          {notificationsScreen()}
         </Stack.Navigator>
       </BottomSheetModalProvider>
     </NavigationContainer>
@@ -264,6 +270,30 @@ const createSearchScreen = () => {
       options={{
         headerShown: false,
         cardStyleInterpolator: verticalAnimation,
+      }}
+    />
+  );
+};
+
+const eventScreen = () => {
+  return (
+    <Stack.Screen
+      name="Event"
+      component={Event}
+      options={{
+        headerShown: false,
+      }}
+    />
+  );
+};
+
+const notificationsScreen = () => {
+  return (
+    <Stack.Screen
+      name="Notifications"
+      component={Notifications}
+      options={{
+        headerShown: false,
       }}
     />
   );
