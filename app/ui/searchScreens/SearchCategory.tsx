@@ -26,7 +26,7 @@ import {handleBookmark} from '../../utils/Misc';
 import {Poi} from '../../utils/types';
 
 const SearchCategory = ({navigation, route}: {navigation: any; route: any}) => {
-  const {category, location, radius, isCreate} = route.params;
+  const {category, location, radius, mode} = route.params;
 
   const [places, setPlaces] = useState<Poi[]>([]);
   const [filters, setFilters] = useState<(number | number[])[]>([]);
@@ -123,7 +123,7 @@ const SearchCategory = ({navigation, route}: {navigation: any; route: any}) => {
                 category,
                 location,
                 radius,
-                isCreate,
+                mode,
               })
             }
           />
@@ -154,7 +154,7 @@ const SearchCategory = ({navigation, route}: {navigation: any; route: any}) => {
                   navigation.navigate('PoiDetail', {
                     poi: item,
                     bookmarked: false,
-                    isCreate: isCreate,
+                    mode: mode,
                   })
                 }>
                 <PoiRow

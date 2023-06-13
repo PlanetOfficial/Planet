@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
   },
   scrollView: {
-    paddingBottom: s(20),
+    paddingBottom: s(30),
   },
   center: {
     paddingTop: s(50),

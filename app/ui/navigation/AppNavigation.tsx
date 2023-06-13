@@ -23,6 +23,7 @@ import PoiDetail from '../otherScreens/PoiDetail';
 import Friends from '../otherScreens/Friends';
 import Explore from '../homeScreens/Explore';
 import Event from '../libraryScreens/Event';
+import SuggestSearch from '../libraryScreens/SuggestSearch';
 import Notifications from '../libraryScreens/Notifications';
 import Settings from '../profileScreens/Settings';
 import {Animated} from 'react-native';
@@ -51,6 +52,7 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {createScreen()}
           {createSearchScreen()}
           {eventScreen()}
+          {suggestSearchScreen()}
           {notificationsScreen()}
           {loginStackScreen()}
           {signUpNameStackScreen()}
@@ -83,6 +85,7 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {createScreen()}
           {createSearchScreen()}
           {eventScreen()}
+          {suggestSearchScreen()}
           {notificationsScreen()}
         </Stack.Navigator>
       </BottomSheetModalProvider>
@@ -282,6 +285,19 @@ const eventScreen = () => {
       component={Event}
       options={{
         headerShown: false,
+      }}
+    />
+  );
+};
+
+const suggestSearchScreen = () => {
+  return (
+    <Stack.Screen
+      name="SuggestSearch"
+      component={SuggestSearch}
+      options={{
+        headerShown: false,
+        cardStyleInterpolator: verticalAnimation,
       }}
     />
   );

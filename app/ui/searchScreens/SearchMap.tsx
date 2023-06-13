@@ -84,7 +84,7 @@ const SearchMap = ({navigation, route}: {navigation: any; route: any}) => {
                   longitude: region.longitude,
                 },
                 radius,
-                isCreate: route.params.isCreate,
+                isCreate: route.params.mode,
               });
             } else {
               Alert.alert(strings.search.tooFar, strings.search.tooFarMessage);

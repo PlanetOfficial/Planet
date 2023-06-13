@@ -35,10 +35,10 @@ import {Category, Coordinate, Genre, Poi} from '../../utils/types';
 
 const Search = ({
   navigation,
-  isCreate = false,
+  mode = 'none',
 }: {
   navigation: any;
-  isCreate?: boolean;
+  mode?: string;
 }) => {
   const [genres, setGenres] = useState<Genre[]>([]);
   const [location, setLocation] = useState<Coordinate>();
@@ -78,7 +78,7 @@ const Search = ({
     if (data) {
       navigation.navigate('PoiDetail', {
         place_id: data.place_id,
-        isCreate: isCreate,
+        mode: mode,
       });
     } else {
       Alert.alert('Error', 'Unable to retrieve destination. Please try again.');
@@ -89,7 +89,7 @@ const Search = ({
     <View style={styles.container}>
       <SafeAreaView>
         <View style={searchStyles.header}>
-          {isCreate && !searching ? (
+          {mode !== 'none' && !searching ? (
             <View style={searchStyles.x}>
               <Icon
                 icon={icons.close}
@@ -188,7 +188,7 @@ const Search = ({
                         category,
                         location,
                         radius: numbers.defaultRadius,
-                        isCreate: isCreate,
+                        mode: mode,
                       });
                     }}>
                     <View style={[categoryStyles.iconContainer, styles.shadow]}>
@@ -223,7 +223,7 @@ const Search = ({
                     navigation.navigate('PoiDetail', {
                       poi: item,
                       bookmarked: false,
-                      isCreate: isCreate,
+                      mode: mode,
                     })
                   }>
                   <PoiRow

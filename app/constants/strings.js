@@ -109,6 +109,7 @@ const strings = {
     noEventsFound: 'No Events Found',
     noEventsFoundDescription:
       'Try creating an event from the plus button below',
+    addSuggestion: 'Add a Suggestion',
   },
   notifications: {
     notifications: 'Notifications',
