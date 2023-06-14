@@ -53,7 +53,7 @@ const Explore = ({navigation, route}: {navigation: any; route: any}) => {
                 navigation.navigate('PoiDetail', {
                   poi: item,
                   bookmarked: true,
-                  mode: 'none'
+                  mode: 'none',
                 })
               }>
               <PoiRow

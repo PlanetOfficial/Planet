@@ -240,7 +240,7 @@ const Create = ({navigation, route}: {navigation: any; route: any}) => {
                       bookmarked: bookmarks.some(
                         bookmark => bookmark.id === destination.id,
                       ),
-                      mode: 'none'
+                      mode: 'none',
                     })
                   }>
                   <PoiCardXL

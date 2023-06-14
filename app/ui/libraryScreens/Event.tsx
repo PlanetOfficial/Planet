@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -9,6 +9,7 @@ import {
   FlatList,
   RefreshControl,
   ScrollView,
+  Animated,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -36,6 +37,7 @@ import {getEvent} from '../../utils/api/eventAPI';
 import {handleBookmark} from '../../utils/Misc';
 import {postSuggestion} from '../../utils/api/suggestionAPI';
 import strings from '../../constants/strings';
+import SuggestionCard from '../components/SuggestionCard';
 
 const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
   const date = new Date();
@@ -100,6 +102,7 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
+      resetAnimation();
       loadData();
       loadBookmarks();
       addSuggestion();
@@ -120,9 +123,61 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
     }
   };
 
+  const animation = useRef(new Animated.Value(0)).current;
+  const [selectedSuggestion, setSelectedSuggestion] = useState<Suggestion>();
+  const suggestionRefs = useRef(new Map());
+
+  const resetAnimation = () => {
+    setDisplayingSuggestion(false);
+    Animated.timing(animation, {
+      toValue: 0,
+      duration: 0,
+      useNativeDriver: false,
+    }).start();
+  };
+
+  const [displayingSuggestion, setDisplayingSuggestion] =
+    useState<boolean>(false);
+
+  const [xPos, setXPos] = useState<number>(0);
+  const [yPos, setYPos] = useState<number>(0);
+
+  const handleMeasure = (r: {
+    measureInWindow: (arg0: (x: number, _y: number) => void) => void;
+  }) => {
+    r.measureInWindow((x: number, y: number) => {
+      setXPos(x);
+      setYPos(y);
+    });
+  };
+
+  const [animateFlag, setAnimateFlag] = useState<boolean>(false);
+  const onSuggestionPress = (suggestion: Suggestion) => {
+    setDisplayingSuggestion(true);
+    setSelectedSuggestion(suggestion);
+    setAnimateFlag(!animateFlag);
+    handleMeasure(suggestionRefs.current.get(suggestion.id));
+    Animated.timing(animation, {
+      toValue: 0.6,
+      duration: 300,
+      useNativeDriver: false,
+    }).start();
+  };
+
+  const [resetFlag, setResetFlag] = React.useState<boolean>(false);
+  const onSuggestionClose = () => {
+    setDisplayingSuggestion(false);
+    setResetFlag(!resetFlag);
+    Animated.timing(animation, {
+      toValue: 0,
+      duration: 200,
+      useNativeDriver: false,
+    }).start();
+  };
+
   return (
     <View style={styles.container}>
-      <SafeAreaView>
+      <SafeAreaView onTouchStart={onSuggestionClose}>
         <View style={styles.header}>
           <Icon
             size="m"
@@ -159,6 +214,7 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
           contentContainerStyle={styles.scrollView}
           showsVerticalScrollIndicator={false}
           data={eventDetail.destinations}
+          onTouchStart={onSuggestionClose}
           renderItem={({item}: {item: Destination}) => (
             <View style={localStyles.destination}>
               <View style={localStyles.destinationHeader}>
@@ -177,7 +233,7 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
                     bookmarked: bookmarks.some(
                       bookmark => bookmark.id === item.suggestions[0].poi.id,
                     ),
-                    mode: 'none'
+                    mode: 'none',
                   })
                 }>
                 <PoiCardXL
@@ -199,17 +255,13 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
                     {item.suggestions.map((suggestion: Suggestion) =>
                       !suggestion.is_primary ? (
                         <TouchableOpacity
-                          key={suggestion.poi.id}
+                          key={suggestion.id}
+                          ref={r =>
+                            suggestionRefs.current.set(suggestion.id, r)
+                          }
                           style={localStyles.suggestion}
-                          onPress={() =>
-                            navigation.navigate('PoiDetail', {
-                              poi: suggestion.poi,
-                              bookmarked: bookmarks.some(
-                                bookmark => bookmark.id === suggestion.poi.id,
-                              ),
-                              mode: 'none'
-                            })
-                          }>
+                          disabled={displayingSuggestion}
+                          onPress={() => onSuggestionPress(suggestion)}>
                           <PoiCardXS poi={suggestion.poi} />
                         </TouchableOpacity>
                       ) : null,
@@ -251,6 +303,28 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
           }
         />
       )}
+
+      <Animated.View
+        pointerEvents={'none'}
+        style={[
+          localStyles.overlay,
+          {
+            opacity: animation,
+          },
+        ]}
+      />
+
+      <SuggestionCard
+        navigation={navigation}
+        bookmarked={bookmarks.some(
+          bookmark => bookmark.id === selectedSuggestion?.poi.id,
+        )}
+        suggestion={selectedSuggestion}
+        x={xPos}
+        y={yPos}
+        resetFlag={resetFlag}
+        animateFlag={animateFlag}
+      />
     </View>
   );
 };
@@ -297,6 +371,15 @@ const localStyles = StyleSheet.create({
     paddingVertical: s(10),
     borderRadius: s(10),
     backgroundColor: colors.white,
+  },
+  overlay: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: colors.black,
+    elevation: 1,
   },
 });
 

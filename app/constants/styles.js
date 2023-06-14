@@ -47,6 +47,9 @@ const styles = StyleSheet.create({
 
     elevation: 3,
   },
+  absolute: {
+    position: 'absolute',
+  },
 });
 
 export default styles;

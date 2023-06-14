@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, Image} from 'react-native';
+import {StyleSheet, View, Image, Animated} from 'react-native';
 
 import {s} from 'react-native-size-matters';
 
@@ -15,13 +15,20 @@ import {getInfoString} from '../../utils/Misc';
 
 interface Props {
   poi: Poi;
-  bookmarked: boolean;
-  handleBookmark: (poi: Poi) => void;
+  width?: Animated.AnimatedInterpolation<string | number>;
+  bookmarked?: boolean;
+  handleBookmark?: (poi: Poi) => void;
 }
 
-const PoiCardXL: React.FC<Props> = ({poi, bookmarked, handleBookmark}) => {
+const PoiCardXL: React.FC<Props> = ({
+  poi,
+  width,
+  bookmarked,
+  handleBookmark,
+}) => {
   return (
-    <View style={[cardStyles.container, styles.shadow]}>
+    <Animated.View
+      style={[cardStyles.container, styles.shadow, {width: width}]}>
       <Image style={cardStyles.image} source={{uri: poi.photo}} />
       <View style={cardStyles.header}>
         <View style={cardStyles.infoContainer}>
@@ -30,21 +37,24 @@ const PoiCardXL: React.FC<Props> = ({poi, bookmarked, handleBookmark}) => {
             {getInfoString(poi)}
           </Text>
         </View>
-        <Icon
-          size="m"
-          icon={bookmarked ? icons.bookmarked : icons.bookmark}
-          color={bookmarked ? colors.accent : colors.black}
-          onPress={() => handleBookmark(poi)}
-        />
+        {bookmarked && handleBookmark ? (
+          <Icon
+            size="m"
+            icon={bookmarked ? icons.bookmarked : icons.bookmark}
+            color={bookmarked ? colors.accent : colors.black}
+            onPress={() => handleBookmark(poi)}
+          />
+        ) : (
+          <View />
+        )}
       </View>
-    </View>
+    </Animated.View>
   );
 };
 
 const cardStyles = StyleSheet.create({
   container: {
-    width: s(310),
-    height: s(200),
+    aspectRatio: 1.6,
     borderRadius: s(10),
     backgroundColor: colors.white,
   },
@@ -59,6 +69,8 @@ const cardStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: s(15),
+    borderTopLeftRadius: s(10),
+    borderTopRightRadius: s(10),
     width: '100%',
     height: s(45),
     backgroundColor: 'rgba(255, 255, 255, 0.8)',

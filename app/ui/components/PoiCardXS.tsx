@@ -51,6 +51,8 @@ const cardStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: s(5),
+    borderTopLeftRadius: s(5),
+    borderTopRightRadius: s(5),
     width: '100%',
     height: s(22),
     backgroundColor: 'rgba(255, 255, 255, 0.8)',
