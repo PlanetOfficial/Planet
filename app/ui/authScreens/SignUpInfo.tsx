@@ -34,7 +34,7 @@ const SignUpInfo = ({navigation, route}: {navigation: any; route: any}) => {
     {label: '22-24', value: '22-24'},
     {label: '25-30', value: '25-30'},
     {label: '30-40', value: '30-40'},
-    {label: '41+', value: '41+'},
+    {label: '41+', value: '41%2B'},
   ]);
 
   const [genderDPOpen, setGenderDPOpen] = useState(false);
@@ -101,6 +101,7 @@ const SignUpInfo = ({navigation, route}: {navigation: any; route: any}) => {
             setOpen={setAgeDPOpen}
             setValue={setAge}
             setItems={setAgeEnum}
+            maxHeight={300}
             placeholder="Age"
           />
         </View>
@@ -113,6 +114,7 @@ const SignUpInfo = ({navigation, route}: {navigation: any; route: any}) => {
             setOpen={setGenderDPOpen}
             setValue={setGender}
             setItems={setGenderEnum}
+            maxHeight={300}
             placeholder="Gender"
           />
         </View>

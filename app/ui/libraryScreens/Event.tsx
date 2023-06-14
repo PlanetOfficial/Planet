@@ -129,6 +129,11 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
   const [displayingSuggestion, setDisplayingSuggestion] =
     useState<boolean>(false);
 
+  const cardWidth = animation.interpolate({
+    inputRange: [0, 1],
+    outputRange: [s(310), s(280)],
+  });
+
   const [xPos, setXPos] = useState<number>(0);
   const [yPos, setYPos] = useState<number>(0);
 
@@ -232,6 +237,7 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
                 />
               </View>
               <TouchableOpacity
+                style={localStyles.destinationCard}
                 onPress={() =>
                   navigation.navigate('PoiDetail', {
                     poi: item.suggestions[0].poi,
@@ -246,6 +252,9 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
                   bookmarked={bookmarks.some(
                     bookmark => bookmark.id === item.suggestions[0].poi.id,
                   )}
+                  width={
+                    item.id === selectedDestination?.id ? cardWidth : s(310)
+                  }
                   handleBookmark={(poi: Poi) =>
                     handleBookmark(poi, bookmarks, setBookmarks)
                   }
@@ -351,6 +360,11 @@ const localStyles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingVertical: s(15),
     paddingHorizontal: s(5),
+  },
+  destinationCard: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: s(310 / 1.6),
   },
   suggestions: {
     flexDirection: 'row',
