@@ -123,3 +123,10 @@ export interface Region {
   latitudeDelta: number;
   longitudeDelta: number;
 }
+
+export interface Option {
+  name: string;
+  onPress: () => void;
+  color: string;
+  disabled?: boolean;
+}

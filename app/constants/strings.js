@@ -10,6 +10,7 @@ const strings = {
     edit: 'Edit',
     remove: 'Remove',
     rename: 'Rename',
+    confirm: 'Confirm',
     add: 'Add',
     create: 'Create',
     next: 'Next',
@@ -110,6 +111,11 @@ const strings = {
     noEventsFoundDescription:
       'Try creating an event from the plus button below',
     addSuggestion: 'Add a Suggestion',
+    markAsSelected: 'Mark as Selected',
+    markAsSelectedInfo:
+      'Are you sure you want to mark this suggestion as the primary destination?',
+    removeSuggestion: 'Remove Suggestion',
+    removeSuggestionInfo: 'Are you sure you want to remove this suggestion?',
   },
   notifications: {
     notifications: 'Notifications',

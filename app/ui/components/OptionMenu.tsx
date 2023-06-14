@@ -8,16 +8,12 @@ import Text from './Text';
 import Icon from './Icon';
 import colors from '../../constants/colors';
 import icons from '../../constants/icons';
+import {Option} from '../../utils/types';
 
 interface Props {
   icon?: ImageSourcePropType;
   iconColor?: string;
-  options: {
-    name: string;
-    onPress: () => void;
-    color: string;
-    disabled?: boolean;
-  }[];
+  options: Option[];
 }
 
 const OptionMenu: React.FC<Props> = ({

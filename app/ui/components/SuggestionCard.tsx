@@ -1,30 +1,41 @@
 import React, {useCallback, useRef, useState} from 'react';
-import {Animated, Easing, TouchableOpacity} from 'react-native';
+import {Alert, Animated, Easing, TouchableOpacity} from 'react-native';
 import {s} from 'react-native-size-matters';
 
 import PoiCardXL from '../components/PoiCardXL';
 
 import styles from '../../constants/styles';
 import {Suggestion} from '../../utils/types';
+import colors from '../../constants/colors';
+import strings from '../../constants/strings';
+import {makePrimary, removeSuggestion} from '../../utils/api/suggestionAPI';
 
 interface SuggestionCardProps {
   navigation: any;
   bookmarked: boolean;
   suggestion?: Suggestion;
+  onSuggestionClose: () => void;
+  loadData: () => void;
   x: number;
   y: number;
   resetFlag: boolean;
   animateFlag: boolean;
+  event_id: number;
+  destination_id?: number;
 }
 
 const SuggestionCard: React.FC<SuggestionCardProps> = ({
   navigation,
   bookmarked,
   suggestion,
+  onSuggestionClose,
+  loadData,
   x,
   y,
   resetFlag,
   animateFlag,
+  event_id,
+  destination_id,
 }) => {
   const animation = useRef(new Animated.Value(0)).current;
 
@@ -73,6 +84,48 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
 
   animation.addListener(({value}) => setAnimValue(value));
 
+  const onMakePrimaryPress = async () => {
+    if (!destination_id || !suggestion) {
+      return;
+    }
+
+    const response = await makePrimary(event_id, destination_id, suggestion.id);
+
+    if (response) {
+      onShrinkAnimation();
+      onSuggestionClose();
+      loadData();
+    } else {
+      Alert.alert(
+        'Error',
+        'Unable to mark suggestion as selected, please try again later.',
+      );
+    }
+  };
+
+  const onRemoveSuggestionPress = async () => {
+    if (!destination_id || !suggestion) {
+      return;
+    }
+
+    const response = await removeSuggestion(
+      event_id,
+      destination_id,
+      suggestion.poi.id,
+    );
+
+    if (response) {
+      onShrinkAnimation();
+      onSuggestionClose();
+      loadData();
+    } else {
+      Alert.alert(
+        'Error',
+        'Unable to remove suggestion, please try again later.',
+      );
+    }
+  };
+
   return animValue > 0 ? (
     <Animated.View
       style={[
@@ -87,20 +140,74 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
         <TouchableOpacity
           onPress={() => {
             setTimeout(() => {
-               onShrinkAnimation();
+              onShrinkAnimation();
             }, 1000);
             navigation.navigate('PoiDetail', {
               poi: suggestion.poi,
               bookmarked: bookmarked,
               mode: 'none',
-            })
-          }
-          }>
+            });
+          }}>
           <PoiCardXL
             poi={suggestion.poi}
             width={width}
+            options={[
+              {
+                name: 'See Votes',
+                onPress: () => {
+                  console.log('TODO: Navigate to roulette page');
+                },
+                color: colors.black,
+                disabled: false,
+              },
+              {
+                name: strings.event.markAsSelected,
+                onPress: () => {
+                  Alert.alert(
+                    strings.event.markAsSelected,
+                    strings.event.markAsSelectedInfo,
+                    [
+                      {
+                        text: strings.main.cancel,
+                        onPress: () => {},
+                        style: 'cancel',
+                      },
+                      {
+                        text: strings.main.confirm,
+                        onPress: onMakePrimaryPress,
+                      },
+                    ],
+                  );
+                },
+                color: colors.accent,
+                disabled: false,
+              },
+              {
+                name: strings.event.removeSuggestion,
+                onPress: () => {
+                  Alert.alert(
+                    strings.event.removeSuggestion,
+                    strings.event.removeSuggestionInfo,
+                    [
+                      {
+                        text: strings.main.cancel,
+                        onPress: () => {},
+                        style: 'cancel',
+                      },
+                      {
+                        text: strings.main.remove,
+                        onPress: onRemoveSuggestionPress,
+                        style: 'destructive',
+                      },
+                    ],
+                  );
+                },
+                color: colors.red,
+                disabled: false,
+              },
+            ]}
           />
-      </TouchableOpacity>
+        </TouchableOpacity>
       ) : null}
     </Animated.View>
   ) : null;

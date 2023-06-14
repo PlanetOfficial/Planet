@@ -10,14 +10,16 @@ import styles from '../../constants/styles';
 import Icon from './Icon';
 import Text from './Text';
 
-import {Poi} from '../../utils/types';
+import {Option, Poi} from '../../utils/types';
 import {getInfoString} from '../../utils/Misc';
+import OptionMenu from './OptionMenu';
 
 interface Props {
   poi: Poi;
   width?: Animated.AnimatedInterpolation<string | number>;
   bookmarked?: boolean;
   handleBookmark?: (poi: Poi) => void;
+  options?: Option[];
 }
 
 const PoiCardXL: React.FC<Props> = ({
@@ -25,6 +27,7 @@ const PoiCardXL: React.FC<Props> = ({
   width,
   bookmarked,
   handleBookmark,
+  options,
 }) => {
   return (
     <Animated.View
@@ -44,9 +47,9 @@ const PoiCardXL: React.FC<Props> = ({
             color={bookmarked ? colors.accent : colors.black}
             onPress={() => handleBookmark(poi)}
           />
-        ) : (
-          <View />
-        )}
+        ) : options ? (
+          <OptionMenu options={options} />
+        ) : null}
       </View>
     </Animated.View>
   );

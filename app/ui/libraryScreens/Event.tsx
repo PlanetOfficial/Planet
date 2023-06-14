@@ -100,17 +100,6 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
     route.params?.destination,
   ]);
 
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      resetAnimation();
-      loadData();
-      loadBookmarks();
-      addSuggestion();
-    });
-
-    return unsubscribe;
-  }, [navigation, loadData, addSuggestion]);
-
   const findPrimaryPoi = (suggestions: Suggestion[]) => {
     const primarySuggestion = suggestions.find(
       suggestion => suggestion.is_primary,
@@ -125,16 +114,17 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
 
   const animation = useRef(new Animated.Value(0)).current;
   const [selectedSuggestion, setSelectedSuggestion] = useState<Suggestion>();
+  const [selectedDestination, setSelectedDestination] = useState<Destination>();
   const suggestionRefs = useRef(new Map());
 
-  const resetAnimation = () => {
+  const resetAnimation = useCallback(() => {
     setDisplayingSuggestion(false);
     Animated.timing(animation, {
       toValue: 0,
       duration: 0,
       useNativeDriver: false,
     }).start();
-  };
+  }, [animation]);
 
   const [displayingSuggestion, setDisplayingSuggestion] =
     useState<boolean>(false);
@@ -143,7 +133,7 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
   const [yPos, setYPos] = useState<number>(0);
 
   const handleMeasure = (r: {
-    measureInWindow: (arg0: (x: number, _y: number) => void) => void;
+    measureInWindow: (arg0: (x: number, y: number) => void) => void;
   }) => {
     r.measureInWindow((x: number, y: number) => {
       setXPos(x);
@@ -152,9 +142,13 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
   };
 
   const [animateFlag, setAnimateFlag] = useState<boolean>(false);
-  const onSuggestionPress = (suggestion: Suggestion) => {
+  const onSuggestionPress = (
+    suggestion: Suggestion,
+    destination: Destination,
+  ) => {
     setDisplayingSuggestion(true);
     setSelectedSuggestion(suggestion);
+    setSelectedDestination(destination);
     setAnimateFlag(!animateFlag);
     handleMeasure(suggestionRefs.current.get(suggestion.id));
     Animated.timing(animation, {
@@ -164,7 +158,7 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
     }).start();
   };
 
-  const [resetFlag, setResetFlag] = React.useState<boolean>(false);
+  const [resetFlag, setResetFlag] = useState<boolean>(false);
   const onSuggestionClose = () => {
     setDisplayingSuggestion(false);
     setResetFlag(!resetFlag);
@@ -174,6 +168,17 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
       useNativeDriver: false,
     }).start();
   };
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      resetAnimation();
+      loadData();
+      loadBookmarks();
+      addSuggestion();
+    });
+
+    return unsubscribe;
+  }, [navigation, loadData, addSuggestion, resetAnimation]);
 
   return (
     <View style={styles.container}>
@@ -261,7 +266,7 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
                           }
                           style={localStyles.suggestion}
                           disabled={displayingSuggestion}
-                          onPress={() => onSuggestionPress(suggestion)}>
+                          onPress={() => onSuggestionPress(suggestion, item)}>
                           <PoiCardXS poi={suggestion.poi} />
                         </TouchableOpacity>
                       ) : null,
@@ -320,10 +325,14 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
           bookmark => bookmark.id === selectedSuggestion?.poi.id,
         )}
         suggestion={selectedSuggestion}
+        onSuggestionClose={onSuggestionClose}
+        loadData={loadData}
         x={xPos}
         y={yPos}
         resetFlag={resetFlag}
         animateFlag={animateFlag}
+        event_id={event.id}
+        destination_id={selectedDestination?.id}
       />
     </View>
   );
