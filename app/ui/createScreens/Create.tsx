@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   ScrollView,
   LayoutAnimation,
+  ActivityIndicator,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 import DatePicker from 'react-native-date-picker';
@@ -42,6 +43,8 @@ const Create = ({navigation, route}: {navigation: any; route: any}) => {
   const [insertionIndex, setInsertionIndex] = useState<number>(0);
 
   const [bookmarks, setBookmarks] = useState<Poi[]>([]);
+
+  const [loading, setLoading] = useState<boolean>(false);
 
   const addDestination = useCallback(() => {
     const destination = route.params?.destination;
@@ -97,6 +100,8 @@ const Create = ({navigation, route}: {navigation: any; route: any}) => {
       return;
     }
 
+    setLoading(true);
+
     const poi_ids = destinations?.map(destination => destination.id);
     const names = destinations?.map(destination => destination.category_name);
 
@@ -106,6 +111,10 @@ const Create = ({navigation, route}: {navigation: any; route: any}) => {
     } else {
       Alert.alert('Error', 'Unable to save event. Please try again.');
     }
+    // wait one second before setloading to false
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
   };
 
   return (
@@ -287,11 +296,15 @@ const Create = ({navigation, route}: {navigation: any; route: any}) => {
                 : colors.grey,
           },
         ]}
-        disabled={!destinations || destinations.length === 0}
+        disabled={loading || !destinations || destinations.length === 0}
         onPress={onSave}>
-        <Text size="l" weight="b" color={colors.white}>
-          {strings.main.save}
-        </Text>
+        {loading ? (
+          <ActivityIndicator color={colors.white} />
+        ) : (
+          <Text size="l" weight="b" color={colors.white}>
+            {strings.main.save}
+          </Text>
+        )}
       </TouchableOpacity>
     </View>
   );
@@ -367,10 +380,14 @@ const createStyles = StyleSheet.create({
   },
   save: {
     position: 'absolute',
-    bottom: s(40),
     alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
     paddingHorizontal: s(25),
     paddingVertical: s(12.5),
+    bottom: s(40),
+    width: s(100),
+    height: s(50),
     borderRadius: s(10),
   },
   scrollView: {
