@@ -12,6 +12,7 @@ const icons = {
   friends: require('../assets/icons/friends.png'),
   heart: require('../assets/icons/heart.png'),
   hearted: require('../assets/icons/hearted.png'),
+  history: require('../assets/icons/history.png'),
   like: require('../assets/icons/like.png'),
   map: require('../assets/icons/map.png'),
   more: require('../assets/icons/more.png'),

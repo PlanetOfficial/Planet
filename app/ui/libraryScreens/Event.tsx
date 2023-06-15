@@ -264,7 +264,11 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
                   size="l"
                   disabled={displayingSuggestion}
                   color={colors.accent}
-                  onPress={() => navigation.navigate('Roulette', {})}
+                  onPress={() =>
+                    navigation.navigate('Roulette', {
+                      destination: item,
+                    })
+                  }
                 />
               </View>
               <TouchableOpacity
@@ -345,7 +349,7 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
                     setInsertionDestionation(item);
                     navigation.navigate('SuggestSearch');
                   }}>
-                  <Text color={colors.accent} weight='b'>
+                  <Text color={colors.accent} weight="b">
                     {strings.event.addSuggestion}
                   </Text>
                 </TouchableOpacity>
@@ -458,7 +462,6 @@ const localStyles = StyleSheet.create({
     left: 0,
     right: 0,
     backgroundColor: colors.black,
-    elevation: 1,
   },
 });
 

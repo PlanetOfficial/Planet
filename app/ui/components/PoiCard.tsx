@@ -15,11 +15,17 @@ import {getInfoString} from '../../utils/Misc';
 
 interface Props {
   poi: Poi;
+  disabled?: boolean;
   bookmarked: boolean;
   handleBookmark: (poi: Poi) => void;
 }
 
-const PoiCard: React.FC<Props> = ({poi, bookmarked, handleBookmark}) => {
+const PoiCard: React.FC<Props> = ({
+  poi,
+  disabled,
+  bookmarked,
+  handleBookmark,
+}) => {
   return (
     <View style={[cardStyles.container, styles.shadow]}>
       <Image style={cardStyles.image} source={{uri: poi.photo}} />
@@ -34,6 +40,7 @@ const PoiCard: React.FC<Props> = ({poi, bookmarked, handleBookmark}) => {
         </View>
         <Icon
           size="m"
+          disabled={disabled}
           icon={bookmarked ? icons.bookmarked : icons.bookmark}
           color={bookmarked ? colors.accent : colors.black}
           onPress={() => handleBookmark(poi)}

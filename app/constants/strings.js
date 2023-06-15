@@ -117,6 +117,11 @@ const strings = {
     removeSuggestion: 'Remove Suggestion',
     removeSuggestionInfo: 'Are you sure you want to remove this suggestion?',
   },
+  roulette: {
+    total: 'Total',
+    spin: 'Spin',
+    votes: 'Votes',
+  },
   notifications: {
     notifications: 'Notifications',
   },
