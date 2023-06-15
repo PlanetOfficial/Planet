@@ -1,5 +1,6 @@
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {EventAPIURL} from './APIConstants';
+import {Spin} from '../types';
 
 export const postSuggestion = async (
   event_id: number,
@@ -53,6 +54,28 @@ export const makePrimary = async (
   );
 
   return response.ok;
+};
+
+export const spinRoulette = async (
+  event_id: number,
+  destination_id: number,
+  suggestion_id: number,
+): Promise<Spin | null> => {
+  const authToken = await EncryptedStorage.getItem('auth_token');
+
+  const response = await fetch(
+    EventAPIURL +
+      `/suggestion/spin?event_id=${event_id}&destination_id=${destination_id}&suggestion_id=${suggestion_id}&authtoken=${authToken}`,
+    {
+      method: 'POST',
+    },
+  );
+
+  if (response.ok) {
+    return await response.json();
+  } else {
+    return null;
+  }
 };
 
 export const vote = async (

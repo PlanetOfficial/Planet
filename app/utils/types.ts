@@ -91,6 +91,7 @@ export interface Destination {
   id: number;
   name: string;
   suggestions: Suggestion[];
+  spin_history: Spin[];
 }
 
 export interface Suggestion {
@@ -98,6 +99,13 @@ export interface Suggestion {
   is_primary: boolean;
   poi: Poi;
   votes: UserInfo[];
+}
+
+export interface Spin {
+  id: number;
+  created_at: string;
+  result: Suggestion;
+  spinner: UserInfo;
 }
 
 export interface Image {

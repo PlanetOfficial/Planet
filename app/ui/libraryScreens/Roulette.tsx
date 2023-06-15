@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   SafeAreaView,
@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   FlatList,
   Image,
+  Alert,
 } from 'react-native';
 import {Gesture, GestureDetector} from 'react-native-gesture-handler';
 import Animated, {
@@ -28,10 +29,34 @@ import Text from '../components/Text';
 import Icon from '../components/Icon';
 import PoiCard from '../components/PoiCard';
 
-import {Destination, Suggestion, UserInfo} from '../../utils/types';
+import {Destination, Poi, Suggestion, UserInfo} from '../../utils/types';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {handleBookmark} from '../../utils/Misc';
+import {makePrimary, spinRoulette} from '../../utils/api/suggestionAPI';
 
 const Roulette = ({navigation, route}: {navigation: any; route: any}) => {
-  const [destination] = useState<Destination>(route.params.destination);
+  const [eventId] = useState(route.params.eventId);
+  const [destination, setDestination] = useState<Destination>(
+    route.params.destination,
+  );
+
+  const [bookmarks, setBookmarks] = useState<Poi[]>([]);
+  const loadBookmarks = async () => {
+    const _bookmarks = await AsyncStorage.getItem('bookmarks');
+    if (_bookmarks) {
+      setBookmarks(JSON.parse(_bookmarks));
+    } else {
+      Alert.alert('Error', 'Unable to load bookmarks. Please try again.');
+    }
+  };
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      loadBookmarks();
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   const rotation = useSharedValue(0);
   const [currentAngle, setCurrentAngle] = useState(rotation.value);
@@ -58,10 +83,6 @@ const Roulette = ({navigation, route}: {navigation: any; route: any}) => {
     };
   });
 
-  const handleAngle = (value: number) => {
-    setCurrentAngle(parseInt(value.toFixed(), 10));
-  };
-
   const gestureBegin = Gesture.Pan().onBegin(e => {
     if (!isSpinning) {
       let dx = e.x - cx;
@@ -80,12 +101,12 @@ const Roulette = ({navigation, route}: {navigation: any; route: any}) => {
       let angle = Math.atan2(dy, dx) * (180 / Math.PI);
 
       rotation.value = startRotation.value + angle - startAngle.value;
-      runOnJS(handleAngle)(rotation.value % 360);
+      runOnJS(setCurrentAngle)(parseInt((rotation.value % 360).toFixed(), 10));
     }
   });
 
-  const getCurrentSuggestion = (): Suggestion => {
-    const angle = currentAngle < 0 ? 360 + currentAngle : currentAngle;
+  const getCurrentSuggestion = (ang: number): Suggestion => {
+    const angle = ang < 0 ? 360 + ang : ang;
     const votes = destination.suggestions
       .sort((a: Suggestion, b: Suggestion) => {
         if (a.votes && b.votes) {
@@ -117,13 +138,58 @@ const Roulette = ({navigation, route}: {navigation: any; route: any}) => {
         easing: EASING,
       },
       () => {
-        runOnJS(handleAngle)(rotation.value % 360);
+        const angle = parseInt((rotation.value % 360).toFixed(), 10);
+        runOnJS(setCurrentAngle)(angle);
         runOnJS(setIsSpinning)(false);
+        runOnJS(handleSpinEnd)(angle);
       },
     );
   };
 
-  const currentSuggestion = getCurrentSuggestion();
+  const handleSpinEnd = async (angle: number) => {
+    const suggestion = getCurrentSuggestion(angle);
+
+    const spin = await spinRoulette(eventId, destination.id, suggestion.id);
+    if (spin) {
+      const _destination = {...destination};
+      _destination.spin_history.unshift(spin);
+      setDestination(_destination);
+    } else {
+      Alert.alert(
+        'Error',
+        'Unable to record the roulette spin. Please try again.',
+      );
+    }
+
+    Alert.alert(suggestion.poi.name, strings.roulette.rouletteSpinInfo, [
+      {
+        text: strings.main.cancel,
+        onPress: () => {},
+        style: 'cancel',
+      },
+      {
+        text: strings.main.confirm,
+        onPress: async () => {
+          const response = await makePrimary(
+            eventId,
+            destination.id,
+            suggestion.id,
+          );
+
+          if (response) {
+            navigation.goBack();
+          } else {
+            Alert.alert(
+              'Error',
+              'Unable to make suggestion primary. Please try again.',
+            );
+          }
+        },
+      },
+    ]);
+  };
+
+  const currentSuggestion = getCurrentSuggestion(currentAngle);
 
   return (
     <View style={styles.container}>
@@ -140,7 +206,11 @@ const Roulette = ({navigation, route}: {navigation: any; route: any}) => {
             size="m"
             disabled={isSpinning}
             icon={icons.history}
-            onPress={() => navigation.goBack()}
+            onPress={() =>
+              navigation.navigate('SpinHistory', {
+                destination: destination,
+              })
+            }
           />
         </View>
       </SafeAreaView>
@@ -152,20 +222,27 @@ const Roulette = ({navigation, route}: {navigation: any; route: any}) => {
             onPress={() => {
               navigation.navigate('PoiDetail', {
                 poi: currentSuggestion.poi,
-                bookmarked: true, // TODO: fix this
+                bookmarked: bookmarks.some(
+                  bookmark => bookmark.id === currentSuggestion.poi.id,
+                ),
                 mode: 'none',
               });
             }}>
             <PoiCard
               poi={currentSuggestion.poi}
               disabled={isSpinning}
-              bookmarked={true} // TODO: fix this
-              handleBookmark={() => {}} // TODO: fix this
+              bookmarked={bookmarks.some(
+                bookmark => bookmark.id === currentSuggestion.poi.id,
+              )}
+              handleBookmark={(poi: Poi) =>
+                handleBookmark(poi, bookmarks, setBookmarks)
+              }
             />
           </TouchableOpacity>
           <View style={localStyles.votes}>
-            <Text size="s">{strings.roulette.votes}:</Text>
+            <Text size="s">{`${strings.roulette.votes} (${currentSuggestion.votes.length}/${totalVotes}):`}</Text>
             <FlatList
+              style={localStyles.votesList}
               data={currentSuggestion.votes}
               renderItem={({item}) => (
                 <View style={userStyles.container}>
@@ -206,14 +283,16 @@ const Roulette = ({navigation, route}: {navigation: any; route: any}) => {
                   <Svg width={s(250)} height={s(250)}>
                     <PieChart
                       style={{height: s(249.6)}}
-                      innerRadius={'45%'}
+                      innerRadius={'40%'}
                       data={destination.suggestions.map(
                         (_suggestion: Suggestion, index: number) => {
                           return {
                             key: index,
                             value: _suggestion.votes?.length,
                             svg: {
-                              fill: colors.accent, // TODO: fix this
+                              fill: colors.accentShades[
+                                index % colors.accentShades.length
+                              ],
                             },
                           };
                         },
@@ -264,6 +343,11 @@ const localStyles = StyleSheet.create({
   votes: {
     flex: 1,
     marginLeft: s(20),
+    height: s(180),
+    paddingTop: s(5),
+  },
+  votesList: {
+    marginTop: s(5),
   },
   roulette: {
     alignItems: 'center',
@@ -285,7 +369,7 @@ const userStyles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: s(5),
+    paddingVertical: s(8),
     borderBottomWidth: 0.5,
     borderColor: colors.lightgrey,
   },

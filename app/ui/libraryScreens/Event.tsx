@@ -200,6 +200,13 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
     } else {
       Alert.alert('Error', 'Unable to change vote, please try again later.');
     }
+
+    const _eventDetail = await getEvent(event.id);
+    if (_eventDetail) {
+      setEventDetail(_eventDetail);
+    } else {
+      Alert.alert('Error', 'Unable to refresh event, please try again later.');
+    }
   };
 
   useEffect(() => {
@@ -262,10 +269,22 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
                 <Icon
                   icon={icons.roulette}
                   size="l"
-                  disabled={displayingSuggestion}
-                  color={colors.accent}
+                  disabled={
+                    displayingSuggestion ||
+                    !item.suggestions.some(
+                      suggestion => suggestion.votes.length > 0,
+                    )
+                  }
+                  color={
+                    !item.suggestions.some(
+                      suggestion => suggestion.votes.length > 0,
+                    )
+                      ? colors.grey
+                      : colors.accent
+                  }
                   onPress={() =>
                     navigation.navigate('Roulette', {
+                      eventId: event.id,
                       destination: item,
                     })
                   }

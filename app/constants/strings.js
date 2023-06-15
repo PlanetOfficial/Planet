@@ -121,6 +121,14 @@ const strings = {
     total: 'Total',
     spin: 'Spin',
     votes: 'Votes',
+    rouletteSpinInfo:
+      'Do you want to mark this suggestion as the primary destination?',
+    spinHistory: 'Spin History',
+    spinHistoryDescription:
+      "Records of everyone's spins will be displayed here, whether or not they choose to accept the result or not.",
+    result: 'Result',
+    spunBy: 'Spun By',
+    time: 'Time',
   },
   notifications: {
     notifications: 'Notifications',

@@ -130,7 +130,6 @@ const Create = ({navigation, route}: {navigation: any; route: any}) => {
                 [
                   {
                     text: strings.main.cancel,
-                    onPress: () => {},
                     style: 'cancel',
                   },
                   {

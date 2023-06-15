@@ -173,7 +173,6 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
                     [
                       {
                         text: strings.main.cancel,
-                        onPress: () => {},
                         style: 'cancel',
                       },
                       {
@@ -195,7 +194,6 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
                     [
                       {
                         text: strings.main.cancel,
-                        onPress: () => {},
                         style: 'cancel',
                       },
                       {

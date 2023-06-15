@@ -24,6 +24,7 @@ import Friends from '../otherScreens/Friends';
 import Explore from '../homeScreens/Explore';
 import Event from '../libraryScreens/Event';
 import Roulette from '../libraryScreens/Roulette';
+import SpinHistory from '../libraryScreens/SpinHistory';
 import SuggestSearch from '../libraryScreens/SuggestSearch';
 import Notifications from '../libraryScreens/Notifications';
 import Settings from '../profileScreens/Settings';
@@ -54,6 +55,7 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {createSearchScreen()}
           {eventScreen()}
           {rouletteScreen()}
+          {spinHistoryScreen()}
           {suggestSearchScreen()}
           {notificationsScreen()}
           {loginStackScreen()}
@@ -88,6 +90,7 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {createSearchScreen()}
           {eventScreen()}
           {rouletteScreen()}
+          {spinHistoryScreen()}
           {suggestSearchScreen()}
           {notificationsScreen()}
         </Stack.Navigator>
@@ -300,6 +303,19 @@ const rouletteScreen = () => {
       component={Roulette}
       options={{
         headerShown: false,
+      }}
+    />
+  );
+};
+
+const spinHistoryScreen = () => {
+  return (
+    <Stack.Screen
+      name="SpinHistory"
+      component={SpinHistory}
+      options={{
+        headerShown: false,
+        presentation: 'modal',
       }}
     />
   );
