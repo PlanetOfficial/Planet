@@ -410,7 +410,7 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
         resetFlag={resetFlag}
         animateFlag={animateFlag}
         event_id={event.id}
-        destination_id={selectedDestination?.id}
+        destination={selectedDestination}
         voted={
           selectedDestination
             ? myVotes.get(selectedDestination?.id) === selectedSuggestion?.id

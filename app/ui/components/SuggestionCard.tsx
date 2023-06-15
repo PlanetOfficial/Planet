@@ -5,7 +5,7 @@ import {s} from 'react-native-size-matters';
 import PoiCardXL from '../components/PoiCardXL';
 
 import styles from '../../constants/styles';
-import {Suggestion} from '../../utils/types';
+import {Destination, Suggestion} from '../../utils/types';
 import colors from '../../constants/colors';
 import strings from '../../constants/strings';
 import {makePrimary, removeSuggestion} from '../../utils/api/suggestionAPI';
@@ -21,7 +21,7 @@ interface SuggestionCardProps {
   resetFlag: boolean;
   animateFlag: boolean;
   event_id: number;
-  destination_id?: number;
+  destination?: Destination;
   voted: boolean;
   onVote: (suggestion: Suggestion) => void;
 }
@@ -37,7 +37,7 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
   resetFlag,
   animateFlag,
   event_id,
-  destination_id,
+  destination,
   voted,
   onVote,
 }) => {
@@ -89,11 +89,11 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
   animation.addListener(({value}) => setAnimValue(value));
 
   const onMakePrimaryPress = async () => {
-    if (!destination_id || !suggestion) {
+    if (!destination || !suggestion) {
       return;
     }
 
-    const response = await makePrimary(event_id, destination_id, suggestion.id);
+    const response = await makePrimary(event_id, destination.id, suggestion.id);
 
     if (response) {
       onShrinkAnimation();
@@ -108,13 +108,13 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
   };
 
   const onRemoveSuggestionPress = async () => {
-    if (!destination_id || !suggestion) {
+    if (!destination || !suggestion) {
       return;
     }
 
     const response = await removeSuggestion(
       event_id,
-      destination_id,
+      destination.id,
       suggestion.poi.id,
     );
 
@@ -159,7 +159,13 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
               {
                 name: 'See Votes',
                 onPress: () => {
-                  console.log('TODO: Navigate to roulette page');
+                  setTimeout(() => {
+                    onShrinkAnimation();
+                  }, 1000);
+                  navigation.navigate('Roulette', {
+                    eventId: event_id,
+                    destination: destination,
+                  });
                 },
                 color: colors.black,
                 disabled: false,
