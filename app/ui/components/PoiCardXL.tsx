@@ -16,6 +16,7 @@ import OptionMenu from './OptionMenu';
 
 interface Props {
   poi: Poi;
+  disabled?: boolean;
   width?: Animated.AnimatedInterpolation<string | number> | number;
   bookmarked?: boolean;
   handleBookmark?: (poi: Poi) => void;
@@ -26,6 +27,7 @@ interface Props {
 
 const PoiCardXL: React.FC<Props> = ({
   poi,
+  disabled = false,
   width,
   bookmarked,
   handleBookmark,
@@ -47,6 +49,7 @@ const PoiCardXL: React.FC<Props> = ({
         {handleBookmark ? (
           <Icon
             size="m"
+            disabled={disabled}
             icon={bookmarked ? icons.bookmarked : icons.bookmark}
             color={bookmarked ? colors.accent : colors.black}
             onPress={() => handleBookmark(poi)}
@@ -59,6 +62,7 @@ const PoiCardXL: React.FC<Props> = ({
         <View style={cardStyles.voteButton}>
           <Icon
             size="m"
+            disabled={disabled}
             icon={icons.like}
             color={voted ? colors.accent : colors.lightgrey}
             onPress={onVote}

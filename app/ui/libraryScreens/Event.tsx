@@ -220,6 +220,7 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
           <Icon
             size="m"
             icon={icons.back}
+            disabled={displayingSuggestion}
             onPress={() => {
               navigation.goBack();
             }}
@@ -234,6 +235,7 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
           </View>
           <Icon
             icon={icons.more}
+            disabled={displayingSuggestion}
             button={true}
             padding={-2}
             onPress={() => {
@@ -260,12 +262,14 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
                 <Icon
                   icon={icons.roulette}
                   size="l"
+                  disabled={displayingSuggestion}
                   color={colors.accent}
                   onPress={() => navigation.navigate('Roulette', {})}
                 />
               </View>
               <TouchableOpacity
                 style={localStyles.destinationCard}
+                disabled={displayingSuggestion}
                 onPress={() =>
                   navigation.navigate('PoiDetail', {
                     poi: findPrimary(item.suggestions).poi,
@@ -278,6 +282,7 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
                 }>
                 <PoiCardXL
                   poi={findPrimary(item.suggestions).poi}
+                  disabled={displayingSuggestion}
                   bookmarked={bookmarks.some(
                     bookmark =>
                       bookmark.id === findPrimary(item.suggestions).poi.id,
@@ -323,6 +328,7 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
                   <View style={localStyles.addSuggestion}>
                     <TouchableOpacity
                       style={localStyles.addSuggestion}
+                      disabled={displayingSuggestion}
                       onPress={() => {
                         setInsertionDestionation(item);
                         navigation.navigate('SuggestSearch');
@@ -334,11 +340,12 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
               ) : (
                 <TouchableOpacity
                   style={[localStyles.addSuggestionBig, styles.shadow]}
+                  disabled={displayingSuggestion}
                   onPress={() => {
                     setInsertionDestionation(item);
                     navigation.navigate('SuggestSearch');
                   }}>
-                  <Text color={colors.accent}>
+                  <Text color={colors.accent} weight='b'>
                     {strings.event.addSuggestion}
                   </Text>
                 </TouchableOpacity>
