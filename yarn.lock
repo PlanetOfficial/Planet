@@ -6771,10 +6771,10 @@ react-native-codegen@^0.71.5:
     jscodeshift "^0.13.1"
     nullthrows "^1.1.1"
 
-react-native-curved-bottom-bar@^3.0.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/react-native-curved-bottom-bar/-/react-native-curved-bottom-bar-3.1.0.tgz#0aba71260a957efbeb6670f913b382809dbb0f04"
-  integrity sha512-E/o1ybR4xrd7YOXKRMlU8NeqzithbOq4J7BJxPQYasJ1r+0U5ezaR/GQJRJAoKUjTga7XhBnjOwuQq7gH8IVUQ==
+react-native-curved-bottom-bar@^3.2.6:
+  version "3.2.6"
+  resolved "https://registry.yarnpkg.com/react-native-curved-bottom-bar/-/react-native-curved-bottom-bar-3.2.6.tgz#6304b4aaad2262ec39ee63ef8af39095ffe71e57"
+  integrity sha512-o7LdGACt/KdL+kRoGdcXSRYrCxI6L/cHzeNA8OhfBYl//eh087N14dF/Cvoz/JN7YPUtrM5Xwdm4tuSI8PzNKQ==
   dependencies:
     d3-shape "^3.2.0"
     react-native-size-scaling "^0.5.1"
