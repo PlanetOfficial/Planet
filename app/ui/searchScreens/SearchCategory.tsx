@@ -116,8 +116,9 @@ const SearchCategory = ({navigation, route}: {navigation: any; route: any}) => {
           />
           <Text>{category.name}</Text>
           <Icon
-            icon={icons.map}
+            icon={icons.pin}
             button={true}
+            padding={-2}
             onPress={() =>
               navigation.navigate('SearchMap', {
                 category,
