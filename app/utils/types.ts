@@ -3,7 +3,7 @@ export interface UserInfo {
   first_name: string;
   last_name: string;
   username: string;
-  icon: Image;
+  icon?: Image;
 }
 
 export interface Genre {

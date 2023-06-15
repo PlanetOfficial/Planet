@@ -10,7 +10,7 @@ import styles from '../../constants/styles';
 import Icon from './Icon';
 import Text from './Text';
 
-import {Option, Poi, Suggestion} from '../../utils/types';
+import {Option, Poi} from '../../utils/types';
 import {getInfoString} from '../../utils/Misc';
 import OptionMenu from './OptionMenu';
 
@@ -20,7 +20,8 @@ interface Props {
   bookmarked?: boolean;
   handleBookmark?: (poi: Poi) => void;
   options?: Option[];
-  onVote?: (suggestion: Suggestion) => void;
+  voted?: boolean;
+  onVote?: () => void;
 }
 
 const PoiCardXL: React.FC<Props> = ({
@@ -29,6 +30,7 @@ const PoiCardXL: React.FC<Props> = ({
   bookmarked,
   handleBookmark,
   options,
+  voted,
   onVote,
 }) => {
   return (
@@ -42,7 +44,7 @@ const PoiCardXL: React.FC<Props> = ({
             {getInfoString(poi)}
           </Text>
         </View>
-        {bookmarked && handleBookmark ? (
+        {handleBookmark ? (
           <Icon
             size="m"
             icon={bookmarked ? icons.bookmarked : icons.bookmark}
@@ -53,8 +55,15 @@ const PoiCardXL: React.FC<Props> = ({
           <OptionMenu options={options} />
         ) : null}
       </View>
-      {onVote? (
-        <View style={cardStyles.header}/>
+      {onVote ? (
+        <View style={cardStyles.voteButton}>
+          <Icon
+            size="m"
+            icon={icons.like}
+            color={voted ? colors.accent : colors.lightgrey}
+            onPress={onVote}
+          />
+        </View>
       ) : null}
     </Animated.View>
   );
@@ -88,6 +97,17 @@ const cardStyles = StyleSheet.create({
     justifyContent: 'space-between',
     height: s(40),
     paddingVertical: s(2),
+  },
+  voteButton: {
+    position: 'absolute',
+    bottom: s(10),
+    right: s(10),
+    width: s(40),
+    height: s(40),
+    borderRadius: s(20),
+    backgroundColor: colors.white,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 

@@ -22,6 +22,8 @@ interface SuggestionCardProps {
   animateFlag: boolean;
   event_id: number;
   destination_id?: number;
+  voted: boolean;
+  onVote: (suggestion: Suggestion) => void;
 }
 
 const SuggestionCard: React.FC<SuggestionCardProps> = ({
@@ -36,6 +38,8 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
   animateFlag,
   event_id,
   destination_id,
+  voted,
+  onVote,
 }) => {
   const animation = useRef(new Animated.Value(0)).current;
 
@@ -206,6 +210,8 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
                 disabled: false,
               },
             ]}
+            voted={voted}
+            onVote={() => onVote(suggestion)}
           />
         </TouchableOpacity>
       ) : null}

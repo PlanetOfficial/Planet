@@ -54,3 +54,21 @@ export const makePrimary = async (
 
   return response.ok;
 };
+
+export const vote = async (
+  event_id: number,
+  destination_id: number,
+  suggestion_id: number,
+): Promise<Boolean> => {
+  const authToken = await EncryptedStorage.getItem('auth_token');
+
+  const response = await fetch(
+    EventAPIURL +
+      `/suggestion/vote?event_id=${event_id}&destination_id=${destination_id}&suggestion_id=${suggestion_id}&authtoken=${authToken}`,
+    {
+      method: 'POST',
+    },
+  );
+
+  return response.ok;
+};

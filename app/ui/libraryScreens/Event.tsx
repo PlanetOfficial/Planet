@@ -35,19 +35,19 @@ import {
 } from '../../utils/types';
 import {getEvent} from '../../utils/api/eventAPI';
 import {handleBookmark} from '../../utils/Misc';
-import {postSuggestion} from '../../utils/api/suggestionAPI';
+import {postSuggestion, vote} from '../../utils/api/suggestionAPI';
 import strings from '../../constants/strings';
 import SuggestionCard from '../components/SuggestionCard';
 
 const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
   const date = new Date();
-
   const [event] = useState<Event>(route.params.event);
 
   const [eventDetail, setEventDetail] = useState<EventDetail>();
   const [loading, setLoading] = useState<boolean>(true);
   const [refreshing, setRefreshing] = useState<boolean>(false);
 
+  const [myVotes, setMyVotes] = useState<Map<number, number>>(new Map());
   const [bookmarks, setBookmarks] = useState<Poi[]>([]);
 
   const [insertionDestination, setInsertionDestionation] =
@@ -55,9 +55,21 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
 
   const loadData = useCallback(async () => {
     setRefreshing(true);
+    const _username = await AsyncStorage.getItem('username');
+
     const _eventDetail = await getEvent(event.id);
     if (_eventDetail) {
       setEventDetail(_eventDetail);
+
+      const _myVotes = new Map<number, number>();
+      _eventDetail.destinations.forEach(dest => {
+        dest.suggestions.forEach(sugg => {
+          if (sugg.votes.some(_vote => _vote.username === _username)) {
+            _myVotes.set(dest.id, sugg.id);
+          }
+        });
+      });
+      setMyVotes(_myVotes);
     } else {
       Alert.alert('Error', 'Could not fetch event, please try again.');
     }
@@ -100,15 +112,15 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
     route.params?.destination,
   ]);
 
-  const findPrimaryPoi = (suggestions: Suggestion[]) => {
+  const findPrimary = (suggestions: Suggestion[]) => {
     const primarySuggestion = suggestions.find(
       suggestion => suggestion.is_primary,
     );
     if (primarySuggestion) {
-      return primarySuggestion.poi;
+      return primarySuggestion;
     } else {
       console.warn('No primary suggestion found, returning first suggestion');
-      return suggestions[0].poi;
+      return suggestions[0];
     }
   };
 
@@ -174,11 +186,27 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
     }).start();
   };
 
+  const onVote = async (destination: Destination, suggestion: Suggestion) => {
+    const response = await vote(event.id, destination.id, suggestion.id);
+
+    if (response && eventDetail) {
+      const _myVotes = new Map<number, number>(myVotes);
+      if (_myVotes.get(destination.id) === suggestion.id) {
+        _myVotes.set(destination.id, -1);
+      } else {
+        _myVotes.set(destination.id, suggestion.id);
+      }
+      setMyVotes(_myVotes);
+    } else {
+      Alert.alert('Error', 'Unable to change vote, please try again later.');
+    }
+  };
+
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       resetAnimation();
-      loadData();
       loadBookmarks();
+      loadData();
       addSuggestion();
     });
 
@@ -240,17 +268,19 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
                 style={localStyles.destinationCard}
                 onPress={() =>
                   navigation.navigate('PoiDetail', {
-                    poi: item.suggestions[0].poi,
+                    poi: findPrimary(item.suggestions).poi,
                     bookmarked: bookmarks.some(
-                      bookmark => bookmark.id === item.suggestions[0].poi.id,
+                      bookmark =>
+                        bookmark.id === findPrimary(item.suggestions).poi.id,
                     ),
                     mode: 'none',
                   })
                 }>
                 <PoiCardXL
-                  poi={findPrimaryPoi(item.suggestions)}
+                  poi={findPrimary(item.suggestions).poi}
                   bookmarked={bookmarks.some(
-                    bookmark => bookmark.id === item.suggestions[0].poi.id,
+                    bookmark =>
+                      bookmark.id === findPrimary(item.suggestions).poi.id,
                   )}
                   width={
                     item.id === selectedDestination?.id ? cardWidth : s(310)
@@ -258,6 +288,15 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
                   handleBookmark={(poi: Poi) =>
                     handleBookmark(poi, bookmarks, setBookmarks)
                   }
+                  voted={
+                    findPrimary(item.suggestions)
+                      ? myVotes.get(item?.id) ===
+                        findPrimary(item.suggestions)?.id
+                      : false
+                  }
+                  onVote={() => {
+                    onVote(item, findPrimary(item.suggestions));
+                  }}
                 />
               </TouchableOpacity>
               {item.suggestions.length > 1 ? (
@@ -342,6 +381,16 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
         animateFlag={animateFlag}
         event_id={event.id}
         destination_id={selectedDestination?.id}
+        voted={
+          selectedDestination
+            ? myVotes.get(selectedDestination?.id) === selectedSuggestion?.id
+            : false
+        }
+        onVote={() => {
+          if (selectedDestination && selectedSuggestion) {
+            onVote(selectedDestination, selectedSuggestion);
+          }
+        }}
       />
     </View>
   );
