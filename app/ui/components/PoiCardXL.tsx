@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, Image} from 'react-native';
+import {StyleSheet, View, Image, Animated} from 'react-native';
 
 import {s} from 'react-native-size-matters';
 
@@ -10,18 +10,34 @@ import styles from '../../constants/styles';
 import Icon from './Icon';
 import Text from './Text';
 
-import {Poi} from '../../utils/types';
+import {Option, Poi} from '../../utils/types';
 import {getInfoString} from '../../utils/Misc';
+import OptionMenu from './OptionMenu';
 
 interface Props {
   poi: Poi;
-  bookmarked: boolean;
-  handleBookmark: (poi: Poi) => void;
+  disabled?: boolean;
+  width?: Animated.AnimatedInterpolation<string | number> | number;
+  bookmarked?: boolean;
+  handleBookmark?: (poi: Poi) => void;
+  options?: Option[];
+  voted?: boolean;
+  onVote?: () => void;
 }
 
-const PoiCardXL: React.FC<Props> = ({poi, bookmarked, handleBookmark}) => {
+const PoiCardXL: React.FC<Props> = ({
+  poi,
+  disabled = false,
+  width,
+  bookmarked,
+  handleBookmark,
+  options,
+  voted,
+  onVote,
+}) => {
   return (
-    <View style={[cardStyles.container, styles.shadow]}>
+    <Animated.View
+      style={[cardStyles.container, styles.shadow, {width: width}]}>
       <Image style={cardStyles.image} source={{uri: poi.photo}} />
       <View style={cardStyles.header}>
         <View style={cardStyles.infoContainer}>
@@ -30,21 +46,36 @@ const PoiCardXL: React.FC<Props> = ({poi, bookmarked, handleBookmark}) => {
             {getInfoString(poi)}
           </Text>
         </View>
-        <Icon
-          size="m"
-          icon={bookmarked ? icons.bookmarked : icons.bookmark}
-          color={bookmarked ? colors.accent : colors.black}
-          onPress={() => handleBookmark(poi)}
-        />
+        {handleBookmark ? (
+          <Icon
+            size="m"
+            disabled={disabled}
+            icon={bookmarked ? icons.bookmarked : icons.bookmark}
+            color={bookmarked ? colors.accent : colors.black}
+            onPress={() => handleBookmark(poi)}
+          />
+        ) : options ? (
+          <OptionMenu options={options} />
+        ) : null}
       </View>
-    </View>
+      {onVote ? (
+        <View style={cardStyles.voteButton}>
+          <Icon
+            size="m"
+            disabled={disabled}
+            icon={icons.like}
+            color={voted ? colors.accent : colors.lightgrey}
+            onPress={onVote}
+          />
+        </View>
+      ) : null}
+    </Animated.View>
   );
 };
 
 const cardStyles = StyleSheet.create({
   container: {
-    width: s(310),
-    height: s(200),
+    aspectRatio: 1.6,
     borderRadius: s(10),
     backgroundColor: colors.white,
   },
@@ -59,6 +90,8 @@ const cardStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: s(15),
+    borderTopLeftRadius: s(10),
+    borderTopRightRadius: s(10),
     width: '100%',
     height: s(45),
     backgroundColor: 'rgba(255, 255, 255, 0.8)',
@@ -68,6 +101,17 @@ const cardStyles = StyleSheet.create({
     justifyContent: 'space-between',
     height: s(40),
     paddingVertical: s(2),
+  },
+  voteButton: {
+    position: 'absolute',
+    bottom: s(10),
+    right: s(10),
+    width: s(40),
+    height: s(40),
+    borderRadius: s(20),
+    backgroundColor: colors.white,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 

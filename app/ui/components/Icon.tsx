@@ -16,7 +16,6 @@ import styles from '../../constants/styles';
 interface Props {
   size?: 'xs' | 's' | 'm' | 'l' | 'xl';
   color?: string;
-  noColor?: boolean;
   button?: boolean;
   padding?: number;
   disabled?: boolean;
@@ -27,7 +26,6 @@ interface Props {
 const Icon: React.FC<Props> = ({
   size = 's',
   color = colors.black,
-  noColor = false,
   button = false,
   padding = 0,
   disabled = false,
@@ -68,7 +66,7 @@ const Icon: React.FC<Props> = ({
   const IconStyles: ImageStyle = {
     width: '100%',
     height: '100%',
-    tintColor: noColor ? undefined : disabled ? colors.darkgrey : color,
+    tintColor: color,
   };
 
   return onPress ? (

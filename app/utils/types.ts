@@ -1,9 +1,9 @@
 export interface UserInfo {
   id: number;
-  created_at: string;
   first_name: string;
   last_name: string;
   username: string;
+  icon?: Image;
 }
 
 export interface Genre {
@@ -68,6 +68,46 @@ export interface Filter {
   defaultIdx: number;
 }
 
+export interface Event {
+  id: number;
+  name: string;
+  datetime: string;
+  members: UserInfo[];
+  created_by: UserInfo;
+  photo: string;
+  vicinity: string;
+}
+
+export interface EventDetail {
+  id: number;
+  name: string;
+  datetime: string;
+  members: UserInfo[];
+  destinations: Destination[];
+  created_by: UserInfo;
+}
+
+export interface Destination {
+  id: number;
+  name: string;
+  suggestions: Suggestion[];
+  spin_history: Spin[];
+}
+
+export interface Suggestion {
+  id: number;
+  is_primary: boolean;
+  poi: Poi;
+  votes: UserInfo[];
+}
+
+export interface Spin {
+  id: number;
+  created_at: string;
+  result: Suggestion;
+  spinner: UserInfo;
+}
+
 export interface Image {
   path: string;
   name: string;
@@ -90,4 +130,11 @@ export interface Region {
   longitude: number;
   latitudeDelta: number;
   longitudeDelta: number;
+}
+
+export interface Option {
+  name: string;
+  onPress: () => void;
+  color: string;
+  disabled?: boolean;
 }

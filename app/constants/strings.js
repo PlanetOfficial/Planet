@@ -10,6 +10,7 @@ const strings = {
     edit: 'Edit',
     remove: 'Remove',
     rename: 'Rename',
+    confirm: 'Confirm',
     add: 'Add',
     create: 'Create',
     next: 'Next',
@@ -98,6 +99,7 @@ const strings = {
     noBookmarksFoundDescription: 'Try bookmarking something',
   },
   event: {
+    yourEvents: 'Your Events',
     untitled: 'Untitled Event',
     backConfirmation:
       'Are you sure you want to go back? Your event will not be saved.',
@@ -105,6 +107,31 @@ const strings = {
     moveUp: 'Move Up',
     moveDown: 'Move Down',
     renamePrompt: 'Enter a new name for this destination:',
+    noEventsFound: 'No Events Found',
+    noEventsFoundDescription:
+      'Try creating an event from the plus button below',
+    addSuggestion: 'Add a Suggestion',
+    markAsSelected: 'Mark as Selected',
+    markAsSelectedInfo:
+      'Are you sure you want to mark this suggestion as the primary destination?',
+    removeSuggestion: 'Remove Suggestion',
+    removeSuggestionInfo: 'Are you sure you want to remove this suggestion?',
+  },
+  roulette: {
+    total: 'Total',
+    spin: 'Spin',
+    votes: 'Votes',
+    rouletteSpinInfo:
+      'Do you want to mark this suggestion as the primary destination?',
+    spinHistory: 'Spin History',
+    spinHistoryDescription:
+      "Records of everyone's spins will be displayed here, whether or not they choose to accept the result or not.",
+    result: 'Result',
+    spunBy: 'Spun By',
+    time: 'Time',
+  },
+  notifications: {
+    notifications: 'Notifications',
   },
 };
 

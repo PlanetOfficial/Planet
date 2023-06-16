@@ -22,6 +22,11 @@ import SearchMap from '../searchScreens/SearchMap';
 import PoiDetail from '../otherScreens/PoiDetail';
 import Friends from '../otherScreens/Friends';
 import Explore from '../homeScreens/Explore';
+import Event from '../libraryScreens/Event';
+import Roulette from '../libraryScreens/Roulette';
+import SpinHistory from '../libraryScreens/SpinHistory';
+import SuggestSearch from '../libraryScreens/SuggestSearch';
+import Notifications from '../libraryScreens/Notifications';
 import Settings from '../profileScreens/Settings';
 import {Animated} from 'react-native';
 
@@ -48,6 +53,11 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {settingsScreen()}
           {createScreen()}
           {createSearchScreen()}
+          {eventScreen()}
+          {rouletteScreen()}
+          {spinHistoryScreen()}
+          {suggestSearchScreen()}
+          {notificationsScreen()}
           {loginStackScreen()}
           {signUpNameStackScreen()}
           {signUpCredsStackScreen()}
@@ -78,6 +88,11 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {settingsScreen()}
           {createScreen()}
           {createSearchScreen()}
+          {eventScreen()}
+          {rouletteScreen()}
+          {spinHistoryScreen()}
+          {suggestSearchScreen()}
+          {notificationsScreen()}
         </Stack.Navigator>
       </BottomSheetModalProvider>
     </NavigationContainer>
@@ -264,6 +279,68 @@ const createSearchScreen = () => {
       options={{
         headerShown: false,
         cardStyleInterpolator: verticalAnimation,
+      }}
+    />
+  );
+};
+
+const eventScreen = () => {
+  return (
+    <Stack.Screen
+      name="Event"
+      component={Event}
+      options={{
+        headerShown: false,
+      }}
+    />
+  );
+};
+
+const rouletteScreen = () => {
+  return (
+    <Stack.Screen
+      name="Roulette"
+      component={Roulette}
+      options={{
+        headerShown: false,
+      }}
+    />
+  );
+};
+
+const spinHistoryScreen = () => {
+  return (
+    <Stack.Screen
+      name="SpinHistory"
+      component={SpinHistory}
+      options={{
+        headerShown: false,
+        presentation: 'modal',
+      }}
+    />
+  );
+};
+
+const suggestSearchScreen = () => {
+  return (
+    <Stack.Screen
+      name="SuggestSearch"
+      component={SuggestSearch}
+      options={{
+        headerShown: false,
+        cardStyleInterpolator: verticalAnimation,
+      }}
+    />
+  );
+};
+
+const notificationsScreen = () => {
+  return (
+    <Stack.Screen
+      name="Notifications"
+      component={Notifications}
+      options={{
+        headerShown: false,
       }}
     />
   );

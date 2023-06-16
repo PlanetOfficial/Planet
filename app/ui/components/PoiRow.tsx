@@ -118,8 +118,8 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingLeft: s(10),
     paddingRight: s(5),
-    justifyContent: 'space-between',
-    height: s(54),
+    justifyContent: 'space-evenly',
+    height: s(64),
   },
 });
 
