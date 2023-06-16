@@ -7,31 +7,42 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
+  ScrollView,
 } from 'react-native';
+import DatePicker from 'react-native-date-picker';
+import {s} from 'react-native-size-matters';
+import prompt from 'react-native-prompt-android';
 
+import moment from 'moment';
+
+import colors from '../../constants/colors';
 import icons from '../../constants/icons';
 import styles from '../../constants/styles';
+import strings from '../../constants/strings';
 
 import Text from '../components/Text';
 import Icon from '../components/Icon';
-import {Event, UserInfo} from '../../utils/types';
+
 import {
   editDatetime,
   editName,
   getEvent,
   leaveEvent,
 } from '../../utils/api/eventAPI';
-import moment from 'moment';
-import DatePicker from 'react-native-date-picker';
-import colors from '../../constants/colors';
-import {s} from 'react-native-size-matters';
-import strings from '../../constants/strings';
+import {Destination, Event, EventDetail, UserInfo} from '../../utils/types';
+import DraggableFlatList from 'react-native-draggable-flatlist';
+import Separator from '../components/Separator';
+import {
+  removeDestination,
+  renameDestination,
+  reorderDestinations,
+} from '../../utils/api/destinationAPI';
 
 const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
   const date = new Date();
 
   const [event] = useState<Event>(route.params.event);
-  const [eventDetail, setEventDetail] = useState<any>(null);
+  const [eventDetail, setEventDetail] = useState<EventDetail>();
 
   const [eventTitle, setEventTitle] = useState<string>(event.name);
 
@@ -62,7 +73,7 @@ const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
   const handleEditName = async () => {
     const response = await editName(event.id, eventTitle);
 
-    if (response) {
+    if (response && eventDetail) {
       const _eventDetail = {...eventDetail};
       _eventDetail.name = eventTitle;
       setEventDetail(_eventDetail);
@@ -75,7 +86,7 @@ const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
   const handleEditDate = async (dt: string) => {
     const response = await editDatetime(event.id, dt);
 
-    if (response) {
+    if (response && eventDetail) {
       const _eventDetail = {...eventDetail};
       _eventDetail.datetime = dt;
       setEventDetail(_eventDetail);
@@ -93,6 +104,45 @@ const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
       navigation.navigate('Library');
     } else {
       Alert.alert('Error', 'Could not leave event, please try again.');
+    }
+  };
+
+  const handleRenameDestination = async (
+    newName: string,
+    destinationId: number,
+  ) => {
+    const response = await renameDestination(event.id, destinationId, newName);
+
+    if (response) {
+      loadData();
+    } else {
+      Alert.alert('Error', 'Could not rename destination, please try again.');
+    }
+  };
+
+  const handleRemoveDestination = async (destinationId: number) => {
+    const response = await removeDestination(event.id, destinationId);
+
+    if (response) {
+      loadData();
+    } else {
+      Alert.alert(
+        'Error',
+        'Could not remove destination from event, please try again.',
+      );
+    }
+  };
+
+  const handleReorderDestinations = async (newOrder: Destination[]) => {
+    const response = await reorderDestinations(
+      event.id,
+      newOrder.map((destination: Destination) => destination.id),
+    );
+
+    if (response) {
+      loadData();
+    } else {
+      Alert.alert('Error', 'Could not reorder destinations, please try again.');
     }
   };
 
@@ -125,86 +175,202 @@ const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
           </TouchableOpacity>
         </View>
       </SafeAreaView>
-      <View style={localStyles.texts}>
-        <TextInput
-          style={localStyles.title}
-          value={eventTitle}
-          autoCorrect={false}
-          onChangeText={(text: string) => setEventTitle(text)}
-          onEndEditing={async () => {
-            if (eventTitle !== event.name) {
-              handleEditName();
-            }
-          }}
-        />
-        <TouchableOpacity onPress={() => setDatePickerOpen(true)}>
-          <Text size="s" weight="l" color={colors.darkgrey}>
-            {datetime}
-          </Text>
-        </TouchableOpacity>
-        <DatePicker
-          modal
-          open={datePickerOpen}
-          minuteInterval={5}
-          date={moment(datetime, 'MMM Do, h:mm a').toDate()}
-          onConfirm={newDate => {
-            setDatePickerOpen(false);
-            handleEditDate(
-              moment(newDate, 'YYYY-MM-DD HH:mm:ssZ').format('MMM Do, h:mm a'),
-            );
-          }}
-          onCancel={() => {
-            setDatePickerOpen(false);
-          }}
-        />
-      </View>
-
-      <View style={localStyles.memberContainer}>
-        {eventDetail
-          ? eventDetail.members.map((member: UserInfo) => (
-              <View
-                key={member.id}
-                style={[userStyles.container, userStyles.border]}>
-                <View style={userStyles.profilePic}>
-                  <Image
-                    style={userStyles.pic}
-                    source={{uri: 'https://picsum.photos/200'}}
-                  />
-                </View>
-                <View style={userStyles.texts}>
-                  <Text
-                    size="s"
-                    numberOfLines={
-                      1
-                    }>{`${member.first_name} ${member.last_name}`}</Text>
-                  <Text
-                    size="xs"
-                    weight="l"
-                    color={colors.darkgrey}
-                    numberOfLines={1}>
-                    {'@' + member.username}
-                  </Text>
-                </View>
-              </View>
-            ))
-          : null}
-        <TouchableOpacity
-          style={userStyles.container}
-          onPress={() => {
-            console.log('hi');
-            // TODO: Navigate to friends tab
-          }}>
-          <View style={userStyles.profilePic}>
-            <Image
-              style={[userStyles.pic, userStyles.add]}
-              source={icons.add}
+      <ScrollView>
+        <View style={localStyles.texts}>
+          <View style={localStyles.titleContainer}>
+            <TextInput
+              style={localStyles.title}
+              value={eventTitle}
+              autoCorrect={false}
+              onChangeText={(text: string) => setEventTitle(text)}
+              onEndEditing={async () => {
+                if (eventTitle !== event.name) {
+                  handleEditName();
+                }
+              }}
             />
+            <View style={localStyles.pencil}>
+              <Icon size="s" icon={icons.edit} color={colors.black} />
+            </View>
           </View>
-          <View style={userStyles.texts}>
-            <Text>{strings.event.inviteAFriend}</Text>
+          <TouchableOpacity onPress={() => setDatePickerOpen(true)}>
+            <Text size="s" weight="l" color={colors.darkgrey}>
+              {datetime}
+            </Text>
+          </TouchableOpacity>
+          <DatePicker
+            modal
+            open={datePickerOpen}
+            minuteInterval={5}
+            date={moment(datetime, 'MMM Do, h:mm a').toDate()}
+            onConfirm={newDate => {
+              setDatePickerOpen(false);
+              handleEditDate(
+                moment(newDate, 'YYYY-MM-DD HH:mm:ssZ').format(
+                  'MMM Do, h:mm a',
+                ),
+              );
+            }}
+            onCancel={() => {
+              setDatePickerOpen(false);
+            }}
+          />
+        </View>
+        <View style={localStyles.memberContainer}>
+          {eventDetail
+            ? eventDetail.members.map((member: UserInfo) => (
+                <View
+                  key={member.id}
+                  style={[userStyles.container, userStyles.border]}>
+                  <View style={userStyles.profilePic}>
+                    <Image
+                      style={userStyles.pic}
+                      source={{uri: 'https://picsum.photos/200'}}
+                    />
+                  </View>
+                  <View style={userStyles.texts}>
+                    <Text
+                      size="s"
+                      numberOfLines={
+                        1
+                      }>{`${member.first_name} ${member.last_name}`}</Text>
+                    <Text
+                      size="xs"
+                      weight="l"
+                      color={colors.darkgrey}
+                      numberOfLines={1}>
+                      {'@' + member.username}
+                    </Text>
+                  </View>
+                </View>
+              ))
+            : null}
+          <TouchableOpacity
+            style={userStyles.container}
+            onPress={() => {
+              console.log('hi');
+              // TODO: Navigate to friends tab
+            }}>
+            <View style={userStyles.profilePic}>
+              <Image
+                style={[userStyles.pic, userStyles.add]}
+                source={icons.add}
+              />
+            </View>
+            <View style={userStyles.texts}>
+              <Text>{strings.event.inviteAFriend}</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+        <View style={localStyles.destinationsContainer}>
+          <View style={destinationStyles.header}>
+            <Text>{strings.event.destinations}:</Text>
           </View>
-        </TouchableOpacity>
-      </View>
+          {eventDetail ? (
+            <DraggableFlatList
+              style={destinationStyles.flatlist}
+              contentContainerStyle={destinationStyles.contentContainer}
+              data={eventDetail.destinations}
+              scrollEnabled={false}
+              keyExtractor={(item: Destination) => item.id.toString()}
+              onDragEnd={({data}) => {
+                setEventDetail({...eventDetail, destinations: data});
+                handleReorderDestinations(data);
+              }}
+              renderItem={({
+                item,
+                drag,
+                isActive,
+              }: {
+                item: Destination;
+                drag: () => void;
+                isActive: boolean;
+              }) => (
+                <>
+                  <View
+                    style={[
+                      destinationStyles.container,
+                      isActive ? styles.shadow : null,
+                    ]}>
+                    <TouchableOpacity
+                      delayLongPress={1}
+                      onLongPress={drag}
+                      disabled={isActive}>
+                      <Icon
+                        size="m"
+                        icon={icons.drag}
+                        color={colors.darkgrey}
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={destinationStyles.title}
+                      onPress={() =>
+                        prompt(
+                          strings.main.rename,
+                          strings.event.renamePrompt,
+                          [
+                            {text: 'Cancel', style: 'cancel'},
+                            {
+                              text: 'Save',
+                              onPress: (name: string) =>
+                                handleRenameDestination(name, item.id),
+                            },
+                          ],
+                          {
+                            type: 'plain-text',
+                            cancelable: false,
+                            defaultValue: item.name,
+                          },
+                        )
+                      }>
+                      <Text size="s">{item.name}</Text>
+                      <View style={destinationStyles.pencil}>
+                        <Icon
+                          size="xs"
+                          icon={icons.edit}
+                          color={colors.black}
+                        />
+                      </View>
+                    </TouchableOpacity>
+                    <Icon
+                      icon={icons.minus}
+                      color={colors.red}
+                      onPress={() =>
+                        Alert.alert(
+                          strings.event.deleteDestination,
+                          strings.event.deleteDestinationInfo,
+                          [
+                            {
+                              text: strings.main.cancel,
+                              style: 'cancel',
+                            },
+                            {
+                              text: strings.main.remove,
+                              onPress: () => {
+                                handleRemoveDestination(item.id);
+                              },
+                              style: 'destructive',
+                            },
+                          ],
+                        )
+                      }
+                    />
+                  </View>
+                  <Separator />
+                </>
+              )}
+            />
+          ) : null}
+          <TouchableOpacity
+            style={destinationStyles.addContainer}
+            onPress={() => {}}>
+            <Icon size="l" icon={icons.add} color={colors.accent} />
+            <View style={userStyles.texts}>
+              <Text size="s">{strings.event.addDestination}</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
     </View>
   );
 };
@@ -215,17 +381,33 @@ const localStyles = StyleSheet.create({
     justifyContent: 'center',
     marginVertical: s(10),
   },
+  titleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: s(10),
+  },
+  pencil: {
+    marginLeft: s(5),
+  },
   title: {
     fontSize: s(19),
     fontWeight: '700',
     fontFamily: 'Lato',
-    marginBottom: s(10),
   },
   memberContainer: {
     marginHorizontal: s(40),
     marginVertical: s(20),
     paddingHorizontal: s(15),
     paddingVertical: s(5),
+    borderWidth: 1,
+    borderRadius: s(20),
+    borderColor: colors.grey,
+  },
+  destinationsContainer: {
+    marginHorizontal: s(30),
+    paddingHorizontal: s(10),
+    marginVertical: s(20),
+    paddingBottom: s(10),
     borderWidth: 1,
     borderRadius: s(20),
     borderColor: colors.grey,
@@ -239,6 +421,8 @@ const userStyles = StyleSheet.create({
     paddingVertical: s(10),
   },
   profilePic: {
+    alignItems: 'center',
+    justifyContent: 'center',
     width: s(35),
     height: s(35),
     borderRadius: s(17.5),
@@ -254,11 +438,52 @@ const userStyles = StyleSheet.create({
     marginLeft: s(10),
   },
   add: {
+    width: '70%',
+    height: '70%',
     tintColor: colors.accent,
   },
   border: {
     borderBottomWidth: 0.5,
     borderColor: colors.lightgrey,
+  },
+});
+
+const destinationStyles = StyleSheet.create({
+  header: {
+    position: 'absolute',
+    left: s(20),
+    top: s(-10),
+    paddingHorizontal: s(5),
+    backgroundColor: colors.white,
+  },
+  flatlist: {
+    marginTop: s(10),
+  },
+  contentContainer: {
+    paddingBottom: s(10),
+  },
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: s(10),
+    paddingHorizontal: s(10),
+    backgroundColor: colors.white,
+    overflow: 'visible',
+  },
+  addContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: s(5),
+    paddingHorizontal: s(10),
+  },
+  title: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: s(10),
+  },
+  pencil: {
+    marginLeft: s(5),
   },
 });
 

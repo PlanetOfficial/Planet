@@ -99,6 +99,7 @@ const strings = {
     noBookmarksFoundDescription: 'Try bookmarking something',
   },
   event: {
+    destinations: 'Destinations',
     yourEvents: 'Your Events',
     untitled: 'Untitled Event',
     backConfirmation:
@@ -120,6 +121,8 @@ const strings = {
     leave: 'Leave',
     leaveEvent: 'Leave Event',
     leaveInfo: 'Are you sure you want to leave this event?',
+    deleteDestination: 'Remove Destination',
+    deleteDestinationInfo: 'Are you sure you want to remove this destination?',
   },
   roulette: {
     total: 'Total',

@@ -164,7 +164,6 @@ const Roulette = ({navigation, route}: {navigation: any; route: any}) => {
     Alert.alert(suggestion.poi.name, strings.roulette.rouletteSpinInfo, [
       {
         text: strings.main.cancel,
-        onPress: () => {},
         style: 'cancel',
       },
       {
