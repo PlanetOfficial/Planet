@@ -50,7 +50,7 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
   const [myVotes, setMyVotes] = useState<Map<number, number>>(new Map());
   const [bookmarks, setBookmarks] = useState<Poi[]>([]);
 
-  const [insertionDestination, setInsertionDestionation] =
+  const [insertionDestination, setInsertionDestination] =
     useState<Destination>();
 
   const loadData = useCallback(async () => {
@@ -353,7 +353,7 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
                       style={localStyles.addSuggestion}
                       disabled={displayingSuggestion}
                       onPress={() => {
-                        setInsertionDestionation(item);
+                        setInsertionDestination(item);
                         navigation.navigate('SuggestSearch');
                       }}>
                       <Icon icon={icons.add} size="xl" color={colors.accent} />
@@ -365,7 +365,7 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
                   style={[localStyles.addSuggestionBig, styles.shadow]}
                   disabled={displayingSuggestion}
                   onPress={() => {
-                    setInsertionDestionation(item);
+                    setInsertionDestination(item);
                     navigation.navigate('SuggestSearch');
                   }}>
                   <Text color={colors.accent} weight="b">

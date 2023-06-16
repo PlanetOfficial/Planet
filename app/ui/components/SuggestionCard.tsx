@@ -1,4 +1,4 @@
-import React, {useCallback, useRef, useState} from 'react';
+import React, {useCallback, useRef, useState, useEffect} from 'react';
 import {Alert, Animated, Easing, TouchableOpacity} from 'react-native';
 import {s} from 'react-native-size-matters';
 
@@ -67,7 +67,7 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
     }).start();
   }, [animation]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     onAnimation();
   }, [animateFlag, onAnimation]);
 
@@ -80,7 +80,7 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
     }).start();
   }, [animation]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     onShrinkAnimation();
   }, [resetFlag, onShrinkAnimation]);
 
