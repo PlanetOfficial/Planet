@@ -92,3 +92,16 @@ export const editDatetime = async (
 
   return response.ok;
 };
+
+export const leaveEvent = async (event_id: number): Promise<Boolean> => {
+  const authToken = await EncryptedStorage.getItem('auth_token');
+
+  const response = await fetch(
+    EventAPIURL + `/member?event_id=${event_id}&authtoken=${authToken}`,
+    {
+      method: 'DELETE',
+    },
+  );
+
+  return response.ok;
+};

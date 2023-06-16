@@ -116,6 +116,10 @@ const strings = {
       'Are you sure you want to mark this suggestion as the primary destination?',
     removeSuggestion: 'Remove Suggestion',
     removeSuggestionInfo: 'Are you sure you want to remove this suggestion?',
+    inviteAFriend: 'Invite a Friend',
+    leave: 'Leave',
+    leaveEvent: 'Leave Event',
+    leaveInfo: 'Are you sure you want to leave this event?',
   },
   roulette: {
     total: 'Total',

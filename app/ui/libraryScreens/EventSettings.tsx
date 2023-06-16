@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  Image,
 } from 'react-native';
 
 import icons from '../../constants/icons';
@@ -13,12 +14,18 @@ import styles from '../../constants/styles';
 
 import Text from '../components/Text';
 import Icon from '../components/Icon';
-import {Event} from '../../utils/types';
-import {editDatetime, editName, getEvent} from '../../utils/api/eventAPI';
+import {Event, UserInfo} from '../../utils/types';
+import {
+  editDatetime,
+  editName,
+  getEvent,
+  leaveEvent,
+} from '../../utils/api/eventAPI';
 import moment from 'moment';
 import DatePicker from 'react-native-date-picker';
 import colors from '../../constants/colors';
-import { s } from 'react-native-size-matters';
+import {s} from 'react-native-size-matters';
+import strings from '../../constants/strings';
 
 const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
   const date = new Date();
@@ -79,6 +86,16 @@ const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
     }
   };
 
+  const handleLeave = async () => {
+    const response = await leaveEvent(event.id);
+
+    if (response) {
+      navigation.navigate('Library');
+    } else {
+      Alert.alert('Error', 'Could not leave event, please try again.');
+    }
+  };
+
   return (
     <View style={styles.container}>
       <SafeAreaView>
@@ -88,6 +105,24 @@ const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
             icon={icons.back}
             onPress={() => navigation.goBack()}
           />
+          <TouchableOpacity
+            onPress={() => {
+              Alert.alert(strings.event.leaveEvent, strings.event.leaveInfo, [
+                {
+                  text: strings.main.cancel,
+                  style: 'cancel',
+                },
+                {
+                  text: strings.event.leave,
+                  onPress: handleLeave,
+                  style: 'destructive',
+                },
+              ]);
+            }}>
+            <Text size="m" color={colors.red}>
+              {strings.event.leave}
+            </Text>
+          </TouchableOpacity>
         </View>
       </SafeAreaView>
       <View style={localStyles.texts}>
@@ -103,7 +138,7 @@ const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
           }}
         />
         <TouchableOpacity onPress={() => setDatePickerOpen(true)}>
-          <Text size='s' weight="l" color={colors.darkgrey}>
+          <Text size="s" weight="l" color={colors.darkgrey}>
             {datetime}
           </Text>
         </TouchableOpacity>
@@ -123,6 +158,50 @@ const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
           }}
         />
       </View>
+
+      <View style={localStyles.memberContainer}>
+        {eventDetail
+          ? eventDetail.members.map((member: UserInfo) => (
+              <View style={[userStyles.container, userStyles.border]}>
+                <View style={userStyles.profilePic}>
+                  <Image
+                    style={userStyles.pic}
+                    source={{uri: 'https://picsum.photos/200'}}
+                  />
+                </View>
+                <View style={userStyles.texts}>
+                  <Text
+                    size="s"
+                    numberOfLines={
+                      1
+                    }>{`${member.first_name} ${member.last_name}`}</Text>
+                  <Text
+                    size="xs"
+                    weight="l"
+                    color={colors.darkgrey}
+                    numberOfLines={1}>
+                    {'@' + member.username}
+                  </Text>
+                </View>
+              </View>
+            ))
+          : null}
+        <TouchableOpacity
+          style={userStyles.container}
+          onPress={() => {
+            console.log('Invite a friend');
+          }}>
+          <View style={userStyles.profilePic}>
+            <Image
+              style={[userStyles.pic, userStyles.add]}
+              source={icons.add}
+            />
+          </View>
+          <View style={userStyles.texts}>
+            <Text>{strings.event.inviteAFriend}</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -138,6 +217,45 @@ const localStyles = StyleSheet.create({
     fontWeight: '700',
     fontFamily: 'Lato',
     marginBottom: s(10),
+  },
+  memberContainer: {
+    marginHorizontal: s(40),
+    marginVertical: s(20),
+    paddingHorizontal: s(15),
+    paddingVertical: s(5),
+    borderWidth: 1,
+    borderRadius: s(20),
+    borderColor: colors.grey,
+  },
+});
+
+const userStyles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: s(10),
+  },
+  profilePic: {
+    width: s(35),
+    height: s(35),
+    borderRadius: s(17.5),
+    overflow: 'hidden',
+  },
+  pic: {
+    width: '100%',
+    height: '100%',
+  },
+  texts: {
+    flex: 1,
+    justifyContent: 'center',
+    marginLeft: s(10),
+  },
+  add: {
+    tintColor: colors.accent,
+  },
+  border: {
+    borderBottomWidth: 0.5,
+    borderColor: colors.lightgrey,
   },
 });
 
