@@ -275,7 +275,6 @@ const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
           <TouchableOpacity
             style={userStyles.container}
             onPress={() => {
-              console.log('hi');
               // TODO: Navigate to friends tab
             }}>
             <View style={userStyles.profilePic}>
