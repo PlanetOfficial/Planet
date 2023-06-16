@@ -27,6 +27,7 @@ import EventSettings from '../libraryScreens/EventSettings';
 import Roulette from '../libraryScreens/Roulette';
 import SpinHistory from '../libraryScreens/SpinHistory';
 import SuggestSearch from '../libraryScreens/SuggestSearch';
+import AddSearch from '../libraryScreens/AddSearch';
 import Notifications from '../libraryScreens/Notifications';
 import Settings from '../profileScreens/Settings';
 import {Animated} from 'react-native';
@@ -59,6 +60,7 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {rouletteScreen()}
           {spinHistoryScreen()}
           {suggestSearchScreen()}
+          {addSearchScreen()}
           {notificationsScreen()}
           {loginStackScreen()}
           {signUpNameStackScreen()}
@@ -95,6 +97,7 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {rouletteScreen()}
           {spinHistoryScreen()}
           {suggestSearchScreen()}
+          {addSearchScreen()}
           {notificationsScreen()}
         </Stack.Navigator>
       </BottomSheetModalProvider>
@@ -279,6 +282,19 @@ const createSearchScreen = () => {
     <Stack.Screen
       name="CreateSearch"
       component={CreateSearch}
+      options={{
+        headerShown: false,
+        cardStyleInterpolator: verticalAnimation,
+      }}
+    />
+  );
+};
+
+const addSearchScreen = () => {
+  return (
+    <Stack.Screen
+      name="AddSearch"
+      component={AddSearch}
       options={{
         headerShown: false,
         cardStyleInterpolator: verticalAnimation,

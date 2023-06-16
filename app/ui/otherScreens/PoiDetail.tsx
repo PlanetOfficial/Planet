@@ -157,6 +157,10 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
                     navigation.navigate('Event', {
                       destination: destination,
                     });
+                  } else if (mode === 'add') {
+                    navigation.navigate('EventSettings', {
+                      destination: destination,
+                    });
                   }
                 },
                 color: colors.black,

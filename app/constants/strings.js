@@ -107,6 +107,7 @@ const strings = {
     addDestination: 'Add a Destination',
     moveUp: 'Move Up',
     moveDown: 'Move Down',
+    renameEvent: 'Enter a new name for this event:',
     renamePrompt: 'Enter a new name for this destination:',
     noEventsFound: 'No Events Found',
     noEventsFoundDescription:

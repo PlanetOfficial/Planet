@@ -3,7 +3,6 @@ import {
   View,
   SafeAreaView,
   Alert,
-  TextInput,
   TouchableOpacity,
   StyleSheet,
   Image,
@@ -33,6 +32,7 @@ import {Destination, Event, EventDetail, UserInfo} from '../../utils/types';
 import DraggableFlatList from 'react-native-draggable-flatlist';
 import Separator from '../components/Separator';
 import {
+  postDestination,
   removeDestination,
   renameDestination,
   reorderDestinations,
@@ -62,21 +62,39 @@ const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
     }
   }, [event.id]);
 
+  const addDestination = useCallback(async () => {
+    const destination = route.params?.destination;
+
+    if (destination) {
+      const response = await postDestination(event.id, destination.id);
+
+      if (response) {
+        loadData();
+      } else {
+        Alert.alert('Error', 'Could not add suggestion, please try again.');
+      }
+
+      navigation.setParams({destination: undefined});
+    }
+  }, [event.id, loadData, navigation, route.params?.destination]);
+
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       loadData();
+      addDestination();
     });
 
     return unsubscribe;
-  }, [navigation, loadData]);
+  }, [navigation, loadData, addDestination]);
 
-  const handleEditName = async () => {
-    const response = await editName(event.id, eventTitle);
+  const handleEditName = async (name: string) => {
+    const response = await editName(event.id, name);
 
     if (response && eventDetail) {
       const _eventDetail = {...eventDetail};
-      _eventDetail.name = eventTitle;
+      _eventDetail.name = name;
       setEventDetail(_eventDetail);
+      setEventTitle(name);
     } else {
       setEventTitle(event.name);
       Alert.alert('Error', 'Could not edit event name, please try again.');
@@ -177,22 +195,31 @@ const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
       </SafeAreaView>
       <ScrollView>
         <View style={localStyles.texts}>
-          <View style={localStyles.titleContainer}>
-            <TextInput
-              style={localStyles.title}
-              value={eventTitle}
-              autoCorrect={false}
-              onChangeText={(text: string) => setEventTitle(text)}
-              onEndEditing={async () => {
-                if (eventTitle !== event.name) {
-                  handleEditName();
-                }
-              }}
-            />
+          <TouchableOpacity
+            style={localStyles.titleContainer}
+            onPress={() =>
+              prompt(
+                strings.main.rename,
+                strings.event.renameEvent,
+                [
+                  {text: 'Cancel', style: 'cancel'},
+                  {
+                    text: 'Save',
+                    onPress: (name: string) => handleEditName(name),
+                  },
+                ],
+                {
+                  type: 'plain-text',
+                  cancelable: false,
+                  defaultValue: eventTitle,
+                },
+              )
+            }>
+            <Text size="l">{eventTitle}</Text>
             <View style={localStyles.pencil}>
               <Icon size="s" icon={icons.edit} color={colors.black} />
             </View>
-          </View>
+          </TouchableOpacity>
           <TouchableOpacity onPress={() => setDatePickerOpen(true)}>
             <Text size="s" weight="l" color={colors.darkgrey}>
               {datetime}
@@ -363,7 +390,7 @@ const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
           ) : null}
           <TouchableOpacity
             style={destinationStyles.addContainer}
-            onPress={() => {}}>
+            onPress={() => navigation.navigate('AddSearch')}>
             <Icon size="l" icon={icons.add} color={colors.accent} />
             <View style={userStyles.texts}>
               <Text size="s">{strings.event.addDestination}</Text>
