@@ -162,7 +162,7 @@ const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
       <View style={localStyles.memberContainer}>
         {eventDetail
           ? eventDetail.members.map((member: UserInfo) => (
-              <View style={[userStyles.container, userStyles.border]}>
+              <View key={member.id} style={[userStyles.container, userStyles.border]}>
                 <View style={userStyles.profilePic}>
                   <Image
                     style={userStyles.pic}
@@ -189,7 +189,8 @@ const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
         <TouchableOpacity
           style={userStyles.container}
           onPress={() => {
-            console.log('Invite a friend');
+            console.log("hi")
+            // TODO: Navigate to friends tab
           }}>
           <View style={userStyles.profilePic}>
             <Image
