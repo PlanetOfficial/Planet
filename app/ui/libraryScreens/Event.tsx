@@ -26,13 +26,7 @@ import PoiCardXS from '../components/PoiCardXS';
 import PoiCardXL from '../components/PoiCardXL';
 import Separator from '../components/Separator';
 
-import {
-  Destination,
-  Event,
-  EventDetail,
-  Poi,
-  Suggestion,
-} from '../../utils/types';
+import {Destination, EventDetail, Poi, Suggestion} from '../../utils/types';
 import {getEvent} from '../../utils/api/eventAPI';
 import {handleBookmark} from '../../utils/Misc';
 import {postSuggestion, vote} from '../../utils/api/suggestionAPI';
@@ -41,7 +35,7 @@ import SuggestionCard from '../components/SuggestionCard';
 
 const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
   const date = new Date();
-  const [event] = useState<Event>(route.params.event);
+  const event = route.params.event;
 
   const [eventDetail, setEventDetail] = useState<EventDetail>();
   const [loading, setLoading] = useState<boolean>(true);
@@ -233,9 +227,9 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
             }}
           />
           <View style={localStyles.texts}>
-            <Text>{event.name}</Text>
+            <Text>{eventDetail ? eventDetail.name : event.name}</Text>
             <Text size="xs" weight="l" color={colors.accent}>
-              {moment(event.datetime)
+              {moment(eventDetail ? eventDetail.datetime : event.datetime)
                 .add(date.getTimezoneOffset(), 'minutes')
                 .format('MMM Do, h:mm a')}
             </Text>
@@ -245,9 +239,7 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
             disabled={displayingSuggestion}
             button={true}
             padding={-2}
-            onPress={() => {
-              // TODO: Navigate to details tab
-            }}
+            onPress={() => navigation.navigate('EventSettings', {event})}
           />
         </View>
       </SafeAreaView>

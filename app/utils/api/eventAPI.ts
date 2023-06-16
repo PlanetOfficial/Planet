@@ -58,3 +58,37 @@ export const postEvent = async (
 
   return response.ok;
 };
+
+export const editName = async (
+  event_id: number,
+  name: string,
+): Promise<Boolean> => {
+  const authToken = await EncryptedStorage.getItem('auth_token');
+
+  const response = await fetch(
+    EventAPIURL +
+      `/event/name?event_id=${event_id}&name=${name}&authtoken=${authToken}`,
+    {
+      method: 'POST',
+    },
+  );
+
+  return response.ok;
+};
+
+export const editDatetime = async (
+  event_id: number,
+  datetime: string,
+): Promise<Boolean> => {
+  const authToken = await EncryptedStorage.getItem('auth_token');
+
+  const response = await fetch(
+    EventAPIURL +
+      `/event/datetime?event_id=${event_id}&datetime=${datetime}&authtoken=${authToken}`,
+    {
+      method: 'POST',
+    },
+  );
+
+  return response.ok;
+};

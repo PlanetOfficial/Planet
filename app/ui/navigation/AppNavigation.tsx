@@ -23,6 +23,7 @@ import PoiDetail from '../otherScreens/PoiDetail';
 import Friends from '../otherScreens/Friends';
 import Explore from '../homeScreens/Explore';
 import Event from '../libraryScreens/Event';
+import EventSettings from '../libraryScreens/EventSettings';
 import Roulette from '../libraryScreens/Roulette';
 import SpinHistory from '../libraryScreens/SpinHistory';
 import SuggestSearch from '../libraryScreens/SuggestSearch';
@@ -54,6 +55,7 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {createScreen()}
           {createSearchScreen()}
           {eventScreen()}
+          {eventSettingsScreen()}
           {rouletteScreen()}
           {spinHistoryScreen()}
           {suggestSearchScreen()}
@@ -89,6 +91,7 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {createScreen()}
           {createSearchScreen()}
           {eventScreen()}
+          {eventSettingsScreen()}
           {rouletteScreen()}
           {spinHistoryScreen()}
           {suggestSearchScreen()}
@@ -289,6 +292,18 @@ const eventScreen = () => {
     <Stack.Screen
       name="Event"
       component={Event}
+      options={{
+        headerShown: false,
+      }}
+    />
+  );
+};
+
+const eventSettingsScreen = () => {
+  return (
+    <Stack.Screen
+      name="EventSettings"
+      component={EventSettings}
       options={{
         headerShown: false,
       }}
