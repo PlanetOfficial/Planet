@@ -14,7 +14,7 @@ interface Props {
   event: Event;
 }
 
-const PoiRow: React.FC<Props> = ({event}) => {
+const EventRow: React.FC<Props> = ({event}) => {
   const date = new Date();
 
   return (
@@ -22,8 +22,8 @@ const PoiRow: React.FC<Props> = ({event}) => {
       <View style={styles.imageContainer}>
         <Image
           style={styles.image}
-          source={event.photo ? {uri: event.photo} : icons.close} // TODO: replace with default image
-          resizeMode={event.photo ? 'cover' : 'contain'}
+          source={event.photo ? {uri: event.photo} : icons.placeholder}
+          resizeMode={'cover'}
         />
       </View>
       <View style={styles.infoContainer}>
@@ -68,4 +68,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PoiRow;
+export default EventRow;

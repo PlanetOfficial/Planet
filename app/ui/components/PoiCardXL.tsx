@@ -38,7 +38,10 @@ const PoiCardXL: React.FC<Props> = ({
   return (
     <Animated.View
       style={[cardStyles.container, styles.shadow, {width: width}]}>
-      <Image style={cardStyles.image} source={{uri: poi.photo}} />
+      <Image
+        style={cardStyles.image}
+        source={poi.photo ? {uri: poi.photo} : icons.placeholder}
+      />
       <View style={cardStyles.header}>
         <View style={cardStyles.infoContainer}>
           <Text numberOfLines={1}>{poi.name}</Text>

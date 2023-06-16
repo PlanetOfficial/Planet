@@ -72,9 +72,9 @@ const PoiRow: React.FC<Props> = ({
               ? {uri: poi.photo}
               : category
               ? {uri: category.icon.url}
-              : icons.close
-          } // TODO: replace with default image
-          resizeMode={poi.photo ? 'cover' : 'contain'}
+              : icons.placeholder
+          }
+          resizeMode={poi.photo || !category ? 'cover' : 'contain'}
         />
       </View>
       <View style={styles.infoContainer}>
