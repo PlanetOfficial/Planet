@@ -221,7 +221,7 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
                   {/* TODO: Change accordingly */}
                   <Text color={colors.red}>Closed</Text>
                   <Text size="xs" weight="l" color={colors.darkgrey}>
-                    {destinationDetails?.hours[date.getDay() - 1].split(' ')[1]}
+                    {destinationDetails?.hours[(date.getDay() + 6) % 7].split(' ')[1]}
                   </Text>
                 </>
               ) : (
@@ -281,11 +281,11 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
                 <Text size="s">{strings.poi.hours}:</Text>
                 <View style={infoStyles.info}>
                   <Text size="s" weight="l">
-                    {destinationDetails?.hours[date.getDay() - 1].split(
+                    {destinationDetails?.hours[(date.getDay() + 6) % 7].split(
                       ' ',
                     )[1] +
                       ' (' +
-                      destinationDetails?.hours[date.getDay() - 1]
+                      destinationDetails?.hours[(date.getDay() + 6) % 7]
                         ?.split(' ')[0]
                         .slice(0, -1) +
                       ')'}
