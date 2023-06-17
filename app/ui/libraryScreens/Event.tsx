@@ -205,7 +205,7 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
     if (_eventDetail) {
       setEventDetail(_eventDetail);
     } else {
-      Alert.alert(strings.error.error, strings.error.refreshEvent);    
+      Alert.alert(strings.error.error, strings.error.refreshEvent);
     }
   };
 

@@ -9,6 +9,7 @@ import {
   ImageBackground,
   Animated,
   TouchableOpacity,
+  Image,
 } from 'react-native';
 import {s, vs} from 'react-native-size-matters';
 import MapView, {Marker} from 'react-native-maps';
@@ -59,7 +60,6 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
         setDestinationDetails(result.poiDetail);
       } else {
         Alert.alert(strings.error.error, strings.error.loadDestinationDetails);
-
       }
     } else {
       const details: PoiDetail | null = await getPoi(
@@ -71,7 +71,6 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
         setDestinationDetails(details);
       } else {
         Alert.alert(strings.error.error, strings.error.loadDestinationDetails);
-
       }
     }
   }, [destination.place_id, destination.supplier, route.params?.place_id]);
@@ -184,12 +183,12 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
       </Animated.View>
 
       <Animated.ScrollView
-        contentContainerStyle={[styles.scrollView, {minHeight: vs(800)}]}
+        contentContainerStyle={[localStyles.scrollView, {minHeight: vs(800)}]}
         onScroll={Animated.event(
           [{nativeEvent: {contentOffset: {y: scrollPosition}}}],
           {useNativeDriver: false},
         )}
-        bounces={false}
+        showsVerticalScrollIndicator={false}
         contentInsetAdjustmentBehavior="automatic">
         <View style={overViewStyles.container}>
           <View style={overViewStyles.top}>
@@ -221,7 +220,11 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
                   {/* TODO: Change accordingly */}
                   <Text color={colors.red}>Closed</Text>
                   <Text size="xs" weight="l" color={colors.darkgrey}>
-                    {destinationDetails?.hours[(date.getDay() + 6) % 7].split(' ')[1]}
+                    {
+                      destinationDetails?.hours[(date.getDay() + 6) % 7].split(
+                        ' ',
+                      )[1]
+                    }
                   </Text>
                 </>
               ) : (
@@ -261,7 +264,9 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
           </MapView>
         ) : null}
         <View style={infoStyles.container}>
-          <Text>{strings.poi.info}</Text>
+          <View style={localStyles.title}>
+            <Text>{strings.poi.info}</Text>
+          </View>
           {destinationDetails?.address !== '' ? (
             <View style={infoStyles.row}>
               <View style={infoStyles.texts}>
@@ -354,6 +359,32 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
             </View>
           ) : null}
         </View>
+        <View style={reviewStyles.container}>
+          <View style={localStyles.title}>
+            <Text>{strings.poi.reviews}</Text>
+          </View>
+          {destinationDetails?.reviews.map((review: Review, index: number) => (
+            <View key={index} style={reviewStyles.row}>
+              <View style={reviewStyles.reviewerContainer}>
+                <View style={reviewStyles.reviewerContainer}>
+                  <Image
+                    style={reviewStyles.reviewer}
+                    source={{uri: review.profile_photo_url}}
+                  />
+                </View>
+                <View style={reviewStyles.texts}>
+                  <Text size="s">{review.author_name}</Text>
+                  <Text size="s" weight="l" color={colors.darkgrey}>
+                    {`Rating: ${review.rating}/5・${review.relative_time_description}`}
+                  </Text>
+                </View>
+              </View>
+              <Text size="s" weight="l">
+                {review.text}
+              </Text>
+            </View>
+          ))}
+        </View>
       </Animated.ScrollView>
 
       <TouchableOpacity
@@ -371,7 +402,8 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
             navigation.navigate('EventSettings', {
               destination: destination,
             });
-          } else { // mode is none, create a fresh event with this destination
+          } else {
+            // mode is none, create a fresh event with this destination
             navigation.navigate('Create', {
               destination: destination,
             });
@@ -399,6 +431,12 @@ const localStyles = StyleSheet.create({
   },
   map: {
     width: '100%',
+  },
+  title: {
+    marginBottom: s(5),
+  },
+  scrollView: {
+    paddingBottom: s(50),
   },
 });
 
@@ -476,7 +514,8 @@ const overViewStyles = StyleSheet.create({
 
 const infoStyles = StyleSheet.create({
   container: {
-    margin: s(20),
+    marginTop: s(20),
+    marginHorizontal: s(20),
   },
   row: {
     flexDirection: 'row',
@@ -493,6 +532,35 @@ const infoStyles = StyleSheet.create({
   info: {
     marginTop: s(5),
     marginLeft: s(5),
+  },
+});
+
+const reviewStyles = StyleSheet.create({
+  container: {
+    marginTop: s(20),
+    marginHorizontal: s(20),
+  },
+  row: {
+    borderTopWidth: 0.5,
+    borderColor: colors.grey,
+    padding: s(10),
+  },
+  reviewerContainer: {
+    flexDirection: 'row',
+    marginBottom: s(5),
+  },
+  reviewer: {
+    width: s(40),
+    height: s(40),
+  },
+  icon: {
+    width: '100%',
+    height: '100%',
+  },
+  texts: {
+    marginLeft: s(10),
+    height: s(40),
+    justifyContent: 'space-evenly',
   },
 });
 

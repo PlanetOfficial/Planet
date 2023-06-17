@@ -100,10 +100,7 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
       onSuggestionClose();
       loadData();
     } else {
-      Alert.alert(
-        strings.error.error,
-        strings.error.markSuggestionAsSelected
-      );
+      Alert.alert(strings.error.error, strings.error.markSuggestionAsSelected);
     }
   };
 
@@ -123,9 +120,7 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
       onSuggestionClose();
       loadData();
     } else {
-      Alert.alert(
-        strings.error.error,
-        strings.error.removeSuggestion      );
+      Alert.alert(strings.error.error, strings.error.removeSuggestion);
     }
   };
 

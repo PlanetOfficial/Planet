@@ -46,7 +46,8 @@ const Roulette = ({navigation, route}: {navigation: any; route: any}) => {
     if (_bookmarks) {
       setBookmarks(JSON.parse(_bookmarks));
     } else {
-      Alert.alert(strings.error.error, strings.error.loadBookmarks);    }
+      Alert.alert(strings.error.error, strings.error.loadBookmarks);
+    }
   };
 
   useEffect(() => {
@@ -153,7 +154,7 @@ const Roulette = ({navigation, route}: {navigation: any; route: any}) => {
       const _destination = {...destination};
       _destination.spin_history.unshift(spin);
       setDestination(_destination);
-    } else {      
+    } else {
       Alert.alert(strings.error.error, strings.error.recordRouletteSpin);
     }
 
@@ -174,7 +175,10 @@ const Roulette = ({navigation, route}: {navigation: any; route: any}) => {
           if (response) {
             navigation.goBack();
           } else {
-            Alert.alert(strings.error.error, strings.error.makeSuggestionPrimary);
+            Alert.alert(
+              strings.error.error,
+              strings.error.makeSuggestionPrimary,
+            );
           }
         },
       },
