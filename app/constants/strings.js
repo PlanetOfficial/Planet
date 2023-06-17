@@ -67,7 +67,8 @@ const strings = {
     hours: 'Hours',
     phone: 'Phone',
     website: 'Website',
-
+    noPrice: 'No Price',
+    noHours: 'No Hours',
     attributes: 'Attributes',
   },
   search: {

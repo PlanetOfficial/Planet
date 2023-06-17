@@ -8,8 +8,9 @@ import {
   Alert,
   ImageBackground,
   Animated,
+  TouchableOpacity,
 } from 'react-native';
-import {s} from 'react-native-size-matters';
+import {s, vs} from 'react-native-size-matters';
 import {showLocation} from 'react-native-map-link';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
@@ -114,6 +115,16 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
     }
   };
 
+  const getButtonString = () => {
+    if (mode === 'create' || mode === 'add') {
+      return 'Add';
+    } else if (mode === 'suggest') {
+      return 'Suggest';
+    } else {
+      return 'Create';
+    }
+  };
+
   const insets = useSafeAreaInsets();
   const scrollPosition = useRef(new Animated.Value(0)).current;
   const headerHeight = scrollPosition.interpolate({
@@ -174,11 +185,12 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
       </Animated.View>
 
       <Animated.ScrollView
-        contentContainerStyle={styles.scrollView}
+        contentContainerStyle={[styles.scrollView, {minHeight: vs(800)}]}
         onScroll={Animated.event(
           [{nativeEvent: {contentOffset: {y: scrollPosition}}}],
           {useNativeDriver: false},
         )}
+        bounces={false}
         contentInsetAdjustmentBehavior="automatic">
         <View style={overViewStyles.container}>
           <View style={overViewStyles.top}>
@@ -188,31 +200,35 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
                 {`(${destination?.rating_count} ${strings.poi.reviews})`}
               </Text>
             </View>
-            {destination?.price ? (
-              <>
-                <View style={overViewStyles.separator} />
-                <View style={overViewStyles.price}>
+            <View style={overViewStyles.separator} />
+            <View style={overViewStyles.price}>
+              {destination?.price ? (
+                <>
                   <Text size="m" weight="b" color={colors.accent}>
                     {'$'.repeat(destination?.price)}
                   </Text>
                   <Text size="m" weight="b" color={colors.grey}>
                     {'$'.repeat(4 - destination?.price)}
                   </Text>
-                </View>
-              </>
-            ) : null}
-            {destinationDetails?.hours.length === 7 ? (
-              <>
-                <View style={overViewStyles.separator} />
-                <View style={overViewStyles.hours}>
+                </>
+              ) : (
+                <Text color={colors.grey}>{strings.poi.noPrice}</Text>
+              )}
+            </View>
+            <View style={overViewStyles.separator} />
+            <View style={overViewStyles.hours}>
+              {destinationDetails?.hours.length === 7 ? (
+                <>
                   {/* TODO: Change accordingly */}
                   <Text color={colors.red}>Closed</Text>
                   <Text size="xs" weight="l" color={colors.darkgrey}>
                     {destinationDetails?.hours[date.getDay() - 1].split(' ')[1]}
                   </Text>
-                </View>
-              </>
-            ) : null}
+                </>
+              ) : (
+                <Text color={colors.grey}>{strings.poi.noHours}</Text>
+              )}
+            </View>
           </View>
           {destinationDetails?.description ? (
             <View style={overViewStyles.description}>
@@ -224,10 +240,7 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
         </View>
         {destination.latitude && destination.longitude ? (
           <MapView
-            style={[
-              overViewStyles.map,
-              {height: mapExpanded ? s(360) : s(180)},
-            ]}
+            style={[localStyles.map, {height: mapExpanded ? s(360) : s(180)}]}
             userInterfaceStyle={'light'}
             initialRegion={{
               latitude: destination.latitude,
@@ -325,11 +338,66 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
               />
             </View>
           ) : null}
+          {destinationDetails && destinationDetails.attributes.length > 0 ? (
+            <View style={infoStyles.row}>
+              <View style={infoStyles.texts}>
+                <Text size="s">{strings.poi.attributes}:</Text>
+                <View style={infoStyles.info}>
+                  {destinationDetails.attributes.map(
+                    (attribute: string, index: number) => (
+                      <Text key={index} size="s" weight="l">
+                        {'・' + attribute}
+                      </Text>
+                    ),
+                  )}
+                </View>
+              </View>
+            </View>
+          ) : null}
         </View>
       </Animated.ScrollView>
+
+      <TouchableOpacity
+        style={[localStyles.button, styles.shadow]}
+        onPress={() => {
+          if (mode === 'create') {
+            navigation.navigate('Create', {
+              destination: destination,
+            });
+          } else if (mode === 'suggest') {
+            navigation.navigate('Event', {
+              destination: destination,
+            });
+          } else if (mode === 'add') {
+            navigation.navigate('EventSettings', {
+              destination: destination,
+            });
+          }
+        }}>
+        <Text size="m" color={colors.white}>
+          {getButtonString()}
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 };
+
+const localStyles = StyleSheet.create({
+  button: {
+    position: 'absolute',
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    bottom: s(40),
+    width: s(75),
+    height: s(40),
+    borderRadius: s(10),
+    backgroundColor: colors.accent,
+  },
+  map: {
+    width: '100%',
+  },
+});
 
 const headerStyles = StyleSheet.create({
   image: {
@@ -394,15 +462,12 @@ const overViewStyles = StyleSheet.create({
   },
   hours: {
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'space-evenly',
   },
   price: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  map: {
-    width: '100%',
   },
 });
 
@@ -426,65 +491,5 @@ const infoStyles = StyleSheet.create({
     marginLeft: s(5),
   },
 });
-
-{
-  /* <OptionMenu
-options={[
-  {
-    name: strings.poi.createEvent,
-    onPress: () => {
-      navigation.navigate('MapSelection', {
-        destination: destination,
-      });
-    },
-    color: colors.accent,
-  },
-  {
-    name: bookmarked
-      ? strings.poi.unbookmark
-      : strings.poi.bookmark,
-    onPress: () => {},
-    color: colors.accent,
-  },
-  {
-    name: strings.main.share,
-    onPress: () => {
-      Alert.alert('Share', 'Coming Soon');
-    },
-    color: colors.black,
-  },
-  {
-    name: strings.poi.openMap,
-    onPress: handleMapPress,
-    color: colors.black,
-  },
-  {
-    name: strings.poi.eventUrl,
-    onPress: handleLinkPress,
-    color: colors.black,
-  },
-  {
-    name: 'add',
-    onPress: () => {
-      if (mode === 'create') {
-        navigation.navigate('Create', {
-          destination: destination,
-        });
-      } else if (mode === 'suggest') {
-        navigation.navigate('Event', {
-          destination: destination,
-        });
-      } else if (mode === 'add') {
-        navigation.navigate('EventSettings', {
-          destination: destination,
-        });
-      }
-    },
-    color: colors.black,
-    disabled: mode === 'none',
-  },
-]}
-/> */
-}
 
 export default PoiDetailPage;
