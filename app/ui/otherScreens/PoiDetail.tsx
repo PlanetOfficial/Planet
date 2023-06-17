@@ -10,6 +10,7 @@ import {
   Animated,
   TouchableOpacity,
   Image,
+  LayoutAnimation,
 } from 'react-native';
 import {s, vs} from 'react-native-size-matters';
 import MapView, {Marker} from 'react-native-maps';
@@ -42,6 +43,7 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
   const [mode] = useState<string>(route.params.mode);
 
   const [mapExpanded, setMapExpanded] = useState<boolean>(false);
+  const [hoursExpanded, setHoursExpanded] = useState<boolean>(false);
 
   const initializeBookmarks = useCallback(async () => {
     const _bookmarks = await AsyncStorage.getItem('bookmarks');
@@ -123,8 +125,8 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
   const insets = useSafeAreaInsets();
   const scrollPosition = useRef(new Animated.Value(0)).current;
   const headerHeight = scrollPosition.interpolate({
-    inputRange: [s(40), s(170)],
-    outputRange: [insets.top + s(170), insets.top + s(40)],
+    inputRange: [s(35), s(170)],
+    outputRange: [insets.top + s(170), insets.top + s(35)],
     extrapolate: 'clamp',
   });
   const topTitleOpacity = scrollPosition.interpolate({
@@ -139,7 +141,42 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
   });
 
   // TODO: photo viewer somewhere
-  // TODO: map expand animation
+
+  const convertStringTimeToDate = (timeString: string) => {
+    const [time, period] = timeString.split(' ');
+    const [hours, minutes] = time.split(':');
+
+    if (hours && minutes && period) {
+      let hour = parseInt(hours, 10);
+      const minute = parseInt(minutes, 10);
+
+      if (period === 'PM' && hour !== 12) {
+        console.log('PM');
+        hour += 12;
+      } else if (period === 'AM' && hour === 12) {
+        hour = 0;
+      }
+
+      const dateWithTimeString = new Date(
+        date.getFullYear(),
+        date.getMonth(),
+        date.getDate(),
+        hour,
+        minute,
+      );
+      return dateWithTimeString;
+    }
+  };
+
+  const isOpen = (operatingHours: string[]) => {
+    const [_, hours] = operatingHours[(date.getDay() + 6) % 7].split(': ');
+    const [start, end] = hours.split(' – ');
+
+    const startTime = convertStringTimeToDate(start);
+    const endTime = convertStringTimeToDate(end);
+
+    return startTime && endTime && date >= startTime && date <= endTime;
+  };
 
   return (
     <View style={styles.container}>
@@ -154,7 +191,10 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
             <View style={headerStyles.row}>
               <Icon
                 icon={icons.back}
-                onPress={navigation.goBack}
+                onPress={() => {
+                  StatusBar.setBarStyle('dark-content', true);
+                  navigation.goBack();
+                }}
                 color={colors.white}
               />
               <Animated.Text
@@ -217,8 +257,12 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
             <View style={overViewStyles.hours}>
               {destinationDetails?.hours.length === 7 ? (
                 <>
-                  {/* TODO: Change accordingly */}
-                  <Text color={colors.red}>Closed</Text>
+                  {isOpen(destinationDetails.hours) ? (
+                    <Text color={colors.green}>Open</Text>
+                  ) : (
+                    <Text color={colors.red}>Closed</Text>
+                  )}
+
                   <Text size="xs" weight="l" color={colors.darkgrey}>
                     {
                       destinationDetails?.hours[(date.getDay() + 6) % 7].split(
@@ -242,6 +286,12 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
         </View>
         {destination.latitude && destination.longitude ? (
           <MapView
+            onPress={() => {
+              LayoutAnimation.configureNext(
+                LayoutAnimation.Presets.easeInEaseOut,
+              );
+              setMapExpanded(!mapExpanded);
+            }}
             style={[localStyles.map, {height: mapExpanded ? s(360) : s(180)}]}
             userInterfaceStyle={'light'}
             initialRegion={{
@@ -256,17 +306,62 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
                 longitude: destination.longitude,
               }}
             />
-            <Icon
-              icon={mapExpanded ? icons.shrink : icons.expand}
-              button={true}
-              onPress={() => setMapExpanded(!mapExpanded)}
-            />
           </MapView>
         ) : null}
         <View style={infoStyles.container}>
           <View style={localStyles.title}>
             <Text>{strings.poi.info}</Text>
           </View>
+          {destinationDetails?.hours.length === 7 ? (
+            <View style={infoStyles.row}>
+              <View style={infoStyles.texts}>
+                <Text size="s">{strings.poi.hours}:</Text>
+                <View style={infoStyles.info}>
+                  {hoursExpanded ? (
+                    destinationDetails?.hours.map(
+                      (hour: string, index: number) => (
+                        <Text
+                          key={index}
+                          size="s"
+                          weight={
+                            index === (date.getDay() + 6) % 7 ? 'r' : 'l'
+                          }>
+                          {hour.split(' ')[1] +
+                            ' (' +
+                            hour?.split(' ')[0].slice(0, -1) +
+                            ')'}
+                        </Text>
+                      ),
+                    )
+                  ) : (
+                    <Text size="s" weight="l">
+                      {destinationDetails?.hours[(date.getDay() + 6) % 7].split(
+                        ' ',
+                      )[1] +
+                        ' (' +
+                        destinationDetails?.hours[(date.getDay() + 6) % 7]
+                          ?.split(' ')[0]
+                          .slice(0, -1) +
+                        ')'}
+                    </Text>
+                  )}
+                </View>
+              </View>
+              <View
+                style={[infoStyles.drop, hoursExpanded ? styles.flip : null]}>
+                <Icon
+                  size="s"
+                  icon={icons.drop}
+                  onPress={() => {
+                    LayoutAnimation.configureNext(
+                      LayoutAnimation.Presets.easeInEaseOut,
+                    );
+                    setHoursExpanded(!hoursExpanded);
+                  }}
+                />
+              </View>
+            </View>
+          ) : null}
           {destinationDetails?.address !== '' ? (
             <View style={infoStyles.row}>
               <View style={infoStyles.texts}>
@@ -278,32 +373,6 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
                 </View>
               </View>
               <Icon icon={icons.map} button={true} onPress={handleMapPress} />
-            </View>
-          ) : null}
-          {destinationDetails?.hours.length === 7 ? (
-            <View style={infoStyles.row}>
-              <View style={infoStyles.texts}>
-                <Text size="s">{strings.poi.hours}:</Text>
-                <View style={infoStyles.info}>
-                  <Text size="s" weight="l">
-                    {destinationDetails?.hours[(date.getDay() + 6) % 7].split(
-                      ' ',
-                    )[1] +
-                      ' (' +
-                      destinationDetails?.hours[(date.getDay() + 6) % 7]
-                        ?.split(' ')[0]
-                        .slice(0, -1) +
-                      ')'}
-                  </Text>
-                </View>
-              </View>
-              <Icon
-                icon={icons.clock}
-                button={true}
-                onPress={() => {
-                  // TODO: Open hours
-                }}
-              />
             </View>
           ) : null}
           {destinationDetails?.phone !== '' ? (
@@ -532,6 +601,9 @@ const infoStyles = StyleSheet.create({
   info: {
     marginTop: s(5),
     marginLeft: s(5),
+  },
+  drop: {
+    marginRight: s(10),
   },
 });
 

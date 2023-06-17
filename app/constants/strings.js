@@ -70,6 +70,8 @@ const strings = {
     noPrice: 'No Price',
     noHours: 'No Hours',
     attributes: 'Attributes',
+    open: 'Open',
+    closed: 'Closed',
   },
   search: {
     search: 'Search',

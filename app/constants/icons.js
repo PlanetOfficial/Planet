@@ -12,7 +12,6 @@ const icons = {
   drag: require('../assets/icons/drag.png'),
   drop: require('../assets/icons/drop.png'),
   edit: require('../assets/icons/edit.png'),
-  expand: require('../assets/icons/expand.png'),
   friends: require('../assets/icons/friends.png'),
   heart: require('../assets/icons/heart.png'),
   hearted: require('../assets/icons/hearted.png'),
@@ -30,7 +29,6 @@ const icons = {
   search: require('../assets/tabIcons/search-2.png'),
   selected: require('../assets/icons/selected.png'),
   settings: require('../assets/icons/settings.png'),
-  shrink: require('../assets/icons/shrink.png'),
   unchecked: require('../assets/icons/unchecked.png'),
   unselected: require('../assets/icons/unselected.png'),
 };
