@@ -34,8 +34,10 @@ import {postEvent} from '../../utils/api/eventAPI';
 
 const Create = ({navigation, route}: {navigation: any; route: any}) => {
   const [eventTitle, setEventTitle] = React.useState(strings.event.untitled);
+  const d = new Date();
+  const c = 1000 * 60 * 5; // 5 minutes
   const [date, setDate] = useState<string>(
-    moment(new Date()).format('MMM Do, h:mm a'),
+    moment(new Date(Math.ceil(d.getTime() / c) * c)).format('MMM Do, h:mm a'),
   );
   const [datePickerOpen, setDatePickerOpen] = useState<boolean>(false);
 

@@ -26,7 +26,13 @@ import PoiCardXS from '../components/PoiCardXS';
 import PoiCardXL from '../components/PoiCardXL';
 import Separator from '../components/Separator';
 
-import {Destination, Event, EventDetail, Poi, Suggestion} from '../../utils/types';
+import {
+  Destination,
+  Event,
+  EventDetail,
+  Poi,
+  Suggestion,
+} from '../../utils/types';
 import {getEvent} from '../../utils/api/eventAPI';
 import {handleBookmark} from '../../utils/Misc';
 import {postSuggestion, vote} from '../../utils/api/suggestionAPI';

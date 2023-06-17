@@ -60,17 +60,14 @@ const strings = {
     enjoy: 'Enjoy!',
   },
   poi: {
-    createEvent: 'Create an Event',
-    unbookmark: 'Unbookmark',
-    bookmark: 'Bookmark',
-    openMap: 'Open map',
-    eventUrl: 'Website',
+    reviews: 'reviews',
     description: 'Description',
+    info: 'Info',
     address: 'Address',
     hours: 'Hours',
     phone: 'Phone',
-    url: 'URL',
     website: 'Website',
+
     attributes: 'Attributes',
   },
   search: {

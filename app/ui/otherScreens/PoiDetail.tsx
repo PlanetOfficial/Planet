@@ -1,70 +1,92 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
   View,
   StyleSheet,
   SafeAreaView,
-  TouchableOpacity,
-  Image,
+  StatusBar,
   Linking,
   Alert,
+  ImageBackground,
+  Animated,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
-import {ScrollView} from 'react-native-gesture-handler';
 import {showLocation} from 'react-native-map-link';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
-import strings from '../../constants/strings';
-import icons from '../../constants/icons';
 import colors from '../../constants/colors';
+import icons from '../../constants/icons';
+import strings from '../../constants/strings';
+import styles from '../../constants/styles';
 
 import Icon from '../components/Icon';
 import Text from '../components/Text';
-import OptionMenu from '../components/OptionMenu';
 
 import {Poi, PoiDetail, Review} from '../../utils/types';
 import {getPoi, postPoi} from '../../utils/api/poiAPI';
+import MapView, {Marker} from 'react-native-maps';
+import numbers from '../../constants/numbers';
+import {handleBookmark} from '../../utils/Misc';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
+  StatusBar.setBarStyle('light-content', true);
+  const date = new Date();
+
   const [destination, setDestination] = useState<Poi>(route.params.poi);
   const [destinationDetails, setDestinationDetails] = useState<PoiDetail>();
-  const [bookmarked, setBookmarked] = useState<boolean>(
-    route?.params?.bookmarked,
-  );
+
+  const [bookmarks, setBookmarks] = useState<Poi[]>([]);
 
   const [mode] = useState<string>(route.params.mode);
 
-  useEffect(() => {
-    const initializeDestinationData = async () => {
-      if (route.params?.place_id) {
-        const result = await postPoi(route.params.place_id);
-        if (result) {
-          setDestination(result.poi);
-          setDestinationDetails(result.poiDetail);
-          setBookmarked(false);
-        } else {
-          Alert.alert(
-            'Error',
-            'Unable to load destination details. Please try again.',
-          );
-        }
+  const [mapExpanded, setMapExpanded] = useState<boolean>(false);
+
+  const initializeBookmarks = useCallback(async () => {
+    const _bookmarks = await AsyncStorage.getItem('bookmarks');
+    if (_bookmarks) {
+      setBookmarks(JSON.parse(_bookmarks));
+    } else {
+      Alert.alert('Error', 'Unable to load bookmarks. Please try again.');
+    }
+  }, []);
+
+  const initializeDestinationData = useCallback(async () => {
+    if (route.params?.place_id) {
+      const result = await postPoi(route.params.place_id);
+      if (result) {
+        setDestination(result.poi);
+        setDestinationDetails(result.poiDetail);
       } else {
-        const details: PoiDetail | null = await getPoi(
-          destination.place_id,
-          destination.supplier,
+        Alert.alert(
+          'Error',
+          'Unable to load destination details. Please try again.',
         );
-
-        if (details) {
-          setDestinationDetails(details);
-        } else {
-          Alert.alert(
-            'Error',
-            'Unable to load destination details. Please try again.',
-          );
-        }
       }
-    };
+    } else {
+      const details: PoiDetail | null = await getPoi(
+        destination.place_id,
+        destination.supplier,
+      );
 
-    initializeDestinationData();
-  }, [destination?.place_id, destination?.supplier, route.params.place_id]);
+      if (details) {
+        setDestinationDetails(details);
+      } else {
+        Alert.alert(
+          'Error',
+          'Unable to load destination details. Please try again.',
+        );
+      }
+    }
+  }, [destination.place_id, destination.supplier, route.params?.place_id]);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      initializeBookmarks();
+      initializeDestinationData();
+    });
+
+    return unsubscribe;
+  }, [navigation, initializeBookmarks, initializeDestinationData]);
 
   const handleMapPress = async () => {
     showLocation({
@@ -86,306 +108,383 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
     }
   };
 
-  const handleLinkPress = async () => {
-    if (destinationDetails?.url) {
-      await Linking.openURL(destinationDetails.url);
-    }
-  };
-
   const handleWebsitePress = async () => {
     if (destinationDetails?.website) {
       await Linking.openURL(destinationDetails.website);
     }
   };
 
+  const insets = useSafeAreaInsets();
+  const scrollPosition = useRef(new Animated.Value(0)).current;
+  const headerHeight = scrollPosition.interpolate({
+    inputRange: [s(40), s(170)],
+    outputRange: [insets.top + s(170), insets.top + s(40)],
+    extrapolate: 'clamp',
+  });
+  const topTitleOpacity = scrollPosition.interpolate({
+    inputRange: [s(100), s(180)],
+    outputRange: [0, 1],
+    extrapolate: 'clamp',
+  });
+  const bottomTitleOpacity = scrollPosition.interpolate({
+    inputRange: [s(80), s(120)],
+    outputRange: [1, 0],
+    extrapolate: 'clamp',
+  });
+
   return (
     <View style={styles.container}>
-      <SafeAreaView>
-        <View style={headerStyles.container}>
-          <Icon icon={icons.back} onPress={navigation.goBack} />
-          <View style={headerStyles.texts}>
-            <Text weight="b" numberOfLines={1}>
-              {destination?.name}
-            </Text>
-            <Text size="xs" weight="l" color={colors.accent} numberOfLines={1}>
-              {/* {getPlaceCardString(destination)} */}
-            </Text>
-          </View>
-          <OptionMenu
-            options={[
-              {
-                name: strings.poi.createEvent,
-                onPress: () => {
-                  navigation.navigate('MapSelection', {
-                    destination: destination,
-                  });
-                },
-                color: colors.accent,
-              },
-              {
-                name: bookmarked
-                  ? strings.poi.unbookmark
-                  : strings.poi.bookmark,
-                onPress: () => {},
-                color: colors.accent,
-              },
-              {
-                name: strings.main.share,
-                onPress: () => {
-                  Alert.alert('Share', 'Coming Soon');
-                },
-                color: colors.black,
-              },
-              {
-                name: strings.poi.openMap,
-                onPress: handleMapPress,
-                color: colors.black,
-              },
-              {
-                name: strings.poi.eventUrl,
-                onPress: handleLinkPress,
-                color: colors.black,
-              },
-              {
-                name: 'add',
-                onPress: () => {
-                  if (mode === 'create') {
-                    navigation.navigate('Create', {
-                      destination: destination,
-                    });
-                  } else if (mode === 'suggest') {
-                    navigation.navigate('Event', {
-                      destination: destination,
-                    });
-                  } else if (mode === 'add') {
-                    navigation.navigate('EventSettings', {
-                      destination: destination,
-                    });
-                  }
-                },
-                color: colors.black,
-                disabled: mode === 'none',
-              },
-            ]}
-          />
-        </View>
-      </SafeAreaView>
+      <Animated.View style={{height: headerHeight}}>
+        <ImageBackground
+          style={[headerStyles.image]}
+          source={{uri: destination.photo}}>
+          <View style={headerStyles.darken} />
+        </ImageBackground>
+        <Animated.View style={[headerStyles.container, {height: headerHeight}]}>
+          <SafeAreaView>
+            <View style={headerStyles.row}>
+              <Icon
+                icon={icons.back}
+                onPress={navigation.goBack}
+                color={colors.white}
+              />
+              <Animated.Text
+                style={[headerStyles.titleTop, {opacity: topTitleOpacity}]}>
+                {destination?.name}
+              </Animated.Text>
+              <Icon
+                size="m"
+                icon={
+                  bookmarks.some(bookmark => bookmark.id === destination.id)
+                    ? icons.bookmarked
+                    : icons.bookmark
+                }
+                onPress={() => {
+                  handleBookmark(destination, bookmarks, setBookmarks);
+                }}
+                color={colors.white}
+              />
+            </View>
+          </SafeAreaView>
+          <Animated.Text
+            style={[headerStyles.titleBottom, {opacity: bottomTitleOpacity}]}>
+            {destination?.name}
+          </Animated.Text>
+        </Animated.View>
+      </Animated.View>
 
-      <ScrollView contentContainerStyle={styles.scrollView}>
-        <>
-          <ScrollView
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.imagesContainer}>
-            {destinationDetails?.photos ? (
-              destinationDetails?.photos.map((photo: string, index: number) => (
-                <View key={index}>
-                  <Image source={{uri: photo}} style={styles.image} />
+      <Animated.ScrollView
+        contentContainerStyle={styles.scrollView}
+        onScroll={Animated.event(
+          [{nativeEvent: {contentOffset: {y: scrollPosition}}}],
+          {useNativeDriver: false},
+        )}
+        contentInsetAdjustmentBehavior="automatic">
+        <View style={overViewStyles.container}>
+          <View style={overViewStyles.top}>
+            <View style={overViewStyles.hours}>
+              <Text color={colors.accent}>{`★ ${destination?.rating}/5`}</Text>
+              <Text size="xs" weight="l" color={colors.darkgrey}>
+                {`(${destination?.rating_count} ${strings.poi.reviews})`}
+              </Text>
+            </View>
+            {destination?.price ? (
+              <>
+                <View style={overViewStyles.separator} />
+                <View style={overViewStyles.price}>
+                  <Text size="m" weight="b" color={colors.accent}>
+                    {'$'.repeat(destination?.price)}
+                  </Text>
+                  <Text size="m" weight="b" color={colors.grey}>
+                    {'$'.repeat(4 - destination?.price)}
+                  </Text>
                 </View>
-              ))
-            ) : destination?.photo ? (
-              <Image source={{uri: destination?.photo}} style={styles.image} />
+              </>
             ) : null}
-          </ScrollView>
-          <View style={styles.separator} />
-        </>
-        {destinationDetails?.description ? (
-          <View style={detailStyles.infoContainer}>
-            <Text size="s">{strings.poi.description}:</Text>
-            <Text size="xs" weight="l">
-              {destinationDetails?.description}
-            </Text>
+            {destinationDetails?.hours.length === 7 ? (
+              <>
+                <View style={overViewStyles.separator} />
+                <View style={overViewStyles.hours}>
+                  {/* TODO: Change accordingly */}
+                  <Text color={colors.red}>Closed</Text>
+                  <Text size="xs" weight="l" color={colors.darkgrey}>
+                    {destinationDetails?.hours[date.getDay() - 1].split(' ')[1]}
+                  </Text>
+                </View>
+              </>
+            ) : null}
           </View>
-        ) : null}
-        {destinationDetails?.address ? (
-          <View style={detailStyles.infoContainer}>
-            <Text size="s">{strings.poi.address}:</Text>
-            <Text size="xs" weight="l">
-              {destinationDetails?.address}
-            </Text>
-          </View>
-        ) : null}
-        {destinationDetails?.hours ? (
-          <View style={detailStyles.infoContainer}>
-            <Text size="s">{strings.poi.hours}:</Text>
-            {destinationDetails?.hours.map((hour: string, index: number) => (
-              <Text key={index} size="xs" weight="l">
-                {hour}
+          {destinationDetails?.description ? (
+            <View style={overViewStyles.description}>
+              <Text size="s" weight="l">
+                {destinationDetails?.description}
               </Text>
-            ))}
-          </View>
+            </View>
+          ) : null}
+        </View>
+        {destination.latitude && destination.longitude ? (
+          <MapView
+            style={[
+              overViewStyles.map,
+              {height: mapExpanded ? s(360) : s(180)},
+            ]}
+            userInterfaceStyle={'light'}
+            initialRegion={{
+              latitude: destination.latitude,
+              longitude: destination.longitude,
+              latitudeDelta: numbers.defaultLatitudeDelta,
+              longitudeDelta: numbers.defaultLongitudeDelta,
+            }}>
+            <Marker
+              coordinate={{
+                latitude: destination.latitude,
+                longitude: destination.longitude,
+              }}
+            />
+            <Icon
+              icon={mapExpanded ? icons.shrink : icons.expand}
+              button={true}
+              onPress={() => setMapExpanded(!mapExpanded)}
+            />
+          </MapView>
         ) : null}
-        {destinationDetails?.phone ? (
-          <View style={detailStyles.infoContainer}>
-            <Text size="s">{strings.poi.phone}:</Text>
-            <TouchableOpacity onPress={handleCallPress}>
-              <Text size="xs" weight="l">
-                {destinationDetails?.phone}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        ) : null}
-        {destinationDetails?.url ? (
-          <View style={detailStyles.infoContainer}>
-            <Text size="s">{strings.poi.url}:</Text>
-            <TouchableOpacity onPress={handleLinkPress}>
-              <Text size="xs" weight="l">
-                {destinationDetails?.url}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        ) : null}
-        {destinationDetails?.website ? (
-          <View style={detailStyles.infoContainer}>
-            <Text size="s">{strings.poi.website}:</Text>
-            <TouchableOpacity onPress={handleWebsitePress}>
-              <Text size="xs" weight="l">
-                {destinationDetails?.website}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        ) : null}
-        {destinationDetails?.attributes &&
-        Array.isArray(destinationDetails.attributes) &&
-        destinationDetails.attributes.length > 0 ? (
-          <View style={detailStyles.infoContainer}>
-            <Text size="s">{strings.poi.attributes}:</Text>
-            {destinationDetails.attributes.map(
-              (attribute: string, index: number) => (
-                <Text key={index} size="xs" weight="l">
-                  {attribute}
-                </Text>
-              ),
-            )}
-          </View>
-        ) : null}
-        {destinationDetails?.reviews &&
-        Array.isArray(destinationDetails?.reviews) &&
-        destinationDetails?.reviews.length > 0 ? (
-          <>
-            <View style={styles.separator} />
-            <ScrollView
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={styles.imagesContainer}>
-              {destinationDetails.reviews.map(
-                (review: Review, index: number) => (
-                  <View key={index} style={detailStyles.reviewContainer}>
-                    <Text size="xs" numberOfLines={20}>
-                      {review.text + ' (' + review.rating + '/5)'}
-                    </Text>
-                    <Text size="xs" color={colors.darkgrey}>
-                      {review.relative_time_description}
-                    </Text>
-                  </View>
-                ),
-              )}
-            </ScrollView>
-          </>
-        ) : null}
-      </ScrollView>
+        <View style={infoStyles.container}>
+          <Text>{strings.poi.info}</Text>
+          {destinationDetails?.address !== '' ? (
+            <View style={infoStyles.row}>
+              <View style={infoStyles.texts}>
+                <Text size="s">{strings.poi.address}:</Text>
+                <View style={infoStyles.info}>
+                  <Text size="s" weight="l">
+                    {destinationDetails?.address}
+                  </Text>
+                </View>
+              </View>
+              <Icon icon={icons.map} button={true} onPress={handleMapPress} />
+            </View>
+          ) : null}
+          {destinationDetails?.hours.length === 7 ? (
+            <View style={infoStyles.row}>
+              <View style={infoStyles.texts}>
+                <Text size="s">{strings.poi.hours}:</Text>
+                <View style={infoStyles.info}>
+                  <Text size="s" weight="l">
+                    {destinationDetails?.hours[date.getDay() - 1].split(
+                      ' ',
+                    )[1] +
+                      ' (' +
+                      destinationDetails?.hours[date.getDay() - 1]
+                        ?.split(' ')[0]
+                        .slice(0, -1) +
+                      ')'}
+                  </Text>
+                </View>
+              </View>
+              <Icon
+                icon={icons.clock}
+                button={true}
+                onPress={() => {
+                  console.log('TODO: Open Hours');
+                }}
+              />
+            </View>
+          ) : null}
+          {destinationDetails?.phone !== '' ? (
+            <View style={infoStyles.row}>
+              <View style={infoStyles.texts}>
+                <Text size="s">{strings.poi.phone}:</Text>
+                <View style={infoStyles.info}>
+                  <Text size="s" weight="l">
+                    {destinationDetails?.phone}
+                  </Text>
+                </View>
+              </View>
+              <Icon
+                icon={icons.call}
+                padding={-2}
+                button={true}
+                onPress={handleCallPress}
+              />
+            </View>
+          ) : null}
+          {destinationDetails?.website !== '' ? (
+            <View style={infoStyles.row}>
+              <View style={infoStyles.texts}>
+                <Text size="s">{strings.poi.website}:</Text>
+                <View style={infoStyles.info}>
+                  <Text size="s" weight="l">
+                    {destinationDetails?.website}
+                  </Text>
+                </View>
+              </View>
+              <Icon
+                icon={icons.open}
+                padding={-2}
+                button={true}
+                onPress={handleWebsitePress}
+              />
+            </View>
+          ) : null}
+        </View>
+      </Animated.ScrollView>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.white,
-  },
-  imagesContainer: {
-    paddingLeft: s(20),
-  },
-  image: {
-    marginRight: s(10),
-    width: s(160),
-    height: s(200),
-    borderRadius: s(10),
-  },
-  map: {
-    height: s(200),
-    marginHorizontal: s(20),
-    marginTop: s(10),
-    borderRadius: s(10),
-  },
-  scrollView: {
-    paddingBottom: s(20),
-  },
-  separator: {
-    borderWidth: 0.5,
-    borderColor: colors.grey,
-    marginVertical: s(10),
-    marginHorizontal: s(20),
-  },
-});
-
 const headerStyles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  image: {
     width: '100%',
-    paddingHorizontal: s(20),
-    paddingTop: s(10),
-    paddingBottom: s(5),
+    height: '100%',
+    position: 'absolute',
   },
-  texts: {
-    flex: 1,
-    marginHorizontal: s(10),
+  darken: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(0,0,0,0.3)',
   },
-});
-
-const detailStyles = StyleSheet.create({
   container: {
-    marginBottom: s(50),
-  },
-  rating: {
-    marginTop: s(10),
+    width: '100%',
+    justifyContent: 'space-between',
+    paddingHorizontal: s(20),
   },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    overflow: 'visible',
   },
-  stars: {
-    width: s(132),
-    height: s(24),
-  },
-  yelp: {
-    width: s(75),
-    height: s(29),
-  },
-  title: {
-    marginLeft: s(20),
+  titleTop: {
     fontSize: s(16),
-    fontWeight: '600',
-    color: colors.black,
+    fontWeight: '700',
+    fontFamily: 'Lato',
+    color: colors.white,
   },
-  infoContainer: {
+  titleBottom: {
+    marginLeft: s(5),
+    marginBottom: s(15),
+    fontSize: s(19),
+    fontWeight: '800',
+    fontFamily: 'Lato',
+    color: colors.white,
+  },
+});
+
+const overViewStyles = StyleSheet.create({
+  container: {
     marginHorizontal: s(20),
-    marginTop: s(5),
-    marginBottom: s(10),
-    padding: s(15),
-    borderRadius: s(10),
+    marginVertical: s(10),
+  },
+  top: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    height: s(45),
+    paddingHorizontal: s(20),
+    paddingVertical: s(5),
+    marginVertical: s(5),
+  },
+  separator: {
+    width: 1,
     backgroundColor: colors.grey,
   },
-  infoTitle: {
-    fontSize: s(13),
-    fontWeight: '600',
-    color: colors.accent,
+  description: {
+    paddingVertical: s(5),
+    paddingHorizontal: s(10),
+    borderTopWidth: 1,
+    borderColor: colors.grey,
+  },
+  hours: {
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  price: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  map: {
+    width: '100%',
+  },
+});
+
+const infoStyles = StyleSheet.create({
+  container: {
+    margin: s(20),
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderTopWidth: 0.5,
+    borderColor: colors.grey,
+    padding: s(10),
+  },
+  texts: {
+    flex: 1,
   },
   info: {
     marginTop: s(5),
-    fontSize: s(13),
-    fontWeight: '500',
-    color: colors.black,
-  },
-  reviewContainer: {
-    padding: s(10),
-    width: s(180),
-    backgroundColor: colors.grey,
-    borderRadius: s(10),
-    marginRight: s(10),
+    marginLeft: s(5),
   },
 });
+
+{
+  /* <OptionMenu
+options={[
+  {
+    name: strings.poi.createEvent,
+    onPress: () => {
+      navigation.navigate('MapSelection', {
+        destination: destination,
+      });
+    },
+    color: colors.accent,
+  },
+  {
+    name: bookmarked
+      ? strings.poi.unbookmark
+      : strings.poi.bookmark,
+    onPress: () => {},
+    color: colors.accent,
+  },
+  {
+    name: strings.main.share,
+    onPress: () => {
+      Alert.alert('Share', 'Coming Soon');
+    },
+    color: colors.black,
+  },
+  {
+    name: strings.poi.openMap,
+    onPress: handleMapPress,
+    color: colors.black,
+  },
+  {
+    name: strings.poi.eventUrl,
+    onPress: handleLinkPress,
+    color: colors.black,
+  },
+  {
+    name: 'add',
+    onPress: () => {
+      if (mode === 'create') {
+        navigation.navigate('Create', {
+          destination: destination,
+        });
+      } else if (mode === 'suggest') {
+        navigation.navigate('Event', {
+          destination: destination,
+        });
+      } else if (mode === 'add') {
+        navigation.navigate('EventSettings', {
+          destination: destination,
+        });
+      }
+    },
+    color: colors.black,
+    disabled: mode === 'none',
+  },
+]}
+/> */
+}
 
 export default PoiDetailPage;
