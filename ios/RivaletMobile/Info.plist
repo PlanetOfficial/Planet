@@ -39,6 +39,8 @@
 	<string>Please allow location access if you wish to search for a nearby locations.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Please allow location access if you wish to search for a nearby locations.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Please allow photo library access if you wish to upload a photo.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
