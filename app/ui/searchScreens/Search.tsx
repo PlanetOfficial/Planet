@@ -54,14 +54,14 @@ const Search = ({
     if (data) {
       setGenres(JSON.parse(data));
     } else {
-      Alert.alert('Error', 'Unable to load genres. Please try again.');
+      Alert.alert(strings.error.error, strings.error.loadGenres);
     }
 
     const _bookmarks = await AsyncStorage.getItem('bookmarks');
     if (_bookmarks) {
       setBookmarks(JSON.parse(_bookmarks));
     } else {
-      Alert.alert('Error', 'Unable to load bookmarks. Please try again.');
+      Alert.alert(strings.error.error, strings.error.loadBookmarks);
     }
   };
 
@@ -81,7 +81,7 @@ const Search = ({
         mode: mode,
       });
     } else {
-      Alert.alert('Error', 'Unable to retrieve destination. Please try again.');
+      Alert.alert(strings.error.error, strings.error.loadDestinationDetails);
     }
   };
 

@@ -14,6 +14,7 @@ import {s} from 'react-native-size-matters';
 import DatePicker from 'react-native-date-picker';
 import {Svg, Line, Circle} from 'react-native-svg';
 import prompt from 'react-native-prompt-android';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import moment from 'moment';
 
@@ -24,12 +25,11 @@ import styles from '../../constants/styles';
 
 import Text from '../components/Text';
 import Icon from '../components/Icon';
-
-import {Poi} from '../../utils/types';
 import PoiCardXL from '../components/PoiCardXL';
 import OptionMenu from '../components/OptionMenu';
+
+import {Poi} from '../../utils/types';
 import {handleBookmark} from '../../utils/Misc';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {postEvent} from '../../utils/api/eventAPI';
 
 const Create = ({navigation, route}: {navigation: any; route: any}) => {
@@ -71,7 +71,7 @@ const Create = ({navigation, route}: {navigation: any; route: any}) => {
     if (_bookmarks) {
       setBookmarks(JSON.parse(_bookmarks));
     } else {
-      Alert.alert('Error', 'Unable to load bookmarks. Please try again.');
+      Alert.alert(strings.error.error, strings.error.loadBookmarks);
     }
   };
 
@@ -111,7 +111,7 @@ const Create = ({navigation, route}: {navigation: any; route: any}) => {
     if (response) {
       navigation.navigate('Library', {event: response});
     } else {
-      Alert.alert('Error', 'Unable to save event. Please try again.');
+      Alert.alert(strings.error.error, strings.error.saveEvent);
     }
     // wait one second before setloading to false
     setTimeout(() => {

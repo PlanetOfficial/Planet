@@ -7,6 +7,7 @@ import haversine from 'haversine-distance';
 import {Coordinate, Poi} from './types';
 
 import {bookmark} from './api/bookmarkAPI';
+import strings from '../constants/strings';
 
 /*
   Given a point and the longitudeDelta, calculate the radius of the circle (the
@@ -70,7 +71,7 @@ export const fetchUserLocation = async (): Promise<Coordinate> => {
         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
       );
       if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
-        Alert.alert('Error', 'Location permission denied.');
+        Alert.alert(strings.error.error, strings.error.locationPermission);
       }
     } catch (err) {
       console.warn(err);
@@ -106,7 +107,7 @@ export const handleBookmark = async (
     setBookmarks(_bookmarks);
     AsyncStorage.setItem('bookmarks', JSON.stringify(_bookmarks));
   } else {
-    Alert.alert('Error', 'Unable to update bookmarks. Please try again.');
+    Alert.alert(strings.error.error, strings.error.updateBookmarks);
   }
 };
 

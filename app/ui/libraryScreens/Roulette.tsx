@@ -19,6 +19,7 @@ import Animated, {
 import {PieChart} from 'react-native-svg-charts';
 import {Svg} from 'react-native-svg';
 import {s} from 'react-native-size-matters';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import icons from '../../constants/icons';
 import strings from '../../constants/strings';
@@ -29,9 +30,8 @@ import Text from '../components/Text';
 import Icon from '../components/Icon';
 import PoiCard from '../components/PoiCard';
 
-import {Destination, Poi, Suggestion, UserInfo} from '../../utils/types';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {handleBookmark} from '../../utils/Misc';
+import {Destination, Poi, Suggestion, UserInfo} from '../../utils/types';
 import {makePrimary, spinRoulette} from '../../utils/api/suggestionAPI';
 
 const Roulette = ({navigation, route}: {navigation: any; route: any}) => {
@@ -46,8 +46,7 @@ const Roulette = ({navigation, route}: {navigation: any; route: any}) => {
     if (_bookmarks) {
       setBookmarks(JSON.parse(_bookmarks));
     } else {
-      Alert.alert('Error', 'Unable to load bookmarks. Please try again.');
-    }
+      Alert.alert(strings.error.error, strings.error.loadBookmarks);    }
   };
 
   useEffect(() => {
@@ -154,11 +153,8 @@ const Roulette = ({navigation, route}: {navigation: any; route: any}) => {
       const _destination = {...destination};
       _destination.spin_history.unshift(spin);
       setDestination(_destination);
-    } else {
-      Alert.alert(
-        'Error',
-        'Unable to record the roulette spin. Please try again.',
-      );
+    } else {      
+      Alert.alert(strings.error.error, strings.error.recordRouletteSpin);
     }
 
     Alert.alert(suggestion.poi.name, strings.roulette.rouletteSpinInfo, [
@@ -178,10 +174,7 @@ const Roulette = ({navigation, route}: {navigation: any; route: any}) => {
           if (response) {
             navigation.goBack();
           } else {
-            Alert.alert(
-              'Error',
-              'Unable to make suggestion primary. Please try again.',
-            );
+            Alert.alert(strings.error.error, strings.error.makeSuggestionPrimary);
           }
         },
       },

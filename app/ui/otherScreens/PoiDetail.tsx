@@ -11,11 +11,14 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {s, vs} from 'react-native-size-matters';
+import MapView, {Marker} from 'react-native-maps';
 import {showLocation} from 'react-native-map-link';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import colors from '../../constants/colors';
 import icons from '../../constants/icons';
+import numbers from '../../constants/numbers';
 import strings from '../../constants/strings';
 import styles from '../../constants/styles';
 
@@ -24,10 +27,7 @@ import Text from '../components/Text';
 
 import {Poi, PoiDetail, Review} from '../../utils/types';
 import {getPoi, postPoi} from '../../utils/api/poiAPI';
-import MapView, {Marker} from 'react-native-maps';
-import numbers from '../../constants/numbers';
 import {handleBookmark} from '../../utils/Misc';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
   StatusBar.setBarStyle('light-content', true);
@@ -47,7 +47,7 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
     if (_bookmarks) {
       setBookmarks(JSON.parse(_bookmarks));
     } else {
-      Alert.alert('Error', 'Unable to load bookmarks. Please try again.');
+      Alert.alert(strings.error.error, strings.error.loadBookmarks);
     }
   }, []);
 
@@ -58,10 +58,8 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
         setDestination(result.poi);
         setDestinationDetails(result.poiDetail);
       } else {
-        Alert.alert(
-          'Error',
-          'Unable to load destination details. Please try again.',
-        );
+        Alert.alert(strings.error.error, strings.error.loadDestinationDetails);
+
       }
     } else {
       const details: PoiDetail | null = await getPoi(
@@ -72,10 +70,8 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
       if (details) {
         setDestinationDetails(details);
       } else {
-        Alert.alert(
-          'Error',
-          'Unable to load destination details. Please try again.',
-        );
+        Alert.alert(strings.error.error, strings.error.loadDestinationDetails);
+
       }
     }
   }, [destination.place_id, destination.supplier, route.params?.place_id]);
@@ -142,6 +138,9 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
     outputRange: [1, 0],
     extrapolate: 'clamp',
   });
+
+  // TODO: photo viewer somewhere
+  // TODO: map expand animation
 
   return (
     <View style={styles.container}>
@@ -297,7 +296,7 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
                 icon={icons.clock}
                 button={true}
                 onPress={() => {
-                  console.log('TODO: Open Hours');
+                  // TODO: Open hours
                 }}
               />
             </View>
@@ -370,6 +369,10 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
             });
           } else if (mode === 'add') {
             navigation.navigate('EventSettings', {
+              destination: destination,
+            });
+          } else { // mode is none, create a fresh event with this destination
+            navigation.navigate('Create', {
               destination: destination,
             });
           }
@@ -485,6 +488,7 @@ const infoStyles = StyleSheet.create({
   },
   texts: {
     flex: 1,
+    marginRight: s(5),
   },
   info: {
     marginTop: s(5),

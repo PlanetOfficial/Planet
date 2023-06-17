@@ -8,18 +8,18 @@ import {
   Image,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
+import moment from 'moment';
 
+import colors from '../../constants/colors';
 import icons from '../../constants/icons';
 import strings from '../../constants/strings';
 import styles from '../../constants/styles';
 
 import Text from '../components/Text';
 import Icon from '../components/Icon';
+import PoiCardXS from '../components/PoiCardXS';
 
 import {Destination, Spin} from '../../utils/types';
-import PoiCardXS from '../components/PoiCardXS';
-import colors from '../../constants/colors';
-import moment from 'moment';
 
 const SpinHistory = ({navigation, route}: {navigation: any; route: any}) => {
   const [destination] = useState<Destination>(route.params.destination);

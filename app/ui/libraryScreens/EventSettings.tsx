@@ -58,7 +58,7 @@ const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
     if (_eventDetail) {
       setEventDetail(_eventDetail);
     } else {
-      Alert.alert('Error', 'Could not fetch event, please try again.');
+      Alert.alert(strings.error.error, strings.error.fetchEvent);
     }
   }, [event.id]);
 
@@ -71,7 +71,7 @@ const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
       if (response) {
         loadData();
       } else {
-        Alert.alert('Error', 'Could not add suggestion, please try again.');
+        Alert.alert(strings.error.error, strings.error.addSuggestion);
       }
 
       navigation.setParams({destination: undefined});
@@ -97,7 +97,7 @@ const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
       setEventTitle(name);
     } else {
       setEventTitle(event.name);
-      Alert.alert('Error', 'Could not edit event name, please try again.');
+      Alert.alert(strings.error.error, strings.error.editEventName);
     }
   };
 
@@ -111,7 +111,7 @@ const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
       setDatetime(dt);
     } else {
       setDatetime(event.datetime);
-      Alert.alert('Error', 'Could not edit event date, please try again.');
+      Alert.alert(strings.error.error, strings.error.editEventDate);
     }
   };
 
@@ -121,7 +121,7 @@ const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
     if (response) {
       navigation.navigate('Library');
     } else {
-      Alert.alert('Error', 'Could not leave event, please try again.');
+      Alert.alert(strings.error.error, strings.error.leaveEvent);
     }
   };
 
@@ -134,7 +134,7 @@ const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
     if (response) {
       loadData();
     } else {
-      Alert.alert('Error', 'Could not rename destination, please try again.');
+      Alert.alert(strings.error.error, strings.error.renameDestination);
     }
   };
 
@@ -144,10 +144,7 @@ const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
     if (response) {
       loadData();
     } else {
-      Alert.alert(
-        'Error',
-        'Could not remove destination from event, please try again.',
-      );
+      Alert.alert(strings.error.error, strings.error.removeDestination);
     }
   };
 
@@ -160,7 +157,7 @@ const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
     if (response) {
       loadData();
     } else {
-      Alert.alert('Error', 'Could not reorder destinations, please try again.');
+      Alert.alert(strings.error.error, strings.error.reorderDestination);
     }
   };
 

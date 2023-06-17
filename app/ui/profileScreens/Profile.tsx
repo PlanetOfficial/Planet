@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import colors from '../../constants/colors';
 import icons from '../../constants/icons';
@@ -23,7 +24,6 @@ import Separator from '../components/Separator';
 
 import {fetchUserLocation, handleBookmark} from '../../utils/Misc';
 import {Coordinate, Poi} from '../../utils/types';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Profile = ({navigation}: {navigation: any}) => {
   const [selectedIndex, setIndex] = useState<number>(0);
@@ -49,7 +49,7 @@ const Profile = ({navigation}: {navigation: any}) => {
     if (_bookmarks) {
       setBookmarks(JSON.parse(_bookmarks));
     } else {
-      Alert.alert('Error', 'Unable to load bookmarks. Please try again.');
+      Alert.alert(strings.error.error, strings.error.loadBookmarks);
     }
   };
 

@@ -71,7 +71,7 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
       });
       setMyVotes(_myVotes);
     } else {
-      Alert.alert('Error', 'Could not fetch event, please try again.');
+      Alert.alert(strings.error.error, strings.error.fetchEvent);
     }
     setRefreshing(false);
     setLoading(false);
@@ -82,7 +82,7 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
     if (_bookmarks) {
       setBookmarks(JSON.parse(_bookmarks));
     } else {
-      Alert.alert('Error', 'Unable to load bookmarks. Please try again.');
+      Alert.alert(strings.error.error, strings.error.loadBookmarks);
     }
   };
 
@@ -99,7 +99,7 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
       if (response) {
         loadData();
       } else {
-        Alert.alert('Error', 'Could not add suggestion, please try again.');
+        Alert.alert(strings.error.error, strings.error.addSuggestion);
       }
 
       navigation.setParams({destination: undefined});
@@ -198,14 +198,14 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
       }
       setMyVotes(_myVotes);
     } else {
-      Alert.alert('Error', 'Unable to change vote, please try again later.');
+      Alert.alert(strings.error.error, strings.error.changeVote);
     }
 
     const _eventDetail = await getEvent(event.id);
     if (_eventDetail) {
       setEventDetail(_eventDetail);
     } else {
-      Alert.alert('Error', 'Unable to refresh event, please try again later.');
+      Alert.alert(strings.error.error, strings.error.refreshEvent);    
     }
   };
 
@@ -407,7 +407,7 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
         y={yPos}
         resetFlag={resetFlag}
         animateFlag={animateFlag}
-        event_id={event.id}
+        eventId={event.id}
         destination={selectedDestination}
         voted={
           selectedDestination
