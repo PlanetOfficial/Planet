@@ -137,12 +137,6 @@ const Profile = ({navigation}: {navigation: any}) => {
             </View>
           )}
         </TouchableOpacity>
-        {/* <Icon
-          icon={icons.edit}
-          padding={-2}
-          button={true}
-          onPress={handleEditPfp}
-        /> */}
         <View style={profileStyles.info}>
           <Text size="l">
             {firstName} {lastName}
