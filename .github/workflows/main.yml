@@ -22,7 +22,7 @@ jobs:
           node-version: 16
           
       - name: Install dependencies
-        run: rimraf node_modules && yarn install
+        run: rm -rf node_modules && yarn install
 
       - name: Run ESLint
         run: yarn lint
