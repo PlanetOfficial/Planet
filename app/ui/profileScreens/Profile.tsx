@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {
   View,
   StyleSheet,
+  Text as RNText,
   SafeAreaView,
   Image,
   Alert,
@@ -20,6 +21,7 @@ import colors from '../../constants/colors';
 import icons from '../../constants/icons';
 import strings from '../../constants/strings';
 import styles from '../../constants/styles';
+import numbers from '../../constants/numbers';
 
 import Text from '../components/Text';
 import Icon from '../components/Icon';
@@ -29,7 +31,6 @@ import Separator from '../components/Separator';
 import {fetchUserLocation, handleBookmark} from '../../utils/Misc';
 import {Coordinate, Poi} from '../../utils/types';
 import {saveImage} from '../../utils/api/authAPI';
-import numbers from '../../constants/numbers';
 
 const Profile = ({navigation}: {navigation: any}) => {
   const [selectedIndex, setIndex] = useState<number>(0);
@@ -118,18 +119,30 @@ const Profile = ({navigation}: {navigation: any}) => {
         </View>
       </SafeAreaView>
       <View style={profileStyles.container}>
-        <View style={profileStyles.profilePic}>
-          <Image
-            style={profileStyles.pic}
-            source={pfpURL.length > 0 ? {uri: pfpURL} : icons.checked}
-          />
-        </View>
-        <Icon
+        <TouchableOpacity
+          style={profileStyles.profilePic}
+          onPress={handleEditPfp}>
+          {pfpURL.length > 0 ? (
+            <Image style={profileStyles.profileImage} source={{uri: pfpURL}} />
+          ) : (
+            <View
+              style={{
+                ...profileStyles.profileImage,
+                backgroundColor: colors.profileShades[username.length % 5],
+              }}>
+              <RNText style={profileStyles.name}>
+                {firstName?.charAt(0).toUpperCase() +
+                  lastName?.charAt(0).toUpperCase()}
+              </RNText>
+            </View>
+          )}
+        </TouchableOpacity>
+        {/* <Icon
           icon={icons.edit}
           padding={-2}
           button={true}
           onPress={handleEditPfp}
-        />
+        /> */}
         <View style={profileStyles.info}>
           <Text size="l">
             {firstName} {lastName}
@@ -221,6 +234,18 @@ const profileStyles = StyleSheet.create({
     paddingTop: s(15),
     paddingBottom: s(10),
     justifyContent: 'space-between',
+  },
+  profileImage: {
+    width: '100%',
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  name: {
+    fontSize: s(40),
+    color: colors.white,
+    fontFamily: 'VarelaRound-Regular',
+    marginTop: s(1),
   },
 });
 

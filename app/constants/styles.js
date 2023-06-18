@@ -50,6 +50,10 @@ const styles = StyleSheet.create({
   absolute: {
     position: 'absolute',
   },
+  image: {
+    width: '100%',
+    height: '100%',
+  },
 });
 
 export default styles;
