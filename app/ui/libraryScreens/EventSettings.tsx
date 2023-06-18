@@ -39,8 +39,6 @@ import {
 } from '../../utils/api/destinationAPI';
 
 const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
-  const date = new Date();
-
   const [event] = useState<Event>(route.params.event);
   const [eventDetail, setEventDetail] = useState<EventDetail>();
 
@@ -51,11 +49,15 @@ const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
   const loadData = useCallback(async () => {
     const _eventDetail = await getEvent(event.id);
     if (_eventDetail) {
+      const date = new Date();
+
       setEventDetail(_eventDetail);
       setEventTitle(_eventDetail.name);
-      setDatetime(moment(_eventDetail.datetime)
-      .add(date.getTimezoneOffset(), 'minutes')
-      .format('MMM Do, h:mm a'),);
+      setDatetime(
+        moment(_eventDetail.datetime)
+          .add(date.getTimezoneOffset(), 'minutes')
+          .format('MMM Do, h:mm a'),
+      );
     } else {
       Alert.alert('Error', 'Could not fetch event, please try again.');
     }
