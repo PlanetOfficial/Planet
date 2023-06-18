@@ -8,6 +8,7 @@
     "ios2": "react-native run-ios --simulator='iPhone 14 Pro (16.0)'",
     "lint": "eslint .",
     "start": "react-native start",
+    "pods": "cd ios && pod install && cd ..",
     "test": "jest"
   },
   "dependencies": {

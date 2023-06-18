@@ -24,5 +24,8 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
-      - name: Build on iOS
+      - name: Install pods on iOS
+        run: yarn pods
+
+      - name: Run on iOS
         run: yarn ios
