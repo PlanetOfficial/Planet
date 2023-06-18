@@ -1,4 +1,4 @@
-name: CI
+name: Quality Checks
 
 on:
   push:
@@ -9,23 +9,23 @@ on:
       - main
 
 jobs:
-  build:
-    runs-on: macos-latest
-
+  quality_checks:
+    runs-on: ubuntu-latest
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
+      
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 16
-
+          
       - name: Install dependencies
         run: yarn install
 
-      - name: Install pods on iOS
-        run: yarn pods
+      - name: Run ESLint
+        run: yarn lint
 
-      - name: Run on iOS
-        run: yarn ios
+      - name: TypeScript Type Checking
+        run: yarn type-check
