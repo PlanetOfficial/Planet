@@ -1,6 +1,6 @@
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {PoiAPIURL} from './APIConstants';
-import {Poi } from '../types';
+import {Poi} from '../types';
 
 export const getBookmarks = async (): Promise<Poi[] | null> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
