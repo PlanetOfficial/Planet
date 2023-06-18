@@ -67,32 +67,3 @@ to the google play store.
 <h3>iOS: </h3>
 
 [WRITE IOS CHECKLIST HERE]
-
-------------
-
-<h1>Detox setup (INACTIVE CURRENTLY):</h1>
-https://wix.github.io/Detox/docs/introduction/getting-started/
-
-Run this in your terminal (for macs)
-```
-brew tap wix/brew
-brew install applesimutils
-```
---> make sure to run the commands above every so often to update to latest version
---> you might have to restart your computer
-
-Run necessary build commands:
-
-For ios debug mode, run:
-
-```
-npx detox build --configuration ios.sim.debug
-```
-
-For other OS and releases, see link for build commands to test .detocrc.js file (step 5 in Project Setup tab)
-
-```
-npm start
-npx detox test --configuration ios.sim.debug
-```
-*see link for other OS and release versions
