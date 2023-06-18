@@ -150,8 +150,12 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
 
   const isOpen = (operatingHours: string[]) => {
     const [_, hours] = operatingHours[(date.getDay() + 6) % 7].split(': ');
-    const [start, end] = hours.split(' – ');
 
+    if(hours === 'Closed'){
+      return false;
+    }
+
+    const [start, end] = hours.split(' – ');
     const startTime = convertStringTimeToDate(start);
     const endTime = convertStringTimeToDate(end);
 
