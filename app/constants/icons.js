@@ -24,7 +24,6 @@ const icons = {
   settings: require('../assets/icons/settings.png'),
   unchecked: require('../assets/icons/unchecked.png'),
   unselected: require('../assets/icons/unselected.png'),
-  edit: require('../assets/icons/edit.png'),
 };
 
 export default icons;
