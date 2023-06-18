@@ -72,6 +72,7 @@ const strings = {
     attributes: 'Attributes',
     open: 'Open',
     closed: 'Closed',
+    images: 'Images',
   },
   search: {
     search: 'Search',

@@ -17,6 +17,7 @@ import MapView, {Marker} from 'react-native-maps';
 import {showLocation} from 'react-native-map-link';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ImageView from 'react-native-image-viewing';
 
 import colors from '../../constants/colors';
 import icons from '../../constants/icons';
@@ -122,26 +123,6 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
     }
   };
 
-  const insets = useSafeAreaInsets();
-  const scrollPosition = useRef(new Animated.Value(0)).current;
-  const headerHeight = scrollPosition.interpolate({
-    inputRange: [s(35), s(170)],
-    outputRange: [insets.top + s(170), insets.top + s(35)],
-    extrapolate: 'clamp',
-  });
-  const topTitleOpacity = scrollPosition.interpolate({
-    inputRange: [s(100), s(180)],
-    outputRange: [0, 1],
-    extrapolate: 'clamp',
-  });
-  const bottomTitleOpacity = scrollPosition.interpolate({
-    inputRange: [s(80), s(120)],
-    outputRange: [1, 0],
-    extrapolate: 'clamp',
-  });
-
-  // TODO: photo viewer somewhere
-
   const convertStringTimeToDate = (timeString: string) => {
     const [time, period] = timeString.split(' ');
     const [hours, minutes] = time.split(':');
@@ -151,7 +132,6 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
       const minute = parseInt(minutes, 10);
 
       if (period === 'PM' && hour !== 12) {
-        console.log('PM');
         hour += 12;
       } else if (period === 'AM' && hour === 12) {
         hour = 0;
@@ -178,8 +158,58 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
     return startTime && endTime && date >= startTime && date <= endTime;
   };
 
+  const [galleryVisible, setGalleryVisible] = useState(false);
+  const HeaderComponent = useCallback(
+    () => (
+      <View style={localStyles.imageTitle}>
+        <Text center={true} color={colors.white}>
+          {strings.poi.images}
+        </Text>
+        <View style={localStyles.closeGallery}>
+          <Icon
+            icon={icons.close}
+            color={colors.white}
+            onPress={() => setGalleryVisible(false)}
+          />
+        </View>
+      </View>
+    ),
+    [],
+  );
+
+  const insets = useSafeAreaInsets();
+  const scrollPosition = useRef(new Animated.Value(0)).current;
+  const headerHeight = scrollPosition.interpolate({
+    inputRange: [s(35), s(170)],
+    outputRange: [insets.top + s(170), insets.top + s(35)],
+    extrapolate: 'clamp',
+  });
+  const topTitleOpacity = scrollPosition.interpolate({
+    inputRange: [s(100), s(180)],
+    outputRange: [0, 1],
+    extrapolate: 'clamp',
+  });
+  const bottomTitleOpacity = scrollPosition.interpolate({
+    inputRange: [s(80), s(120)],
+    outputRange: [1, 0],
+    extrapolate: 'clamp',
+  });
+
   return (
     <View style={styles.container}>
+      {destinationDetails ? (
+        <ImageView
+          images={destinationDetails.photos.map(photo => ({uri: photo}))}
+          imageIndex={0}
+          visible={galleryVisible}
+          onRequestClose={() => setGalleryVisible(false)}
+          animationType="slide"
+          presentationStyle="formSheet"
+          backgroundColor={colors.darkgrey}
+          swipeToCloseEnabled={true}
+          HeaderComponent={HeaderComponent}
+        />
+      ) : null}
       <Animated.View style={{height: headerHeight}}>
         <ImageBackground
           style={[headerStyles.image]}
@@ -198,7 +228,8 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
                 color={colors.white}
               />
               <Animated.Text
-                style={[headerStyles.titleTop, {opacity: topTitleOpacity}]}>
+                style={[headerStyles.title, {opacity: topTitleOpacity}]}
+                numberOfLines={1}>
                 {destination?.name}
               </Animated.Text>
               <Icon
@@ -215,10 +246,18 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
               />
             </View>
           </SafeAreaView>
-          <Animated.Text
-            style={[headerStyles.titleBottom, {opacity: bottomTitleOpacity}]}>
-            {destination?.name}
-          </Animated.Text>
+          <Animated.View
+            style={[headerStyles.bottom, {opacity: bottomTitleOpacity}]}>
+            <Text size="l" weight="b" color={colors.white}>
+              {destination?.name}
+            </Text>
+            <Icon
+              size="l"
+              icon={icons.gallery}
+              color={colors.white}
+              onPress={() => setGalleryVisible(true)}
+            />
+          </Animated.View>
         </Animated.View>
       </Animated.View>
 
@@ -258,9 +297,9 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
               {destinationDetails?.hours.length === 7 ? (
                 <>
                   {isOpen(destinationDetails.hours) ? (
-                    <Text color={colors.green}>Open</Text>
+                    <Text color={colors.green}>{strings.poi.open}</Text>
                   ) : (
-                    <Text color={colors.red}>Closed</Text>
+                    <Text color={colors.red}>{strings.poi.closed}</Text>
                   )}
 
                   <Text size="xs" weight="l" color={colors.darkgrey}>
@@ -498,6 +537,14 @@ const localStyles = StyleSheet.create({
     borderRadius: s(10),
     backgroundColor: colors.accent,
   },
+  imageTitle: {
+    marginTop: s(10),
+  },
+  closeGallery: {
+    position: 'absolute',
+    top: s(2.5),
+    right: s(20),
+  },
   map: {
     width: '100%',
   },
@@ -531,19 +578,20 @@ const headerStyles = StyleSheet.create({
     justifyContent: 'space-between',
     overflow: 'visible',
   },
-  titleTop: {
+  bottom: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingLeft: s(5),
+    marginBottom: s(15),
+  },
+  title: {
     fontSize: s(16),
     fontWeight: '700',
     fontFamily: 'Lato',
     color: colors.white,
-  },
-  titleBottom: {
-    marginLeft: s(5),
-    marginBottom: s(15),
-    fontSize: s(19),
-    fontWeight: '800',
-    fontFamily: 'Lato',
-    color: colors.white,
+    maxWidth: s(280),
+    paddingHorizontal: s(10),
   },
 });
 

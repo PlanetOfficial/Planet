@@ -172,9 +172,7 @@ const Roulette = ({navigation, route}: {navigation: any; route: any}) => {
             suggestion.id,
           );
 
-          if (response) {
-            navigation.goBack();
-          } else {
+          if (!response) {
             Alert.alert(
               strings.error.error,
               strings.error.makeSuggestionPrimary,

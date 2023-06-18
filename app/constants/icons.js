@@ -13,6 +13,7 @@ const icons = {
   drop: require('../assets/icons/drop.png'),
   edit: require('../assets/icons/edit.png'),
   friends: require('../assets/icons/friends.png'),
+  gallery: require('../assets/icons/gallery.png'),
   heart: require('../assets/icons/heart.png'),
   hearted: require('../assets/icons/hearted.png'),
   history: require('../assets/icons/history.png'),
