@@ -1,3 +1,5 @@
+import numbers from "./numbers";
+
 const strings = {
   main: {
     appName: 'Planet',
@@ -97,6 +99,9 @@ const strings = {
     settings: 'Settings',
     noBookmarksFound: 'No Bookmarks Found',
     noBookmarksFoundDescription: 'Try bookmarking something',
+    pfpSelectError: 'Error selecting profile picture',
+    pfpSizeError: `Profile picture must be less than ${numbers.maxPfpSize/1000000}MB`,
+    pfpUploadError: 'Error uploading profile picture',
   },
   event: {
     yourEvents: 'Your Events',

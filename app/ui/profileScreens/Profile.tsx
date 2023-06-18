@@ -10,6 +10,8 @@ import {
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {ImageLibraryOptions, launchImageLibrary} from 'react-native-image-picker';
 
 import colors from '../../constants/colors';
 import icons from '../../constants/icons';
@@ -23,7 +25,8 @@ import Separator from '../components/Separator';
 
 import {fetchUserLocation, handleBookmark} from '../../utils/Misc';
 import {Coordinate, Poi} from '../../utils/types';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { saveImage } from '../../utils/api/authAPI';
+import numbers from '../../constants/numbers';
 
 const Profile = ({navigation}: {navigation: any}) => {
   const [selectedIndex, setIndex] = useState<number>(0);
@@ -33,6 +36,7 @@ const Profile = ({navigation}: {navigation: any}) => {
   const [firstName, setFirstName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
   const [username, setUsername] = useState<string>('');
+  const [pfpURL, setPfpURL] = useState<string>('');
 
   const [bookmarks, setBookmarks] = useState<Poi[]>([]);
 
@@ -41,9 +45,11 @@ const Profile = ({navigation}: {navigation: any}) => {
     const _firstName = await AsyncStorage.getItem('first_name');
     const _lastName = await AsyncStorage.getItem('last_name');
     const _username = await AsyncStorage.getItem('username');
+    const _pfpURL = await AsyncStorage.getItem('pfp_url');
     setFirstName(_firstName || '');
     setLastName(_lastName || '');
     setUsername(_username || '');
+    setPfpURL(_pfpURL || '');
 
     const _bookmarks = await AsyncStorage.getItem('bookmarks');
     if (_bookmarks) {
@@ -61,6 +67,32 @@ const Profile = ({navigation}: {navigation: any}) => {
     return unsubscribe;
   }, [navigation]);
 
+  const handleEditPfp = async () => {
+    const options: ImageLibraryOptions = {
+      mediaType: 'photo',
+      includeBase64: true,
+    }
+
+    const image = await launchImageLibrary(options);
+    if (image.assets && image.assets.length > 0 && image.assets[0].base64 && image.assets[0].type) {
+      if (image.assets[0].fileSize && image.assets[0].fileSize < numbers.maxPfpSize) {
+        const image_url = await saveImage(image.assets[0].base64);
+
+        if (image_url) {
+          setPfpURL(image_url);
+        } else {
+          Alert.alert('Error', strings.profile.pfpUploadError);
+        }
+      } else {
+        Alert.alert('Error', strings.profile.pfpSizeError);
+      }
+    } else {
+      if (!image.didCancel) {
+        Alert.alert('Error', strings.profile.pfpSelectError);
+      }
+    }
+  }
+
   return (
     <View style={styles.container}>
       <SafeAreaView>
@@ -76,8 +108,14 @@ const Profile = ({navigation}: {navigation: any}) => {
       </SafeAreaView>
       <View style={profileStyles.container}>
         <View style={profileStyles.profilePic}>
-          <Image style={profileStyles.pic} source={{uri: user.profilePic}} />
+          <Image style={profileStyles.pic} source={pfpURL.length > 0 ? { uri: pfpURL } : icons.checked} />
         </View>
+        <Icon
+          icon={icons.edit}
+          padding={-2}
+          button={true}
+          onPress={handleEditPfp}
+        />
         <View style={profileStyles.info}>
           <Text size="l">
             {firstName} {lastName}

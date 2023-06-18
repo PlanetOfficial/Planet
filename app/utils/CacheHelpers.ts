@@ -11,8 +11,10 @@ import {getBookmarks} from './api/bookmarkAPI';
  * - first_name
  * - last_name
  * - username
- * - categories
+ * - pfp_url
  * - bookmarks
+ * 
+ * - categories
  */
 
 // caches categories
@@ -38,7 +40,7 @@ export const cacheBookmarks = async () => {
   }
 };
 
-// caches auth_token, user_id, first_name, last_name, username, bookmarks
+// caches auth_token, user_id, first_name, last_name, username, pfp_url, bookmarks
 export const cacheUserInfo = async (authToken: string) => {
   // start with clear caches (for user storage)
   clearCaches();
@@ -56,7 +58,7 @@ export const updateCaches = async (authToken: string) => {
   await cacheStorage(authToken);
 };
 
-// clears auth_token, user_id, first_name, last_name, username, bookmarks from cache
+// clears auth_token, user_id, first_name, last_name, username, pfp_url, bookmarks from cache
 export const clearCaches = async () => {
   if (await EncryptedStorage.getItem('auth_token')) {
     await EncryptedStorage.removeItem('auth_token');
@@ -78,6 +80,10 @@ export const clearCaches = async () => {
     AsyncStorage.removeItem('username');
   }
 
+  if (await AsyncStorage.getItem('pfp_url')) {
+    AsyncStorage.removeItem('pfp_url');
+  }
+
   if (await AsyncStorage.getItem('bookmarks')) {
     AsyncStorage.removeItem('bookmarks');
   }
@@ -96,6 +102,10 @@ const cacheStorage = async (authToken: string) => {
   await AsyncStorage.setItem('first_name', response.first_name);
   await AsyncStorage.setItem('last_name', response.last_name);
   await AsyncStorage.setItem('username', response.username);
+
+  if (response?.icon?.url) {
+    await AsyncStorage.setItem('pfp_url', response.icon.url);
+  }
 
   return true;
 };
