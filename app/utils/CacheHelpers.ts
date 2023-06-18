@@ -13,7 +13,7 @@ import {getBookmarks} from './api/bookmarkAPI';
  * - username
  * - pfp_url
  * - bookmarks
- * 
+ *
  * - categories
  */
 

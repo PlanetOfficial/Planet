@@ -11,7 +11,10 @@ import {
 import {s} from 'react-native-size-matters';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {ImageLibraryOptions, launchImageLibrary} from 'react-native-image-picker';
+import {
+  ImageLibraryOptions,
+  launchImageLibrary,
+} from 'react-native-image-picker';
 
 import colors from '../../constants/colors';
 import icons from '../../constants/icons';
@@ -25,7 +28,7 @@ import Separator from '../components/Separator';
 
 import {fetchUserLocation, handleBookmark} from '../../utils/Misc';
 import {Coordinate, Poi} from '../../utils/types';
-import { saveImage } from '../../utils/api/authAPI';
+import {saveImage} from '../../utils/api/authAPI';
 import numbers from '../../constants/numbers';
 
 const Profile = ({navigation}: {navigation: any}) => {
@@ -71,11 +74,19 @@ const Profile = ({navigation}: {navigation: any}) => {
     const options: ImageLibraryOptions = {
       mediaType: 'photo',
       includeBase64: true,
-    }
+    };
 
     const image = await launchImageLibrary(options);
-    if (image.assets && image.assets.length > 0 && image.assets[0].base64 && image.assets[0].type) {
-      if (image.assets[0].fileSize && image.assets[0].fileSize < numbers.maxPfpSize) {
+    if (
+      image.assets &&
+      image.assets.length > 0 &&
+      image.assets[0].base64 &&
+      image.assets[0].type
+    ) {
+      if (
+        image.assets[0].fileSize &&
+        image.assets[0].fileSize < numbers.maxPfpSize
+      ) {
         const image_url = await saveImage(image.assets[0].base64);
 
         if (image_url) {
@@ -91,7 +102,7 @@ const Profile = ({navigation}: {navigation: any}) => {
         Alert.alert('Error', strings.profile.pfpSelectError);
       }
     }
-  }
+  };
 
   return (
     <View style={styles.container}>
@@ -108,7 +119,10 @@ const Profile = ({navigation}: {navigation: any}) => {
       </SafeAreaView>
       <View style={profileStyles.container}>
         <View style={profileStyles.profilePic}>
-          <Image style={profileStyles.pic} source={pfpURL.length > 0 ? { uri: pfpURL } : icons.checked} />
+          <Image
+            style={profileStyles.pic}
+            source={pfpURL.length > 0 ? {uri: pfpURL} : icons.checked}
+          />
         </View>
         <Icon
           icon={icons.edit}

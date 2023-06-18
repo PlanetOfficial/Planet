@@ -1,4 +1,4 @@
-import numbers from "./numbers";
+import numbers from './numbers';
 
 const strings = {
   main: {
@@ -100,7 +100,9 @@ const strings = {
     noBookmarksFound: 'No Bookmarks Found',
     noBookmarksFoundDescription: 'Try bookmarking something',
     pfpSelectError: 'Error selecting profile picture',
-    pfpSizeError: `Profile picture must be less than ${numbers.maxPfpSize/1000000}MB`,
+    pfpSizeError: `Profile picture must be less than ${
+      numbers.maxPfpSize / 1000000
+    }MB`,
     pfpUploadError: 'Error uploading profile picture',
   },
   event: {

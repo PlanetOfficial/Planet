@@ -130,7 +130,7 @@ export const saveTokenToDatabase = async (fcm_token: string) => {
  * @requires auth_token should be set in EncryptedStorage before calling this function
  * This sets the user's profile in the cache if a succesful response.
  */
-export const saveImage = async(base64: string): Promise<string | null> => {
+export const saveImage = async (base64: string): Promise<string | null> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
   if (!authToken) {
@@ -138,13 +138,12 @@ export const saveImage = async(base64: string): Promise<string | null> => {
   }
 
   const response = await fetch(
-    UserAPIURL +
-      `/auth/uploadImage?authtoken=${authToken}`,
+    UserAPIURL + `/auth/uploadImage?authtoken=${authToken}`,
     {
       method: 'POST',
-      body: JSON.stringify({"content": "data:image/png;base64," + base64}),
+      body: JSON.stringify({content: 'data:image/png;base64,' + base64}),
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
     },
   );
@@ -157,4 +156,4 @@ export const saveImage = async(base64: string): Promise<string | null> => {
   } else {
     return null;
   }
-}
+};
