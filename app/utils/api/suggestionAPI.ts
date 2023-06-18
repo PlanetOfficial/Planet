@@ -2,12 +2,19 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 import {EventAPIURL} from './APIConstants';
 import {Spin} from '../types';
 
+/**
+ * @requires auth_token should be set in EncryptedStorage before calling this function
+ */
 export const postSuggestion = async (
   event_id: number,
   destination_id: number,
   poi_id: number,
 ): Promise<Boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
+
+  if (!authToken) {
+    return false;
+  }
 
   const response = await fetch(
     EventAPIURL +
@@ -20,12 +27,19 @@ export const postSuggestion = async (
   return response.ok;
 };
 
+/**
+ * @requires auth_token should be set in EncryptedStorage before calling this function
+ */
 export const removeSuggestion = async (
   event_id: number,
   destination_id: number,
   poi_id: number,
 ): Promise<Boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
+
+  if (!authToken) {
+    return false;
+  }
 
   const response = await fetch(
     EventAPIURL +
@@ -38,12 +52,19 @@ export const removeSuggestion = async (
   return response.ok;
 };
 
+/**
+ * @requires auth_token should be set in EncryptedStorage before calling this function
+ */
 export const makePrimary = async (
   event_id: number,
   destination_id: number,
   suggestion_id: number,
 ): Promise<Boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
+
+  if (!authToken) {
+    return false;
+  }
 
   const response = await fetch(
     EventAPIURL +
@@ -56,12 +77,19 @@ export const makePrimary = async (
   return response.ok;
 };
 
+/**
+ * @requires auth_token should be set in EncryptedStorage before calling this function
+ */
 export const spinRoulette = async (
   event_id: number,
   destination_id: number,
   suggestion_id: number,
 ): Promise<Spin | null> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
+
+  if (!authToken) {
+    return null;
+  }
 
   const response = await fetch(
     EventAPIURL +
@@ -78,12 +106,19 @@ export const spinRoulette = async (
   }
 };
 
+/**
+ * @requires auth_token should be set in EncryptedStorage before calling this function
+ */
 export const vote = async (
   event_id: number,
   destination_id: number,
   suggestion_id: number,
 ): Promise<Boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
+
+  if (!authToken) {
+    return false;
+  }
 
   const response = await fetch(
     EventAPIURL +

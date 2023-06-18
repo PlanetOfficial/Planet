@@ -39,6 +39,8 @@
 	<string>Please allow location access if you wish to search for a nearby locations.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Please allow location access if you wish to search for a nearby locations.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Please allow photo library access if you wish to upload a photo.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
@@ -74,6 +76,7 @@
 		<string>Lato-Regular.ttf</string>
 		<string>Lato-Thin.ttf</string>
 		<string>Lato-ThinItalic.ttf</string>
+		<string>VarelaRound-Regular.ttf</string>
 	</array>
 </dict>
 </plist>

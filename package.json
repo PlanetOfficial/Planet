@@ -34,6 +34,7 @@
     "react-native-encrypted-storage": "^4.0.3",
     "react-native-gesture-handler": "^2.10.1",
     "react-native-google-places-autocomplete": "^2.5.1",
+    "react-native-image-picker": "^5.4.2",
     "react-native-linear-gradient": "^2.6.2",
     "react-native-map-link": "^2.11.0",
     "react-native-maps": "^1.7.1",
