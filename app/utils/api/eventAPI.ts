@@ -79,3 +79,71 @@ export const postEvent = async (
 
   return response.ok;
 };
+
+/**
+ * @requires auth_token should be set in EncryptedStorage before calling this function
+ */
+export const editName = async (
+  event_id: number,
+  name: string,
+): Promise<Boolean> => {
+  const authToken = await EncryptedStorage.getItem('auth_token');
+
+  if (!authToken) {
+    return false;
+  }
+
+  const response = await fetch(
+    EventAPIURL +
+      `/event/name?event_id=${event_id}&name=${name}&authtoken=${authToken}`,
+    {
+      method: 'POST',
+    },
+  );
+
+  return response.ok;
+};
+
+/**
+ * @requires auth_token should be set in EncryptedStorage before calling this function
+ */
+export const editDatetime = async (
+  event_id: number,
+  datetime: string,
+): Promise<Boolean> => {
+  const authToken = await EncryptedStorage.getItem('auth_token');
+
+  if (!authToken) {
+    return false;
+  }
+
+  const response = await fetch(
+    EventAPIURL +
+      `/event/datetime?event_id=${event_id}&datetime=${datetime}&authtoken=${authToken}`,
+    {
+      method: 'POST',
+    },
+  );
+
+  return response.ok;
+};
+
+/**
+ * @requires auth_token should be set in EncryptedStorage before calling this function
+ */
+export const leaveEvent = async (event_id: number): Promise<Boolean> => {
+  const authToken = await EncryptedStorage.getItem('auth_token');
+
+  if (!authToken) {
+    return false;
+  }
+
+  const response = await fetch(
+    EventAPIURL + `/member?event_id=${event_id}&authtoken=${authToken}`,
+    {
+      method: 'DELETE',
+    },
+  );
+
+  return response.ok;
+};

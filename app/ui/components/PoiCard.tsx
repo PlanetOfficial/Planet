@@ -28,7 +28,10 @@ const PoiCard: React.FC<Props> = ({
 }) => {
   return (
     <View style={[cardStyles.container, styles.shadow]}>
-      <Image style={cardStyles.image} source={{uri: poi.photo}} />
+      <Image
+        style={cardStyles.image}
+        source={poi.photo ? {uri: poi.photo} : icons.placeholder}
+      />
       <View style={cardStyles.footer}>
         <View style={cardStyles.infoContainer}>
           <Text size="s" numberOfLines={1}>

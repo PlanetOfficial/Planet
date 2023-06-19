@@ -9,6 +9,7 @@ import styles from '../../constants/styles';
 import Text from './Text';
 
 import {Poi} from '../../utils/types';
+import icons from '../../constants/icons';
 
 interface Props {
   poi: Poi;
@@ -17,7 +18,10 @@ interface Props {
 const PoiCardXS: React.FC<Props> = ({poi}) => {
   return (
     <View style={[cardStyles.container, styles.shadow]}>
-      <Image style={cardStyles.image} source={{uri: poi.photo}} />
+      <Image
+        style={cardStyles.image}
+        source={poi.photo ? {uri: poi.photo} : icons.placeholder}
+      />
       <View style={cardStyles.header}>
         <View style={cardStyles.title}>
           <Text size="xs" numberOfLines={1}>

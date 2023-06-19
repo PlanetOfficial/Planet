@@ -106,6 +106,7 @@ const strings = {
     pfpUploadError: 'Error uploading profile picture',
   },
   event: {
+    destinations: 'Destinations',
     yourEvents: 'Your Events',
     untitled: 'Untitled Event',
     backConfirmation:
@@ -113,6 +114,7 @@ const strings = {
     addDestination: 'Add a Destination',
     moveUp: 'Move Up',
     moveDown: 'Move Down',
+    renameEvent: 'Enter a new name for this event:',
     renamePrompt: 'Enter a new name for this destination:',
     noEventsFound: 'No Events Found',
     noEventsFoundDescription:
@@ -123,6 +125,12 @@ const strings = {
       'Are you sure you want to mark this suggestion as the primary destination?',
     removeSuggestion: 'Remove Suggestion',
     removeSuggestionInfo: 'Are you sure you want to remove this suggestion?',
+    inviteAFriend: 'Invite a Friend',
+    leave: 'Leave',
+    leaveEvent: 'Leave Event',
+    leaveInfo: 'Are you sure you want to leave this event?',
+    deleteDestination: 'Remove Destination',
+    deleteDestinationInfo: 'Are you sure you want to remove this destination?',
   },
   roulette: {
     total: 'Total',

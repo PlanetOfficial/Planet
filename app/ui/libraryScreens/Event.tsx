@@ -233,9 +233,9 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
             }}
           />
           <View style={localStyles.texts}>
-            <Text>{event.name}</Text>
+            <Text>{eventDetail ? eventDetail.name : event.name}</Text>
             <Text size="xs" weight="l" color={colors.accent}>
-              {moment(event.datetime)
+              {moment(eventDetail ? eventDetail.datetime : event.datetime)
                 .add(date.getTimezoneOffset(), 'minutes')
                 .format('MMM Do, h:mm a')}
             </Text>
@@ -245,9 +245,7 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
             disabled={displayingSuggestion}
             button={true}
             padding={-2}
-            onPress={() => {
-              // TODO: Navigate to details tab
-            }}
+            onPress={() => navigation.navigate('EventSettings', {event})}
           />
         </View>
       </SafeAreaView>
