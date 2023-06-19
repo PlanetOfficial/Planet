@@ -30,7 +30,7 @@ import Text from '../components/Text';
 
 import {Poi, PoiDetail, Review} from '../../utils/types';
 import {getPoi, postPoi} from '../../utils/api/poiAPI';
-import {handleBookmark} from '../../utils/Misc';
+import {handleBookmark, isOpen} from '../../utils/Misc';
 
 const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
   StatusBar.setBarStyle('light-content', true);
@@ -40,6 +40,7 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
   const [destinationDetails, setDestinationDetails] = useState<PoiDetail>();
 
   const [bookmarks, setBookmarks] = useState<Poi[]>([]);
+  const [open, setOpen] = useState<boolean>();
 
   const [mode] = useState<string>(route.params?.mode);
 
@@ -61,6 +62,7 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
       if (result) {
         setDestination(result.poi);
         setDestinationDetails(result.poiDetail);
+        setOpen(isOpen(result.poiDetail.periods));
       } else {
         Alert.alert(strings.error.error, strings.error.loadDestinationDetails);
       }
@@ -75,6 +77,7 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
 
       if (details) {
         setDestinationDetails(details);
+        setOpen(isOpen(details.periods));
       } else {
         Alert.alert(strings.error.error, strings.error.loadDestinationDetails);
       }
@@ -129,47 +132,6 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
     }
   };
 
-  const convertStringTimeToDate = (timeString: string) => {
-    const [time, period] = timeString.split(' ');
-    const [hours, minutes] = time.split(':');
-
-    if (hours && minutes) {
-      let hour = parseInt(hours, 10);
-      const minute = parseInt(minutes, 10);
-
-      if (period === 'PM' && hour !== 12) {
-        hour += 12;
-      } else if (period === 'AM' && hour === 12) {
-        hour = 0;
-      } else if (!period && hour < 6) {
-        hour += 12;
-      }
-
-      const dateWithTimeString = new Date(
-        date.getFullYear(),
-        date.getMonth(),
-        date.getDate(),
-        hour,
-        minute,
-      );
-      return dateWithTimeString;
-    }
-  };
-
-  const isOpen = (operatingHours: string[]) => {
-    const [_, hours] = operatingHours[(date.getDay() + 6) % 7].split(': ');
-
-    if (hours === 'Closed') {
-      return false;
-    }
-
-    const [start, end] = hours.split(' – ');
-    const endTime = convertStringTimeToDate(end);
-    const startTime = convertStringTimeToDate(start);
-
-    return startTime && endTime && date >= startTime && date <= endTime;
-  };
-
   const [galleryVisible, setGalleryVisible] = useState(false);
   const HeaderComponent = useCallback(
     () => (
@@ -211,7 +173,7 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
     <View style={styles.container}>
       {destinationDetails ? (
         <ImageView
-          images={destinationDetails.photos.map(photo => ({uri: photo}))}
+          images={destinationDetails.photos?.map(photo => ({uri: photo}))}
           imageIndex={0}
           visible={galleryVisible}
           onRequestClose={() => setGalleryVisible(false)}
@@ -310,7 +272,7 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
             <View style={overViewStyles.hours}>
               {destinationDetails?.hours.length === 7 ? (
                 <>
-                  {isOpen(destinationDetails.hours) ? (
+                  {open ? (
                     <Text color={colors.green}>{strings.poi.open}</Text>
                   ) : (
                     <Text color={colors.red}>{strings.poi.closed}</Text>
@@ -379,7 +341,7 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
                           weight={
                             index === (date.getDay() + 6) % 7 ? 'r' : 'l'
                           }>
-                          {hour.split(' ')[1] +
+                          {hour.replace(',', '').split(' ')[1] +
                             ' (' +
                             hour?.split(' ')[0].slice(0, -1) +
                             ')'}
@@ -388,9 +350,9 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
                     )
                   ) : (
                     <Text size="s" weight="l">
-                      {destinationDetails?.hours[(date.getDay() + 6) % 7].split(
-                        ' ',
-                      )[1] +
+                      {destinationDetails?.hours[(date.getDay() + 6) % 7]
+                        .replace(',', '')
+                        .split(' ')[1] +
                         ' (' +
                         destinationDetails?.hours[(date.getDay() + 6) % 7]
                           ?.split(' ')[0]

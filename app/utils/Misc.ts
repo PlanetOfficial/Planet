@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import haversine from 'haversine-distance';
 
-import {Coordinate, Poi} from './types';
+import {Coordinate, PlaceOpeningHoursPeriod, Poi} from './types';
 
 import {bookmark} from './api/bookmarkAPI';
 import strings from '../constants/strings';
@@ -131,4 +131,41 @@ export const getInfoString = (poi: Poi): string => {
   }
 
   return poiString;
+};
+
+const convertStringTimeToDate = (timeString: string) => {
+  const date = new Date();
+
+  const hours = timeString.substring(0, 2);
+  const minutes = timeString.substring(2, 4);
+
+  if (hours && minutes) {
+    return new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+      parseInt(hours, 10),
+      parseInt(minutes, 10),
+    );
+  }
+};
+
+export const isOpen = (periods: PlaceOpeningHoursPeriod[]) => {
+  const date = new Date();
+
+  return periods?.some(period => {
+    const startTime = convertStringTimeToDate(period.open.time);
+    const endTime = convertStringTimeToDate(period.close.time);
+
+    console.log(startTime, endTime, date, period.open.day, period.close.day);
+
+    return (
+      startTime &&
+      endTime &&
+      date >= startTime &&
+      date <= endTime &&
+      period.open.day <= date.getDay() &&
+      period.close.day >= date.getDay()
+    );
+  });
 };

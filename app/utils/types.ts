@@ -43,9 +43,20 @@ export interface PoiDetail {
   photos: string[];
   reviews: Review[];
   hours: string[];
+  periods: PlaceOpeningHoursPeriod[];
   url: string;
   website: string;
   attributes: string[];
+}
+
+export interface PlaceOpeningHoursPeriod {
+  open: PlaceOpeningHoursPeriodDetail;
+  close: PlaceOpeningHoursPeriodDetail;
+}
+
+export interface PlaceOpeningHoursPeriodDetail {
+  day: number;
+  time: string;
 }
 
 export interface Review {
