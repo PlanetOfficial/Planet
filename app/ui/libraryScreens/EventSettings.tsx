@@ -40,7 +40,7 @@ import {
 import {Destination, Event, EventDetail, UserInfo} from '../../utils/types';
 
 const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
-  const [event] = useState<Event>(route.params.event);
+  const [event] = useState<Event>(route.params?.event);
   const [eventDetail, setEventDetail] = useState<EventDetail>();
 
   const [eventTitle, setEventTitle] = useState<string>();
