@@ -64,9 +64,9 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
       } else {
         Alert.alert(strings.error.error, strings.error.loadDestinationDetails);
       }
-    } else {
-      const _destination = route.params?.destination;
-      setDestination(route.params?.destination);
+    } else if (route.params?.poi) {
+      const _destination = route.params?.poi;
+      setDestination(_destination);
 
       const details: PoiDetail | null = await getPoi(
         _destination.place_id,
@@ -79,7 +79,7 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
         Alert.alert(strings.error.error, strings.error.loadDestinationDetails);
       }
     }
-  }, [route.params?.destination, route.params?.place_id]);
+  }, [route.params?.poi, route.params?.place_id]);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -141,6 +141,8 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
         hour += 12;
       } else if (period === 'AM' && hour === 12) {
         hour = 0;
+      } else if (!period && hour < 6) {
+        hour += 12;
       }
 
       const dateWithTimeString = new Date(
@@ -162,8 +164,8 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
     }
 
     const [start, end] = hours.split(' – ');
-    const startTime = convertStringTimeToDate(start);
     const endTime = convertStringTimeToDate(end);
+    const startTime = convertStringTimeToDate(start);
 
     return startTime && endTime && date >= startTime && date <= endTime;
   };
