@@ -11,6 +11,7 @@ import {
 import DatePicker from 'react-native-date-picker';
 import {s} from 'react-native-size-matters';
 import prompt from 'react-native-prompt-android';
+import DraggableFlatList from 'react-native-draggable-flatlist';
 
 import moment from 'moment';
 
@@ -21,6 +22,8 @@ import strings from '../../constants/strings';
 
 import Text from '../components/Text';
 import Icon from '../components/Icon';
+import Separator from '../components/Separator';
+import UserIcon from '../components/UserIcon';
 
 import {
   editDatetime,
@@ -28,15 +31,13 @@ import {
   getEvent,
   leaveEvent,
 } from '../../utils/api/eventAPI';
-import {Destination, Event, EventDetail, UserInfo} from '../../utils/types';
-import DraggableFlatList from 'react-native-draggable-flatlist';
-import Separator from '../components/Separator';
 import {
   postDestination,
   renameDestination,
   removeDestination,
   reorderDestinations,
 } from '../../utils/api/destinationAPI';
+import {Destination, Event, EventDetail, UserInfo} from '../../utils/types';
 
 const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
   const [event] = useState<Event>(route.params.event);
@@ -252,10 +253,7 @@ const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
                   key={member.id}
                   style={[userStyles.container, userStyles.border]}>
                   <View style={userStyles.profilePic}>
-                    <Image
-                      style={userStyles.pic}
-                      source={{uri: 'https://picsum.photos/200'}}
-                    />
+                    <UserIcon user={member} />
                   </View>
                   <View style={userStyles.texts}>
                     <Text

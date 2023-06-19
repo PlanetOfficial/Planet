@@ -4,10 +4,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import haversine from 'haversine-distance';
 
-import {Coordinate, PlaceOpeningHoursPeriod, Poi} from './types';
-
-import {bookmark} from './api/bookmarkAPI';
 import strings from '../constants/strings';
+
+import {Coordinate, PlaceOpeningHoursPeriod, Poi} from './types';
+import {bookmark} from './api/bookmarkAPI';
 
 /*
   Given a point and the longitudeDelta, calculate the radius of the circle (the
@@ -150,6 +150,9 @@ const convertStringTimeToDate = (timeString: string) => {
   }
 };
 
+/*
+  Determines if the poi is open or not.
+*/
 export const isOpen = (periods: PlaceOpeningHoursPeriod[]) => {
   const date = new Date();
 

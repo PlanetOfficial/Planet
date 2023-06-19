@@ -33,7 +33,7 @@ import {handleBookmark} from '../../utils/Misc';
 import {postEvent} from '../../utils/api/eventAPI';
 
 const Create = ({navigation, route}: {navigation: any; route: any}) => {
-  const [eventTitle, setEventTitle] = React.useState(strings.event.untitled);
+  const [eventTitle, setEventTitle] = useState(strings.event.untitled);
   const d = new Date();
   const c = 1000 * 60 * 5; // 5 minutes
   const [date, setDate] = useState<string>(
