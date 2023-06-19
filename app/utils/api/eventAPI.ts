@@ -59,11 +59,18 @@ export const postEvent = async (
   return response.ok;
 };
 
+/**
+ * @requires auth_token should be set in EncryptedStorage before calling this function
+ */
 export const editName = async (
   event_id: number,
   name: string,
 ): Promise<Boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
+
+  if (!authToken) {
+    return false;
+  }
 
   const response = await fetch(
     EventAPIURL +
@@ -76,11 +83,18 @@ export const editName = async (
   return response.ok;
 };
 
+/**
+ * @requires auth_token should be set in EncryptedStorage before calling this function
+ */
 export const editDatetime = async (
   event_id: number,
   datetime: string,
 ): Promise<Boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
+
+  if (!authToken) {
+    return false;
+  }
 
   const response = await fetch(
     EventAPIURL +
@@ -93,8 +107,15 @@ export const editDatetime = async (
   return response.ok;
 };
 
+/**
+ * @requires auth_token should be set in EncryptedStorage before calling this function
+ */
 export const leaveEvent = async (event_id: number): Promise<Boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
+
+  if (!authToken) {
+    return false;
+  }
 
   const response = await fetch(
     EventAPIURL + `/member?event_id=${event_id}&authtoken=${authToken}`,

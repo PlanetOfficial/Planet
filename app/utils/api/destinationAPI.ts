@@ -1,11 +1,18 @@
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {EventAPIURL} from './APIConstants';
 
+/**
+ * @requires auth_token should be set in EncryptedStorage before calling this function
+ */
 export const postDestination = async (
   event_id: number,
   poi_id: number,
 ): Promise<Boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
+
+  if (!authToken) {
+    return false;
+  }
 
   const response = await fetch(
     EventAPIURL +
@@ -18,12 +25,19 @@ export const postDestination = async (
   return response.ok;
 };
 
+/**
+ * @requires auth_token should be set in EncryptedStorage before calling this function
+ */
 export const renameDestination = async (
   event_id: number,
   destination_id: number,
   name: string,
 ): Promise<Boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
+
+  if (!authToken) {
+    return false;
+  }
 
   const response = await fetch(
     EventAPIURL +
@@ -36,11 +50,18 @@ export const renameDestination = async (
   return response.ok;
 };
 
+/**
+ * @requires auth_token should be set in EncryptedStorage before calling this function
+ */
 export const removeDestination = async (
   event_id: number,
   destination_id: number,
 ): Promise<Boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
+
+  if (!authToken) {
+    return false;
+  }
 
   const response = await fetch(
     EventAPIURL +
@@ -53,11 +74,18 @@ export const removeDestination = async (
   return response.ok;
 };
 
+/**
+ * @requires auth_token should be set in EncryptedStorage before calling this function
+ */
 export const reorderDestinations = async (
   event_id: number,
   destination_ids: number[],
 ): Promise<Boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
+
+  if (!authToken) {
+    return false;
+  }
 
   const response = await fetch(
     EventAPIURL +
