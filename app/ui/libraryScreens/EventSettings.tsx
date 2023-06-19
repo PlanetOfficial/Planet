@@ -101,7 +101,6 @@ const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
       setEventDetail(_eventDetail);
       setEventTitle(name);
     } else {
-      setEventTitle(eventDetail.name);
       Alert.alert('Error', 'Could not edit event name, please try again.');
     }
   };
@@ -115,7 +114,6 @@ const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
       setEventDetail(_eventDetail);
       setDatetime(dt);
     } else {
-      setDatetime(event.datetime);
       Alert.alert('Error', 'Could not edit event date, please try again.');
     }
   };
