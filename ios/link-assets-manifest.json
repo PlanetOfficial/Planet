@@ -44,6 +44,10 @@
     {
       "path": "app/assets/fonts/Lato/OFL.txt",
       "sha1": "dced1a41948e9968f9026cbc7ddabbf88e65423b"
+    },
+    {
+      "path": "app/assets/fonts/Varela_Round/VarelaRound-Regular.ttf",
+      "sha1": "549e4b02217aff2920c11101eca6b41c805ccb69"
     }
   ]
 }

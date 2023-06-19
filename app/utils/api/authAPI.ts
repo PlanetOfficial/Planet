@@ -1,6 +1,7 @@
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {UserAPIURL} from './APIConstants';
 import {UserInfo} from '../types';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const login = async (username: string, password: string) => {
   const response = await fetch(
@@ -102,6 +103,9 @@ export const isVerified = async (authToken: string) => {
   return myJson?.verified;
 };
 
+/**
+ * @requires auth_token should be set in EncryptedStorage before calling this function
+ */
 export const saveTokenToDatabase = async (fcm_token: string) => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
@@ -120,4 +124,36 @@ export const saveTokenToDatabase = async (fcm_token: string) => {
   const myJson = await response.json();
 
   return myJson;
+};
+
+/**
+ * @requires auth_token should be set in EncryptedStorage before calling this function
+ * This sets the user's profile in the cache if a succesful response.
+ */
+export const saveImage = async (base64: string): Promise<string | null> => {
+  const authToken = await EncryptedStorage.getItem('auth_token');
+
+  if (!authToken) {
+    return null;
+  }
+
+  const response = await fetch(
+    UserAPIURL + `/auth/uploadImage?authtoken=${authToken}`,
+    {
+      method: 'POST',
+      body: JSON.stringify({content: 'data:image/png;base64,' + base64}),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    },
+  );
+
+  const myJson: {image_url: string} = await response.json();
+
+  if (response?.ok) {
+    await AsyncStorage.setItem('pfp_url', JSON.stringify(myJson.image_url));
+    return myJson.image_url;
+  } else {
+    return null;
+  }
 };

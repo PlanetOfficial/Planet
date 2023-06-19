@@ -31,32 +31,28 @@ import {
 import {Destination, Event, EventDetail, UserInfo} from '../../utils/types';
 import DraggableFlatList from 'react-native-draggable-flatlist';
 import Separator from '../components/Separator';
-import {
-  postDestination,
-  removeDestination,
-  renameDestination,
-  reorderDestinations,
-} from '../../utils/api/destinationAPI';
+import { postDestination, renameDestination, removeDestination, reorderDestinations } from '../../utils/api/destinationAPI';
 
 const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
-  const date = new Date();
-
-  const [event] = useState<Event>(route.params?.event);
+  const [event] = useState<Event>(route.params.event);
   const [eventDetail, setEventDetail] = useState<EventDetail>();
 
-  const [eventTitle, setEventTitle] = useState<string>(event.name);
-
-  const [datetime, setDatetime] = useState<string>(
-    moment(event.datetime)
-      .add(date.getTimezoneOffset(), 'minutes')
-      .format('MMM Do, h:mm a'),
-  );
+  const [eventTitle, setEventTitle] = useState<string>();
+  const [datetime, setDatetime] = useState<string>();
   const [datePickerOpen, setDatePickerOpen] = useState<boolean>(false);
 
   const loadData = useCallback(async () => {
     const _eventDetail = await getEvent(event.id);
     if (_eventDetail) {
+      const date = new Date();
+
       setEventDetail(_eventDetail);
+      setEventTitle(_eventDetail.name);
+      setDatetime(
+        moment(_eventDetail.datetime)
+          .add(date.getTimezoneOffset(), 'minutes')
+          .format('MMM Do, h:mm a'),
+      );
     } else {
       Alert.alert(strings.error.error, strings.error.fetchEvent);
     }
@@ -88,9 +84,13 @@ const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
   }, [navigation, loadData, addDestination]);
 
   const handleEditName = async (name: string) => {
+    if (!eventDetail) {
+      return;
+    }
+
     const response = await editName(event.id, name);
 
-    if (response && eventDetail) {
+    if (response) {
       const _eventDetail = {...eventDetail};
       _eventDetail.name = name;
       setEventDetail(_eventDetail);

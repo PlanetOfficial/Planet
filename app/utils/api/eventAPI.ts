@@ -2,8 +2,15 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 import {EventAPIURL} from './APIConstants';
 import {Event, EventDetail} from '../types';
 
+/**
+ * @requires auth_token should be set in EncryptedStorage before calling this function
+ */
 export const getEvents = async (): Promise<Event[] | null> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
+
+  if (!authToken) {
+    return null;
+  }
 
   const response = await fetch(EventAPIURL + `/event?authtoken=${authToken}`, {
     method: 'GET',
@@ -17,8 +24,15 @@ export const getEvents = async (): Promise<Event[] | null> => {
   }
 };
 
+/**
+ * @requires auth_token should be set in EncryptedStorage before calling this function
+ */
 export const getEvent = async (id: number): Promise<EventDetail | null> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
+
+  if (!authToken) {
+    return null;
+  }
 
   const response = await fetch(
     EventAPIURL + `/event/${id}?authtoken=${authToken}`,
@@ -35,6 +49,9 @@ export const getEvent = async (id: number): Promise<EventDetail | null> => {
   }
 };
 
+/**
+ * @requires auth_token should be set in EncryptedStorage before calling this function
+ */
 export const postEvent = async (
   poi_ids: number[],
   names: string[],
@@ -43,6 +60,10 @@ export const postEvent = async (
   members: number[],
 ): Promise<Boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
+
+  if (!authToken) {
+    return false;
+  }
 
   const response = await fetch(
     EventAPIURL +
@@ -59,11 +80,18 @@ export const postEvent = async (
   return response.ok;
 };
 
+/**
+ * @requires auth_token should be set in EncryptedStorage before calling this function
+ */
 export const editName = async (
   event_id: number,
   name: string,
 ): Promise<Boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
+
+  if (!authToken) {
+    return false;
+  }
 
   const response = await fetch(
     EventAPIURL +
@@ -76,11 +104,18 @@ export const editName = async (
   return response.ok;
 };
 
+/**
+ * @requires auth_token should be set in EncryptedStorage before calling this function
+ */
 export const editDatetime = async (
   event_id: number,
   datetime: string,
 ): Promise<Boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
+
+  if (!authToken) {
+    return false;
+  }
 
   const response = await fetch(
     EventAPIURL +
@@ -93,8 +128,15 @@ export const editDatetime = async (
   return response.ok;
 };
 
+/**
+ * @requires auth_token should be set in EncryptedStorage before calling this function
+ */
 export const leaveEvent = async (event_id: number): Promise<Boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
+
+  if (!authToken) {
+    return false;
+  }
 
   const response = await fetch(
     EventAPIURL + `/member?event_id=${event_id}&authtoken=${authToken}`,

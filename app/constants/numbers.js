@@ -6,6 +6,7 @@ const numbers = {
   defaultRadius: 5000,
   maxRadius: 50000,
   milesToMeters: 1609,
+  maxPfpSize: 2000000, // in bytes
 };
 
 export default numbers;

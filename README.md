@@ -70,7 +70,7 @@ to the google play store.
 
 ------------
 
-<h1>Detox setup (INACTIVE CURRENTLY):</h1>
+<h1>Detox setup (NOT SUPPORTED CURRENTLY):</h1>
 https://wix.github.io/Detox/docs/introduction/getting-started/
 
 Run this in your terminal (for macs)

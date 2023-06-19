@@ -5,7 +5,6 @@ import {
   StyleSheet,
   TouchableOpacity,
   FlatList,
-  Image,
   Alert,
 } from 'react-native';
 import {Gesture, GestureDetector} from 'react-native-gesture-handler';
@@ -33,6 +32,7 @@ import PoiCard from '../components/PoiCard';
 import {handleBookmark} from '../../utils/Misc';
 import {Destination, Poi, Suggestion, UserInfo} from '../../utils/types';
 import {makePrimary, spinRoulette} from '../../utils/api/suggestionAPI';
+import UserIcon from '../components/UserIcon';
 
 const Roulette = ({navigation, route}: {navigation: any; route: any}) => {
   const [eventId] = useState(route.params?.eventId);
@@ -241,10 +241,7 @@ const Roulette = ({navigation, route}: {navigation: any; route: any}) => {
               renderItem={({item}) => (
                 <View style={userStyles.container}>
                   <View style={userStyles.profilePic}>
-                    <Image
-                      style={userStyles.pic}
-                      source={{uri: 'https://picsum.photos/200'}}
-                    />
+                    <UserIcon user={item} />
                   </View>
                   <View style={userStyles.texts}>
                     <Text
