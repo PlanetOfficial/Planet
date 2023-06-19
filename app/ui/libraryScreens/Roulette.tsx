@@ -35,9 +35,9 @@ import {Destination, Poi, Suggestion, UserInfo} from '../../utils/types';
 import {makePrimary, spinRoulette} from '../../utils/api/suggestionAPI';
 
 const Roulette = ({navigation, route}: {navigation: any; route: any}) => {
-  const [eventId] = useState(route.params.eventId);
+  const [eventId] = useState(route.params?.eventId);
   const [destination, setDestination] = useState<Destination>(
-    route.params.destination,
+    route.params?.destination,
   );
 
   const [bookmarks, setBookmarks] = useState<Poi[]>([]);

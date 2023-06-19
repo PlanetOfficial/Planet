@@ -41,7 +41,7 @@ import {
 const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
   const date = new Date();
 
-  const [event] = useState<Event>(route.params.event);
+  const [event] = useState<Event>(route.params?.event);
   const [eventDetail, setEventDetail] = useState<EventDetail>();
 
   const [eventTitle, setEventTitle] = useState<string>(event.name);

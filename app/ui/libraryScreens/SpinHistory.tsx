@@ -22,7 +22,7 @@ import PoiCardXS from '../components/PoiCardXS';
 import {Destination, Spin} from '../../utils/types';
 
 const SpinHistory = ({navigation, route}: {navigation: any; route: any}) => {
-  const [destination] = useState<Destination>(route.params.destination);
+  const [destination] = useState<Destination>(route.params?.destination);
 
   return (
     <View style={styles.container}>

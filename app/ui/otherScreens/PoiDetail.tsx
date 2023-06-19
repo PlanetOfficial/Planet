@@ -36,12 +36,12 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
   StatusBar.setBarStyle('light-content', true);
   const date = new Date();
 
-  const [destination, setDestination] = useState<Poi>(route.params.poi);
+  const [destination, setDestination] = useState<Poi>();
   const [destinationDetails, setDestinationDetails] = useState<PoiDetail>();
 
   const [bookmarks, setBookmarks] = useState<Poi[]>([]);
 
-  const [mode] = useState<string>(route.params.mode);
+  const [mode] = useState<string>(route.params?.mode);
 
   const [mapExpanded, setMapExpanded] = useState<boolean>(false);
   const [hoursExpanded, setHoursExpanded] = useState<boolean>(false);
@@ -57,7 +57,7 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
 
   const initializeDestinationData = useCallback(async () => {
     if (route.params?.place_id) {
-      const result = await postPoi(route.params.place_id);
+      const result = await postPoi(route.params?.place_id);
       if (result) {
         setDestination(result.poi);
         setDestinationDetails(result.poiDetail);
@@ -65,9 +65,12 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
         Alert.alert(strings.error.error, strings.error.loadDestinationDetails);
       }
     } else {
+      const _destination = route.params?.destination;
+      setDestination(route.params?.destination);
+
       const details: PoiDetail | null = await getPoi(
-        destination.place_id,
-        destination.supplier,
+        _destination.place_id,
+        _destination.supplier,
       );
 
       if (details) {
@@ -76,7 +79,7 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
         Alert.alert(strings.error.error, strings.error.loadDestinationDetails);
       }
     }
-  }, [destination.place_id, destination.supplier, route.params?.place_id]);
+  }, [route.params?.destination, route.params?.place_id]);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -88,6 +91,9 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
   }, [navigation, initializeBookmarks, initializeDestinationData]);
 
   const handleMapPress = async () => {
+    if (!destination) {
+      return;
+    }
     showLocation({
       latitude: destination?.latitude,
       longitude: destination?.longitude,
@@ -127,7 +133,7 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
     const [time, period] = timeString.split(' ');
     const [hours, minutes] = time.split(':');
 
-    if (hours && minutes && period) {
+    if (hours && minutes) {
       let hour = parseInt(hours, 10);
       const minute = parseInt(minutes, 10);
 
@@ -151,7 +157,7 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
   const isOpen = (operatingHours: string[]) => {
     const [_, hours] = operatingHours[(date.getDay() + 6) % 7].split(': ');
 
-    if(hours === 'Closed'){
+    if (hours === 'Closed') {
       return false;
     }
 
@@ -217,7 +223,7 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
       <Animated.View style={{height: headerHeight}}>
         <ImageBackground
           style={[headerStyles.image]}
-          source={{uri: destination.photo}}>
+          source={{uri: destination?.photo}}>
           <View style={headerStyles.darken} />
         </ImageBackground>
         <Animated.View style={[headerStyles.container, {height: headerHeight}]}>
@@ -239,13 +245,15 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
               <Icon
                 size="m"
                 icon={
-                  bookmarks.some(bookmark => bookmark.id === destination.id)
+                  bookmarks.some(bookmark => bookmark.id === destination?.id)
                     ? icons.bookmarked
                     : icons.bookmark
                 }
-                onPress={() => {
-                  handleBookmark(destination, bookmarks, setBookmarks);
-                }}
+                onPress={() =>
+                  destination
+                    ? handleBookmark(destination, bookmarks, setBookmarks)
+                    : null
+                }
                 color={colors.white}
               />
             </View>
@@ -327,7 +335,7 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
             </View>
           ) : null}
         </View>
-        {destination.latitude && destination.longitude ? (
+        {destination?.latitude && destination.longitude ? (
           <MapView
             onPress={() => {
               LayoutAnimation.configureNext(

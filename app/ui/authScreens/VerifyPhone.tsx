@@ -23,7 +23,7 @@ import {verifyCode} from '../../utils/api/authAPI';
  * - authToken: string
  */
 const VerifyPhone = ({navigation, route}: {navigation: any; route: any}) => {
-  const [authToken] = useState<string>(route.params.authToken);
+  const [authToken] = useState<string>(route.params?.authToken);
 
   const [code, setCode] = useState<string>('');
 

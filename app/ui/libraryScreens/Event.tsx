@@ -41,7 +41,7 @@ import SuggestionCard from '../components/SuggestionCard';
 
 const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
   const date = new Date();
-  const [event] = useState<Event>(route.params.event);
+  const [event] = useState<Event>(route.params?.event);
 
   const [eventDetail, setEventDetail] = useState<EventDetail>();
   const [loading, setLoading] = useState<boolean>(true);
