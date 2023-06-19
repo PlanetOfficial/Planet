@@ -31,7 +31,12 @@ import {
 import {Destination, Event, EventDetail, UserInfo} from '../../utils/types';
 import DraggableFlatList from 'react-native-draggable-flatlist';
 import Separator from '../components/Separator';
-import { postDestination, renameDestination, removeDestination, reorderDestinations } from '../../utils/api/destinationAPI';
+import {
+  postDestination,
+  renameDestination,
+  removeDestination,
+  reorderDestinations,
+} from '../../utils/api/destinationAPI';
 
 const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
   const [event] = useState<Event>(route.params.event);
