@@ -156,7 +156,7 @@ export const isOpen = (periods: PlaceOpeningHoursPeriod[]) => {
   return periods?.some(period => {
     const startTime = convertStringTimeToDate(period.open.time);
     const endTime = convertStringTimeToDate(period.close.time);
-    
+
     return (
       startTime &&
       endTime &&
