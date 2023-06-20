@@ -41,7 +41,7 @@ import SuggestionCard from '../components/SuggestionCard';
 
 const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
   const date = new Date();
-  const [event] = useState<Event>(route.params?.event);
+  const [event] = useState<Event>(route.params.event);
 
   const [eventDetail, setEventDetail] = useState<EventDetail>();
   const [loading, setLoading] = useState<boolean>(true);
@@ -87,7 +87,7 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
   };
 
   const addSuggestion = useCallback(async () => {
-    const suggestion = route.params?.destination;
+    const suggestion = route.params.destination;
 
     if (suggestion && insertionDestination) {
       const response = await postSuggestion(
@@ -109,7 +109,7 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
     insertionDestination,
     loadData,
     navigation,
-    route.params?.destination,
+    route.params.destination,
   ]);
 
   const findPrimary = (suggestions: Suggestion[]) => {
@@ -316,8 +316,8 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
                   }
                   voted={
                     findPrimary(item.suggestions)
-                      ? myVotes.get(item?.id) ===
-                        findPrimary(item.suggestions)?.id
+                      ? myVotes.get(item.id) ===
+                        findPrimary(item.suggestions).id
                       : false
                   }
                   onVote={() => {

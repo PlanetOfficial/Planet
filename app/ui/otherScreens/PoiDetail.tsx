@@ -42,7 +42,7 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
   const [bookmarks, setBookmarks] = useState<Poi[]>([]);
   const [open, setOpen] = useState<boolean>();
 
-  const [mode] = useState<string>(route.params?.mode);
+  const [mode] = useState<string>(route.params.mode);
 
   const [mapExpanded, setMapExpanded] = useState<boolean>(false);
   const [hoursExpanded, setHoursExpanded] = useState<boolean>(false);
@@ -57,8 +57,8 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
   }, []);
 
   const initializeDestinationData = useCallback(async () => {
-    if (route.params?.place_id) {
-      const result = await postPoi(route.params?.place_id);
+    if (route.params.place_id) {
+      const result = await postPoi(route.params.place_id);
       if (result) {
         setDestination(result.poi);
         setDestinationDetails(result.poiDetail);
@@ -66,8 +66,8 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
       } else {
         Alert.alert(strings.error.error, strings.error.loadDestinationDetails);
       }
-    } else if (route.params?.poi) {
-      const _destination = route.params?.poi;
+    } else if (route.params.poi) {
+      const _destination = route.params.poi;
       setDestination(_destination);
 
       const details: PoiDetail | null = await getPoi(
@@ -82,7 +82,7 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
         Alert.alert(strings.error.error, strings.error.loadDestinationDetails);
       }
     }
-  }, [route.params?.poi, route.params?.place_id]);
+  }, [route.params.poi, route.params.place_id]);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -98,9 +98,9 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
       return;
     }
     showLocation({
-      latitude: destination?.latitude,
-      longitude: destination?.longitude,
-      title: destination?.name,
+      latitude: destination.latitude,
+      longitude: destination.longitude,
+      title: destination.name,
     });
   };
 
@@ -173,7 +173,7 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
     <View style={styles.container}>
       {destinationDetails ? (
         <ImageView
-          images={destinationDetails.photos?.map(photo => ({uri: photo}))}
+          images={destinationDetails.photos.map(photo => ({uri: photo}))}
           imageIndex={0}
           visible={galleryVisible}
           onRequestClose={() => setGalleryVisible(false)}
@@ -483,9 +483,7 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
               destination: destination,
             });
           } else if (mode === 'add') {
-            navigation.navigate('EventSettings', {
-              destination: destination,
-            });
+            navigation.navigate('EventSettings', {destination});
           } else {
             // mode is none, create a fresh event with this destination
             navigation.navigate('Create', {

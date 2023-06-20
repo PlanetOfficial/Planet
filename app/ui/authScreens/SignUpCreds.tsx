@@ -24,8 +24,8 @@ import {signup} from '../../utils/api/authAPI';
  * - lastName: string
  */
 const SignUpCreds = ({navigation, route}: {navigation: any; route: any}) => {
-  const [firstName] = useState<string>(route.params?.firstName);
-  const [lastName] = useState<string>(route.params?.lastName);
+  const [firstName] = useState<string>(route.params.firstName);
+  const [lastName] = useState<string>(route.params.lastName);
 
   const [username, setUsername] = useState<string>(
     firstName.toLowerCase() + lastName.toLowerCase(),

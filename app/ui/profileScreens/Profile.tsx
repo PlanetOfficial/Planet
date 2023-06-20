@@ -131,8 +131,8 @@ const Profile = ({navigation}: {navigation: any}) => {
                 backgroundColor: colors.profileShades[username.length % 5],
               }}>
               <RNText style={profileStyles.name}>
-                {firstName?.charAt(0).toUpperCase() +
-                  lastName?.charAt(0).toUpperCase()}
+                {firstName.charAt(0).toUpperCase() +
+                  lastName.charAt(0).toUpperCase()}
               </RNText>
             </View>
           )}

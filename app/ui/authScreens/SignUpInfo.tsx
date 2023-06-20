@@ -24,7 +24,7 @@ import {cacheUserInfo} from '../../utils/CacheHelpers';
  * - authToken: string
  */
 const SignUpInfo = ({navigation, route}: {navigation: any; route: any}) => {
-  const [authToken] = useState<string>(route.params?.authToken);
+  const [authToken] = useState<string>(route.params.authToken);
 
   const [ageDPOpen, setAgeDPOpen] = useState(false);
   const [age, setAge] = useState<string | null>(null);

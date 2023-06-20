@@ -17,7 +17,7 @@ import {sendCode} from '../../utils/api/authAPI';
  * - authToken: string
  */
 const SignUpPhone = ({navigation, route}: {navigation: any; route: any}) => {
-  const [authToken] = useState<string>(route.params?.authToken);
+  const [authToken] = useState<string>(route.params.authToken);
 
   const [phoneNumber, setPhoneNumber] = useState<E164Number | undefined>();
 

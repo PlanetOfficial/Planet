@@ -17,17 +17,17 @@ import {Region} from '../../utils/types';
 
 const SearchMap = ({navigation, route}: {navigation: any; route: any}) => {
   const [region, setRegion] = useState<Region>(
-    getRegionFromPointAndDistance(route.params?.location, route.params?.radius),
+    getRegionFromPointAndDistance(route.params.location, route.params.radius),
   );
 
   useEffect(() => {
     setRegion(
       getRegionFromPointAndDistance(
-        route.params?.location,
-        route.params?.radius,
+        route.params.location,
+        route.params.radius,
       ),
     );
-  }, [route.params?.location, route.params?.radius]);
+  }, [route.params.location, route.params.radius]);
 
   return (
     <>
@@ -81,13 +81,13 @@ const SearchMap = ({navigation, route}: {navigation: any; route: any}) => {
 
             if (radius <= numbers.maxRadius) {
               navigation.navigate('SearchCategory', {
-                category: route.params?.category,
+                category: route.params.category,
                 location: {
                   latitude: region.latitude,
                   longitude: region.longitude,
                 },
                 radius,
-                isCreate: route.params?.mode,
+                isCreate: route.params.mode,
               });
             } else {
               Alert.alert(strings.search.tooFar, strings.search.tooFarMessage);

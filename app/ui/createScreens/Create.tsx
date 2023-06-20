@@ -49,7 +49,7 @@ const Create = ({navigation, route}: {navigation: any; route: any}) => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const addDestination = useCallback(() => {
-    const destination = route.params?.destination;
+    const destination = route.params.destination;
 
     if (destination) {
       const _destinations = destinations ? [...destinations] : [];
@@ -58,7 +58,7 @@ const Create = ({navigation, route}: {navigation: any; route: any}) => {
 
       navigation.setParams({destination: undefined});
     }
-  }, [navigation, route.params?.destination, destinations, insertionIndex]);
+  }, [navigation, route.params.destination, destinations, insertionIndex]);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', addDestination);
@@ -104,8 +104,8 @@ const Create = ({navigation, route}: {navigation: any; route: any}) => {
 
     setLoading(true);
 
-    const poi_ids = destinations?.map(destination => destination.id);
-    const names = destinations?.map(destination => destination.category_name);
+    const poi_ids = destinations.map(destination => destination.id);
+    const names = destinations.map(destination => destination.category_name);
 
     const response = await postEvent(poi_ids, names, eventTitle, date, []);
     if (response) {
@@ -182,7 +182,7 @@ const Create = ({navigation, route}: {navigation: any; route: any}) => {
           />
         </View>
       </SafeAreaView>
-      {destinations && destinations?.length > 0 ? (
+      {destinations && destinations.length > 0 ? (
         <ScrollView contentContainerStyle={createStyles.scrollView}>
           {destinations.map((destination: Poi, index: number) => (
             <View key={index}>

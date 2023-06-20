@@ -35,9 +35,9 @@ import {makePrimary, spinRoulette} from '../../utils/api/suggestionAPI';
 import UserIcon from '../components/UserIcon';
 
 const Roulette = ({navigation, route}: {navigation: any; route: any}) => {
-  const [eventId] = useState(route.params?.eventId);
+  const [eventId] = useState(route.params.eventId);
   const [destination, setDestination] = useState<Destination>(
-    route.params?.destination,
+    route.params.destination,
   );
 
   const [bookmarks, setBookmarks] = useState<Poi[]>([]);
@@ -73,7 +73,7 @@ const Roulette = ({navigation, route}: {navigation: any; route: any}) => {
 
   const totalVotes = destination.suggestions
     .map((suggestion: Suggestion) =>
-      suggestion.votes?.length ? suggestion.votes?.length : 0,
+      suggestion.votes.length ? suggestion.votes.length : 0,
     )
     .reduce((a: number, b: number) => a + b, 0);
 
@@ -110,13 +110,13 @@ const Roulette = ({navigation, route}: {navigation: any; route: any}) => {
     const votes = destination.suggestions
       .sort((a: Suggestion, b: Suggestion) => {
         if (a.votes && b.votes) {
-          return a.votes?.length - b.votes?.length;
+          return a.votes.length - b.votes.length;
         } else {
           return 0;
         }
       })
       .map((place: Suggestion) =>
-        place.votes?.length ? place.votes?.length : 0,
+        place.votes.length ? place.votes.length : 0,
       );
 
     let voteIndex = Math.floor(angle / (360 / totalVotes));
@@ -279,7 +279,7 @@ const Roulette = ({navigation, route}: {navigation: any; route: any}) => {
                         (_suggestion: Suggestion, index: number) => {
                           return {
                             key: index,
-                            value: _suggestion.votes?.length,
+                            value: _suggestion.votes.length,
                             svg: {
                               fill: colors.accentShades[
                                 index % colors.accentShades.length
@@ -294,7 +294,7 @@ const Roulette = ({navigation, route}: {navigation: any; route: any}) => {
               </Animated.View>
               <View style={rouletteStyles.numContainer}>
                 <Text color={colors.accent} size="xl" weight="b">
-                  {currentSuggestion.votes?.length}
+                  {currentSuggestion.votes.length}
                 </Text>
                 <View style={rouletteStyles.separater} />
                 <Text size="s">

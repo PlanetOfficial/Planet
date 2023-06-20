@@ -16,7 +16,7 @@ import {Destination, Spin} from '../../utils/types';
 import UserIcon from '../components/UserIcon';
 
 const SpinHistory = ({navigation, route}: {navigation: any; route: any}) => {
-  const [destination] = useState<Destination>(route.params?.destination);
+  const [destination] = useState<Destination>(route.params.destination);
 
   return (
     <View style={styles.container}>

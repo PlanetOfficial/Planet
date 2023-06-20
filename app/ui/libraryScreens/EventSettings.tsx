@@ -40,7 +40,7 @@ import {
 import {Destination, Event, EventDetail, UserInfo} from '../../utils/types';
 
 const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
-  const [event] = useState<Event>(route.params?.event);
+  const [event] = useState<Event>(route.params.event);
   const [eventDetail, setEventDetail] = useState<EventDetail>();
 
   const [eventTitle, setEventTitle] = useState<string>();
@@ -65,7 +65,7 @@ const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
   }, [event.id]);
 
   const addDestination = useCallback(async () => {
-    const destination = route.params?.destination;
+    const destination = route.params.destination;
 
     if (destination) {
       const response = await postDestination(event.id, destination.id);
@@ -78,7 +78,7 @@ const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
 
       navigation.setParams({destination: undefined});
     }
-  }, [event.id, loadData, navigation, route.params?.destination]);
+  }, [event.id, loadData, navigation, route.params.destination]);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
