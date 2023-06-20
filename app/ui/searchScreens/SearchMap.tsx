@@ -22,10 +22,7 @@ const SearchMap = ({navigation, route}: {navigation: any; route: any}) => {
 
   useEffect(() => {
     setRegion(
-      getRegionFromPointAndDistance(
-        route.params.location,
-        route.params.radius,
-      ),
+      getRegionFromPointAndDistance(route.params.location, route.params.radius),
     );
   }, [route.params.location, route.params.radius]);
 

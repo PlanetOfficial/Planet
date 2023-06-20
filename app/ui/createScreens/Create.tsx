@@ -22,6 +22,7 @@ import colors from '../../constants/colors';
 import icons from '../../constants/icons';
 import strings from '../../constants/strings';
 import styles from '../../constants/styles';
+import numbers from '../../constants/numbers';
 
 import Text from '../components/Text';
 import Icon from '../components/Icon';
@@ -35,7 +36,7 @@ import {postEvent} from '../../utils/api/eventAPI';
 const Create = ({navigation, route}: {navigation: any; route: any}) => {
   const [eventTitle, setEventTitle] = useState(strings.event.untitled);
   const d = new Date();
-  const c = 1000 * 60 * 5; // 5 minutes
+  const c = numbers.fiveMinutes; // 5 minutes
   const [date, setDate] = useState<string>(
     moment(new Date(Math.ceil(d.getTime() / c) * c)).format('MMM Do, h:mm a'),
   );

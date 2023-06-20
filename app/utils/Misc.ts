@@ -156,17 +156,30 @@ const convertStringTimeToDate = (timeString: string) => {
 export const isOpen = (periods: PlaceOpeningHoursPeriod[]) => {
   const date = new Date();
 
-  return periods?.some(period => {
+  return periods.some(period => {
     const startTime = convertStringTimeToDate(period.open.time);
     const endTime = convertStringTimeToDate(period.close.time);
 
-    return (
-      startTime &&
-      endTime &&
+    if (!startTime || !endTime) {
+      return false;
+    }
+
+    if (
       date >= startTime &&
       date <= endTime &&
       period.open.day <= date.getDay() &&
       period.close.day >= date.getDay()
-    );
+    ) {
+      return true;
+    }
+
+    if (
+      period.open.day > period.close.day &&
+      period.open.day - period.close.day !== 6
+    ) {
+      return true;
+    }
+
+    return false;
   });
 };

@@ -62,7 +62,9 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
       if (result) {
         setDestination(result.poi);
         setDestinationDetails(result.poiDetail);
-        setOpen(isOpen(result.poiDetail.periods));
+        setOpen(
+          result.poiDetail.periods ? isOpen(result.poiDetail.periods) : false,
+        );
       } else {
         Alert.alert(strings.error.error, strings.error.loadDestinationDetails);
       }
@@ -77,7 +79,7 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
 
       if (details) {
         setDestinationDetails(details);
-        setOpen(isOpen(details.periods));
+        setOpen(details.periods ? isOpen(details.periods) : false);
       } else {
         Alert.alert(strings.error.error, strings.error.loadDestinationDetails);
       }

@@ -102,7 +102,6 @@ const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
       setEventDetail(_eventDetail);
       setEventTitle(name);
     } else {
-      setEventTitle(event.name);
       Alert.alert(strings.error.error, strings.error.editEventName);
     }
   };
@@ -116,7 +115,6 @@ const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
       setEventDetail(_eventDetail);
       setDatetime(dt);
     } else {
-      setDatetime(event.datetime);
       Alert.alert(strings.error.error, strings.error.editEventDate);
     }
   };
