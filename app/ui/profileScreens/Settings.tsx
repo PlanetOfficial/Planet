@@ -2,12 +2,10 @@ import React from 'react';
 import {
   View,
   SafeAreaView,
-  Alert,
   TouchableOpacity,
   StyleSheet,
   ScrollView,
 } from 'react-native';
-import messaging from '@react-native-firebase/messaging';
 import {s} from 'react-native-size-matters';
 
 import colors from '../../constants/colors';
@@ -17,25 +15,9 @@ import styles from '../../constants/styles';
 
 import Text from '../components/Text';
 import Icon from '../components/Icon';
-
-import {clearCaches} from '../../utils/CacheHelpers';
+import Separator from '../components/Separator';
 
 const Settings = ({navigation}: {navigation: any}) => {
-  const handleLogout = async () => {
-    try {
-      clearCaches();
-    } catch (error) {
-      Alert.alert('Error', 'Unable to logout. Please try again.');
-    } finally {
-      await messaging().deleteToken();
-
-      navigation.reset({
-        index: 0,
-        routes: [{name: 'Login'}],
-      });
-    }
-  };
-
   const settingsItems = [
     {
       name: 'Profile',
@@ -85,16 +67,18 @@ const Settings = ({navigation}: {navigation: any}) => {
       </SafeAreaView>
       <ScrollView>
         {settingsItems.map((settingsItem, index) => (
-          <TouchableOpacity
-            key={index}
-            style={localStyles.row}
-            onPress={settingsItem.onPress}>
-            <Icon size="l" icon={settingsItem.icon} color={colors.darkgrey} />
-            <View style={localStyles.text}>
-              <Text>{settingsItem.name}</Text>
-            </View>
-            <Icon icon={icons.next} />
-          </TouchableOpacity>
+          <View key={index}>
+            <TouchableOpacity
+              style={localStyles.row}
+              onPress={settingsItem.onPress}>
+              <Icon size="l" icon={settingsItem.icon} color={colors.darkgrey} />
+              <View style={localStyles.text}>
+                <Text>{settingsItem.name}</Text>
+              </View>
+              <Icon icon={icons.next} />
+            </TouchableOpacity>
+            <Separator />
+          </View>
         ))}
         <View style={localStyles.footer}>
           <Text size="s" weight="l" color={colors.darkgrey}>
@@ -116,11 +100,8 @@ const localStyles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginHorizontal: s(20),
-    paddingHorizontal: s(10),
+    paddingHorizontal: s(35),
     paddingVertical: s(25),
-    borderBottomWidth: 0.5,
-    borderColor: colors.grey,
   },
   text: {
     flex: 1,

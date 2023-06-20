@@ -24,6 +24,9 @@ const PrivacySettings = ({navigation}: {navigation: any}) => {
           </View>
         </View>
       </SafeAreaView>
+      <View style={localStyles.container}>
+        <Text>No Privacy for you.</Text>
+      </View>
     </View>
   );
 };
@@ -32,6 +35,11 @@ const localStyles = StyleSheet.create({
   title: {
     flex: 1,
     marginLeft: s(10),
+  },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

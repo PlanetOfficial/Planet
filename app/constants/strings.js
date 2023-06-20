@@ -156,6 +156,10 @@ const strings = {
     notifications: 'Push Notifications',
     privacy: 'Privacy',
     profile: 'Profile',
+    openLocationSettings: 'Open Location Settings',
+    resetPassword: 'Reset Password',
+    logout: 'Logout',
+    removeAccount: 'Remove Account',
   },
 };
 
