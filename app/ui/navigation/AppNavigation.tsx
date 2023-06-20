@@ -30,6 +30,12 @@ import SuggestSearch from '../libraryScreens/SuggestSearch';
 import AddSearch from '../libraryScreens/AddSearch';
 import Notifications from '../libraryScreens/Notifications';
 import Settings from '../profileScreens/Settings';
+import AccountSettings from '../settingsScreens/AccountSettings';
+import ContactUs from '../settingsScreens/ContactUs';
+import LocationsSettings from '../settingsScreens/LocationsSettings';
+import NotificationSettings from '../settingsScreens/NotificationSettings';
+import PrivacySettings from '../settingsScreens/PrivacySettings';
+import ProfileSettings from '../settingsScreens/ProfileSettings';
 import {Animated} from 'react-native';
 
 interface AppNavigationProps {
@@ -53,6 +59,12 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {friendsScreen()}
           {exploreScreen()}
           {settingsScreen()}
+          {accountSettingsScreen()}
+          {contactUsScreen()}
+          {locationsSettingsScreen()}
+          {notificationSettingsScreen()}
+          {privacySettingsScreen()}
+          {profileSettingsScreen()}
           {createScreen()}
           {createSearchScreen()}
           {eventScreen()}
@@ -90,6 +102,12 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {friendsScreen()}
           {exploreScreen()}
           {settingsScreen()}
+          {accountSettingsScreen()}
+          {contactUsScreen()}
+          {locationsSettingsScreen()}
+          {notificationSettingsScreen()}
+          {privacySettingsScreen()}
+          {profileSettingsScreen()}
           {createScreen()}
           {createSearchScreen()}
           {eventScreen()}
@@ -257,6 +275,78 @@ const settingsScreen = () => {
     <Stack.Screen
       name="Settings"
       component={Settings}
+      options={{
+        headerShown: false,
+      }}
+    />
+  );
+};
+
+const accountSettingsScreen = () => {
+  return (
+    <Stack.Screen
+      name="AccountSettings"
+      component={AccountSettings}
+      options={{
+        headerShown: false,
+      }}
+    />
+  );
+};
+
+const contactUsScreen = () => {
+  return (
+    <Stack.Screen
+      name="ContactUs"
+      component={ContactUs}
+      options={{
+        headerShown: false,
+      }}
+    />
+  );
+};
+
+const locationsSettingsScreen = () => {
+  return (
+    <Stack.Screen
+      name="LocationsSettings"
+      component={LocationsSettings}
+      options={{
+        headerShown: false,
+      }}
+    />
+  );
+};
+
+const notificationSettingsScreen = () => {
+  return (
+    <Stack.Screen
+      name="NotificationSettings"
+      component={NotificationSettings}
+      options={{
+        headerShown: false,
+      }}
+    />
+  );
+};
+
+const privacySettingsScreen = () => {
+  return (
+    <Stack.Screen
+      name="PrivacySettings"
+      component={PrivacySettings}
+      options={{
+        headerShown: false,
+      }}
+    />
+  );
+};
+
+const profileSettingsScreen = () => {
+  return (
+    <Stack.Screen
+      name="ProfileSettings"
+      component={ProfileSettings}
       options={{
         headerShown: false,
       }}

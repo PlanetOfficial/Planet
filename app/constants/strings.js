@@ -148,6 +148,15 @@ const strings = {
   notifications: {
     notifications: 'Notifications',
   },
+  settings: {
+    settings: 'Settings',
+    account: 'Account',
+    contactUs: 'Contact Us',
+    locations: 'Locations',
+    notifications: 'Push Notifications',
+    privacy: 'Privacy',
+    profile: 'Profile',
+  },
 };
 
 export default strings;

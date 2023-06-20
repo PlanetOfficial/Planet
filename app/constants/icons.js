@@ -1,4 +1,5 @@
 const icons = {
+  accountSettings: require('../assets/icons/account-settings.png'),
   add: require('../assets/icons/add.png'),
   back: require('../assets/icons/back.png'),
   bell: require('../assets/icons/bell.png'),
@@ -17,9 +18,12 @@ const icons = {
   like: require('../assets/icons/like.png'),
   minus: require('../assets/icons/minus.png'),
   more: require('../assets/icons/more.png'),
+  next: require('../assets/icons/next.png'),
   option: require('../assets/icons/option.png'),
   pin: require('../assets/icons/pin.png'),
   placeholder: require('../assets/icons/placeholder.png'),
+  privacy: require('../assets/icons/privacy.png'),
+  profile: require('../assets/tabIcons/profile.png'),
   question: require('../assets/icons/question.png'),
   roulette: require('../assets/icons/roulette.png'),
   search: require('../assets/tabIcons/search-2.png'),
