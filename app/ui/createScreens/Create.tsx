@@ -49,7 +49,7 @@ const Create = ({navigation, route}: {navigation: any; route: any}) => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const addDestination = useCallback(() => {
-    const destination = route.params.destination;
+    const destination = route.params?.destination;
 
     if (destination) {
       const _destinations = destinations ? [...destinations] : [];
@@ -58,7 +58,7 @@ const Create = ({navigation, route}: {navigation: any; route: any}) => {
 
       navigation.setParams({destination: undefined});
     }
-  }, [navigation, route.params.destination, destinations, insertionIndex]);
+  }, [navigation, route.params?.destination, destinations, insertionIndex]);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', addDestination);
