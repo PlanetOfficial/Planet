@@ -20,7 +20,7 @@ const AccountSettings = ({navigation}: {navigation: any}) => {
             onPress={() => navigation.goBack()}
           />
           <View style={localStyles.title}>
-            <Text size="xl">{strings.settings.account}</Text>
+            <Text size="l">{strings.settings.account}</Text>
           </View>
         </View>
       </SafeAreaView>

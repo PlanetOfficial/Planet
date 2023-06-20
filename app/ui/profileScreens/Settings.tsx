@@ -8,6 +8,7 @@ import {
   ScrollView,
 } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
+import {s} from 'react-native-size-matters';
 
 import colors from '../../constants/colors';
 import icons from '../../constants/icons';
@@ -16,8 +17,8 @@ import styles from '../../constants/styles';
 
 import Text from '../components/Text';
 import Icon from '../components/Icon';
+
 import {clearCaches} from '../../utils/CacheHelpers';
-import {s} from 'react-native-size-matters';
 
 const Settings = ({navigation}: {navigation: any}) => {
   const handleLogout = async () => {
@@ -78,7 +79,7 @@ const Settings = ({navigation}: {navigation: any}) => {
             onPress={() => navigation.goBack()}
           />
           <View style={localStyles.title}>
-            <Text size="xl">{strings.settings.settings}</Text>
+            <Text size="l">{strings.settings.settings}</Text>
           </View>
         </View>
       </SafeAreaView>

@@ -1,5 +1,6 @@
 import React from 'react';
 import {View, SafeAreaView, StyleSheet} from 'react-native';
+import {s} from 'react-native-size-matters';
 
 import icons from '../../constants/icons';
 import strings from '../../constants/strings';
@@ -7,7 +8,6 @@ import styles from '../../constants/styles';
 
 import Text from '../components/Text';
 import Icon from '../components/Icon';
-import {s} from 'react-native-size-matters';
 
 const LocationsSettings = ({navigation}: {navigation: any}) => {
   return (
@@ -20,7 +20,7 @@ const LocationsSettings = ({navigation}: {navigation: any}) => {
             onPress={() => navigation.goBack()}
           />
           <View style={localStyles.title}>
-            <Text size="xl">{strings.settings.locations}</Text>
+            <Text size="l">{strings.settings.locations}</Text>
           </View>
         </View>
       </SafeAreaView>

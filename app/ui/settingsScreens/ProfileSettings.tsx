@@ -1,5 +1,6 @@
 import React from 'react';
 import {View, SafeAreaView, StyleSheet} from 'react-native';
+import {s} from 'react-native-size-matters';
 
 import icons from '../../constants/icons';
 import strings from '../../constants/strings';
@@ -7,7 +8,6 @@ import styles from '../../constants/styles';
 
 import Text from '../components/Text';
 import Icon from '../components/Icon';
-import {s} from 'react-native-size-matters';
 
 const ProfileSettings = ({navigation}: {navigation: any}) => {
   return (
@@ -20,7 +20,7 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
             onPress={() => navigation.goBack()}
           />
           <View style={localStyles.title}>
-            <Text size="xl">{strings.settings.profile}</Text>
+            <Text size="l">{strings.settings.profile}</Text>
           </View>
         </View>
       </SafeAreaView>
