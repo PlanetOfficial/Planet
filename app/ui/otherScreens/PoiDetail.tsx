@@ -173,7 +173,7 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
 
   return (
     <View style={styles.container}>
-      {destinationDetails ? (
+      {destinationDetails?.photos ? (
         <ImageView
           images={destinationDetails.photos.map(photo => ({uri: photo}))}
           imageIndex={0}
