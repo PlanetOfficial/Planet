@@ -34,6 +34,10 @@ import {Destination, Poi, Suggestion, UserInfo} from '../../utils/types';
 import {makePrimary, spinRoulette} from '../../utils/api/suggestionAPI';
 import UserIcon from '../components/UserIcon';
 
+/*
+ * route params:
+ * - eventId: number
+ */
 const Roulette = ({navigation, route}: {navigation: any; route: any}) => {
   const [eventId] = useState(route.params.eventId);
   const [destination, setDestination] = useState<Destination>(

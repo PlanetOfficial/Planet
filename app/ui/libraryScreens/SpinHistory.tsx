@@ -15,6 +15,10 @@ import PoiCardXS from '../components/PoiCardXS';
 import {Destination, Spin} from '../../utils/types';
 import UserIcon from '../components/UserIcon';
 
+/*
+ * route params:
+ * - destination: Destination
+ */
 const SpinHistory = ({navigation, route}: {navigation: any; route: any}) => {
   const [destination] = useState<Destination>(route.params.destination);
 

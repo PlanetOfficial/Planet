@@ -33,6 +33,10 @@ import {Poi} from '../../utils/types';
 import {handleBookmark} from '../../utils/Misc';
 import {postEvent} from '../../utils/api/eventAPI';
 
+/*
+ * route params:
+ * - destination: Destination
+ */
 const Create = ({navigation, route}: {navigation: any; route: any}) => {
   const [eventTitle, setEventTitle] = useState(strings.event.untitled);
   const d = new Date();

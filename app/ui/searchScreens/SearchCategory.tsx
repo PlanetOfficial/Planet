@@ -25,6 +25,13 @@ import {getPois} from '../../utils/api/poiAPI';
 import {handleBookmark} from '../../utils/Misc';
 import {Poi} from '../../utils/types';
 
+/*
+ * route params:
+ * - mode: string
+ * - location?: Coordinate
+ * - radius: number
+ * - category: Category
+ */
 const SearchCategory = ({navigation, route}: {navigation: any; route: any}) => {
   const {category, location, radius, mode} = route.params;
 

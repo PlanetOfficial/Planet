@@ -32,6 +32,12 @@ import {Poi, PoiDetail, Review} from '../../utils/types';
 import {getPoi, postPoi} from '../../utils/api/poiAPI';
 import {handleBookmark, isOpen} from '../../utils/Misc';
 
+/*
+ * route params:
+ * - mode: string
+ * - place_id?: string
+ * - poi?: Poi
+ */
 const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
   StatusBar.setBarStyle('light-content', true);
   const date = new Date();

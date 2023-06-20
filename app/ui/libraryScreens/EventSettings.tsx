@@ -39,6 +39,11 @@ import {
 } from '../../utils/api/destinationAPI';
 import {Destination, Event, EventDetail, UserInfo} from '../../utils/types';
 
+/*
+ * route params:
+ * - event: Event
+ * - destination?: Destination
+ */
 const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
   const [event] = useState<Event>(route.params.event);
   const [eventDetail, setEventDetail] = useState<EventDetail>();

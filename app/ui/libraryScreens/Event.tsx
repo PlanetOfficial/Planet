@@ -39,6 +39,10 @@ import {postSuggestion, vote} from '../../utils/api/suggestionAPI';
 import strings from '../../constants/strings';
 import SuggestionCard from '../components/SuggestionCard';
 
+/*
+ * route params:
+ * - event: Event
+ */
 const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
   const date = new Date();
   const [event] = useState<Event>(route.params.event);
