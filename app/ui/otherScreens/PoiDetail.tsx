@@ -193,11 +193,15 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
         />
       ) : null}
       <Animated.View style={{height: headerHeight}}>
-        <ImageBackground
-          style={[headerStyles.image]}
-          source={{uri: destination?.photo}}>
-          <View style={headerStyles.darken} />
-        </ImageBackground>
+        {destination?.photo ? (
+          <ImageBackground
+            style={headerStyles.image}
+            source={{uri: destination?.photo}}>
+            <View style={headerStyles.darken} />
+          </ImageBackground>
+        ) : (
+          <View style={headerStyles.image} />
+        )}
         <Animated.View style={[headerStyles.container, {height: headerHeight}]}>
           <SafeAreaView>
             <View style={headerStyles.row}>
@@ -278,7 +282,7 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
             </View>
             <View style={overViewStyles.separator} />
             <View style={overViewStyles.hours}>
-              {destinationDetails?.hours.length === 7 ? (
+              {destinationDetails?.hours?.length === 7 ? (
                 <>
                   {open ? (
                     <Text color={colors.green}>{strings.poi.open}</Text>
@@ -349,7 +353,7 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
                           weight={
                             index === (date.getDay() + 6) % 7 ? 'r' : 'l'
                           }>
-                          {hour.replace(',', '').split(' ')[1] +
+                          {hour.replace(',', '').split(' ').slice(1).join(' ') +
                             ' (' +
                             hour?.split(' ')[0].slice(0, -1) +
                             ')'}
@@ -360,7 +364,9 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
                     <Text size="s" weight="l">
                       {destinationDetails?.hours[(date.getDay() + 6) % 7]
                         .replace(',', '')
-                        .split(' ')[1] +
+                        .split(' ')
+                        .slice(1)
+                        .join(' ') +
                         ' (' +
                         destinationDetails?.hours[(date.getDay() + 6) % 7]
                           ?.split(' ')[0]
@@ -543,6 +549,7 @@ const headerStyles = StyleSheet.create({
     width: '100%',
     height: '100%',
     position: 'absolute',
+    backgroundColor: colors.grey,
   },
   darken: {
     width: '100%',

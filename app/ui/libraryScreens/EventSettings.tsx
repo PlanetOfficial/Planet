@@ -231,23 +231,25 @@ const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
               {datetime}
             </Text>
           </TouchableOpacity>
-          <DatePicker
-            modal
-            open={datePickerOpen}
-            minuteInterval={5}
-            date={moment(datetime, 'MMM Do, h:mm a').toDate()}
-            onConfirm={newDate => {
-              setDatePickerOpen(false);
-              handleEditDate(
-                moment(newDate, 'YYYY-MM-DD HH:mm:ssZ').format(
-                  'MMM Do, h:mm a',
-                ),
-              );
-            }}
-            onCancel={() => {
-              setDatePickerOpen(false);
-            }}
-          />
+          {datetime ? (
+            <DatePicker
+              modal
+              open={datePickerOpen}
+              minuteInterval={5}
+              date={moment(datetime, 'MMM Do, h:mm a').toDate()}
+              onConfirm={newDate => {
+                setDatePickerOpen(false);
+                handleEditDate(
+                  moment(newDate, 'YYYY-MM-DD HH:mm:ssZ').format(
+                    'MMM Do, h:mm a',
+                  ),
+                );
+              }}
+              onCancel={() => {
+                setDatePickerOpen(false);
+              }}
+            />
+          ) : null}
         </View>
         <View style={localStyles.memberContainer}>
           {eventDetail

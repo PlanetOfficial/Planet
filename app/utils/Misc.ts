@@ -167,12 +167,27 @@ export const isOpen = (periods: PlaceOpeningHoursPeriod[]) => {
     if (
       date >= startTime &&
       date <= endTime &&
-      period.open.day <= date.getDay() &&
-      period.close.day >= date.getDay()
+      period.open.day === date.getDay() &&
+      period.close.day === date.getDay()
     ) {
       return true;
     }
 
+    if (
+      date >= startTime &&
+      period.open.day === date.getDay() &&
+      period.close.day === date.getDay() + 1
+    ) {
+      return true;
+    }
+
+    if (
+      date <= endTime &&
+      period.open.day === date.getDay() - 1 &&
+      period.close.day === date.getDay()
+    ) {
+      return true;
+    }
     if (
       period.open.day > period.close.day &&
       period.open.day - period.close.day !== 6
