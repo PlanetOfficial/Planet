@@ -40,7 +40,7 @@ import {postEvent} from '../../utils/api/eventAPI';
 const Create = ({navigation, route}: {navigation: any; route: any}) => {
   const [eventTitle, setEventTitle] = useState(strings.event.untitled);
   const d = new Date();
-  const c = numbers.fiveMinutes; // 5 minutes
+  const c = numbers.fiveMinutes;
   const [date, setDate] = useState<string>(
     moment(new Date(Math.ceil(d.getTime() / c) * c)).format('MMM Do, h:mm a'),
   );

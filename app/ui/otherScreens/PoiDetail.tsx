@@ -12,6 +12,7 @@ import {
   Image,
   LayoutAnimation,
 } from 'react-native';
+import {CommonActions} from '@react-navigation/native';
 import {s, vs} from 'react-native-size-matters';
 import MapView, {Marker} from 'react-native-maps';
 import {showLocation} from 'react-native-map-link';
@@ -339,7 +340,7 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
           <View style={localStyles.title}>
             <Text>{strings.poi.info}</Text>
           </View>
-          {destinationDetails?.hours.length === 7 ? (
+          {destinationDetails?.hours?.length === 7 ? (
             <View style={infoStyles.row}>
               <View style={infoStyles.texts}>
                 <Text size="s">{strings.poi.hours}:</Text>
@@ -440,12 +441,12 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
               />
             </View>
           ) : null}
-          {destinationDetails && destinationDetails.attributes.length > 0 ? (
+          {destinationDetails?.attributes ? (
             <View style={infoStyles.row}>
               <View style={infoStyles.texts}>
                 <Text size="s">{strings.poi.attributes}:</Text>
                 <View style={infoStyles.info}>
-                  {destinationDetails.attributes.map(
+                  {destinationDetails.attributes?.map(
                     (attribute: string, index: number) => (
                       <Text key={index} size="s" weight="l">
                         {'・' + attribute}
@@ -461,7 +462,7 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
           <View style={localStyles.title}>
             <Text>{strings.poi.reviews}</Text>
           </View>
-          {destinationDetails?.reviews.map((review: Review, index: number) => (
+          {destinationDetails?.reviews?.map((review: Review, index: number) => (
             <View key={index} style={reviewStyles.row}>
               <View style={reviewStyles.reviewerContainer}>
                 <View style={reviewStyles.reviewerContainer}>
@@ -500,9 +501,20 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
             navigation.navigate('EventSettings', {destination});
           } else {
             // mode is none, create a fresh event with this destination
-            navigation.navigate('Create', {
-              destination: destination,
-            });
+            navigation.dispatch(
+              CommonActions.reset({
+                index: 1,
+                routes: [
+                  {
+                    name: 'TabStack',
+                  },
+                  {
+                    name: 'Create',
+                    params: {destination: destination},
+                  },
+                ],
+              }),
+            );
           }
         }}>
         <Text size="m" color={colors.white}>
