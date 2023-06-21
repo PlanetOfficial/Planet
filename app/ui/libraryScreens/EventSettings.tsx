@@ -11,6 +11,7 @@ import {
 import DatePicker from 'react-native-date-picker';
 import {s} from 'react-native-size-matters';
 import prompt from 'react-native-prompt-android';
+import DraggableFlatList from 'react-native-draggable-flatlist';
 
 import moment from 'moment';
 
@@ -21,6 +22,8 @@ import strings from '../../constants/strings';
 
 import Text from '../components/Text';
 import Icon from '../components/Icon';
+import Separator from '../components/Separator';
+import UserIcon from '../components/UserIcon';
 
 import {
   editDatetime,
@@ -28,16 +31,19 @@ import {
   getEvent,
   leaveEvent,
 } from '../../utils/api/eventAPI';
-import {Destination, Event, EventDetail, UserInfo} from '../../utils/types';
-import DraggableFlatList from 'react-native-draggable-flatlist';
-import Separator from '../components/Separator';
 import {
   postDestination,
-  removeDestination,
   renameDestination,
+  removeDestination,
   reorderDestinations,
 } from '../../utils/api/destinationAPI';
+import {Destination, Event, EventDetail, UserInfo} from '../../utils/types';
 
+/*
+ * route params:
+ * - event: Event
+ * - destination?: Destination
+ */
 const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
   const [event] = useState<Event>(route.params.event);
   const [eventDetail, setEventDetail] = useState<EventDetail>();
@@ -59,12 +65,12 @@ const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
           .format('MMM Do, h:mm a'),
       );
     } else {
-      Alert.alert('Error', 'Could not fetch event, please try again.');
+      Alert.alert(strings.error.error, strings.error.fetchEvent);
     }
   }, [event.id]);
 
   const addDestination = useCallback(async () => {
-    const destination = route.params?.destination;
+    const destination = route.params.destination;
 
     if (destination) {
       const response = await postDestination(event.id, destination.id);
@@ -72,12 +78,12 @@ const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
       if (response) {
         loadData();
       } else {
-        Alert.alert('Error', 'Could not add suggestion, please try again.');
+        Alert.alert(strings.error.error, strings.error.addSuggestion);
       }
 
       navigation.setParams({destination: undefined});
     }
-  }, [event.id, loadData, navigation, route.params?.destination]);
+  }, [event.id, loadData, navigation, route.params.destination]);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -101,7 +107,7 @@ const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
       setEventDetail(_eventDetail);
       setEventTitle(name);
     } else {
-      Alert.alert('Error', 'Could not edit event name, please try again.');
+      Alert.alert(strings.error.error, strings.error.editEventName);
     }
   };
 
@@ -114,7 +120,7 @@ const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
       setEventDetail(_eventDetail);
       setDatetime(dt);
     } else {
-      Alert.alert('Error', 'Could not edit event date, please try again.');
+      Alert.alert(strings.error.error, strings.error.editEventDate);
     }
   };
 
@@ -124,7 +130,7 @@ const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
     if (response) {
       navigation.navigate('Library');
     } else {
-      Alert.alert('Error', 'Could not leave event, please try again.');
+      Alert.alert(strings.error.error, strings.error.leaveEvent);
     }
   };
 
@@ -137,7 +143,7 @@ const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
     if (response) {
       loadData();
     } else {
-      Alert.alert('Error', 'Could not rename destination, please try again.');
+      Alert.alert(strings.error.error, strings.error.renameDestination);
     }
   };
 
@@ -147,10 +153,7 @@ const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
     if (response) {
       loadData();
     } else {
-      Alert.alert(
-        'Error',
-        'Could not remove destination from event, please try again.',
-      );
+      Alert.alert(strings.error.error, strings.error.removeDestination);
     }
   };
 
@@ -163,7 +166,7 @@ const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
     if (response) {
       loadData();
     } else {
-      Alert.alert('Error', 'Could not reorder destinations, please try again.');
+      Alert.alert(strings.error.error, strings.error.reorderDestination);
     }
   };
 
@@ -228,23 +231,25 @@ const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
               {datetime}
             </Text>
           </TouchableOpacity>
-          <DatePicker
-            modal
-            open={datePickerOpen}
-            minuteInterval={5}
-            date={moment(datetime, 'MMM Do, h:mm a').toDate()}
-            onConfirm={newDate => {
-              setDatePickerOpen(false);
-              handleEditDate(
-                moment(newDate, 'YYYY-MM-DD HH:mm:ssZ').format(
-                  'MMM Do, h:mm a',
-                ),
-              );
-            }}
-            onCancel={() => {
-              setDatePickerOpen(false);
-            }}
-          />
+          {datetime ? (
+            <DatePicker
+              modal
+              open={datePickerOpen}
+              minuteInterval={5}
+              date={moment(datetime, 'MMM Do, h:mm a').toDate()}
+              onConfirm={newDate => {
+                setDatePickerOpen(false);
+                handleEditDate(
+                  moment(newDate, 'YYYY-MM-DD HH:mm:ssZ').format(
+                    'MMM Do, h:mm a',
+                  ),
+                );
+              }}
+              onCancel={() => {
+                setDatePickerOpen(false);
+              }}
+            />
+          ) : null}
         </View>
         <View style={localStyles.memberContainer}>
           {eventDetail
@@ -253,10 +258,7 @@ const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
                   key={member.id}
                   style={[userStyles.container, userStyles.border]}>
                   <View style={userStyles.profilePic}>
-                    <Image
-                      style={userStyles.pic}
-                      source={{uri: 'https://picsum.photos/200'}}
-                    />
+                    <UserIcon user={member} />
                   </View>
                   <View style={userStyles.texts}>
                     <Text

@@ -37,7 +37,7 @@ const Library = ({navigation}: {navigation: any}) => {
     if (_events) {
       setEvents(_events);
     } else {
-      Alert.alert('Error', 'Could not fetch events, please try again.');
+      Alert.alert(strings.error.error, strings.error.fetchEvents);
     }
     setRefreshing(false);
     setLoading(false);

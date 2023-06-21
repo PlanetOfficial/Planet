@@ -59,7 +59,7 @@ const Profile = ({navigation}: {navigation: any}) => {
     if (_bookmarks) {
       setBookmarks(JSON.parse(_bookmarks));
     } else {
-      Alert.alert('Error', 'Unable to load bookmarks. Please try again.');
+      Alert.alert(strings.error.error, strings.error.loadBookmarks);
     }
   };
 
@@ -131,8 +131,8 @@ const Profile = ({navigation}: {navigation: any}) => {
                 backgroundColor: colors.profileShades[username.length % 5],
               }}>
               <RNText style={profileStyles.name}>
-                {firstName?.charAt(0).toUpperCase() +
-                  lastName?.charAt(0).toUpperCase()}
+                {firstName.charAt(0).toUpperCase() +
+                  lastName.charAt(0).toUpperCase()}
               </RNText>
             </View>
           )}

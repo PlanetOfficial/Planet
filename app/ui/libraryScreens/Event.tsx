@@ -39,6 +39,10 @@ import {postSuggestion, vote} from '../../utils/api/suggestionAPI';
 import strings from '../../constants/strings';
 import SuggestionCard from '../components/SuggestionCard';
 
+/*
+ * route params:
+ * - event: Event
+ */
 const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
   const date = new Date();
   const [event] = useState<Event>(route.params.event);
@@ -71,7 +75,7 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
       });
       setMyVotes(_myVotes);
     } else {
-      Alert.alert('Error', 'Could not fetch event, please try again.');
+      Alert.alert(strings.error.error, strings.error.fetchEvent);
     }
     setRefreshing(false);
     setLoading(false);
@@ -82,12 +86,12 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
     if (_bookmarks) {
       setBookmarks(JSON.parse(_bookmarks));
     } else {
-      Alert.alert('Error', 'Unable to load bookmarks. Please try again.');
+      Alert.alert(strings.error.error, strings.error.loadBookmarks);
     }
   };
 
   const addSuggestion = useCallback(async () => {
-    const suggestion = route.params?.destination;
+    const suggestion = route.params.destination;
 
     if (suggestion && insertionDestination) {
       const response = await postSuggestion(
@@ -99,7 +103,7 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
       if (response) {
         loadData();
       } else {
-        Alert.alert('Error', 'Could not add suggestion, please try again.');
+        Alert.alert(strings.error.error, strings.error.addSuggestion);
       }
 
       navigation.setParams({destination: undefined});
@@ -109,7 +113,7 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
     insertionDestination,
     loadData,
     navigation,
-    route.params?.destination,
+    route.params.destination,
   ]);
 
   const findPrimary = (suggestions: Suggestion[]) => {
@@ -198,14 +202,14 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
       }
       setMyVotes(_myVotes);
     } else {
-      Alert.alert('Error', 'Unable to change vote, please try again later.');
+      Alert.alert(strings.error.error, strings.error.changeVote);
     }
 
     const _eventDetail = await getEvent(event.id);
     if (_eventDetail) {
       setEventDetail(_eventDetail);
     } else {
-      Alert.alert('Error', 'Unable to refresh event, please try again later.');
+      Alert.alert(strings.error.error, strings.error.refreshEvent);
     }
   };
 
@@ -316,8 +320,8 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
                   }
                   voted={
                     findPrimary(item.suggestions)
-                      ? myVotes.get(item?.id) ===
-                        findPrimary(item.suggestions)?.id
+                      ? myVotes.get(item.id) ===
+                        findPrimary(item.suggestions).id
                       : false
                   }
                   onVote={() => {
@@ -407,7 +411,7 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
         y={yPos}
         resetFlag={resetFlag}
         animateFlag={animateFlag}
-        event_id={event.id}
+        eventId={event.id}
         destination={selectedDestination}
         voted={
           selectedDestination

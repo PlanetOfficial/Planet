@@ -62,18 +62,19 @@ const strings = {
     enjoy: 'Enjoy!',
   },
   poi: {
-    createEvent: 'Create an Event',
-    unbookmark: 'Unbookmark',
-    bookmark: 'Bookmark',
-    openMap: 'Open map',
-    eventUrl: 'Website',
+    reviews: 'Reviews',
     description: 'Description',
+    info: 'Info',
     address: 'Address',
     hours: 'Hours',
     phone: 'Phone',
-    url: 'URL',
     website: 'Website',
+    noPrice: 'No Price',
+    noHours: 'No Hours',
     attributes: 'Attributes',
+    open: 'Open',
+    closed: 'Closed',
+    images: 'Images',
   },
   search: {
     search: 'Search',
@@ -140,13 +141,45 @@ const strings = {
       'Do you want to mark this suggestion as the primary destination?',
     spinHistory: 'Spin History',
     spinHistoryDescription:
-      "Records of everyone's spins will be displayed here, whether or not they choose to accept the result or not.",
+      "Records of everyone's spins will be displayed here, whether or not they choose to accept the result.",
     result: 'Result',
     spunBy: 'Spun By',
     time: 'Time',
   },
   notifications: {
     notifications: 'Notifications',
+  },
+  error: {
+    error: 'Error',
+    markSuggestionAsSelected:
+      'Unable to mark suggestion as selected. Please try again later.',
+    removeSuggestion: 'Unable to remove suggestion. Please try again later.',
+    loadBookmarks: 'Unable to load bookmarks. Please try again later.',
+    updateBookmarks: 'Unable to update bookmarks. Please try again later.',
+    saveEvent: 'Unable to save event. Please try again later.',
+    fetchEvents: 'Unable to fetch events. Please try again later.',
+    fetchEvent: 'Unable to fetch event. Please try again later.',
+    addSuggestion: 'Unable to add suggestions. Please try again later.',
+    changeVote: 'Unable to change vote. Please try again later.',
+    refreshEvent: 'Unable to refresh event. Please try again later.',
+    editEventName: 'Unable to edit the event name. Please try again later.',
+    editEventDate:
+      'Unable to edit the event date/time. Please try again later.',
+    renameDestination: 'Unable to rename destination. Please try again later.',
+    removeDestination: 'Unable to remove destination. Please try again later.',
+    reorderDestination:
+      'Unable to reorder destination. Please try again later.',
+    leaveEvent: 'Unable to leave the event. Please try again later.',
+    recordRouletteSpin:
+      'Unable ot record the roulette spin. Please try again later.',
+    makeSuggestionPrimary:
+      'Unable to make suggestion primary. Please try again later.',
+    loadDestinationDetails:
+      'Unable to load destination details. Please try again later.',
+    logOut: 'Unable to logout. Please try again later.',
+    loadGenres: 'Unable to load genres. Please try again later.',
+    loadPlaces: 'Unable to load places. Please try again later.',
+    locationPermission: 'Location permission denied.',
   },
 };
 

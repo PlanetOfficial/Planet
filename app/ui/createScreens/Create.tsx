@@ -14,6 +14,7 @@ import {s} from 'react-native-size-matters';
 import DatePicker from 'react-native-date-picker';
 import {Svg, Line, Circle} from 'react-native-svg';
 import prompt from 'react-native-prompt-android';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import moment from 'moment';
 
@@ -21,21 +22,27 @@ import colors from '../../constants/colors';
 import icons from '../../constants/icons';
 import strings from '../../constants/strings';
 import styles from '../../constants/styles';
+import numbers from '../../constants/numbers';
 
 import Text from '../components/Text';
 import Icon from '../components/Icon';
-
-import {Poi} from '../../utils/types';
 import PoiCardXL from '../components/PoiCardXL';
 import OptionMenu from '../components/OptionMenu';
+
+import {Poi} from '../../utils/types';
 import {handleBookmark} from '../../utils/Misc';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {postEvent} from '../../utils/api/eventAPI';
 
+/*
+ * route params:
+ * - destination: Destination
+ */
 const Create = ({navigation, route}: {navigation: any; route: any}) => {
-  const [eventTitle, setEventTitle] = React.useState(strings.event.untitled);
+  const [eventTitle, setEventTitle] = useState(strings.event.untitled);
+  const d = new Date();
+  const c = numbers.fiveMinutes;
   const [date, setDate] = useState<string>(
-    moment(new Date()).format('MMM Do, h:mm a'),
+    moment(new Date(Math.ceil(d.getTime() / c) * c)).format('MMM Do, h:mm a'),
   );
   const [datePickerOpen, setDatePickerOpen] = useState<boolean>(false);
 
@@ -69,7 +76,7 @@ const Create = ({navigation, route}: {navigation: any; route: any}) => {
     if (_bookmarks) {
       setBookmarks(JSON.parse(_bookmarks));
     } else {
-      Alert.alert('Error', 'Unable to load bookmarks. Please try again.');
+      Alert.alert(strings.error.error, strings.error.loadBookmarks);
     }
   };
 
@@ -102,14 +109,14 @@ const Create = ({navigation, route}: {navigation: any; route: any}) => {
 
     setLoading(true);
 
-    const poi_ids = destinations?.map(destination => destination.id);
-    const names = destinations?.map(destination => destination.category_name);
+    const poi_ids = destinations.map(destination => destination.id);
+    const names = destinations.map(destination => destination.category_name);
 
     const response = await postEvent(poi_ids, names, eventTitle, date, []);
     if (response) {
       navigation.navigate('Library', {event: response});
     } else {
-      Alert.alert('Error', 'Unable to save event. Please try again.');
+      Alert.alert(strings.error.error, strings.error.saveEvent);
     }
     // wait one second before setloading to false
     setTimeout(() => {
@@ -180,7 +187,7 @@ const Create = ({navigation, route}: {navigation: any; route: any}) => {
           />
         </View>
       </SafeAreaView>
-      {destinations && destinations?.length > 0 ? (
+      {destinations && destinations.length > 0 ? (
         <ScrollView contentContainerStyle={createStyles.scrollView}>
           {destinations.map((destination: Poi, index: number) => (
             <View key={index}>

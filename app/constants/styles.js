@@ -50,6 +50,9 @@ const styles = StyleSheet.create({
   absolute: {
     position: 'absolute',
   },
+  flip: {
+    transform: [{rotate: '180deg'}],
+  },
 });
 
 export default styles;
