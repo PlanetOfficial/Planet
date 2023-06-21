@@ -63,11 +63,11 @@ const NotificationSettings = ({navigation}: {navigation: any}) => {
   const settings = [
     {
       name: 'Friend Requests',
-      value: 'notify_friend_requests' as keyof NS,
+      value: 'notify_friend_request' as keyof NS,
       description:
         'Receive notifications when someone sends you a friend request',
       onPress: () =>
-        toggle(toggleNotifyFriendRequest, 'notify_friend_requests' as keyof NS),
+        toggle(toggleNotifyFriendRequest, 'notify_friend_request' as keyof NS),
     },
     {
       name: 'Friend Requests Accepted',
