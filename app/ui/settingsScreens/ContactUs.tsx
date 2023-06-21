@@ -24,9 +24,6 @@ const ContactUs = ({navigation}: {navigation: any}) => {
           </View>
         </View>
       </SafeAreaView>
-      <View style={localStyles.container}>
-        <Text>You thought you could contact us. Lol!</Text>
-      </View>
     </View>
   );
 };

@@ -24,9 +24,6 @@ const PrivacySettings = ({navigation}: {navigation: any}) => {
           </View>
         </View>
       </SafeAreaView>
-      <View style={localStyles.container}>
-        <Text>No Privacy for you.</Text>
-      </View>
     </View>
   );
 };

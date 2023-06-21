@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   ScrollView,
+  Alert,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 
@@ -27,7 +28,7 @@ const Settings = ({navigation}: {navigation: any}) => {
     {
       name: 'Privacy',
       icon: icons.privacy,
-      onPress: () => navigation.navigate('PrivacySettings'),
+      onPress: () => Alert.alert('Nothing to see here'),
     },
     {
       name: 'Locations',
@@ -47,7 +48,7 @@ const Settings = ({navigation}: {navigation: any}) => {
     {
       name: 'Contact Us',
       icon: icons.close, // TODO: replace with phone
-      onPress: () => navigation.navigate('ContactUs'),
+      onPress: () => Alert.alert('Nothing to see here'),
     },
   ];
 

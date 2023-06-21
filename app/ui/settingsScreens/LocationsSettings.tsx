@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Linking,
+  Alert,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 
@@ -31,9 +32,11 @@ const LocationsSettings = ({navigation}: {navigation: any}) => {
           </View>
         </View>
       </SafeAreaView>
-      <View style={localStyles.row}>
-        <Text weight="l">Primary Location is not implemented TT</Text>
-      </View>
+      <TouchableOpacity
+        style={localStyles.row}
+        onPress={() => Alert.alert('Primary Location is not implemented yet')}>
+        <Text weight="l">Primary Location: Seattle</Text>
+      </TouchableOpacity>
       <Separator />
       <TouchableOpacity style={localStyles.row} onPress={Linking.openSettings}>
         <Text weight="l">{strings.settings.openLocationSettings}</Text>

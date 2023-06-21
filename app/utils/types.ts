@@ -138,3 +138,11 @@ export interface Option {
   color: string;
   disabled?: boolean;
 }
+
+export interface NotificationSettings {
+  notify_friend_request: boolean;
+  notify_friend_request_accept: boolean;
+  notify_event_invite: boolean;
+  notify_new_suggestion: boolean;
+  notify_set_primary: boolean;
+}
