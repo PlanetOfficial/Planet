@@ -262,32 +262,41 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
           <View style={localStyles.prompt}>
             <Text weight="l">{strings.signUp.age}: </Text>
           </View>
-          <TextInput
-            onTouchStart={() => {
-              setAgeDPOpen(true);
-            }}
+          <TouchableOpacity
             style={localStyles.input}
-            placeholder={
-              strings.ageEnum.find(ageEnum => ageEnum.value === age)?.label
-            }
-            placeholderTextColor={colors.black}
-            editable={false}
-          />
+            onPress={() => {
+              setAgeDPOpen(true);
+            }}>
+            <TextInput
+              style={localStyles.textInput}
+              pointerEvents="none"
+              placeholder={
+                strings.ageEnum.find(ageEnum => ageEnum.value === age)?.label
+              }
+              placeholderTextColor={colors.black}
+              editable={false}
+            />
+          </TouchableOpacity>
           <View style={localStyles.gender}>
             <Text weight="l">{strings.signUp.gender}: </Text>
           </View>
-          <TextInput
-            onTouchStart={() => {
-              setGenderDPOpen(true);
-            }}
+          <TouchableOpacity
             style={localStyles.input}
-            placeholder={
-              strings.genderEnum.find(genderEnum => genderEnum.value === gender)
-                ?.label
-            }
-            placeholderTextColor={colors.black}
-            editable={false}
-          />
+            onPress={() => {
+              setGenderDPOpen(true);
+            }}>
+            <TextInput
+              style={localStyles.textInput}
+              pointerEvents="none"
+              placeholder={
+                strings.genderEnum.find(
+                  genderEnum => genderEnum.value === gender,
+                )?.label
+              }
+              placeholderTextColor={colors.black}
+              editable={false}
+            />
+          </TouchableOpacity>
         </View>
       </View>
       <Modal
@@ -441,6 +450,9 @@ const localStyles = StyleSheet.create({
   },
   picker: {
     width: s(300),
+  },
+  textInput: {
+    padding: 0,
   },
 });
 
