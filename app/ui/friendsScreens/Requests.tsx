@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -19,8 +19,10 @@ import Text from '../components/Text';
 import Icon from '../components/Icon';
 import {UserInfo} from '../../utils/types';
 import {
+  acceptFriendRequest,
   getFriendRequests,
   getFriendRequestsSent,
+  rejectFriendRequest,
 } from '../../utils/api/friendsAPI';
 import UserIcon from '../components/UserIcon';
 import Separator from '../components/Separator';
@@ -31,30 +33,50 @@ const Requests = ({navigation}: {navigation: any}) => {
   const [loadingRequests, setLoadingRequests] = useState<boolean>(true);
   const [refreshingRequests, setRefreshingRequests] = useState<boolean>(false);
 
-  const fetchRequests = async () => {
+  const fetchRequests = useCallback(async () => {
     const req = await getFriendRequests();
     const reqSent = await getFriendRequestsSent();
 
     if (req && reqSent) {
       setRequests(req);
       setRequestsSent(reqSent);
+
+      navigation.setOptions({
+        title: `Requests (${req.length})`,
+      });
     } else {
       Alert.alert(strings.error.error, strings.error.loadFriendsRequests);
     }
     setRefreshingRequests(false);
     setLoadingRequests(false);
-  };
-
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      fetchRequests();
-    });
-
-    return unsubscribe;
   }, [navigation]);
 
+  useEffect(() => {
+    fetchRequests();
+  }, [fetchRequests]);
+
+  const handleAcceptRequest = async (id: number) => {
+    const response = await acceptFriendRequest(id);
+
+    if (response) {
+      fetchRequests();
+    } else {
+      Alert.alert(strings.error.error, strings.error.acceptFriendRequest);
+    }
+  };
+
+  const handleDeclineRequest = async (id: number) => {
+    const response = await rejectFriendRequest(id);
+
+    if (response) {
+      fetchRequests();
+    } else {
+      Alert.alert(strings.error.error, strings.error.declineFriendRequest);
+    }
+  };
+
   return loadingRequests ? (
-    <View style={styles.center}>
+    <View style={[styles.center, styles.container]}>
       <ActivityIndicator size="small" color={colors.accent} />
     </View>
   ) : (
@@ -78,18 +100,25 @@ const Requests = ({navigation}: {navigation: any}) => {
               {'@' + item.username}
             </Text>
           </View>
-          <Icon
-            icon={icons.back} // TODO: Change to next
-          />
+          <View style={localStyles.icons}>
+            <Icon
+              size="s"
+              icon={icons.x}
+              color={colors.black}
+              onPress={() => handleDeclineRequest(item.id)}
+            />
+            <Icon
+              size="m"
+              icon={icons.check}
+              color={colors.accent}
+              onPress={() => handleAcceptRequest(item.id)}
+            />
+          </View>
         </TouchableOpacity>
       )}
       ListEmptyComponent={
         <View style={styles.center}>
-          <Text>{strings.friends.noFriendsFound}</Text>
-          <Text> </Text>
-          <Text size="s" color={colors.darkgrey}>
-            {strings.friends.noFriendsFoundDescription}
-          </Text>
+          <Text weight="l">{strings.friends.noFriendRequestsFound}</Text>
         </View>
       }
       ItemSeparatorComponent={Separator}
@@ -106,6 +135,16 @@ const Requests = ({navigation}: {navigation: any}) => {
     />
   );
 };
+
+const localStyles = StyleSheet.create({
+  icons: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: s(60),
+    marginRight: s(10),
+  },
+});
 
 const userStyles = StyleSheet.create({
   container: {

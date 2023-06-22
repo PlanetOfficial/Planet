@@ -96,6 +96,7 @@ const strings = {
     requests: 'Requests',
     noFriendsFound: 'No Friends Found',
     noFriendsFoundDescription: 'Try adding some friends',
+    noFriendRequestsFound: 'No Friend Requests Found',
   },
   profile: {
     yourProfile: 'Your Profile',
@@ -187,6 +188,10 @@ const strings = {
     loadFriendsList: 'Unable to load friends list. Please try again later.',
     loadFriendsRequests:
       'Unable to load friends requests. Please try again later.',
+    acceptFriendRequest:
+      'Unable to accept friend request. Please try again later.',
+    declineFriendRequest:
+      'Unable to decline friend request. Please try again later.',
   },
 };
 

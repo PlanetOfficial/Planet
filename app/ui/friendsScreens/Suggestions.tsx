@@ -48,7 +48,7 @@ const Friends = ({navigation}: {navigation: any}) => {
   }, [navigation]);
 
   return loadingFriends ? (
-    <View style={styles.center}>
+    <View style={[styles.center, styles.container]}>
       <ActivityIndicator size="small" color={colors.accent} />
     </View>
   ) : (

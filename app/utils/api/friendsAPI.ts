@@ -125,7 +125,7 @@ export const acceptFriendRequest = async (id: number): Promise<boolean> => {
   }
 
   const response = await fetch(
-    UserAPIURL + `/friend/accept/?requester=${id}&authtoken=${authToken}`,
+    UserAPIURL + `/friend/accept?requester=${id}&authtoken=${authToken}`,
     {
       method: 'POST',
     },
@@ -145,7 +145,7 @@ export const rejectFriendRequest = async (id: number): Promise<boolean> => {
   }
 
   const response = await fetch(
-    UserAPIURL + `/friend/reject/?requester=${id}&authtoken=${authToken}`,
+    UserAPIURL + `/friend/reject?requester=${id}&authtoken=${authToken}`,
     {
       method: 'DELETE',
     },

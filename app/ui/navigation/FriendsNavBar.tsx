@@ -13,7 +13,7 @@ const Tab = createMaterialTopTabNavigator();
 export const NavBar = () => {
   return (
     <Tab.Navigator
-      initialRouteName="Friends"
+      initialRouteName="Suggestions"
       screenOptions={() => ({
         tabBarShowLabel: true,
         headerShown: false,
@@ -22,6 +22,8 @@ export const NavBar = () => {
         },
         tabBarLabelStyle: {
           textTransform: 'none',
+          fontSize: s(12),
+          fontWeight: '500',
         },
         tabBarItemStyle: {
           margin: -s(5),

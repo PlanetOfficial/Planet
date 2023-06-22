@@ -6,6 +6,7 @@ const icons = {
   bookmarked: require('../assets/icons/bookmarked.png'),
   call: require('../assets/icons/call.png'),
   chat: require('../assets/icons/chat.png'),
+  check: require('../assets/icons/check.png'),
   checked: require('../assets/icons/checked.png'),
   clock: require('../assets/icons/clock.png'),
   close: require('../assets/icons/x.png'),
@@ -21,6 +22,7 @@ const icons = {
   map: require('../assets/icons/map.png'),
   minus: require('../assets/icons/minus.png'),
   more: require('../assets/icons/more.png'),
+  next: require('../assets/icons/next.png'),
   open: require('../assets/icons/open.png'),
   option: require('../assets/icons/option.png'),
   pin: require('../assets/icons/pin.png'),
@@ -32,6 +34,7 @@ const icons = {
   settings: require('../assets/icons/settings.png'),
   unchecked: require('../assets/icons/unchecked.png'),
   unselected: require('../assets/icons/unselected.png'),
+  x: require('../assets/icons/x.png'),
 };
 
 export default icons;

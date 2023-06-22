@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import {
   View,
   StyleSheet,
@@ -27,7 +27,7 @@ const Friends = ({navigation}: {navigation: any}) => {
   const [loadingFriends, setLoadingFriends] = useState<boolean>(true);
   const [refreshingFriends, setRefreshingFriends] = useState<boolean>(false);
 
-  const fetchFriends = async () => {
+  const fetchFriends = useCallback(async () => {
     const response = await getFriends();
 
     if (response) {
@@ -37,18 +37,14 @@ const Friends = ({navigation}: {navigation: any}) => {
     }
     setRefreshingFriends(false);
     setLoadingFriends(false);
-  };
+  }, []);
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      fetchFriends();
-    });
-
-    return unsubscribe;
-  }, [navigation]);
+    fetchFriends();
+  }, [fetchFriends]);
 
   return loadingFriends ? (
-    <View style={styles.center}>
+    <View style={[styles.center, styles.container]}>
       <ActivityIndicator size="small" color={colors.accent} />
     </View>
   ) : (
@@ -72,9 +68,7 @@ const Friends = ({navigation}: {navigation: any}) => {
               {'@' + item.username}
             </Text>
           </View>
-          <Icon
-            icon={icons.back} // TODO: Change to next
-          />
+          <Icon icon={icons.next} />
         </TouchableOpacity>
       )}
       ListEmptyComponent={
