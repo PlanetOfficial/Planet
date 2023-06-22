@@ -2,6 +2,9 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 import {UserAPIURL} from './APIConstants';
 import {NotificationSettings} from '../types';
 
+/**
+ * @requires auth_token should be set in EncryptedStorage before calling this function
+ */
 export const getNotificationSettings =
   async (): Promise<NotificationSettings | null> => {
     const authToken = await EncryptedStorage.getItem('auth_token');

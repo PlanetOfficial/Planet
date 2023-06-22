@@ -24,7 +24,7 @@ import {
   toggleNotifyFriendRequestAccept,
   toggleNotifyNewSuggestion,
   toggleNotifySetPrimary,
-} from '../../utils/api/notificationsAPI';
+} from '../../utils/api/notificationSettingsAPI';
 import {NotificationSettings as NS} from '../../utils/types';
 
 const NotificationSettings = ({navigation}: {navigation: any}) => {
