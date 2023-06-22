@@ -50,6 +50,7 @@ const Friends = ({navigation}: {navigation: any}) => {
   ) : (
     <FlatList
       style={styles.container}
+      contentContainerStyle={styles.flatList}
       data={friends}
       keyExtractor={item => item.id.toString()}
       renderItem={({item}: {item: UserInfo}) => (

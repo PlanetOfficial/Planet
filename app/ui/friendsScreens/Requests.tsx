@@ -20,6 +20,7 @@ import Icon from '../components/Icon';
 import {UserInfo} from '../../utils/types';
 import {
   acceptFriendRequest,
+  deleteFriendRequest,
   getFriendRequests,
   getFriendRequestsSent,
   rejectFriendRequest,
@@ -75,6 +76,16 @@ const Requests = ({navigation}: {navigation: any}) => {
     }
   };
 
+  const handleCancelRequest = async (id: number) => {
+    const response = await deleteFriendRequest(id);
+
+    if (response) {
+      fetchRequests();
+    } else {
+      Alert.alert(strings.error.error, strings.error.cancelFriendRequest);
+    }
+  };
+
   return loadingRequests ? (
     <View style={[styles.center, styles.container]}>
       <ActivityIndicator size="small" color={colors.accent} />
@@ -82,6 +93,7 @@ const Requests = ({navigation}: {navigation: any}) => {
   ) : (
     <FlatList
       style={styles.container}
+      contentContainerStyle={styles.flatList}
       data={requests}
       keyExtractor={item => item.id.toString()}
       renderItem={({item}: {item: UserInfo}) => (
@@ -121,6 +133,53 @@ const Requests = ({navigation}: {navigation: any}) => {
           <Text weight="l">{strings.friends.noFriendRequestsFound}</Text>
         </View>
       }
+      ListFooterComponent={
+        <View>
+          {requestsSent.length > 0 ? (
+            <>
+              <Separator />
+              <View style={localStyles.pending}>
+                <Text weight="l">{`${
+                  requestsSent.length === 1
+                    ? strings.friends.pendingRequest
+                    : strings.friends.pendingRequests
+                } (${requestsSent.length}):`}</Text>
+              </View>
+              {requestsSent?.map((item: UserInfo) => (
+                <TouchableOpacity
+                  key={item.id}
+                  style={userStyles.container}
+                  onPress={() => console.log('navigate to friend page')}>
+                  <View style={userStyles.profilePic}>
+                    <UserIcon user={item} />
+                  </View>
+                  <View style={userStyles.texts}>
+                    <Text
+                      size="s"
+                      numberOfLines={
+                        1
+                      }>{`${item.first_name} ${item.last_name}`}</Text>
+                    <Text
+                      size="s"
+                      weight="l"
+                      color={colors.darkgrey}
+                      numberOfLines={1}>
+                      {'@' + item.username}
+                    </Text>
+                  </View>
+
+                  <Icon
+                    size="m"
+                    icon={icons.x}
+                    color={colors.black}
+                    onPress={() => handleCancelRequest(item.id)}
+                  />
+                </TouchableOpacity>
+              ))}
+            </>
+          ) : null}
+        </View>
+      }
       ItemSeparatorComponent={Separator}
       refreshControl={
         <RefreshControl
@@ -144,13 +203,18 @@ const localStyles = StyleSheet.create({
     width: s(60),
     marginRight: s(10),
   },
+  pending: {
+    marginHorizontal: s(20),
+    marginTop: s(20),
+    marginBottom: s(10),
+  },
 });
 
 const userStyles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginHorizontal: s(20),
+    marginHorizontal: s(30),
     paddingVertical: s(10),
   },
   profilePic: {

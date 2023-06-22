@@ -7,6 +7,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.white,
   },
+  flatList: {
+    paddingTop: s(10),
+  },
   scrollView: {
     paddingBottom: s(30),
   },
