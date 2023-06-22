@@ -95,7 +95,6 @@ export interface Event {
   name: string;
   datetime: string;
   members: UserInfo[];
-  created_by: UserInfo;
   photo: string;
   vicinity: string;
 }
@@ -106,7 +105,6 @@ export interface EventDetail {
   datetime: string;
   members: UserInfo[];
   destinations: Destination[];
-  created_by: UserInfo;
 }
 
 export interface Destination {
