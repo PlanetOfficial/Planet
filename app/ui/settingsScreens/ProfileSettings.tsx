@@ -125,11 +125,7 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
           )}
         </View>
         <View style={[localStyles.profilePic, localStyles.overlay]}>
-          <Icon
-            icon={icons.close} // image
-            size="l"
-            color={colors.white}
-          />
+          <Icon icon={icons.gallery} size="l" color={colors.white} />
         </View>
       </TouchableOpacity>
       <View style={localStyles.container}>
@@ -201,9 +197,9 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
               setAgeDPOpen(true);
             }}
             style={localStyles.input}
-            placeholder={strings.ageEnum.find(
-              ageEnum => ageEnum.value === age,
-            )?.label}
+            placeholder={
+              strings.ageEnum.find(ageEnum => ageEnum.value === age)?.label
+            }
             placeholderTextColor={colors.black}
             editable={false}
           />
@@ -215,9 +211,10 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
               setGenderDPOpen(true);
             }}
             style={localStyles.input}
-            placeholder={strings.genderEnum.find(
-              genderEnum => genderEnum.value === gender,
-            )?.label}
+            placeholder={
+              strings.genderEnum.find(genderEnum => genderEnum.value === gender)
+                ?.label
+            }
             placeholderTextColor={colors.black}
             editable={false}
           />

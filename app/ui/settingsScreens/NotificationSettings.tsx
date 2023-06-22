@@ -36,7 +36,7 @@ const NotificationSettings = ({navigation}: {navigation: any}) => {
     if (response) {
       setNotificationsSettings(response);
     } else {
-      Alert.alert('TODO CHANGE THIS');
+      Alert.alert(strings.error.error, strings.error.loadNotifications);
     }
   };
 
@@ -56,7 +56,7 @@ const NotificationSettings = ({navigation}: {navigation: any}) => {
         [key]: !notificationsSettings[key],
       });
     } else {
-      Alert.alert('TODO CHANGE THIS');
+      Alert.alert(strings.error.error, strings.error.toggleNotifications);
     }
   };
 

@@ -47,7 +47,7 @@ const Settings = ({navigation}: {navigation: any}) => {
     },
     {
       name: 'Contact Us',
-      icon: icons.close, // TODO: replace with phone
+      icon: icons.call,
       onPress: () => Alert.alert('Nothing to see here'),
     },
   ];

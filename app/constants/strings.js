@@ -194,6 +194,10 @@ const strings = {
     loadGenres: 'Unable to load genres. Please try again later.',
     loadPlaces: 'Unable to load places. Please try again later.',
     locationPermission: 'Location permission denied.',
+    loadNotifications:
+      'Unable to load notification settings. Please try again later.',
+    toggleNotifications:
+      'Unable to toggle notification settings. Please try again later.',
   },
   ageEnum: [
     {label: '-17', value: '-17'},
