@@ -57,15 +57,16 @@ const AccountSettings = ({navigation}: {navigation: any}) => {
               {
                 text: 'Remove',
                 onPress: async () => {
-                  try {
-                    await removeAccount();
+                  const response = await removeAccount();
+
+                  if (response) {
                     clearCaches();
                     await messaging().deleteToken();
                     navigation.reset({
                       index: 0,
                       routes: [{name: 'Login'}],
                     });
-                  } catch (error) {
+                  } else {
                     Alert.alert(
                       'Error',
                       'Unable to remove account. Please try again.',
