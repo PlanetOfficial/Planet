@@ -20,7 +20,7 @@ import CreateSearch from '../createScreens/CreateSearch';
 import SearchCategory from '../searchScreens/SearchCategory';
 import SearchMap from '../searchScreens/SearchMap';
 import PoiDetail from '../otherScreens/PoiDetail';
-import Friends from '../otherScreens/Friends';
+import Friends from '../friendsScreens/Friend';
 import Explore from '../homeScreens/Explore';
 import Event from '../libraryScreens/Event';
 import EventSettings from '../libraryScreens/EventSettings';
@@ -234,7 +234,6 @@ const friendsScreen = () => {
       component={Friends}
       options={{
         headerShown: false,
-        presentation: 'modal',
       }}
     />
   );

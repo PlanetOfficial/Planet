@@ -58,7 +58,6 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
     useState<Destination>();
 
   const loadData = useCallback(async () => {
-    setRefreshing(true);
     const _username = await AsyncStorage.getItem('username');
 
     const _eventDetail = await getEvent(event.id);
@@ -382,7 +381,10 @@ const EventPage = ({navigation, route}: {navigation: any; route: any}) => {
           refreshControl={
             <RefreshControl
               refreshing={refreshing}
-              onRefresh={() => loadData()}
+              onRefresh={() => {
+                setRefreshing(true);
+                loadData();
+              }}
               tintColor={colors.accent}
             />
           }

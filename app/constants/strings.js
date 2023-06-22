@@ -92,6 +92,10 @@ const strings = {
   },
   friends: {
     friends: 'Friends',
+    suggestions: 'Suggestions',
+    requests: 'Requests',
+    noFriendsFound: 'No Friends Found',
+    noFriendsFoundDescription: 'Try adding some friends',
   },
   profile: {
     yourProfile: 'Your Profile',
@@ -180,6 +184,9 @@ const strings = {
     loadGenres: 'Unable to load genres. Please try again later.',
     loadPlaces: 'Unable to load places. Please try again later.',
     locationPermission: 'Location permission denied.',
+    loadFriendsList: 'Unable to load friends list. Please try again later.',
+    loadFriendsRequests:
+      'Unable to load friends requests. Please try again later.',
   },
 };
 
