@@ -28,23 +28,11 @@ const SignUpInfo = ({navigation, route}: {navigation: any; route: any}) => {
 
   const [ageDPOpen, setAgeDPOpen] = useState(false);
   const [age, setAge] = useState<string | null>(null);
-  const [ageEnum, setAgeEnum] = useState([
-    {label: '-17', value: '-17'},
-    {label: '18-21', value: '18-21'},
-    {label: '22-24', value: '22-24'},
-    {label: '25-30', value: '25-30'},
-    {label: '30-40', value: '30-40'},
-    {label: '41+', value: '41%2B'},
-  ]);
+  const [ageEnum, setAgeEnum] = useState(strings.ageEnum);
 
   const [genderDPOpen, setGenderDPOpen] = useState(false);
   const [gender, setGender] = useState<string | null>(null);
-  const [genderEnum, setGenderEnum] = useState([
-    {label: 'Male', value: 'Male'},
-    {label: 'Female', value: 'Female'},
-    {label: 'Other', value: 'Other'},
-    {label: 'Rather not say', value: 'Rather not say'},
-  ]);
+  const [genderEnum, setGenderEnum] = useState(strings.genderEnum);
 
   const handleNext = async () => {
     if (!age || !gender) {

@@ -79,7 +79,7 @@ const Profile = ({navigation}: {navigation: any}) => {
         </View>
       </SafeAreaView>
       <View style={profileStyles.container}>
-        <TouchableOpacity style={profileStyles.profilePic}>
+        <View style={profileStyles.profilePic}>
           {pfpURL.length > 0 ? (
             <Image style={profileStyles.profileImage} source={{uri: pfpURL}} />
           ) : (
@@ -94,7 +94,7 @@ const Profile = ({navigation}: {navigation: any}) => {
               </RNText>
             </View>
           )}
-        </TouchableOpacity>
+        </View>
         <View style={profileStyles.info}>
           <Text size="l">
             {firstName} {lastName}
