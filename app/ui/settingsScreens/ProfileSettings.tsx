@@ -26,7 +26,7 @@ import styles from '../../constants/styles';
 import Text from '../components/Text';
 import Icon from '../components/Icon';
 
-import {saveImage} from '../../utils/api/authAPI';
+import {editInfo, saveImage} from '../../utils/api/authAPI';
 import colors from '../../constants/colors';
 
 const ProfileSettings = ({navigation}: {navigation: any}) => {
@@ -34,7 +34,7 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
   const [lastName, setLastName] = useState<string>('');
   const [username, setUsername] = useState<string>('');
   const [pfpURL, setPfpURL] = useState<string>('');
-  const [phoneNumber, setPhoneNumber] = useState<string>('350870870');
+  const [phoneNumber, setPhoneNumber] = useState<string>('');
   const [age, setAge] = useState<string>('');
   const [ageDPOpen, setAgeDPOpen] = useState(false);
   const [gender, setGender] = useState<string>('');
@@ -45,9 +45,15 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
     const _lastName = await AsyncStorage.getItem('last_name');
     const _username = await AsyncStorage.getItem('username');
     const _pfpURL = await AsyncStorage.getItem('pfp_url');
+    const _phoneNumber = await AsyncStorage.getItem('phone_number');
+    const _age = await AsyncStorage.getItem('age');
+    const _gender = await AsyncStorage.getItem('gender');
     setFirstName(_firstName || '');
     setLastName(_lastName || '');
     setUsername(_username || '');
+    setPhoneNumber(_phoneNumber || '');
+    setAge(_age || '');
+    setGender(_gender || '');
     setPfpURL(_pfpURL || '');
   };
 
@@ -93,6 +99,51 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
     }
   };
 
+  const handleEditInfo = async (
+    _firstName: string,
+    _lastName: string,
+    _username: string,
+    _age: string,
+    _gender: string,
+  ) => {
+    if (_firstName.length === 0) {
+      const fn = await AsyncStorage.getItem('first_name');
+      setFirstName(fn || '');
+      return;
+    }
+    if (_lastName.length === 0) {
+      const ln = await AsyncStorage.getItem('last_name');
+      setLastName(ln || '');
+      return;
+    }
+    if (_username.length === 0) {
+      const un = await AsyncStorage.getItem('username');
+      setUsername(un || '');
+      return;
+    }
+
+    const response = await editInfo(
+      _firstName,
+      _lastName,
+      _username,
+      _age,
+      _gender,
+    );
+
+    if (response?.ok) {
+      setAge(_age);
+      setGender(_gender);
+
+      await AsyncStorage.setItem('first_name', _firstName);
+      await AsyncStorage.setItem('last_name', _lastName);
+      await AsyncStorage.setItem('username', _username);
+      await AsyncStorage.setItem('age', _age);
+      await AsyncStorage.setItem('gender', _gender);
+    } else {
+      Alert.alert(strings.error.error, strings.error.editInfo);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <SafeAreaView>
@@ -125,7 +176,7 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
           )}
         </View>
         <View style={[localStyles.profilePic, localStyles.overlay]}>
-          <Icon icon={icons.gallery} size="l" color={colors.white} />
+          <Icon icon={icons.gallery} size="xl" color={colors.white} />
         </View>
       </TouchableOpacity>
       <View style={localStyles.container}>
@@ -140,8 +191,13 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
             autoCorrect={false}
             onChangeText={text => setFirstName(text)}
             onEndEditing={e => {
-              console.log('change firstname to ' + e.nativeEvent.text);
-              // edit name, change back to original if error (or if text is empty)
+              handleEditInfo(
+                e.nativeEvent.text,
+                lastName,
+                username,
+                age,
+                gender,
+              );
             }}
             placeholderTextColor={colors.darkgrey}
           />
@@ -157,8 +213,13 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
             autoCorrect={false}
             onChangeText={text => setLastName(text)}
             onEndEditing={e => {
-              console.log('change lastname to ' + e.nativeEvent.text);
-              // edit name, change back to original if error (or if text is empty)
+              handleEditInfo(
+                firstName,
+                e.nativeEvent.text,
+                username,
+                age,
+                gender,
+              );
             }}
             placeholderTextColor={colors.darkgrey}
           />
@@ -170,8 +231,17 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
           <TextInput
             style={localStyles.input}
             placeholder={strings.signUp.username}
-            value={'@' + username}
+            value={username}
             onChangeText={text => setUsername(text.toLowerCase())}
+            onEndEditing={e => {
+              handleEditInfo(
+                firstName,
+                lastName,
+                e.nativeEvent.text,
+                age,
+                gender,
+              );
+            }}
             placeholderTextColor={colors.darkgrey}
             autoCapitalize="none"
             autoCorrect={false}
@@ -231,8 +301,14 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
               style={localStyles.picker}
               selectedValue={age}
               onValueChange={itemValue => {
+                handleEditInfo(
+                  firstName,
+                  lastName,
+                  username,
+                  itemValue,
+                  gender,
+                );
                 setAgeDPOpen(false);
-                setAge(itemValue);
               }}>
               {strings.ageEnum.map((ageEnum, index) => {
                 return (
@@ -259,9 +335,8 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
               style={localStyles.picker}
               selectedValue={gender}
               onValueChange={itemValue => {
-                console.log(itemValue);
+                handleEditInfo(firstName, lastName, username, age, itemValue);
                 setGenderDPOpen(false);
-                setGender(itemValue);
               }}>
               {strings.genderEnum.map((genderEnum, index) => {
                 return (

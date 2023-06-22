@@ -198,6 +198,7 @@ const strings = {
       'Unable to load notification settings. Please try again later.',
     toggleNotifications:
       'Unable to toggle notification settings. Please try again later.',
+    editInfo: 'Unable to edit user info. Please try again later.',
   },
   ageEnum: [
     {label: '-17', value: '-17'},

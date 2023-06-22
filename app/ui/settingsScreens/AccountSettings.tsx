@@ -19,6 +19,7 @@ import Icon from '../components/Icon';
 
 import {clearCaches} from '../../utils/CacheHelpers';
 import Separator from '../components/Separator';
+import {removeAccount} from '../../utils/api/authAPI';
 
 const AccountSettings = ({navigation}: {navigation: any}) => {
   const handleLogout = async () => {
@@ -34,6 +35,52 @@ const AccountSettings = ({navigation}: {navigation: any}) => {
         routes: [{name: 'Login'}],
       });
     }
+  };
+
+  const handleRemoveAccount = async () => {
+    Alert.alert(
+      'Remove Account',
+      'Are you sure you want to remove your account?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Remove',
+          onPress: async () => {
+            Alert.alert('Are you sure?', 'This action cannot be undone.', [
+              {
+                text: 'Cancel',
+                style: 'cancel',
+              },
+              {
+                text: 'Remove',
+                onPress: async () => {
+                  try {
+                    await removeAccount();
+                    clearCaches();
+                  } catch (error) {
+                    Alert.alert(
+                      'Error',
+                      'Unable to remove account. Please try again.',
+                    );
+                  } finally {
+                    await messaging().deleteToken();
+                    navigation.reset({
+                      index: 0,
+                      routes: [{name: 'Login'}],
+                    });
+                  }
+                },
+                style: 'destructive',
+              },
+            ]);
+          },
+          style: 'destructive',
+        },
+      ],
+    );
   };
 
   return (
@@ -62,9 +109,7 @@ const AccountSettings = ({navigation}: {navigation: any}) => {
         </Text>
       </TouchableOpacity>
       <Separator />
-      <TouchableOpacity
-        style={localStyles.row}
-        onPress={() => Alert.alert('Remove Account not implemented yet')}>
+      <TouchableOpacity style={localStyles.row} onPress={handleRemoveAccount}>
         <Text weight="l" color={colors.red}>
           {strings.settings.removeAccount}
         </Text>

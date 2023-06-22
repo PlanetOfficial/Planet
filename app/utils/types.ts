@@ -6,6 +6,17 @@ export interface UserInfo {
   icon?: Image;
 }
 
+export interface MyInfo {
+  id: number;
+  first_name: string;
+  last_name: string;
+  username: string;
+  icon?: Image;
+  phone_number: string;
+  age: string;
+  gender: string;
+}
+
 export interface Genre {
   id: number;
   name: string;
