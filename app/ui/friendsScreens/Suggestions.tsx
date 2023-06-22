@@ -39,14 +39,6 @@ const Friends = ({navigation}: {navigation: any}) => {
     setLoadingFriends(false);
   };
 
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      fetchFriends();
-    });
-
-    return unsubscribe;
-  }, [navigation]);
-
   return loadingFriends ? (
     <View style={[styles.center, styles.container]}>
       <ActivityIndicator size="small" color={colors.accent} />
@@ -72,9 +64,7 @@ const Friends = ({navigation}: {navigation: any}) => {
               {'@' + item.username}
             </Text>
           </View>
-          <Icon
-            icon={icons.back} // TODO: Change to next
-          />
+          <Icon icon={icons.next} />
         </TouchableOpacity>
       )}
       ListEmptyComponent={

@@ -57,7 +57,11 @@ const Friends = ({navigation}: {navigation: any}) => {
         <TouchableOpacity
           key={item.id}
           style={userStyles.container}
-          onPress={() => console.log('navigate to friend page')}>
+          onPress={() =>
+            navigation.navigate('User', {
+              user: item,
+            })
+          }>
           <View style={userStyles.profilePic}>
             <UserIcon user={item} />
           </View>

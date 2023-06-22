@@ -100,7 +100,12 @@ const Requests = ({navigation}: {navigation: any}) => {
         <TouchableOpacity
           key={item.id}
           style={userStyles.container}
-          onPress={() => console.log('navigate to friend page')}>
+          onPress={() =>
+            navigation.navigate('Friends', {
+              screen: 'User',
+              params: {user: 'jane'},
+            })
+          }>
           <View style={userStyles.profilePic}>
             <UserIcon user={item} />
           </View>
@@ -149,7 +154,12 @@ const Requests = ({navigation}: {navigation: any}) => {
                 <TouchableOpacity
                   key={item.id}
                   style={userStyles.container}
-                  onPress={() => console.log('navigate to friend page')}>
+                  onPress={() =>
+                    navigation.navigate('Main', {
+                      screen: 'User',
+                      params: {user: 'jane'},
+                    })
+                  }>
                   <View style={userStyles.profilePic}>
                     <UserIcon user={item} />
                   </View>
@@ -169,7 +179,7 @@ const Requests = ({navigation}: {navigation: any}) => {
                   </View>
 
                   <Icon
-                    size="m"
+                    size="s"
                     icon={icons.x}
                     color={colors.black}
                     onPress={() => handleCancelRequest(item.id)}

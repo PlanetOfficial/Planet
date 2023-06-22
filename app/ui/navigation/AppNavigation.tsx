@@ -21,6 +21,7 @@ import SearchCategory from '../searchScreens/SearchCategory';
 import SearchMap from '../searchScreens/SearchMap';
 import PoiDetail from '../otherScreens/PoiDetail';
 import Friends from '../friendsScreens/Friend';
+import User from '../friendsScreens/User';
 import Explore from '../homeScreens/Explore';
 import Event from '../libraryScreens/Event';
 import EventSettings from '../libraryScreens/EventSettings';
@@ -51,6 +52,7 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {searchMapScreen()}
           {poiDetailScreen()}
           {friendsScreen()}
+          {userScreen()}
           {exploreScreen()}
           {settingsScreen()}
           {createScreen()}
@@ -88,6 +90,7 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {searchMapScreen()}
           {poiDetailScreen()}
           {friendsScreen()}
+          {userScreen()}
           {exploreScreen()}
           {settingsScreen()}
           {createScreen()}
@@ -232,6 +235,18 @@ const friendsScreen = () => {
     <Stack.Screen
       name="Friends"
       component={Friends}
+      options={{
+        headerShown: false,
+      }}
+    />
+  );
+};
+
+const userScreen = () => {
+  return (
+    <Stack.Screen
+      name="User"
+      component={User}
       options={{
         headerShown: false,
       }}
