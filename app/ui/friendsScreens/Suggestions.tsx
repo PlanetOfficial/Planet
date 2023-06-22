@@ -39,6 +39,14 @@ const Friends = ({navigation}: {navigation: any}) => {
     setLoadingFriends(false);
   };
 
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      fetchFriends();
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
   return loadingFriends ? (
     <View style={[styles.center, styles.container]}>
       <ActivityIndicator size="small" color={colors.accent} />

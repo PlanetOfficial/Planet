@@ -104,6 +104,7 @@ const strings = {
     yourProfile: 'Your Profile',
     bookmarks: 'Bookmarks',
     yourAlbums: 'Your Albums',
+    albums: 'Albums',
     settings: 'Settings',
     noBookmarksFound: 'No Bookmarks Found',
     noBookmarksFoundDescription: 'Try bookmarking something',

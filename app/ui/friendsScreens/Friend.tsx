@@ -11,8 +11,6 @@ import styles from '../../constants/styles';
 import Text from '../components/Text';
 import Icon from '../components/Icon';
 
-import {UserInfo} from '../../utils/types';
-
 const FriendPage = ({navigation}: {navigation: any}) => {
   return (
     <View style={styles.container}>
