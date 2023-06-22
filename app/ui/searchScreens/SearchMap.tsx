@@ -15,6 +15,13 @@ import Blur from '../components/Blur';
 import {calculateRadius, getRegionFromPointAndDistance} from '../../utils/Misc';
 import {Region} from '../../utils/types';
 
+/*
+ * route params:
+ * - mode: string
+ * - location?: Coordinate
+ * - radius: number
+ * - category: Category
+ */
 const SearchMap = ({navigation, route}: {navigation: any; route: any}) => {
   const [region, setRegion] = useState<Region>(
     getRegionFromPointAndDistance(route.params.location, route.params.radius),

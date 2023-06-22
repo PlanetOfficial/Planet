@@ -25,6 +25,13 @@ import {getPois} from '../../utils/api/poiAPI';
 import {handleBookmark} from '../../utils/Misc';
 import {Poi} from '../../utils/types';
 
+/*
+ * route params:
+ * - mode: string
+ * - location?: Coordinate
+ * - radius: number
+ * - category: Category
+ */
 const SearchCategory = ({navigation, route}: {navigation: any; route: any}) => {
   const {category, location, radius, mode} = route.params;
 
@@ -65,7 +72,7 @@ const SearchCategory = ({navigation, route}: {navigation: any; route: any}) => {
     if (data) {
       setPlaces(data);
     } else {
-      Alert.alert('Error', 'Unable to load places. Please try again.');
+      Alert.alert(strings.error.error, strings.error.loadPlaces);
     }
     setRefreshing(false);
     setLoading(false);
@@ -76,7 +83,7 @@ const SearchCategory = ({navigation, route}: {navigation: any; route: any}) => {
     if (_bookmarks) {
       setBookmarks(JSON.parse(_bookmarks));
     } else {
-      Alert.alert('Error', 'Unable to load bookmarks. Please try again.');
+      Alert.alert(strings.error.error, strings.error.loadBookmarks);
     }
   };
 

@@ -1,76 +1,115 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
   View,
   StyleSheet,
   SafeAreaView,
-  TouchableOpacity,
-  Image,
+  StatusBar,
   Linking,
   Alert,
+  ImageBackground,
+  Animated,
+  TouchableOpacity,
+  Image,
+  LayoutAnimation,
 } from 'react-native';
-import {s} from 'react-native-size-matters';
-import {ScrollView} from 'react-native-gesture-handler';
+import {CommonActions} from '@react-navigation/native';
+import {s, vs} from 'react-native-size-matters';
+import MapView, {Marker} from 'react-native-maps';
 import {showLocation} from 'react-native-map-link';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import ImageView from 'react-native-image-viewing';
 
-import strings from '../../constants/strings';
-import icons from '../../constants/icons';
 import colors from '../../constants/colors';
+import icons from '../../constants/icons';
+import numbers from '../../constants/numbers';
+import strings from '../../constants/strings';
+import styles from '../../constants/styles';
 
 import Icon from '../components/Icon';
 import Text from '../components/Text';
-import OptionMenu from '../components/OptionMenu';
 
 import {Poi, PoiDetail, Review} from '../../utils/types';
 import {getPoi, postPoi} from '../../utils/api/poiAPI';
+import {handleBookmark, isOpen} from '../../utils/Misc';
 
+/*
+ * route params:
+ * - mode: string
+ * - place_id?: string
+ * - poi?: Poi
+ */
 const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
-  const [destination, setDestination] = useState<Poi>(route.params.poi);
+  StatusBar.setBarStyle('light-content', true);
+  const date = new Date();
+
+  const [destination, setDestination] = useState<Poi>();
   const [destinationDetails, setDestinationDetails] = useState<PoiDetail>();
-  const [bookmarked, setBookmarked] = useState<boolean>(
-    route?.params?.bookmarked,
-  );
+
+  const [bookmarks, setBookmarks] = useState<Poi[]>([]);
+  const [open, setOpen] = useState<boolean>();
 
   const [mode] = useState<string>(route.params.mode);
 
-  useEffect(() => {
-    const initializeDestinationData = async () => {
-      if (route.params?.place_id) {
-        const result = await postPoi(route.params.place_id);
-        if (result) {
-          setDestination(result.poi);
-          setDestinationDetails(result.poiDetail);
-          setBookmarked(false);
-        } else {
-          Alert.alert(
-            'Error',
-            'Unable to load destination details. Please try again.',
-          );
-        }
-      } else {
-        const details: PoiDetail | null = await getPoi(
-          destination.place_id,
-          destination.supplier,
+  const [mapExpanded, setMapExpanded] = useState<boolean>(false);
+  const [hoursExpanded, setHoursExpanded] = useState<boolean>(false);
+
+  const initializeBookmarks = useCallback(async () => {
+    const _bookmarks = await AsyncStorage.getItem('bookmarks');
+    if (_bookmarks) {
+      setBookmarks(JSON.parse(_bookmarks));
+    } else {
+      Alert.alert(strings.error.error, strings.error.loadBookmarks);
+    }
+  }, []);
+
+  const initializeDestinationData = useCallback(async () => {
+    if (route.params.place_id) {
+      const result = await postPoi(route.params.place_id);
+      if (result) {
+        setDestination(result.poi);
+        setDestinationDetails(result.poiDetail);
+        setOpen(
+          result.poiDetail.periods ? isOpen(result.poiDetail.periods) : false,
         );
-
-        if (details) {
-          setDestinationDetails(details);
-        } else {
-          Alert.alert(
-            'Error',
-            'Unable to load destination details. Please try again.',
-          );
-        }
+      } else {
+        Alert.alert(strings.error.error, strings.error.loadDestinationDetails);
       }
-    };
+    } else if (route.params.poi) {
+      const _destination = route.params.poi;
+      setDestination(_destination);
 
-    initializeDestinationData();
-  }, [destination?.place_id, destination?.supplier, route.params.place_id]);
+      const details: PoiDetail | null = await getPoi(
+        _destination.place_id,
+        _destination.supplier,
+      );
+
+      if (details) {
+        setDestinationDetails(details);
+        setOpen(details.periods ? isOpen(details.periods) : false);
+      } else {
+        Alert.alert(strings.error.error, strings.error.loadDestinationDetails);
+      }
+    }
+  }, [route.params.poi, route.params.place_id]);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      initializeBookmarks();
+      initializeDestinationData();
+    });
+
+    return unsubscribe;
+  }, [navigation, initializeBookmarks, initializeDestinationData]);
 
   const handleMapPress = async () => {
+    if (!destination) {
+      return;
+    }
     showLocation({
-      latitude: destination?.latitude,
-      longitude: destination?.longitude,
-      title: destination?.name,
+      latitude: destination.latitude,
+      longitude: destination.longitude,
+      title: destination.name,
     });
   };
 
@@ -86,305 +125,563 @@ const PoiDetailPage = ({navigation, route}: {navigation: any; route: any}) => {
     }
   };
 
-  const handleLinkPress = async () => {
-    if (destinationDetails?.url) {
-      await Linking.openURL(destinationDetails.url);
-    }
-  };
-
   const handleWebsitePress = async () => {
     if (destinationDetails?.website) {
       await Linking.openURL(destinationDetails.website);
     }
   };
 
-  return (
-    <View style={styles.container}>
-      <SafeAreaView>
-        <View style={headerStyles.container}>
-          <Icon icon={icons.back} onPress={navigation.goBack} />
-          <View style={headerStyles.texts}>
-            <Text weight="b" numberOfLines={1}>
-              {destination?.name}
-            </Text>
-            <Text size="xs" weight="l" color={colors.accent} numberOfLines={1}>
-              {/* {getPlaceCardString(destination)} */}
-            </Text>
-          </View>
-          <OptionMenu
-            options={[
-              {
-                name: strings.poi.createEvent,
-                onPress: () => {
-                  navigation.navigate('MapSelection', {
-                    destination: destination,
-                  });
-                },
-                color: colors.accent,
-              },
-              {
-                name: bookmarked
-                  ? strings.poi.unbookmark
-                  : strings.poi.bookmark,
-                onPress: () => {},
-                color: colors.accent,
-              },
-              {
-                name: strings.main.share,
-                onPress: () => {
-                  Alert.alert('Share', 'Coming Soon');
-                },
-                color: colors.black,
-              },
-              {
-                name: strings.poi.openMap,
-                onPress: handleMapPress,
-                color: colors.black,
-              },
-              {
-                name: strings.poi.eventUrl,
-                onPress: handleLinkPress,
-                color: colors.black,
-              },
-              {
-                name: 'add',
-                onPress: () => {
-                  if (mode === 'create') {
-                    navigation.navigate('Create', {
-                      destination: destination,
-                    });
-                  } else if (mode === 'suggest') {
-                    navigation.navigate('Event', {
-                      destination: destination,
-                    });
-                  } else if (mode === 'add') {
-                    navigation.navigate('EventSettings', {
-                      destination: destination,
-                    });
-                  }
-                },
-                color: colors.black,
-                disabled: mode === 'none',
-              },
-            ]}
+  const getButtonString = () => {
+    if (mode === 'create' || mode === 'add') {
+      return 'Add';
+    } else if (mode === 'suggest') {
+      return 'Suggest';
+    } else {
+      return 'Create';
+    }
+  };
+
+  const [galleryVisible, setGalleryVisible] = useState(false);
+  const HeaderComponent = useCallback(
+    () => (
+      <View style={localStyles.imageTitle}>
+        <Text center={true} color={colors.white}>
+          {strings.poi.images}
+        </Text>
+        <View style={localStyles.closeGallery}>
+          <Icon
+            icon={icons.close}
+            color={colors.white}
+            onPress={() => setGalleryVisible(false)}
           />
         </View>
-      </SafeAreaView>
+      </View>
+    ),
+    [],
+  );
 
-      <ScrollView contentContainerStyle={styles.scrollView}>
-        <>
-          <ScrollView
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.imagesContainer}>
-            {destinationDetails?.photos ? (
-              destinationDetails?.photos.map((photo: string, index: number) => (
-                <View key={index}>
-                  <Image source={{uri: photo}} style={styles.image} />
-                </View>
-              ))
-            ) : destination?.photo ? (
-              <Image source={{uri: destination?.photo}} style={styles.image} />
-            ) : null}
-          </ScrollView>
-          <View style={styles.separator} />
-        </>
-        {destinationDetails?.description ? (
-          <View style={detailStyles.infoContainer}>
-            <Text size="s">{strings.poi.description}:</Text>
-            <Text size="xs" weight="l">
-              {destinationDetails?.description}
+  const insets = useSafeAreaInsets();
+  const scrollPosition = useRef(new Animated.Value(0)).current;
+  const headerHeight = scrollPosition.interpolate({
+    inputRange: [s(35), s(170)],
+    outputRange: [insets.top + s(170), insets.top + s(35)],
+    extrapolate: 'clamp',
+  });
+  const topTitleOpacity = scrollPosition.interpolate({
+    inputRange: [s(100), s(180)],
+    outputRange: [0, 1],
+    extrapolate: 'clamp',
+  });
+  const bottomTitleOpacity = scrollPosition.interpolate({
+    inputRange: [s(80), s(120)],
+    outputRange: [1, 0],
+    extrapolate: 'clamp',
+  });
+
+  return (
+    <View style={styles.container}>
+      {destinationDetails?.photos ? (
+        <ImageView
+          images={destinationDetails.photos.map(photo => ({uri: photo}))}
+          imageIndex={0}
+          visible={galleryVisible}
+          onRequestClose={() => setGalleryVisible(false)}
+          animationType="slide"
+          presentationStyle="formSheet"
+          backgroundColor={colors.darkgrey}
+          swipeToCloseEnabled={true}
+          HeaderComponent={HeaderComponent}
+        />
+      ) : null}
+      <Animated.View style={{height: headerHeight}}>
+        {destination?.photo ? (
+          <ImageBackground
+            style={headerStyles.image}
+            source={{uri: destination?.photo}}>
+            <View style={headerStyles.darken} />
+          </ImageBackground>
+        ) : (
+          <View style={headerStyles.image} />
+        )}
+        <Animated.View style={[headerStyles.container, {height: headerHeight}]}>
+          <SafeAreaView>
+            <View style={headerStyles.row}>
+              <Icon
+                icon={icons.back}
+                onPress={() => {
+                  StatusBar.setBarStyle('dark-content', true);
+                  navigation.goBack();
+                }}
+                color={colors.white}
+              />
+              <Animated.Text
+                style={[headerStyles.title, {opacity: topTitleOpacity}]}
+                numberOfLines={1}>
+                {destination?.name}
+              </Animated.Text>
+              <Icon
+                size="m"
+                icon={
+                  bookmarks.some(bookmark => bookmark.id === destination?.id)
+                    ? icons.bookmarked
+                    : icons.bookmark
+                }
+                onPress={() =>
+                  destination
+                    ? handleBookmark(destination, bookmarks, setBookmarks)
+                    : null
+                }
+                color={colors.white}
+              />
+            </View>
+          </SafeAreaView>
+          <Animated.View
+            style={[headerStyles.bottom, {opacity: bottomTitleOpacity}]}>
+            <Text size="l" weight="b" color={colors.white}>
+              {destination?.name}
             </Text>
-          </View>
-        ) : null}
-        {destinationDetails?.address ? (
-          <View style={detailStyles.infoContainer}>
-            <Text size="s">{strings.poi.address}:</Text>
-            <Text size="xs" weight="l">
-              {destinationDetails?.address}
-            </Text>
-          </View>
-        ) : null}
-        {destinationDetails?.hours ? (
-          <View style={detailStyles.infoContainer}>
-            <Text size="s">{strings.poi.hours}:</Text>
-            {destinationDetails?.hours.map((hour: string, index: number) => (
-              <Text key={index} size="xs" weight="l">
-                {hour}
+            <Icon
+              size="l"
+              icon={icons.gallery}
+              color={colors.white}
+              onPress={() => setGalleryVisible(true)}
+            />
+          </Animated.View>
+        </Animated.View>
+      </Animated.View>
+
+      <Animated.ScrollView
+        contentContainerStyle={[localStyles.scrollView, {minHeight: vs(800)}]}
+        onScroll={Animated.event(
+          [{nativeEvent: {contentOffset: {y: scrollPosition}}}],
+          {useNativeDriver: false},
+        )}
+        showsVerticalScrollIndicator={false}
+        contentInsetAdjustmentBehavior="automatic">
+        <View style={overViewStyles.container}>
+          <View style={overViewStyles.top}>
+            <View style={overViewStyles.hours}>
+              <Text color={colors.accent}>{`★ ${destination?.rating}/5`}</Text>
+              <Text size="xs" weight="l" color={colors.darkgrey}>
+                {`(${destination?.rating_count} ${strings.poi.reviews})`}
               </Text>
-            ))}
-          </View>
-        ) : null}
-        {destinationDetails?.phone ? (
-          <View style={detailStyles.infoContainer}>
-            <Text size="s">{strings.poi.phone}:</Text>
-            <TouchableOpacity onPress={handleCallPress}>
-              <Text size="xs" weight="l">
-                {destinationDetails?.phone}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        ) : null}
-        {destinationDetails?.url ? (
-          <View style={detailStyles.infoContainer}>
-            <Text size="s">{strings.poi.url}:</Text>
-            <TouchableOpacity onPress={handleLinkPress}>
-              <Text size="xs" weight="l">
-                {destinationDetails?.url}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        ) : null}
-        {destinationDetails?.website ? (
-          <View style={detailStyles.infoContainer}>
-            <Text size="s">{strings.poi.website}:</Text>
-            <TouchableOpacity onPress={handleWebsitePress}>
-              <Text size="xs" weight="l">
-                {destinationDetails?.website}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        ) : null}
-        {destinationDetails?.attributes &&
-        Array.isArray(destinationDetails.attributes) &&
-        destinationDetails.attributes.length > 0 ? (
-          <View style={detailStyles.infoContainer}>
-            <Text size="s">{strings.poi.attributes}:</Text>
-            {destinationDetails.attributes.map(
-              (attribute: string, index: number) => (
-                <Text key={index} size="xs" weight="l">
-                  {attribute}
-                </Text>
-              ),
-            )}
-          </View>
-        ) : null}
-        {destinationDetails?.reviews &&
-        Array.isArray(destinationDetails?.reviews) &&
-        destinationDetails?.reviews.length > 0 ? (
-          <>
-            <View style={styles.separator} />
-            <ScrollView
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={styles.imagesContainer}>
-              {destinationDetails.reviews.map(
-                (review: Review, index: number) => (
-                  <View key={index} style={detailStyles.reviewContainer}>
-                    <Text size="xs" numberOfLines={20}>
-                      {review.text + ' (' + review.rating + '/5)'}
-                    </Text>
-                    <Text size="xs" color={colors.darkgrey}>
-                      {review.relative_time_description}
-                    </Text>
-                  </View>
-                ),
+            </View>
+            <View style={overViewStyles.separator} />
+            <View style={overViewStyles.price}>
+              {destination?.price ? (
+                <>
+                  <Text size="m" weight="b" color={colors.accent}>
+                    {'$'.repeat(destination?.price)}
+                  </Text>
+                  <Text size="m" weight="b" color={colors.grey}>
+                    {'$'.repeat(4 - destination?.price)}
+                  </Text>
+                </>
+              ) : (
+                <Text color={colors.grey}>{strings.poi.noPrice}</Text>
               )}
-            </ScrollView>
-          </>
+            </View>
+            <View style={overViewStyles.separator} />
+            <View style={overViewStyles.hours}>
+              {destinationDetails?.hours?.length === 7 ? (
+                <>
+                  {open ? (
+                    <Text color={colors.green}>{strings.poi.open}</Text>
+                  ) : (
+                    <Text color={colors.red}>{strings.poi.closed}</Text>
+                  )}
+
+                  <Text size="xs" weight="l" color={colors.darkgrey}>
+                    {
+                      destinationDetails?.hours[(date.getDay() + 6) % 7].split(
+                        ' ',
+                      )[1]
+                    }
+                  </Text>
+                </>
+              ) : (
+                <Text color={colors.grey}>{strings.poi.noHours}</Text>
+              )}
+            </View>
+          </View>
+          {destinationDetails?.description ? (
+            <View style={overViewStyles.description}>
+              <Text size="s" weight="l">
+                {destinationDetails?.description}
+              </Text>
+            </View>
+          ) : null}
+        </View>
+        {destination?.latitude && destination.longitude ? (
+          <MapView
+            onPress={() => {
+              LayoutAnimation.configureNext(
+                LayoutAnimation.Presets.easeInEaseOut,
+              );
+              setMapExpanded(!mapExpanded);
+            }}
+            style={[localStyles.map, {height: mapExpanded ? s(360) : s(180)}]}
+            userInterfaceStyle={'light'}
+            initialRegion={{
+              latitude: destination.latitude,
+              longitude: destination.longitude,
+              latitudeDelta: numbers.defaultLatitudeDelta,
+              longitudeDelta: numbers.defaultLongitudeDelta,
+            }}>
+            <Marker
+              coordinate={{
+                latitude: destination.latitude,
+                longitude: destination.longitude,
+              }}
+            />
+          </MapView>
         ) : null}
-      </ScrollView>
+        <View style={infoStyles.container}>
+          <View style={localStyles.title}>
+            <Text>{strings.poi.info}</Text>
+          </View>
+          {destinationDetails?.hours?.length === 7 ? (
+            <View style={infoStyles.row}>
+              <View style={infoStyles.texts}>
+                <Text size="s">{strings.poi.hours}:</Text>
+                <View style={infoStyles.info}>
+                  {hoursExpanded ? (
+                    destinationDetails?.hours.map(
+                      (hour: string, index: number) => (
+                        <Text
+                          key={index}
+                          size="s"
+                          weight={
+                            index === (date.getDay() + 6) % 7 ? 'r' : 'l'
+                          }>
+                          {hour.replace(',', '').split(' ').slice(1).join(' ') +
+                            ' (' +
+                            hour?.split(' ')[0].slice(0, -1) +
+                            ')'}
+                        </Text>
+                      ),
+                    )
+                  ) : (
+                    <Text size="s" weight="l">
+                      {destinationDetails?.hours[(date.getDay() + 6) % 7]
+                        .replace(',', '')
+                        .split(' ')
+                        .slice(1)
+                        .join(' ') +
+                        ' (' +
+                        destinationDetails?.hours[(date.getDay() + 6) % 7]
+                          ?.split(' ')[0]
+                          .slice(0, -1) +
+                        ')'}
+                    </Text>
+                  )}
+                </View>
+              </View>
+              <View
+                style={[infoStyles.drop, hoursExpanded ? styles.flip : null]}>
+                <Icon
+                  size="s"
+                  icon={icons.drop}
+                  onPress={() => {
+                    LayoutAnimation.configureNext(
+                      LayoutAnimation.Presets.easeInEaseOut,
+                    );
+                    setHoursExpanded(!hoursExpanded);
+                  }}
+                />
+              </View>
+            </View>
+          ) : null}
+          {destinationDetails?.address !== '' ? (
+            <View style={infoStyles.row}>
+              <View style={infoStyles.texts}>
+                <Text size="s">{strings.poi.address}:</Text>
+                <View style={infoStyles.info}>
+                  <Text size="s" weight="l">
+                    {destinationDetails?.address}
+                  </Text>
+                </View>
+              </View>
+              <Icon icon={icons.map} button={true} onPress={handleMapPress} />
+            </View>
+          ) : null}
+          {destinationDetails?.phone !== '' ? (
+            <View style={infoStyles.row}>
+              <View style={infoStyles.texts}>
+                <Text size="s">{strings.poi.phone}:</Text>
+                <View style={infoStyles.info}>
+                  <Text size="s" weight="l">
+                    {destinationDetails?.phone}
+                  </Text>
+                </View>
+              </View>
+              <Icon
+                icon={icons.call}
+                padding={-2}
+                button={true}
+                onPress={handleCallPress}
+              />
+            </View>
+          ) : null}
+          {destinationDetails?.website !== '' ? (
+            <View style={infoStyles.row}>
+              <View style={infoStyles.texts}>
+                <Text size="s">{strings.poi.website}:</Text>
+                <View style={infoStyles.info}>
+                  <Text size="s" weight="l">
+                    {destinationDetails?.website}
+                  </Text>
+                </View>
+              </View>
+              <Icon
+                icon={icons.open}
+                padding={-2}
+                button={true}
+                onPress={handleWebsitePress}
+              />
+            </View>
+          ) : null}
+          {destinationDetails?.attributes ? (
+            <View style={infoStyles.row}>
+              <View style={infoStyles.texts}>
+                <Text size="s">{strings.poi.attributes}:</Text>
+                <View style={infoStyles.info}>
+                  {destinationDetails.attributes?.map(
+                    (attribute: string, index: number) => (
+                      <Text key={index} size="s" weight="l">
+                        {'・' + attribute}
+                      </Text>
+                    ),
+                  )}
+                </View>
+              </View>
+            </View>
+          ) : null}
+        </View>
+        <View style={reviewStyles.container}>
+          <View style={localStyles.title}>
+            <Text>{strings.poi.reviews}</Text>
+          </View>
+          {destinationDetails?.reviews?.map((review: Review, index: number) => (
+            <View key={index} style={reviewStyles.row}>
+              <View style={reviewStyles.reviewerContainer}>
+                <View style={reviewStyles.reviewerContainer}>
+                  <Image
+                    style={reviewStyles.reviewer}
+                    source={{uri: review.profile_photo_url}}
+                  />
+                </View>
+                <View style={reviewStyles.texts}>
+                  <Text size="s">{review.author_name}</Text>
+                  <Text size="s" weight="l" color={colors.darkgrey}>
+                    {`Rating: ${review.rating}/5・${review.relative_time_description}`}
+                  </Text>
+                </View>
+              </View>
+              <Text size="s" weight="l">
+                {review.text}
+              </Text>
+            </View>
+          ))}
+        </View>
+      </Animated.ScrollView>
+
+      <TouchableOpacity
+        style={[localStyles.button, styles.shadow]}
+        onPress={() => {
+          if (mode === 'create') {
+            navigation.navigate('Create', {
+              destination: destination,
+            });
+          } else if (mode === 'suggest') {
+            navigation.navigate('Event', {
+              destination: destination,
+            });
+          } else if (mode === 'add') {
+            navigation.navigate('EventSettings', {destination});
+          } else {
+            // mode is none, create a fresh event with this destination
+            navigation.dispatch(
+              CommonActions.reset({
+                index: 1,
+                routes: [
+                  {
+                    name: 'TabStack',
+                  },
+                  {
+                    name: 'Create',
+                    params: {destination: destination},
+                  },
+                ],
+              }),
+            );
+          }
+        }}>
+        <Text size="m" color={colors.white}>
+          {getButtonString()}
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.white,
-  },
-  imagesContainer: {
-    paddingLeft: s(20),
-  },
-  image: {
-    marginRight: s(10),
-    width: s(160),
-    height: s(200),
+const localStyles = StyleSheet.create({
+  button: {
+    position: 'absolute',
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    bottom: s(40),
+    width: s(75),
+    height: s(40),
     borderRadius: s(10),
+    backgroundColor: colors.accent,
+  },
+  imageTitle: {
+    marginTop: s(10),
+  },
+  closeGallery: {
+    position: 'absolute',
+    top: s(2.5),
+    right: s(20),
   },
   map: {
-    height: s(200),
-    marginHorizontal: s(20),
-    marginTop: s(10),
-    borderRadius: s(10),
+    width: '100%',
+  },
+  title: {
+    marginBottom: s(5),
   },
   scrollView: {
-    paddingBottom: s(20),
-  },
-  separator: {
-    borderWidth: 0.5,
-    borderColor: colors.grey,
-    marginVertical: s(10),
-    marginHorizontal: s(20),
+    paddingBottom: s(50),
   },
 });
 
 const headerStyles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  image: {
     width: '100%',
-    paddingHorizontal: s(20),
-    paddingTop: s(10),
-    paddingBottom: s(5),
+    height: '100%',
+    position: 'absolute',
+    backgroundColor: colors.grey,
   },
-  texts: {
-    flex: 1,
-    marginHorizontal: s(10),
+  darken: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(0,0,0,0.3)',
   },
-});
-
-const detailStyles = StyleSheet.create({
   container: {
-    marginBottom: s(50),
-  },
-  rating: {
-    marginTop: s(10),
+    width: '100%',
+    justifyContent: 'space-between',
+    paddingHorizontal: s(20),
   },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    overflow: 'visible',
   },
-  stars: {
-    width: s(132),
-    height: s(24),
-  },
-  yelp: {
-    width: s(75),
-    height: s(29),
+  bottom: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingLeft: s(5),
+    marginBottom: s(15),
   },
   title: {
-    marginLeft: s(20),
     fontSize: s(16),
-    fontWeight: '600',
-    color: colors.black,
+    fontWeight: '700',
+    fontFamily: 'Lato',
+    color: colors.white,
+    maxWidth: s(280),
+    paddingHorizontal: s(10),
   },
-  infoContainer: {
+});
+
+const overViewStyles = StyleSheet.create({
+  container: {
     marginHorizontal: s(20),
-    marginTop: s(5),
-    marginBottom: s(10),
-    padding: s(15),
-    borderRadius: s(10),
+    marginVertical: s(10),
+  },
+  top: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    height: s(45),
+    paddingHorizontal: s(20),
+    paddingVertical: s(5),
+    marginVertical: s(5),
+  },
+  separator: {
+    width: 1,
     backgroundColor: colors.grey,
   },
-  infoTitle: {
-    fontSize: s(13),
-    fontWeight: '600',
-    color: colors.accent,
+  description: {
+    paddingVertical: s(5),
+    paddingHorizontal: s(10),
+    borderTopWidth: 1,
+    borderColor: colors.grey,
+  },
+  hours: {
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+  },
+  price: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
+
+const infoStyles = StyleSheet.create({
+  container: {
+    marginTop: s(20),
+    marginHorizontal: s(20),
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderTopWidth: 0.5,
+    borderColor: colors.grey,
+    padding: s(10),
+  },
+  texts: {
+    flex: 1,
+    marginRight: s(5),
   },
   info: {
     marginTop: s(5),
-    fontSize: s(13),
-    fontWeight: '500',
-    color: colors.black,
+    marginLeft: s(5),
   },
-  reviewContainer: {
-    padding: s(10),
-    width: s(180),
-    backgroundColor: colors.grey,
-    borderRadius: s(10),
+  drop: {
     marginRight: s(10),
+  },
+});
+
+const reviewStyles = StyleSheet.create({
+  container: {
+    marginTop: s(20),
+    marginHorizontal: s(20),
+  },
+  row: {
+    borderTopWidth: 0.5,
+    borderColor: colors.grey,
+    padding: s(10),
+  },
+  reviewerContainer: {
+    flexDirection: 'row',
+    marginBottom: s(5),
+  },
+  reviewer: {
+    width: s(40),
+    height: s(40),
+  },
+  icon: {
+    width: '100%',
+    height: '100%',
+  },
+  texts: {
+    marginLeft: s(10),
+    height: s(40),
+    justifyContent: 'space-evenly',
   },
 });
 

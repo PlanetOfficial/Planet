@@ -20,7 +20,7 @@ interface SuggestionCardProps {
   y: number;
   resetFlag: boolean;
   animateFlag: boolean;
-  event_id: number;
+  eventId: number;
   destination?: Destination;
   voted: boolean;
   onVote: (suggestion: Suggestion) => void;
@@ -36,7 +36,7 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
   y,
   resetFlag,
   animateFlag,
-  event_id,
+  eventId,
   destination,
   voted,
   onVote,
@@ -93,17 +93,14 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
       return;
     }
 
-    const response = await makePrimary(event_id, destination.id, suggestion.id);
+    const response = await makePrimary(eventId, destination.id, suggestion.id);
 
     if (response) {
       onShrinkAnimation();
       onSuggestionClose();
       loadData();
     } else {
-      Alert.alert(
-        'Error',
-        'Unable to mark suggestion as selected, please try again later.',
-      );
+      Alert.alert(strings.error.error, strings.error.markSuggestionAsSelected);
     }
   };
 
@@ -113,7 +110,7 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
     }
 
     const response = await removeSuggestion(
-      event_id,
+      eventId,
       destination.id,
       suggestion.poi.id,
     );
@@ -123,10 +120,7 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
       onSuggestionClose();
       loadData();
     } else {
-      Alert.alert(
-        'Error',
-        'Unable to remove suggestion, please try again later.',
-      );
+      Alert.alert(strings.error.error, strings.error.removeSuggestion);
     }
   };
 
@@ -163,7 +157,7 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
                     onShrinkAnimation();
                   }, 1000);
                   navigation.navigate('Roulette', {
-                    eventId: event_id,
+                    eventId: eventId,
                     destination: destination,
                   });
                 },

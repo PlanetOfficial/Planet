@@ -15,9 +15,9 @@ import styles from '../../constants/styles';
 import Text from '../components/Text';
 import Icon from '../components/Icon';
 import Separator from '../components/Separator';
+import PoiRow from '../components/PoiRow';
 
 import {Poi} from '../../utils/types';
-import PoiRow from '../components/PoiRow';
 
 const Explore = ({navigation, route}: {navigation: any; route: any}) => {
   const {name, pois, location} = route.params;
