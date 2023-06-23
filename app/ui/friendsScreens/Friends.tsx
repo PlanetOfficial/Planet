@@ -58,7 +58,7 @@ const Friends = ({navigation}: {navigation: any}) => {
           key={item.id}
           style={userStyles.container}
           onPress={() =>
-            navigation.navigate('Suggestions', {
+            navigation.navigate('User', {
               user: item,
             })
           }>

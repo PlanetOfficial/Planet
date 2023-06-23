@@ -27,9 +27,7 @@ const FriendPage = ({navigation}: {navigation: any}) => {
         </View>
       </SafeAreaView>
 
-      <NavigationContainer independent={true}>
-        <FriendsNavBar />
-      </NavigationContainer>
+      <FriendsNavBar />
     </View>
   );
 };
