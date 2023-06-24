@@ -1,134 +1,40 @@
-import React, {useEffect, useState, useCallback} from 'react';
-import {
-  View,
-  StyleSheet,
-  Alert,
-  FlatList,
-  TouchableOpacity,
-  ActivityIndicator,
-  RefreshControl,
-} from 'react-native';
+import React from 'react';
+import {View, SafeAreaView, StyleSheet} from 'react-native';
 import {s} from 'react-native-size-matters';
+import FriendsNavBar from '../navigation/FriendsNavBar';
 
-import colors from '../../constants/colors';
 import icons from '../../constants/icons';
 import strings from '../../constants/strings';
 import styles from '../../constants/styles';
 
 import Text from '../components/Text';
 import Icon from '../components/Icon';
-import {UserInfo} from '../../utils/types';
-import {getFriends} from '../../utils/api/friendsAPI';
-import UserIcon from '../components/UserIcon';
-import Separator from '../components/Separator';
 
 const Friends = ({navigation}: {navigation: any}) => {
-  const [friends, setFriends] = useState<UserInfo[]>([]);
-  const [loadingFriends, setLoadingFriends] = useState<boolean>(true);
-  const [refreshingFriends, setRefreshingFriends] = useState<boolean>(false);
-
-  const fetchFriends = useCallback(async () => {
-    const response = await getFriends();
-
-    if (response) {
-      setFriends(response);
-    } else {
-      Alert.alert(strings.error.error, strings.error.loadFriendsList);
-    }
-    setRefreshingFriends(false);
-    setLoadingFriends(false);
-  }, []);
-
-  useEffect(() => {
-    fetchFriends();
-  }, [fetchFriends]);
-
-  return loadingFriends ? (
-    <View style={[styles.center, styles.container]}>
-      <ActivityIndicator size="small" color={colors.accent} />
-    </View>
-  ) : (
-    <FlatList
-      style={styles.container}
-      contentContainerStyle={styles.flatList}
-      data={friends}
-      keyExtractor={item => item.id.toString()}
-      renderItem={({item}: {item: UserInfo}) => (
-        <TouchableOpacity
-          key={item.id}
-          style={userStyles.container}
-          onPress={() =>
-            navigation.navigate('User', {
-              user: item,
-            })
-          }>
-          <View style={userStyles.profilePic}>
-            <UserIcon user={item} />
+  return (
+    <View style={styles.container}>
+      <SafeAreaView>
+        <View style={styles.header}>
+          <Icon
+            size="m"
+            icon={icons.back}
+            onPress={() => navigation.goBack()}
+          />
+          <View style={localStyles.header}>
+            <Text size="l">{strings.friends.friends}</Text>
           </View>
-          <View style={userStyles.texts}>
-            <Text
-              size="s"
-              numberOfLines={1}>{`${item.first_name} ${item.last_name}`}</Text>
-            <Text size="s" weight="l" color={colors.darkgrey} numberOfLines={1}>
-              {'@' + item.username}
-            </Text>
-          </View>
-          <Icon icon={icons.next} />
-        </TouchableOpacity>
-      )}
-      ListEmptyComponent={
-        <View style={styles.center}>
-          <Text>{strings.friends.noFriendsFound}</Text>
-          <Text> </Text>
-          <Text size="s" color={colors.darkgrey}>
-            {strings.friends.noFriendsFoundDescription}
-          </Text>
         </View>
-      }
-      ItemSeparatorComponent={Separator}
-      refreshControl={
-        <RefreshControl
-          refreshing={refreshingFriends}
-          onRefresh={() => {
-            setRefreshingFriends(true);
-            fetchFriends();
-          }}
-          tintColor={colors.accent}
-        />
-      }
-    />
+      </SafeAreaView>
+
+      <FriendsNavBar />
+    </View>
   );
 };
 
-const userStyles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginHorizontal: s(20),
-    paddingVertical: s(10),
-  },
-  profilePic: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: s(45),
-    height: s(45),
-    borderRadius: s(22.5),
-    overflow: 'hidden',
-  },
-  pic: {
-    width: '100%',
-    height: '100%',
-  },
-  texts: {
+const localStyles = StyleSheet.create({
+  header: {
     flex: 1,
-    height: s(50),
-    justifyContent: 'space-evenly',
     marginLeft: s(10),
-  },
-  add: {
-    width: '70%',
-    height: '70%',
-    tintColor: colors.accent,
   },
 });
 

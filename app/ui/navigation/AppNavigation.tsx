@@ -20,7 +20,7 @@ import CreateSearch from '../createScreens/CreateSearch';
 import SearchCategory from '../searchScreens/SearchCategory';
 import SearchMap from '../searchScreens/SearchMap';
 import PoiDetail from '../otherScreens/PoiDetail';
-import Friends from '../friendsScreens/Friend';
+import Friends from '../friendsScreens/Friends';
 import User from '../friendsScreens/User';
 import Explore from '../homeScreens/Explore';
 import Event from '../libraryScreens/Event';

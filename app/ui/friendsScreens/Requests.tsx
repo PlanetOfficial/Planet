@@ -31,8 +31,8 @@ import Separator from '../components/Separator';
 const Requests = ({navigation}: {navigation: any}) => {
   const [requests, setRequests] = useState<UserInfo[]>([]);
   const [requestsSent, setRequestsSent] = useState<UserInfo[]>([]);
-  const [loadingRequests, setLoadingRequests] = useState<boolean>(true);
-  const [refreshingRequests, setRefreshingRequests] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
 
   const fetchRequests = useCallback(async () => {
     const req = await getFriendRequests();
@@ -48,8 +48,8 @@ const Requests = ({navigation}: {navigation: any}) => {
     } else {
       Alert.alert(strings.error.error, strings.error.loadFriendsRequests);
     }
-    setRefreshingRequests(false);
-    setLoadingRequests(false);
+    setRefreshing(false);
+    setLoading(false);
   }, [navigation]);
 
   useEffect(() => {
@@ -86,7 +86,7 @@ const Requests = ({navigation}: {navigation: any}) => {
     }
   };
 
-  return loadingRequests ? (
+  return loading ? (
     <View style={[styles.center, styles.container]}>
       <ActivityIndicator size="small" color={colors.accent} />
     </View>
@@ -101,9 +101,8 @@ const Requests = ({navigation}: {navigation: any}) => {
           key={item.id}
           style={userStyles.container}
           onPress={() =>
-            navigation.navigate('Friends', {
-              screen: 'User',
-              params: {user: 'jane'},
+            navigation.navigate('User', {
+              user: item,
             })
           }>
           <View style={userStyles.profilePic}>
@@ -155,9 +154,8 @@ const Requests = ({navigation}: {navigation: any}) => {
                   key={item.id}
                   style={userStyles.container}
                   onPress={() =>
-                    navigation.navigate('Main', {
-                      screen: 'User',
-                      params: {user: 'jane'},
+                    navigation.navigate('User', {
+                      user: item,
                     })
                   }>
                   <View style={userStyles.profilePic}>
@@ -193,9 +191,9 @@ const Requests = ({navigation}: {navigation: any}) => {
       ItemSeparatorComponent={Separator}
       refreshControl={
         <RefreshControl
-          refreshing={refreshingRequests}
+          refreshing={refreshing}
           onRefresh={() => {
-            setRefreshingRequests(true);
+            setRefreshing(true);
             fetchRequests();
           }}
           tintColor={colors.accent}
@@ -243,7 +241,7 @@ const userStyles = StyleSheet.create({
     flex: 1,
     height: s(50),
     justifyContent: 'space-evenly',
-    marginLeft: s(10),
+    marginHorizontal: s(10),
   },
   add: {
     width: '70%',

@@ -1,7 +1,8 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import {
   View,
   StyleSheet,
+  Alert,
   FlatList,
   TouchableOpacity,
   ActivityIndicator,
@@ -17,25 +18,30 @@ import styles from '../../constants/styles';
 import Text from '../components/Text';
 import Icon from '../components/Icon';
 import {UserInfo} from '../../utils/types';
+import {getFriends} from '../../utils/api/friendsAPI';
 import UserIcon from '../components/UserIcon';
 import Separator from '../components/Separator';
 
-const Friends = ({navigation}: {navigation: any}) => {
+const FriendsList = ({navigation}: {navigation: any}) => {
+  const [friends, setFriends] = useState<UserInfo[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [refreshing, setRefreshingFriends] = useState<boolean>(false);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
 
-  const fetchSuggestions = async () => {
-    setRefreshingFriends(false);
+  const fetchFriends = useCallback(async () => {
+    const response = await getFriends();
+
+    if (response) {
+      setFriends(response);
+    } else {
+      Alert.alert(strings.error.error, strings.error.loadFriendsList);
+    }
+    setRefreshing(false);
     setLoading(false);
-  };
+  }, []);
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      fetchSuggestions();
-    });
-
-    return unsubscribe;
-  }, [navigation]);
+    fetchFriends();
+  }, [fetchFriends]);
 
   return loading ? (
     <View style={[styles.center, styles.container]}>
@@ -44,7 +50,8 @@ const Friends = ({navigation}: {navigation: any}) => {
   ) : (
     <FlatList
       style={styles.container}
-      data={[]} // temporary
+      contentContainerStyle={styles.flatList}
+      data={friends}
       keyExtractor={item => item.id.toString()}
       renderItem={({item}: {item: UserInfo}) => (
         <TouchableOpacity
@@ -71,7 +78,11 @@ const Friends = ({navigation}: {navigation: any}) => {
       )}
       ListEmptyComponent={
         <View style={styles.center}>
-          <Text>{strings.friends.noSuggestionsFound}</Text>
+          <Text>{strings.friends.noFriendsFound}</Text>
+          <Text> </Text>
+          <Text size="s" color={colors.darkgrey}>
+            {strings.friends.noFriendsFoundDescription}
+          </Text>
         </View>
       }
       ItemSeparatorComponent={Separator}
@@ -79,8 +90,8 @@ const Friends = ({navigation}: {navigation: any}) => {
         <RefreshControl
           refreshing={refreshing}
           onRefresh={() => {
-            setRefreshingFriends(true);
-            fetchSuggestions();
+            setRefreshing(true);
+            fetchFriends();
           }}
           tintColor={colors.accent}
         />
@@ -121,4 +132,4 @@ const userStyles = StyleSheet.create({
   },
 });
 
-export default Friends;
+export default FriendsList;

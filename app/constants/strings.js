@@ -97,9 +97,12 @@ const strings = {
     requests: 'Requests',
     noFriendsFound: 'No Friends Found',
     noFriendsFoundDescription: 'Try adding some friends',
+    noRequestsFound: 'No Requests Found',
     noFriendRequestsFound: 'No Friend Requests Found',
+    noSuggestionsFound: 'No Suggestions Found',
     pendingRequest: 'Pending Request',
     pendingRequests: 'Pending Requests',
+    mutualEvents: 'Mutual Events',
   },
   profile: {
     yourProfile: 'Your Profile',

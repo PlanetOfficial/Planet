@@ -3,7 +3,7 @@ import {s} from 'react-native-size-matters';
 
 import colors from '../../constants/colors';
 
-import Friends from '../friendsScreens/Friends';
+import FriendsList from '../friendsScreens/FriendsList';
 import Requests from '../friendsScreens/Requests';
 import Suggestions from '../friendsScreens/Suggestions';
 
@@ -34,7 +34,7 @@ export const NavBar = () => {
         },
       })}>
       <Tab.Screen name="Suggestions" component={Suggestions} />
-      <Tab.Screen name="Friends" component={Friends} />
+      <Tab.Screen name="FriendsList" component={FriendsList} />
       <Tab.Screen name="Requests" component={Requests} />
     </Tab.Navigator>
   );

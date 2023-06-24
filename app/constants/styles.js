@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     paddingBottom: s(30),
   },
   center: {
-    paddingTop: s(50),
+    paddingVertical: s(50),
     alignItems: 'center',
   },
   header: {

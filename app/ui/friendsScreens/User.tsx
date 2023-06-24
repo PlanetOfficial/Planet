@@ -30,7 +30,7 @@ const User = ({navigation, route}: {navigation: any; route: any}) => {
   const [firstName] = useState<string>(route.params.user.first_name);
   const [lastName] = useState<string>(route.params.user.last_name);
   const [username] = useState<string>(route.params.user.username);
-  const [pfpURL] = useState<string>(route.params.user.icon);
+  const [pfpURL] = useState<string>(route.params.user.icon?.url);
 
   const initializeData = async () => {};
 
@@ -55,13 +55,16 @@ const User = ({navigation, route}: {navigation: any; route: any}) => {
       </SafeAreaView>
       <View style={profileStyles.container}>
         <TouchableOpacity style={profileStyles.profilePic}>
-          {pfpURL.length > 0 ? (
+          {pfpURL?.length > 0 ? (
             <Image style={profileStyles.profileImage} source={{uri: pfpURL}} />
           ) : (
             <View
               style={{
                 ...profileStyles.profileImage,
-                backgroundColor: colors.profileShades[username.length % 5],
+                backgroundColor:
+                  colors.profileShades[
+                    username.length % colors.profileShades.length
+                  ],
               }}>
               <RNText style={profileStyles.name}>
                 {firstName.charAt(0).toUpperCase() +
@@ -77,9 +80,6 @@ const User = ({navigation, route}: {navigation: any; route: any}) => {
           <Text size="s" color={colors.darkgrey}>
             @{username}
           </Text>
-          <Text size="s" weight="b" color={colors.accent}>
-            {user.friends.length} {strings.friends.friends}
-          </Text>
         </View>
       </View>
       <SegmentedControlTab
@@ -90,7 +90,7 @@ const User = ({navigation, route}: {navigation: any; route: any}) => {
         firstTabStyle={sctStyles.firstTab}
         activeTabTextStyle={sctStyles.activeText}
         borderRadius={0}
-        values={[strings.profile.bookmarks, strings.profile.albums]}
+        values={[strings.friends.mutualEvents, strings.profile.albums]}
         selectedIndex={selectedIndex}
         onTabPress={(index: number) => {
           setIndex(index);
@@ -102,7 +102,7 @@ const User = ({navigation, route}: {navigation: any; route: any}) => {
         }}
       />
       <FlatList
-        data={[]}
+        data={[]} // this is also temporary
         renderItem={({item}: {item: Event}) => {
           return (
             <TouchableOpacity
@@ -153,7 +153,7 @@ const profileStyles = StyleSheet.create({
     marginLeft: s(20),
     paddingTop: s(15),
     paddingBottom: s(10),
-    justifyContent: 'space-between',
+    justifyContent: 'space-evenly',
   },
   profileImage: {
     width: '100%',
@@ -200,23 +200,5 @@ const sctStyles = StyleSheet.create({
     color: colors.accent,
   },
 });
-
-const user = {
-  profilePic: 'https://picsum.photos/200',
-  friends: [
-    {
-      first_name: 'Jane',
-      last_name: 'Doe',
-      username: 'janedoe',
-      profilePic: 'https://picsum.photos/200',
-    },
-    {
-      first_name: 'Jack',
-      last_name: 'Doe',
-      username: 'jackdoe',
-      profilePic: 'https://picsum.photos/200',
-    },
-  ],
-};
 
 export default User;
