@@ -45,6 +45,7 @@ const strings = {
     phoneNumber: 'Phone Number',
     verifyPrompt: 'Please enter the 6 digit code we sent you:',
     age: 'Age',
+    gender: 'Gender',
     sendCode: 'Send',
     code: 'Code',
     verifyCode: 'Verify Code',
@@ -157,6 +158,19 @@ const strings = {
   notifications: {
     notifications: 'Notifications',
   },
+  settings: {
+    settings: 'Settings',
+    account: 'Account',
+    contactUs: 'Contact Us',
+    locations: 'Locations',
+    notifications: 'Push Notifications',
+    privacy: 'Privacy',
+    profile: 'Profile',
+    openLocationSettings: 'Open Location Settings',
+    resetPassword: 'Reset Password',
+    logout: 'Logout',
+    removeAccount: 'Remove Account',
+  },
   error: {
     error: 'Error',
     markSuggestionAsSelected:
@@ -197,7 +211,26 @@ const strings = {
       'Unable to decline friend request. Please try again later.',
     cancelFriendRequest:
       'Unable to cancel friend request. Please try again later.',
+    loadNotifications:
+      'Unable to load notification settings. Please try again later.',
+    toggleNotifications:
+      'Unable to toggle notification settings. Please try again later.',
+    editInfo: 'Unable to edit user info. Please try again later.',
   },
+  ageEnum: [
+    {label: '-17', value: '-17'},
+    {label: '18-21', value: '18-21'},
+    {label: '22-24', value: '22-24'},
+    {label: '25-30', value: '25-30'},
+    {label: '30-40', value: '30-40'},
+    {label: '41+', value: '41%2B'},
+  ],
+  genderEnum: [
+    {label: 'Male', value: 'Male'},
+    {label: 'Female', value: 'Female'},
+    {label: 'Other', value: 'Other'},
+    {label: 'Rather not say', value: 'Rather not say'},
+  ],
 };
 
 export default strings;

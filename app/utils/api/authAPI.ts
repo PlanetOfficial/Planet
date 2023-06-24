@@ -1,6 +1,6 @@
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {UserAPIURL} from './APIConstants';
-import {UserInfo} from '../types';
+import {MyInfo} from '../types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const login = async (username: string, password: string) => {
@@ -76,7 +76,7 @@ export const sendMoreInfo = async (
 
 export const getUserInfo = async (
   authToken: string,
-): Promise<UserInfo | undefined> => {
+): Promise<MyInfo | undefined> => {
   const response = await fetch(UserAPIURL + `/auth/me?authtoken=${authToken}`, {
     method: 'GET',
   });
@@ -156,4 +156,51 @@ export const saveImage = async (base64: string): Promise<string | null> => {
   } else {
     return null;
   }
+};
+
+/**
+ * @requires auth_token should be set in EncryptedStorage before calling this function
+ */
+export const editInfo = async (
+  first_name: string,
+  last_name: string,
+  username: string,
+  age: string,
+  gender: string,
+) => {
+  const authToken = await EncryptedStorage.getItem('auth_token');
+
+  if (!authToken) {
+    return null;
+  }
+
+  const response = await fetch(
+    UserAPIURL +
+      `/auth/editInfo?authtoken=${authToken}&first_name=${first_name}&last_name=${last_name}&username=${username}&age=${age}&gender=${gender}`,
+    {
+      method: 'POST',
+    },
+  );
+
+  return response;
+};
+
+/**
+ * @requires auth_token should be set in EncryptedStorage before calling this function
+ */
+export const removeAccount = async (): Promise<Boolean> => {
+  const authToken = await EncryptedStorage.getItem('auth_token');
+
+  if (!authToken) {
+    return false;
+  }
+
+  const response = await fetch(
+    UserAPIURL + `/removeAccount?authtoken=${authToken}`,
+    {
+      method: 'DELETE',
+    },
+  );
+
+  return response.ok;
 };
