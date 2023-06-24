@@ -29,6 +29,7 @@ export const NavBar = () => {
           margin: -s(5),
         },
         tabBarStyle: {
+          elevation: 0,
           backgroundColor: colors.white,
           marginHorizontal: s(20),
         },

@@ -161,6 +161,7 @@ const localStyles = StyleSheet.create({
     marginLeft: s(10),
     fontSize: s(13),
     fontFamily: 'Lato',
+    padding: 0,
   },
   cancel: {
     marginLeft: s(10),
