@@ -8,30 +8,34 @@ import {
   TouchableOpacity,
   FlatList,
   ActivityIndicator,
+  LayoutAnimation,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 import FriendsNavBar from '../navigation/FriendsNavBar';
 
+import colors from '../../constants/colors';
 import icons from '../../constants/icons';
 import strings from '../../constants/strings';
 import styles from '../../constants/styles';
 
-import Text from '../components/Text';
 import Icon from '../components/Icon';
-import colors from '../../constants/colors';
-import {searchUsers} from '../../utils/api/friendsAPI';
-import {UserInfo} from '../../utils/types';
 import Separator from '../components/Separator';
 import UserIcon from '../components/UserIcon';
+import Text from '../components/Text';
+
+import {searchUsers} from '../../utils/api/friendsAPI';
+import {UserInfo} from '../../utils/types';
 
 const Friends = ({navigation}: {navigation: any}) => {
-  const [searching, setSearching] = useState<boolean>(false);
-  const [searchResult, setSearchResult] = useState<UserInfo[]>([]);
   const searchRef = createRef<TextInput>();
+  const [searchText, setSearchText] = useState<string>('');
+  const [searchResult, setSearchResult] = useState<UserInfo[]>([]);
+  const [searching, setSearching] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
 
   const search = async (text: string) => {
     setLoading(true);
+    setSearchText(text);
     if (text.length > 0) {
       const result = await searchUsers(text);
 
@@ -62,7 +66,12 @@ const Friends = ({navigation}: {navigation: any}) => {
               placeholderTextColor={colors.grey}
               autoCapitalize="none"
               autoCorrect={false}
-              onFocus={() => setSearching(true)}
+              onFocus={() => {
+                LayoutAnimation.configureNext(
+                  LayoutAnimation.Presets.easeInEaseOut,
+                );
+                setSearching(true);
+              }}
               onBlur={() => setSearching(false)}
               onChangeText={text => search(text)}
             />
@@ -121,9 +130,11 @@ const Friends = ({navigation}: {navigation: any}) => {
               </TouchableOpacity>
             )}
             ListEmptyComponent={
-              <View style={styles.center}>
-                <Text>{strings.search.noResultsFound}</Text>
-              </View>
+              searchText.length > 0 ? (
+                <View style={styles.center}>
+                  <Text>{strings.search.noResultsFound}</Text>
+                </View>
+              ) : null
             }
             ItemSeparatorComponent={Separator}
           />
