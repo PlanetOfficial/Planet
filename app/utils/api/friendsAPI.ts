@@ -1,5 +1,5 @@
 import EncryptedStorage from 'react-native-encrypted-storage';
-import {UserAPIURL} from './APIConstants';
+import {FriendAPIURL} from './APIConstants';
 import {UserInfo} from '../types';
 
 /**
@@ -12,7 +12,7 @@ export const getFriends = async (): Promise<UserInfo[] | null> => {
     return null;
   }
 
-  const response = await fetch(UserAPIURL + `/friend?authtoken=${authToken}`, {
+  const response = await fetch(FriendAPIURL + `/friend?authtoken=${authToken}`, {
     method: 'GET',
   });
 
@@ -35,7 +35,7 @@ export const getFriendRequests = async (): Promise<UserInfo[] | null> => {
   }
 
   const response = await fetch(
-    UserAPIURL + `/friend/request?authtoken=${authToken}`,
+    FriendAPIURL + `/request?authtoken=${authToken}`,
     {
       method: 'GET',
     },
@@ -60,7 +60,7 @@ export const getFriendRequestsSent = async (): Promise<UserInfo[] | null> => {
   }
 
   const response = await fetch(
-    UserAPIURL + `/friend/request/sent?authtoken=${authToken}`,
+    FriendAPIURL + `/request/sent?authtoken=${authToken}`,
     {
       method: 'GET',
     },
@@ -85,7 +85,7 @@ export const postFriendRequest = async (id: number): Promise<boolean> => {
   }
 
   const response = await fetch(
-    UserAPIURL + `/friend/request?requestee=${id}&authtoken=${authToken}`,
+    FriendAPIURL + `/request?requestee=${id}&authtoken=${authToken}`,
     {
       method: 'POST',
     },
@@ -105,7 +105,7 @@ export const deleteFriendRequest = async (id: number): Promise<boolean> => {
   }
 
   const response = await fetch(
-    UserAPIURL + `/friend/request?requestee=${id}&authtoken=${authToken}`,
+    FriendAPIURL + `/request?requestee=${id}&authtoken=${authToken}`,
     {
       method: 'DELETE',
     },
@@ -125,7 +125,7 @@ export const acceptFriendRequest = async (id: number): Promise<boolean> => {
   }
 
   const response = await fetch(
-    UserAPIURL + `/friend/accept?requester=${id}&authtoken=${authToken}`,
+    FriendAPIURL + `/request/accept?requester=${id}&authtoken=${authToken}`,
     {
       method: 'POST',
     },
@@ -145,7 +145,7 @@ export const rejectFriendRequest = async (id: number): Promise<boolean> => {
   }
 
   const response = await fetch(
-    UserAPIURL + `/friend/reject?requester=${id}&authtoken=${authToken}`,
+    FriendAPIURL + `/request/reject?requester=${id}&authtoken=${authToken}`,
     {
       method: 'DELETE',
     },
@@ -165,7 +165,7 @@ export const deleteFriend = async (id: number): Promise<boolean> => {
   }
 
   const response = await fetch(
-    UserAPIURL + `/friend?friend=${id}&authtoken=${authToken}`,
+    FriendAPIURL + `/friend?friend=${id}&authtoken=${authToken}`,
     {
       method: 'DELETE',
     },
@@ -185,7 +185,7 @@ export const getSuggestions = async (): Promise<UserInfo[] | null> => {
   }
 
   const response = await fetch(
-    UserAPIURL + `/friend/suggestion?authtoken=${authToken}`,
+    FriendAPIURL + `/suggestion?authtoken=${authToken}`,
     {
       method: 'GET',
     },
@@ -200,7 +200,7 @@ export const getSuggestions = async (): Promise<UserInfo[] | null> => {
 };
 
 export const searchUsers = async (text: string): Promise<UserInfo[] | null> => {
-  const response = await fetch(UserAPIURL + `/friend/search?query=${text}`, {
+  const response = await fetch(FriendAPIURL + `/search?query=${text}`, {
     method: 'GET',
   });
 

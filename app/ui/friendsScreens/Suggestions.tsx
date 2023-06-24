@@ -56,7 +56,7 @@ const Friends = ({navigation}: {navigation: any}) => {
     <FlatList
       style={styles.container}
       data={suggestions}
-      keyExtractor={(item, index) => index.toString()}
+      keyExtractor={item => item.id.toString()}
       renderItem={({item}: {item: UserInfo}) => (
         <TouchableOpacity
           style={userStyles.container}
