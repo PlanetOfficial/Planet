@@ -1,6 +1,13 @@
 import React from 'react';
-import {View, SafeAreaView, Alert, TouchableOpacity} from 'react-native';
-import messaging from '@react-native-firebase/messaging';
+import {
+  View,
+  SafeAreaView,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+  Alert,
+} from 'react-native';
+import {s} from 'react-native-size-matters';
 
 import colors from '../../constants/colors';
 import icons from '../../constants/icons';
@@ -9,24 +16,41 @@ import styles from '../../constants/styles';
 
 import Text from '../components/Text';
 import Icon from '../components/Icon';
-
-import {clearCaches} from '../../utils/CacheHelpers';
+import Separator from '../components/Separator';
 
 const Settings = ({navigation}: {navigation: any}) => {
-  const handleLogout = async () => {
-    try {
-      clearCaches();
-    } catch (error) {
-      Alert.alert(strings.error.error, strings.error.logOut);
-    } finally {
-      await messaging().deleteToken();
-
-      navigation.reset({
-        index: 0,
-        routes: [{name: 'Login'}],
-      });
-    }
-  };
+  const settingsItems = [
+    {
+      name: 'Profile',
+      icon: icons.profile,
+      onPress: () => navigation.navigate('ProfileSettings'),
+    },
+    {
+      name: 'Privacy',
+      icon: icons.privacy,
+      onPress: () => Alert.alert('Nothing to see here'),
+    },
+    {
+      name: 'Locations',
+      icon: icons.pin,
+      onPress: () => navigation.navigate('LocationsSettings'),
+    },
+    {
+      name: 'Push notifications',
+      icon: icons.bell,
+      onPress: () => navigation.navigate('NotificationSettings'),
+    },
+    {
+      name: 'Account',
+      icon: icons.accountSettings,
+      onPress: () => navigation.navigate('AccountSettings'),
+    },
+    {
+      name: 'Contact Us',
+      icon: icons.call,
+      onPress: () => Alert.alert('Nothing to see here'),
+    },
+  ];
 
   return (
     <View style={styles.container}>
@@ -37,22 +61,56 @@ const Settings = ({navigation}: {navigation: any}) => {
             icon={icons.back}
             onPress={() => navigation.goBack()}
           />
-          <Text>{strings.profile.settings}</Text>
-          <Icon
-            size="l"
-            color={colors.accent}
-            icon={icons.add}
-            onPress={() => Alert.alert('Add Friend', 'Coming soon!')}
-          />
-        </View>
-        <View>
-          <TouchableOpacity style={styles.center} onPress={handleLogout}>
-            <Text>Logout</Text>
-          </TouchableOpacity>
+          <View style={localStyles.title}>
+            <Text size="l">{strings.settings.settings}</Text>
+          </View>
         </View>
       </SafeAreaView>
+      <ScrollView>
+        {settingsItems.map((settingsItem, index) => (
+          <View key={index}>
+            <TouchableOpacity
+              style={localStyles.row}
+              onPress={settingsItem.onPress}>
+              <Icon size="l" icon={settingsItem.icon} color={colors.darkgrey} />
+              <View style={localStyles.text}>
+                <Text>{settingsItem.name}</Text>
+              </View>
+              <Icon icon={icons.next} />
+            </TouchableOpacity>
+            <Separator />
+          </View>
+        ))}
+        <View style={localStyles.footer}>
+          <Text size="s" weight="l" color={colors.darkgrey}>
+            Privacy Policy and Stuff. This is a totally legit app and our
+            company is not run by babies.
+          </Text>
+        </View>
+      </ScrollView>
     </View>
   );
 };
+
+const localStyles = StyleSheet.create({
+  title: {
+    flex: 1,
+    marginLeft: s(10),
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: s(35),
+    paddingVertical: s(25),
+  },
+  text: {
+    flex: 1,
+    marginHorizontal: s(20),
+  },
+  footer: {
+    margin: s(50),
+  },
+});
 
 export default Settings;

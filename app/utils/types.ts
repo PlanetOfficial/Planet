@@ -6,6 +6,17 @@ export interface UserInfo {
   icon?: Image;
 }
 
+export interface MyInfo {
+  id: number;
+  first_name: string;
+  last_name: string;
+  username: string;
+  icon?: Image;
+  phone_number: string;
+  age: string;
+  gender: string;
+}
+
 export interface Genre {
   id: number;
   name: string;
@@ -84,7 +95,6 @@ export interface Event {
   name: string;
   datetime: string;
   members: UserInfo[];
-  created_by: UserInfo;
   photo: string;
   vicinity: string;
 }
@@ -95,7 +105,6 @@ export interface EventDetail {
   datetime: string;
   members: UserInfo[];
   destinations: Destination[];
-  created_by: UserInfo;
 }
 
 export interface Destination {
@@ -148,4 +157,12 @@ export interface Option {
   onPress: () => void;
   color: string;
   disabled?: boolean;
+}
+
+export interface NotificationSettings {
+  notify_friend_request: boolean;
+  notify_friend_request_accept: boolean;
+  notify_event_invite: boolean;
+  notify_new_suggestion: boolean;
+  notify_set_primary: boolean;
 }

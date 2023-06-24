@@ -11,6 +11,9 @@ import {getBookmarks} from './api/bookmarkAPI';
  * - first_name
  * - last_name
  * - username
+ * - phone_number
+ * - age
+ * - gender
  * - pfp_url
  * - bookmarks
  *
@@ -40,7 +43,7 @@ export const cacheBookmarks = async () => {
   }
 };
 
-// caches auth_token, user_id, first_name, last_name, username, pfp_url, bookmarks
+// caches auth_token, user_id, first_name, last_name, username, phone_number, age, gender, pfp_url, bookmarks
 export const cacheUserInfo = async (authToken: string) => {
   // start with clear caches (for user storage)
   clearCaches();
@@ -58,7 +61,7 @@ export const updateCaches = async (authToken: string) => {
   await cacheStorage(authToken);
 };
 
-// clears auth_token, user_id, first_name, last_name, username, pfp_url, bookmarks from cache
+// clears auth_token, user_id, first_name, last_name, username, phone_number, age, gender, pfp_url, bookmarks from cache
 export const clearCaches = async () => {
   if (await EncryptedStorage.getItem('auth_token')) {
     await EncryptedStorage.removeItem('auth_token');
@@ -78,6 +81,18 @@ export const clearCaches = async () => {
 
   if (await AsyncStorage.getItem('username')) {
     AsyncStorage.removeItem('username');
+  }
+
+  if (await AsyncStorage.getItem('phone_number')) {
+    AsyncStorage.removeItem('phone_number');
+  }
+
+  if (await AsyncStorage.getItem('age')) {
+    AsyncStorage.removeItem('age');
+  }
+
+  if (await AsyncStorage.getItem('gender')) {
+    AsyncStorage.removeItem('gender');
   }
 
   if (await AsyncStorage.getItem('pfp_url')) {
@@ -102,6 +117,9 @@ const cacheStorage = async (authToken: string) => {
   await AsyncStorage.setItem('first_name', response.first_name);
   await AsyncStorage.setItem('last_name', response.last_name);
   await AsyncStorage.setItem('username', response.username);
+  await AsyncStorage.setItem('phone_number', response.phone_number);
+  await AsyncStorage.setItem('age', response.age);
+  await AsyncStorage.setItem('gender', response.gender);
 
   if (response?.icon?.url) {
     await AsyncStorage.setItem('pfp_url', response.icon.url);
