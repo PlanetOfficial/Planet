@@ -31,6 +31,7 @@ import {
   postFriendRequest,
   rejectFriendRequest,
 } from '../../utils/api/friendsAPI';
+import ProfileBody from '../profileScreens/ProfileBody';
 
 const User = ({navigation, route}: {navigation: any; route: any}) => {
   const [selectedIndex, setIndex] = useState<number>(0);
@@ -122,140 +123,149 @@ const User = ({navigation, route}: {navigation: any; route: any}) => {
           />
         </View>
       </SafeAreaView>
-      <View style={profileStyles.container}>
-        <TouchableOpacity style={profileStyles.profilePic}>
-          {pfpURL?.length > 0 ? (
-            <Image style={profileStyles.profileImage} source={{uri: pfpURL}} />
-          ) : (
-            <View
-              style={{
-                ...profileStyles.profileImage,
-                backgroundColor:
-                  colors.profileShades[
-                    username.length % colors.profileShades.length
-                  ],
-              }}>
-              <RNText style={profileStyles.name}>
-                {firstName.charAt(0).toUpperCase() +
-                  lastName.charAt(0).toUpperCase()}
-              </RNText>
-            </View>
-          )}
-        </TouchableOpacity>
-        <View style={profileStyles.info}>
-          <Text size="l" numberOfLines={1}>
-            {firstName} {lastName}
-          </Text>
-          <Text size="s" color={colors.darkgrey} numberOfLines={1}>
-            @{username}
-          </Text>
-          <View style={profileStyles.buttons}>
-            {status === 'NONE' ? (
-              <TouchableOpacity
-                style={{
-                  ...profileStyles.button,
-                  backgroundColor: colors.accent,
-                }}
-                onPress={handleFriendRequest}>
-                <Text size="s" color={colors.white}>
-                  {strings.friends.addFriend}
-                </Text>
-              </TouchableOpacity>
-            ) : null}
-            {status === 'FRIENDS' ? (
-              <TouchableOpacity
-                style={{
-                  ...profileStyles.button,
-                  backgroundColor: colors.darkgrey,
-                }}
-                onPress={handleUnfriend}>
-                <Text size="s" color={colors.white}>
-                  {strings.friends.unfriend}
-                </Text>
-              </TouchableOpacity>
-            ) : null}
-            {status === 'REQSENT' ? (
-              <TouchableOpacity
-                style={{
-                  ...profileStyles.button,
-                  backgroundColor: colors.darkgrey,
-                }}
-                onPress={handleCancelRequest}>
-                <Text size="s" color={colors.white}>
-                  {strings.friends.cancelRequest}
-                </Text>
-              </TouchableOpacity>
-            ) : null}
-            {status === 'REQRECEIVED' ? (
-              <>
-                <TouchableOpacity
+      {status === 'SELF' ? (
+        <ProfileBody navigation={navigation} />
+      ) : (
+        <>
+          <View style={profileStyles.container}>
+            <TouchableOpacity style={profileStyles.profilePic}>
+              {pfpURL?.length > 0 ? (
+                <Image
+                  style={profileStyles.profileImage}
+                  source={{uri: pfpURL}}
+                />
+              ) : (
+                <View
                   style={{
-                    ...profileStyles.button,
-                    backgroundColor: colors.red,
-                  }}
-                  onPress={handleDeclineRequest}>
-                  <Text size="s" color={colors.white}>
-                    {strings.friends.reject}
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={{
-                    ...profileStyles.button,
-                    backgroundColor: colors.accent,
-                  }}
-                  onPress={handleAcceptRequest}>
-                  <Text size="s" color={colors.white}>
-                    {strings.friends.accept}
-                  </Text>
-                </TouchableOpacity>
-              </>
-            ) : null}
-          </View>
-        </View>
-      </View>
-      <SegmentedControlTab
-        tabsContainerStyle={sctStyles.container}
-        tabStyle={sctStyles.tab}
-        activeTabStyle={sctStyles.activeTab}
-        tabTextStyle={sctStyles.text}
-        firstTabStyle={sctStyles.firstTab}
-        activeTabTextStyle={sctStyles.activeText}
-        borderRadius={0}
-        values={[strings.friends.mutualEvents, strings.profile.albums]}
-        selectedIndex={selectedIndex}
-        onTabPress={(index: number) => {
-          setIndex(index);
-          if (index === 1) {
-            Alert.alert('Albums', 'Coming soon!', [
-              {text: 'OK', onPress: () => setIndex(0)},
-            ]);
-          }
-        }}
-      />
-      <FlatList
-        data={[]} // this is also temporary
-        renderItem={({item}: {item: Event}) => {
-          return (
-            <TouchableOpacity
-              onPress={() =>
-                navigation.navigate('PoiDetail', {
-                  poi: item,
-                  bookmarked: true,
-                  mode: 'none',
-                })
-              }>
-              <EventRow event={item} />
+                    ...profileStyles.profileImage,
+                    backgroundColor:
+                      colors.profileShades[
+                        username.length % colors.profileShades.length
+                      ],
+                  }}>
+                  <RNText style={profileStyles.name}>
+                    {firstName.charAt(0).toUpperCase() +
+                      lastName.charAt(0).toUpperCase()}
+                  </RNText>
+                </View>
+              )}
             </TouchableOpacity>
-          );
-        }}
-        ListEmptyComponent={
-          <View style={styles.center}>
-            <Text>{strings.friends.noMutualEventsFound}</Text>
+            <View style={profileStyles.info}>
+              <Text size="l" numberOfLines={1}>
+                {firstName} {lastName}
+              </Text>
+              <Text size="s" color={colors.darkgrey} numberOfLines={1}>
+                @{username}
+              </Text>
+              <View style={profileStyles.buttons}>
+                {status === 'NONE' ? (
+                  <TouchableOpacity
+                    style={{
+                      ...profileStyles.button,
+                      backgroundColor: colors.accent,
+                    }}
+                    onPress={handleFriendRequest}>
+                    <Text size="s" color={colors.white}>
+                      {strings.friends.addFriend}
+                    </Text>
+                  </TouchableOpacity>
+                ) : null}
+                {status === 'FRIENDS' ? (
+                  <TouchableOpacity
+                    style={{
+                      ...profileStyles.button,
+                      backgroundColor: colors.darkgrey,
+                    }}
+                    onPress={handleUnfriend}>
+                    <Text size="s" color={colors.white}>
+                      {strings.friends.unfriend}
+                    </Text>
+                  </TouchableOpacity>
+                ) : null}
+                {status === 'REQSENT' ? (
+                  <TouchableOpacity
+                    style={{
+                      ...profileStyles.button,
+                      backgroundColor: colors.darkgrey,
+                    }}
+                    onPress={handleCancelRequest}>
+                    <Text size="s" color={colors.white}>
+                      {strings.friends.cancelRequest}
+                    </Text>
+                  </TouchableOpacity>
+                ) : null}
+                {status === 'REQRECEIVED' ? (
+                  <>
+                    <TouchableOpacity
+                      style={{
+                        ...profileStyles.button,
+                        backgroundColor: colors.red,
+                      }}
+                      onPress={handleDeclineRequest}>
+                      <Text size="s" color={colors.white}>
+                        {strings.friends.reject}
+                      </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={{
+                        ...profileStyles.button,
+                        backgroundColor: colors.accent,
+                      }}
+                      onPress={handleAcceptRequest}>
+                      <Text size="s" color={colors.white}>
+                        {strings.friends.accept}
+                      </Text>
+                    </TouchableOpacity>
+                  </>
+                ) : null}
+              </View>
+            </View>
           </View>
-        }
-        ItemSeparatorComponent={Separator}
-        keyExtractor={(item: Event) => item.id.toString()}
-      />
+          <SegmentedControlTab
+            tabsContainerStyle={sctStyles.container}
+            tabStyle={sctStyles.tab}
+            activeTabStyle={sctStyles.activeTab}
+            tabTextStyle={sctStyles.text}
+            firstTabStyle={sctStyles.firstTab}
+            activeTabTextStyle={sctStyles.activeText}
+            borderRadius={0}
+            values={[strings.friends.mutualEvents, strings.profile.albums]}
+            selectedIndex={selectedIndex}
+            onTabPress={(index: number) => {
+              setIndex(index);
+              if (index === 1) {
+                Alert.alert('Albums', 'Coming soon!', [
+                  {text: 'OK', onPress: () => setIndex(0)},
+                ]);
+              }
+            }}
+          />
+          <FlatList
+            data={[]} // this is also temporary
+            renderItem={({item}: {item: Event}) => {
+              return (
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate('PoiDetail', {
+                      poi: item,
+                      bookmarked: true,
+                      mode: 'none',
+                    })
+                  }>
+                  <EventRow event={item} />
+                </TouchableOpacity>
+              );
+            }}
+            ListEmptyComponent={
+              <View style={styles.center}>
+                <Text>{strings.friends.noMutualEventsFound}</Text>
+              </View>
+            }
+            ItemSeparatorComponent={Separator}
+            keyExtractor={(item: Event) => item.id.toString()}
+          />
+        </>
+      )}
     </View>
   );
 };

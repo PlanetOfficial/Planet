@@ -254,7 +254,8 @@ const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
         <View style={localStyles.memberContainer}>
           {eventDetail
             ? eventDetail.members.map((member: UserInfo) => (
-                <View
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('User', {user: member})}
                   key={member.id}
                   style={[userStyles.container, userStyles.border]}>
                   <View style={userStyles.profilePic}>
@@ -274,7 +275,7 @@ const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
                       {'@' + member.username}
                     </Text>
                   </View>
-                </View>
+                </TouchableOpacity>
               ))
             : null}
           <TouchableOpacity
