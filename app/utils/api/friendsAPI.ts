@@ -173,3 +173,16 @@ export const deleteFriend = async (id: number): Promise<boolean> => {
 
   return response?.ok;
 };
+
+export const searchUsers = async (text: string): Promise<UserInfo[] | null> => {
+  const response = await fetch(UserAPIURL + `/friend/search?query=${text}`, {
+    method: 'GET',
+  });
+
+  if (response?.ok) {
+    const myJson: UserInfo[] = await response.json();
+    return myJson;
+  } else {
+    return null;
+  }
+};

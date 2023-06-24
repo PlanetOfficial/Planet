@@ -102,9 +102,11 @@ const Profile = ({navigation}: {navigation: any}) => {
           <Text size="s" color={colors.darkgrey}>
             @{username}
           </Text>
-          <Text size="s" weight="b" color={colors.accent}>
-            {user.friends.length} {strings.friends.friends}
-          </Text>
+          <TouchableOpacity onPress={() => navigation.navigate('Friends')}>
+            <Text size="s" color={colors.accent}>
+              {user.friends.length} {strings.friends.friends}
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
       <SegmentedControlTab
