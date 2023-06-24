@@ -196,7 +196,7 @@ export const removeAccount = async (): Promise<Boolean> => {
   }
 
   const response = await fetch(
-    UserAPIURL + `/removeAccount?authtoken=${authToken}`,
+    UserAPIURL + `/auth/removeAccount?authtoken=${authToken}`,
     {
       method: 'DELETE',
     },

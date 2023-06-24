@@ -7,6 +7,7 @@ const icons = {
   bookmarked: require('../assets/icons/bookmarked.png'),
   call: require('../assets/icons/call.png'),
   chat: require('../assets/icons/chat.png'),
+  check: require('../assets/icons/check.png'),
   checked: require('../assets/icons/checked.png'),
   clock: require('../assets/icons/clock.png'),
   close: require('../assets/icons/x.png'),
@@ -36,6 +37,7 @@ const icons = {
   settings: require('../assets/icons/settings.png'),
   unchecked: require('../assets/icons/unchecked.png'),
   unselected: require('../assets/icons/unselected.png'),
+  x: require('../assets/icons/x.png'),
 };
 
 export default icons;

@@ -1767,6 +1767,14 @@
   resolved "https://registry.yarnpkg.com/@react-navigation/elements/-/elements-1.3.17.tgz#9cb95765940f2841916fc71686598c22a3e4067e"
   integrity sha512-sui8AzHm6TxeEvWT/NEXlz3egYvCUog4tlXA4Xlb2Vxvy3purVXDq/XsM56lJl344U5Aj/jDzkVanOTMWyk4UA==
 
+"@react-navigation/material-top-tabs@^6.6.3":
+  version "6.6.3"
+  resolved "https://registry.yarnpkg.com/@react-navigation/material-top-tabs/-/material-top-tabs-6.6.3.tgz#a8c651d322efea4483ac6cae08c4f3ba9141cf87"
+  integrity sha512-7rbBUUvVSKD8jV/a7iV2BTSQ83G7W8grGSwBNojdeXdeZpsUa+wmmKnPtBFhdPv7DDQp7nzAYRx6RCOPtjZSCw==
+  dependencies:
+    color "^4.2.3"
+    warn-once "^0.1.0"
+
 "@react-navigation/native@^6.1.2":
   version "6.1.6"
   resolved "https://registry.yarnpkg.com/@react-navigation/native/-/native-6.1.6.tgz#84ff5cf85b91f660470fa9407c06c8ee393d5792"
@@ -6871,6 +6879,11 @@ react-native-modal@^13.0.1:
     prop-types "^15.6.2"
     react-native-animatable "1.3.3"
 
+react-native-pager-view@^6.2.0:
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-pager-view/-/react-native-pager-view-6.2.0.tgz#51380d93fbe47f6380dc71d613a787bf27a4ca37"
+  integrity sha512-pf9OnL/Tkr+5s4Gjmsn7xh91PtJLDa6qxYa/bmtUhd/+s4cQdWQ8DIFoOFghwZIHHHwVdWtoXkp6HtpjN+r20g==
+
 react-native-prompt-android@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/react-native-prompt-android/-/react-native-prompt-android-1.1.0.tgz#3c5168029075cb9f72549fd5f92403372fb234e9"
@@ -6962,6 +6975,13 @@ react-native-swipeable-item@^2.0.9:
   integrity sha512-NUBX5Xs8cYCU7lWj5O/NtY7kq8I9dIo3eQVtnSbfYU39RXi/n0TpRqpmaQTPM6sE5EQR/BcygD4jwDcrE5h/sQ==
   dependencies:
     "@babel/preset-typescript" "^7.17.12"
+
+react-native-tab-view@^3.4.2:
+  version "3.4.2"
+  resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-3.4.2.tgz#20c0a7716a0344505ec19f1b3b67ac64b7cb06d9"
+  integrity sha512-TBWTC7N1VfvK2bxZPj9LtqWfJpxz/pK8GLn5O8bc6cTPgJefk5II0P+9ftrlMGwbksZy+7AELkrw/I8ra41Brw==
+  dependencies:
+    use-latest-callback "^0.1.5"
 
 react-native@0.71.8:
   version "0.71.8"

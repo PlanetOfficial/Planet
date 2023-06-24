@@ -7,11 +7,14 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.white,
   },
+  flatList: {
+    paddingTop: s(10),
+  },
   scrollView: {
     paddingBottom: s(30),
   },
   center: {
-    paddingTop: s(50),
+    paddingVertical: s(50),
     alignItems: 'center',
   },
   header: {

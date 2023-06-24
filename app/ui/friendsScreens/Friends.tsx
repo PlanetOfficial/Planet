@@ -1,7 +1,8 @@
 import React from 'react';
-import {View, SafeAreaView, Alert} from 'react-native';
+import {View, SafeAreaView, StyleSheet} from 'react-native';
+import {s} from 'react-native-size-matters';
+import FriendsNavBar from '../navigation/FriendsNavBar';
 
-import colors from '../../constants/colors';
 import icons from '../../constants/icons';
 import strings from '../../constants/strings';
 import styles from '../../constants/styles';
@@ -19,17 +20,22 @@ const Friends = ({navigation}: {navigation: any}) => {
             icon={icons.back}
             onPress={() => navigation.goBack()}
           />
-          <Text>{strings.friends.friends}</Text>
-          <Icon
-            size="l"
-            color={colors.accent}
-            icon={icons.add}
-            onPress={() => Alert.alert('Add Friend', 'Coming soon!')}
-          />
+          <View style={localStyles.header}>
+            <Text size="l">{strings.friends.friends}</Text>
+          </View>
         </View>
       </SafeAreaView>
+
+      <FriendsNavBar />
     </View>
   );
 };
+
+const localStyles = StyleSheet.create({
+  header: {
+    flex: 1,
+    marginLeft: s(10),
+  },
+});
 
 export default Friends;

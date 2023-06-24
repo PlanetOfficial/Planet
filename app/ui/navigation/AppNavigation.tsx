@@ -20,7 +20,8 @@ import CreateSearch from '../createScreens/CreateSearch';
 import SearchCategory from '../searchScreens/SearchCategory';
 import SearchMap from '../searchScreens/SearchMap';
 import PoiDetail from '../otherScreens/PoiDetail';
-import Friends from '../otherScreens/Friends';
+import Friends from '../friendsScreens/Friends';
+import User from '../friendsScreens/User';
 import Explore from '../homeScreens/Explore';
 import Event from '../libraryScreens/Event';
 import EventSettings from '../libraryScreens/EventSettings';
@@ -57,6 +58,7 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {searchMapScreen()}
           {poiDetailScreen()}
           {friendsScreen()}
+          {userScreen()}
           {exploreScreen()}
           {settingsScreen()}
           {accountSettingsScreen()}
@@ -100,6 +102,7 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {searchMapScreen()}
           {poiDetailScreen()}
           {friendsScreen()}
+          {userScreen()}
           {exploreScreen()}
           {settingsScreen()}
           {accountSettingsScreen()}
@@ -252,7 +255,18 @@ const friendsScreen = () => {
       component={Friends}
       options={{
         headerShown: false,
-        presentation: 'modal',
+      }}
+    />
+  );
+};
+
+const userScreen = () => {
+  return (
+    <Stack.Screen
+      name="User"
+      component={User}
+      options={{
+        headerShown: false,
       }}
     />
   );
