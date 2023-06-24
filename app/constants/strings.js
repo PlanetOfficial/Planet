@@ -103,6 +103,12 @@ const strings = {
     pendingRequest: 'Pending Request',
     pendingRequests: 'Pending Requests',
     mutualEvents: 'Mutual Events',
+    addFriend: 'Add Friend',
+    unfriend: 'Unfriend',
+    cancelRequest: 'Cancel Request',
+    accept: 'Accept',
+    reject: 'Reject',
+    noMutualEventsFound: 'No Mutual Events Found',
   },
   profile: {
     yourProfile: 'Your Profile',
@@ -221,6 +227,9 @@ const strings = {
     editInfo: 'Unable to edit user info. Please try again later.',
     searchError: 'Unable to search for users. Please try again later.',
     loadSuggestions: 'Unable to load suggestions. Please try again later.',
+    loadUserData: 'Unable to load user data. Please try again later.',
+    friendRequest: 'Unable to send friend request. Please try again later.',
+    unfriend: 'Unable to unfriend. Please try again later.',
   },
   ageEnum: [
     {label: '-17', value: '-17'},

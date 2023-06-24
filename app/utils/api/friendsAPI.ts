@@ -1,6 +1,31 @@
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {FriendAPIURL} from './APIConstants';
-import {UserInfo} from '../types';
+import {UserDetail, UserInfo} from '../types';
+
+/**
+ * @requires auth_token should be set in EncryptedStorage before calling this function
+ */
+export const getFriend = async (id: number): Promise<UserDetail | null> => {
+  const authToken = await EncryptedStorage.getItem('auth_token');
+
+  if (!authToken) {
+    return null;
+  }
+
+  const response = await fetch(
+    FriendAPIURL + `/friend/${id}?authtoken=${authToken}`,
+    {
+      method: 'GET',
+    },
+  );
+
+  if (response?.ok) {
+    const myJson: UserDetail = await response.json();
+    return myJson;
+  } else {
+    return null;
+  }
+};
 
 /**
  * @requires auth_token should be set in EncryptedStorage before calling this function
@@ -12,9 +37,12 @@ export const getFriends = async (): Promise<UserInfo[] | null> => {
     return null;
   }
 
-  const response = await fetch(FriendAPIURL + `/friend?authtoken=${authToken}`, {
-    method: 'GET',
-  });
+  const response = await fetch(
+    FriendAPIURL + `/friend?authtoken=${authToken}`,
+    {
+      method: 'GET',
+    },
+  );
 
   if (response?.ok) {
     const myJson: UserInfo[] = await response.json();

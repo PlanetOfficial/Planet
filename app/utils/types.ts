@@ -7,6 +7,10 @@ export interface UserInfo {
   count?: number;
 }
 
+export interface UserDetail {
+  status: string;
+}
+
 export interface MyInfo {
   id: number;
   first_name: string;

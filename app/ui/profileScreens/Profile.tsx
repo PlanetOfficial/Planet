@@ -96,10 +96,10 @@ const Profile = ({navigation}: {navigation: any}) => {
           )}
         </View>
         <View style={profileStyles.info}>
-          <Text size="l">
+          <Text size="l" numberOfLines={1}>
             {firstName} {lastName}
           </Text>
-          <Text size="s" color={colors.darkgrey}>
+          <Text size="s" color={colors.darkgrey} numberOfLines={1}>
             @{username}
           </Text>
           <TouchableOpacity onPress={() => navigation.navigate('Friends')}>

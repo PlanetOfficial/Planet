@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   name: {
-    fontSize: s(14),
+    fontSize: s(16),
     color: colors.white,
     fontFamily: 'VarelaRound-Regular',
     marginTop: s(1),

@@ -5,7 +5,6 @@ import {
   StyleSheet,
   TextInput,
   Alert,
-  TouchableOpacity,
   FlatList,
   ActivityIndicator,
   LayoutAnimation,
@@ -25,6 +24,7 @@ import Text from '../components/Text';
 
 import {searchUsers} from '../../utils/api/friendsAPI';
 import {UserInfo} from '../../utils/types';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const Friends = ({navigation}: {navigation: any}) => {
   const searchRef = createRef<TextInput>();
@@ -102,7 +102,6 @@ const Friends = ({navigation}: {navigation: any}) => {
             keyExtractor={item => item.id.toString()}
             renderItem={({item}: {item: UserInfo}) => (
               <TouchableOpacity
-                key={item.id}
                 style={userStyles.container}
                 onPress={() =>
                   navigation.navigate('User', {

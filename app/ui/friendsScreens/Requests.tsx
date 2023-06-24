@@ -148,40 +148,42 @@ const Requests = ({navigation}: {navigation: any}) => {
                     : strings.friends.pendingRequests
                 } (${requestsSent.length}):`}</Text>
               </View>
-              {requestsSent?.map((item: UserInfo) => (
-                <TouchableOpacity
-                  key={item.id}
-                  style={userStyles.container}
-                  onPress={() =>
-                    navigation.navigate('User', {
-                      user: item,
-                    })
-                  }>
-                  <View style={userStyles.profilePic}>
-                    <UserIcon user={item} />
-                  </View>
-                  <View style={userStyles.texts}>
-                    <Text
-                      size="s"
-                      numberOfLines={
-                        1
-                      }>{`${item.first_name} ${item.last_name}`}</Text>
-                    <Text
-                      size="s"
-                      weight="l"
-                      color={colors.darkgrey}
-                      numberOfLines={1}>
-                      {'@' + item.username}
-                    </Text>
-                  </View>
+              {requestsSent?.map((item: UserInfo, index: number) => (
+                <View key={item.id}>
+                  <TouchableOpacity
+                    style={userStyles.container}
+                    onPress={() =>
+                      navigation.navigate('User', {
+                        user: item,
+                      })
+                    }>
+                    <View style={userStyles.profilePic}>
+                      <UserIcon user={item} />
+                    </View>
+                    <View style={userStyles.texts}>
+                      <Text
+                        size="s"
+                        numberOfLines={
+                          1
+                        }>{`${item.first_name} ${item.last_name}`}</Text>
+                      <Text
+                        size="s"
+                        weight="l"
+                        color={colors.darkgrey}
+                        numberOfLines={1}>
+                        {'@' + item.username}
+                      </Text>
+                    </View>
 
-                  <Icon
-                    size="s"
-                    icon={icons.x}
-                    color={colors.black}
-                    onPress={() => handleCancelRequest(item.id)}
-                  />
-                </TouchableOpacity>
+                    <Icon
+                      size="s"
+                      icon={icons.x}
+                      color={colors.black}
+                      onPress={() => handleCancelRequest(item.id)}
+                    />
+                  </TouchableOpacity>
+                  {index !== requestsSent.length - 1 ? <Separator /> : null}
+                </View>
               ))}
             </>
           ) : null}
@@ -208,7 +210,6 @@ const localStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     width: s(60),
-    marginRight: s(10),
   },
   pending: {
     marginHorizontal: s(20),
@@ -221,7 +222,7 @@ const userStyles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginHorizontal: s(30),
+    marginHorizontal: s(20),
     paddingVertical: s(10),
   },
   profilePic: {
