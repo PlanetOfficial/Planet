@@ -34,7 +34,13 @@ export const NavBar = () => {
         },
       })}>
       <Tab.Screen name="Suggestions" component={Suggestions} />
-      <Tab.Screen name="FriendsList" component={FriendsList} />
+      <Tab.Screen
+        name="FriendsList"
+        component={FriendsList}
+        options={{
+          tabBarLabel: 'Friends',
+        }}
+      />
       <Tab.Screen name="Requests" component={Requests} />
     </Tab.Navigator>
   );
