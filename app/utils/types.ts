@@ -4,6 +4,7 @@ export interface UserInfo {
   last_name: string;
   username: string;
   icon?: Image;
+  count?: number;
 }
 
 export interface MyInfo {
