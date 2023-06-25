@@ -26,7 +26,7 @@ import User from '../friendsScreens/User';
 import EventPage from '../libraryScreens/event/Event';
 import Mutuals from '../friendsScreens/Mutuals';
 import Explore from '../homeScreens/Explore';
-import EventSettings from '../libraryScreens/EventSettings';
+import EventSettings from '../libraryScreens/eventSettings/EventSettings';
 import Roulette from '../libraryScreens/roulette/Roulette';
 import SpinHistory from '../libraryScreens/spinHistory/SpinHistory';
 import SuggestSearch from '../libraryScreens/suggestSearch/SuggestSearch';

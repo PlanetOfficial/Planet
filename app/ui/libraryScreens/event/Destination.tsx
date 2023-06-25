@@ -5,19 +5,16 @@ import {
   TouchableOpacity,
   FlatList,
   RefreshControl,
-  ScrollView,
   Animated,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
-import strings from '../../../constants/strings';
 import STYLES from '../../../constants/styles';
 
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
-import PoiCardXS from '../../components/PoiCardXS';
 import PoiCardXL from '../../components/PoiCardXL';
 import Separator from '../../components/Separator';
 
@@ -31,6 +28,7 @@ import {
 import {handleBookmark} from '../../../utils/Misc';
 
 import {onVote} from './functions';
+import Suggestions from './Suggestions';
 
 interface Props {
   navigation: any;
@@ -50,7 +48,7 @@ interface Props {
   findPrimary: (suggestions: Suggestion[]) => Suggestion;
   selectedDestination: Destination | undefined;
   cardWidth: Animated.AnimatedInterpolation<string | number>;
-  suggestionRefs: any; // figure out type
+  suggestionRefs: any; // WARN: figure out type
   onSuggestionPress: (suggestion: Suggestion, destination: Destination) => void;
 }
 
@@ -150,50 +148,14 @@ const DestinationView: React.FC<Props> = ({
               }}
             />
           </TouchableOpacity>
-          {item.suggestions.length > 1 ? (
-            <View style={styles.suggestions}>
-              <ScrollView
-                style={styles.suggestionsScrollView}
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}>
-                {item.suggestions.map((suggestion: Suggestion) =>
-                  !suggestion.is_primary ? (
-                    <TouchableOpacity
-                      key={suggestion.id}
-                      ref={r => suggestionRefs.current.set(suggestion.id, r)}
-                      style={styles.suggestion}
-                      disabled={displayingSuggestion}
-                      onPress={() => onSuggestionPress(suggestion, item)}>
-                      <PoiCardXS poi={suggestion.poi} />
-                    </TouchableOpacity>
-                  ) : null,
-                )}
-              </ScrollView>
-              <View style={styles.addSuggestion}>
-                <TouchableOpacity
-                  style={styles.addSuggestion}
-                  disabled={displayingSuggestion}
-                  onPress={() => {
-                    setInsertionDestination(item);
-                    navigation.navigate('SuggestSearch');
-                  }}>
-                  <Icon icon={icons.add} size="xl" color={colors.accent} />
-                </TouchableOpacity>
-              </View>
-            </View>
-          ) : (
-            <TouchableOpacity
-              style={[styles.addSuggestionBig, STYLES.shadow]}
-              disabled={displayingSuggestion}
-              onPress={() => {
-                setInsertionDestination(item);
-                navigation.navigate('SuggestSearch');
-              }}>
-              <Text color={colors.accent} weight="b">
-                {strings.event.addSuggestion}
-              </Text>
-            </TouchableOpacity>
-          )}
+          <Suggestions
+            navigation={navigation}
+            destination={item}
+            displayingSuggestion={displayingSuggestion}
+            setInsertionDestination={setInsertionDestination}
+            suggestionRefs={suggestionRefs}
+            onSuggestionPress={onSuggestionPress}
+          />
         </View>
       )}
       ItemSeparatorComponent={Separator}
@@ -226,43 +188,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     height: s(310 / 1.6),
-  },
-  suggestions: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: s(10),
-  },
-  suggestionsScrollView: {
-    overflow: 'visible',
-  },
-  suggestion: {
-    marginRight: s(10),
-  },
-  addSuggestion: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: -s(20),
-    paddingRight: s(20),
-    width: s(95),
-    height: s(85),
-    backgroundColor: colors.white,
-    borderLeftWidth: 0.5,
-    borderLeftColor: colors.grey,
-  },
-  addSuggestionBig: {
-    alignItems: 'center',
-    marginVertical: s(10),
-    paddingVertical: s(10),
-    borderRadius: s(10),
-    backgroundColor: colors.white,
-  },
-  dim: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: colors.black,
   },
 });
 
