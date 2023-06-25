@@ -6976,10 +6976,10 @@ react-native-swipeable-item@^2.0.9:
   dependencies:
     "@babel/preset-typescript" "^7.17.12"
 
-react-native-tab-view@^3.4.2:
-  version "3.4.2"
-  resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-3.4.2.tgz#20c0a7716a0344505ec19f1b3b67ac64b7cb06d9"
-  integrity sha512-TBWTC7N1VfvK2bxZPj9LtqWfJpxz/pK8GLn5O8bc6cTPgJefk5II0P+9ftrlMGwbksZy+7AELkrw/I8ra41Brw==
+react-native-tab-view@^3.5.1:
+  version "3.5.2"
+  resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-3.5.2.tgz#2789b8af6148b16835869566bf13dc3b0e6c1b46"
+  integrity sha512-nE5WqjbeEPsWQx4mtz81QGVvgHRhujTNIIZiMCx3Bj6CBFDafbk7XZp9ocmtzXUQaZ4bhtVS43R4FIiR4LboJw==
   dependencies:
     use-latest-callback "^0.1.5"
 
