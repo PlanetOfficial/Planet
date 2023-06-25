@@ -11,18 +11,18 @@ import {
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 
-import colors from '../../constants/colors';
-import icons from '../../constants/icons';
-import strings from '../../constants/strings';
-import styles from '../../constants/styles';
+import colors from '../../../constants/colors';
+import icons from '../../../constants/icons';
+import strings from '../../../constants/strings';
+import STYLES from '../../../constants/styles';
 
-import Text from '../components/Text';
-import Icon from '../components/Icon';
-import Separator from '../components/Separator';
-import EventRow from '../components/EventRow';
+import Text from '../../components/Text';
+import Icon from '../../components/Icon';
+import Separator from '../../components/Separator';
+import EventRow from '../../components/EventRow';
 
-import {getEvents} from '../../utils/api/eventAPI';
-import {Event} from '../../utils/types';
+import {getEvents} from '../../../utils/api/eventAPI';
+import {Event} from '../../../utils/types';
 
 const Library = ({navigation}: {navigation: any}) => {
   const [events, setEvents] = useState<Event[]>([]);
@@ -31,7 +31,6 @@ const Library = ({navigation}: {navigation: any}) => {
   const [refreshing, setRefreshing] = useState<boolean>(false);
 
   const loadData = async () => {
-    setRefreshing(true);
     const _events = await getEvents();
 
     if (_events) {
@@ -52,9 +51,9 @@ const Library = ({navigation}: {navigation: any}) => {
   }, [navigation]);
 
   return (
-    <View style={styles.container}>
+    <View style={STYLES.container}>
       <SafeAreaView>
-        <View style={styles.header}>
+        <View style={STYLES.header}>
           <Text size="l">{strings.event.yourEvents}</Text>
           <Icon
             icon={icons.bell}
@@ -66,12 +65,12 @@ const Library = ({navigation}: {navigation: any}) => {
       </SafeAreaView>
 
       {loading ? (
-        <View style={styles.center}>
+        <View style={STYLES.center}>
           <ActivityIndicator size="small" color={colors.accent} />
         </View>
       ) : (
         <FlatList
-          style={localStyles.list}
+          style={styles.list}
           data={events}
           renderItem={({item}: {item: Event}) => {
             return (
@@ -86,7 +85,7 @@ const Library = ({navigation}: {navigation: any}) => {
             );
           }}
           ListEmptyComponent={
-            <View style={styles.center}>
+            <View style={STYLES.center}>
               <Text>{strings.event.noEventsFound}</Text>
               <Text> </Text>
               <Text size="s" color={colors.darkgrey}>
@@ -109,7 +108,7 @@ const Library = ({navigation}: {navigation: any}) => {
   );
 };
 
-const localStyles = StyleSheet.create({
+const styles = StyleSheet.create({
   list: {
     marginTop: s(10),
     borderTopWidth: 0.5,

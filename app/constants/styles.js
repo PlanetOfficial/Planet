@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     marginVertical: s(10),
   },
   separator: {
-    marginLeft: s(20),
+    marginHorizontal: s(20),
     height: 0.5,
     backgroundColor: colors.lightgrey,
   },

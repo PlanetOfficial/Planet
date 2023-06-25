@@ -20,7 +20,7 @@ import colors from '../../constants/colors';
 
 import Home from '../homeScreens/Home';
 import Search from '../searchScreens/search/Search';
-import Library from '../libraryScreens/Library';
+import Library from '../libraryScreens/library/Library';
 import Profile from '../profileScreens/profile/Profile';
 
 const Tab = createBottomTabNavigator();

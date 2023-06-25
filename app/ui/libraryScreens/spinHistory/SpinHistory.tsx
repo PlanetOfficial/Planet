@@ -10,29 +10,36 @@ import {
 import {s} from 'react-native-size-matters';
 import moment from 'moment';
 
-import colors from '../../constants/colors';
-import icons from '../../constants/icons';
-import strings from '../../constants/strings';
-import styles from '../../constants/styles';
+import colors from '../../../constants/colors';
+import icons from '../../../constants/icons';
+import strings from '../../../constants/strings';
+import STYLES from '../../../constants/styles';
 
-import Text from '../components/Text';
-import Icon from '../components/Icon';
-import PoiCardXS from '../components/PoiCardXS';
+import Text from '../../components/Text';
+import Icon from '../../components/Icon';
+import PoiCardXS from '../../components/PoiCardXS';
 
-import {Destination, Spin} from '../../utils/types';
-import UserIcon from '../components/UserIcon';
+import {Destination, Spin} from '../../../utils/types';
+import UserIcon from '../../components/UserIcon';
+import Separator from '../../components/Separator';
 
-/*
- * route params:
- * - destination: Destination
- */
-const SpinHistory = ({navigation, route}: {navigation: any; route: any}) => {
+const SpinHistory = ({
+  navigation,
+  route,
+}: {
+  navigation: any;
+  route: {
+    params: {
+      destination: Destination;
+    };
+  };
+}) => {
   const [destination] = useState<Destination>(route.params.destination);
 
   return (
-    <View style={styles.container}>
+    <View style={STYLES.container}>
       <SafeAreaView>
-        <View style={styles.header}>
+        <View style={STYLES.header}>
           <Icon icon={icons.close} onPress={() => navigation.goBack()} />
           <Text>{strings.roulette.spinHistory}</Text>
           <Icon
@@ -47,18 +54,18 @@ const SpinHistory = ({navigation, route}: {navigation: any; route: any}) => {
           />
         </View>
       </SafeAreaView>
-      <View style={localStyles.header}>
-        <View style={localStyles.result}>
+      <View style={styles.header}>
+        <View style={styles.result}>
           <Text size="s" weight="l">
             {strings.roulette.result}
           </Text>
         </View>
-        <View style={localStyles.spunBy}>
+        <View style={styles.spunBy}>
           <Text size="s" weight="l">
             {strings.roulette.spunBy}
           </Text>
         </View>
-        <View style={localStyles.time}>
+        <View style={styles.time}>
           <Text size="s" weight="l">
             {strings.roulette.time}
           </Text>
@@ -68,7 +75,7 @@ const SpinHistory = ({navigation, route}: {navigation: any; route: any}) => {
         data={destination.spin_history}
         renderItem={({item}: {item: Spin}) => {
           return (
-            <View style={localStyles.row}>
+            <View style={styles.row}>
               <TouchableOpacity
                 onPress={() =>
                   navigation.navigate('PoiDetail', {
@@ -79,13 +86,13 @@ const SpinHistory = ({navigation, route}: {navigation: any; route: any}) => {
               </TouchableOpacity>
 
               <TouchableOpacity
-                style={userStyles.container}
+                style={styles.user}
                 onPress={() =>
                   navigation.navigate('User', {
                     user: item.spinner,
                   })
                 }>
-                <View style={userStyles.profilePic}>
+                <View style={styles.profilePic}>
                   <UserIcon user={item.spinner} />
                 </View>
                 <Text size="s" weight="l" numberOfLines={1}>
@@ -93,7 +100,7 @@ const SpinHistory = ({navigation, route}: {navigation: any; route: any}) => {
                 </Text>
               </TouchableOpacity>
 
-              <View style={localStyles.texts}>
+              <View style={styles.texts}>
                 <Text size="s" color={colors.darkgrey} numberOfLines={2}>
                   {moment(item.created_at).format('MMM Do')}
                 </Text>
@@ -105,12 +112,13 @@ const SpinHistory = ({navigation, route}: {navigation: any; route: any}) => {
           );
         }}
         keyExtractor={(item: Spin) => item.id.toString()}
+        ItemSeparatorComponent={Separator}
       />
     </View>
   );
 };
 
-const localStyles = StyleSheet.create({
+const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -139,8 +147,6 @@ const localStyles = StyleSheet.create({
     marginHorizontal: s(30),
     marginTop: s(15),
     paddingBottom: s(15),
-    borderBottomWidth: 0.5,
-    borderColor: colors.lightgrey,
   },
   texts: {
     alignItems: 'center',
@@ -148,10 +154,7 @@ const localStyles = StyleSheet.create({
     paddingVertical: s(18),
     width: s(70),
   },
-});
-
-const userStyles = StyleSheet.create({
-  container: {
+  user: {
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingVertical: s(10),
@@ -162,10 +165,6 @@ const userStyles = StyleSheet.create({
     height: s(35),
     borderRadius: s(17.5),
     overflow: 'hidden',
-  },
-  pic: {
-    width: '100%',
-    height: '100%',
   },
 });
 
