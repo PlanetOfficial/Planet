@@ -12,9 +12,11 @@ import LoginScreen from '../authScreens/LogIn';
 import SignUpName from '../authScreens/SignUpName';
 import SignUpCreds from '../authScreens/SignUpCreds';
 import SignUpPhone from '../authScreens/SignUpPhone';
-import VerifyPhone from '../authScreens/VerifyPhone';
+import SignUpVerify from '../authScreens/SignUpVerify';
 import SignUpInfo from '../authScreens/SignUpInfo';
-import ForgotPassword from '../authScreens/!ForgotPwd';
+import ForgotPassword from '../authScreens/ForgotPwd';
+import ForgotVerifyPhone from '../authScreens/ForgotPwdVerify';
+import ResetPwd from '../authScreens/ResetPwd';
 import Create from '../createScreens/Create';
 import CreateSearch from '../createScreens/CreateSearch';
 import SearchCategory from '../searchScreens/SearchCategory';
@@ -80,9 +82,11 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {signUpNameStackScreen()}
           {signUpCredsStackScreen()}
           {signUpPhoneStackScreen()}
-          {verifyPhoneStackScreen()}
+          {signUpVerifyStackScreen()}
           {signUpInfoStackScreen()}
-          {forgetPassStackScreen()}
+          {forgotPassStackScreen()}
+          {forgotPassVerifyStackScreen()}
+          {resetPasswordStackScreen()}
         </Stack.Navigator>
       </BottomSheetModalProvider>
     </NavigationContainer>
@@ -94,9 +98,11 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {signUpNameStackScreen()}
           {signUpCredsStackScreen()}
           {signUpPhoneStackScreen()}
-          {verifyPhoneStackScreen()}
+          {signUpVerifyStackScreen()}
           {signUpInfoStackScreen()}
-          {forgetPassStackScreen()}
+          {forgotPassStackScreen()}
+          {forgotPassVerifyStackScreen()}
+          {resetPasswordStackScreen()}
           {tabStack()}
           {searchCategoryScreen()}
           {searchMapScreen()}
@@ -170,11 +176,11 @@ const signUpPhoneStackScreen = () => {
   );
 };
 
-const verifyPhoneStackScreen = () => {
+const signUpVerifyStackScreen = () => {
   return (
     <Stack.Screen
-      name="VerifyPhone"
-      component={VerifyPhone}
+      name="SignUpVerify"
+      component={SignUpVerify}
       options={{headerShown: false}}
     />
   );
@@ -190,7 +196,7 @@ const signUpInfoStackScreen = () => {
   );
 };
 
-const forgetPassStackScreen = () => {
+const forgotPassStackScreen = () => {
   return (
     <Stack.Screen
       name="ForgotPassword"
@@ -199,6 +205,26 @@ const forgetPassStackScreen = () => {
     />
   );
 };
+
+const forgotPassVerifyStackScreen = () => {
+  return (
+    <Stack.Screen
+      name="ForgotPasswordVerify"
+      component={ForgotVerifyPhone}
+      options={{headerShown: false}}
+    />
+  );
+}
+
+const resetPasswordStackScreen = () => {
+  return (
+    <Stack.Screen
+      name="ResetPassword"
+      component={ResetPwd}
+      options={{headerShown: false}}
+    />
+  );
+}
 
 const tabStack = () => {
   return (

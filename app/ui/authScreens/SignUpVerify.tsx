@@ -1,68 +1,81 @@
 import React, {useState} from 'react';
-import {View, SafeAreaView, TouchableOpacity, StyleSheet} from 'react-native';
-import PhoneInput from 'react-phone-number-input/react-native-input';
+import {
+  View,
+  SafeAreaView,
+  TouchableOpacity,
+  TextInput,
+  StyleSheet,
+} from 'react-native';
 import {s} from 'react-native-size-matters';
 
-import {E164Number} from 'libphonenumber-js/types';
-
 import Text from '../components/Text';
+import Icon from '../components/Icon';
+
 import colors from '../../constants/colors';
+import icons from '../../constants/icons';
 import strings from '../../constants/strings';
 import styles from '../../constants/styles';
 
-import {sendCode} from '../../utils/api/authAPI';
+import {verifyCode} from '../../utils/api/authAPI';
 
 /*
  * route params:
  * - authToken: string
  */
-const SignUpPhone = ({navigation, route}: {navigation: any; route: any}) => {
+const SignUpVerify = ({navigation, route}: {navigation: any; route: any}) => {
   const [authToken] = useState<string>(route.params.authToken);
 
-  const [phoneNumber, setPhoneNumber] = useState<E164Number | undefined>();
+  const [code, setCode] = useState<string>('');
 
   const [error, setError] = useState<string>('');
 
-  const handleSendCode = async () => {
+  const handleVerifyCode = async () => {
     setError('');
 
-    if (phoneNumber === undefined || phoneNumber.length === 0) {
+    if (code.length === 0) {
       setError(strings.signUp.missingFields);
       return;
     }
 
-    const response = await sendCode(authToken, phoneNumber);
+    const response = await verifyCode(authToken, code);
 
     if (response) {
-      navigation.navigate('SignUpVerify', {authToken});
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'SignUpInfo', params: {authToken: authToken}}],
+      });
     } else {
-      setError(strings.signUp.codeSendFailed);
+      setError(strings.signUp.codeVerifyFailed);
     }
   };
 
   return (
     <View style={styles.container}>
       <SafeAreaView>
-        <View style={localStyles.messageContainer}>
-          <Text size="l" center={true}>
-            {strings.signUp.signUpSuccess}
-          </Text>
+        <View style={styles.header}>
+          <Icon
+            size="m"
+            icon={icons.back}
+            onPress={() => navigation.goBack()}
+          />
         </View>
       </SafeAreaView>
 
       <View style={localStyles.promptContainer}>
         <Text size="l" weight="l" center={true}>
-          {strings.signUp.phonePrompt}
+          {strings.signUp.verifyPrompt}
         </Text>
       </View>
 
       <View style={localStyles.inputContainer}>
-        <Text weight="l">{strings.signUp.phoneNumber}: </Text>
-        <PhoneInput
+        <TextInput
           style={localStyles.input}
-          placeholder={strings.signUp.phoneNumber}
-          value={phoneNumber}
-          onChange={setPhoneNumber}
+          value={code}
+          onChangeText={text =>
+            setCode(text.replace(/[^0-9]/g, '').substring(0, 6))
+          }
+          placeholderTextColor={colors.darkgrey}
+          keyboardType="number-pad"
         />
       </View>
       {error.length !== 0 ? (
@@ -74,13 +87,14 @@ const SignUpPhone = ({navigation, route}: {navigation: any; route: any}) => {
         style={[
           localStyles.button,
           {
-            backgroundColor: phoneNumber ? colors.accent : colors.darkgrey,
+            backgroundColor:
+              code.length !== 6 ? colors.darkgrey : colors.accent,
           },
         ]}
-        disabled={!phoneNumber}
-        onPress={() => handleSendCode()}>
+        disabled={code.length !== 6}
+        onPress={() => handleVerifyCode()}>
         <Text weight="b" color={colors.white}>
-          {strings.signUp.sendCode}
+          {strings.signUp.verifyCode}
         </Text>
       </TouchableOpacity>
     </View>
@@ -88,9 +102,6 @@ const SignUpPhone = ({navigation, route}: {navigation: any; route: any}) => {
 };
 
 const localStyles = StyleSheet.create({
-  messageContainer: {
-    margin: s(20),
-  },
   promptContainer: {
     margin: s(40),
     paddingHorizontal: s(20),
@@ -101,17 +112,21 @@ const localStyles = StyleSheet.create({
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     marginVertical: s(30),
     marginHorizontal: s(50),
   },
   input: {
-    flex: 1,
+    alignSelf: 'center',
     borderBottomWidth: 1,
     borderColor: colors.darkgrey,
     marginHorizontal: s(5),
     paddingHorizontal: s(10),
     paddingVertical: s(5),
     fontFamily: 'Lato',
+    letterSpacing: s(10),
+    fontSize: s(20),
+    width: s(150),
   },
   button: {
     alignSelf: 'center',
@@ -124,4 +139,4 @@ const localStyles = StyleSheet.create({
   },
 });
 
-export default SignUpPhone;
+export default SignUpVerify;

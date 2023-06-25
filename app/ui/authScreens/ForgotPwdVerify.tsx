@@ -16,14 +16,14 @@ import icons from '../../constants/icons';
 import strings from '../../constants/strings';
 import styles from '../../constants/styles';
 
-import {verifyCode} from '../../utils/api/authAPI';
+import {verifyCodeUsername} from '../../utils/api/authAPI';
 
 /*
  * route params:
- * - authToken: string
+ * - username: string
  */
-const VerifyPhone = ({navigation, route}: {navigation: any; route: any}) => {
-  const [authToken] = useState<string>(route.params.authToken);
+const ForgotVerifyPhone = ({navigation, route}: {navigation: any; route: any}) => {
+  const [username] = useState<string>(route.params.username);
 
   const [code, setCode] = useState<string>('');
 
@@ -37,12 +37,14 @@ const VerifyPhone = ({navigation, route}: {navigation: any; route: any}) => {
       return;
     }
 
-    const response = await verifyCode(authToken, code);
+    const response = await verifyCodeUsername(username, code);
 
     if (response) {
       navigation.reset({
         index: 0,
-        routes: [{name: 'SignUpInfo', params: {authToken: authToken}}],
+        routes: [
+          {name: 'ResetPassword', params: {authToken: response.authToken}},
+        ],
       });
     } else {
       setError(strings.signUp.codeVerifyFailed);
@@ -94,7 +96,7 @@ const VerifyPhone = ({navigation, route}: {navigation: any; route: any}) => {
         disabled={code.length !== 6}
         onPress={() => handleVerifyCode()}>
         <Text weight="b" color={colors.white}>
-          {strings.signUp.sendCode}
+          {strings.signUp.verifyCode}
         </Text>
       </TouchableOpacity>
     </View>
@@ -139,4 +141,4 @@ const localStyles = StyleSheet.create({
   },
 });
 
-export default VerifyPhone;
+export default ForgotVerifyPhone;

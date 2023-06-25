@@ -47,9 +47,49 @@ export const sendCode = async (authToken: string, phone_number: string) => {
   return response.ok;
 };
 
+export const sendCodeUsername = async (username: string) => {
+  const response = await fetch(
+    UserAPIURL + `/auth/sendCodeUsername?username=${username}`,
+    {
+      method: 'POST',
+    },
+  );
+
+  return response.ok;
+};
+
 export const verifyCode = async (authToken: string, code: string) => {
   const response = await fetch(
     UserAPIURL + `/auth/verifyCode?code=${code}&authtoken=${authToken}`,
+    {
+      method: 'POST',
+    },
+  );
+
+  return response.ok;
+};
+
+export const verifyCodeUsername = async (username: string, code: string): Promise<{authToken: string} | null> => {
+  const response = await fetch(
+    UserAPIURL + `/auth/verifyCodeUsername?code=${code}&username=${username}`,
+    {
+      method: 'POST',
+    },
+  );
+
+  if (response?.ok) {
+    const myJson = await response.json();
+
+    return myJson;
+  } else {
+    return null;
+  }
+};
+
+export const resetPassword = async (authToken: string, password: string) => {
+  const response = await fetch(
+    UserAPIURL +
+      `/auth/resetPassword?password=${password}&authtoken=${authToken}`,
     {
       method: 'POST',
     },

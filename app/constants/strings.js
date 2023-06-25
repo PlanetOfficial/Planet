@@ -30,7 +30,9 @@ const strings = {
     signUp: 'Sign up',
     username: 'Username',
     password: 'Password',
-    missingInfo: 'Missing email or password',
+    missingInfo: 'Missing username or password',
+    resetPassword: 'Reset Password',
+    passwordResetSuccess: 'Password was successfully reset!',
   },
   signUp: {
     namePrompt: 'First, please tell us your name:',
@@ -176,6 +178,7 @@ const strings = {
   },
   error: {
     error: 'Error',
+    ambiguousError: 'Something went wrong. Please try again later.',
     markSuggestionAsSelected:
       'Unable to mark suggestion as selected. Please try again later.',
     removeSuggestion: 'Unable to remove suggestion. Please try again later.',
@@ -219,6 +222,7 @@ const strings = {
     toggleNotifications:
       'Unable to toggle notification settings. Please try again later.',
     editInfo: 'Unable to edit user info. Please try again later.',
+    resetPassword: 'Unable to reset password. Please try again later.',
   },
   ageEnum: [
     {label: '-17', value: '-17'},
