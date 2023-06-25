@@ -10,7 +10,7 @@ import {
   LayoutAnimation,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
-import FriendsNavBar from '../navigation/FriendsNavBar';
+import FriendsNavBar from '../navigations/FriendsNavBar';
 
 import colors from '../../constants/colors';
 import icons from '../../constants/icons';

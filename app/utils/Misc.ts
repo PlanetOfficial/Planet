@@ -6,7 +6,7 @@ import haversine from 'haversine-distance';
 
 import strings from '../constants/strings';
 
-import {Coordinate, PlaceOpeningHoursPeriod, Poi} from './types';
+import {Coordinate, Poi} from './types';
 import {bookmark} from './api/bookmarkAPI';
 
 /*
@@ -131,70 +131,4 @@ export const getInfoString = (poi: Poi): string => {
   }
 
   return poiString;
-};
-
-const convertStringTimeToDate = (timeString: string) => {
-  const date = new Date();
-
-  const hours = timeString.substring(0, 2);
-  const minutes = timeString.substring(2, 4);
-
-  if (hours && minutes) {
-    return new Date(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate(),
-      parseInt(hours, 10),
-      parseInt(minutes, 10),
-    );
-  }
-};
-
-/*
-  Determines if the poi is open or not.
-*/
-export const isOpen = (periods: PlaceOpeningHoursPeriod[]) => {
-  const date = new Date();
-
-  return periods.some(period => {
-    const startTime = convertStringTimeToDate(period.open.time);
-    const endTime = convertStringTimeToDate(period.close.time);
-
-    if (!startTime || !endTime) {
-      return false;
-    }
-
-    if (
-      date >= startTime &&
-      date <= endTime &&
-      period.open.day === date.getDay() &&
-      period.close.day === date.getDay()
-    ) {
-      return true;
-    }
-
-    if (
-      date >= startTime &&
-      period.open.day === date.getDay() &&
-      period.close.day === date.getDay() + 1
-    ) {
-      return true;
-    }
-
-    if (
-      date <= endTime &&
-      period.open.day === date.getDay() - 1 &&
-      period.close.day === date.getDay()
-    ) {
-      return true;
-    }
-    if (
-      period.open.day > period.close.day &&
-      period.open.day - period.close.day !== 6
-    ) {
-      return true;
-    }
-
-    return false;
-  });
 };
