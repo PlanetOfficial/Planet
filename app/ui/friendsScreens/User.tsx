@@ -51,6 +51,7 @@ const User = ({navigation, route}: {navigation: any; route: any}) => {
 
   const [status, setStatus] = useState<string>('');
   const [mutuals, setMutuals] = useState<UserInfo[]>([]);
+  const [mutualEvents, setMutualEvents] = useState<Event[]>([]);
 
   const initializeData = useCallback(async () => {
     setUserId(route.params.user.id);
@@ -64,6 +65,7 @@ const User = ({navigation, route}: {navigation: any; route: any}) => {
     if (userData) {
       setStatus(userData.status);
       setMutuals(userData.mutuals);
+      setMutualEvents(userData.shared_events);
     } else {
       Alert.alert(strings.error.error, strings.error.loadUserData);
     }
@@ -288,15 +290,13 @@ const User = ({navigation, route}: {navigation: any; route: any}) => {
             }}
           />
           <FlatList
-            data={[]} // this is also temporary
+            data={mutualEvents}
             renderItem={({item}: {item: Event}) => {
               return (
                 <TouchableOpacity
                   onPress={() =>
-                    navigation.navigate('PoiDetail', {
-                      poi: item,
-                      bookmarked: true,
-                      mode: 'none',
+                    navigation.navigate('Event', {
+                      event: item,
                     })
                   }>
                   <EventRow event={item} />

@@ -10,6 +10,7 @@ export interface UserInfo {
 export interface UserDetail {
   status: string;
   mutuals: UserInfo[];
+  shared_events: Event[];
 }
 
 export interface MyInfo {

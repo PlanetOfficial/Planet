@@ -97,10 +97,7 @@ const AddFriend = ({navigation, route}: {navigation: any; route: any}) => {
     <View style={styles.container}>
       <SafeAreaView>
         <View style={styles.header}>
-          <Icon
-            icon={icons.close}
-            onPress={() => navigation.goBack()}
-          />
+          <Icon icon={icons.close} onPress={() => navigation.goBack()} />
           <View style={[localStyles.searchBar, styles.shadow]}>
             <Icon size="s" icon={icons.search} color={colors.darkgrey} />
             <TextInput
@@ -176,7 +173,10 @@ const AddFriend = ({navigation, route}: {navigation: any; route: any}) => {
                 <Icon
                   size="m"
                   icon={
-                    invitees.some(i => i.id === item.id) || members.some(m => m.id === item.id) ? icons.selected : icons.unselected
+                    invitees.some(i => i.id === item.id) ||
+                    members.some(m => m.id === item.id)
+                      ? icons.selected
+                      : icons.unselected
                   }
                   color={colors.accent}
                 />
@@ -232,7 +232,10 @@ const AddFriend = ({navigation, route}: {navigation: any; route: any}) => {
                   <Icon
                     size="m"
                     icon={
-                      invitees.some(i => i.id === item.id) || members.some(m => m.id === item.id) ? icons.selected : icons.unselected
+                      invitees.some(i => i.id === item.id) ||
+                      members.some(m => m.id === item.id)
+                        ? icons.selected
+                        : icons.unselected
                     }
                     color={colors.accent}
                   />
