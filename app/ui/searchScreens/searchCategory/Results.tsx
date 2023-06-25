@@ -45,7 +45,7 @@ const Results: React.FC<Props> = ({
         return (
           <TouchableOpacity
             onPress={() =>
-              navigation.navigate('PoiDetail', {
+              navigation.navigate('Poi', {
                 poi: item,
                 bookmarked: bookmarks.some(bookmark => bookmark.id === item.id),
                 mode: mode,

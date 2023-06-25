@@ -44,7 +44,7 @@ const Header: React.FC<Props> = ({
 
   const handleSelection = async (data: GooglePlaceData) => {
     if (data) {
-      navigation.navigate('PoiDetail', {
+      navigation.navigate('Poi', {
         place_id: data.place_id,
         mode: mode,
       });

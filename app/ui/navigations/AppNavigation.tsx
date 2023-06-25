@@ -19,13 +19,13 @@ import Create from '../createScreens/create/Create';
 import CreateSearch from '../createScreens/createSearch/CreateSearch';
 import SearchCategory from '../searchScreens/searchCategory/SearchCategory';
 import SearchMap from '../searchScreens/searchMap/SearchMap';
-import PoiDetail from '../otherScreens/poiDetail/PoiDetail';
+import Poi from '../otherScreens/poi/Poi';
 import Friends from '../friendsScreens/Friends';
-import AddFriend from '../libraryScreens/AddFriend';
+import AddFriend from '../friendsScreens/AddFriend';
 import User from '../friendsScreens/User';
+import EventPage from '../libraryScreens/event/Event';
 import Mutuals from '../friendsScreens/Mutuals';
 import Explore from '../homeScreens/Explore';
-import Event from '../libraryScreens/Event';
 import EventSettings from '../libraryScreens/EventSettings';
 import Roulette from '../libraryScreens/roulette/Roulette';
 import SpinHistory from '../libraryScreens/spinHistory/SpinHistory';
@@ -58,7 +58,7 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {tabStack()}
           {searchCategoryScreen()}
           {searchMapScreen()}
-          {poiDetailScreen()}
+          {poiScreen()}
           {friendsScreen()}
           {addFriendScreen()}
           {mutualsScreen()}
@@ -104,7 +104,7 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {tabStack()}
           {searchCategoryScreen()}
           {searchMapScreen()}
-          {poiDetailScreen()}
+          {poiScreen()}
           {friendsScreen()}
           {addFriendScreen()}
           {mutualsScreen()}
@@ -242,11 +242,11 @@ const searchMapScreen = () => {
   );
 };
 
-const poiDetailScreen = () => {
+const poiScreen = () => {
   return (
     <Stack.Screen
-      name="PoiDetail"
-      component={PoiDetail}
+      name="Poi"
+      component={Poi}
       options={{
         headerShown: false,
       }}
@@ -442,8 +442,8 @@ const addSearchScreen = () => {
 const eventScreen = () => {
   return (
     <Stack.Screen
-      name="Event"
-      component={Event}
+      name="EventPage"
+      component={EventPage}
       options={{
         headerShown: false,
       }}

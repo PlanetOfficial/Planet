@@ -111,7 +111,7 @@ const ProfileBody = ({navigation}: {navigation: any}) => {
           return (
             <TouchableOpacity
               onPress={() =>
-                navigation.navigate('PoiDetail', {
+                navigation.navigate('Poi', {
                   poi: item,
                   bookmarked: true,
                   mode: 'none',

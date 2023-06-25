@@ -78,7 +78,7 @@ const SpinHistory = ({
             <View style={styles.row}>
               <TouchableOpacity
                 onPress={() =>
-                  navigation.navigate('PoiDetail', {
+                  navigation.navigate('Poi', {
                     poi: item.result.poi,
                   })
                 }>

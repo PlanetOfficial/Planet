@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   },
   texts: {
     flex: 1,
-    marginLeft: s(10),
+    marginHorizontal: s(10),
   },
   button: {
     position: 'absolute',

@@ -96,7 +96,7 @@ const DestinationsList: React.FC<Props> = ({
             </View>
             <TouchableOpacity
               onPress={() =>
-                navigation.navigate('PoiDetail', {
+                navigation.navigate('Poi', {
                   poi: destination,
                   bookmarked: bookmarks.some(
                     bookmark => bookmark.id === destination.id,

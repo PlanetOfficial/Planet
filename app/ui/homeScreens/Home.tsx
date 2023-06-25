@@ -88,7 +88,7 @@ const Home = ({navigation}: {navigation: any}) => {
                   key={poi.id}
                   style={homeStyles.cardContainer}
                   onPress={() => {
-                    navigation.navigate('PoiDetail', {
+                    navigation.navigate('Poi', {
                       poi: poi,
                       bookmarked: false,
                       mode: 'none',

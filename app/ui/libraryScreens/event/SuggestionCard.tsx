@@ -2,13 +2,13 @@ import React, {useCallback, useRef, useState, useEffect} from 'react';
 import {Alert, Animated, Easing, TouchableOpacity} from 'react-native';
 import {s} from 'react-native-size-matters';
 
-import PoiCardXL from '../components/PoiCardXL';
+import PoiCardXL from '../../components/PoiCardXL';
 
-import styles from '../../constants/styles';
-import {Destination, Suggestion} from '../../utils/types';
-import colors from '../../constants/colors';
-import strings from '../../constants/strings';
-import {makePrimary, removeSuggestion} from '../../utils/api/suggestionAPI';
+import styles from '../../../constants/styles';
+import {Destination, Suggestion} from '../../../utils/types';
+import colors from '../../../constants/colors';
+import strings from '../../../constants/strings';
+import {makePrimary, removeSuggestion} from '../../../utils/api/suggestionAPI';
 
 interface SuggestionCardProps {
   navigation: any;
@@ -140,7 +140,7 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
             setTimeout(() => {
               onShrinkAnimation();
             }, 1000);
-            navigation.navigate('PoiDetail', {
+            navigation.navigate('Poi', {
               poi: suggestion.poi,
               bookmarked: bookmarked,
               mode: 'none',

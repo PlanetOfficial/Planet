@@ -51,7 +51,7 @@ const Explore = ({navigation, route}: {navigation: any; route: any}) => {
           return (
             <TouchableOpacity
               onPress={() =>
-                navigation.navigate('PoiDetail', {
+                navigation.navigate('Poi', {
                   poi: item,
                   bookmarked: true,
                   mode: 'none',

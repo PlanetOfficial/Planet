@@ -22,7 +22,7 @@ import Info from './Info';
 import Reviews from './Reviews';
 import Button from './Button';
 
-const PoiDetailPage = ({
+const PoiPage = ({
   navigation,
   route,
 }: {
@@ -181,4 +181,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PoiDetailPage;
+export default PoiPage;

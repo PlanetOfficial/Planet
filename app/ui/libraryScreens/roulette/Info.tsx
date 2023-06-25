@@ -34,7 +34,7 @@ const Info: React.FC<Props> = ({
       <TouchableOpacity
         disabled={isSpinning}
         onPress={() => {
-          navigation.navigate('PoiDetail', {
+          navigation.navigate('Poi', {
             poi: currentSuggestion.poi,
             bookmarked: bookmarks.some(
               bookmark => bookmark.id === currentSuggestion.poi.id,
