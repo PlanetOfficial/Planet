@@ -97,7 +97,7 @@ const Home = ({navigation}: {navigation: any}) => {
                     poi={poi}
                     bookmarked={false}
                     handleBookmark={(p: Poi) => {
-                      console.log('TODO: handle bookmark: ', p.name);
+                      console.log('handle bookmark: ', p.name);
                     }}
                   />
                 </TouchableOpacity>

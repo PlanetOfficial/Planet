@@ -41,17 +41,25 @@ import IconCluster from '../components/IconCluster';
 const User = ({navigation, route}: {navigation: any; route: any}) => {
   const [selectedIndex, setIndex] = useState<number>(0);
 
-  const [userId] = useState<number>(route.params.user.id);
-  const [firstName] = useState<string>(route.params.user.first_name);
-  const [lastName] = useState<string>(route.params.user.last_name);
-  const [username] = useState<string>(route.params.user.username);
-  const [pfpURL] = useState<string>(route.params.user.icon?.url);
+  const [userId, setUserId] = useState<number>(route.params.user.id);
+  const [firstName, setFirstName] = useState<string>(
+    route.params.user.first_name,
+  );
+  const [lastName, setLastName] = useState<string>(route.params.user.last_name);
+  const [username, setUsername] = useState<string>(route.params.user.username);
+  const [pfpURL, setPfpURL] = useState<string>(route.params.user.icon?.url);
 
   const [status, setStatus] = useState<string>('');
   const [mutuals, setMutuals] = useState<UserInfo[]>([]);
 
   const initializeData = useCallback(async () => {
-    const userData = await getFriend(userId);
+    setUserId(route.params.user.id);
+    setFirstName(route.params.user.first_name);
+    setLastName(route.params.user.last_name);
+    setUsername(route.params.user.username);
+    setPfpURL(route.params.user.icon?.url);
+
+    const userData = await getFriend(route.params.user.id);
 
     if (userData) {
       setStatus(userData.status);
@@ -59,7 +67,7 @@ const User = ({navigation, route}: {navigation: any; route: any}) => {
     } else {
       Alert.alert(strings.error.error, strings.error.loadUserData);
     }
-  }, [userId]);
+  }, [route.params.user]);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', async () => {

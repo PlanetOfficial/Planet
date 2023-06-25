@@ -281,7 +281,10 @@ const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
               <TouchableOpacity
                 style={userStyles.container}
                 onPress={() => {
-                  // TODO: Navigate to friends tab
+                  navigation.navigate('AddFriend', {
+                    members: eventDetail.members,
+                    event_id: event.id,
+                  });
                 }}>
                 <View style={userStyles.profilePic}>
                   <Image

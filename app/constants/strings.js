@@ -236,6 +236,7 @@ const strings = {
     loadUserData: 'Unable to load user data. Please try again later.',
     friendRequest: 'Unable to send friend request. Please try again later.',
     unfriend: 'Unable to unfriend. Please try again later.',
+    addFriend: 'Unable to invite friend. Please try again later.',
   },
   ageEnum: [
     {label: '-17', value: '-17'},

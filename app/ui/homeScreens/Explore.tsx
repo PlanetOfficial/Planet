@@ -61,7 +61,7 @@ const Explore = ({navigation, route}: {navigation: any; route: any}) => {
                 bookmarked={true}
                 location={location}
                 handleBookmark={(poi: Poi) =>
-                  console.log('TODO: handle bookmark: ', poi.name)
+                  console.log('handle bookmark: ', poi.name)
                 }
               />
             </TouchableOpacity>
