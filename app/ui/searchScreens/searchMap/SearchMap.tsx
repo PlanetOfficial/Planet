@@ -1,28 +1,36 @@
 import React, {useEffect, useState} from 'react';
 import {Alert, StyleSheet, TouchableOpacity, View} from 'react-native';
-
 import {s} from 'react-native-size-matters';
 import MapView from 'react-native-maps';
 import {Circle, Svg} from 'react-native-svg';
 
-import colors from '../../constants/colors';
-import strings from '../../constants/strings';
-import numbers from '../../constants/numbers';
+import colors from '../../../constants/colors';
+import strings from '../../../constants/strings';
+import numbers from '../../../constants/numbers';
 
-import Text from '../components/Text';
-import Blur from '../components/Blur';
+import Text from '../../components/Text';
+import Blur from '../../components/Blur';
 
-import {calculateRadius, getRegionFromPointAndDistance} from '../../utils/Misc';
-import {Region} from '../../utils/types';
+import {
+  calculateRadius,
+  getRegionFromPointAndDistance,
+} from '../../../utils/Misc';
+import {Category, Coordinate, Region} from '../../../utils/types';
 
-/*
- * route params:
- * - mode: string
- * - location?: Coordinate
- * - radius: number
- * - category: Category
- */
-const SearchMap = ({navigation, route}: {navigation: any; route: any}) => {
+const SearchMap = ({
+  navigation,
+  route,
+}: {
+  navigation: any;
+  route: {
+    params: {
+      mode: 'create' | 'suggest' | 'add' | 'none';
+      location: Coordinate;
+      radius: number;
+      category: Category;
+    };
+  };
+}) => {
   const [region, setRegion] = useState<Region>(
     getRegionFromPointAndDistance(route.params.location, route.params.radius),
   );

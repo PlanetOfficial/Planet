@@ -1,48 +1,43 @@
 import React, {useEffect, useState, useCallback, useRef} from 'react';
-import {
-  View,
-  SafeAreaView,
-  Alert,
-  FlatList,
-  TouchableOpacity,
-  RefreshControl,
-  ActivityIndicator,
-} from 'react-native';
+import {View, SafeAreaView, Alert, ActivityIndicator} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import colors from '../../constants/colors';
-import icons from '../../constants/icons';
-import styles from '../../constants/styles';
-import strings from '../../constants/strings';
+import colors from '../../../constants/colors';
+import icons from '../../../constants/icons';
+import strings from '../../../constants/strings';
+import STYLES from '../../../constants/styles';
 
-import Text from '../components/Text';
-import Separator from '../components/Separator';
-import Icon from '../components/Icon';
-import Filter from '../components/Filter';
-import PoiRow from '../components/PoiRow';
+import Text from '../../components/Text';
+import Icon from '../../components/Icon';
+import Filter from '../../components/Filter';
 
-import {getPois} from '../../utils/api/poiAPI';
-import {handleBookmark} from '../../utils/Misc';
-import {Poi} from '../../utils/types';
+import {getPois} from '../../../utils/api/poiAPI';
+import {Poi, Coordinate, Category} from '../../../utils/types';
+import Results from './Results';
 
-/*
- * route params:
- * - mode: string
- * - location?: Coordinate
- * - radius: number
- * - category: Category
- */
-const SearchCategory = ({navigation, route}: {navigation: any; route: any}) => {
-  const {category, location, radius, mode} = route.params;
+const SearchCategory = ({
+  navigation,
+  route,
+}: {
+  navigation: any;
+  route: {
+    params: {
+      mode: 'create' | 'suggest' | 'add' | 'none';
+      location: Coordinate;
+      radius: number;
+      category: Category;
+    };
+  };
+}) => {
+  const {mode, location, radius, category} = route.params;
 
   const [places, setPlaces] = useState<Poi[]>([]);
   const [filters, setFilters] = useState<(number | number[])[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [refreshing, setRefreshing] = useState<boolean>(false);
+  const [bookmarks, setBookmarks] = useState<Poi[]>([]);
 
   const filterRef = useRef<any>(null); // due to forwardRef
-
-  const [bookmarks, setBookmarks] = useState<Poi[]>([]);
 
   const loadData = useCallback(async () => {
     setRefreshing(true);
@@ -78,23 +73,23 @@ const SearchCategory = ({navigation, route}: {navigation: any; route: any}) => {
     setLoading(false);
   }, [category, filters, location.latitude, location.longitude, radius]);
 
-  const initializeData = async () => {
+  const loadBookmarks = useCallback(async () => {
     const _bookmarks = await AsyncStorage.getItem('bookmarks');
     if (_bookmarks) {
       setBookmarks(JSON.parse(_bookmarks));
     } else {
       Alert.alert(strings.error.error, strings.error.loadBookmarks);
     }
-  };
+  }, []);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      initializeData();
+      loadBookmarks();
       loadData();
     });
 
     return unsubscribe;
-  }, [navigation, loadData]);
+  }, [navigation, loadBookmarks, loadData]);
 
   useEffect(() => {
     const _filters: (number | number[])[] = [];
@@ -113,9 +108,9 @@ const SearchCategory = ({navigation, route}: {navigation: any; route: any}) => {
   }, [filters, loadData]);
 
   return (
-    <View style={styles.container}>
+    <View style={STYLES.container}>
       <SafeAreaView>
-        <View style={styles.header}>
+        <View style={STYLES.header}>
           <Icon
             size="m"
             icon={icons.back}
@@ -148,57 +143,21 @@ const SearchCategory = ({navigation, route}: {navigation: any; route: any}) => {
       ) : null}
 
       {loading ? (
-        <View style={styles.center}>
+        <View style={STYLES.center}>
           <ActivityIndicator size="small" color={colors.accent} />
         </View>
       ) : (
-        <FlatList
-          data={places}
-          onTouchStart={() => filterRef.current?.closeDropdown()}
-          renderItem={({item}: {item: Poi}) => {
-            return (
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate('PoiDetail', {
-                    poi: item,
-                    bookmarked: bookmarks.some(
-                      bookmark => bookmark.id === item.id,
-                    ),
-                    mode: mode,
-                  })
-                }>
-                <PoiRow
-                  poi={item}
-                  bookmarked={bookmarks.some(
-                    bookmark => bookmark.id === item.id,
-                  )}
-                  handleBookmark={(poi: Poi) =>
-                    handleBookmark(poi, bookmarks, setBookmarks)
-                  }
-                  location={location}
-                  category={category}
-                />
-              </TouchableOpacity>
-            );
-          }}
-          ListEmptyComponent={
-            <View style={styles.center}>
-              <Text>{strings.search.noResultsFound}</Text>
-              <Text> </Text>
-              <Text size="s" color={colors.darkgrey}>
-                {strings.search.noResultsFoundDescription}
-              </Text>
-            </View>
-          }
-          ItemSeparatorComponent={Separator}
-          keyExtractor={(item: Poi) => item.id.toString()}
-          refreshControl={
-            <RefreshControl
-              refreshing={refreshing}
-              onRefresh={() => loadData()}
-              tintColor={colors.accent}
-            />
-          }
+        <Results
+          navigation={navigation}
+          results={places}
+          filterRef={filterRef}
+          refreshing={refreshing}
+          loadData={loadData}
+          bookmarks={bookmarks}
+          setBookmarks={setBookmarks}
+          location={location}
+          category={category}
+          mode={mode}
         />
       )}
     </View>
