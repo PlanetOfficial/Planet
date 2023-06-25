@@ -69,7 +69,10 @@ export const verifyCode = async (authToken: string, code: string) => {
   return response.ok;
 };
 
-export const verifyCodeUsername = async (username: string, code: string): Promise<{authToken: string} | null> => {
+export const verifyCodeUsername = async (
+  username: string,
+  code: string,
+): Promise<{authToken: string} | null> => {
   const response = await fetch(
     UserAPIURL + `/auth/verifyCodeUsername?code=${code}&username=${username}`,
     {

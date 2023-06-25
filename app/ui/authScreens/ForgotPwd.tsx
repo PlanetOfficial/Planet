@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { Alert, TextInput, TouchableOpacity } from 'react-native';
+import React, {useState} from 'react';
+import {Alert, TextInput, TouchableOpacity} from 'react-native';
 import {View, StyleSheet} from 'react-native';
 
 import strings from '../../constants/strings';
 import colors from '../../constants/colors';
 import Text from '../components/Text';
-import { s } from 'react-native-size-matters';
-import { sendCodeForgotPwd } from '../../utils/api/authAPI';
+import {s} from 'react-native-size-matters';
+import {sendCodeForgotPwd} from '../../utils/api/authAPI';
 
 const ForgotPwd = ({navigation}: {navigation: any}) => {
   const [username, setUsername] = useState<string>('');
@@ -26,10 +26,10 @@ const ForgotPwd = ({navigation}: {navigation: any}) => {
     if (response) {
       navigation.navigate('ForgotPasswordVerify', {username});
     } else {
-      // made the error ambiguous so that the user can't guess if the username exists or not
+      // made the error ambiguous so the user can't guess if the username exists or not
       Alert.alert(strings.error.error, strings.error.ambiguousError);
     }
-  }
+  };
 
   return (
     <View style={styles.container}>
@@ -52,9 +52,7 @@ const ForgotPwd = ({navigation}: {navigation: any}) => {
           styles.button,
           {
             backgroundColor:
-              username.length === 0
-                ? colors.darkgrey
-                : colors.accent,
+              username.length === 0 ? colors.darkgrey : colors.accent,
           },
         ]}
         disabled={username.length === 0}

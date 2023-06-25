@@ -104,9 +104,7 @@ const AccountSettings = ({navigation}: {navigation: any}) => {
           </View>
         </View>
       </SafeAreaView>
-      <TouchableOpacity
-        style={localStyles.row}
-        onPress={handleResetPassword}>
+      <TouchableOpacity style={localStyles.row} onPress={handleResetPassword}>
         <Text weight="l">{strings.settings.resetPassword}</Text>
       </TouchableOpacity>
       <Separator />

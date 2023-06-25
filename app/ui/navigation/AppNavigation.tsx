@@ -214,7 +214,7 @@ const forgotPassVerifyStackScreen = () => {
       options={{headerShown: false}}
     />
   );
-}
+};
 
 const resetPasswordStackScreen = () => {
   return (
@@ -224,7 +224,7 @@ const resetPasswordStackScreen = () => {
       options={{headerShown: false}}
     />
   );
-}
+};
 
 const tabStack = () => {
   return (

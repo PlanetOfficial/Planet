@@ -16,7 +16,7 @@ import styles from '../../constants/styles';
 import strings from '../../constants/strings';
 
 import {resetPassword} from '../../utils/api/authAPI';
-import { clearCaches } from '../../utils/CacheHelpers';
+import {clearCaches} from '../../utils/CacheHelpers';
 
 /*
  * route params:
@@ -33,10 +33,7 @@ const ResetPwd = ({navigation, route}: {navigation: any; route: any}) => {
   const handleNext = async () => {
     setError('');
 
-    if (
-      password.length === 0 ||
-      passwordConfirm.length === 0
-    ) {
+    if (password.length === 0 || passwordConfirm.length === 0) {
       setError(strings.signUp.missingFields);
       return;
     }
@@ -65,9 +62,7 @@ const ResetPwd = ({navigation, route}: {navigation: any; route: any}) => {
 
       navigation.reset({
         index: 0,
-        routes: [
-          {name: 'Login'},
-        ],
+        routes: [{name: 'Login'}],
       });
     } else {
       setError(strings.error.resetPassword);
@@ -112,16 +107,12 @@ const ResetPwd = ({navigation, route}: {navigation: any; route: any}) => {
           localStyles.button,
           {
             backgroundColor:
-              password.length === 0 ||
-              password !== passwordConfirm
+              password.length === 0 || password !== passwordConfirm
                 ? colors.darkgrey
                 : colors.accent,
           },
         ]}
-        disabled={
-          password.length === 0 ||
-          password !== passwordConfirm
-        }
+        disabled={password.length === 0 || password !== passwordConfirm}
         onPress={() => handleNext()}>
         <Text weight="b" color={colors.white}>
           {strings.login.resetPassword}
