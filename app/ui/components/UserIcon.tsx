@@ -19,9 +19,11 @@ const UserIcon: React.FC<Props> = ({user, size = s(16)}) => {
         ...styles.image,
         backgroundColor: colors.profileShades[user.username.length % 5],
       }}>
-      <Text style={[styles.name, {fontSize: size}]}>
-        {user.first_name[0].toUpperCase() + user.last_name[0].toUpperCase()}
-      </Text>
+      {user.first_name.length > 0 && user.last_name.length > 0 ? (
+        <Text style={[styles.name, {fontSize: size}]}>
+          {user.first_name[0].toUpperCase() + user.last_name[0].toUpperCase()}
+        </Text>
+      ) : null}
     </View>
   );
 };

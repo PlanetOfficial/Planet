@@ -22,6 +22,7 @@ import PoiCard from '../components/PoiCard';
 import {Coordinate, Poi} from '../../utils/types';
 import {fetchUserLocation} from '../../utils/Misc';
 
+// TODO: THIS PAGE IS INCOMPLETE
 const Home = ({navigation}: {navigation: any}) => {
   const [location, setLocation] = useState<Coordinate>();
 

@@ -31,7 +31,7 @@ import {
   postFriendRequest,
   rejectFriendRequest,
 } from '../../utils/api/friendsAPI';
-import ProfileBody from '../profileScreens/ProfileBody';
+import ProfileBody from '../profileScreens/profile/ProfileBody';
 import IconCluster from '../components/IconCluster';
 
 /*

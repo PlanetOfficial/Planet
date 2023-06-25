@@ -2,20 +2,16 @@ import React from 'react';
 import {View, ViewStyle, Platform} from 'react-native';
 
 import {BlurView} from '@react-native-community/blur';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 interface Props {
   height: number;
-  insetEnabled?: boolean;
 }
 
-const Blur: React.FC<Props> = ({height, insetEnabled = false}) => {
-  const insets = useSafeAreaInsets();
-
+const Blur: React.FC<Props> = ({height}) => {
   const BlurStyles: ViewStyle = {
     position: 'absolute',
     width: '100%',
-    height: height + (insetEnabled ? insets.top : 0),
+    height: height,
   };
 
   const AndroidBlurStyles: ViewStyle = {

@@ -2,8 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {
   View,
   StyleSheet,
-  Text as RNText,
-  Image,
   Alert,
   FlatList,
   TouchableOpacity,
@@ -12,16 +10,17 @@ import {s} from 'react-native-size-matters';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import colors from '../../constants/colors';
-import strings from '../../constants/strings';
-import styles from '../../constants/styles';
+import colors from '../../../constants/colors';
+import strings from '../../../constants/strings';
+import STYLES, {sctStyles} from '../../../constants/styles';
 
-import Text from '../components/Text';
-import PoiRow from '../components/PoiRow';
-import Separator from '../components/Separator';
+import Text from '../../components/Text';
+import PoiRow from '../../components/PoiRow';
+import Separator from '../../components/Separator';
 
-import {fetchUserLocation, handleBookmark} from '../../utils/Misc';
-import {Coordinate, Poi} from '../../utils/types';
+import {fetchUserLocation, handleBookmark} from '../../../utils/Misc';
+import {Coordinate, Poi} from '../../../utils/types';
+import UserIcon from '../../components/UserIcon';
 
 const ProfileBody = ({navigation}: {navigation: any}) => {
   const [selectedIndex, setIndex] = useState<number>(0);
@@ -60,24 +59,20 @@ const ProfileBody = ({navigation}: {navigation: any}) => {
 
   return (
     <>
-      <View style={profileStyles.container}>
-        <View style={profileStyles.profilePic}>
-          {pfpURL.length > 0 ? (
-            <Image style={profileStyles.profileImage} source={{uri: pfpURL}} />
-          ) : (
-            <View
-              style={{
-                ...profileStyles.profileImage,
-                backgroundColor: colors.profileShades[username.length % 5],
-              }}>
-              <RNText style={profileStyles.name}>
-                {firstName.charAt(0).toUpperCase() +
-                  lastName.charAt(0).toUpperCase()}
-              </RNText>
-            </View>
-          )}
+      <View style={styles.container}>
+        <View style={styles.profilePic}>
+          <UserIcon
+            user={{
+              id: 0,
+              first_name: firstName,
+              last_name: lastName,
+              username: username,
+              icon: {url: pfpURL},
+            }}
+            size={s(40)}
+          />
         </View>
-        <View style={profileStyles.info}>
+        <View style={styles.info}>
           <Text size="l" numberOfLines={1}>
             {firstName} {lastName}
           </Text>
@@ -134,7 +129,7 @@ const ProfileBody = ({navigation}: {navigation: any}) => {
           );
         }}
         ListEmptyComponent={
-          <View style={styles.center}>
+          <View style={STYLES.center}>
             <Text>{strings.profile.noBookmarksFound}</Text>
             <Text> </Text>
             <Text size="s" color={colors.darkgrey}>
@@ -149,7 +144,7 @@ const ProfileBody = ({navigation}: {navigation: any}) => {
   );
 };
 
-const profileStyles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     paddingHorizontal: s(20),
@@ -182,38 +177,6 @@ const profileStyles = StyleSheet.create({
     color: colors.white,
     fontFamily: 'VarelaRound-Regular',
     marginTop: s(1),
-  },
-});
-
-const sctStyles = StyleSheet.create({
-  container: {
-    marginTop: s(10),
-    paddingHorizontal: s(20),
-    height: s(25),
-  },
-  tab: {
-    borderWidth: 0,
-    borderBottomWidth: 2,
-    borderBottomColor: colors.grey,
-    backgroundColor: colors.white,
-  },
-  activeTab: {
-    borderBottomWidth: 2,
-    borderBottomColor: colors.accent,
-    backgroundColor: colors.white,
-  },
-  firstTab: {
-    borderRightWidth: 0,
-  },
-  text: {
-    fontSize: s(12),
-    fontWeight: '600',
-    fontFamily: 'Lato',
-    color: colors.black,
-  },
-  activeText: {
-    marginBottom: 0,
-    color: colors.accent,
   },
 });
 

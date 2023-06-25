@@ -19,6 +19,7 @@ import PoiRow from '../components/PoiRow';
 
 import {Poi} from '../../utils/types';
 
+// TODO: THIS PAGE IS INCOMPLETE
 const Explore = ({navigation, route}: {navigation: any; route: any}) => {
   const {name, pois, location} = route.params;
 

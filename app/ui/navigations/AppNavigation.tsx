@@ -32,13 +32,13 @@ import SpinHistory from '../libraryScreens/SpinHistory';
 import SuggestSearch from '../libraryScreens/SuggestSearch';
 import AddSearch from '../libraryScreens/AddSearch';
 import Notifications from '../libraryScreens/Notifications';
-import Settings from '../profileScreens/Settings';
-import AccountSettings from '../settingsScreens/AccountSettings';
-import ContactUs from '../settingsScreens/ContactUs';
-import LocationsSettings from '../settingsScreens/LocationsSettings';
-import NotificationSettings from '../settingsScreens/NotificationSettings';
-import PrivacySettings from '../settingsScreens/PrivacySettings';
-import ProfileSettings from '../settingsScreens/ProfileSettings';
+import Settings from '../profileScreens/settingsScreens/Settings';
+import AccountSettings from '../profileScreens/settingsScreens/AccountSettings';
+import ContactUs from '../profileScreens/settingsScreens/ContactUs';
+import LocationsSettings from '../profileScreens/settingsScreens/LocationsSettings';
+import NotificationSettings from '../profileScreens/settingsScreens/NotificationSettings';
+import PrivacySettings from '../profileScreens/settingsScreens/PrivacySettings';
+import ProfileSettings from '../profileScreens/settingsScreens/ProfileSettings';
 import {Animated} from 'react-native';
 
 interface AppNavigationProps {

@@ -18,17 +18,18 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Picker} from '@react-native-picker/picker';
 
-import icons from '../../constants/icons';
-import numbers from '../../constants/numbers';
-import strings from '../../constants/strings';
-import styles from '../../constants/styles';
+import icons from '../../../constants/icons';
+import numbers from '../../../constants/numbers';
+import strings from '../../../constants/strings';
+import STYLES from '../../../constants/styles';
 
-import Text from '../components/Text';
-import Icon from '../components/Icon';
+import Text from '../../components/Text';
+import Icon from '../../components/Icon';
 
-import {editInfo, saveImage} from '../../utils/api/authAPI';
-import colors from '../../constants/colors';
+import {editInfo, saveImage} from '../../../utils/api/authAPI';
+import colors from '../../../constants/colors';
 
+// TODO: REFACTOR THIS PAGE: compartmentalize and optimize, save button maybe?
 const ProfileSettings = ({navigation}: {navigation: any}) => {
   const [firstName, setFirstName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
@@ -145,47 +146,47 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={STYLES.container}>
       <SafeAreaView>
-        <View style={styles.header}>
+        <View style={STYLES.header}>
           <Icon
             size="m"
             icon={icons.back}
             onPress={() => navigation.goBack()}
           />
-          <View style={localStyles.title}>
+          <View style={styles.title}>
             <Text size="l">{strings.settings.profile}</Text>
           </View>
         </View>
       </SafeAreaView>
-      <TouchableOpacity style={localStyles.profile} onPress={handleEditPfp}>
-        <View style={localStyles.profilePic}>
+      <TouchableOpacity style={styles.profile} onPress={handleEditPfp}>
+        <View style={styles.profilePic}>
           {pfpURL.length > 0 ? (
-            <Image style={localStyles.profileImage} source={{uri: pfpURL}} />
+            <Image style={styles.profileImage} source={{uri: pfpURL}} />
           ) : (
             <View
               style={{
-                ...localStyles.profileImage,
+                ...styles.profileImage,
                 backgroundColor: colors.profileShades[username.length % 5],
               }}>
-              <RNText style={localStyles.name}>
+              <RNText style={styles.name}>
                 {firstName?.charAt(0).toUpperCase() +
                   lastName?.charAt(0).toUpperCase()}
               </RNText>
             </View>
           )}
         </View>
-        <View style={[localStyles.profilePic, localStyles.overlay]}>
+        <View style={[styles.profilePic, styles.overlay]}>
           <Icon icon={icons.gallery} size="xl" color={colors.white} />
         </View>
       </TouchableOpacity>
-      <View style={localStyles.container}>
-        <View style={localStyles.inputContainer}>
-          <View style={localStyles.prompt}>
+      <View style={styles.container}>
+        <View style={styles.inputContainer}>
+          <View style={styles.prompt}>
             <Text weight="l">{strings.signUp.firstName}: </Text>
           </View>
           <TextInput
-            style={localStyles.input}
+            style={styles.input}
             placeholder={strings.signUp.firstName}
             value={firstName}
             autoCorrect={false}
@@ -202,12 +203,12 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
             placeholderTextColor={colors.darkgrey}
           />
         </View>
-        <View style={localStyles.inputContainer}>
-          <View style={localStyles.prompt}>
+        <View style={styles.inputContainer}>
+          <View style={styles.prompt}>
             <Text weight="l">{strings.signUp.lastName}: </Text>
           </View>
           <TextInput
-            style={localStyles.input}
+            style={styles.input}
             placeholder={strings.signUp.lastName}
             value={lastName}
             autoCorrect={false}
@@ -224,12 +225,12 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
             placeholderTextColor={colors.darkgrey}
           />
         </View>
-        <View style={localStyles.inputContainer}>
-          <View style={localStyles.prompt}>
+        <View style={styles.inputContainer}>
+          <View style={styles.prompt}>
             <Text weight="l">{strings.signUp.username}: </Text>
           </View>
           <TextInput
-            style={localStyles.input}
+            style={styles.input}
             placeholder={strings.signUp.username}
             value={username}
             onChangeText={text => setUsername(text.toLowerCase())}
@@ -247,28 +248,28 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
             autoCorrect={false}
           />
         </View>
-        <View style={localStyles.inputContainer}>
-          <View style={localStyles.prompt}>
+        <View style={styles.inputContainer}>
+          <View style={styles.prompt}>
             <Text weight="l">{strings.signUp.phoneNumber}: </Text>
           </View>
           <TextInput
-            style={localStyles.input}
+            style={styles.input}
             placeholder={phoneNumber}
             placeholderTextColor={colors.darkgrey}
             editable={false}
           />
         </View>
-        <View style={localStyles.inputContainer}>
-          <View style={localStyles.prompt}>
+        <View style={styles.inputContainer}>
+          <View style={styles.prompt}>
             <Text weight="l">{strings.signUp.age}: </Text>
           </View>
           <TouchableOpacity
-            style={localStyles.input}
+            style={styles.input}
             onPress={() => {
               setAgeDPOpen(true);
             }}>
             <TextInput
-              style={localStyles.textInput}
+              style={styles.textInput}
               pointerEvents="none"
               placeholder={
                 strings.ageEnum.find(ageEnum => ageEnum.value === age)?.label
@@ -277,16 +278,16 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
               editable={false}
             />
           </TouchableOpacity>
-          <View style={localStyles.gender}>
+          <View style={styles.gender}>
             <Text weight="l">{strings.signUp.gender}: </Text>
           </View>
           <TouchableOpacity
-            style={localStyles.input}
+            style={styles.input}
             onPress={() => {
               setGenderDPOpen(true);
             }}>
             <TextInput
-              style={localStyles.textInput}
+              style={styles.textInput}
               pointerEvents="none"
               placeholder={
                 strings.genderEnum.find(
@@ -304,10 +305,10 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
         animationType={'fade'}
         transparent={true}
         onRequestClose={() => setAgeDPOpen(false)}>
-        <View style={localStyles.modalContainer}>
-          <View style={localStyles.modal}>
+        <View style={styles.modalContainer}>
+          <View style={styles.modal}>
             <Picker
-              style={localStyles.picker}
+              style={styles.picker}
               selectedValue={age}
               onValueChange={itemValue => {
                 handleEditInfo(
@@ -338,10 +339,10 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
         animationType={'fade'}
         transparent={true}
         onRequestClose={() => setGenderDPOpen(false)}>
-        <View style={localStyles.modalContainer}>
-          <View style={localStyles.modal}>
+        <View style={styles.modalContainer}>
+          <View style={styles.modal}>
             <Picker
-              style={localStyles.picker}
+              style={styles.picker}
               selectedValue={gender}
               onValueChange={itemValue => {
                 handleEditInfo(firstName, lastName, username, age, itemValue);
@@ -364,7 +365,8 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
     </View>
   );
 };
-const localStyles = StyleSheet.create({
+
+const styles = StyleSheet.create({
   title: {
     flex: 1,
     marginLeft: s(10),

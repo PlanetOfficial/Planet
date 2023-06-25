@@ -9,13 +9,13 @@ import {
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 
-import icons from '../../constants/icons';
-import strings from '../../constants/strings';
-import styles from '../../constants/styles';
-import colors from '../../constants/colors';
+import colors from '../../../constants/colors';
+import icons from '../../../constants/icons';
+import strings from '../../../constants/strings';
+import STYLES from '../../../constants/styles';
 
-import Text from '../components/Text';
-import Icon from '../components/Icon';
+import Text from '../../components/Text';
+import Icon from '../../components/Icon';
 
 import {
   getNotificationSettings,
@@ -24,8 +24,8 @@ import {
   toggleNotifyFriendRequestAccept,
   toggleNotifyNewSuggestion,
   toggleNotifySetPrimary,
-} from '../../utils/api/notificationSettingsAPI';
-import {NotificationSettings as NS} from '../../utils/types';
+} from '../../../utils/api/notificationSettingsAPI';
+import {NotificationSettings as NS} from '../../../utils/types';
 
 const NotificationSettings = ({navigation}: {navigation: any}) => {
   const [notificationsSettings, setNotificationsSettings] = useState<NS>();
@@ -106,29 +106,30 @@ const NotificationSettings = ({navigation}: {navigation: any}) => {
   ];
 
   return (
-    <View style={styles.container}>
+    <View style={STYLES.container}>
       <SafeAreaView>
-        <View style={styles.header}>
+        <View style={STYLES.header}>
           <Icon
             size="m"
             icon={icons.back}
             onPress={() => navigation.goBack()}
           />
-          <View style={localStyles.title}>
+          <View style={STYLES.texts}>
             <Text size="l">{strings.settings.notifications}</Text>
           </View>
         </View>
       </SafeAreaView>
       {notificationsSettings ? (
-        <ScrollView style={localStyles.content}>
+        <ScrollView style={styles.content}>
           {settings.map((setting, index) => (
-            <View key={index} style={localStyles.row}>
-              <View style={localStyles.texts}>
+            <View key={index} style={styles.row}>
+              <View style={STYLES.texts}>
                 <Text weight="l">{setting.name}</Text>
-                <View style={localStyles.separator} />
-                <Text size="s" weight="l" color={colors.darkgrey}>
-                  {setting.description}
-                </Text>
+                <View style={styles.description}>
+                  <Text size="s" weight="l" color={colors.darkgrey}>
+                    {setting.description}
+                  </Text>
+                </View>
               </View>
               <Switch
                 trackColor={{false: colors.grey, true: colors.accent}}
@@ -145,11 +146,7 @@ const NotificationSettings = ({navigation}: {navigation: any}) => {
   );
 };
 
-const localStyles = StyleSheet.create({
-  title: {
-    flex: 1,
-    marginLeft: s(10),
-  },
+const styles = StyleSheet.create({
   content: {
     marginTop: s(10),
   },
@@ -162,12 +159,9 @@ const localStyles = StyleSheet.create({
     borderBottomWidth: 0.5,
     borderBottomColor: colors.lightgrey,
   },
-  texts: {
-    flex: 1,
-    marginHorizontal: s(15),
-  },
-  separator: {
-    height: s(5),
+  description: {
+    marginTop: s(5),
+    marginRight: s(10),
   },
 });
 

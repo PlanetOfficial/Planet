@@ -9,7 +9,7 @@ import strings from '../../../constants/strings';
 import numbers from '../../../constants/numbers';
 
 import Text from '../../components/Text';
-import Blur from '../../components/Blur';
+import Blur from './Blur';
 
 import {
   calculateRadius,

@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   },
   texts: {
     flex: 1,
-    marginLeft: s(20),
+    marginLeft: s(10),
   },
   button: {
     position: 'absolute',
@@ -66,6 +66,38 @@ const styles = StyleSheet.create({
   },
   flip: {
     transform: [{rotate: '180deg'}],
+  },
+});
+
+export const sctStyles = StyleSheet.create({
+  container: {
+    marginTop: s(10),
+    paddingHorizontal: s(20),
+    height: s(25),
+  },
+  tab: {
+    borderWidth: 0,
+    borderBottomWidth: 2,
+    borderBottomColor: colors.grey,
+    backgroundColor: colors.white,
+  },
+  activeTab: {
+    borderBottomWidth: 2,
+    borderBottomColor: colors.accent,
+    backgroundColor: colors.white,
+  },
+  firstTab: {
+    borderRightWidth: 0,
+  },
+  text: {
+    fontSize: s(12),
+    fontWeight: '600',
+    fontFamily: 'Lato',
+    color: colors.black,
+  },
+  activeText: {
+    marginBottom: 0,
+    color: colors.accent,
   },
 });
 

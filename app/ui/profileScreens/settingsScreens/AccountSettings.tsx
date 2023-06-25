@@ -9,17 +9,17 @@ import {
 import messaging from '@react-native-firebase/messaging';
 import {s} from 'react-native-size-matters';
 
-import icons from '../../constants/icons';
-import strings from '../../constants/strings';
-import styles from '../../constants/styles';
-import colors from '../../constants/colors';
+import colors from '../../../constants/colors';
+import icons from '../../../constants/icons';
+import strings from '../../../constants/strings';
+import STYLES from '../../../constants/styles';
 
-import Text from '../components/Text';
-import Icon from '../components/Icon';
+import Text from '../../components/Text';
+import Icon from '../../components/Icon';
 
-import {clearCaches} from '../../utils/CacheHelpers';
-import Separator from '../components/Separator';
-import {removeAccount} from '../../utils/api/authAPI';
+import {clearCaches} from '../../../utils/CacheHelpers';
+import Separator from '../../components/Separator';
+import {removeAccount} from '../../../utils/api/authAPI';
 
 const AccountSettings = ({navigation}: {navigation: any}) => {
   const handleLogout = async () => {
@@ -84,32 +84,32 @@ const AccountSettings = ({navigation}: {navigation: any}) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={STYLES.container}>
       <SafeAreaView>
-        <View style={styles.header}>
+        <View style={STYLES.header}>
           <Icon
             size="m"
             icon={icons.back}
             onPress={() => navigation.goBack()}
           />
-          <View style={localStyles.title}>
+          <View style={STYLES.texts}>
             <Text size="l">{strings.settings.account}</Text>
           </View>
         </View>
       </SafeAreaView>
       <TouchableOpacity
-        style={localStyles.row}
+        style={styles.row}
         onPress={() => navigation.navigate('ForgotPassword')}>
         <Text weight="l">{strings.settings.resetPassword}</Text>
       </TouchableOpacity>
       <Separator />
-      <TouchableOpacity style={localStyles.row} onPress={handleLogout}>
+      <TouchableOpacity style={styles.row} onPress={handleLogout}>
         <Text weight="l" color={colors.red}>
           {strings.settings.logout}
         </Text>
       </TouchableOpacity>
       <Separator />
-      <TouchableOpacity style={localStyles.row} onPress={handleRemoveAccount}>
+      <TouchableOpacity style={styles.row} onPress={handleRemoveAccount}>
         <Text weight="l" color={colors.red}>
           {strings.settings.removeAccount}
         </Text>
@@ -118,11 +118,7 @@ const AccountSettings = ({navigation}: {navigation: any}) => {
   );
 };
 
-const localStyles = StyleSheet.create({
-  title: {
-    flex: 1,
-    marginLeft: s(10),
-  },
+const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center',

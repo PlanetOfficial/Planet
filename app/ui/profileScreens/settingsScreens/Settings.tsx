@@ -9,14 +9,14 @@ import {
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 
-import colors from '../../constants/colors';
-import icons from '../../constants/icons';
-import strings from '../../constants/strings';
-import styles from '../../constants/styles';
+import colors from '../../../constants/colors';
+import icons from '../../../constants/icons';
+import strings from '../../../constants/strings';
+import styles from '../../../constants/styles';
 
-import Text from '../components/Text';
-import Icon from '../components/Icon';
-import Separator from '../components/Separator';
+import Text from '../../components/Text';
+import Icon from '../../components/Icon';
+import Separator from '../../components/Separator';
 
 const Settings = ({navigation}: {navigation: any}) => {
   const settingsItems = [
@@ -61,7 +61,7 @@ const Settings = ({navigation}: {navigation: any}) => {
             icon={icons.back}
             onPress={() => navigation.goBack()}
           />
-          <View style={localStyles.title}>
+          <View style={styles.texts}>
             <Text size="l">{strings.settings.settings}</Text>
           </View>
         </View>
@@ -73,7 +73,7 @@ const Settings = ({navigation}: {navigation: any}) => {
               style={localStyles.row}
               onPress={settingsItem.onPress}>
               <Icon size="l" icon={settingsItem.icon} color={colors.darkgrey} />
-              <View style={localStyles.text}>
+              <View style={styles.texts}>
                 <Text>{settingsItem.name}</Text>
               </View>
               <Icon icon={icons.next} />
@@ -93,20 +93,12 @@ const Settings = ({navigation}: {navigation: any}) => {
 };
 
 const localStyles = StyleSheet.create({
-  title: {
-    flex: 1,
-    marginLeft: s(10),
-  },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: s(35),
     paddingVertical: s(25),
-  },
-  text: {
-    flex: 1,
-    marginHorizontal: s(20),
   },
   footer: {
     margin: s(50),
