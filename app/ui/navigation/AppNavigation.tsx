@@ -15,7 +15,7 @@ import SignUpPhone from '../authScreens/SignUpPhone';
 import SignUpVerify from '../authScreens/SignUpVerify';
 import SignUpInfo from '../authScreens/SignUpInfo';
 import ForgotPassword from '../authScreens/ForgotPwd';
-import ForgotVerifyPhone from '../authScreens/ForgotPwdVerify';
+import ForgotPwdVerify from '../authScreens/ForgotPwdVerify';
 import ResetPwd from '../authScreens/ResetPwd';
 import Create from '../createScreens/Create';
 import CreateSearch from '../createScreens/CreateSearch';
@@ -210,7 +210,7 @@ const forgotPassVerifyStackScreen = () => {
   return (
     <Stack.Screen
       name="ForgotPasswordVerify"
-      component={ForgotVerifyPhone}
+      component={ForgotPwdVerify}
       options={{headerShown: false}}
     />
   );

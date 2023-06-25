@@ -22,7 +22,7 @@ import {verifyCodeUsername} from '../../utils/api/authAPI';
  * route params:
  * - username: string
  */
-const ForgotVerifyPhone = ({navigation, route}: {navigation: any; route: any}) => {
+const ForgotPwdVerify = ({navigation, route}: {navigation: any; route: any}) => {
   const [username] = useState<string>(route.params.username);
 
   const [code, setCode] = useState<string>('');
@@ -141,4 +141,4 @@ const localStyles = StyleSheet.create({
   },
 });
 
-export default ForgotVerifyPhone;
+export default ForgotPwdVerify;
