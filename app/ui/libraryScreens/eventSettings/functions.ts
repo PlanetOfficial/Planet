@@ -1,6 +1,5 @@
 import {Alert} from 'react-native';
 import strings from '../../../constants/strings';
-
 import {
   renameDestination,
   removeDestination,

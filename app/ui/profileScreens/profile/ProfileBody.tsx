@@ -17,10 +17,10 @@ import STYLES, {sctStyles} from '../../../constants/styles';
 import Text from '../../components/Text';
 import PoiRow from '../../components/PoiRow';
 import Separator from '../../components/Separator';
+import UserIcon from '../../components/UserIcon';
 
 import {fetchUserLocation, handleBookmark} from '../../../utils/Misc';
 import {Coordinate, Poi} from '../../../utils/types';
-import UserIcon from '../../components/UserIcon';
 
 const ProfileBody = ({navigation}: {navigation: any}) => {
   const [selectedIndex, setIndex] = useState<number>(0);

@@ -1,9 +1,12 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {UserInfo} from '../../utils/types';
 import {s} from 'react-native-size-matters';
-import UserIcon from './UserIcon';
+
 import colors from '../../constants/colors';
+
+import UserIcon from './UserIcon';
+
+import {UserInfo} from '../../utils/types';
 
 const IconCluster = ({users}: {users: UserInfo[]}) => (
   <View style={styles.iconCluster}>

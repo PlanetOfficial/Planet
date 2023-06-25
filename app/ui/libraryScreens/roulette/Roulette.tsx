@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import icons from '../../../constants/icons';
 import strings from '../../../constants/strings';
-import styles from '../../../constants/styles';
+import STYLES from '../../../constants/styles';
 
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
@@ -68,9 +68,9 @@ const Roulette = ({
   );
 
   return (
-    <View style={styles.container}>
+    <View style={STYLES.container}>
       <SafeAreaView>
-        <View style={styles.header}>
+        <View style={STYLES.header}>
           <Icon
             size="m"
             disabled={isSpinning}

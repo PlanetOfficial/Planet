@@ -16,9 +16,9 @@ import STYLES from '../../../constants/styles';
 
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
+import Separator from '../../components/Separator';
 
 import {clearCaches} from '../../../utils/CacheHelpers';
-import Separator from '../../components/Separator';
 import {removeAccount} from '../../../utils/api/authAPI';
 
 const AccountSettings = ({navigation}: {navigation: any}) => {

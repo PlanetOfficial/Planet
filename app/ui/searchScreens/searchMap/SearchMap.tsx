@@ -9,13 +9,14 @@ import strings from '../../../constants/strings';
 import numbers from '../../../constants/numbers';
 
 import Text from '../../components/Text';
-import Blur from './Blur';
 
 import {
   calculateRadius,
   getRegionFromPointAndDistance,
 } from '../../../utils/Misc';
 import {Category, Coordinate, Region} from '../../../utils/types';
+
+import Blur from './Blur';
 
 const SearchMap = ({
   navigation,

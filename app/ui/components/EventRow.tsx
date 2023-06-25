@@ -7,9 +7,9 @@ import colors from '../../constants/colors';
 import icons from '../../constants/icons';
 
 import Text from './Text';
+import IconCluster from './IconCluster';
 
 import {Event} from '../../utils/types';
-import IconCluster from './IconCluster';
 
 interface Props {
   event: Event;

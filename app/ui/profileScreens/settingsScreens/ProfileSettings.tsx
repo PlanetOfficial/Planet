@@ -18,6 +18,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Picker} from '@react-native-picker/picker';
 
+import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
 import numbers from '../../../constants/numbers';
 import strings from '../../../constants/strings';
@@ -27,7 +28,6 @@ import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 
 import {editInfo, saveImage} from '../../../utils/api/authAPI';
-import colors from '../../../constants/colors';
 
 // TODO: REFACTOR THIS PAGE: compartmentalize and optimize, save button maybe?
 const ProfileSettings = ({navigation}: {navigation: any}) => {

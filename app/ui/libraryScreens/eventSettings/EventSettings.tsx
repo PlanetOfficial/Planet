@@ -3,8 +3,8 @@ import {View, Alert, ScrollView} from 'react-native';
 
 import moment from 'moment';
 
-import STYLES from '../../../constants/styles';
 import strings from '../../../constants/strings';
+import STYLES from '../../../constants/styles';
 
 import {getEvent} from '../../../utils/api/eventAPI';
 import {postDestination} from '../../../utils/api/destinationAPI';

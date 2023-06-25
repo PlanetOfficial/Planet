@@ -12,7 +12,7 @@ import {s} from 'react-native-size-matters';
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
 import strings from '../../../constants/strings';
-import styles from '../../../constants/styles';
+import STYLES from '../../../constants/styles';
 
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
@@ -53,15 +53,15 @@ const Settings = ({navigation}: {navigation: any}) => {
   ];
 
   return (
-    <View style={styles.container}>
+    <View style={STYLES.container}>
       <SafeAreaView>
-        <View style={styles.header}>
+        <View style={STYLES.header}>
           <Icon
             size="m"
             icon={icons.back}
             onPress={() => navigation.goBack()}
           />
-          <View style={styles.texts}>
+          <View style={STYLES.texts}>
             <Text size="l">{strings.settings.settings}</Text>
           </View>
         </View>
@@ -70,10 +70,10 @@ const Settings = ({navigation}: {navigation: any}) => {
         {settingsItems.map((settingsItem, index) => (
           <View key={index}>
             <TouchableOpacity
-              style={localStyles.row}
+              style={styles.row}
               onPress={settingsItem.onPress}>
               <Icon size="l" icon={settingsItem.icon} color={colors.darkgrey} />
-              <View style={styles.texts}>
+              <View style={STYLES.texts}>
                 <Text>{settingsItem.name}</Text>
               </View>
               <Icon icon={icons.next} />
@@ -81,7 +81,7 @@ const Settings = ({navigation}: {navigation: any}) => {
             <Separator />
           </View>
         ))}
-        <View style={localStyles.footer}>
+        <View style={styles.footer}>
           <Text size="s" weight="l" color={colors.darkgrey}>
             Privacy Policy and Stuff. This is a totally legit app and our
             company is not run by babies.
@@ -92,7 +92,7 @@ const Settings = ({navigation}: {navigation: any}) => {
   );
 };
 
-const localStyles = StyleSheet.create({
+const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center',

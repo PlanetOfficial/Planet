@@ -1,11 +1,10 @@
 import React from 'react';
 import {StyleSheet, View, Image} from 'react-native';
-
 import {s} from 'react-native-size-matters';
 
 import colors from '../../constants/colors';
 import icons from '../../constants/icons';
-import styles from '../../constants/styles';
+import STYLES from '../../constants/styles';
 
 import Icon from './Icon';
 import Text from './Text';
@@ -27,13 +26,13 @@ const PoiCard: React.FC<Props> = ({
   handleBookmark,
 }) => {
   return (
-    <View style={[cardStyles.container, styles.shadow]}>
+    <View style={[styles.container, STYLES.shadow]}>
       <Image
-        style={cardStyles.image}
+        style={styles.image}
         source={poi.photo ? {uri: poi.photo} : icons.placeholder}
       />
-      <View style={cardStyles.footer}>
-        <View style={cardStyles.infoContainer}>
+      <View style={styles.footer}>
+        <View style={styles.infoContainer}>
           <Text size="s" numberOfLines={1}>
             {poi.name}
           </Text>
@@ -53,7 +52,7 @@ const PoiCard: React.FC<Props> = ({
   );
 };
 
-const cardStyles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     width: s(140),
     height: s(180),

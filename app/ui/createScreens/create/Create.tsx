@@ -6,9 +6,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import moment from 'moment';
 
 import colors from '../../../constants/colors';
+import numbers from '../../../constants/numbers';
 import strings from '../../../constants/strings';
 import STYLES from '../../../constants/styles';
-import numbers from '../../../constants/numbers';
 
 import Text from '../../components/Text';
 

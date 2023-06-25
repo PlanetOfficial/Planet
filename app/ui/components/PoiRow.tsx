@@ -1,18 +1,17 @@
 import React from 'react';
 import {StyleSheet, View, Image} from 'react-native';
-
 import {s} from 'react-native-size-matters';
 
 import colors from '../../constants/colors';
 import strings from '../../constants/strings';
 import icons from '../../constants/icons';
+import numbers from '../../constants/numbers';
 
 import Icon from './Icon';
 import Text from './Text';
 
 import {Category, Coordinate, Poi} from '../../utils/types';
 import {getDistanceFromCoordinates} from '../../utils/Misc';
-import numbers from '../../constants/numbers';
 
 interface Props {
   poi: Poi;

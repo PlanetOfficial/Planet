@@ -18,10 +18,10 @@ import STYLES from '../../../constants/styles';
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 import PoiCardXS from '../../components/PoiCardXS';
-
-import {Destination, Spin} from '../../../utils/types';
 import UserIcon from '../../components/UserIcon';
 import Separator from '../../components/Separator';
+
+import {Destination, Spin} from '../../../utils/types';
 
 const SpinHistory = ({
   navigation,

@@ -2,12 +2,13 @@ import React, {useCallback, useRef, useState, useEffect} from 'react';
 import {Alert, Animated, Easing, TouchableOpacity} from 'react-native';
 import {s} from 'react-native-size-matters';
 
-import PoiCardXL from '../../components/PoiCardXL';
-
-import styles from '../../../constants/styles';
-import {Destination, Suggestion} from '../../../utils/types';
 import colors from '../../../constants/colors';
 import strings from '../../../constants/strings';
+import STYLES from '../../../constants/styles';
+
+import PoiCardXL from '../../components/PoiCardXL';
+
+import {Destination, Suggestion} from '../../../utils/types';
 import {makePrimary, removeSuggestion} from '../../../utils/api/suggestionAPI';
 
 interface SuggestionCardProps {
@@ -127,7 +128,7 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
   return animValue > 0 ? (
     <Animated.View
       style={[
-        styles.absolute,
+        STYLES.absolute,
         {
           left: left,
           top: top,

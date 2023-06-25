@@ -1,13 +1,14 @@
 import React, {useState} from 'react';
 import {StyleSheet, View, ImageSourcePropType} from 'react-native';
-
 import {s} from 'react-native-size-matters';
 import {Menu, MenuItem, MenuDivider} from 'react-native-material-menu';
 
-import Text from './Text';
-import Icon from './Icon';
 import colors from '../../constants/colors';
 import icons from '../../constants/icons';
+
+import Text from './Text';
+import Icon from './Icon';
+
 import {Option} from '../../utils/types';
 
 interface Props {

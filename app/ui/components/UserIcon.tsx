@@ -1,9 +1,10 @@
 import React from 'react';
 import {Image, View, Text, StyleSheet} from 'react-native';
+import {s} from 'react-native-size-matters';
+
+import colors from '../../constants/colors';
 
 import {UserInfo} from '../../utils/types';
-import colors from '../../constants/colors';
-import {s} from 'react-native-size-matters';
 
 interface Props {
   user: UserInfo;

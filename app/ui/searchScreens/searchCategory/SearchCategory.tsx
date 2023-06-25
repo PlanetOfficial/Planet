@@ -13,6 +13,7 @@ import Filter from '../../components/Filter';
 
 import {getPois} from '../../../utils/api/poiAPI';
 import {Poi, Coordinate, Category} from '../../../utils/types';
+
 import Results from './Results';
 
 const SearchCategory = ({

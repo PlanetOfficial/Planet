@@ -3,7 +3,7 @@ import {TouchableOpacity, ActivityIndicator} from 'react-native';
 
 import colors from '../../../constants/colors';
 import strings from '../../../constants/strings';
-import styles from '../../../constants/styles';
+import STYLES from '../../../constants/styles';
 
 import Text from '../../components/Text';
 
@@ -31,8 +31,8 @@ const SaveButton: React.FC<Props> = ({
   return (
     <TouchableOpacity
       style={[
-        styles.button,
-        styles.shadow,
+        STYLES.button,
+        STYLES.shadow,
         {
           backgroundColor:
             destinations && destinations.length > 0

@@ -17,6 +17,7 @@ import colors from '../../../constants/colors';
 import Text from '../../components/Text';
 
 import {Destination, Suggestion} from '../../../utils/types';
+
 import {getCurrentSuggestion, onSpinPress} from './functions';
 
 interface Props {

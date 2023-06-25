@@ -1,6 +1,6 @@
-import {Poi, PoiDetail, PlaceOpeningHoursPeriod} from '../../../utils/types';
-import {showLocation} from 'react-native-map-link';
 import {Linking} from 'react-native';
+import {showLocation} from 'react-native-map-link';
+import {Poi, PoiDetail, PlaceOpeningHoursPeriod} from '../../../utils/types';
 
 export const getButtonString = (
   mode: 'create' | 'suggest' | 'add' | 'none',

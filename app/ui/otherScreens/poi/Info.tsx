@@ -11,6 +11,7 @@ import Icon from '../../components/Icon';
 import Text from '../../components/Text';
 
 import {Poi, PoiDetail} from '../../../utils/types';
+
 import {handleMapPress, handleCallPress, handleWebsitePress} from './functions';
 
 interface Props {
