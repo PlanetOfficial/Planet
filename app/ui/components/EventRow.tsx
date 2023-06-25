@@ -9,6 +9,7 @@ import icons from '../../constants/icons';
 import Text from './Text';
 
 import {Event} from '../../utils/types';
+import IconCluster from './IconCluster';
 
 interface Props {
   event: Event;
@@ -39,6 +40,7 @@ const EventRow: React.FC<Props> = ({event}) => {
           {event.vicinity}
         </Text>
       </View>
+      <IconCluster users={event.members} />
     </View>
   );
 };

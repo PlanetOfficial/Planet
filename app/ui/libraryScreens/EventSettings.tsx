@@ -251,9 +251,10 @@ const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
             />
           ) : null}
         </View>
-        <View style={localStyles.memberContainer}>
-          {eventDetail
-            ? eventDetail.members.map((member: UserInfo) => (
+        {eventDetail ? (
+          <>
+            <View style={localStyles.memberContainer}>
+              {eventDetail.members.map((member: UserInfo) => (
                 <TouchableOpacity
                   onPress={() => navigation.navigate('User', {user: member})}
                   key={member.id}
@@ -276,132 +277,131 @@ const EventSettings = ({navigation, route}: {navigation: any; route: any}) => {
                     </Text>
                   </View>
                 </TouchableOpacity>
-              ))
-            : null}
-          <TouchableOpacity
-            style={userStyles.container}
-            onPress={() => {
-              // TODO: Navigate to friends tab
-            }}>
-            <View style={userStyles.profilePic}>
-              <Image
-                style={[userStyles.pic, userStyles.add]}
-                source={icons.add}
-              />
+              ))}
+              <TouchableOpacity
+                style={userStyles.container}
+                onPress={() => {
+                  // TODO: Navigate to friends tab
+                }}>
+                <View style={userStyles.profilePic}>
+                  <Image
+                    style={[userStyles.pic, userStyles.add]}
+                    source={icons.add}
+                  />
+                </View>
+                <View style={userStyles.texts}>
+                  <Text>{strings.event.inviteAFriend}</Text>
+                </View>
+              </TouchableOpacity>
             </View>
-            <View style={userStyles.texts}>
-              <Text>{strings.event.inviteAFriend}</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-        <View style={localStyles.destinationsContainer}>
-          <View style={destinationStyles.header}>
-            <Text>{strings.event.destinations}:</Text>
-          </View>
-          {eventDetail ? (
-            <DraggableFlatList
-              style={destinationStyles.flatlist}
-              contentContainerStyle={destinationStyles.contentContainer}
-              data={eventDetail.destinations}
-              scrollEnabled={false}
-              keyExtractor={(item: Destination) => item.id.toString()}
-              onDragEnd={({data}) => {
-                setEventDetail({...eventDetail, destinations: data});
-                handleReorderDestinations(data);
-              }}
-              renderItem={({
-                item,
-                drag,
-                isActive,
-              }: {
-                item: Destination;
-                drag: () => void;
-                isActive: boolean;
-              }) => (
-                <>
-                  <View
-                    style={[
-                      destinationStyles.container,
-                      isActive ? styles.shadow : null,
-                    ]}>
-                    <TouchableOpacity
-                      delayLongPress={1}
-                      onLongPress={drag}
-                      disabled={isActive}>
-                      <Icon
-                        size="m"
-                        icon={icons.drag}
-                        color={colors.darkgrey}
-                      />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={destinationStyles.title}
-                      onPress={() =>
-                        prompt(
-                          strings.main.rename,
-                          strings.event.renamePrompt,
-                          [
-                            {text: 'Cancel', style: 'cancel'},
-                            {
-                              text: 'Save',
-                              onPress: (name: string) =>
-                                handleRenameDestination(name, item.id),
-                            },
-                          ],
-                          {
-                            type: 'plain-text',
-                            cancelable: false,
-                            defaultValue: item.name,
-                          },
-                        )
-                      }>
-                      <Text size="s">{item.name}</Text>
-                      <View style={destinationStyles.pencil}>
+            <View style={localStyles.destinationsContainer}>
+              <View style={destinationStyles.header}>
+                <Text>{strings.event.destinations}:</Text>
+              </View>
+              <DraggableFlatList
+                style={destinationStyles.flatlist}
+                contentContainerStyle={destinationStyles.contentContainer}
+                data={eventDetail.destinations}
+                scrollEnabled={false}
+                keyExtractor={(item: Destination) => item.id.toString()}
+                onDragEnd={({data}) => {
+                  setEventDetail({...eventDetail, destinations: data});
+                  handleReorderDestinations(data);
+                }}
+                renderItem={({
+                  item,
+                  drag,
+                  isActive,
+                }: {
+                  item: Destination;
+                  drag: () => void;
+                  isActive: boolean;
+                }) => (
+                  <>
+                    <View
+                      style={[
+                        destinationStyles.container,
+                        isActive ? styles.shadow : null,
+                      ]}>
+                      <TouchableOpacity
+                        delayLongPress={1}
+                        onLongPress={drag}
+                        disabled={isActive}>
                         <Icon
-                          size="xs"
-                          icon={icons.edit}
-                          color={colors.black}
+                          size="m"
+                          icon={icons.drag}
+                          color={colors.darkgrey}
                         />
-                      </View>
-                    </TouchableOpacity>
-                    <Icon
-                      icon={icons.minus}
-                      color={colors.red}
-                      onPress={() =>
-                        Alert.alert(
-                          strings.event.deleteDestination,
-                          strings.event.deleteDestinationInfo,
-                          [
-                            {
-                              text: strings.main.cancel,
-                              style: 'cancel',
-                            },
-                            {
-                              text: strings.main.remove,
-                              onPress: () => {
-                                handleRemoveDestination(item.id);
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={destinationStyles.title}
+                        onPress={() =>
+                          prompt(
+                            strings.main.rename,
+                            strings.event.renamePrompt,
+                            [
+                              {text: 'Cancel', style: 'cancel'},
+                              {
+                                text: 'Save',
+                                onPress: (name: string) =>
+                                  handleRenameDestination(name, item.id),
                               },
-                              style: 'destructive',
+                            ],
+                            {
+                              type: 'plain-text',
+                              cancelable: false,
+                              defaultValue: item.name,
                             },
-                          ],
-                        )
-                      }
-                    />
-                  </View>
-                  <Separator />
-                </>
-              )}
-            />
-          ) : null}
-          <TouchableOpacity
-            style={destinationStyles.addContainer}
-            onPress={() => navigation.navigate('AddSearch')}>
-            <Icon size="l" icon={icons.add} color={colors.accent} />
-            <View style={userStyles.texts}>
-              <Text size="s">{strings.event.addDestination}</Text>
+                          )
+                        }>
+                        <Text size="s">{item.name}</Text>
+                        <View style={destinationStyles.pencil}>
+                          <Icon
+                            size="xs"
+                            icon={icons.edit}
+                            color={colors.black}
+                          />
+                        </View>
+                      </TouchableOpacity>
+                      <Icon
+                        icon={icons.minus}
+                        color={colors.red}
+                        onPress={() =>
+                          Alert.alert(
+                            strings.event.deleteDestination,
+                            strings.event.deleteDestinationInfo,
+                            [
+                              {
+                                text: strings.main.cancel,
+                                style: 'cancel',
+                              },
+                              {
+                                text: strings.main.remove,
+                                onPress: () => {
+                                  handleRemoveDestination(item.id);
+                                },
+                                style: 'destructive',
+                              },
+                            ],
+                          )
+                        }
+                      />
+                    </View>
+                    <Separator />
+                  </>
+                )}
+              />
+              <TouchableOpacity
+                style={destinationStyles.addContainer}
+                onPress={() => navigation.navigate('AddSearch')}>
+                <Icon size="l" icon={icons.add} color={colors.accent} />
+                <View style={userStyles.texts}>
+                  <Text size="s">{strings.event.addDestination}</Text>
+                </View>
+              </TouchableOpacity>
             </View>
-          </TouchableOpacity>
-        </View>
+          </>
+        ) : null}
       </ScrollView>
     </View>
   );

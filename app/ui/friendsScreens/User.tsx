@@ -22,7 +22,7 @@ import Icon from '../components/Icon';
 import Separator from '../components/Separator';
 import EventRow from '../components/EventRow';
 
-import {Event} from '../../utils/types';
+import {Event, UserInfo} from '../../utils/types';
 import {
   acceptFriendRequest,
   deleteFriend,
@@ -32,7 +32,12 @@ import {
   rejectFriendRequest,
 } from '../../utils/api/friendsAPI';
 import ProfileBody from '../profileScreens/ProfileBody';
+import IconCluster from '../components/IconCluster';
 
+/*
+ * route params:
+ * - user: UserInfo
+ */
 const User = ({navigation, route}: {navigation: any; route: any}) => {
   const [selectedIndex, setIndex] = useState<number>(0);
 
@@ -43,12 +48,14 @@ const User = ({navigation, route}: {navigation: any; route: any}) => {
   const [pfpURL] = useState<string>(route.params.user.icon?.url);
 
   const [status, setStatus] = useState<string>('');
+  const [mutuals, setMutuals] = useState<UserInfo[]>([]);
 
   const initializeData = useCallback(async () => {
     const userData = await getFriend(userId);
 
     if (userData) {
       setStatus(userData.status);
+      setMutuals(userData.mutuals);
     } else {
       Alert.alert(strings.error.error, strings.error.loadUserData);
     }
@@ -112,6 +119,18 @@ const User = ({navigation, route}: {navigation: any; route: any}) => {
     }
   };
 
+  const getMutualString = (users: UserInfo[]) => {
+    let mutualString = strings.friends.friendsWith + ' ' + users[0].first_name;
+
+    if (users.length > 1) {
+      mutualString += ` ${strings.friends.and} ${users.length - 1} ${
+        users.length > 2 ? strings.friends.others : strings.friends.other
+      }`;
+    }
+
+    return mutualString;
+  };
+
   return (
     <View style={styles.container}>
       <SafeAreaView>
@@ -128,7 +147,7 @@ const User = ({navigation, route}: {navigation: any; route: any}) => {
       ) : (
         <>
           <View style={profileStyles.container}>
-            <TouchableOpacity style={profileStyles.profilePic}>
+            <View style={profileStyles.profilePic}>
               {pfpURL?.length > 0 ? (
                 <Image
                   style={profileStyles.profileImage}
@@ -149,7 +168,7 @@ const User = ({navigation, route}: {navigation: any; route: any}) => {
                   </RNText>
                 </View>
               )}
-            </TouchableOpacity>
+            </View>
             <View style={profileStyles.info}>
               <Text size="l" numberOfLines={1}>
                 {firstName} {lastName}
@@ -221,6 +240,26 @@ const User = ({navigation, route}: {navigation: any; route: any}) => {
               </View>
             </View>
           </View>
+          {mutuals.length > 0 ? (
+            <TouchableOpacity
+              style={mutualStyles.container}
+              onPress={() =>
+                navigation.navigate('Mutuals', {
+                  mutuals: mutuals,
+                })
+              }>
+              <IconCluster users={mutuals} />
+              <View style={mutualStyles.text}>
+                <Text
+                  size="s"
+                  weight="l"
+                  color={colors.black}
+                  numberOfLines={1}>
+                  {getMutualString(mutuals)}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          ) : null}
           <SegmentedControlTab
             tabsContainerStyle={sctStyles.container}
             tabStyle={sctStyles.tab}
@@ -312,6 +351,18 @@ const profileStyles = StyleSheet.create({
     paddingVertical: s(5),
     marginRight: s(10),
     borderRadius: s(10),
+  },
+});
+
+const mutualStyles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: s(20),
+    marginVertical: s(10),
+  },
+  text: {
+    marginLeft: s(10),
   },
 });
 

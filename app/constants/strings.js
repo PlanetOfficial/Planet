@@ -109,6 +109,12 @@ const strings = {
     accept: 'Accept',
     reject: 'Reject',
     noMutualEventsFound: 'No Mutual Events Found',
+    friendsWith: 'Friends with',
+    and: 'and',
+    other: 'other',
+    others: 'others',
+    mutualFriends: 'Mutual Friends',
+    mutualFriendsDescriptions: 'You have these friends in common',
   },
   profile: {
     yourProfile: 'Your Profile',

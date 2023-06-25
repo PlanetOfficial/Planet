@@ -9,6 +9,7 @@ export interface UserInfo {
 
 export interface UserDetail {
   status: string;
+  mutuals: UserInfo[];
 }
 
 export interface MyInfo {

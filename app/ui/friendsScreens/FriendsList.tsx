@@ -124,11 +124,6 @@ const userStyles = StyleSheet.create({
     justifyContent: 'space-evenly',
     marginHorizontal: s(10),
   },
-  add: {
-    width: '70%',
-    height: '70%',
-    tintColor: colors.accent,
-  },
 });
 
 export default FriendsList;
