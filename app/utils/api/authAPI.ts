@@ -47,9 +47,9 @@ export const sendCode = async (authToken: string, phone_number: string) => {
   return response.ok;
 };
 
-export const sendCodeUsername = async (username: string) => {
+export const sendCodeForgotPwd = async (username: string) => {
   const response = await fetch(
-    UserAPIURL + `/auth/sendCodeUsername?username=${username}`,
+    UserAPIURL + `/auth/sendCodeForgotPwd?username=${username}`,
     {
       method: 'POST',
     },

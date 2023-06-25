@@ -6,7 +6,7 @@ import strings from '../../constants/strings';
 import colors from '../../constants/colors';
 import Text from '../components/Text';
 import { s } from 'react-native-size-matters';
-import { sendCodeUsername } from '../../utils/api/authAPI';
+import { sendCodeForgotPwd } from '../../utils/api/authAPI';
 
 const ForgotPwd = ({navigation}: {navigation: any}) => {
   const [username, setUsername] = useState<string>('');
@@ -21,7 +21,7 @@ const ForgotPwd = ({navigation}: {navigation: any}) => {
       return;
     }
 
-    const response = await sendCodeUsername(username);
+    const response = await sendCodeForgotPwd(username);
 
     if (response) {
       navigation.navigate('ForgotPasswordVerify', {username});
