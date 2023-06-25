@@ -20,6 +20,7 @@ import Icon from '../components/Icon';
 import {clearCaches} from '../../utils/CacheHelpers';
 import Separator from '../components/Separator';
 import {removeAccount} from '../../utils/api/authAPI';
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 const AccountSettings = ({navigation}: {navigation: any}) => {
   const handleLogout = async () => {
@@ -35,6 +36,12 @@ const AccountSettings = ({navigation}: {navigation: any}) => {
         routes: [{name: 'Login'}],
       });
     }
+  };
+
+  const handleResetPassword = async () => {
+    const authToken = await EncryptedStorage.getItem('auth_token');
+
+    navigation.navigate('ResetPassword', {authToken});
   };
 
   const handleRemoveAccount = async () => {
@@ -99,7 +106,7 @@ const AccountSettings = ({navigation}: {navigation: any}) => {
       </SafeAreaView>
       <TouchableOpacity
         style={localStyles.row}
-        onPress={() => navigation.navigate('ForgotPassword')}>
+        onPress={handleResetPassword}>
         <Text weight="l">{strings.settings.resetPassword}</Text>
       </TouchableOpacity>
       <Separator />
