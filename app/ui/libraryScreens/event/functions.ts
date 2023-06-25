@@ -1,13 +1,13 @@
+import {Alert} from 'react-native';
+import strings from '../../../constants/strings';
+import {vote} from '../../../utils/api/suggestionAPI';
+import {getEvent} from '../../../utils/api/eventAPI';
 import {
   Destination,
   Suggestion,
   Event,
   EventDetail,
 } from '../../../utils/types';
-import {postSuggestion, vote} from '../../../utils/api/suggestionAPI';
-import {Alert} from 'react-native';
-import strings from '../../../constants/strings';
-import { getEvent } from '../../../utils/api/eventAPI';
 
 export const onVote = async (
   event: Event,
@@ -19,7 +19,8 @@ export const onVote = async (
 ) => {
   const response = await vote(event.id, destination.id, suggestion.id);
 
-  if (response) { // WARN: there used to be a eventDetail null check here
+  if (response) {
+    // WARN: there used to be a eventDetail null check here
     const _myVotes = new Map<number, number>(myVotes);
     if (_myVotes.get(destination.id) === suggestion.id) {
       _myVotes.set(destination.id, -1);

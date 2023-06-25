@@ -1,31 +1,16 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {
-  StyleSheet,
-  View,
-  Alert,
-  ActivityIndicator,
-  Animated,
-} from 'react-native';
-import {s} from 'react-native-size-matters';
+import {View, Alert, ActivityIndicator, Animated} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import colors from '../../../constants/colors';
 import strings from '../../../constants/strings';
 import STYLES from '../../../constants/styles';
 
-import {
-  Destination,
-  Event,
-  EventDetail,
-  Poi,
-  Suggestion,
-} from '../../../utils/types';
+import {Destination, Event, EventDetail, Poi} from '../../../utils/types';
 import {getEvent} from '../../../utils/api/eventAPI';
 import {postSuggestion} from '../../../utils/api/suggestionAPI';
 
-import SuggestionCard from './SuggestionCard';
 import Header from './Header';
-import { onVote } from './functions';
 import Destinations from './Destinations';
 
 const EventPage = ({
@@ -41,14 +26,17 @@ const EventPage = ({
   };
 }) => {
   const [event] = useState<Event>(route.params.event);
-
   const [eventDetail, setEventDetail] = useState<EventDetail>();
+  const [bookmarks, setBookmarks] = useState<Poi[]>([]);
+
   const [loading, setLoading] = useState<boolean>(true);
   const [refreshing, setRefreshing] = useState<boolean>(false);
 
+  const animation = useRef(new Animated.Value(0)).current;
   const [myVotes, setMyVotes] = useState<Map<number, number>>(new Map());
-  const [bookmarks, setBookmarks] = useState<Poi[]>([]);
-
+  const [resetFlag, setResetFlag] = useState<boolean>(false);
+  const [displayingSuggestion, setDisplayingSuggestion] =
+    useState<boolean>(false);
   const [insertionDestination, setInsertionDestination] =
     useState<Destination>();
 
@@ -75,14 +63,14 @@ const EventPage = ({
     setLoading(false);
   }, [event.id]);
 
-  const loadBookmarks = async () => {
+  const loadBookmarks = useCallback(async () => {
     const _bookmarks = await AsyncStorage.getItem('bookmarks');
     if (_bookmarks) {
       setBookmarks(JSON.parse(_bookmarks));
     } else {
       Alert.alert(strings.error.error, strings.error.loadBookmarks);
     }
-  };
+  }, []);
 
   const addSuggestion = useCallback(async () => {
     const suggestion = route.params.destination;
@@ -110,21 +98,6 @@ const EventPage = ({
     route.params.destination,
   ]);
 
-  const animation = useRef(new Animated.Value(0)).current;
-  const [xPos, setXPos] = useState<number>(0);
-  const [yPos, setYPos] = useState<number>(0);
-  const [animateFlag, setAnimateFlag] = useState<boolean>(false);
-  const [resetFlag, setResetFlag] = useState<boolean>(false);
-  const [selectedSuggestion, setSelectedSuggestion] = useState<Suggestion>();
-  const [selectedDestination, setSelectedDestination] = useState<Destination>();
-  const [displayingSuggestion, setDisplayingSuggestion] = useState<boolean>(false);
-  const suggestionRefs = useRef(new Map());
-
-  const cardWidth = animation.interpolate({
-    inputRange: [0, 1],
-    outputRange: [s(310), s(280)],
-  });
-
   const resetAnimation = useCallback(() => {
     setDisplayingSuggestion(false);
     Animated.timing(animation, {
@@ -134,30 +107,16 @@ const EventPage = ({
     }).start();
   }, [animation]);
 
-  const handleMeasure = (r: {
-    measureInWindow: (arg0: (x: number, y: number) => void) => void;
-  }) => {
-    r.measureInWindow((x: number, y: number) => {
-      setXPos(x);
-      setYPos(y);
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      loadData();
+      loadBookmarks();
+      addSuggestion();
+      resetAnimation();
     });
-  };
 
-  const onSuggestionPress = (
-    suggestion: Suggestion,
-    destination: Destination,
-  ) => {
-    setDisplayingSuggestion(true);
-    setSelectedSuggestion(suggestion);
-    setSelectedDestination(destination);
-    setAnimateFlag(!animateFlag);
-    handleMeasure(suggestionRefs.current.get(suggestion.id));
-    Animated.timing(animation, {
-      toValue: 0.6,
-      duration: 300,
-      useNativeDriver: false,
-    }).start();
-  };
+    return unsubscribe;
+  }, [navigation, loadData, loadBookmarks, addSuggestion, resetAnimation]);
 
   const onSuggestionClose = () => {
     setDisplayingSuggestion(false);
@@ -168,17 +127,6 @@ const EventPage = ({
       useNativeDriver: false,
     }).start();
   };
-
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      resetAnimation();
-      loadBookmarks();
-      loadData();
-      addSuggestion();
-    });
-
-    return unsubscribe;
-  }, [navigation, loadData, addSuggestion, resetAnimation]);
 
   return (
     <View style={STYLES.container}>
@@ -201,6 +149,8 @@ const EventPage = ({
           eventDetail={eventDetail}
           setEventDetail={setEventDetail}
           displayingSuggestion={displayingSuggestion}
+          setDisplayingSuggestion={setDisplayingSuggestion}
+          animation={animation}
           onSuggestionClose={onSuggestionClose}
           myVotes={myVotes}
           setMyVotes={setMyVotes}
@@ -208,65 +158,13 @@ const EventPage = ({
           setBookmarks={setBookmarks}
           refreshing={refreshing}
           setRefreshing={setRefreshing}
-          selectedDestination={selectedDestination}
-          cardWidth={cardWidth}
+          resetFlag={resetFlag}
           setInsertionDestination={setInsertionDestination}
           loadData={loadData}
-          onSuggestionPress={onSuggestionPress}
-          suggestionRefs={suggestionRefs}
         />
       )}
-
-      <Animated.View
-        pointerEvents={'none'}
-        style={[
-          styles.dim,
-          {
-            opacity: animation,
-          },
-        ]}
-      />
-
-      <SuggestionCard
-        navigation={navigation}
-        bookmarked={bookmarks.some(
-          bookmark => bookmark.id === selectedSuggestion?.poi.id,
-        )}
-        suggestion={selectedSuggestion}
-        onSuggestionClose={onSuggestionClose}
-        loadData={loadData}
-        x={xPos}
-        y={yPos}
-        resetFlag={resetFlag}
-        animateFlag={animateFlag}
-        eventId={event.id}
-        destination={selectedDestination}
-        voted={
-          selectedDestination
-            ? myVotes.get(selectedDestination?.id) === selectedSuggestion?.id
-            : false
-        }
-        onVote={() => {
-          if (selectedDestination && selectedSuggestion) {
-            onVote(
-              event, setEventDetail, myVotes, setMyVotes, selectedDestination, selectedSuggestion
-            )
-          }
-        }}
-      />
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  dim: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: colors.black,
-  },
-});
 
 export default EventPage;
