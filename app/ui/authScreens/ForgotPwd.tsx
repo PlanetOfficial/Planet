@@ -47,15 +47,17 @@ const ForgotPwd = ({navigation}: {navigation: any}) => {
         </View>
       </SafeAreaView>
 
-      <TextInput
-        style={STYLES.input}
-        placeholder={strings.signUp.username}
-        value={username}
-        onChangeText={text => setUsername(text.toLowerCase())}
-        placeholderTextColor={colors.darkgrey}
-        autoCapitalize="none"
-        autoCorrect={false}
-      />
+      <View style={STYLES.inputContainer}>
+        <TextInput
+          style={STYLES.input}
+          placeholder={strings.signUp.username}
+          value={username}
+          onChangeText={text => setUsername(text.toLowerCase())}
+          placeholderTextColor={colors.darkgrey}
+          autoCapitalize="none"
+          autoCorrect={false}
+        />
+      </View>
       {error.length !== 0 ? (
         <Text weight="l" center={true} color={colors.red}>
           {error}
