@@ -12,29 +12,36 @@ import {
   TouchableOpacity as RNTO,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
-
-import colors from '../../constants/colors';
-import icons from '../../constants/icons';
-import strings from '../../constants/strings';
-import styles from '../../constants/styles';
-
-import Icon from '../components/Icon';
-import Separator from '../components/Separator';
-import UserIcon from '../components/UserIcon';
-import Text from '../components/Text';
-
-import {getFriends, searchUsers} from '../../utils/api/friendsAPI';
-import {UserInfo} from '../../utils/types';
-import {inviteToEvent} from '../../utils/api/eventAPI';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
-/*
- * route params:
- * - members: UserInfo[]
- * - event_id?: number
- */
-const AddFriend = ({navigation, route}: {navigation: any; route: any}) => {
-  const [event_id] = useState<number>(route.params.event_id);
+import colors from '../../../constants/colors';
+import icons from '../../../constants/icons';
+import strings from '../../../constants/strings';
+import STYLES from '../../../constants/styles';
+
+import Icon from '../../components/Icon';
+import Separator from '../../components/Separator';
+import UserIcon from '../../components/UserIcon';
+import Text from '../../components/Text';
+
+import {getFriends, searchUsers} from '../../../utils/api/friendsAPI';
+import {UserInfo} from '../../../utils/types';
+import {inviteToEvent} from '../../../utils/api/eventAPI';
+
+// TODO: Refactor
+const AddFriend = ({
+  navigation,
+  route,
+}: {
+  navigation: any;
+  route: {
+    params: {
+      members: UserInfo[];
+      event_id?: number;
+    };
+  };
+}) => {
+  const [event_id] = useState<number | undefined>(route.params.event_id);
   const [members] = useState<UserInfo[]>(route.params.members);
   const [invitees, setInvitees] = useState<UserInfo[]>([]);
 
@@ -94,11 +101,11 @@ const AddFriend = ({navigation, route}: {navigation: any; route: any}) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={STYLES.container}>
       <SafeAreaView>
-        <View style={styles.header}>
+        <View style={STYLES.header}>
           <Icon icon={icons.close} onPress={() => navigation.goBack()} />
-          <View style={[localStyles.searchBar, styles.shadow]}>
+          <View style={[localStyles.searchBar, STYLES.shadow]}>
             <Icon size="s" icon={icons.search} color={colors.darkgrey} />
             <TextInput
               ref={searchRef}
@@ -132,13 +139,13 @@ const AddFriend = ({navigation, route}: {navigation: any; route: any}) => {
       </SafeAreaView>
       {searching ? (
         loading ? (
-          <View style={[styles.center, styles.container]}>
+          <View style={[STYLES.center, STYLES.container]}>
             <ActivityIndicator size="small" color={colors.accent} />
           </View>
         ) : (
           <FlatList
-            style={styles.container}
-            contentContainerStyle={styles.flatList}
+            style={STYLES.container}
+            contentContainerStyle={STYLES.flatList}
             data={searchResult}
             keyExtractor={(_, index) => index.toString()}
             renderItem={({item}: {item: UserInfo}) => (
@@ -184,7 +191,7 @@ const AddFriend = ({navigation, route}: {navigation: any; route: any}) => {
             )}
             ListEmptyComponent={
               searchText.length > 0 ? (
-                <View style={styles.center}>
+                <View style={STYLES.center}>
                   <Text>{strings.search.noResultsFound}</Text>
                 </View>
               ) : null
@@ -195,8 +202,8 @@ const AddFriend = ({navigation, route}: {navigation: any; route: any}) => {
       ) : (
         <>
           <FlatList
-            style={styles.container}
-            contentContainerStyle={styles.flatList}
+            style={STYLES.container}
+            contentContainerStyle={STYLES.flatList}
             data={[...invitees, ...friends.filter(f => !invitees.includes(f))]}
             keyExtractor={(_, index) => index.toString()}
             renderItem={({item}: {item: UserInfo}) =>
@@ -243,7 +250,7 @@ const AddFriend = ({navigation, route}: {navigation: any; route: any}) => {
               ) : null
             }
             ListEmptyComponent={
-              <View style={styles.center}>
+              <View style={STYLES.center}>
                 <Text>{strings.friends.noFriendsFound}</Text>
                 <Text> </Text>
                 <Text size="s" color={colors.darkgrey}>
@@ -263,7 +270,7 @@ const AddFriend = ({navigation, route}: {navigation: any; route: any}) => {
             }
           />
           {invitees && invitees.length > 0 ? (
-            <RNTO style={[localStyles.add, styles.shadow]} onPress={onAdd}>
+            <RNTO style={[localStyles.add, STYLES.shadow]} onPress={onAdd}>
               <Text size="l" weight="b" color={colors.white}>
                 {`${strings.main.add} (${invitees.length})`}
               </Text>

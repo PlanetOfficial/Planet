@@ -9,29 +9,36 @@ import {
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 
-import colors from '../../constants/colors';
-import icons from '../../constants/icons';
-import strings from '../../constants/strings';
-import styles from '../../constants/styles';
+import colors from '../../../constants/colors';
+import icons from '../../../constants/icons';
+import strings from '../../../constants/strings';
+import STYLES from '../../../constants/styles';
 
-import Text from '../components/Text';
-import Icon from '../components/Icon';
+import Text from '../../components/Text';
+import Icon from '../../components/Icon';
+import Separator from '../../components/Separator';
+import UserIcon from '../../components/UserIcon';
 
-import {UserInfo} from '../../utils/types';
-import Separator from '../components/Separator';
-import UserIcon from '../components/UserIcon';
+import {UserInfo} from '../../../utils/types';
 
-/*
- * route params:
- * - mutuals: UserInfo[]
- */
-const Mutuals = ({navigation, route}: {navigation: any; route: any}) => {
+// TODO: Refactor
+const Mutuals = ({
+  navigation,
+  route,
+}: {
+  navigation: any;
+  route: {
+    params: {
+      mutuals: UserInfo[];
+    };
+  };
+}) => {
   const [mutuals] = useState<UserInfo[]>(route.params.mutuals);
 
   return (
-    <View style={styles.container}>
+    <View style={STYLES.container}>
       <SafeAreaView>
-        <View style={styles.header}>
+        <View style={STYLES.header}>
           <Icon icon={icons.close} onPress={() => navigation.goBack()} />
           <Text>{strings.friends.mutualFriends}</Text>
           <Icon
@@ -47,8 +54,8 @@ const Mutuals = ({navigation, route}: {navigation: any; route: any}) => {
         </View>
       </SafeAreaView>
       <FlatList
-        style={styles.container}
-        contentContainerStyle={styles.flatList}
+        style={STYLES.container}
+        contentContainerStyle={STYLES.flatList}
         data={mutuals}
         keyExtractor={item => item.id.toString()}
         renderItem={({item}: {item: UserInfo}) => (
@@ -80,7 +87,7 @@ const Mutuals = ({navigation, route}: {navigation: any; route: any}) => {
           </TouchableOpacity>
         )}
         ListEmptyComponent={
-          <View style={styles.center}>
+          <View style={STYLES.center}>
             <Text>{strings.friends.noFriendsFound}</Text>
             <Text> </Text>
             <Text size="s" color={colors.darkgrey}>

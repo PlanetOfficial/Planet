@@ -3,9 +3,9 @@ import {s} from 'react-native-size-matters';
 
 import colors from '../../constants/colors';
 
-import FriendsList from '../friendsScreens/FriendsList';
-import Requests from '../friendsScreens/Requests';
-import Suggestions from '../friendsScreens/Suggestions';
+import FriendsList from '../friendsScreens/friendsList/FriendsList';
+import Requests from '../friendsScreens/requests/Requests';
+import Suggestions from '../friendsScreens/suggestions/Suggestions';
 
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 

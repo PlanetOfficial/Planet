@@ -10,22 +10,24 @@ import {
   LayoutAnimation,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
-import FriendsNavBar from '../navigations/FriendsNavBar';
-
-import colors from '../../constants/colors';
-import icons from '../../constants/icons';
-import strings from '../../constants/strings';
-import styles from '../../constants/styles';
-
-import Icon from '../components/Icon';
-import Separator from '../components/Separator';
-import UserIcon from '../components/UserIcon';
-import Text from '../components/Text';
-
-import {searchUsers} from '../../utils/api/friendsAPI';
-import {UserInfo} from '../../utils/types';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
+import FriendsNavBar from '../../navigations/FriendsNavBar';
+
+import colors from '../../../constants/colors';
+import icons from '../../../constants/icons';
+import strings from '../../../constants/strings';
+import STYLES from '../../../constants/styles';
+
+import Icon from '../../components/Icon';
+import Separator from '../../components/Separator';
+import UserIcon from '../../components/UserIcon';
+import Text from '../../components/Text';
+
+import {searchUsers} from '../../../utils/api/friendsAPI';
+import {UserInfo} from '../../../utils/types';
+
+// TODO: Refactor
 const Friends = ({navigation}: {navigation: any}) => {
   const searchRef = createRef<TextInput>();
   const [searchText, setSearchText] = useState<string>('');
@@ -49,15 +51,15 @@ const Friends = ({navigation}: {navigation: any}) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={STYLES.container}>
       <SafeAreaView>
-        <View style={styles.header}>
+        <View style={STYLES.header}>
           <Icon
             size="m"
             icon={icons.back}
             onPress={() => navigation.goBack()}
           />
-          <View style={[localStyles.searchBar, styles.shadow]}>
+          <View style={[localStyles.searchBar, STYLES.shadow]}>
             <Icon size="s" icon={icons.search} color={colors.darkgrey} />
             <TextInput
               ref={searchRef}
@@ -91,13 +93,13 @@ const Friends = ({navigation}: {navigation: any}) => {
       </SafeAreaView>
       {searching ? (
         loading ? (
-          <View style={[styles.center, styles.container]}>
+          <View style={[STYLES.center, STYLES.container]}>
             <ActivityIndicator size="small" color={colors.accent} />
           </View>
         ) : (
           <FlatList
-            style={styles.container}
-            contentContainerStyle={styles.flatList}
+            style={STYLES.container}
+            contentContainerStyle={STYLES.flatList}
             data={searchResult}
             keyExtractor={item => item.id.toString()}
             renderItem={({item}: {item: UserInfo}) => (
@@ -130,7 +132,7 @@ const Friends = ({navigation}: {navigation: any}) => {
             )}
             ListEmptyComponent={
               searchText.length > 0 ? (
-                <View style={styles.center}>
+                <View style={STYLES.center}>
                   <Text>{strings.search.noResultsFound}</Text>
                 </View>
               ) : null

@@ -20,11 +20,11 @@ import CreateSearch from '../createScreens/createSearch/CreateSearch';
 import SearchCategory from '../searchScreens/searchCategory/SearchCategory';
 import SearchMap from '../searchScreens/searchMap/SearchMap';
 import Poi from '../otherScreens/poi/Poi';
-import Friends from '../friendsScreens/Friends';
-import AddFriend from '../friendsScreens/AddFriend';
-import User from '../friendsScreens/User';
+import Friends from '../friendsScreens/friends/Friends';
+import AddFriend from '../friendsScreens/addFriend/AddFriend';
+import User from '../friendsScreens/user/User';
 import EventPage from '../libraryScreens/event/Event';
-import Mutuals from '../friendsScreens/Mutuals';
+import Mutuals from '../friendsScreens/mutuals/Mutuals';
 import Explore from '../homeScreens/Explore';
 import EventSettings from '../libraryScreens/eventSettings/EventSettings';
 import Roulette from '../libraryScreens/roulette/Roulette';
@@ -77,9 +77,16 @@ type RootStackParamList = {
     poi: PoiType | undefined;
   };
   Friends: undefined;
-  AddFriend: undefined;
-  Mutuals: undefined;
-  User: undefined;
+  AddFriend: {
+    members: UserInfo[];
+    event_id: number | undefined;
+  };
+  Mutuals: {
+    mutuals: UserInfo[];
+  };
+  User: {
+    user: UserInfo;
+  };
   Explore: undefined;
   Settings: undefined;
   AccountSettings: undefined;

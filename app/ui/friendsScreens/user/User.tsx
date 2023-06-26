@@ -12,17 +12,17 @@ import {
 import {s} from 'react-native-size-matters';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 
-import colors from '../../constants/colors';
-import icons from '../../constants/icons';
-import strings from '../../constants/strings';
-import styles from '../../constants/styles';
+import colors from '../../../constants/colors';
+import icons from '../../../constants/icons';
+import strings from '../../../constants/strings';
+import STYLES from '../../../constants/styles';
 
-import Text from '../components/Text';
-import Icon from '../components/Icon';
-import Separator from '../components/Separator';
-import EventRow from '../components/EventRow';
+import Text from '../../components/Text';
+import Icon from '../../components/Icon';
+import Separator from '../../components/Separator';
+import EventRow from '../../components/EventRow';
 
-import {Event, UserInfo} from '../../utils/types';
+import {Event, UserInfo} from '../../../utils/types';
 import {
   acceptFriendRequest,
   deleteFriend,
@@ -30,15 +30,22 @@ import {
   getFriend,
   postFriendRequest,
   rejectFriendRequest,
-} from '../../utils/api/friendsAPI';
-import ProfileBody from '../profileScreens/profile/ProfileBody';
-import IconCluster from '../components/IconCluster';
+} from '../../../utils/api/friendsAPI';
+import ProfileBody from '../../profileScreens/profile/ProfileBody';
+import IconCluster from '../../components/IconCluster';
 
-/*
- * route params:
- * - user: UserInfo
- */
-const User = ({navigation, route}: {navigation: any; route: any}) => {
+// TODO: Refactor
+const User = ({
+  navigation,
+  route,
+}: {
+  navigation: any;
+  route: {
+    params: {
+      user: UserInfo;
+    };
+  };
+}) => {
   const [selectedIndex, setIndex] = useState<number>(0);
 
   const [userId, setUserId] = useState<number>(route.params.user.id);
@@ -47,7 +54,9 @@ const User = ({navigation, route}: {navigation: any; route: any}) => {
   );
   const [lastName, setLastName] = useState<string>(route.params.user.last_name);
   const [username, setUsername] = useState<string>(route.params.user.username);
-  const [pfpURL, setPfpURL] = useState<string>(route.params.user.icon?.url);
+  const [pfpURL, setPfpURL] = useState<string | undefined>(
+    route.params.user.icon?.url,
+  );
 
   const [status, setStatus] = useState<string>('');
   const [mutuals, setMutuals] = useState<UserInfo[]>([]);
@@ -142,9 +151,9 @@ const User = ({navigation, route}: {navigation: any; route: any}) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={STYLES.container}>
       <SafeAreaView>
-        <View style={styles.header}>
+        <View style={STYLES.header}>
           <Icon
             size="m"
             icon={icons.back}
@@ -158,7 +167,7 @@ const User = ({navigation, route}: {navigation: any; route: any}) => {
         <>
           <View style={profileStyles.container}>
             <View style={profileStyles.profilePic}>
-              {pfpURL?.length > 0 ? (
+              {pfpURL && pfpURL.length > 0 ? (
                 <Image
                   style={profileStyles.profileImage}
                   source={{uri: pfpURL}}
@@ -304,7 +313,7 @@ const User = ({navigation, route}: {navigation: any; route: any}) => {
               );
             }}
             ListEmptyComponent={
-              <View style={styles.center}>
+              <View style={STYLES.center}>
                 <Text>{strings.friends.noMutualEventsFound}</Text>
               </View>
             }

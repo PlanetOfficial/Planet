@@ -10,24 +10,26 @@ import {
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 
-import colors from '../../constants/colors';
-import icons from '../../constants/icons';
-import strings from '../../constants/strings';
-import styles from '../../constants/styles';
+import colors from '../../../constants/colors';
+import icons from '../../../constants/icons';
+import strings from '../../../constants/strings';
+import STYLES from '../../../constants/styles';
 
-import Text from '../components/Text';
-import Icon from '../components/Icon';
-import {UserInfo} from '../../utils/types';
+import Text from '../../components/Text';
+import Icon from '../../components/Icon';
+import UserIcon from '../../components/UserIcon';
+import Separator from '../../components/Separator';
+
+import {UserInfo} from '../../../utils/types';
 import {
   acceptFriendRequest,
   deleteFriendRequest,
   getFriendRequests,
   getFriendRequestsSent,
   rejectFriendRequest,
-} from '../../utils/api/friendsAPI';
-import UserIcon from '../components/UserIcon';
-import Separator from '../components/Separator';
+} from '../../../utils/api/friendsAPI';
 
+// TODO: Refactor
 const Requests = ({navigation}: {navigation: any}) => {
   const [requests, setRequests] = useState<UserInfo[]>([]);
   const [requestsSent, setRequestsSent] = useState<UserInfo[]>([]);
@@ -87,13 +89,13 @@ const Requests = ({navigation}: {navigation: any}) => {
   };
 
   return loading ? (
-    <View style={[styles.center, styles.container]}>
+    <View style={[STYLES.center, STYLES.container]}>
       <ActivityIndicator size="small" color={colors.accent} />
     </View>
   ) : (
     <FlatList
-      style={styles.container}
-      contentContainerStyle={styles.flatList}
+      style={STYLES.container}
+      contentContainerStyle={STYLES.flatList}
       data={requests}
       keyExtractor={item => item.id.toString()}
       renderItem={({item}: {item: UserInfo}) => (
@@ -132,7 +134,7 @@ const Requests = ({navigation}: {navigation: any}) => {
         </TouchableOpacity>
       )}
       ListEmptyComponent={
-        <View style={styles.center}>
+        <View style={STYLES.center}>
           <Text weight="l">{strings.friends.noFriendRequestsFound}</Text>
         </View>
       }
