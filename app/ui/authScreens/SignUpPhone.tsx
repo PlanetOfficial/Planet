@@ -8,15 +8,21 @@ import {E164Number} from 'libphonenumber-js/types';
 import Text from '../components/Text';
 import colors from '../../constants/colors';
 import strings from '../../constants/strings';
-import styles from '../../constants/styles';
+import STYLES from '../../constants/styles';
 
 import {sendCode} from '../../utils/api/authAPI';
 
-/*
- * route params:
- * - authToken: string
- */
-const SignUpPhone = ({navigation, route}: {navigation: any; route: any}) => {
+const SignUpPhone = ({
+  navigation,
+  route,
+}: {
+  navigation: any;
+  route: {
+    params: {
+      authToken: string;
+    };
+  };
+}) => {
   const [authToken] = useState<string>(route.params.authToken);
 
   const [phoneNumber, setPhoneNumber] = useState<E164Number | undefined>();
@@ -41,25 +47,25 @@ const SignUpPhone = ({navigation, route}: {navigation: any; route: any}) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={STYLES.container}>
       <SafeAreaView>
-        <View style={localStyles.messageContainer}>
+        <View style={styles.messageContainer}>
           <Text size="l" center={true}>
             {strings.signUp.signUpSuccess}
           </Text>
         </View>
       </SafeAreaView>
 
-      <View style={localStyles.promptContainer}>
+      <View style={styles.promptContainer}>
         <Text size="l" weight="l" center={true}>
           {strings.signUp.phonePrompt}
         </Text>
       </View>
 
-      <View style={localStyles.inputContainer}>
+      <View style={styles.inputContainer}>
         <Text weight="l">{strings.signUp.phoneNumber}: </Text>
         <PhoneInput
-          style={localStyles.input}
+          style={styles.input}
           placeholder={strings.signUp.phoneNumber}
           value={phoneNumber}
           onChange={setPhoneNumber}
@@ -72,7 +78,7 @@ const SignUpPhone = ({navigation, route}: {navigation: any; route: any}) => {
       ) : null}
       <TouchableOpacity
         style={[
-          localStyles.button,
+          styles.button,
           {
             backgroundColor: phoneNumber ? colors.accent : colors.darkgrey,
           },
@@ -87,7 +93,7 @@ const SignUpPhone = ({navigation, route}: {navigation: any; route: any}) => {
   );
 };
 
-const localStyles = StyleSheet.create({
+const styles = StyleSheet.create({
   messageContainer: {
     margin: s(20),
   },

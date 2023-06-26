@@ -122,10 +122,19 @@ type RootStackParamList = {
   Notifications: undefined;
   Login: undefined;
   SignUpName: undefined;
-  SignUpCreds: undefined;
-  SignUpPhone: undefined;
-  VerifyPhone: undefined;
-  SignUpInfo: undefined;
+  SignUpCreds: {
+    firstName: string;
+    lastName: string;
+  };
+  SignUpPhone: {
+    authToken: string;
+  };
+  VerifyPhone: {
+    authToken: string;
+  };
+  SignUpInfo: {
+    authToken: string;
+  };
   ForgotPassword: undefined;
 };
 

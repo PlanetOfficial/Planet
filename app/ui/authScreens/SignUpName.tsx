@@ -8,22 +8,22 @@ import {
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 
-import Icon from '../components/Icon';
-import Text from '../components/Text';
-
 import colors from '../../constants/colors';
 import icons from '../../constants/icons';
 import strings from '../../constants/strings';
-import styles from '../../constants/styles';
+import STYLES from '../../constants/styles';
+
+import Icon from '../components/Icon';
+import Text from '../components/Text';
 
 const SignUpName = ({navigation}: {navigation: any}) => {
   const [firstName, setFirstName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
 
   return (
-    <View style={styles.container}>
+    <View style={STYLES.container}>
       <SafeAreaView>
-        <View style={styles.header}>
+        <View style={STYLES.header}>
           <Icon
             size="m"
             icon={icons.back}
@@ -32,15 +32,15 @@ const SignUpName = ({navigation}: {navigation: any}) => {
         </View>
       </SafeAreaView>
 
-      <View style={localStyles.promptContainer}>
+      <View style={styles.promptContainer}>
         <Text size="l" weight="l" center={true}>
           {strings.signUp.namePrompt}
         </Text>
       </View>
 
-      <View style={localStyles.inputContainer}>
+      <View style={styles.inputContainer}>
         <TextInput
-          style={localStyles.input}
+          style={styles.input}
           placeholder={strings.signUp.firstName}
           value={firstName}
           autoCorrect={false}
@@ -48,7 +48,7 @@ const SignUpName = ({navigation}: {navigation: any}) => {
           placeholderTextColor={colors.darkgrey}
         />
         <TextInput
-          style={localStyles.input}
+          style={styles.input}
           placeholder={strings.signUp.lastName}
           value={lastName}
           autoCorrect={false}
@@ -58,7 +58,7 @@ const SignUpName = ({navigation}: {navigation: any}) => {
       </View>
       <TouchableOpacity
         style={[
-          localStyles.button,
+          styles.button,
           {
             backgroundColor:
               firstName.length === 0 || lastName.length === 0
@@ -81,7 +81,7 @@ const SignUpName = ({navigation}: {navigation: any}) => {
   );
 };
 
-const localStyles = StyleSheet.create({
+const styles = StyleSheet.create({
   promptContainer: {
     margin: s(40),
   },
