@@ -20,7 +20,6 @@ export const onVote = async (
   const response = await vote(event.id, destination.id, suggestion.id);
 
   if (response) {
-    // WARN: there used to be a eventDetail null check here
     const _myVotes = new Map<number, number>(myVotes);
     if (_myVotes.get(destination.id) === suggestion.id) {
       _myVotes.set(destination.id, -1);

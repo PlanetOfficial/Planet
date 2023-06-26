@@ -24,7 +24,7 @@ const Create = ({
 }: {
   navigation: any;
   route: {
-    params: {
+    params?: {
       members?: UserInfo[];
       destination?: Poi;
     };

@@ -18,7 +18,7 @@ interface Props {
   destination: Destination;
   displayingSuggestion: boolean;
   setInsertionDestination: (insertionDestination: Destination) => void;
-  suggestionRefs: any; // WARN: figure out type
+  suggestionRefs: React.MutableRefObject<Map<number, any>>;
   onSuggestionPress: (suggestion: Suggestion, destination: Destination) => void;
 }
 

@@ -48,7 +48,7 @@ interface Props {
   findPrimary: (suggestions: Suggestion[]) => Suggestion;
   selectedDestination: Destination | undefined;
   cardWidth: Animated.AnimatedInterpolation<string | number>;
-  suggestionRefs: any; // WARN: figure out type
+  suggestionRefs: React.MutableRefObject<Map<number, any>>;
   onSuggestionPress: (suggestion: Suggestion, destination: Destination) => void;
 }
 

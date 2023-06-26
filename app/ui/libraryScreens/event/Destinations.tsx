@@ -60,7 +60,7 @@ const Destinations: React.FC<Props> = ({
   const [animateFlag, setAnimateFlag] = useState<boolean>(false);
   const [selectedSuggestion, setSelectedSuggestion] = useState<Suggestion>();
   const [selectedDestination, setSelectedDestination] = useState<Destination>();
-  const suggestionRefs = useRef(new Map());
+  const suggestionRefs = useRef<Map<number, any>>(new Map());
   const cardWidth = animation.interpolate({
     inputRange: [0, 1],
     outputRange: [s(310), s(280)],

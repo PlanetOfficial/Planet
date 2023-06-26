@@ -88,10 +88,12 @@ type RootStackParamList = {
   NotificationSettings: undefined;
   PrivacySettings: undefined;
   ProfileSettings: undefined;
-  Create: {
-    members: UserInfo[] | undefined;
-    destination: PoiType | undefined;
-  };
+  Create:
+    | {
+        members: UserInfo[] | undefined;
+        destination: PoiType | undefined;
+      }
+    | undefined;
   CreateSearch: undefined;
   Event: {
     event: Event;
