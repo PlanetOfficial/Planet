@@ -48,8 +48,7 @@ Naming Scheme:
 
 <h1>Deployment</h1>
 
-1. Testing procedure for a release version
-Go to AppNavigation.tsx, do an exhaustive test with all screens and all possible buttons.
+1. Testing procedure for a release version: Go to AppNavigation.tsx, do an exhaustive test with all screens and all possible buttons.
 
 2. Update package.json to have correct version
 
