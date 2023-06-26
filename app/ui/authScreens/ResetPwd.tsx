@@ -23,11 +23,13 @@ const ResetPwd = ({
   route,
 }: {
   navigation: any;
-  route: {
-    params: {
-      authToken: string;
-    };
-  };
+  route: any;
+  // add this after merge
+  // route: {
+  //   params: {
+  //     authToken: string;
+  //   };
+  // };
 }) => {
   const [authToken] = useState<string>(route.params.authToken);
 

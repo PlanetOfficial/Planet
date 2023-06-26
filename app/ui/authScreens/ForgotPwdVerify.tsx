@@ -23,11 +23,13 @@ const ForgotPwdVerify = ({
   route,
 }: {
   navigation: any;
-  route: {
-    params: {
-      username: string;
-    };
-  };
+  route: any;
+  // add this after merge
+  // {
+  //   params: {
+  //     username: string;
+  //   };
+  // };
 }) => {
   const [username] = useState<string>(route.params.username);
 
