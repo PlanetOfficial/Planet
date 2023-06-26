@@ -35,8 +35,7 @@ const PoiCardXL: React.FC<Props> = ({
   onVote,
 }) => {
   return (
-    <Animated.View
-      style={[styles.container, STYLES.shadow, {width: width}]}>
+    <Animated.View style={[styles.container, STYLES.shadow, {width: width}]}>
       <Image
         style={styles.image}
         source={poi.photo ? {uri: poi.photo} : icons.placeholder}

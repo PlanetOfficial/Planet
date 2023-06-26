@@ -69,9 +69,7 @@ const Settings = ({navigation}: {navigation: any}) => {
       <ScrollView>
         {settingsItems.map((settingsItem, index) => (
           <View key={index}>
-            <TouchableOpacity
-              style={styles.row}
-              onPress={settingsItem.onPress}>
+            <TouchableOpacity style={styles.row} onPress={settingsItem.onPress}>
               <Icon size="l" icon={settingsItem.icon} color={colors.darkgrey} />
               <View style={STYLES.texts}>
                 <Text>{settingsItem.name}</Text>

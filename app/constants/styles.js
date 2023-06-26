@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   texts: {
     flex: 1,
     marginHorizontal: s(10),
-    alignItems: 'center',
+    justifyContent: 'center',
   },
   button: {
     position: 'absolute',

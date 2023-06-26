@@ -30,8 +30,8 @@ const Create = ({
     };
   };
 }) => {
-  const [eventTitle, setEventTitle] = useState<string>('');
-  const [date, setDate] = useState<string>('');
+  const [eventTitle, setEventTitle] = useState<string>();
+  const [date, setDate] = useState<string>();
   const [bookmarks, setBookmarks] = useState<Poi[]>([]);
   const [members, setMembers] = useState<UserInfo[]>([]);
   const [destinations, setDestinations] = useState<Poi[]>([]);
@@ -99,14 +99,16 @@ const Create = ({
 
   return (
     <View style={STYLES.container}>
-      <Header
-        navigation={navigation}
-        eventTitle={eventTitle}
-        setEventTitle={setEventTitle}
-        date={date}
-        setDate={setDate}
-        members={members}
-      />
+      {eventTitle && date ? (
+        <Header
+          navigation={navigation}
+          eventTitle={eventTitle}
+          setEventTitle={setEventTitle}
+          date={date}
+          setDate={setDate}
+          members={members}
+        />
+      ) : null}
       {destinations && destinations.length > 0 ? (
         <DestinationsList
           navigation={navigation}
@@ -128,13 +130,15 @@ const Create = ({
           </Text>
         </TouchableOpacity>
       )}
-      <SaveButton
-        navigation={navigation}
-        eventTitle={eventTitle}
-        date={date}
-        members={members}
-        destinations={destinations}
-      />
+      {eventTitle && date ? (
+        <SaveButton
+          navigation={navigation}
+          eventTitle={eventTitle}
+          date={date}
+          members={members}
+          destinations={destinations}
+        />
+      ) : null}
     </View>
   );
 };
