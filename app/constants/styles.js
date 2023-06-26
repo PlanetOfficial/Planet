@@ -56,6 +56,37 @@ const styles = StyleSheet.create({
   flip: {
     transform: [{rotate: '180deg'}],
   },
+  promptContainer: {
+    margin: s(40),
+    paddingHorizontal: s(20),
+  },
+  prompt: {
+    width: s(100),
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: s(30),
+    marginHorizontal: s(50),
+  },
+  input: {
+    flex: 1,
+    borderBottomWidth: 1,
+    borderColor: colors.darkgrey,
+    marginHorizontal: s(5),
+    paddingHorizontal: s(10),
+    paddingVertical: s(5),
+    fontFamily: 'Lato',
+  },
+  buttonBig: {
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: s(30),
+    width: s(150),
+    height: s(50),
+    borderRadius: s(25),
+  },
 });
 
 export default styles;

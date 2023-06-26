@@ -14,7 +14,7 @@ import Icon from '../components/Icon';
 import colors from '../../constants/colors';
 import icons from '../../constants/icons';
 import strings from '../../constants/strings';
-import styles from '../../constants/styles';
+import STYLES from '../../constants/styles';
 
 import {verifyCode} from '../../utils/api/authAPI';
 
@@ -50,9 +50,9 @@ const SignUpVerify = ({navigation, route}: {navigation: any; route: any}) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={STYLES.container}>
       <SafeAreaView>
-        <View style={styles.header}>
+        <View style={STYLES.header}>
           <Icon
             size="m"
             icon={icons.back}
@@ -61,15 +61,15 @@ const SignUpVerify = ({navigation, route}: {navigation: any; route: any}) => {
         </View>
       </SafeAreaView>
 
-      <View style={localStyles.promptContainer}>
+      <View style={STYLES.promptContainer}>
         <Text size="l" weight="l" center={true}>
           {strings.signUp.verifyPrompt}
         </Text>
       </View>
 
-      <View style={localStyles.inputContainer}>
+      <View style={styles.inputContainer}>
         <TextInput
-          style={localStyles.input}
+          style={styles.input}
           value={code}
           onChangeText={text =>
             setCode(text.replace(/[^0-9]/g, '').substring(0, 6))
@@ -85,7 +85,7 @@ const SignUpVerify = ({navigation, route}: {navigation: any; route: any}) => {
       ) : null}
       <TouchableOpacity
         style={[
-          localStyles.button,
+          STYLES.buttonBig,
           {
             backgroundColor:
               code.length !== 6 ? colors.darkgrey : colors.accent,
@@ -101,14 +101,7 @@ const SignUpVerify = ({navigation, route}: {navigation: any; route: any}) => {
   );
 };
 
-const localStyles = StyleSheet.create({
-  promptContainer: {
-    margin: s(40),
-    paddingHorizontal: s(20),
-  },
-  prompt: {
-    width: s(100),
-  },
+const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -127,15 +120,6 @@ const localStyles = StyleSheet.create({
     letterSpacing: s(10),
     fontSize: s(20),
     width: s(150),
-  },
-  button: {
-    alignSelf: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: s(30),
-    width: s(150),
-    height: s(50),
-    borderRadius: s(25),
   },
 });
 

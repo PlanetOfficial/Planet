@@ -1,11 +1,15 @@
 import React, {useState} from 'react';
-import {Alert, TextInput, TouchableOpacity} from 'react-native';
-import {View, StyleSheet} from 'react-native';
+import {Alert, SafeAreaView, TextInput, TouchableOpacity} from 'react-native';
+import {View} from 'react-native';
 
-import strings from '../../constants/strings';
 import colors from '../../constants/colors';
+import icons from '../../constants/icons';
+import strings from '../../constants/strings';
+import STYLES from '../../constants/styles';
+
+import Icon from '../components/Icon';
 import Text from '../components/Text';
-import {s} from 'react-native-size-matters';
+
 import {sendCodeForgotPwd} from '../../utils/api/authAPI';
 
 const ForgotPwd = ({navigation}: {navigation: any}) => {
@@ -32,9 +36,19 @@ const ForgotPwd = ({navigation}: {navigation: any}) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={STYLES.container}>
+      <SafeAreaView>
+        <View style={STYLES.header}>
+          <Icon
+            size="m"
+            icon={icons.back}
+            onPress={() => navigation.goBack()}
+          />
+        </View>
+      </SafeAreaView>
+
       <TextInput
-        style={styles.input}
+        style={STYLES.input}
         placeholder={strings.signUp.username}
         value={username}
         onChangeText={text => setUsername(text.toLowerCase())}
@@ -49,7 +63,7 @@ const ForgotPwd = ({navigation}: {navigation: any}) => {
       ) : null}
       <TouchableOpacity
         style={[
-          styles.button,
+          STYLES.buttonBig,
           {
             backgroundColor:
               username.length === 0 ? colors.darkgrey : colors.accent,
@@ -64,29 +78,5 @@ const ForgotPwd = ({navigation}: {navigation: any}) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  text: {
-    fontSize: 20,
-    fontWeight: '700',
-  },
-  input: {
-    flex: 1,
-    fontFamily: 'Lato',
-  },
-  button: {
-    alignSelf: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: s(150),
-    height: s(50),
-    borderRadius: s(25),
-  },
-});
 
 export default ForgotPwd;

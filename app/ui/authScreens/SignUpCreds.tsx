@@ -1,20 +1,13 @@
 import React, {useState} from 'react';
-import {
-  View,
-  SafeAreaView,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-} from 'react-native';
-import {s} from 'react-native-size-matters';
+import {View, SafeAreaView, TextInput, TouchableOpacity} from 'react-native';
 
 import Icon from '../components/Icon';
 import Text from '../components/Text';
 
 import icons from '../../constants/icons';
 import colors from '../../constants/colors';
-import styles from '../../constants/styles';
 import strings from '../../constants/strings';
+import STYLES from '../../constants/styles';
 
 import {signup} from '../../utils/api/authAPI';
 
@@ -82,9 +75,9 @@ const SignUpCreds = ({navigation, route}: {navigation: any; route: any}) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={STYLES.container}>
       <SafeAreaView>
-        <View style={styles.header}>
+        <View style={STYLES.header}>
           <Icon
             size="m"
             icon={icons.back}
@@ -93,18 +86,18 @@ const SignUpCreds = ({navigation, route}: {navigation: any; route: any}) => {
         </View>
       </SafeAreaView>
 
-      <View style={localStyles.promptContainer}>
+      <View style={STYLES.promptContainer}>
         <Text size="l" weight="l" center={true}>
           {strings.signUp.credPrompt}
         </Text>
       </View>
 
-      <View style={localStyles.inputContainer}>
-        <View style={localStyles.prompt}>
+      <View style={STYLES.inputContainer}>
+        <View style={STYLES.prompt}>
           <Text weight="l">{strings.signUp.username}: </Text>
         </View>
         <TextInput
-          style={localStyles.input}
+          style={STYLES.input}
           placeholder={strings.signUp.username}
           value={username}
           onChangeText={text => setUsername(text.toLowerCase())}
@@ -113,12 +106,12 @@ const SignUpCreds = ({navigation, route}: {navigation: any; route: any}) => {
           autoCorrect={false}
         />
       </View>
-      <View style={localStyles.inputContainer}>
-        <View style={localStyles.prompt}>
+      <View style={STYLES.inputContainer}>
+        <View style={STYLES.prompt}>
           <Text weight="l">{strings.login.password}: </Text>
         </View>
         <TextInput
-          style={localStyles.input}
+          style={STYLES.input}
           placeholder={strings.login.password}
           value={password}
           onChangeText={text => setPassword(text)}
@@ -126,12 +119,12 @@ const SignUpCreds = ({navigation, route}: {navigation: any; route: any}) => {
           secureTextEntry={true}
         />
       </View>
-      <View style={localStyles.inputContainer}>
-        <View style={localStyles.prompt}>
+      <View style={STYLES.inputContainer}>
+        <View style={STYLES.prompt}>
           <Text weight="l">{strings.signUp.confirmPassword}: </Text>
         </View>
         <TextInput
-          style={localStyles.input}
+          style={STYLES.input}
           placeholder={strings.signUp.confirmPassword}
           value={passwordConfirm}
           onChangeText={text => setPasswordConfirm(text)}
@@ -146,7 +139,7 @@ const SignUpCreds = ({navigation, route}: {navigation: any; route: any}) => {
       ) : null}
       <TouchableOpacity
         style={[
-          localStyles.button,
+          STYLES.buttonBig,
           {
             backgroundColor:
               username.length === 0 ||
@@ -169,39 +162,5 @@ const SignUpCreds = ({navigation, route}: {navigation: any; route: any}) => {
     </View>
   );
 };
-
-const localStyles = StyleSheet.create({
-  promptContainer: {
-    margin: s(40),
-    paddingHorizontal: s(20),
-  },
-  prompt: {
-    width: s(100),
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: s(30),
-    marginHorizontal: s(50),
-  },
-  input: {
-    flex: 1,
-    borderBottomWidth: 1,
-    borderColor: colors.darkgrey,
-    marginHorizontal: s(5),
-    paddingHorizontal: s(10),
-    paddingVertical: s(5),
-    fontFamily: 'Lato',
-  },
-  button: {
-    alignSelf: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: s(30),
-    width: s(150),
-    height: s(50),
-    borderRadius: s(25),
-  },
-});
 
 export default SignUpCreds;

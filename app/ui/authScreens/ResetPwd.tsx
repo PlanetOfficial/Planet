@@ -4,25 +4,31 @@ import {
   SafeAreaView,
   TextInput,
   TouchableOpacity,
-  StyleSheet,
   Alert,
 } from 'react-native';
-import {s} from 'react-native-size-matters';
-
-import Text from '../components/Text';
 
 import colors from '../../constants/colors';
-import styles from '../../constants/styles';
+import icons from '../../constants/icons';
 import strings from '../../constants/strings';
+import STYLES from '../../constants/styles';
+
+import Icon from '../components/Icon';
+import Text from '../components/Text';
 
 import {resetPassword} from '../../utils/api/authAPI';
 import {clearCaches} from '../../utils/CacheHelpers';
 
-/*
- * route params:
- * - authToken: string
- */
-const ResetPwd = ({navigation, route}: {navigation: any; route: any}) => {
+const ResetPwd = ({
+  navigation,
+  route,
+}: {
+  navigation: any;
+  route: {
+    params: {
+      authToken: string;
+    };
+  };
+}) => {
   const [authToken] = useState<string>(route.params.authToken);
 
   const [password, setPassword] = useState<string>('');
@@ -70,13 +76,22 @@ const ResetPwd = ({navigation, route}: {navigation: any; route: any}) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={localStyles.inputContainer}>
-        <View style={localStyles.prompt}>
-          <Text weight="l">{strings.login.password}: </Text>
+    <View style={STYLES.container}>
+      <SafeAreaView>
+        <View style={STYLES.header}>
+          <Icon
+            size="m"
+            icon={icons.back}
+            onPress={() => navigation.goBack()}
+          />
+        </View>
+      </SafeAreaView>
+      <View style={STYLES.inputContainer}>
+        <View style={STYLES.prompt}>
+          <Text weight="l">{strings.login.newPassword}: </Text>
         </View>
         <TextInput
-          style={localStyles.input}
+          style={STYLES.input}
           placeholder={strings.login.password}
           value={password}
           onChangeText={text => setPassword(text)}
@@ -84,12 +99,12 @@ const ResetPwd = ({navigation, route}: {navigation: any; route: any}) => {
           secureTextEntry={true}
         />
       </View>
-      <View style={localStyles.inputContainer}>
-        <View style={localStyles.prompt}>
+      <View style={STYLES.inputContainer}>
+        <View style={STYLES.prompt}>
           <Text weight="l">{strings.signUp.confirmPassword}: </Text>
         </View>
         <TextInput
-          style={localStyles.input}
+          style={STYLES.input}
           placeholder={strings.signUp.confirmPassword}
           value={passwordConfirm}
           onChangeText={text => setPasswordConfirm(text)}
@@ -104,7 +119,7 @@ const ResetPwd = ({navigation, route}: {navigation: any; route: any}) => {
       ) : null}
       <TouchableOpacity
         style={[
-          localStyles.button,
+          STYLES.buttonBig,
           {
             backgroundColor:
               password.length === 0 || password !== passwordConfirm
@@ -114,46 +129,10 @@ const ResetPwd = ({navigation, route}: {navigation: any; route: any}) => {
         ]}
         disabled={password.length === 0 || password !== passwordConfirm}
         onPress={() => handleNext()}>
-        <Text weight="b" color={colors.white}>
-          {strings.login.resetPassword}
-        </Text>
+        <Text color={colors.white}>{strings.login.resetPassword}</Text>
       </TouchableOpacity>
-    </SafeAreaView>
+    </View>
   );
 };
-
-const localStyles = StyleSheet.create({
-  promptContainer: {
-    margin: s(40),
-    paddingHorizontal: s(20),
-  },
-  prompt: {
-    width: s(100),
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: s(30),
-    marginHorizontal: s(50),
-  },
-  input: {
-    flex: 1,
-    borderBottomWidth: 1,
-    borderColor: colors.darkgrey,
-    marginHorizontal: s(5),
-    paddingHorizontal: s(10),
-    paddingVertical: s(5),
-    fontFamily: 'Lato',
-  },
-  button: {
-    alignSelf: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: s(30),
-    width: s(150),
-    height: s(50),
-    borderRadius: s(25),
-  },
-});
 
 export default ResetPwd;

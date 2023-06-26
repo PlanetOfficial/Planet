@@ -31,6 +31,7 @@ const strings = {
     username: 'Username',
     password: 'Password',
     missingInfo: 'Missing username or password',
+    newPassword: 'New Password',
     resetPassword: 'Reset Password',
     passwordResetSuccess: 'Password was successfully reset!',
   },
