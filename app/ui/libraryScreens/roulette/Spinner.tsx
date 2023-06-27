@@ -23,7 +23,6 @@ import {getCurrentSuggestion, onSpinPress} from './functions';
 interface Props {
   eventId: number;
   destination: Destination;
-  setDestination: (destination: Destination) => void;
   rotation: SharedValue<number>;
   isSpinning: boolean;
   setIsSpinning: (isSpinning: boolean) => void;
@@ -34,7 +33,6 @@ interface Props {
 const Spinner: React.FC<Props> = ({
   eventId,
   destination,
-  setDestination,
   rotation,
   isSpinning,
   setIsSpinning,

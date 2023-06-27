@@ -87,7 +87,7 @@ const Library = ({navigation}: {navigation: any}) => {
                     event: item,
                   })
                 }>
-                <EventRow event={item} self={self}/>
+                <EventRow event={item} self={self} />
               </TouchableOpacity>
             );
           }}

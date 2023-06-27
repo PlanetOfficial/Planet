@@ -66,7 +66,7 @@ const User = ({
 
   const initializeData = useCallback(async () => {
     const _self = await EncryptedStorage.getItem('username');
-    if(_self){
+    if (_self) {
       setSelf(_self);
     }
 
@@ -274,7 +274,7 @@ const User = ({
                   mutuals: mutuals,
                 })
               }>
-              <IconCluster users={mutuals} self={self}/>
+              <IconCluster users={mutuals} self={self} />
               <View style={mutualStyles.text}>
                 <Text
                   size="s"
@@ -315,7 +315,7 @@ const User = ({
                       event: item,
                     })
                   }>
-                  <EventRow event={item} self={self}/>
+                  <EventRow event={item} self={self} />
                 </TouchableOpacity>
               );
             }}

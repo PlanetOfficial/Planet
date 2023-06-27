@@ -60,12 +60,7 @@ export const onSpinPress = (
       const angle = parseInt((rotation.value % 360).toFixed(), 10);
       runOnJS(setCurrentAngle)(angle);
       runOnJS(setIsSpinning)(false);
-      runOnJS(handleSpinEnd)(
-        eventId,
-        angle,
-        destination,
-        totalVotes,
-      );
+      runOnJS(handleSpinEnd)(eventId, angle, destination, totalVotes);
     },
   );
 };
