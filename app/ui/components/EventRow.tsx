@@ -13,9 +13,10 @@ import {Event} from '../../utils/types';
 
 interface Props {
   event: Event;
+  self: string;
 }
 
-const EventRow: React.FC<Props> = ({event}) => {
+const EventRow: React.FC<Props> = ({event, self}) => {
   const date = new Date();
 
   return (
@@ -40,7 +41,7 @@ const EventRow: React.FC<Props> = ({event}) => {
           {event.vicinity}
         </Text>
       </View>
-      <IconCluster users={event.members} />
+      <IconCluster users={event.members} self={self} />
     </View>
   );
 };
@@ -49,7 +50,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     paddingHorizontal: s(20),
-    marginVertical: s(10),
+    marginVertical: s(13),
     alignItems: 'center',
     justifyContent: 'space-between',
   },

@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
@@ -48,6 +49,7 @@ const User = ({
 }) => {
   const [selectedIndex, setIndex] = useState<number>(0);
 
+  const [self, setSelf] = useState<string>('');
   const [userId, setUserId] = useState<number>(route.params.user.id);
   const [firstName, setFirstName] = useState<string>(
     route.params.user.first_name,
@@ -63,6 +65,11 @@ const User = ({
   const [mutualEvents, setMutualEvents] = useState<Event[]>([]);
 
   const initializeData = useCallback(async () => {
+    const _self = await EncryptedStorage.getItem('username');
+    if(_self){
+      setSelf(_self);
+    }
+
     setUserId(route.params.user.id);
     setFirstName(route.params.user.first_name);
     setLastName(route.params.user.last_name);
@@ -267,7 +274,7 @@ const User = ({
                   mutuals: mutuals,
                 })
               }>
-              <IconCluster users={mutuals} />
+              <IconCluster users={mutuals} self={self}/>
               <View style={mutualStyles.text}>
                 <Text
                   size="s"
@@ -308,7 +315,7 @@ const User = ({
                       event: item,
                     })
                   }>
-                  <EventRow event={item} />
+                  <EventRow event={item} self={self}/>
                 </TouchableOpacity>
               );
             }}

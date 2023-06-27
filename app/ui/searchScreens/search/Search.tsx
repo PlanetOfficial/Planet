@@ -17,7 +17,7 @@ import strings from '../../../constants/strings';
 import STYLES from '../../../constants/styles';
 
 import Text from '../../components/Text';
-import Separator from '../../components/Separator';
+import Separator from '../../components/SeparatorR';
 import PoiRow from '../../components/PoiRow';
 
 import {fetchUserLocation, handleBookmark} from '../../../utils/Misc';

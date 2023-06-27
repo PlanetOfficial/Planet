@@ -23,14 +23,21 @@ import EventRow from '../../components/EventRow';
 
 import {getEvents} from '../../../utils/api/eventAPI';
 import {Event} from '../../../utils/types';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Library = ({navigation}: {navigation: any}) => {
+  const [self, setSelf] = useState<string>('');
   const [events, setEvents] = useState<Event[]>([]);
 
   const [loading, setLoading] = useState<boolean>(true);
   const [refreshing, setRefreshing] = useState<boolean>(false);
 
   const loadData = async () => {
+    const _self = await AsyncStorage.getItem('username');
+    if (_self) {
+      setSelf(_self);
+    }
+
     const _events = await getEvents();
 
     if (_events) {
@@ -80,7 +87,7 @@ const Library = ({navigation}: {navigation: any}) => {
                     event: item,
                   })
                 }>
-                <EventRow event={item} />
+                <EventRow event={item} self={self}/>
               </TouchableOpacity>
             );
           }}
@@ -110,8 +117,9 @@ const Library = ({navigation}: {navigation: any}) => {
 
 const styles = StyleSheet.create({
   list: {
-    marginTop: s(10),
-    borderTopWidth: 0.5,
+    marginTop: s(15),
+    paddingTop: s(5),
+    borderTopWidth: 1,
     borderTopColor: colors.lightgrey,
   },
 });

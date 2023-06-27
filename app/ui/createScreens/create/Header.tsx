@@ -63,7 +63,12 @@ const Header: React.FC<Props> = ({
           <TextInput
             style={styles.title}
             value={eventTitle}
-            onChangeText={(text: string) => setEventTitle(text)}
+            onChangeText={text => setEventTitle(text)}
+            onEndEditing={e => {
+              if (e.nativeEvent.text === '') {
+                setEventTitle(strings.event.untitled);
+              }
+            }}
           />
           <TouchableOpacity onPress={() => setDatePickerOpen(true)}>
             <Text size="xs" weight="l" color={colors.accent} underline={true}>

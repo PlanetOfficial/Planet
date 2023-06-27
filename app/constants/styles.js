@@ -37,6 +37,11 @@ const styles = StyleSheet.create({
     height: 0.5,
     backgroundColor: colors.lightgrey,
   },
+  separatorExtendsToRight: {
+    marginLeft: s(20),
+    height: 0.5,
+    backgroundColor: colors.lightgrey,
+  },
   texts: {
     flex: 1,
     marginHorizontal: s(10),

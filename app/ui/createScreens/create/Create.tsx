@@ -99,7 +99,7 @@ const Create = ({
 
   return (
     <View style={STYLES.container}>
-      {eventTitle && date ? (
+      {eventTitle !== undefined && date ? (
         <Header
           navigation={navigation}
           eventTitle={eventTitle}

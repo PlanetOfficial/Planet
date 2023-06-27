@@ -135,7 +135,6 @@ const Spinner: React.FC<Props> = ({
           onSpinPress(
             eventId,
             destination,
-            setDestination,
             totalVotes,
             rotation,
             setIsSpinning,

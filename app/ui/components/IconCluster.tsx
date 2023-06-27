@@ -8,9 +8,9 @@ import UserIcon from './UserIcon';
 
 import {UserInfo} from '../../utils/types';
 
-const IconCluster = ({users}: {users: UserInfo[]}) => (
+const IconCluster = ({users, self}: {users: UserInfo[], self: string}) => (
   <View style={styles.iconCluster}>
-    {users.slice(0, 3).map(user => (
+    {users.filter((user: UserInfo) => user.username !== self).slice(0, 3).map(user => (
       <View key={user.id} style={styles.icon}>
         <UserIcon user={user} size={s(12)} />
       </View>

@@ -44,7 +44,6 @@ export const getCurrentSuggestion = (
 export const onSpinPress = (
   eventId: number,
   destination: Destination,
-  setDestination: (destination: Destination) => void,
   totalVotes: number,
   rotation: SharedValue<number>,
   setIsSpinning: (isSpinning: boolean) => void,
@@ -65,7 +64,6 @@ export const onSpinPress = (
         eventId,
         angle,
         destination,
-        setDestination,
         totalVotes,
       );
     },
@@ -76,17 +74,12 @@ export const handleSpinEnd = async (
   eventId: number,
   angle: number,
   destination: Destination,
-  setDestination: (destination: Destination) => void,
   totalVotes: number,
 ) => {
   const suggestion = getCurrentSuggestion(angle, destination, totalVotes);
 
   const spin = await spinRoulette(eventId, destination.id, suggestion.id);
-  if (spin) {
-    const _destination = {...destination};
-    _destination.spin_history.unshift(spin);
-    setDestination(_destination);
-  } else {
+  if (!spin) {
     Alert.alert(strings.error.error, strings.error.recordRouletteSpin);
   }
 

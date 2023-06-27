@@ -31,7 +31,9 @@ export const NavBar = () => {
         tabBarStyle: {
           elevation: 0,
           backgroundColor: colors.white,
-          marginHorizontal: s(20),
+          marginHorizontal: s(10),
+          borderBottomWidth: 0.5,
+          borderBottomColor: colors.lightgrey,
         },
       })}>
       <Tab.Screen name="Suggestions" component={Suggestions} />

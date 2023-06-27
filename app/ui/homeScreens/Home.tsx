@@ -16,7 +16,7 @@ import styles from '../../constants/styles';
 
 import Text from '../components/Text';
 import Icon from '../components/Icon';
-import Separator from '../components/Separator';
+import Separator from '../components/SeparatorR';
 import PoiCard from '../components/PoiCard';
 
 import {Coordinate, Poi} from '../../utils/types';
