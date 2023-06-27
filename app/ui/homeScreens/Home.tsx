@@ -20,11 +20,12 @@ import Separator from '../components/SeparatorR';
 import PoiCard from '../components/PoiCard';
 
 import {Coordinate, Poi} from '../../utils/types';
-import {fetchUserLocation} from '../../utils/Misc';
+import {fetchUserLocation, handleBookmark} from '../../utils/Misc';
 
 // TODO: THIS PAGE IS INCOMPLETE
 const Home = ({navigation}: {navigation: any}) => {
   const [location, setLocation] = useState<Coordinate>();
+  const [bookmarks, setBookmarks] = useState<Poi[]>([]);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', async () => {
@@ -98,7 +99,7 @@ const Home = ({navigation}: {navigation: any}) => {
                     poi={poi}
                     bookmarked={false}
                     handleBookmark={(p: Poi) => {
-                      console.log('handle bookmark: ', p.name);
+                      handleBookmark(p, bookmarks, setBookmarks);
                     }}
                   />
                 </TouchableOpacity>
