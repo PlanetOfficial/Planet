@@ -57,7 +57,6 @@ const ProfileBody = ({navigation}: {navigation: any}) => {
     const _friendsCount = await getFriendCount();
     if (_friendsCount) {
       setFriendsCount(_friendsCount);
-      console.log(_friendsCount);
     } else {
       Alert.alert(strings.error.error, strings.error.loadFriendsList);
     }
