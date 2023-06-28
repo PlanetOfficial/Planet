@@ -55,14 +55,14 @@ const styles = StyleSheet.create({
     bottom: s(40),
     borderRadius: s(10),
     backgroundColor: colors.accent,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 1,
     },
     shadowOpacity: 0.29,
     shadowRadius: 4.65,
-    
+
     elevation: 7,
   },
   shadow: {

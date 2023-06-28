@@ -50,7 +50,7 @@ const Button: React.FC<Props> = ({navigation, destination, mode}) => {
           );
         }
       }}>
-      <Text size="m" weight='b' color={colors.white}>
+      <Text size="m" weight="b" color={colors.white}>
         {getButtonString(mode)}
       </Text>
     </TouchableOpacity>
