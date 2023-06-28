@@ -32,7 +32,6 @@ const SaveButton: React.FC<Props> = ({
     <TouchableOpacity
       style={[
         STYLES.button,
-        STYLES.shadow,
         {
           backgroundColor:
             destinations && destinations.length > 0

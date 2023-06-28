@@ -20,7 +20,7 @@ interface Props {
 const Button: React.FC<Props> = ({navigation, destination, mode}) => {
   return (
     <TouchableOpacity
-      style={[STYLES.button, STYLES.shadow]}
+      style={STYLES.button}
       onPress={() => {
         if (mode === 'create') {
           navigation.navigate('Create', {
@@ -50,7 +50,7 @@ const Button: React.FC<Props> = ({navigation, destination, mode}) => {
           );
         }
       }}>
-      <Text size="m" color={colors.white}>
+      <Text size="m" weight='b' color={colors.white}>
         {getButtonString(mode)}
       </Text>
     </TouchableOpacity>

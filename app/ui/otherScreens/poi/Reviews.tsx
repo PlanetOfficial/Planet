@@ -35,7 +35,7 @@ const Reviews: React.FC<Props> = ({reviews}) => {
               </Text>
             </View>
           </View>
-          <Text size="s" weight="l">
+          <Text size="s" weight="l" lineHeight={s(20)}>
             {review.text}
           </Text>
         </View>
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
   row: {
     borderTopWidth: 0.5,
     borderColor: colors.grey,
-    padding: s(10),
+    padding: s(12),
   },
   reviewerContainer: {
     flexDirection: 'row',

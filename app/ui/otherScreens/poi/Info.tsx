@@ -87,6 +87,7 @@ const Info: React.FC<Props> = ({destination, destinationDetails}) => {
           </View>
           <Icon
             icon={icons.map}
+            padding={1}
             button={true}
             onPress={() => handleMapPress(destination)}
           />
@@ -104,7 +105,6 @@ const Info: React.FC<Props> = ({destination, destinationDetails}) => {
           </View>
           <Icon
             icon={icons.call}
-            padding={-2}
             button={true}
             onPress={() => handleCallPress(destinationDetails)}
           />
@@ -122,7 +122,6 @@ const Info: React.FC<Props> = ({destination, destinationDetails}) => {
           </View>
           <Icon
             icon={icons.open}
-            padding={-2}
             button={true}
             onPress={() => handleWebsitePress(destinationDetails)}
           />
@@ -162,7 +161,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     borderTopWidth: 0.5,
     borderColor: colors.grey,
-    padding: s(10),
+    padding: s(12),
   },
   texts: {
     flex: 1,
@@ -173,7 +172,7 @@ const styles = StyleSheet.create({
     marginLeft: s(5),
   },
   drop: {
-    marginRight: s(10),
+    marginRight: s(7),
   },
 });
 

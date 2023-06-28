@@ -71,7 +71,7 @@ const Overview: React.FC<Props> = ({destination, destinationDetails}) => {
       </View>
       {destinationDetails.description ? (
         <View style={styles.description}>
-          <Text size="s" weight="l">
+          <Text size="s" weight="l" lineHeight={s(20)}>
             {destinationDetails.description}
           </Text>
         </View>
@@ -83,7 +83,7 @@ const Overview: React.FC<Props> = ({destination, destinationDetails}) => {
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: s(20),
-    marginVertical: s(10),
+    marginVertical: s(5),
   },
   top: {
     flexDirection: 'row',
