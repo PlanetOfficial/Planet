@@ -88,7 +88,7 @@ const SpinHistory = ({
               <TouchableOpacity
                 style={styles.user}
                 onPress={() =>
-                  navigation.navigate('User', {
+                  navigation.push('User', {
                     user: item.spinner,
                   })
                 }>

@@ -23,7 +23,7 @@ const Members: React.FC<Props> = ({navigation, event, eventDetail}) => {
     <View style={styles.container}>
       {eventDetail.members.map((member: UserInfo) => (
         <TouchableOpacity
-          onPress={() => navigation.navigate('User', {user: member})}
+          onPress={() => navigation.push('User', {user: member})}
           key={member.id}
           style={[styles.user, styles.border]}>
           <View style={styles.profilePic}>

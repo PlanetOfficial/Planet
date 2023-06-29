@@ -106,7 +106,7 @@ const Friends = ({navigation}: {navigation: any}) => {
               <TouchableOpacity
                 style={userStyles.container}
                 onPress={() =>
-                  navigation.navigate('User', {
+                  navigation.push('User', {
                     user: item,
                   })
                 }>

@@ -62,7 +62,7 @@ const Mutuals = ({
           <TouchableOpacity
             style={userStyles.container}
             onPress={() =>
-              navigation.navigate('User', {
+              navigation.push('User', {
                 user: item,
               })
             }>

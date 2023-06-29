@@ -62,7 +62,7 @@ const Info: React.FC<Props> = ({
             <TouchableOpacity
               style={styles.user}
               onPress={() =>
-                navigation.navigate('User', {
+                navigation.push('User', {
                   user: item,
                 })
               }>
