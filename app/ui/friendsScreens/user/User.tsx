@@ -20,7 +20,6 @@ import STYLES, {sctStyles} from '../../../constants/styles';
 
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
-import Separator from '../../components/Separator';
 import EventRow from '../../components/EventRow';
 
 import {Event, UserInfo} from '../../../utils/types';
@@ -324,7 +323,6 @@ const User = ({
                 <Text>{strings.friends.noMutualEventsFound}</Text>
               </View>
             }
-            ItemSeparatorComponent={Separator}
             keyExtractor={(item: Event) => item.id.toString()}
           />
         </>
