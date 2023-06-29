@@ -90,7 +90,7 @@ const Requests = ({navigation}: {navigation: any}) => {
 
   return loading ? (
     <View style={[STYLES.center, STYLES.container]}>
-      <ActivityIndicator size="small" color={colors.accent} />
+      <ActivityIndicator size="small" color={colors.primary} />
     </View>
   ) : (
     <FlatList
@@ -127,7 +127,7 @@ const Requests = ({navigation}: {navigation: any}) => {
             <Icon
               size="m"
               icon={icons.check}
-              color={colors.accent}
+              color={colors.primary}
               onPress={() => handleAcceptRequest(item.id)}
             />
           </View>
@@ -199,7 +199,7 @@ const Requests = ({navigation}: {navigation: any}) => {
             setRefreshing(true);
             fetchRequests();
           }}
-          tintColor={colors.accent}
+          tintColor={colors.primary}
         />
       }
     />
@@ -248,7 +248,7 @@ const userStyles = StyleSheet.create({
   add: {
     width: '70%',
     height: '70%',
-    tintColor: colors.accent,
+    tintColor: colors.primary,
   },
 });
 

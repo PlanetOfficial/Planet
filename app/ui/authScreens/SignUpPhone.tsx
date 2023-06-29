@@ -80,7 +80,7 @@ const SignUpPhone = ({
         style={[
           styles.button,
           {
-            backgroundColor: phoneNumber ? colors.accent : colors.darkgrey,
+            backgroundColor: phoneNumber ? colors.primary : colors.darkgrey,
           },
         ]}
         disabled={!phoneNumber}

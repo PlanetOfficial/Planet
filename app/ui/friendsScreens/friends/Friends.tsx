@@ -94,7 +94,7 @@ const Friends = ({navigation}: {navigation: any}) => {
       {searching ? (
         loading ? (
           <View style={[STYLES.center, STYLES.container]}>
-            <ActivityIndicator size="small" color={colors.accent} />
+            <ActivityIndicator size="small" color={colors.primary} />
           </View>
         ) : (
           <FlatList

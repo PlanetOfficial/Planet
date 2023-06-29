@@ -71,7 +71,7 @@ const Header: React.FC<Props> = ({
             }}
           />
           <TouchableOpacity onPress={() => setDatePickerOpen(true)}>
-            <Text size="xs" weight="l" color={colors.accent} underline={true}>
+            <Text size="xs" weight="l" color={colors.primary} underline={true}>
               {date}
             </Text>
           </TouchableOpacity>

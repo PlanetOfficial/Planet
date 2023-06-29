@@ -47,7 +47,7 @@ const FriendsList = ({navigation}: {navigation: any}) => {
 
   return loading ? (
     <View style={[STYLES.center, STYLES.container]}>
-      <ActivityIndicator size="small" color={colors.accent} />
+      <ActivityIndicator size="small" color={colors.primary} />
     </View>
   ) : (
     <FlatList
@@ -94,7 +94,7 @@ const FriendsList = ({navigation}: {navigation: any}) => {
             setRefreshing(true);
             fetchFriends();
           }}
-          tintColor={colors.accent}
+          tintColor={colors.primary}
         />
       }
     />

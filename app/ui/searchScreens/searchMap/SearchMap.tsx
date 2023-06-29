@@ -70,7 +70,7 @@ const SearchMap = ({
               r={s(148)}
               stroke={colors.white}
               strokeWidth={4}
-              fill={colors.accent}
+              fill={colors.primary}
               fillOpacity={0.3}
             />
           </Svg>
@@ -106,7 +106,7 @@ const SearchMap = ({
               Alert.alert(strings.search.tooFar, strings.search.tooFarMessage);
             }
           }}>
-          <Text size="s" color={colors.accent}>
+          <Text size="s" color={colors.primary}>
             {strings.main.done}
           </Text>
         </TouchableOpacity>

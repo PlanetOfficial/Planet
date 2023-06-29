@@ -75,7 +75,7 @@ const Home = ({navigation}: {navigation: any}) => {
                     location: location,
                   })
                 }>
-                <Text size="s" color={colors.accent}>
+                <Text size="s" color={colors.primary}>
                   {strings.main.seeAll}
                 </Text>
               </TouchableOpacity>

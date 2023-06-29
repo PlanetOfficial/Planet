@@ -125,7 +125,7 @@ const Create = ({
             setInsertionIndex(0);
             navigation.navigate('CreateSearch');
           }}>
-          <Text size="l" weight="b" color={colors.accent}>
+          <Text size="l" weight="b" color={colors.primary}>
             {strings.event.addDestination}
           </Text>
         </TouchableOpacity>

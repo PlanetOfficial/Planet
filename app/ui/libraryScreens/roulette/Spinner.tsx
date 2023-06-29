@@ -102,8 +102,8 @@ const Spinner: React.FC<Props> = ({
                           key: index,
                           value: _suggestion.votes.length,
                           svg: {
-                            fill: colors.accentShades[
-                              index % colors.accentShades.length
+                            fill: colors.primaryShades[
+                              index % colors.primaryShades.length
                             ],
                           },
                         };
@@ -114,7 +114,7 @@ const Spinner: React.FC<Props> = ({
               </View>
             </Animated.View>
             <View style={styles.numContainer}>
-              <Text color={colors.accent} size="xl" weight="b">
+              <Text color={colors.primary} size="xl" weight="b">
                 {currentSuggestion.votes.length}
               </Text>
               <View style={styles.separater} />
@@ -126,7 +126,7 @@ const Spinner: React.FC<Props> = ({
       <TouchableOpacity
         style={[
           styles.button,
-          {backgroundColor: isSpinning ? colors.grey : colors.accent},
+          {backgroundColor: isSpinning ? colors.grey : colors.primary},
         ]}
         disabled={isSpinning}
         onPress={() =>
@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: s(20),
     paddingVertical: s(10),
     borderRadius: s(10),
-    backgroundColor: colors.accent,
+    backgroundColor: colors.primary,
   },
 });
 

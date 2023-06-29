@@ -130,7 +130,7 @@ const Destinations: React.FC<Props> = ({
       <TouchableOpacity
         style={destinationStyles.addContainer}
         onPress={() => navigation.navigate('AddSearch')}>
-        <Icon size="l" icon={icons.add} color={colors.accent} />
+        <Icon size="l" icon={icons.add} color={colors.primary} />
         <View style={STYLES.texts}>
           <Text size="s">{strings.event.addDestination}</Text>
         </View>

@@ -10,14 +10,14 @@ const AddSeparator = () => (
       y1={s(20)}
       x2={s(162.5)}
       y2={s(20)}
-      stroke={colors.accent}
+      stroke={colors.primary}
       strokeWidth={s(1)}
     />
     <Circle
       cx={s(175)}
       cy={s(20)}
       r={s(12.5)}
-      stroke={colors.accent}
+      stroke={colors.primary}
       strokeWidth={s(1)}
       fill="none"
     />
@@ -26,7 +26,7 @@ const AddSeparator = () => (
       y1={s(14)}
       x2={s(175)}
       y2={s(26)}
-      stroke={colors.accent}
+      stroke={colors.primary}
       strokeWidth={s(2)}
       strokeLinecap="round"
     />
@@ -35,7 +35,7 @@ const AddSeparator = () => (
       y1={s(20)}
       x2={s(181)}
       y2={s(20)}
-      stroke={colors.accent}
+      stroke={colors.primary}
       strokeWidth={s(2)}
       strokeLinecap="round"
     />
@@ -44,7 +44,7 @@ const AddSeparator = () => (
       y1={s(20)}
       x2={s(330)}
       y2={s(20)}
-      stroke={colors.accent}
+      stroke={colors.primary}
       strokeWidth={s(1)}
     />
   </Svg>

@@ -63,7 +63,7 @@ const SignUpName = ({navigation}: {navigation: any}) => {
             backgroundColor:
               firstName.length === 0 || lastName.length === 0
                 ? colors.darkgrey
-                : colors.accent,
+                : colors.primary,
           },
         ]}
         disabled={firstName.length === 0 || lastName.length === 0}

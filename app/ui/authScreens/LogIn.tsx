@@ -78,7 +78,7 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
   return (
     <View style={styles.container}>
       <LinearGradient
-        colors={[colors.white, colors.accentLight]}
+        colors={[colors.white, colors.primaryLight]}
         style={styles.container}
         start={{x: 0, y: 0}}
         end={{x: 1, y: 1}}
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
     fontSize: s(75),
     fontWeight: '900',
     fontFamily: 'Lato',
-    color: colors.accent,
+    color: colors.primary,
   },
   input: {
     paddingHorizontal: s(25),
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
     width: s(150),
     height: s(50),
     borderRadius: s(25),
-    backgroundColor: colors.accent,
+    backgroundColor: colors.primary,
   },
 });
 

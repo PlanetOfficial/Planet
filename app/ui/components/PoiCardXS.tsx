@@ -30,7 +30,7 @@ const PoiCardXS: React.FC<Props> = ({poi}) => {
         <Text
           size="xs"
           numberOfLines={1}
-          color={colors.accent}>{`★ ${poi.rating}`}</Text>
+          color={colors.primary}>{`★ ${poi.rating}`}</Text>
       </View>
     </View>
   );

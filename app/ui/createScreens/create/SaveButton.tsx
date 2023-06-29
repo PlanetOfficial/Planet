@@ -35,7 +35,7 @@ const SaveButton: React.FC<Props> = ({
         {
           backgroundColor:
             destinations && destinations.length > 0
-              ? colors.accent
+              ? colors.primary
               : colors.grey,
         },
       ]}

@@ -18,13 +18,15 @@ export const NavBar = () => {
         tabBarShowLabel: true,
         headerShown: false,
         tabBarIndicatorStyle: {
-          backgroundColor: colors.accent,
+          backgroundColor: colors.primary,
         },
         tabBarLabelStyle: {
           textTransform: 'none',
           fontSize: s(12),
           fontWeight: '500',
         },
+        tabBarActiveTintColor: colors.primary,
+        tabBarInactiveTintColor: colors.darkgrey,
         tabBarItemStyle: {
           margin: -s(5),
         },
@@ -33,7 +35,7 @@ export const NavBar = () => {
           backgroundColor: colors.white,
           marginHorizontal: s(10),
           borderBottomWidth: 0.5,
-          borderBottomColor: colors.lightgrey,
+          borderBottomColor: colors.grey,
         },
       })}>
       <Tab.Screen name="Suggestions" component={Suggestions} />

@@ -140,7 +140,7 @@ const AddFriend = ({
       {searching ? (
         loading ? (
           <View style={[STYLES.center, STYLES.container]}>
-            <ActivityIndicator size="small" color={colors.accent} />
+            <ActivityIndicator size="small" color={colors.primary} />
           </View>
         ) : (
           <FlatList
@@ -185,7 +185,7 @@ const AddFriend = ({
                       ? icons.selected
                       : icons.unselected
                   }
-                  color={colors.accent}
+                  color={colors.primary}
                 />
               </TouchableOpacity>
             )}
@@ -244,7 +244,7 @@ const AddFriend = ({
                         ? icons.selected
                         : icons.unselected
                     }
-                    color={colors.accent}
+                    color={colors.primary}
                   />
                 </TouchableOpacity>
               ) : null
@@ -265,7 +265,7 @@ const AddFriend = ({
                   setRefreshing(true);
                   fetchFriends();
                 }}
-                tintColor={colors.accent}
+                tintColor={colors.primary}
               />
             }
           />
@@ -313,7 +313,7 @@ const localStyles = StyleSheet.create({
     bottom: s(40),
     height: s(50),
     borderRadius: s(10),
-    backgroundColor: colors.accent,
+    backgroundColor: colors.primary,
   },
 });
 

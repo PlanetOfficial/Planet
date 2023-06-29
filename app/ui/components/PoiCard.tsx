@@ -44,7 +44,7 @@ const PoiCard: React.FC<Props> = ({
           size="m"
           disabled={disabled}
           icon={bookmarked ? icons.bookmarked : icons.bookmark}
-          color={bookmarked ? colors.accent : colors.black}
+          color={bookmarked ? colors.primary : colors.black}
           onPress={() => handleBookmark(poi)}
         />
       </View>

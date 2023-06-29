@@ -57,7 +57,7 @@ const Suggestions: React.FC<Props> = ({
             setInsertionDestination(destination);
             navigation.navigate('SuggestSearch');
           }}>
-          <Icon icon={icons.add} size="xl" color={colors.accent} />
+          <Icon icon={icons.add} size="xl" color={colors.primary} />
         </TouchableOpacity>
       </View>
     </View>
@@ -69,7 +69,7 @@ const Suggestions: React.FC<Props> = ({
         setInsertionDestination(destination);
         navigation.navigate('SuggestSearch');
       }}>
-      <Text color={colors.accent} weight="b">
+      <Text color={colors.primary} weight="b">
         {strings.event.addSuggestion}
       </Text>
     </TouchableOpacity>

@@ -90,7 +90,7 @@ const PoiRow: React.FC<Props> = ({
       <Icon
         size="l"
         icon={bookmarked ? icons.bookmarked : icons.bookmark}
-        color={bookmarked ? colors.accent : colors.black}
+        color={bookmarked ? colors.primary : colors.black}
         onPress={() => handleBookmark(poi)}
       />
     </View>

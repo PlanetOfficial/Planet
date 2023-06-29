@@ -41,7 +41,7 @@ const Header: React.FC<Props> = ({
         />
         <View style={STYLES.texts}>
           <Text>{eventDetail ? eventDetail.name : event.name}</Text>
-          <Text size="xs" weight="l" color={colors.accent}>
+          <Text size="xs" weight="l" color={colors.primary}>
             {moment(eventDetail ? eventDetail.datetime : event.datetime)
               .add(date.getTimezoneOffset(), 'minutes')
               .format('MMM Do, h:mm a')}

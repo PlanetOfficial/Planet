@@ -132,7 +132,7 @@ const NotificationSettings = ({navigation}: {navigation: any}) => {
                 </View>
               </View>
               <Switch
-                trackColor={{false: colors.grey, true: colors.accent}}
+                trackColor={{false: colors.grey, true: colors.primary}}
                 thumbColor={colors.white}
                 ios_backgroundColor={colors.grey}
                 onValueChange={setting.onPress}

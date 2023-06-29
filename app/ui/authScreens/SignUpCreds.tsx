@@ -159,7 +159,7 @@ const SignUpCreds = ({
               password.length === 0 ||
               password !== passwordConfirm
                 ? colors.darkgrey
-                : colors.accent,
+                : colors.primary,
           },
         ]}
         disabled={

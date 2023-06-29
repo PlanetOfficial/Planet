@@ -89,7 +89,7 @@ const ProfileBody = ({navigation}: {navigation: any}) => {
             @{username}
           </Text>
           <TouchableOpacity onPress={() => navigation.navigate('Friends')}>
-            <Text size="s" color={colors.accent}>
+            <Text size="s" color={colors.primary}>
               {(friendsCount ? friendsCount : '') +
                 ' ' +
                 strings.friends.friends}

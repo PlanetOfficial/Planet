@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
   add: {
     width: '70%',
     height: '70%',
-    tintColor: colors.accent,
+    tintColor: colors.primary,
   },
   border: {
     borderBottomWidth: 0.5,

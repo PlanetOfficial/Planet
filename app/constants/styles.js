@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     paddingVertical: s(10),
     bottom: s(40),
     borderRadius: s(10),
-    backgroundColor: colors.accent,
+    backgroundColor: colors.primary,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -98,7 +98,7 @@ export const sctStyles = StyleSheet.create({
   },
   activeTab: {
     borderBottomWidth: 2,
-    borderBottomColor: colors.accent,
+    borderBottomColor: colors.primary,
     backgroundColor: colors.white,
   },
   firstTab: {
@@ -112,7 +112,7 @@ export const sctStyles = StyleSheet.create({
   },
   activeText: {
     marginBottom: 0,
-    color: colors.accent,
+    color: colors.primary,
   },
 });
 

@@ -117,7 +117,7 @@ const SignUpInfo = ({
         style={[
           styles.button,
           {
-            backgroundColor: age && gender ? colors.accent : colors.darkgrey,
+            backgroundColor: age && gender ? colors.primary : colors.darkgrey,
           },
         ]}
         disabled={!age || !gender}

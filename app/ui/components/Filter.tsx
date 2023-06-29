@@ -167,7 +167,7 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
                           ? icons.checked
                           : icons.selected
                       }
-                      color={colors.accent}
+                      color={colors.primary}
                     />
                   ) : (
                     <Icon
@@ -176,7 +176,7 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
                           ? icons.unchecked
                           : icons.unselected
                       }
-                      color={colors.accent}
+                      color={colors.primary}
                     />
                   )}
                   <View style={styles.paddingLeft}>

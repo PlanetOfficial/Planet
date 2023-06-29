@@ -94,7 +94,7 @@ const VerifyPhone = ({
           styles.button,
           {
             backgroundColor:
-              code.length !== 6 ? colors.darkgrey : colors.accent,
+              code.length !== 6 ? colors.darkgrey : colors.primary,
           },
         ]}
         disabled={code.length !== 6}

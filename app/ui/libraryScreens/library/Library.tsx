@@ -73,7 +73,7 @@ const Library = ({navigation}: {navigation: any}) => {
 
       {loading ? (
         <View style={STYLES.center}>
-          <ActivityIndicator size="small" color={colors.accent} />
+          <ActivityIndicator size="small" color={colors.primary} />
         </View>
       ) : (
         <FlatList
@@ -106,7 +106,7 @@ const Library = ({navigation}: {navigation: any}) => {
             <RefreshControl
               refreshing={refreshing}
               onRefresh={() => loadData()}
-              tintColor={colors.accent}
+              tintColor={colors.primary}
             />
           }
         />

@@ -62,7 +62,7 @@ export const NavBar = () => {
           <Image
             style={[
               styles.icon,
-              {tintColor: focused ? colors.accent : colors.darkgrey},
+              {tintColor: focused ? colors.primary : colors.darkgrey},
             ]}
             source={source}
           />
@@ -75,7 +75,7 @@ export const NavBar = () => {
 
     return (
       <Svg style={styles.button}>
-        <Circle cx={s(24)} cy={s(24)} r={s(24)} fill={colors.accent} />
+        <Circle cx={s(24)} cy={s(24)} r={s(24)} fill={colors.primary} />
         <Line
           x1={s(24)}
           y1={s(16)}

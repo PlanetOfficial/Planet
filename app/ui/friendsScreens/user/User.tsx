@@ -207,7 +207,7 @@ const User = ({
                   <TouchableOpacity
                     style={{
                       ...profileStyles.button,
-                      backgroundColor: colors.accent,
+                      backgroundColor: colors.primary,
                     }}
                     onPress={handleFriendRequest}>
                     <Text size="s" color={colors.white}>
@@ -254,7 +254,7 @@ const User = ({
                     <TouchableOpacity
                       style={{
                         ...profileStyles.button,
-                        backgroundColor: colors.accent,
+                        backgroundColor: colors.primary,
                       }}
                       onPress={handleAcceptRequest}>
                       <Text size="s" color={colors.white}>
@@ -404,7 +404,7 @@ const sctStyles = StyleSheet.create({
   },
   activeTab: {
     borderBottomWidth: 2,
-    borderBottomColor: colors.accent,
+    borderBottomColor: colors.primary,
     backgroundColor: colors.white,
   },
   firstTab: {
@@ -418,7 +418,7 @@ const sctStyles = StyleSheet.create({
   },
   activeText: {
     marginBottom: 0,
-    color: colors.accent,
+    color: colors.primary,
   },
 });
 

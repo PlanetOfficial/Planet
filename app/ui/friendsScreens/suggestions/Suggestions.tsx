@@ -52,7 +52,7 @@ const Friends = ({navigation}: {navigation: any}) => {
 
   return loading ? (
     <View style={[STYLES.center, STYLES.container]}>
-      <ActivityIndicator size="small" color={colors.accent} />
+      <ActivityIndicator size="small" color={colors.primary} />
     </View>
   ) : (
     <FlatList
@@ -76,7 +76,7 @@ const Friends = ({navigation}: {navigation: any}) => {
               numberOfLines={1}>{`${item.first_name} ${item.last_name}`}</Text>
             <Text size="s" weight="l" color={colors.darkgrey} numberOfLines={1}>
               {'@' + item.username + '・'}
-              <Text size="s" weight="l" color={colors.accent} numberOfLines={1}>
+              <Text size="s" weight="l" color={colors.primary} numberOfLines={1}>
                 {item.count + ' mutuals'}
               </Text>
             </Text>
@@ -97,7 +97,7 @@ const Friends = ({navigation}: {navigation: any}) => {
             setRefreshingFriends(true);
             fetchSuggestions();
           }}
-          tintColor={colors.accent}
+          tintColor={colors.primary}
         />
       }
     />
@@ -132,7 +132,7 @@ const userStyles = StyleSheet.create({
   add: {
     width: '70%',
     height: '70%',
-    tintColor: colors.accent,
+    tintColor: colors.primary,
   },
 });
 

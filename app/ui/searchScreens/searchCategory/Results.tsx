@@ -78,7 +78,7 @@ const Results: React.FC<Props> = ({
         <RefreshControl
           refreshing={refreshing}
           onRefresh={() => loadData()}
-          tintColor={colors.accent}
+          tintColor={colors.primary}
         />
       }
     />

@@ -43,7 +43,7 @@ const PoiCardXL: React.FC<Props> = ({
       <View style={styles.header}>
         <View style={styles.infoContainer}>
           <Text numberOfLines={1}>{poi.name}</Text>
-          <Text size="xs" color={colors.accent} numberOfLines={1}>
+          <Text size="xs" color={colors.primary} numberOfLines={1}>
             {getInfoString(poi)}
           </Text>
         </View>
@@ -52,7 +52,7 @@ const PoiCardXL: React.FC<Props> = ({
             size="m"
             disabled={disabled}
             icon={bookmarked ? icons.bookmarked : icons.bookmark}
-            color={bookmarked ? colors.accent : colors.black}
+            color={bookmarked ? colors.primary : colors.black}
             onPress={() => handleBookmark(poi)}
           />
         ) : options ? (
@@ -65,7 +65,7 @@ const PoiCardXL: React.FC<Props> = ({
             size="m"
             disabled={disabled}
             icon={icons.like}
-            color={voted ? colors.accent : colors.lightgrey}
+            color={voted ? colors.primary : colors.lightgrey}
             onPress={onVote}
           />
         </View>

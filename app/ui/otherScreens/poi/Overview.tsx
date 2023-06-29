@@ -26,7 +26,7 @@ const Overview: React.FC<Props> = ({destination, destinationDetails}) => {
     <View style={styles.container}>
       <View style={styles.top}>
         <View style={styles.hours}>
-          <Text color={colors.accent}>{`★ ${destination.rating}/5`}</Text>
+          <Text color={colors.primary}>{`★ ${destination.rating}/5`}</Text>
           <Text size="xs" weight="l" color={colors.darkgrey}>
             {`(${destination.rating_count} ${strings.poi.reviews})`}
           </Text>
@@ -35,7 +35,7 @@ const Overview: React.FC<Props> = ({destination, destinationDetails}) => {
         <View style={styles.price}>
           {destination.price ? (
             <>
-              <Text size="m" weight="b" color={colors.accent}>
+              <Text size="m" weight="b" color={colors.primary}>
                 {'$'.repeat(destination.price)}
               </Text>
               <Text size="m" weight="b" color={colors.grey}>

@@ -183,7 +183,7 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
                     ],
                   );
                 },
-                color: colors.accent,
+                color: colors.primary,
                 disabled: false,
               },
               {
