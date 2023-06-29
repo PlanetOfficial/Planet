@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
     zIndex: 600,
     width: s(7),
     height: s(30),
-    backgroundColor: colors.lightgrey,
+    backgroundColor: colors.grey,
   },
   numContainer: {
     position: 'absolute',

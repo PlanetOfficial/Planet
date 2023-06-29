@@ -65,7 +65,7 @@ const Friends = ({navigation}: {navigation: any}) => {
               ref={searchRef}
               style={localStyles.searchText}
               placeholder={strings.search.search}
-              placeholderTextColor={colors.grey}
+              placeholderTextColor={colors.darkgrey}
               autoCapitalize="none"
               autoCorrect={false}
               onFocus={() => {

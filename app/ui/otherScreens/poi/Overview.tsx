@@ -43,7 +43,7 @@ const Overview: React.FC<Props> = ({destination, destinationDetails}) => {
               </Text>
             </>
           ) : (
-            <Text color={colors.grey}>{strings.poi.noPrice}</Text>
+            <Text color={colors.darkgrey}>{strings.poi.noPrice}</Text>
           )}
         </View>
         <View style={styles.separator} />
@@ -65,7 +65,7 @@ const Overview: React.FC<Props> = ({destination, destinationDetails}) => {
               </Text>
             </>
           ) : (
-            <Text color={colors.grey}>{strings.poi.noHours}</Text>
+            <Text color={colors.darkgrey}>{strings.poi.noHours}</Text>
           )}
         </View>
       </View>

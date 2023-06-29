@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
   },
   border: {
     borderBottomWidth: 0.5,
-    borderColor: colors.lightgrey,
+    borderColor: colors.grey,
   },
 });
 

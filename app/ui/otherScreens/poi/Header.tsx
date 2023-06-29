@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     position: 'absolute',
-    backgroundColor: colors.grey,
+    backgroundColor: colors.darkgrey,
   },
   container: {
     width: '100%',

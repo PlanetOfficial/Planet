@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
     paddingRight: s(20),
     paddingVertical: s(20),
     borderBottomWidth: 0.5,
-    borderBottomColor: colors.lightgrey,
+    borderBottomColor: colors.grey,
   },
   description: {
     marginTop: s(5),

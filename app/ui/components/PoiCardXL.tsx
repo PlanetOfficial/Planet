@@ -65,7 +65,7 @@ const PoiCardXL: React.FC<Props> = ({
             size="m"
             disabled={disabled}
             icon={icons.like}
-            color={voted ? colors.primary : colors.lightgrey}
+            color={voted ? colors.primary : colors.grey}
             onPress={onVote}
           />
         </View>

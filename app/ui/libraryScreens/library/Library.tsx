@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     marginTop: s(15),
     paddingTop: s(5),
     borderTopWidth: 1,
-    borderTopColor: colors.lightgrey,
+    borderTopColor: colors.grey,
   },
 });
 

@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
   },
   separator: {
     height: 0.5,
-    backgroundColor: colors.lightgrey,
+    backgroundColor: colors.grey,
   },
   icon: {
     marginTop: s(7.5),

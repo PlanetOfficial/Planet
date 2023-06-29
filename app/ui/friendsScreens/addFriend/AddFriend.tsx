@@ -111,7 +111,7 @@ const AddFriend = ({
               ref={searchRef}
               style={localStyles.searchText}
               placeholder={strings.search.search}
-              placeholderTextColor={colors.grey}
+              placeholderTextColor={colors.darkgrey}
               autoCapitalize="none"
               autoCorrect={false}
               onFocus={() => {
@@ -324,7 +324,7 @@ const userStyles = StyleSheet.create({
     marginHorizontal: s(20),
     paddingVertical: s(10),
     borderBottomWidth: 0.5,
-    borderBottomColor: colors.lightgrey,
+    borderBottomColor: colors.grey,
   },
   profilePic: {
     alignItems: 'center',
