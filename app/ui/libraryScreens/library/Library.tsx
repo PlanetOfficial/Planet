@@ -78,6 +78,7 @@ const Library = ({navigation}: {navigation: any}) => {
       ) : (
         <FlatList
           style={styles.list}
+          contentContainerStyle={styles.content}
           data={events}
           renderItem={({item}: {item: Event}) => {
             return (
@@ -100,7 +101,6 @@ const Library = ({navigation}: {navigation: any}) => {
               </Text>
             </View>
           }
-          ItemSeparatorComponent={Separator}
           keyExtractor={(item: Event) => item.id.toString()}
           refreshControl={
             <RefreshControl
@@ -117,10 +117,12 @@ const Library = ({navigation}: {navigation: any}) => {
 
 const styles = StyleSheet.create({
   list: {
-    marginTop: s(15),
-    paddingTop: s(5),
-    borderTopWidth: 1,
+    marginTop: s(5),
+    paddingTop: s(10),
     borderTopColor: colors.grey,
+  },
+  content: {
+    paddingBottom: s(20),
   },
 });
 

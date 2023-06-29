@@ -77,7 +77,7 @@ const Search = ({
           {genres.map((genre: Genre, index: number) => (
             <View key={genre.id}>
               <View style={styles.header}>
-                <Text>{genre.name}</Text>
+                <Text size='s'>{genre.name}</Text>
               </View>
               <ScrollView
                 horizontal={true}
@@ -112,10 +112,6 @@ const Search = ({
           ))}
         </ScrollView>
       ) : searchText.length === 0 ? (
-        <>
-          <View style={styles.header}>
-            <Text>{strings.profile.bookmarks}</Text>
-          </View>
           <FlatList
             contentContainerStyle={styles.flatList}
             keyboardShouldPersistTaps={'always'}
@@ -150,10 +146,8 @@ const Search = ({
                 </Text>
               </View>
             }
-            ItemSeparatorComponent={Separator}
             keyExtractor={(item: Poi) => item.id.toString()}
           />
-        </>
       ) : null}
     </View>
   );

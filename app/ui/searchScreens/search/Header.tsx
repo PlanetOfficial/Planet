@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
     padding: 0,
     paddingLeft: s(30),
     fontSize: s(14),
-    fontWeight: '700',
+    fontWeight: '400',
     width: '100%',
     fontFamily: 'Lato',
   },

@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     paddingHorizontal: s(20),
-    marginVertical: s(12),
+    marginVertical: s(8),
     alignItems: 'center',
     justifyContent: 'space-between',
   },
@@ -112,13 +112,14 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: '100%',
+    borderRadius: s(5),
   },
   infoContainer: {
     flex: 1,
+    height: s(64),
     paddingLeft: s(10),
     paddingRight: s(5),
     justifyContent: 'space-evenly',
-    height: s(64),
   },
 });
 

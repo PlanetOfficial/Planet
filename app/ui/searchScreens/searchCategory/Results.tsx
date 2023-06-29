@@ -72,7 +72,6 @@ const Results: React.FC<Props> = ({
           </Text>
         </View>
       }
-      ItemSeparatorComponent={Separator}
       keyExtractor={(item: Poi) => item.id.toString()}
       refreshControl={
         <RefreshControl

@@ -148,7 +148,6 @@ const ProfileBody = ({navigation}: {navigation: any}) => {
             </Text>
           </View>
         }
-        ItemSeparatorComponent={Separator}
         keyExtractor={(item: Poi) => item.id.toString()}
       />
     </>

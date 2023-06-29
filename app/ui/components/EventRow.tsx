@@ -29,16 +29,16 @@ const EventRow: React.FC<Props> = ({event, self}) => {
         />
       </View>
       <View style={styles.infoContainer}>
-        <Text size="m" numberOfLines={1}>
+        <Text size="s" numberOfLines={1}>
           {event.name}
+        </Text>
+        <Text size="xs" weight="l" color={colors.black}>
+          {event.vicinity}
         </Text>
         <Text size="xs" color={colors.black}>
           {moment(event.datetime)
             .add(date.getTimezoneOffset(), 'minutes')
             .format('MMM Do, h:mm a')}
-        </Text>
-        <Text size="xs" weight="l" color={colors.black}>
-          {event.vicinity}
         </Text>
       </View>
       <IconCluster users={event.members} self={self} />
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     paddingHorizontal: s(20),
-    marginVertical: s(13),
+    marginVertical: s(8),
     alignItems: 'center',
     justifyContent: 'space-between',
   },
@@ -61,13 +61,14 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: '100%',
+    borderRadius: s(5),
   },
   infoContainer: {
     flex: 1,
+    height: s(64),
     paddingLeft: s(10),
     paddingRight: s(5),
     justifyContent: 'space-evenly',
-    height: s(64),
   },
 });
 
