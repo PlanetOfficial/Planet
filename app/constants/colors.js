@@ -1,10 +1,8 @@
 const colors = {
   white: '#ffffff',
   grey: '#d9d9d9',
-  darkgrey: '#666666',
   black: '#3c3c3c',
   primary: '#f36f3f',
-  primaryLight: '#f9a87f',
   red: '#ff0000',
   green: '#2ac42c',
   primaryShades: ['#f9a67a', '#f6ae2d', '#ff6c32', '#fc2f00'],

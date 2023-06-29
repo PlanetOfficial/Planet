@@ -114,7 +114,7 @@ const SignUpCreds = ({
           placeholder={strings.signUp.username}
           value={username}
           onChangeText={text => setUsername(text.toLowerCase())}
-          placeholderTextColor={colors.darkgrey}
+          placeholderTextColor={colors.black}
           autoCapitalize="none"
           autoCorrect={false}
         />
@@ -128,7 +128,7 @@ const SignUpCreds = ({
           placeholder={strings.login.password}
           value={password}
           onChangeText={text => setPassword(text)}
-          placeholderTextColor={colors.darkgrey}
+          placeholderTextColor={colors.black}
           secureTextEntry={true}
         />
       </View>
@@ -141,7 +141,7 @@ const SignUpCreds = ({
           placeholder={strings.signUp.confirmPassword}
           value={passwordConfirm}
           onChangeText={text => setPasswordConfirm(text)}
-          placeholderTextColor={colors.darkgrey}
+          placeholderTextColor={colors.black}
           secureTextEntry={true}
         />
       </View>
@@ -158,7 +158,7 @@ const SignUpCreds = ({
               username.length === 0 ||
               password.length === 0 ||
               password !== passwordConfirm
-                ? colors.darkgrey
+                ? colors.black
                 : colors.primary,
           },
         ]}
@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     borderBottomWidth: 1,
-    borderColor: colors.darkgrey,
+    borderColor: colors.black,
     marginHorizontal: s(5),
     paddingHorizontal: s(10),
     paddingVertical: s(5),

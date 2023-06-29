@@ -70,7 +70,7 @@ const Settings = ({navigation}: {navigation: any}) => {
         {settingsItems.map((settingsItem, index) => (
           <View key={index}>
             <TouchableOpacity style={styles.row} onPress={settingsItem.onPress}>
-              <Icon size="l" icon={settingsItem.icon} color={colors.darkgrey} />
+              <Icon size="l" icon={settingsItem.icon} color={colors.black} />
               <View style={STYLES.texts}>
                 <Text>{settingsItem.name}</Text>
               </View>
@@ -80,7 +80,7 @@ const Settings = ({navigation}: {navigation: any}) => {
           </View>
         ))}
         <View style={styles.footer}>
-          <Text size="s" weight="l" color={colors.darkgrey}>
+          <Text size="s" weight="l" color={colors.black}>
             Privacy Policy and Stuff. This is a totally legit app and our
             company is not run by babies.
           </Text>

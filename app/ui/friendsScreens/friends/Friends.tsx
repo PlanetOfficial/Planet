@@ -60,12 +60,12 @@ const Friends = ({navigation}: {navigation: any}) => {
             onPress={() => navigation.goBack()}
           />
           <View style={[localStyles.searchBar, STYLES.shadow]}>
-            <Icon size="s" icon={icons.search} color={colors.darkgrey} />
+            <Icon size="s" icon={icons.search} color={colors.black} />
             <TextInput
               ref={searchRef}
               style={localStyles.searchText}
               placeholder={strings.search.search}
-              placeholderTextColor={colors.darkgrey}
+              placeholderTextColor={colors.black}
               autoCapitalize="none"
               autoCorrect={false}
               onFocus={() => {
@@ -122,7 +122,7 @@ const Friends = ({navigation}: {navigation: any}) => {
                   <Text
                     size="s"
                     weight="l"
-                    color={colors.darkgrey}
+                    color={colors.black}
                     numberOfLines={1}>
                     {'@' + item.username}
                   </Text>

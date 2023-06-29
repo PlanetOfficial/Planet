@@ -74,9 +74,13 @@ const Friends = ({navigation}: {navigation: any}) => {
             <Text
               size="s"
               numberOfLines={1}>{`${item.first_name} ${item.last_name}`}</Text>
-            <Text size="s" weight="l" color={colors.darkgrey} numberOfLines={1}>
+            <Text size="s" weight="l" color={colors.black} numberOfLines={1}>
               {'@' + item.username + '・'}
-              <Text size="s" weight="l" color={colors.primary} numberOfLines={1}>
+              <Text
+                size="s"
+                weight="l"
+                color={colors.primary}
+                numberOfLines={1}>
                 {item.count + ' mutuals'}
               </Text>
             </Text>

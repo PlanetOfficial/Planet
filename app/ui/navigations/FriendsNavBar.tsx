@@ -26,7 +26,7 @@ export const NavBar = () => {
           fontWeight: '500',
         },
         tabBarActiveTintColor: colors.primary,
-        tabBarInactiveTintColor: colors.darkgrey,
+        tabBarInactiveTintColor: colors.black,
         tabBarItemStyle: {
           margin: -s(5),
         },

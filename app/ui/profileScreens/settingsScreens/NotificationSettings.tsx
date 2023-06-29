@@ -126,7 +126,7 @@ const NotificationSettings = ({navigation}: {navigation: any}) => {
               <View style={STYLES.texts}>
                 <Text weight="l">{setting.name}</Text>
                 <View style={styles.description}>
-                  <Text size="s" weight="l" color={colors.darkgrey}>
+                  <Text size="s" weight="l" color={colors.black}>
                     {setting.description}
                   </Text>
                 </View>

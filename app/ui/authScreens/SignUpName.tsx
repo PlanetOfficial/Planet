@@ -45,7 +45,7 @@ const SignUpName = ({navigation}: {navigation: any}) => {
           value={firstName}
           autoCorrect={false}
           onChangeText={text => setFirstName(text)}
-          placeholderTextColor={colors.darkgrey}
+          placeholderTextColor={colors.black}
         />
         <TextInput
           style={styles.input}
@@ -53,7 +53,7 @@ const SignUpName = ({navigation}: {navigation: any}) => {
           value={lastName}
           autoCorrect={false}
           onChangeText={text => setLastName(text)}
-          placeholderTextColor={colors.darkgrey}
+          placeholderTextColor={colors.black}
         />
       </View>
       <TouchableOpacity
@@ -62,7 +62,7 @@ const SignUpName = ({navigation}: {navigation: any}) => {
           {
             backgroundColor:
               firstName.length === 0 || lastName.length === 0
-                ? colors.darkgrey
+                ? colors.black
                 : colors.primary,
           },
         ]}
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     borderBottomWidth: 1,
-    borderColor: colors.darkgrey,
+    borderColor: colors.black,
     marginHorizontal: s(5),
     paddingHorizontal: s(10),
     paddingVertical: s(5),

@@ -32,12 +32,12 @@ const EventRow: React.FC<Props> = ({event, self}) => {
         <Text size="m" numberOfLines={1}>
           {event.name}
         </Text>
-        <Text size="xs" color={colors.darkgrey}>
+        <Text size="xs" color={colors.black}>
           {moment(event.datetime)
             .add(date.getTimezoneOffset(), 'minutes')
             .format('MMM Do, h:mm a')}
         </Text>
-        <Text size="xs" weight="l" color={colors.darkgrey}>
+        <Text size="xs" weight="l" color={colors.black}>
           {event.vicinity}
         </Text>
       </View>

@@ -74,7 +74,7 @@ const Explore = ({navigation, route}: {navigation: any; route: any}) => {
           <View style={styles.center}>
             <Text>{strings.search.noResultsFound}</Text>
             <Text> </Text>
-            <Text size="s" color={colors.darkgrey}>
+            <Text size="s" color={colors.black}>
               {strings.search.noResultsFoundDescription}
             </Text>
           </View>

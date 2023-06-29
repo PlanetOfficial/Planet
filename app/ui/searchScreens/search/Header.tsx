@@ -93,7 +93,7 @@ const Header: React.FC<Props> = ({
               );
               setSearching(false);
             },
-            placeholderTextColor: colors.darkgrey,
+            placeholderTextColor: colors.black,
             onChangeText: text => {
               setSearchText(text);
             },
@@ -120,7 +120,7 @@ const Header: React.FC<Props> = ({
               <Text size="s" weight="r" color={colors.black}>
                 {rowData.structured_formatting.main_text}
               </Text>
-              <Text size="xs" weight="l" color={colors.darkgrey}>
+              <Text size="xs" weight="l" color={colors.black}>
                 {rowData.structured_formatting.secondary_text}
               </Text>
             </View>
@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
     marginRight: s(-23),
     width: s(15),
     height: s(15),
-    tintColor: colors.darkgrey,
+    tintColor: colors.black,
     zIndex: 5,
   },
   cancel: {

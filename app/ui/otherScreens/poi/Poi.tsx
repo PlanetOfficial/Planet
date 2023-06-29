@@ -116,7 +116,7 @@ const PoiPage = ({
           onRequestClose={() => setGalleryVisible(false)}
           animationType="slide"
           presentationStyle="formSheet"
-          backgroundColor={colors.darkgrey}
+          backgroundColor={colors.black}
           swipeToCloseEnabled={true}
           HeaderComponent={HeaderComponent}
         />

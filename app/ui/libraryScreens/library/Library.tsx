@@ -95,7 +95,7 @@ const Library = ({navigation}: {navigation: any}) => {
             <View style={STYLES.center}>
               <Text>{strings.event.noEventsFound}</Text>
               <Text> </Text>
-              <Text size="s" color={colors.darkgrey}>
+              <Text size="s" color={colors.black}>
                 {strings.event.noEventsFoundDescription}
               </Text>
             </View>

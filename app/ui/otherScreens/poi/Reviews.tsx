@@ -30,7 +30,7 @@ const Reviews: React.FC<Props> = ({reviews}) => {
             </View>
             <View style={styles.texts}>
               <Text size="s">{review.author_name}</Text>
-              <Text size="s" weight="l" color={colors.darkgrey}>
+              <Text size="s" weight="l" color={colors.black}>
                 {`Rating: ${review.rating}/5・${review.relative_time_description}`}
               </Text>
             </View>

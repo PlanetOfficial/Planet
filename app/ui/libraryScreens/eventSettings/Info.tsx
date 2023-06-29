@@ -95,7 +95,7 @@ const Info: React.FC<Props> = ({
         </View>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => setDatePickerOpen(true)}>
-        <Text size="s" weight="l" color={colors.darkgrey}>
+        <Text size="s" weight="l" color={colors.black}>
           {datetime}
         </Text>
       </TouchableOpacity>

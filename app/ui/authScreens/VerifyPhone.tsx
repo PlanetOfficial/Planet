@@ -80,7 +80,7 @@ const VerifyPhone = ({
           onChangeText={text =>
             setCode(text.replace(/[^0-9]/g, '').substring(0, 6))
           }
-          placeholderTextColor={colors.darkgrey}
+          placeholderTextColor={colors.black}
           keyboardType="number-pad"
         />
       </View>
@@ -93,8 +93,7 @@ const VerifyPhone = ({
         style={[
           styles.button,
           {
-            backgroundColor:
-              code.length !== 6 ? colors.darkgrey : colors.primary,
+            backgroundColor: code.length !== 6 ? colors.black : colors.primary,
           },
         ]}
         disabled={code.length !== 6}
@@ -125,7 +124,7 @@ const styles = StyleSheet.create({
   input: {
     alignSelf: 'center',
     borderBottomWidth: 1,
-    borderColor: colors.darkgrey,
+    borderColor: colors.black,
     marginHorizontal: s(5),
     paddingHorizontal: s(10),
     paddingVertical: s(5),

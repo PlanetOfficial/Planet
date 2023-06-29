@@ -62,7 +62,7 @@ const OptionMenu: React.FC<Props> = ({
               weight="r"
               color={
                 option.disabled
-                  ? colors.darkgrey
+                  ? colors.black
                   : pressed[index]
                   ? colors.grey
                   : option.color

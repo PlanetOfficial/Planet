@@ -85,7 +85,7 @@ const ProfileBody = ({navigation}: {navigation: any}) => {
           <Text size="l" numberOfLines={1}>
             {firstName} {lastName}
           </Text>
-          <Text size="s" color={colors.darkgrey} numberOfLines={1}>
+          <Text size="s" color={colors.black} numberOfLines={1}>
             @{username}
           </Text>
           <TouchableOpacity onPress={() => navigation.navigate('Friends')}>
@@ -143,7 +143,7 @@ const ProfileBody = ({navigation}: {navigation: any}) => {
           <View style={STYLES.center}>
             <Text>{strings.profile.noBookmarksFound}</Text>
             <Text> </Text>
-            <Text size="s" color={colors.darkgrey}>
+            <Text size="s" color={colors.black}>
               {strings.profile.noBookmarksFoundDescription}
             </Text>
           </View>

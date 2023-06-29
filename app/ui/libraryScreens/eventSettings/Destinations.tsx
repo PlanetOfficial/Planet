@@ -66,7 +66,7 @@ const Destinations: React.FC<Props> = ({
                 delayLongPress={1}
                 onLongPress={drag}
                 disabled={isActive}>
-                <Icon size="m" icon={icons.drag} color={colors.darkgrey} />
+                <Icon size="m" icon={icons.drag} color={colors.black} />
               </TouchableOpacity>
               <TouchableOpacity
                 style={destinationStyles.title}

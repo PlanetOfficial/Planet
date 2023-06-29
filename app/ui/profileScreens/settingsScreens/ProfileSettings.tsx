@@ -200,7 +200,7 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
                 gender,
               );
             }}
-            placeholderTextColor={colors.darkgrey}
+            placeholderTextColor={colors.black}
           />
         </View>
         <View style={styles.inputContainer}>
@@ -222,7 +222,7 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
                 gender,
               );
             }}
-            placeholderTextColor={colors.darkgrey}
+            placeholderTextColor={colors.black}
           />
         </View>
         <View style={styles.inputContainer}>
@@ -243,7 +243,7 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
                 gender,
               );
             }}
-            placeholderTextColor={colors.darkgrey}
+            placeholderTextColor={colors.black}
             autoCapitalize="none"
             autoCorrect={false}
           />
@@ -255,7 +255,7 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
           <TextInput
             style={styles.input}
             placeholder={phoneNumber}
-            placeholderTextColor={colors.darkgrey}
+            placeholderTextColor={colors.black}
             editable={false}
           />
         </View>
@@ -424,7 +424,7 @@ const styles = StyleSheet.create({
   input: {
     flex: 5,
     borderBottomWidth: 1,
-    borderColor: colors.darkgrey,
+    borderColor: colors.black,
     marginHorizontal: s(5),
     paddingHorizontal: s(10),
     paddingVertical: s(5),

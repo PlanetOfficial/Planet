@@ -199,7 +199,7 @@ const User = ({
               <Text size="l" numberOfLines={1}>
                 {firstName} {lastName}
               </Text>
-              <Text size="s" color={colors.darkgrey} numberOfLines={1}>
+              <Text size="s" color={colors.black} numberOfLines={1}>
                 @{username}
               </Text>
               <View style={profileStyles.buttons}>
@@ -219,7 +219,7 @@ const User = ({
                   <TouchableOpacity
                     style={{
                       ...profileStyles.button,
-                      backgroundColor: colors.darkgrey,
+                      backgroundColor: colors.black,
                     }}
                     onPress={handleUnfriend}>
                     <Text size="s" color={colors.white}>
@@ -231,7 +231,7 @@ const User = ({
                   <TouchableOpacity
                     style={{
                       ...profileStyles.button,
-                      backgroundColor: colors.darkgrey,
+                      backgroundColor: colors.black,
                     }}
                     onPress={handleCancelRequest}>
                     <Text size="s" color={colors.white}>

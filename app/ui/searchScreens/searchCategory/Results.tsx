@@ -67,7 +67,7 @@ const Results: React.FC<Props> = ({
         <View style={STYLES.center}>
           <Text>{strings.search.noResultsFound}</Text>
           <Text> </Text>
-          <Text size="s" color={colors.darkgrey}>
+          <Text size="s" color={colors.black}>
             {strings.search.noResultsFoundDescription}
           </Text>
         </View>

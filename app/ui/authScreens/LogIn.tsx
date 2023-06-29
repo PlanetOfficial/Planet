@@ -78,11 +78,11 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
   return (
     <View style={styles.container}>
       <LinearGradient
-        colors={[colors.white, colors.primaryLight]}
+        colors={[colors.white, colors.primary]}
         style={styles.container}
         start={{x: 0, y: 0}}
         end={{x: 1, y: 1}}
-        locations={[0.5, 1]}>
+        locations={[0.6, 1]}>
         <RNText style={styles.title}>{strings.main.appName}</RNText>
         <TextInput
           style={styles.input}
@@ -91,7 +91,7 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
           onChangeText={setUsername}
           autoCapitalize="none"
           autoCorrect={false}
-          placeholderTextColor={colors.darkgrey}
+          placeholderTextColor={colors.black}
         />
         <TextInput
           style={styles.input}
@@ -100,7 +100,7 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
           onChangeText={setPassword}
           secureTextEntry={true}
           textContentType="password"
-          placeholderTextColor={colors.darkgrey}
+          placeholderTextColor={colors.black}
         />
         <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
           <Text size="s" weight="l">
@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
     borderRadius: s(25),
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: colors.black,
+    backgroundColor: colors.primary,
   },
   bottomContainer: {
     alignItems: 'center',
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
     width: s(150),
     height: s(50),
     borderRadius: s(25),
-    backgroundColor: colors.primary,
+    backgroundColor: colors.black,
   },
 });
 

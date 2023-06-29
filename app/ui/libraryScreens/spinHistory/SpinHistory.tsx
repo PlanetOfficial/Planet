@@ -101,10 +101,10 @@ const SpinHistory = ({
               </TouchableOpacity>
 
               <View style={styles.texts}>
-                <Text size="s" color={colors.darkgrey} numberOfLines={2}>
+                <Text size="s" color={colors.black} numberOfLines={2}>
                   {moment(item.created_at).format('MMM Do')}
                 </Text>
-                <Text size="s" color={colors.darkgrey} numberOfLines={2}>
+                <Text size="s" color={colors.black} numberOfLines={2}>
                   {moment(item.created_at).format('h:mm a')}
                 </Text>
               </View>
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: s(10),
     paddingBottom: s(5),
     borderBottomWidth: 1,
-    borderColor: colors.darkgrey,
+    borderColor: colors.black,
   },
   result: {
     alignItems: 'center',

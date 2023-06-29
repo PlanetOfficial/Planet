@@ -106,12 +106,12 @@ const AddFriend = ({
         <View style={STYLES.header}>
           <Icon icon={icons.close} onPress={() => navigation.goBack()} />
           <View style={[localStyles.searchBar, STYLES.shadow]}>
-            <Icon size="s" icon={icons.search} color={colors.darkgrey} />
+            <Icon size="s" icon={icons.search} color={colors.black} />
             <TextInput
               ref={searchRef}
               style={localStyles.searchText}
               placeholder={strings.search.search}
-              placeholderTextColor={colors.darkgrey}
+              placeholderTextColor={colors.black}
               autoCapitalize="none"
               autoCorrect={false}
               onFocus={() => {
@@ -172,7 +172,7 @@ const AddFriend = ({
                   <Text
                     size="s"
                     weight="l"
-                    color={colors.darkgrey}
+                    color={colors.black}
                     numberOfLines={1}>
                     {'@' + item.username}
                   </Text>
@@ -231,7 +231,7 @@ const AddFriend = ({
                     <Text
                       size="s"
                       weight="l"
-                      color={colors.darkgrey}
+                      color={colors.black}
                       numberOfLines={1}>
                       {'@' + item.username}
                     </Text>
@@ -253,7 +253,7 @@ const AddFriend = ({
               <View style={STYLES.center}>
                 <Text>{strings.friends.noFriendsFound}</Text>
                 <Text> </Text>
-                <Text size="s" color={colors.darkgrey}>
+                <Text size="s" color={colors.black}>
                   {strings.friends.noFriendsFoundDescription}
                 </Text>
               </View>

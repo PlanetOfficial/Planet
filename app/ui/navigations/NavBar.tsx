@@ -62,7 +62,7 @@ export const NavBar = () => {
           <Image
             style={[
               styles.icon,
-              {tintColor: focused ? colors.primary : colors.darkgrey},
+              {tintColor: focused ? colors.primary : colors.black},
             ]}
             source={source}
           />
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
     fontSize: s(9),
     fontWeight: '400',
     fontFamily: 'Lato',
-    color: colors.darkgrey,
+    color: colors.black,
   },
   bold: {
     fontWeight: '700',

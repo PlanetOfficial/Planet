@@ -134,7 +134,7 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
               size="xs"
               weight="l"
               color={
-                dropdownStatus === filter.name ? colors.darkgrey : colors.black
+                dropdownStatus === filter.name ? colors.black : colors.black
               }>
               {filter.name + displayFilter(filter, idx)}
             </Text>
@@ -223,7 +223,7 @@ const styles = StyleSheet.create({
 
     borderRadius: s(12.5),
     borderWidth: 0.5,
-    borderColor: colors.darkgrey,
+    borderColor: colors.black,
   },
   chipIcon: {
     marginLeft: s(5),

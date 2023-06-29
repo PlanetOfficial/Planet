@@ -80,7 +80,7 @@ const SignUpPhone = ({
         style={[
           styles.button,
           {
-            backgroundColor: phoneNumber ? colors.primary : colors.darkgrey,
+            backgroundColor: phoneNumber ? colors.primary : colors.black,
           },
         ]}
         disabled={!phoneNumber}
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     borderBottomWidth: 1,
-    borderColor: colors.darkgrey,
+    borderColor: colors.black,
     marginHorizontal: s(5),
     paddingHorizontal: s(10),
     paddingVertical: s(5),

@@ -78,7 +78,7 @@ const Info: React.FC<Props> = ({
                 <Text
                   size="xs"
                   weight="l"
-                  color={colors.darkgrey}
+                  color={colors.black}
                   numberOfLines={1}>
                   {'@' + item.username}
                 </Text>
