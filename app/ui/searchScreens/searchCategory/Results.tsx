@@ -6,7 +6,6 @@ import strings from '../../../constants/strings';
 import STYLES from '../../../constants/styles';
 
 import Text from '../../components/Text';
-import Separator from '../../components/Separator';
 import PoiRow from '../../components/PoiRow';
 
 import {handleBookmark} from '../../../utils/Misc';

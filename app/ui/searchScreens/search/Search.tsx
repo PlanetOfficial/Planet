@@ -77,7 +77,7 @@ const Search = ({
           {genres.map((genre: Genre, index: number) => (
             <View key={genre.id}>
               <View style={styles.header}>
-                <Text size='s'>{genre.name}</Text>
+                <Text size="s">{genre.name}</Text>
               </View>
               <ScrollView
                 horizontal={true}
@@ -112,42 +112,42 @@ const Search = ({
           ))}
         </ScrollView>
       ) : searchText.length === 0 ? (
-          <FlatList
-            contentContainerStyle={styles.flatList}
-            keyboardShouldPersistTaps={'always'}
-            data={bookmarks}
-            renderItem={({item}: {item: Poi}) => {
-              return (
-                <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate('Poi', {
-                      poi: item,
-                      bookmarked: true,
-                      mode: mode,
-                    })
-                  }>
-                  <PoiRow
-                    poi={item}
-                    bookmarked={true}
-                    location={location}
-                    handleBookmark={(poi: Poi) =>
-                      handleBookmark(poi, bookmarks, setBookmarks)
-                    }
-                  />
-                </TouchableOpacity>
-              );
-            }}
-            ListEmptyComponent={
-              <View style={STYLES.center}>
-                <Text>{strings.profile.noBookmarksFound}</Text>
-                <Text> </Text>
-                <Text size="s" color={colors.black}>
-                  {strings.profile.noBookmarksFoundDescription}
-                </Text>
-              </View>
-            }
-            keyExtractor={(item: Poi) => item.id.toString()}
-          />
+        <FlatList
+          contentContainerStyle={styles.flatList}
+          keyboardShouldPersistTaps={'always'}
+          data={bookmarks}
+          renderItem={({item}: {item: Poi}) => {
+            return (
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate('Poi', {
+                    poi: item,
+                    bookmarked: true,
+                    mode: mode,
+                  })
+                }>
+                <PoiRow
+                  poi={item}
+                  bookmarked={true}
+                  location={location}
+                  handleBookmark={(poi: Poi) =>
+                    handleBookmark(poi, bookmarks, setBookmarks)
+                  }
+                />
+              </TouchableOpacity>
+            );
+          }}
+          ListEmptyComponent={
+            <View style={STYLES.center}>
+              <Text>{strings.profile.noBookmarksFound}</Text>
+              <Text> </Text>
+              <Text size="s" color={colors.black}>
+                {strings.profile.noBookmarksFoundDescription}
+              </Text>
+            </View>
+          }
+          keyExtractor={(item: Poi) => item.id.toString()}
+        />
       ) : null}
     </View>
   );

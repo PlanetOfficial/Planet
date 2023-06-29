@@ -102,11 +102,13 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
           textContentType="password"
           placeholderTextColor={colors.black}
         />
-        <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
-          <Text size="s" weight="l">
-            {strings.login.forgotPassword}
-          </Text>
-        </TouchableOpacity>
+        <View>
+          {error.length !== 0 ? (
+            <Text size="s" color={colors.red}>
+              {error}
+            </Text>
+          ) : null}
+        </View>
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
           {loading ? (
             <ActivityIndicator size="small" color={colors.white} />
@@ -116,15 +118,7 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
             </Text>
           )}
         </TouchableOpacity>
-        <View>
-          {error.length !== 0 ? (
-            <Text size="s" color={colors.red}>
-              {error}
-            </Text>
-          ) : null}
-        </View>
         <View style={styles.bottomContainer}>
-          <Text size="s">{strings.login.noAccount}</Text>
           <TouchableOpacity
             style={styles.signUpButton}
             onPress={() => navigation.navigate('SignUpName')}>
@@ -133,6 +127,11 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
             </Text>
           </TouchableOpacity>
         </View>
+        <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
+          <Text size="s" weight="l">
+            {strings.login.forgotPassword}
+          </Text>
+        </TouchableOpacity>
       </LinearGradient>
     </View>
   );
@@ -147,7 +146,7 @@ const styles = StyleSheet.create({
   title: {
     marginTop: vs(110),
     marginBottom: vs(70),
-    fontSize: s(75),
+    fontSize: s(55),
     fontWeight: '900',
     fontFamily: 'Lato',
     color: colors.primary,
@@ -166,7 +165,6 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: vs(10),
-    marginBottom: vs(10),
     width: s(150),
     height: s(50),
     borderRadius: s(25),
@@ -179,12 +177,12 @@ const styles = StyleSheet.create({
     marginTop: vs(20),
   },
   signUpButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: vs(10),
+    marginBottom: vs(10),
     width: s(150),
     height: s(50),
     borderRadius: s(25),
+    alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: colors.black,
   },
 });
