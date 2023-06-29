@@ -34,12 +34,18 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
  * - event_id?: number
  */
 const AddFriend = ({navigation, route}: {navigation: any; route: any}) => {
-  const [event_id] = useState<number>(route.params.event_id);
+  const [event_id] = useState<number | undefined>(route.params.event_id);
   const [members] = useState<UserInfo[]>(route.params.members);
   const [invitees, setInvitees] = useState<UserInfo[]>([]);
 
   const [friends, setFriends] = useState<UserInfo[]>([]);
   const [refreshing, setRefreshing] = useState<boolean>(false);
+
+  const searchRef = createRef<TextInput>();
+  const [searchText, setSearchText] = useState<string>('');
+  const [searchResult, setSearchResult] = useState<UserInfo[]>([]);
+  const [searching, setSearching] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const fetchFriends = useCallback(async () => {
     const response = await getFriends();
@@ -56,12 +62,6 @@ const AddFriend = ({navigation, route}: {navigation: any; route: any}) => {
   useEffect(() => {
     fetchFriends();
   }, [fetchFriends]);
-
-  const searchRef = createRef<TextInput>();
-  const [searchText, setSearchText] = useState<string>('');
-  const [searchResult, setSearchResult] = useState<UserInfo[]>([]);
-  const [searching, setSearching] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(false);
 
   const search = async (text: string) => {
     setLoading(true);
@@ -80,14 +80,16 @@ const AddFriend = ({navigation, route}: {navigation: any; route: any}) => {
 
   const onAdd = async () => {
     if (event_id) {
-      for (let i = 0; i < invitees.length; i++) {
-        const response = await inviteToEvent(event_id, invitees[i].id);
-        if (!response) {
-          Alert.alert(strings.error.error, strings.error.addFriend);
-          return;
-        }
+      const response = await inviteToEvent(
+        event_id,
+        invitees.map(i => i.id),
+      );
+      if (response) {
+        navigation.goBack();
+      } else {
+        Alert.alert(strings.error.error, strings.error.addFriend);
+        return;
       }
-      navigation.goBack();
     } else {
       navigation.navigate('Create', {members: invitees});
     }
@@ -200,7 +202,7 @@ const AddFriend = ({navigation, route}: {navigation: any; route: any}) => {
             data={[...invitees, ...friends.filter(f => !invitees.includes(f))]}
             keyExtractor={(_, index) => index.toString()}
             renderItem={({item}: {item: UserInfo}) =>
-              !(event_id && members.some(m => m.id === item.id)) ? (
+              !event_id || !members.some(m => m.id === item.id) ? (
                 <TouchableOpacity
                   style={userStyles.container}
                   onPress={() => {
