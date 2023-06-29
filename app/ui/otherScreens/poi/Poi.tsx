@@ -1,7 +1,12 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import {View, StyleSheet, Alert, Animated} from 'react-native';
 import {s, vs} from 'react-native-size-matters';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import ImageView from 'react-native-image-viewing';
 
 import colors from '../../../constants/colors';
@@ -11,6 +16,8 @@ import STYLES from '../../../constants/styles';
 
 import Icon from '../../components/Icon';
 import Text from '../../components/Text';
+
+import BookmarkContext from '../../../context/BookmarkContext';
 
 import {Poi, PoiDetail} from '../../../utils/types';
 import {getPoi, postPoi} from '../../../utils/api/poiAPI';
@@ -37,19 +44,15 @@ const PoiPage = ({
 }) => {
   const [destination, setDestination] = useState<Poi>();
   const [destinationDetails, setDestinationDetails] = useState<PoiDetail>();
-  const [bookmarks, setBookmarks] = useState<Poi[]>([]);
   const [mode] = useState<'create' | 'suggest' | 'add' | 'none'>(
     route.params.mode,
   );
 
-  const initializeBookmarks = useCallback(async () => {
-    const _bookmarks = await AsyncStorage.getItem('bookmarks');
-    if (_bookmarks) {
-      setBookmarks(JSON.parse(_bookmarks));
-    } else {
-      Alert.alert(strings.error.error, strings.error.loadBookmarks);
-    }
-  }, []);
+  const bookmarkContext = useContext(BookmarkContext);
+  if (!bookmarkContext) {
+    throw new Error('BookmarkContext is not set!');
+  }
+  const {bookmarks, setBookmarks} = bookmarkContext;
 
   const initializeDestinationData = useCallback(async () => {
     if (route.params.place_id) {
@@ -79,12 +82,11 @@ const PoiPage = ({
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      initializeBookmarks();
       initializeDestinationData();
     });
 
     return unsubscribe;
-  }, [navigation, initializeBookmarks, initializeDestinationData]);
+  }, [navigation, initializeDestinationData]);
 
   const scrollPosition = useRef(new Animated.Value(0)).current;
   const [galleryVisible, setGalleryVisible] = useState(false);

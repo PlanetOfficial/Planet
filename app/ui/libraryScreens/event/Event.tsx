@@ -1,10 +1,18 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import {View, Alert, ActivityIndicator, Animated} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import colors from '../../../constants/colors';
 import strings from '../../../constants/strings';
 import STYLES from '../../../constants/styles';
+
+import BookmarkContext from '../../../context/BookmarkContext';
 
 import {Destination, Event, EventDetail, Poi} from '../../../utils/types';
 import {getEvent} from '../../../utils/api/eventAPI';
@@ -27,7 +35,6 @@ const EventPage = ({
 }) => {
   const [event] = useState<Event>(route.params.event);
   const [eventDetail, setEventDetail] = useState<EventDetail>();
-  const [bookmarks, setBookmarks] = useState<Poi[]>([]);
 
   const [loading, setLoading] = useState<boolean>(true);
   const [refreshing, setRefreshing] = useState<boolean>(false);
@@ -39,6 +46,12 @@ const EventPage = ({
     useState<boolean>(false);
   const [insertionDestination, setInsertionDestination] =
     useState<Destination>();
+
+  const bookmarkContext = useContext(BookmarkContext);
+  if (!bookmarkContext) {
+    throw new Error('BookmarkContext is not set!');
+  }
+  const {bookmarks, setBookmarks} = bookmarkContext;
 
   const loadData = useCallback(async () => {
     const _username = await AsyncStorage.getItem('username');
@@ -62,15 +75,6 @@ const EventPage = ({
     setRefreshing(false);
     setLoading(false);
   }, [event.id]);
-
-  const loadBookmarks = useCallback(async () => {
-    const _bookmarks = await AsyncStorage.getItem('bookmarks');
-    if (_bookmarks) {
-      setBookmarks(JSON.parse(_bookmarks));
-    } else {
-      Alert.alert(strings.error.error, strings.error.loadBookmarks);
-    }
-  }, []);
 
   const addSuggestion = useCallback(async () => {
     const suggestion = route.params.destination;
@@ -110,13 +114,12 @@ const EventPage = ({
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       loadData();
-      loadBookmarks();
       addSuggestion();
       resetAnimation();
     });
 
     return unsubscribe;
-  }, [navigation, loadData, loadBookmarks, addSuggestion, resetAnimation]);
+  }, [navigation, loadData, addSuggestion, resetAnimation]);
 
   const onSuggestionClose = () => {
     setDisplayingSuggestion(false);

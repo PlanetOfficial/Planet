@@ -1,6 +1,5 @@
 import {Platform, PermissionsAndroid, Alert} from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import haversine from 'haversine-distance';
 
@@ -105,7 +104,6 @@ export const handleBookmark = async (
       _bookmarks.splice(idx, 1);
     }
     setBookmarks(_bookmarks);
-    AsyncStorage.setItem('bookmarks', JSON.stringify(_bookmarks));
   } else {
     Alert.alert(strings.error.error, strings.error.updateBookmarks);
   }

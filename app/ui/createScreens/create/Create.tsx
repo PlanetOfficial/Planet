@@ -1,7 +1,6 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {StyleSheet, View, Alert, TouchableOpacity} from 'react-native';
+import React, {useCallback, useContext, useEffect, useState} from 'react';
+import {StyleSheet, View, TouchableOpacity} from 'react-native';
 import {s} from 'react-native-size-matters';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import moment from 'moment';
 
@@ -11,6 +10,8 @@ import strings from '../../../constants/strings';
 import STYLES from '../../../constants/styles';
 
 import Text from '../../components/Text';
+
+import BookmarkContext from '../../../context/BookmarkContext';
 
 import {Poi, UserInfo} from '../../../utils/types';
 
@@ -32,10 +33,15 @@ const Create = ({
 }) => {
   const [eventTitle, setEventTitle] = useState<string>();
   const [date, setDate] = useState<string>();
-  const [bookmarks, setBookmarks] = useState<Poi[]>([]);
   const [members, setMembers] = useState<UserInfo[]>([]);
   const [destinations, setDestinations] = useState<Poi[]>([]);
   const [insertionIndex, setInsertionIndex] = useState<number>(0);
+
+  const bookmarkContext = useContext(BookmarkContext);
+  if (!bookmarkContext) {
+    throw new Error('BookmarkContext is not set!');
+  }
+  const {bookmarks, setBookmarks} = bookmarkContext;
 
   const addMembers = useCallback(() => {
     const membersToBeAdded = route.params?.members;
@@ -84,13 +90,6 @@ const Create = ({
         ),
       ).format('MMM Do, h:mm a'),
     );
-
-    const _bookmarks = await AsyncStorage.getItem('bookmarks');
-    if (_bookmarks) {
-      setBookmarks(JSON.parse(_bookmarks));
-    } else {
-      Alert.alert(strings.error.error, strings.error.loadBookmarks);
-    }
   }, []);
 
   useEffect(() => {

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -18,6 +18,8 @@ import Text from '../../components/Text';
 import PoiRow from '../../components/PoiRow';
 import UserIcon from '../../components/UserIcon';
 
+import BookmarkContext from '../../../context/BookmarkContext';
+
 import {fetchUserLocation, handleBookmark} from '../../../utils/Misc';
 import {Coordinate, Poi} from '../../../utils/types';
 import {getFriendCount} from '../../../utils/api/friendsAPI';
@@ -32,8 +34,13 @@ const ProfileBody = ({navigation}: {navigation: any}) => {
   const [username, setUsername] = useState<string>('');
   const [pfpURL, setPfpURL] = useState<string>('');
 
+  const bookmarkContext = useContext(BookmarkContext);
+  if (!bookmarkContext) {
+    throw new Error('BookmarkContext is not set!');
+  }
+  const {bookmarks, setBookmarks} = bookmarkContext;
+
   const [friendsCount, setFriendsCount] = useState<number>();
-  const [bookmarks, setBookmarks] = useState<Poi[]>([]);
 
   const initializeData = async () => {
     setLocation(await fetchUserLocation());
@@ -45,13 +52,6 @@ const ProfileBody = ({navigation}: {navigation: any}) => {
     setLastName(_lastName || '');
     setUsername(_username || '');
     setPfpURL(_pfpURL || '');
-
-    const _bookmarks = await AsyncStorage.getItem('bookmarks');
-    if (_bookmarks) {
-      setBookmarks(JSON.parse(_bookmarks));
-    } else {
-      Alert.alert(strings.error.error, strings.error.loadBookmarks);
-    }
 
     const _friendsCount = await getFriendCount();
     if (_friendsCount) {
