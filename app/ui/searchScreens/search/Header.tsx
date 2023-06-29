@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   separator: {
-    height: 0.5,
+    height: 1,
     backgroundColor: colors.grey,
   },
   icon: {

@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     marginBottom: s(5),
   },
   row: {
-    borderTopWidth: 0.5,
+    borderTopWidth: 1,
     borderColor: colors.grey,
     padding: s(12),
   },

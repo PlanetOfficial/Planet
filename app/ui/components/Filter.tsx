@@ -200,7 +200,7 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    borderBottomWidth: 0.5,
+    borderBottomWidth: 1,
     borderColor: colors.grey,
     zIndex: 10,
   },
@@ -256,7 +256,7 @@ const styles = StyleSheet.create({
     paddingLeft: s(10),
   },
   optionSeparator: {
-    height: 0.5,
+    height: 1,
     backgroundColor: colors.grey,
   },
 });

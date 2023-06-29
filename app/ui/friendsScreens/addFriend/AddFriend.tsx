@@ -323,7 +323,7 @@ const userStyles = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal: s(20),
     paddingVertical: s(10),
-    borderBottomWidth: 0.5,
+    borderBottomWidth: 1,
     borderBottomColor: colors.grey,
   },
   profilePic: {

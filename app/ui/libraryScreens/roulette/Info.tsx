@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: s(8),
-    borderBottomWidth: 0.5,
+    borderBottomWidth: 1,
     borderColor: colors.grey,
   },
   profilePic: {

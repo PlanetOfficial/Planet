@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     tintColor: colors.primary,
   },
   border: {
-    borderBottomWidth: 0.5,
+    borderBottomWidth: 1,
     borderColor: colors.grey,
   },
 });

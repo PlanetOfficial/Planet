@@ -109,7 +109,7 @@ export const NavBar = () => {
           headerShown: false,
           tabBarTestID: route.name,
           tabBarStyle: {
-            borderTopWidth: 0.5,
+            borderTopWidth: 1,
             borderTopColor: colors.grey,
             backgroundColor: colors.white,
             height: s(50) + insets.bottom,

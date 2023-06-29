@@ -34,7 +34,7 @@ export const NavBar = () => {
           elevation: 0,
           backgroundColor: colors.white,
           marginHorizontal: s(10),
-          borderBottomWidth: 0.5,
+          borderBottomWidth: 1,
           borderBottomColor: colors.grey,
         },
       })}>

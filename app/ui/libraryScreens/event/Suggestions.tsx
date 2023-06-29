@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     width: s(95),
     height: s(85),
     backgroundColor: colors.white,
-    borderLeftWidth: 0.5,
+    borderLeftWidth: 1,
     borderLeftColor: colors.grey,
   },
   addBig: {

@@ -34,12 +34,12 @@ const styles = StyleSheet.create({
   },
   separator: {
     marginHorizontal: s(20),
-    height: 0.5,
+    height: 1,
     backgroundColor: colors.grey,
   },
   separatorExtendsToRight: {
     marginLeft: s(20),
-    height: 0.5,
+    height: 1,
     backgroundColor: colors.grey,
   },
   texts: {

@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    borderTopWidth: 0.5,
+    borderTopWidth: 1,
     borderColor: colors.grey,
     padding: s(12),
   },
