@@ -1,7 +1,6 @@
 import React from 'react';
 import {View, FlatList, TouchableOpacity} from 'react-native';
 
-import colors from '../../../constants/colors';
 import strings from '../../../constants/strings';
 import STYLES from '../../../constants/styles';
 
@@ -62,9 +61,7 @@ const Results: React.FC<Props> = ({
         <View style={STYLES.center}>
           <Text>{strings.search.noResultsFound}</Text>
           <Text> </Text>
-          <Text size="s" color={colors.black}>
-            {strings.search.noResultsFoundDescription}
-          </Text>
+          <Text size="s">{strings.search.noResultsFoundDescription}</Text>
         </View>
       }
       keyExtractor={(item: Poi) => item.id.toString()}

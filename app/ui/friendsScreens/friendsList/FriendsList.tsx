@@ -62,9 +62,7 @@ const FriendsList = ({navigation}: {navigation: any}) => {
         <View style={STYLES.center}>
           <Text>{strings.friends.noFriendsFound}</Text>
           <Text> </Text>
-          <Text size="s" color={colors.black}>
-            {strings.friends.noFriendsFoundDescription}
-          </Text>
+          <Text size="s">{strings.friends.noFriendsFoundDescription}</Text>
         </View>
       }
       refreshControl={

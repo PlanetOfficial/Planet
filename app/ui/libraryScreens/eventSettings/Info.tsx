@@ -5,7 +5,6 @@ import {s} from 'react-native-size-matters';
 import prompt from 'react-native-prompt-android';
 import moment from 'moment';
 
-import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
 import strings from '../../../constants/strings';
 
@@ -90,11 +89,11 @@ const Info: React.FC<Props> = ({
         }>
         <Text size="l">{eventTitle}</Text>
         <View style={styles.pencil}>
-          <Icon size="s" icon={icons.edit} color={colors.black} />
+          <Icon size="s" icon={icons.edit} />
         </View>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => setDatePickerOpen(true)}>
-        <Text size="s" weight="l" color={colors.black}>
+        <Text size="s" weight="l">
           {datetime}
         </Text>
       </TouchableOpacity>

@@ -101,10 +101,10 @@ const SpinHistory = ({
               </TouchableOpacity>
 
               <View style={styles.texts}>
-                <Text size="s" color={colors.black} numberOfLines={2}>
+                <Text size="s" numberOfLines={2}>
                   {moment(item.created_at).format('MMM Do')}
                 </Text>
-                <Text size="s" color={colors.black} numberOfLines={2}>
+                <Text size="s" numberOfLines={2}>
                   {moment(item.created_at).format('h:mm a')}
                 </Text>
               </View>

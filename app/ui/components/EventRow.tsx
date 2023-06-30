@@ -3,7 +3,6 @@ import {StyleSheet, View, Image} from 'react-native';
 import {s} from 'react-native-size-matters';
 import moment from 'moment';
 
-import colors from '../../constants/colors';
 import icons from '../../constants/icons';
 
 import Text from './Text';
@@ -32,10 +31,10 @@ const EventRow: React.FC<Props> = ({event, self}) => {
         <Text size="s" numberOfLines={1}>
           {event.name}
         </Text>
-        <Text size="xs" weight="l" color={colors.black}>
+        <Text size="xs" weight="l">
           {event.vicinity}
         </Text>
-        <Text size="xs" color={colors.black}>
+        <Text size="xs">
           {moment(event.datetime)
             .add(date.getTimezoneOffset(), 'minutes')
             .format('MMM Do, h:mm a')}

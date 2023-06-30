@@ -122,6 +122,7 @@ const strings = {
       numbers.maxPfpSize / 1000000
     }MB`,
     pfpUploadError: 'Error uploading profile picture',
+    editProfile: 'Edit Profile',
   },
   event: {
     destinations: 'Destinations',

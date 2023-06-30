@@ -2,8 +2,6 @@ import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {s} from 'react-native-size-matters';
 
-import colors from '../../constants/colors';
-
 import Text from './Text';
 import UserIcon from './UserIcon';
 
@@ -24,7 +22,7 @@ const UserRow: React.FC<Props> = ({children, user}) => {
         <Text
           size="s"
           numberOfLines={1}>{`${user.first_name} ${user.last_name}`}</Text>
-        <Text size="xs" weight="l" color={colors.black} numberOfLines={1}>
+        <Text size="xs" weight="l" numberOfLines={1}>
           {'@' + user.username}
         </Text>
       </View>

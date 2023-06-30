@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
 import strings from '../../../constants/strings';
 import STYLES from '../../../constants/styles';
@@ -70,9 +69,7 @@ const Mutuals = ({
           <View style={STYLES.center}>
             <Text>{strings.friends.noFriendsFound}</Text>
             <Text> </Text>
-            <Text size="s" color={colors.black}>
-              {strings.friends.noFriendsFoundDescription}
-            </Text>
+            <Text size="s">{strings.friends.noFriendsFoundDescription}</Text>
           </View>
         }
       />

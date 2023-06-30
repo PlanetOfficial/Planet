@@ -130,7 +130,6 @@ const Requests = ({navigation}: {navigation: any}) => {
               <Icon
                 size="xs"
                 icon={icons.x}
-                color={colors.black}
                 onPress={() => handleDeclineRequest(item.id)}
               />
             </View>
@@ -159,7 +158,6 @@ const Requests = ({navigation}: {navigation: any}) => {
             <Icon
               size="xs"
               icon={icons.x}
-              color={colors.black}
               onPress={() => handleCancelRequest(item.id)}
             />
           </UserRow>

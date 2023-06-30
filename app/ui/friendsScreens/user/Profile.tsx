@@ -56,7 +56,7 @@ const Profile: React.FC<Props> = ({
           <Text size="l" numberOfLines={1}>
             {user.first_name} {user.last_name}
           </Text>
-          <Text size="s" weight="l" color={colors.black} numberOfLines={1}>
+          <Text size="s" weight="l" numberOfLines={1}>
             @{user.username}
           </Text>
         </View>
@@ -106,9 +106,7 @@ const Profile: React.FC<Props> = ({
               onPress={() =>
                 handleUnfriend(user.id, setStatus, friends, setFriends)
               }>
-              <Text size="s" color={colors.black}>
-                {strings.friends.unfriend}
-              </Text>
+              <Text size="s">{strings.friends.unfriend}</Text>
             </TouchableOpacity>
           ) : null}
           {status === 'REQSENT' ? (
@@ -125,9 +123,7 @@ const Profile: React.FC<Props> = ({
                   setRequestsSent,
                 )
               }>
-              <Text size="s" color={colors.black}>
-                {strings.friends.cancelRequest}
-              </Text>
+              <Text size="s">{strings.friends.cancelRequest}</Text>
             </TouchableOpacity>
           ) : null}
           {status === 'REQRECEIVED' ? (
@@ -165,9 +161,7 @@ const Profile: React.FC<Props> = ({
                     setRequests,
                   )
                 }>
-                <Text size="s" color={colors.black}>
-                  {strings.friends.reject}
-                </Text>
+                <Text size="s">{strings.friends.reject}</Text>
               </TouchableOpacity>
             </>
           ) : null}

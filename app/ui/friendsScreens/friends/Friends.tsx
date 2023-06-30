@@ -58,7 +58,7 @@ const Friends = ({navigation}: {navigation: any}) => {
             onPress={() => navigation.goBack()}
           />
           <View style={[styles.searchBar, STYLES.shadow]}>
-            <Icon size="s" icon={icons.search} color={colors.black} />
+            <Icon size="s" icon={icons.search} />
             <TextInput
               ref={searchRef}
               style={styles.searchText}
