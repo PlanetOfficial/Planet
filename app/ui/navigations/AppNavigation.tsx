@@ -137,7 +137,9 @@ type RootStackParamList = {
   SignUpInfo: {
     authToken: string;
   };
-  SignUpVerify: undefined;
+  SignUpVerify: {
+    authToken: string;
+  };
   ForgotPasswordVerify: {
     username: string;
   };

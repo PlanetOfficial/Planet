@@ -18,11 +18,11 @@ import Text from '../components/Text';
 
 import {verifyCode} from '../../utils/api/authAPI';
 
-/*
- * route params:
- * - authToken: string
- */
-const SignUpVerify = ({navigation, route}: {navigation: any; route: any}) => {
+const SignUpVerify = ({navigation, route}: {navigation: any; route: {
+  params: {
+    authToken: string;
+  };
+}}) => {
   const [authToken] = useState<string>(route.params.authToken);
 
   const [code, setCode] = useState<string>('');
