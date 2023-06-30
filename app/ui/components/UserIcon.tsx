@@ -7,9 +7,10 @@ import {s} from 'react-native-size-matters';
 
 interface Props {
   user: UserInfo;
+  size?: number;
 }
 
-const UserIcon: React.FC<Props> = ({user}) => {
+const UserIcon: React.FC<Props> = ({user, size = s(16)}) => {
   return user.icon?.url ? (
     <Image style={styles.image} source={{uri: user.icon.url}} />
   ) : (
@@ -18,7 +19,7 @@ const UserIcon: React.FC<Props> = ({user}) => {
         ...styles.image,
         backgroundColor: colors.profileShades[user.username.length % 5],
       }}>
-      <Text style={styles.name}>
+      <Text style={[styles.name, {fontSize: size}]}>
         {user.first_name[0].toUpperCase() + user.last_name[0].toUpperCase()}
       </Text>
     </View>
@@ -27,13 +28,13 @@ const UserIcon: React.FC<Props> = ({user}) => {
 
 const styles = StyleSheet.create({
   image: {
-    width: '100%',
     height: '100%',
+    aspectRatio: 1,
+    borderRadius: 100,
     alignItems: 'center',
     justifyContent: 'center',
   },
   name: {
-    fontSize: s(16),
     color: colors.white,
     fontFamily: 'VarelaRound-Regular',
     marginTop: s(1),

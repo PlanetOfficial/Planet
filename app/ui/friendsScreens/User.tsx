@@ -22,7 +22,7 @@ import Icon from '../components/Icon';
 import Separator from '../components/Separator';
 import EventRow from '../components/EventRow';
 
-import {Event} from '../../utils/types';
+import {Event, UserInfo} from '../../utils/types';
 import {
   acceptFriendRequest,
   deleteFriend,
@@ -32,27 +32,44 @@ import {
   rejectFriendRequest,
 } from '../../utils/api/friendsAPI';
 import ProfileBody from '../profileScreens/ProfileBody';
+import IconCluster from '../components/IconCluster';
 
+/*
+ * route params:
+ * - user: UserInfo
+ */
 const User = ({navigation, route}: {navigation: any; route: any}) => {
   const [selectedIndex, setIndex] = useState<number>(0);
 
-  const [userId] = useState<number>(route.params.user.id);
-  const [firstName] = useState<string>(route.params.user.first_name);
-  const [lastName] = useState<string>(route.params.user.last_name);
-  const [username] = useState<string>(route.params.user.username);
-  const [pfpURL] = useState<string>(route.params.user.icon?.url);
+  const [userId, setUserId] = useState<number>(route.params.user.id);
+  const [firstName, setFirstName] = useState<string>(
+    route.params.user.first_name,
+  );
+  const [lastName, setLastName] = useState<string>(route.params.user.last_name);
+  const [username, setUsername] = useState<string>(route.params.user.username);
+  const [pfpURL, setPfpURL] = useState<string>(route.params.user.icon?.url);
 
   const [status, setStatus] = useState<string>('');
+  const [mutuals, setMutuals] = useState<UserInfo[]>([]);
+  const [mutualEvents, setMutualEvents] = useState<Event[]>([]);
 
   const initializeData = useCallback(async () => {
-    const userData = await getFriend(userId);
+    setUserId(route.params.user.id);
+    setFirstName(route.params.user.first_name);
+    setLastName(route.params.user.last_name);
+    setUsername(route.params.user.username);
+    setPfpURL(route.params.user.icon?.url);
+
+    const userData = await getFriend(route.params.user.id);
 
     if (userData) {
       setStatus(userData.status);
+      setMutuals(userData.mutuals);
+      setMutualEvents(userData.shared_events);
     } else {
       Alert.alert(strings.error.error, strings.error.loadUserData);
     }
-  }, [userId]);
+  }, [route.params.user]);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', async () => {
@@ -112,6 +129,18 @@ const User = ({navigation, route}: {navigation: any; route: any}) => {
     }
   };
 
+  const getMutualString = (users: UserInfo[]) => {
+    let mutualString = strings.friends.friendsWith + ' ' + users[0].first_name;
+
+    if (users.length > 1) {
+      mutualString += ` ${strings.friends.and} ${users.length - 1} ${
+        users.length > 2 ? strings.friends.others : strings.friends.other
+      }`;
+    }
+
+    return mutualString;
+  };
+
   return (
     <View style={styles.container}>
       <SafeAreaView>
@@ -128,7 +157,7 @@ const User = ({navigation, route}: {navigation: any; route: any}) => {
       ) : (
         <>
           <View style={profileStyles.container}>
-            <TouchableOpacity style={profileStyles.profilePic}>
+            <View style={profileStyles.profilePic}>
               {pfpURL?.length > 0 ? (
                 <Image
                   style={profileStyles.profileImage}
@@ -149,7 +178,7 @@ const User = ({navigation, route}: {navigation: any; route: any}) => {
                   </RNText>
                 </View>
               )}
-            </TouchableOpacity>
+            </View>
             <View style={profileStyles.info}>
               <Text size="l" numberOfLines={1}>
                 {firstName} {lastName}
@@ -221,6 +250,26 @@ const User = ({navigation, route}: {navigation: any; route: any}) => {
               </View>
             </View>
           </View>
+          {mutuals.length > 0 ? (
+            <TouchableOpacity
+              style={mutualStyles.container}
+              onPress={() =>
+                navigation.navigate('Mutuals', {
+                  mutuals: mutuals,
+                })
+              }>
+              <IconCluster users={mutuals} />
+              <View style={mutualStyles.text}>
+                <Text
+                  size="s"
+                  weight="l"
+                  color={colors.black}
+                  numberOfLines={1}>
+                  {getMutualString(mutuals)}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          ) : null}
           <SegmentedControlTab
             tabsContainerStyle={sctStyles.container}
             tabStyle={sctStyles.tab}
@@ -241,15 +290,13 @@ const User = ({navigation, route}: {navigation: any; route: any}) => {
             }}
           />
           <FlatList
-            data={[]} // this is also temporary
+            data={mutualEvents}
             renderItem={({item}: {item: Event}) => {
               return (
                 <TouchableOpacity
                   onPress={() =>
-                    navigation.navigate('PoiDetail', {
-                      poi: item,
-                      bookmarked: true,
-                      mode: 'none',
+                    navigation.navigate('Event', {
+                      event: item,
                     })
                   }>
                   <EventRow event={item} />
@@ -312,6 +359,18 @@ const profileStyles = StyleSheet.create({
     paddingVertical: s(5),
     marginRight: s(10),
     borderRadius: s(10),
+  },
+});
+
+const mutualStyles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: s(20),
+    marginVertical: s(10),
+  },
+  text: {
+    marginLeft: s(10),
   },
 });
 

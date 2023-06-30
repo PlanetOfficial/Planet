@@ -29,13 +29,14 @@ import Icon from '../components/Icon';
 import PoiCardXL from '../components/PoiCardXL';
 import OptionMenu from '../components/OptionMenu';
 
-import {Poi} from '../../utils/types';
+import {Poi, UserInfo} from '../../utils/types';
 import {handleBookmark} from '../../utils/Misc';
 import {postEvent} from '../../utils/api/eventAPI';
 
 /*
  * route params:
- * - destination: Destination
+ * - members?: UserInfo[]
+ * - destination?: Destination
  */
 const Create = ({navigation, route}: {navigation: any; route: any}) => {
   const [eventTitle, setEventTitle] = useState(strings.event.untitled);
@@ -46,12 +47,28 @@ const Create = ({navigation, route}: {navigation: any; route: any}) => {
   );
   const [datePickerOpen, setDatePickerOpen] = useState<boolean>(false);
 
+  const [members, setMembers] = useState<UserInfo[]>([]);
   const [destinations, setDestinations] = useState<Poi[]>();
   const [insertionIndex, setInsertionIndex] = useState<number>(0);
-
   const [bookmarks, setBookmarks] = useState<Poi[]>([]);
 
   const [loading, setLoading] = useState<boolean>(false);
+
+  const addMembers = useCallback(() => {
+    const membersToBeAdded = route.params?.members;
+
+    if (membersToBeAdded) {
+      const _members = [...members];
+      membersToBeAdded.forEach((member: UserInfo) => {
+        if (!_members.includes(member)) {
+          _members.push(member);
+        }
+      });
+      setMembers(_members);
+
+      navigation.setParams({member: undefined});
+    }
+  }, [navigation, route.params?.members, members]);
 
   const addDestination = useCallback(() => {
     const destination = route.params?.destination;
@@ -66,10 +83,13 @@ const Create = ({navigation, route}: {navigation: any; route: any}) => {
   }, [navigation, route.params?.destination, destinations, insertionIndex]);
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', addDestination);
+    const unsubscribe = navigation.addListener('focus', () => {
+      addMembers();
+      addDestination();
+    });
 
     return unsubscribe;
-  }, [navigation, addDestination]);
+  }, [navigation, addMembers, addDestination]);
 
   const loadBookmarks = async () => {
     const _bookmarks = await AsyncStorage.getItem('bookmarks');
@@ -112,13 +132,18 @@ const Create = ({navigation, route}: {navigation: any; route: any}) => {
     const poi_ids = destinations.map(destination => destination.id);
     const names = destinations.map(destination => destination.category_name);
 
-    const response = await postEvent(poi_ids, names, eventTitle, date, []);
+    const response = await postEvent(
+      poi_ids,
+      names,
+      eventTitle,
+      date,
+      members.map(member => member.id),
+    );
     if (response) {
       navigation.navigate('Library', {event: response});
     } else {
       Alert.alert(strings.error.error, strings.error.saveEvent);
     }
-    // wait one second before setloading to false
     setTimeout(() => {
       setLoading(false);
     }, 1000);
@@ -182,7 +207,7 @@ const Create = ({navigation, route}: {navigation: any; route: any}) => {
             button={true}
             padding={-2}
             onPress={() => {
-              // TODO: Navigate to friends tab
+              navigation.navigate('AddFriend', {members: members});
             }}
           />
         </View>

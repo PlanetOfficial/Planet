@@ -21,7 +21,9 @@ import SearchCategory from '../searchScreens/SearchCategory';
 import SearchMap from '../searchScreens/SearchMap';
 import PoiDetail from '../otherScreens/PoiDetail';
 import Friends from '../friendsScreens/Friends';
+import AddFriend from '../libraryScreens/AddFriend';
 import User from '../friendsScreens/User';
+import Mutuals from '../friendsScreens/Mutuals';
 import Explore from '../homeScreens/Explore';
 import Event from '../libraryScreens/Event';
 import EventSettings from '../libraryScreens/EventSettings';
@@ -58,6 +60,8 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {searchMapScreen()}
           {poiDetailScreen()}
           {friendsScreen()}
+          {addFriendScreen()}
+          {mutualsScreen()}
           {userScreen()}
           {exploreScreen()}
           {settingsScreen()}
@@ -102,6 +106,8 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {searchMapScreen()}
           {poiDetailScreen()}
           {friendsScreen()}
+          {addFriendScreen()}
+          {mutualsScreen()}
           {userScreen()}
           {exploreScreen()}
           {settingsScreen()}
@@ -255,6 +261,32 @@ const friendsScreen = () => {
       component={Friends}
       options={{
         headerShown: false,
+      }}
+    />
+  );
+};
+
+const addFriendScreen = () => {
+  return (
+    <Stack.Screen
+      name="AddFriend"
+      component={AddFriend}
+      options={{
+        headerShown: false,
+        presentation: 'modal',
+      }}
+    />
+  );
+};
+
+const mutualsScreen = () => {
+  return (
+    <Stack.Screen
+      name="Mutuals"
+      component={Mutuals}
+      options={{
+        headerShown: false,
+        presentation: 'modal',
       }}
     />
   );

@@ -109,6 +109,12 @@ const strings = {
     accept: 'Accept',
     reject: 'Reject',
     noMutualEventsFound: 'No Mutual Events Found',
+    friendsWith: 'Friends with',
+    and: 'and',
+    other: 'other',
+    others: 'others',
+    mutualFriends: 'Mutual Friends',
+    mutualFriendsDescriptions: 'You have these friends in common',
   },
   profile: {
     yourProfile: 'Your Profile',
@@ -230,6 +236,7 @@ const strings = {
     loadUserData: 'Unable to load user data. Please try again later.',
     friendRequest: 'Unable to send friend request. Please try again later.',
     unfriend: 'Unable to unfriend. Please try again later.',
+    addFriend: 'Unable to invite friend. Please try again later.',
   },
   ageEnum: [
     {label: '-17', value: '-17'},
