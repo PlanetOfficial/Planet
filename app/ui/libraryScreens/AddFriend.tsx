@@ -265,7 +265,9 @@ const AddFriend = ({navigation, route}: {navigation: any; route: any}) => {
             }
           />
           {invitees && invitees.length > 0 ? (
-            <TouchableOpacity style={[localStyles.add, styles.shadow]} onPress={onAdd}>
+            <TouchableOpacity
+              style={[localStyles.add, styles.shadow]}
+              onPress={onAdd}>
               <Text size="l" weight="b" color={colors.white}>
                 {`${strings.main.add} (${invitees.length})`}
               </Text>
