@@ -28,7 +28,7 @@ import {getFriends, searchUsers} from '../../../utils/api/friendsAPI';
 import {UserInfo} from '../../../utils/types';
 import {inviteToEvent} from '../../../utils/api/eventAPI';
 
-// TODO: Refactor
+// TODO: INCOMPLETE
 const AddFriend = ({
   navigation,
   route,
@@ -58,7 +58,7 @@ const AddFriend = ({
     const response = await getFriends();
 
     if (response) {
-      setFriends(response);
+      setFriends(response.friends);
     } else {
       Alert.alert(strings.error.error, strings.error.loadFriendsList);
     }

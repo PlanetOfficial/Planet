@@ -20,7 +20,7 @@ import PoiRow from '../components/PoiRow';
 import {Poi} from '../../utils/types';
 import {handleBookmark} from '../../utils/Misc';
 
-// TODO: THIS PAGE IS INCOMPLETE
+// TODO: INCOMPLETE
 const Explore = ({navigation, route}: {navigation: any; route: any}) => {
   const {name, pois, location} = route.params;
   const [bookmarks, setBookmarks] = useState<Poi[]>([]);
