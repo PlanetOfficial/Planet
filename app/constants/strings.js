@@ -3,7 +3,6 @@ import numbers from './numbers';
 const strings = {
   main: {
     appName: 'Planet',
-
     none: 'None',
     save: 'Save',
     done: 'Done',
@@ -17,6 +16,7 @@ const strings = {
     search: 'Search',
     seeAll: 'See All',
     warning: 'Warning',
+    milesAbbrev: 'mi',
   },
   login: {
     login: 'Login',
@@ -108,6 +108,7 @@ const strings = {
     mutualFriend: 'Mutual Friend',
     mutualFriends: 'Mutual Friends',
     mutualFriendsDescriptions: 'You have these friends in common',
+    noSuggestionsFound: 'No Suggestions Found',
   },
   profile: {
     yourProfile: 'Your Profile',
