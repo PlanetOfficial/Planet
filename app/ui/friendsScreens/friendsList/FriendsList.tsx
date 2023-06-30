@@ -26,7 +26,7 @@ const FriendsList = ({navigation}: {navigation: any}) => {
   if (!friendsContext) {
     throw new Error('FriendsContext is not set!');
   }
-  const {friends, setFriends, friendGroups, setFriendGroups} = friendsContext;
+  const {friends, setFriends, setFriendGroups} = friendsContext;
 
   const [loading, setLoading] = React.useState(false);
   const loadFriends = async () => {
@@ -39,8 +39,6 @@ const FriendsList = ({navigation}: {navigation: any}) => {
       Alert.alert(strings.error.error, strings.error.loadFriendsList);
     }
   };
-
-  console.log(friendGroups);
 
   return (
     <FlatList
