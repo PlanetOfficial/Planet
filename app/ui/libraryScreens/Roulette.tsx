@@ -243,7 +243,13 @@ const Roulette = ({navigation, route}: {navigation: any; route: any}) => {
               style={localStyles.votesList}
               data={currentSuggestion.votes}
               renderItem={({item}) => (
-                <View style={userStyles.container}>
+                <TouchableOpacity
+                  style={userStyles.container}
+                  onPress={() =>
+                    navigation.navigate('User', {
+                      user: item,
+                    })
+                  }>
                   <View style={userStyles.profilePic}>
                     <UserIcon user={item} />
                   </View>
@@ -261,7 +267,7 @@ const Roulette = ({navigation, route}: {navigation: any; route: any}) => {
                       {'@' + item.username}
                     </Text>
                   </View>
-                </View>
+                </TouchableOpacity>
               )}
               keyExtractor={(item: UserInfo) => item.id.toString()}
             />

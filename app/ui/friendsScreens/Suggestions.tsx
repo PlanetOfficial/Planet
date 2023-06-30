@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   RefreshControl,
+  Alert,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 
@@ -19,12 +20,22 @@ import Icon from '../components/Icon';
 import {UserInfo} from '../../utils/types';
 import UserIcon from '../components/UserIcon';
 import Separator from '../components/Separator';
+import {getSuggestions} from '../../utils/api/friendsAPI';
 
 const Friends = ({navigation}: {navigation: any}) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [refreshing, setRefreshingFriends] = useState<boolean>(false);
 
+  const [suggestions, setSuggestions] = useState<UserInfo[]>([]);
+
   const fetchSuggestions = async () => {
+    const response = await getSuggestions();
+
+    if (response) {
+      setSuggestions(response);
+    } else {
+      Alert.alert(strings.error.error, strings.error.loadFriendsList);
+    }
     setRefreshingFriends(false);
     setLoading(false);
   };
@@ -44,11 +55,10 @@ const Friends = ({navigation}: {navigation: any}) => {
   ) : (
     <FlatList
       style={styles.container}
-      data={[]} // temporary
+      data={suggestions}
       keyExtractor={item => item.id.toString()}
       renderItem={({item}: {item: UserInfo}) => (
         <TouchableOpacity
-          key={item.id}
           style={userStyles.container}
           onPress={() =>
             navigation.navigate('User', {
@@ -63,7 +73,10 @@ const Friends = ({navigation}: {navigation: any}) => {
               size="s"
               numberOfLines={1}>{`${item.first_name} ${item.last_name}`}</Text>
             <Text size="s" weight="l" color={colors.darkgrey} numberOfLines={1}>
-              {'@' + item.username}
+              {'@' + item.username + '・'}
+              <Text size="s" weight="l" color={colors.accent} numberOfLines={1}>
+                {item.count + ' mutuals'}
+              </Text>
             </Text>
           </View>
           <Icon icon={icons.next} />
