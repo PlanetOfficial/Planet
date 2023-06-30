@@ -153,7 +153,7 @@ export const leaveEvent = async (event_id: number): Promise<Boolean> => {
  */
 export const inviteToEvent = async (
   event_id: number,
-  user_id: number,
+  user_ids: number[],
 ): Promise<Boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
@@ -163,7 +163,9 @@ export const inviteToEvent = async (
 
   const response = await fetch(
     EventAPIURL +
-      `/member?event_id=${event_id}&user_id=${user_id}&authtoken=${authToken}`,
+      `/member?event_id=${event_id}&user_ids=${JSON.stringify(
+        user_ids,
+      )}&authtoken=${authToken}`,
     {
       method: 'POST',
     },
