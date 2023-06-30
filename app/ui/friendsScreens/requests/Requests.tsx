@@ -1,10 +1,11 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   View,
   StyleSheet,
   Alert,
   TouchableOpacity,
   ScrollView,
+  RefreshControl,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 
@@ -23,6 +24,7 @@ import {UserInfo} from '../../../utils/types';
 import {
   acceptFriendRequest,
   deleteFriendRequest,
+  getFriendRequests,
   rejectFriendRequest,
 } from '../../../utils/api/friendsAPI';
 
@@ -32,6 +34,18 @@ const Requests = ({navigation}: {navigation: any}) => {
     throw new Error('FriendsContext is not set!');
   }
   const {requests, setRequests, requestsSent, setRequestsSent} = friendsContext;
+
+  const [loading, setLoading] = useState(false);
+  const loadRequests = async () => {
+    const response = await getFriendRequests();
+
+    if (response) {
+      setRequests(response.requests);
+      setRequestsSent(response.requests_sent);
+    } else {
+      Alert.alert(strings.error.error, strings.error.loadFriendRequests);
+    }
+  };
 
   useEffect(() => {
     navigation.setOptions({
@@ -75,7 +89,18 @@ const Requests = ({navigation}: {navigation: any}) => {
   return (
     <ScrollView
       style={STYLES.container}
-      contentContainerStyle={STYLES.flatList}>
+      contentContainerStyle={STYLES.flatList}
+      refreshControl={
+        <RefreshControl
+          refreshing={loading}
+          onRefresh={async () => {
+            setLoading(true);
+            await loadRequests();
+            setLoading(false);
+          }}
+          tintColor={colors.primary}
+        />
+      }>
       {requests.length > 0 ? (
         <View style={styles.title}>
           <Text size="s" weight="l">

@@ -58,7 +58,7 @@ import {
   FriendGroup,
 } from '../../utils/types';
 import {getBookmarks} from '../../utils/api/bookmarkAPI';
-import {getFriends} from '../../utils/api/friendsAPI';
+import {getFriendsInfo} from '../../utils/api/friendsAPI';
 
 interface AppNavigationProps {
   isLoggedIn: boolean;
@@ -192,13 +192,13 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
     [suggestions, friends, requests, requestsSent, friendGroups],
   );
   const initializeFriendsInfo = async () => {
-    const result = await getFriends();
+    const result = await getFriendsInfo();
     if (result) {
       setSuggestions(result.suggestions);
       setFriends(result.friends);
       setRequests(result.requests);
       setRequestsSent(result.requests_sent);
-      setFriendGroups(result.friend_groups);
+      setFriendGroups(result.friendgroups);
     } else {
       Alert.alert(strings.error.error, strings.error.loadFriendsList);
     }

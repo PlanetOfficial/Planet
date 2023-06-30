@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, FlatList, TouchableOpacity, RefreshControl} from 'react-native';
+import {View, FlatList, TouchableOpacity} from 'react-native';
 
 import colors from '../../../constants/colors';
 import strings from '../../../constants/strings';
@@ -15,8 +15,6 @@ interface Props {
   navigation: any;
   results: Poi[];
   filterRef: any;
-  refreshing: boolean;
-  loadData: () => void;
   bookmarks: Poi[];
   setBookmarks: (bookmarks: Poi[]) => void;
   location: Coordinate;
@@ -28,8 +26,6 @@ const Results: React.FC<Props> = ({
   navigation,
   results: places,
   filterRef,
-  refreshing,
-  loadData,
   bookmarks,
   setBookmarks,
   location,
@@ -72,13 +68,6 @@ const Results: React.FC<Props> = ({
         </View>
       }
       keyExtractor={(item: Poi) => item.id.toString()}
-      refreshControl={
-        <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => loadData()}
-          tintColor={colors.primary}
-        />
-      }
     />
   );
 };

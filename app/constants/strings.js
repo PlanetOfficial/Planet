@@ -224,6 +224,8 @@ const strings = {
     loadPlaces: 'Unable to load places. Please try again later.',
     locationPermission: 'Location permission denied.',
     loadFriendsList: 'Unable to load friends info. Please try again later.',
+    loadFriendRequests:
+      'Unable to load friend requests. Please try again later.',
     acceptFriendRequest:
       'Unable to accept friend request. Please try again later.',
     declineFriendRequest:
