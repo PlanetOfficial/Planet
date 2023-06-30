@@ -1,6 +1,7 @@
 import React from 'react';
 import {s} from 'react-native-size-matters';
 import {Svg, Line, Circle} from 'react-native-svg';
+
 import colors from '../../../constants/colors';
 
 const AddSeparator = () => (

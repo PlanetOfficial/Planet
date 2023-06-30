@@ -1,4 +1,5 @@
 import React from 'react';
+
 import Search from '../../searchScreens/search/Search';
 
 const SuggestSearch = ({navigation}: {navigation: any}) => {

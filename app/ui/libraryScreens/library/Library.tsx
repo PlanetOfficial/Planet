@@ -10,6 +10,7 @@ import {
   RefreshControl,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
@@ -22,7 +23,6 @@ import EventRow from '../../components/EventRow';
 
 import {getEvents} from '../../../utils/api/eventAPI';
 import {Event} from '../../../utils/types';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Library = ({navigation}: {navigation: any}) => {
   const [self, setSelf] = useState<string>('');

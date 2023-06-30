@@ -21,10 +21,10 @@ import STYLES from '../../../constants/styles';
 
 import Icon from '../../components/Icon';
 import Text from '../../components/Text';
+import UserRow from '../../components/UserRow';
 
 import {searchUsers} from '../../../utils/api/friendsAPI';
 import {UserInfo} from '../../../utils/types';
-import UserRow from '../../components/UserRow';
 
 const Friends = ({navigation}: {navigation: any}) => {
   const searchRef = createRef<TextInput>();

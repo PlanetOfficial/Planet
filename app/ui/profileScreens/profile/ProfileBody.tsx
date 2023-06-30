@@ -19,10 +19,10 @@ import PoiRow from '../../components/PoiRow';
 import UserIcon from '../../components/UserIcon';
 
 import BookmarkContext from '../../../context/BookmarkContext';
+import FriendsContext from '../../../context/FriendsContext';
 
 import {fetchUserLocation, handleBookmark} from '../../../utils/Misc';
 import {Coordinate, Poi} from '../../../utils/types';
-import FriendsContext from '../../../context/FriendsContext';
 
 const ProfileBody = ({navigation}: {navigation: any}) => {
   const [selectedIndex, setIndex] = useState<number>(0);

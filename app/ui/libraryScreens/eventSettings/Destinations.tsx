@@ -14,6 +14,7 @@ import Icon from '../../components/Icon';
 import Separator from '../../components/Separator';
 
 import {Destination, Event, EventDetail} from '../../../utils/types';
+
 import {
   handleRemoveDestination,
   handleRenameDestination,

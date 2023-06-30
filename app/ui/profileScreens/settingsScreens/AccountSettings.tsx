@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 import {s} from 'react-native-size-matters';
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
@@ -20,7 +21,6 @@ import Separator from '../../components/Separator';
 
 import {clearCaches} from '../../../utils/CacheHelpers';
 import {removeAccount} from '../../../utils/api/authAPI';
-import EncryptedStorage from 'react-native-encrypted-storage';
 
 const AccountSettings = ({navigation}: {navigation: any}) => {
   const handleLogout = async () => {

@@ -7,7 +7,6 @@ import {
   Text,
   View,
 } from 'react-native';
-
 import {Svg, Circle, Line} from 'react-native-svg';
 import {s} from 'react-native-size-matters';
 import {
