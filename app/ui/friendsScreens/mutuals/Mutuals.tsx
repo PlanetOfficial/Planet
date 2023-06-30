@@ -3,11 +3,9 @@ import {
   View,
   SafeAreaView,
   Alert,
-  StyleSheet,
   FlatList,
   TouchableOpacity,
 } from 'react-native';
-import {s} from 'react-native-size-matters';
 
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
@@ -16,12 +14,10 @@ import STYLES from '../../../constants/styles';
 
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
-import Separator from '../../components/Separator';
-import UserIcon from '../../components/UserIcon';
+import UserRow from '../../components/UserRow';
 
 import {UserInfo} from '../../../utils/types';
 
-// TODO: Refactor
 const Mutuals = ({
   navigation,
   route,
@@ -60,26 +56,14 @@ const Mutuals = ({
         keyExtractor={item => item.id.toString()}
         renderItem={({item}: {item: UserInfo}) => (
           <TouchableOpacity
-            style={userStyles.container}
             onPress={() =>
               navigation.push('User', {
                 user: item,
               })
             }>
-            <View style={userStyles.profilePic}>
-              <UserIcon user={item} />
-            </View>
-            <View style={userStyles.texts}>
-              <Text
-                size="s"
-                numberOfLines={
-                  1
-                }>{`${item.first_name} ${item.last_name}`}</Text>
-              <Text size="s" weight="l" color={colors.black} numberOfLines={1}>
-                {'@' + item.username}
-              </Text>
-            </View>
-            <Icon icon={icons.next} />
+            <UserRow user={item}>
+              <Icon size='xs' icon={icons.next} />
+            </UserRow>
           </TouchableOpacity>
         )}
         ListEmptyComponent={
@@ -91,37 +75,9 @@ const Mutuals = ({
             </Text>
           </View>
         }
-        ItemSeparatorComponent={Separator}
       />
     </View>
   );
 };
-
-const userStyles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginHorizontal: s(20),
-    paddingVertical: s(10),
-  },
-  profilePic: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: s(45),
-    height: s(45),
-    borderRadius: s(22.5),
-    overflow: 'hidden',
-  },
-  pic: {
-    width: '100%',
-    height: '100%',
-  },
-  texts: {
-    flex: 1,
-    height: s(50),
-    justifyContent: 'space-evenly',
-    marginHorizontal: s(10),
-  },
-});
 
 export default Mutuals;
