@@ -20,14 +20,12 @@ import strings from '../../../constants/strings';
 import STYLES from '../../../constants/styles';
 
 import Icon from '../../components/Icon';
-import Separator from '../../components/Separator';
-import UserIcon from '../../components/UserIcon';
 import Text from '../../components/Text';
 
 import {searchUsers} from '../../../utils/api/friendsAPI';
 import {UserInfo} from '../../../utils/types';
+import UserRow from '../../components/UserRow';
 
-// TODO: Refactor
 const Friends = ({navigation}: {navigation: any}) => {
   const searchRef = createRef<TextInput>();
   const [searchText, setSearchText] = useState<string>('');
@@ -50,8 +48,6 @@ const Friends = ({navigation}: {navigation: any}) => {
     setLoading(false);
   };
 
-  console.log(searching);
-
   return (
     <View style={STYLES.container}>
       <SafeAreaView>
@@ -61,11 +57,11 @@ const Friends = ({navigation}: {navigation: any}) => {
             icon={icons.back}
             onPress={() => navigation.goBack()}
           />
-          <View style={[localStyles.searchBar, STYLES.shadow]}>
+          <View style={[styles.searchBar, STYLES.shadow]}>
             <Icon size="s" icon={icons.search} color={colors.black} />
             <TextInput
               ref={searchRef}
-              style={localStyles.searchText}
+              style={styles.searchText}
               placeholder={strings.search.search}
               placeholderTextColor={colors.black}
               autoCapitalize="none"
@@ -82,7 +78,7 @@ const Friends = ({navigation}: {navigation: any}) => {
           </View>
           {searching ? (
             <TouchableOpacity
-              style={localStyles.cancel}
+              style={styles.cancel}
               onPress={() => {
                 searchRef.current?.clear();
                 setSearching(false);
@@ -106,30 +102,14 @@ const Friends = ({navigation}: {navigation: any}) => {
             keyExtractor={item => item.id.toString()}
             renderItem={({item}: {item: UserInfo}) => (
               <TouchableOpacity
-                style={userStyles.container}
                 onPress={() =>
                   navigation.push('User', {
                     user: item,
                   })
                 }>
-                <View style={userStyles.profilePic}>
-                  <UserIcon user={item} />
-                </View>
-                <View style={userStyles.texts}>
-                  <Text
-                    size="s"
-                    numberOfLines={
-                      1
-                    }>{`${item.first_name} ${item.last_name}`}</Text>
-                  <Text
-                    size="s"
-                    weight="l"
-                    color={colors.black}
-                    numberOfLines={1}>
-                    {'@' + item.username}
-                  </Text>
-                </View>
-                <Icon icon={icons.next} />
+                <UserRow user={item}>
+                  <Icon size="xs" icon={icons.next} />
+                </UserRow>
               </TouchableOpacity>
             )}
             ListEmptyComponent={
@@ -139,7 +119,6 @@ const Friends = ({navigation}: {navigation: any}) => {
                 </View>
               ) : null
             }
-            ItemSeparatorComponent={Separator}
           />
         )
       ) : (
@@ -149,7 +128,7 @@ const Friends = ({navigation}: {navigation: any}) => {
   );
 };
 
-const localStyles = StyleSheet.create({
+const styles = StyleSheet.create({
   searchBar: {
     flex: 1,
     flexDirection: 'row',
@@ -169,29 +148,6 @@ const localStyles = StyleSheet.create({
   },
   cancel: {
     marginLeft: s(10),
-  },
-});
-
-const userStyles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginHorizontal: s(20),
-    paddingVertical: s(10),
-  },
-  profilePic: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: s(45),
-    height: s(45),
-    borderRadius: s(22.5),
-    overflow: 'hidden',
-  },
-  texts: {
-    flex: 1,
-    height: s(50),
-    justifyContent: 'space-evenly',
-    marginHorizontal: s(10),
   },
 });
 

@@ -98,6 +98,8 @@ const strings = {
     noFriendsFound: 'No Friends Found',
     noFriendsFoundDescription: 'Try adding some friends',
     noRequestsFound: 'No Requests Found',
+    friendRequest: 'Friend Request',
+    friendRequests: 'Friend Requests',
     noFriendRequestsFound: 'No Friend Requests Found',
     noSuggestionsFound: 'No Suggestions Found',
     pendingRequest: 'Pending Request',
