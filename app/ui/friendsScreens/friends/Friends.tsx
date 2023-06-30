@@ -29,7 +29,7 @@ import UserRow from '../../components/UserRow';
 const Friends = ({navigation}: {navigation: any}) => {
   const searchRef = createRef<TextInput>();
   const [searchText, setSearchText] = useState<string>('');
-  const [searchResult, setSearchResult] = useState<UserInfo[]>([]);
+  const [searchResults, setSearchResults] = useState<UserInfo[]>([]);
   const [searching, setSearching] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -40,7 +40,7 @@ const Friends = ({navigation}: {navigation: any}) => {
       const result = await searchUsers(text);
 
       if (result) {
-        setSearchResult(result);
+        setSearchResults(result);
       } else {
         Alert.alert(strings.error.error, strings.error.searchError);
       }
@@ -82,7 +82,7 @@ const Friends = ({navigation}: {navigation: any}) => {
               onPress={() => {
                 searchRef.current?.clear();
                 setSearching(false);
-                setSearchResult([]);
+                setSearchResults([]);
               }}>
               <Text>{strings.main.cancel}</Text>
             </TouchableOpacity>
@@ -98,7 +98,7 @@ const Friends = ({navigation}: {navigation: any}) => {
           <FlatList
             style={STYLES.container}
             contentContainerStyle={STYLES.flatList}
-            data={searchResult}
+            data={searchResults}
             keyExtractor={item => item.id.toString()}
             renderItem={({item}: {item: UserInfo}) => (
               <TouchableOpacity

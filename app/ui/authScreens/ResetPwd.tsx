@@ -1,5 +1,11 @@
 import React, {useState} from 'react';
-import {View, SafeAreaView, TextInput, TouchableOpacity} from 'react-native';
+import {
+  View,
+  SafeAreaView,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
 
 import colors from '../../constants/colors';
 import icons from '../../constants/icons';
@@ -9,26 +15,22 @@ import STYLES from '../../constants/styles';
 import Icon from '../components/Icon';
 import Text from '../components/Text';
 
-import {signup} from '../../utils/api/authAPI';
+import {resetPassword} from '../../utils/api/authAPI';
+import {clearCaches} from '../../utils/CacheHelpers';
 
-const SignUpCreds = ({
+const ResetPwd = ({
   navigation,
   route,
 }: {
   navigation: any;
   route: {
     params: {
-      firstName: string;
-      lastName: string;
+      authToken: string;
     };
   };
 }) => {
-  const [firstName] = useState<string>(route.params.firstName);
-  const [lastName] = useState<string>(route.params.lastName);
+  const [authToken] = useState<string>(route.params.authToken);
 
-  const [username, setUsername] = useState<string>(
-    firstName.toLowerCase() + lastName.toLowerCase(),
-  );
   const [password, setPassword] = useState<string>('');
   const [passwordConfirm, setPasswordConfirm] = useState<string>('');
 
@@ -37,17 +39,8 @@ const SignUpCreds = ({
   const handleNext = async () => {
     setError('');
 
-    if (
-      username.length === 0 ||
-      password.length === 0 ||
-      passwordConfirm.length === 0
-    ) {
+    if (password.length === 0 || passwordConfirm.length === 0) {
       setError(strings.signUp.missingFields);
-      return;
-    }
-
-    if (username.length > 100) {
-      setError(strings.signUp.inputLong);
       return;
     }
 
@@ -66,17 +59,19 @@ const SignUpCreds = ({
       return;
     }
 
-    const response = await signup(firstName, lastName, username, password);
+    const response = await resetPassword(authToken, password);
 
-    if (response?.authToken) {
+    if (response) {
+      clearCaches();
+
+      Alert.alert(strings.login.passwordResetSuccess);
+
       navigation.reset({
         index: 0,
-        routes: [
-          {name: 'SignUpPhone', params: {authToken: response.authToken}},
-        ],
+        routes: [{name: 'Login'}],
       });
     } else {
-      setError(response?.message);
+      setError(strings.error.resetPassword);
     }
   };
 
@@ -91,30 +86,9 @@ const SignUpCreds = ({
           />
         </View>
       </SafeAreaView>
-
-      <View style={STYLES.promptContainer}>
-        <Text size="l" weight="l" center={true}>
-          {strings.signUp.credPrompt}
-        </Text>
-      </View>
-
       <View style={STYLES.inputContainer}>
         <View style={STYLES.prompt}>
-          <Text weight="l">{strings.signUp.username}: </Text>
-        </View>
-        <TextInput
-          style={STYLES.input}
-          placeholder={strings.signUp.username}
-          value={username}
-          onChangeText={text => setUsername(text.toLowerCase())}
-          placeholderTextColor={colors.black}
-          autoCapitalize="none"
-          autoCorrect={false}
-        />
-      </View>
-      <View style={STYLES.inputContainer}>
-        <View style={STYLES.prompt}>
-          <Text weight="l">{strings.login.password}: </Text>
+          <Text weight="l">{strings.login.newPassword}: </Text>
         </View>
         <TextInput
           style={STYLES.input}
@@ -148,25 +122,17 @@ const SignUpCreds = ({
           STYLES.buttonBig,
           {
             backgroundColor:
-              username.length === 0 ||
-              password.length === 0 ||
-              password !== passwordConfirm
-                ? colors.black
+              password.length === 0 || password !== passwordConfirm
+                ? colors.grey
                 : colors.primary,
           },
         ]}
-        disabled={
-          username.length === 0 ||
-          password.length === 0 ||
-          password !== passwordConfirm
-        }
+        disabled={password.length === 0 || password !== passwordConfirm}
         onPress={() => handleNext()}>
-        <Text weight="b" color={colors.white}>
-          {strings.signUp.signUp}
-        </Text>
+        <Text color={colors.white}>{strings.login.resetPassword}</Text>
       </TouchableOpacity>
     </View>
   );
 };
 
-export default SignUpCreds;
+export default ResetPwd;

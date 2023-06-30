@@ -1,12 +1,5 @@
 import React, {useState} from 'react';
-import {
-  View,
-  SafeAreaView,
-  TouchableOpacity,
-  TextInput,
-  StyleSheet,
-} from 'react-native';
-import {s} from 'react-native-size-matters';
+import {View, SafeAreaView, TouchableOpacity, TextInput} from 'react-native';
 
 import colors from '../../constants/colors';
 import icons from '../../constants/icons';
@@ -16,20 +9,20 @@ import STYLES from '../../constants/styles';
 import Text from '../components/Text';
 import Icon from '../components/Icon';
 
-import {verifyCode} from '../../utils/api/authAPI';
+import {verifyCodeUsername} from '../../utils/api/authAPI';
 
-const VerifyPhone = ({
+const ForgotPwdVerify = ({
   navigation,
   route,
 }: {
   navigation: any;
   route: {
     params: {
-      authToken: string;
+      username: string;
     };
   };
 }) => {
-  const [authToken] = useState<string>(route.params.authToken);
+  const [username] = useState<string>(route.params.username);
 
   const [code, setCode] = useState<string>('');
 
@@ -43,12 +36,14 @@ const VerifyPhone = ({
       return;
     }
 
-    const response = await verifyCode(authToken, code);
+    const response = await verifyCodeUsername(username, code);
 
     if (response) {
       navigation.reset({
         index: 0,
-        routes: [{name: 'SignUpInfo', params: {authToken: authToken}}],
+        routes: [
+          {name: 'ResetPassword', params: {authToken: response.authToken}},
+        ],
       });
     } else {
       setError(strings.signUp.codeVerifyFailed);
@@ -67,15 +62,15 @@ const VerifyPhone = ({
         </View>
       </SafeAreaView>
 
-      <View style={styles.promptContainer}>
+      <View style={STYLES.promptContainer}>
         <Text size="l" weight="l" center={true}>
           {strings.signUp.verifyPrompt}
         </Text>
       </View>
 
-      <View style={styles.inputContainer}>
+      <View style={STYLES.inputContainer}>
         <TextInput
-          style={styles.input}
+          style={STYLES.input}
           value={code}
           onChangeText={text =>
             setCode(text.replace(/[^0-9]/g, '').substring(0, 6))
@@ -91,57 +86,19 @@ const VerifyPhone = ({
       ) : null}
       <TouchableOpacity
         style={[
-          styles.button,
+          STYLES.buttonBig,
           {
-            backgroundColor: code.length !== 6 ? colors.black : colors.primary,
+            backgroundColor: code.length !== 6 ? colors.grey : colors.primary,
           },
         ]}
         disabled={code.length !== 6}
         onPress={() => handleVerifyCode()}>
         <Text weight="b" color={colors.white}>
-          {strings.signUp.sendCode}
+          {strings.signUp.verifyCode}
         </Text>
       </TouchableOpacity>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  promptContainer: {
-    margin: s(40),
-    paddingHorizontal: s(20),
-  },
-  prompt: {
-    width: s(100),
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginVertical: s(30),
-    marginHorizontal: s(50),
-  },
-  input: {
-    alignSelf: 'center',
-    borderBottomWidth: 1,
-    borderColor: colors.black,
-    marginHorizontal: s(5),
-    paddingHorizontal: s(10),
-    paddingVertical: s(5),
-    fontFamily: 'Lato',
-    letterSpacing: s(10),
-    fontSize: s(20),
-    width: s(150),
-  },
-  button: {
-    alignSelf: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: s(30),
-    width: s(150),
-    height: s(50),
-    borderRadius: s(25),
-  },
-});
-
-export default VerifyPhone;
+export default ForgotPwdVerify;
