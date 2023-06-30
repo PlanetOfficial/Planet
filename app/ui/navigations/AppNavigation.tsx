@@ -1,4 +1,5 @@
 import React, {useEffect, useMemo, useState} from 'react';
+import {Alert, Animated} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {
   StackCardInterpolatedStyle,
@@ -39,7 +40,12 @@ import LocationsSettings from '../profileScreens/settingsScreens/LocationsSettin
 import NotificationSettings from '../profileScreens/settingsScreens/NotificationSettings';
 import PrivacySettings from '../profileScreens/settingsScreens/PrivacySettings';
 import ProfileSettings from '../profileScreens/settingsScreens/ProfileSettings';
-import {Alert, Animated} from 'react-native';
+
+import strings from '../../constants/strings';
+
+import BookmarkContext from '../../context/BookmarkContext';
+import FriendsContext from '../../context/FriendsContext';
+
 import {
   Event,
   Coordinate,
@@ -47,10 +53,10 @@ import {
   Poi as PoiType,
   UserInfo,
   Destination,
+  FriendGroup,
 } from '../../utils/types';
-import BookmarkContext from '../../context/BookmarkContext';
 import {getBookmarks} from '../../utils/api/bookmarkAPI';
-import strings from '../../constants/strings';
+import {getFriends} from '../../utils/api/friendsAPI';
 
 interface AppNavigationProps {
   isLoggedIn: boolean;
@@ -153,94 +159,133 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
       Alert.alert(strings.error.error, strings.error.loadBookmarks);
     }
   };
+
+  const [suggestions, setSuggestions] = useState<UserInfo[]>([]);
+  const [friends, setFriends] = useState<UserInfo[]>([]);
+  const [requests, setRequests] = useState<UserInfo[]>([]);
+  const [requestsSent, setRequestsSent] = useState<UserInfo[]>([]);
+  const [friendGroups, setFriendGroups] = useState<FriendGroup[]>([]);
+  const friendsInfo = useMemo(
+    () => ({
+      suggestions,
+      setSuggestions,
+      friends,
+      setFriends,
+      requests,
+      setRequests,
+      requestsSent,
+      setRequestsSent,
+      friendGroups,
+      setFriendGroups,
+    }),
+    [suggestions, friends, requests, requestsSent, friendGroups],
+  );
+  const initializeFriendsInfo = async () => {
+    const result = await getFriends();
+    if (result) {
+      setSuggestions(result.suggestions);
+      setFriends(result.friends);
+      setRequests(result.requests);
+      setRequestsSent(result.requests_sent);
+      setFriendGroups(result.friend_groups);
+    } else {
+      Alert.alert(strings.error.error, strings.error.loadFriendsList);
+    }
+  };
+
   useEffect(() => {
     if (isLoggedIn) {
       initializeBookmarks();
+      initializeFriendsInfo();
     }
   }, [isLoggedIn]);
 
   return isLoggedIn ? (
-    <BookmarkContext.Provider value={bookmarkValue}>
-      <NavigationContainer>
-        <BottomSheetModalProvider>
-          <Stack.Navigator initialRouteName="TabStack">
-            {tabStack()}
-            {searchCategoryScreen()}
-            {searchMapScreen()}
-            {poiScreen()}
-            {friendsScreen()}
-            {addFriendScreen()}
-            {mutualsScreen()}
-            {userScreen()}
-            {exploreScreen()}
-            {settingsScreen()}
-            {accountSettingsScreen()}
-            {contactUsScreen()}
-            {locationsSettingsScreen()}
-            {notificationSettingsScreen()}
-            {privacySettingsScreen()}
-            {profileSettingsScreen()}
-            {createScreen()}
-            {createSearchScreen()}
-            {eventScreen()}
-            {eventSettingsScreen()}
-            {rouletteScreen()}
-            {spinHistoryScreen()}
-            {suggestSearchScreen()}
-            {addSearchScreen()}
-            {notificationsScreen()}
-            {loginStackScreen()}
-            {signUpNameStackScreen()}
-            {signUpCredsStackScreen()}
-            {signUpPhoneStackScreen()}
-            {verifyPhoneStackScreen()}
-            {signUpInfoStackScreen()}
-            {forgetPassStackScreen()}
-          </Stack.Navigator>
-        </BottomSheetModalProvider>
-      </NavigationContainer>
-    </BookmarkContext.Provider>
+    <FriendsContext.Provider value={friendsInfo}>
+      <BookmarkContext.Provider value={bookmarkValue}>
+        <NavigationContainer>
+          <BottomSheetModalProvider>
+            <Stack.Navigator initialRouteName="TabStack">
+              {tabStack()}
+              {searchCategoryScreen()}
+              {searchMapScreen()}
+              {poiScreen()}
+              {friendsScreen()}
+              {addFriendScreen()}
+              {mutualsScreen()}
+              {userScreen()}
+              {exploreScreen()}
+              {settingsScreen()}
+              {accountSettingsScreen()}
+              {contactUsScreen()}
+              {locationsSettingsScreen()}
+              {notificationSettingsScreen()}
+              {privacySettingsScreen()}
+              {profileSettingsScreen()}
+              {createScreen()}
+              {createSearchScreen()}
+              {eventScreen()}
+              {eventSettingsScreen()}
+              {rouletteScreen()}
+              {spinHistoryScreen()}
+              {suggestSearchScreen()}
+              {addSearchScreen()}
+              {notificationsScreen()}
+              {loginStackScreen()}
+              {signUpNameStackScreen()}
+              {signUpCredsStackScreen()}
+              {signUpPhoneStackScreen()}
+              {verifyPhoneStackScreen()}
+              {signUpInfoStackScreen()}
+              {forgetPassStackScreen()}
+            </Stack.Navigator>
+          </BottomSheetModalProvider>
+        </NavigationContainer>
+      </BookmarkContext.Provider>
+    </FriendsContext.Provider>
   ) : (
-    <BookmarkContext.Provider value={bookmarkValue}>
-      <NavigationContainer>
-        <BottomSheetModalProvider>
-          <Stack.Navigator initialRouteName="Login">
-            {loginStackScreen()}
-            {signUpNameStackScreen()}
-            {signUpCredsStackScreen()}
-            {signUpPhoneStackScreen()}
-            {verifyPhoneStackScreen()}
-            {signUpInfoStackScreen()}
-            {forgetPassStackScreen()}
-            {tabStack()}
-            {searchCategoryScreen()}
-            {searchMapScreen()}
-            {poiScreen()}
-            {friendsScreen()}
-            {addFriendScreen()}
-            {mutualsScreen()}
-            {userScreen()}
-            {exploreScreen()}
-            {settingsScreen()}
-            {accountSettingsScreen()}
-            {contactUsScreen()}
-            {locationsSettingsScreen()}
-            {notificationSettingsScreen()}
-            {privacySettingsScreen()}
-            {profileSettingsScreen()}
-            {createScreen()}
-            {createSearchScreen()}
-            {eventScreen()}
-            {eventSettingsScreen()}
-            {rouletteScreen()}
-            {spinHistoryScreen()}
-            {suggestSearchScreen()}
-            {addSearchScreen()}
-            {notificationsScreen()}
-          </Stack.Navigator>
-        </BottomSheetModalProvider>
-      </NavigationContainer>
-    </BookmarkContext.Provider>
+    <FriendsContext.Provider value={friendsInfo}>
+      <BookmarkContext.Provider value={bookmarkValue}>
+        <NavigationContainer>
+          <BottomSheetModalProvider>
+            <Stack.Navigator initialRouteName="Login">
+              {loginStackScreen()}
+              {signUpNameStackScreen()}
+              {signUpCredsStackScreen()}
+              {signUpPhoneStackScreen()}
+              {verifyPhoneStackScreen()}
+              {signUpInfoStackScreen()}
+              {forgetPassStackScreen()}
+              {tabStack()}
+              {searchCategoryScreen()}
+              {searchMapScreen()}
+              {poiScreen()}
+              {friendsScreen()}
+              {addFriendScreen()}
+              {mutualsScreen()}
+              {userScreen()}
+              {exploreScreen()}
+              {settingsScreen()}
+              {accountSettingsScreen()}
+              {contactUsScreen()}
+              {locationsSettingsScreen()}
+              {notificationSettingsScreen()}
+              {privacySettingsScreen()}
+              {profileSettingsScreen()}
+              {createScreen()}
+              {createSearchScreen()}
+              {eventScreen()}
+              {eventSettingsScreen()}
+              {rouletteScreen()}
+              {spinHistoryScreen()}
+              {suggestSearchScreen()}
+              {addSearchScreen()}
+              {notificationsScreen()}
+            </Stack.Navigator>
+          </BottomSheetModalProvider>
+        </NavigationContainer>
+      </BookmarkContext.Provider>
+    </FriendsContext.Provider>
   );
 };
 

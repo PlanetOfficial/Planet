@@ -22,7 +22,7 @@ import BookmarkContext from '../../../context/BookmarkContext';
 
 import {fetchUserLocation, handleBookmark} from '../../../utils/Misc';
 import {Coordinate, Poi} from '../../../utils/types';
-import {getFriendCount} from '../../../utils/api/friendsAPI';
+import FriendsContext from '../../../context/FriendsContext';
 
 const ProfileBody = ({navigation}: {navigation: any}) => {
   const [selectedIndex, setIndex] = useState<number>(0);
@@ -40,7 +40,11 @@ const ProfileBody = ({navigation}: {navigation: any}) => {
   }
   const {bookmarks, setBookmarks} = bookmarkContext;
 
-  const [friendsCount, setFriendsCount] = useState<number>();
+  const friendsContext = useContext(FriendsContext);
+  if (!friendsContext) {
+    throw new Error('FriendsContext is not set!');
+  }
+  const {friends} = friendsContext;
 
   const initializeData = async () => {
     setLocation(await fetchUserLocation());
@@ -52,13 +56,6 @@ const ProfileBody = ({navigation}: {navigation: any}) => {
     setLastName(_lastName || '');
     setUsername(_username || '');
     setPfpURL(_pfpURL || '');
-
-    const _friendsCount = await getFriendCount();
-    if (_friendsCount) {
-      setFriendsCount(_friendsCount);
-    } else {
-      Alert.alert(strings.error.error, strings.error.loadFriendsList);
-    }
   };
 
   useEffect(() => {
@@ -89,9 +86,7 @@ const ProfileBody = ({navigation}: {navigation: any}) => {
           </Text>
           <TouchableOpacity onPress={() => navigation.navigate('Friends')}>
             <Text size="s" color={colors.primary}>
-              {(friendsCount ? friendsCount : '') +
-                ' ' +
-                strings.friends.friends}
+              {friends.length + ' ' + strings.friends.friends}
             </Text>
           </TouchableOpacity>
         </View>
