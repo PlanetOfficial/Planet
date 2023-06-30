@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useCallback} from 'react';
+import React, {useEffect, useState, useCallback, useContext} from 'react';
 import {
   View,
   StyleSheet,
@@ -33,6 +33,7 @@ import {
 } from '../../../utils/api/friendsAPI';
 import ProfileBody from '../../profileScreens/profile/ProfileBody';
 import IconCluster from '../../components/IconCluster';
+import FriendsContext from '../../../context/FriendsContext';
 
 // TODO: Refactor
 const User = ({
@@ -62,6 +63,19 @@ const User = ({
   const [status, setStatus] = useState<string>('');
   const [mutuals, setMutuals] = useState<UserInfo[]>([]);
   const [mutualEvents, setMutualEvents] = useState<Event[]>([]);
+
+  const friendsContext = useContext(FriendsContext);
+  if (!friendsContext) {
+    throw new Error('FriendsContext is not set!');
+  }
+  const {
+    friends,
+    setFriends,
+    requests,
+    setRequests,
+    requestsSent,
+    setRequestsSent,
+  } = friendsContext;
 
   const initializeData = useCallback(async () => {
     const _self = await EncryptedStorage.getItem('username');
@@ -99,6 +113,8 @@ const User = ({
 
     if (response) {
       setStatus('REQSENT');
+      const newRequestsSent = [...requestsSent, route.params.user];
+      setRequestsSent(newRequestsSent);
     } else {
       Alert.alert(strings.error.error, strings.error.friendRequest);
     }
@@ -109,6 +125,10 @@ const User = ({
 
     if (response) {
       setStatus('NONE');
+      const newFriends = friends.filter(
+        (friend: UserInfo) => friend.id !== userId,
+      );
+      setFriends(newFriends);
     } else {
       Alert.alert(strings.error.error, strings.error.unfriend);
     }
@@ -119,6 +139,14 @@ const User = ({
 
     if (response) {
       setStatus('FRIENDS');
+
+      const newFriends = [...friends, route.params.user];
+      setFriends(newFriends);
+
+      const newRequests = requests.filter(
+        (request: UserInfo) => request.id !== userId,
+      );
+      setRequests(newRequests);
     } else {
       Alert.alert(strings.error.error, strings.error.acceptFriendRequest);
     }
@@ -129,6 +157,10 @@ const User = ({
 
     if (response) {
       setStatus('NONE');
+      const newRequests = requests.filter(
+        (request: UserInfo) => request.id !== userId,
+      );
+      setRequests(newRequests);
     } else {
       Alert.alert(strings.error.error, strings.error.declineFriendRequest);
     }
@@ -139,6 +171,10 @@ const User = ({
 
     if (response) {
       setStatus('NONE');
+      const newRequestsSent = requestsSent.filter(
+        (request: UserInfo) => request.id !== userId,
+      );
+      setRequestsSent(newRequestsSent);
     } else {
       Alert.alert(strings.error.error, strings.error.cancelFriendRequest);
     }

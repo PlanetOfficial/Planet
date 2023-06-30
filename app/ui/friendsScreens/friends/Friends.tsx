@@ -50,6 +50,8 @@ const Friends = ({navigation}: {navigation: any}) => {
     setLoading(false);
   };
 
+  console.log(searching);
+
   return (
     <View style={STYLES.container}>
       <SafeAreaView>
