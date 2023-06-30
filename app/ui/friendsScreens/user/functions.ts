@@ -1,7 +1,7 @@
 import {Alert} from 'react-native';
 import strings from '../../../constants/strings';
 
-import {UserInfo} from '../../../utils/types';
+import {UserInfo, UserStatus} from '../../../utils/types';
 import {
   acceptFriendRequest,
   deleteFriend,
@@ -12,7 +12,7 @@ import {
 
 export const handleFriendRequest = async (
   userId: number,
-  setStatus: (status: string) => void,
+  setStatus: (status: UserStatus) => void,
   requestsSent: UserInfo[],
   setRequestsSent: (requestsSent: UserInfo[]) => void,
   user: UserInfo,
@@ -30,7 +30,7 @@ export const handleFriendRequest = async (
 
 export const handleUnfriend = async (
   userId: number,
-  setStatus: (status: string) => void,
+  setStatus: (status: UserStatus) => void,
   friends: UserInfo[],
   setFriends: (friends: UserInfo[]) => void,
 ) => {
@@ -49,7 +49,7 @@ export const handleUnfriend = async (
 
 export const handleAcceptRequest = async (
   userId: number,
-  setStatus: (status: string) => void,
+  setStatus: (status: UserStatus) => void,
   friends: UserInfo[],
   setFriends: (friends: UserInfo[]) => void,
   requests: UserInfo[],
@@ -75,7 +75,7 @@ export const handleAcceptRequest = async (
 
 export const handleDeclineRequest = async (
   userId: number,
-  setStatus: (status: string) => void,
+  setStatus: (status: UserStatus) => void,
   requests: UserInfo[],
   setRequests: (requests: UserInfo[]) => void,
 ) => {
@@ -94,7 +94,7 @@ export const handleDeclineRequest = async (
 
 export const handleCancelRequest = async (
   userId: number,
-  setStatus: (status: string) => void,
+  setStatus: (status: UserStatus) => void,
   requestsSent: UserInfo[],
   setRequestsSent: (requestsSent: UserInfo[]) => void,
 ) => {

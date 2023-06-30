@@ -7,7 +7,7 @@ import strings from '../../../constants/strings';
 
 import Text from '../../components/Text';
 
-import {UserInfo} from '../../../utils/types';
+import {UserInfo, UserStatus} from '../../../utils/types';
 import FriendsContext from '../../../context/FriendsContext';
 import {
   handleAcceptRequest,
@@ -22,8 +22,8 @@ interface Props {
   navigation: any;
   user: UserInfo;
   mutuals: UserInfo[];
-  status: string;
-  setStatus: (status: string) => void;
+  status: UserStatus;
+  setStatus: (status: UserStatus) => void;
 }
 
 const Profile: React.FC<Props> = ({

@@ -37,7 +37,7 @@ const User = ({
 }) => {
   const [selectedIndex, setIndex] = useState<number>(0);
   const [self, setSelf] = useState<string>('');
-  const [status, setStatus] = useState<string>('');
+  const [status, setStatus] = useState<UserStatus>('');
   const [mutuals, setMutuals] = useState<UserInfo[]>([]);
   const [mutualEvents, setMutualEvents] = useState<Event[]>([]);
 
