@@ -153,8 +153,8 @@ const styles = StyleSheet.create({
   },
   title: {
     marginHorizontal: s(20),
-    marginTop: s(5),
-    marginBottom: s(10),
+    marginTop: s(10),
+    marginBottom: s(5),
   },
 });
 
