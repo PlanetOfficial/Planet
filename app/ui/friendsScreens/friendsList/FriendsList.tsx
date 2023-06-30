@@ -1,13 +1,5 @@
-import React, {useEffect, useState, useCallback} from 'react';
-import {
-  View,
-  StyleSheet,
-  Alert,
-  FlatList,
-  TouchableOpacity,
-  ActivityIndicator,
-  RefreshControl,
-} from 'react-native';
+import React, {useContext} from 'react';
+import {View, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
 import {s} from 'react-native-size-matters';
 
 import colors from '../../../constants/colors';
@@ -20,36 +12,19 @@ import Icon from '../../components/Icon';
 import UserIcon from '../../components/UserIcon';
 import Separator from '../../components/Separator';
 
+import FriendsContext from '../../../context/FriendsContext';
+
 import {UserInfo} from '../../../utils/types';
-import {getFriends} from '../../../utils/api/friendsAPI';
 
 // TODO: Refactor
 const FriendsList = ({navigation}: {navigation: any}) => {
-  const [friends, setFriends] = useState<UserInfo[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [refreshing, setRefreshing] = useState<boolean>(false);
+  const friendsContext = useContext(FriendsContext);
+  if (!friendsContext) {
+    throw new Error('FriendsContext is not set!');
+  }
+  const {friends} = friendsContext;
 
-  const fetchFriends = useCallback(async () => {
-    const response = await getFriends();
-
-    if (response) {
-      setFriends(response);
-    } else {
-      Alert.alert(strings.error.error, strings.error.loadFriendsList);
-    }
-    setRefreshing(false);
-    setLoading(false);
-  }, []);
-
-  useEffect(() => {
-    fetchFriends();
-  }, [fetchFriends]);
-
-  return loading ? (
-    <View style={[STYLES.center, STYLES.container]}>
-      <ActivityIndicator size="small" color={colors.primary} />
-    </View>
-  ) : (
+  return (
     <FlatList
       style={STYLES.container}
       contentContainerStyle={STYLES.flatList}
@@ -87,16 +62,6 @@ const FriendsList = ({navigation}: {navigation: any}) => {
         </View>
       }
       ItemSeparatorComponent={Separator}
-      refreshControl={
-        <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => {
-            setRefreshing(true);
-            fetchFriends();
-          }}
-          tintColor={colors.primary}
-        />
-      }
     />
   );
 };

@@ -24,6 +24,12 @@ export interface MyInfo {
   gender: string;
 }
 
+export interface FriendGroup {
+  id: number;
+  name: string;
+  members: UserInfo[];
+}
+
 export interface Genre {
   id: number;
   name: string;

@@ -1,12 +1,10 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {
   View,
   StyleSheet,
   Alert,
   FlatList,
   TouchableOpacity,
-  ActivityIndicator,
-  RefreshControl,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 
@@ -20,49 +18,35 @@ import Icon from '../../components/Icon';
 import UserIcon from '../../components/UserIcon';
 import Separator from '../../components/Separator';
 
+import FriendsContext from '../../../context/FriendsContext';
+
 import {UserInfo} from '../../../utils/types';
 import {
   acceptFriendRequest,
   deleteFriendRequest,
-  getFriendRequests,
-  getFriendRequestsSent,
   rejectFriendRequest,
 } from '../../../utils/api/friendsAPI';
 
 // TODO: Refactor
 const Requests = ({navigation}: {navigation: any}) => {
-  const [requests, setRequests] = useState<UserInfo[]>([]);
-  const [requestsSent, setRequestsSent] = useState<UserInfo[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [refreshing, setRefreshing] = useState<boolean>(false);
-
-  const fetchRequests = useCallback(async () => {
-    const req = await getFriendRequests();
-    const reqSent = await getFriendRequestsSent();
-
-    if (req && reqSent) {
-      setRequests(req);
-      setRequestsSent(reqSent);
-
-      navigation.setOptions({
-        title: `Requests (${req.length})`,
-      });
-    } else {
-      Alert.alert(strings.error.error, strings.error.loadFriendsRequests);
-    }
-    setRefreshing(false);
-    setLoading(false);
-  }, [navigation]);
+  const friendsContext = useContext(FriendsContext);
+  if (!friendsContext) {
+    throw new Error('FriendsContext is not set!');
+  }
+  const {requests, setRequests, requestsSent, setRequestsSent} = friendsContext;
 
   useEffect(() => {
-    fetchRequests();
-  }, [fetchRequests]);
+    navigation.setOptions({
+      title: `Requests (${requests.length})`,
+    });
+  }, [navigation, requests]);
 
   const handleAcceptRequest = async (id: number) => {
     const response = await acceptFriendRequest(id);
 
     if (response) {
-      fetchRequests();
+      const newRequests = requests.filter(item => item.id !== id);
+      setRequests(newRequests);
     } else {
       Alert.alert(strings.error.error, strings.error.acceptFriendRequest);
     }
@@ -72,7 +56,8 @@ const Requests = ({navigation}: {navigation: any}) => {
     const response = await rejectFriendRequest(id);
 
     if (response) {
-      fetchRequests();
+      const newRequests = requests.filter(item => item.id !== id);
+      setRequests(newRequests);
     } else {
       Alert.alert(strings.error.error, strings.error.declineFriendRequest);
     }
@@ -82,17 +67,14 @@ const Requests = ({navigation}: {navigation: any}) => {
     const response = await deleteFriendRequest(id);
 
     if (response) {
-      fetchRequests();
+      const newRequestsSent = requestsSent.filter(item => item.id !== id);
+      setRequestsSent(newRequestsSent);
     } else {
       Alert.alert(strings.error.error, strings.error.cancelFriendRequest);
     }
   };
 
-  return loading ? (
-    <View style={[STYLES.center, STYLES.container]}>
-      <ActivityIndicator size="small" color={colors.primary} />
-    </View>
-  ) : (
+  return (
     <FlatList
       style={STYLES.container}
       contentContainerStyle={STYLES.flatList}
@@ -192,16 +174,6 @@ const Requests = ({navigation}: {navigation: any}) => {
         </View>
       }
       ItemSeparatorComponent={Separator}
-      refreshControl={
-        <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => {
-            setRefreshing(true);
-            fetchRequests();
-          }}
-          tintColor={colors.primary}
-        />
-      }
     />
   );
 };

@@ -1,13 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {
-  View,
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
-  ActivityIndicator,
-  RefreshControl,
-  Alert,
-} from 'react-native';
+import React, {useContext} from 'react';
+import {View, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
 import {s} from 'react-native-size-matters';
 
 import colors from '../../../constants/colors';
@@ -20,41 +12,19 @@ import Icon from '../../components/Icon';
 import UserIcon from '../../components/UserIcon';
 import Separator from '../../components/Separator';
 
+import FriendsContext from '../../../context/FriendsContext';
+
 import {UserInfo} from '../../../utils/types';
-import {getSuggestions} from '../../../utils/api/friendsAPI';
 
 // TODO: Refactor
 const Friends = ({navigation}: {navigation: any}) => {
-  const [loading, setLoading] = useState<boolean>(true);
-  const [refreshing, setRefreshingFriends] = useState<boolean>(false);
+  const friendsContext = useContext(FriendsContext);
+  if (!friendsContext) {
+    throw new Error('FriendsContext is not set!');
+  }
+  const {suggestions} = friendsContext;
 
-  const [suggestions, setSuggestions] = useState<UserInfo[]>([]);
-
-  const fetchSuggestions = async () => {
-    const response = await getSuggestions();
-
-    if (response) {
-      setSuggestions(response);
-    } else {
-      Alert.alert(strings.error.error, strings.error.loadFriendsList);
-    }
-    setRefreshingFriends(false);
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      fetchSuggestions();
-    });
-
-    return unsubscribe;
-  }, [navigation]);
-
-  return loading ? (
-    <View style={[STYLES.center, STYLES.container]}>
-      <ActivityIndicator size="small" color={colors.primary} />
-    </View>
-  ) : (
+  return (
     <FlatList
       style={STYLES.container}
       data={suggestions}
@@ -94,16 +64,6 @@ const Friends = ({navigation}: {navigation: any}) => {
         </View>
       }
       ItemSeparatorComponent={Separator}
-      refreshControl={
-        <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => {
-            setRefreshingFriends(true);
-            fetchSuggestions();
-          }}
-          tintColor={colors.primary}
-        />
-      }
     />
   );
 };

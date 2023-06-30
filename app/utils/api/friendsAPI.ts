@@ -30,7 +30,7 @@ export const getFriend = async (id: number): Promise<UserDetail | null> => {
 /**
  * @requires auth_token should be set in EncryptedStorage before calling this function
  */
-export const getFriends = async (): Promise<UserInfo[] | null> => {
+export const getFriends = async () => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
   if (!authToken) {
@@ -38,89 +38,14 @@ export const getFriends = async (): Promise<UserInfo[] | null> => {
   }
 
   const response = await fetch(
-    FriendAPIURL + `/friend?authtoken=${authToken}`,
+    FriendAPIURL + `/friends?authtoken=${authToken}`,
     {
       method: 'GET',
     },
   );
 
   if (response?.ok) {
-    const myJson: UserInfo[] = await response.json();
-    return myJson;
-  } else {
-    return null;
-  }
-};
-
-/**
- * @requires auth_token should be set in EncryptedStorage before calling this function
- */
-export const getFriendCount = async (): Promise<number | null> => {
-  const authToken = await EncryptedStorage.getItem('auth_token');
-
-  if (!authToken) {
-    return null;
-  }
-
-  const response = await fetch(
-    FriendAPIURL + `/friendCount?authtoken=${authToken}`,
-    {
-      method: 'GET',
-    },
-  );
-
-  if (response?.ok) {
-    const myJson: number = await response.json();
-    return myJson;
-  } else {
-    return null;
-  }
-};
-
-/**
- * @requires auth_token should be set in EncryptedStorage before calling this function
- */
-export const getFriendRequests = async (): Promise<UserInfo[] | null> => {
-  const authToken = await EncryptedStorage.getItem('auth_token');
-
-  if (!authToken) {
-    return null;
-  }
-
-  const response = await fetch(
-    FriendAPIURL + `/request?authtoken=${authToken}`,
-    {
-      method: 'GET',
-    },
-  );
-
-  if (response?.ok) {
-    const myJson: UserInfo[] = await response.json();
-    return myJson;
-  } else {
-    return null;
-  }
-};
-
-/**
- * @requires auth_token should be set in EncryptedStorage before calling this function
- */
-export const getFriendRequestsSent = async (): Promise<UserInfo[] | null> => {
-  const authToken = await EncryptedStorage.getItem('auth_token');
-
-  if (!authToken) {
-    return null;
-  }
-
-  const response = await fetch(
-    FriendAPIURL + `/request/sent?authtoken=${authToken}`,
-    {
-      method: 'GET',
-    },
-  );
-
-  if (response?.ok) {
-    const myJson: UserInfo[] = await response.json();
+    const myJson = await response.json();
     return myJson;
   } else {
     return null;

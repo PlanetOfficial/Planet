@@ -217,9 +217,7 @@ const strings = {
     loadGenres: 'Unable to load genres. Please try again later.',
     loadPlaces: 'Unable to load places. Please try again later.',
     locationPermission: 'Location permission denied.',
-    loadFriendsList: 'Unable to load friends list. Please try again later.',
-    loadFriendsRequests:
-      'Unable to load friends requests. Please try again later.',
+    loadFriendsList: 'Unable to load friends info. Please try again later.',
     acceptFriendRequest:
       'Unable to accept friend request. Please try again later.',
     declineFriendRequest:
@@ -232,7 +230,6 @@ const strings = {
       'Unable to toggle notification settings. Please try again later.',
     editInfo: 'Unable to edit user info. Please try again later.',
     searchError: 'Unable to search for users. Please try again later.',
-    loadSuggestions: 'Unable to load suggestions. Please try again later.',
     loadUserData: 'Unable to load user data. Please try again later.',
     friendRequest: 'Unable to send friend request. Please try again later.',
     unfriend: 'Unable to unfriend. Please try again later.',
