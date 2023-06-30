@@ -9,7 +9,7 @@ import {
   ActivityIndicator,
   LayoutAnimation,
   RefreshControl,
-  TouchableOpacity as RNTO,
+  TouchableOpacity,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 
@@ -26,7 +26,7 @@ import Text from '../components/Text';
 import {getFriends, searchUsers} from '../../utils/api/friendsAPI';
 import {UserInfo} from '../../utils/types';
 import {inviteToEvent} from '../../utils/api/eventAPI';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {TouchableOpacity as TouchableOpacityGestureHandler} from 'react-native-gesture-handler';
 
 /*
  * route params:
@@ -120,7 +120,7 @@ const AddFriend = ({navigation, route}: {navigation: any; route: any}) => {
             />
           </View>
           {searching ? (
-            <TouchableOpacity
+            <TouchableOpacityGestureHandler
               style={localStyles.cancel}
               onPress={() => {
                 searchRef.current?.clear();
@@ -128,7 +128,7 @@ const AddFriend = ({navigation, route}: {navigation: any; route: any}) => {
                 setSearchResult([]);
               }}>
               <Text>{strings.main.cancel}</Text>
-            </TouchableOpacity>
+            </TouchableOpacityGestureHandler>
           ) : null}
         </View>
       </SafeAreaView>
@@ -144,7 +144,7 @@ const AddFriend = ({navigation, route}: {navigation: any; route: any}) => {
             data={searchResult}
             keyExtractor={(_, index) => index.toString()}
             renderItem={({item}: {item: UserInfo}) => (
-              <TouchableOpacity
+              <TouchableOpacityGestureHandler
                 style={userStyles.container}
                 onPress={() => {
                   const _invitees = [...invitees];
@@ -182,7 +182,7 @@ const AddFriend = ({navigation, route}: {navigation: any; route: any}) => {
                   }
                   color={colors.accent}
                 />
-              </TouchableOpacity>
+              </TouchableOpacityGestureHandler>
             )}
             ListEmptyComponent={
               searchText.length > 0 ? (
@@ -203,7 +203,7 @@ const AddFriend = ({navigation, route}: {navigation: any; route: any}) => {
             keyExtractor={(_, index) => index.toString()}
             renderItem={({item}: {item: UserInfo}) =>
               !event_id || !members.some(m => m.id === item.id) ? (
-                <TouchableOpacity
+                <TouchableOpacityGestureHandler
                   style={userStyles.container}
                   onPress={() => {
                     const _invitees = [...invitees];
@@ -241,7 +241,7 @@ const AddFriend = ({navigation, route}: {navigation: any; route: any}) => {
                     }
                     color={colors.accent}
                   />
-                </TouchableOpacity>
+                </TouchableOpacityGestureHandler>
               ) : null
             }
             ListEmptyComponent={
@@ -265,11 +265,11 @@ const AddFriend = ({navigation, route}: {navigation: any; route: any}) => {
             }
           />
           {invitees && invitees.length > 0 ? (
-            <RNTO style={[localStyles.add, styles.shadow]} onPress={onAdd}>
+            <TouchableOpacity style={[localStyles.add, styles.shadow]} onPress={onAdd}>
               <Text size="l" weight="b" color={colors.white}>
                 {`${strings.main.add} (${invitees.length})`}
               </Text>
-            </RNTO>
+            </TouchableOpacity>
           ) : null}
         </>
       )}
