@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {
   StackCardInterpolatedStyle,
@@ -153,9 +153,11 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
       Alert.alert(strings.error.error, strings.error.loadBookmarks);
     }
   };
-  if (isLoggedIn) {
-    initializeBookmarks();
-  }
+  useEffect(() => {
+    if (isLoggedIn) {
+      initializeBookmarks();
+    }
+  }, [isLoggedIn]);
 
   return isLoggedIn ? (
     <BookmarkContext.Provider value={bookmarkValue}>
