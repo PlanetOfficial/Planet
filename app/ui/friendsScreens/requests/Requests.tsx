@@ -78,7 +78,7 @@ const Requests = ({navigation}: {navigation: any}) => {
       contentContainerStyle={STYLES.flatList}>
       {requests.length > 0 ? (
         <View style={styles.title}>
-          <Text size='s' weight="l">
+          <Text size="s" weight="l">
             {requests.length === 1
               ? strings.friends.friendRequest
               : strings.friends.friendRequests}
@@ -114,7 +114,7 @@ const Requests = ({navigation}: {navigation: any}) => {
       ))}
       {requestsSent.length > 0 ? (
         <View style={styles.title}>
-          <Text size='s' weight="l">
+          <Text size="s" weight="l">
             {requestsSent.length === 1
               ? strings.friends.pendingRequest
               : strings.friends.pendingRequests}
