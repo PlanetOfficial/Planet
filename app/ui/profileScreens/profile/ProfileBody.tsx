@@ -20,7 +20,6 @@ import UserIcon from '../../components/UserIcon';
 
 import {fetchUserLocation, handleBookmark} from '../../../utils/Misc';
 import {Coordinate, Poi} from '../../../utils/types';
-import {getFriendCount} from '../../../utils/api/friendsAPI';
 
 const ProfileBody = ({navigation}: {navigation: any}) => {
   const [selectedIndex, setIndex] = useState<number>(0);
@@ -32,7 +31,6 @@ const ProfileBody = ({navigation}: {navigation: any}) => {
   const [username, setUsername] = useState<string>('');
   const [pfpURL, setPfpURL] = useState<string>('');
 
-  const [friendsCount, setFriendsCount] = useState<number>();
   const [bookmarks, setBookmarks] = useState<Poi[]>([]);
 
   const initializeData = async () => {
@@ -51,13 +49,6 @@ const ProfileBody = ({navigation}: {navigation: any}) => {
       setBookmarks(JSON.parse(_bookmarks));
     } else {
       Alert.alert(strings.error.error, strings.error.loadBookmarks);
-    }
-
-    const _friendsCount = await getFriendCount();
-    if (_friendsCount) {
-      setFriendsCount(_friendsCount);
-    } else {
-      Alert.alert(strings.error.error, strings.error.loadFriendsList);
     }
   };
 
@@ -89,9 +80,7 @@ const ProfileBody = ({navigation}: {navigation: any}) => {
           </Text>
           <TouchableOpacity onPress={() => navigation.navigate('Friends')}>
             <Text size="s" color={colors.primary}>
-              {(friendsCount ? friendsCount : '') +
-                ' ' +
-                strings.friends.friends}
+              {strings.friends.friends}
             </Text>
           </TouchableOpacity>
         </View>
