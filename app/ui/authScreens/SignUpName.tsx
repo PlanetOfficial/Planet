@@ -1,12 +1,5 @@
 import React, {useState} from 'react';
-import {
-  View,
-  SafeAreaView,
-  TouchableOpacity,
-  TextInput,
-  StyleSheet,
-} from 'react-native';
-import {s} from 'react-native-size-matters';
+import {View, SafeAreaView, TouchableOpacity, TextInput} from 'react-native';
 
 import colors from '../../constants/colors';
 import icons from '../../constants/icons';
@@ -32,15 +25,15 @@ const SignUpName = ({navigation}: {navigation: any}) => {
         </View>
       </SafeAreaView>
 
-      <View style={styles.promptContainer}>
+      <View style={STYLES.promptContainer}>
         <Text size="l" weight="l" center={true}>
           {strings.signUp.namePrompt}
         </Text>
       </View>
 
-      <View style={styles.inputContainer}>
+      <View style={STYLES.inputContainer}>
         <TextInput
-          style={styles.input}
+          style={STYLES.input}
           placeholder={strings.signUp.firstName}
           value={firstName}
           autoCorrect={false}
@@ -48,7 +41,7 @@ const SignUpName = ({navigation}: {navigation: any}) => {
           placeholderTextColor={colors.black}
         />
         <TextInput
-          style={styles.input}
+          style={STYLES.input}
           placeholder={strings.signUp.lastName}
           value={lastName}
           autoCorrect={false}
@@ -58,7 +51,7 @@ const SignUpName = ({navigation}: {navigation: any}) => {
       </View>
       <TouchableOpacity
         style={[
-          styles.button,
+          STYLES.buttonBig,
           {
             backgroundColor:
               firstName.length === 0 || lastName.length === 0
@@ -80,34 +73,5 @@ const SignUpName = ({navigation}: {navigation: any}) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  promptContainer: {
-    margin: s(40),
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    marginVertical: s(30),
-    marginHorizontal: s(50),
-  },
-  input: {
-    flex: 1,
-    borderBottomWidth: 1,
-    borderColor: colors.black,
-    marginHorizontal: s(5),
-    paddingHorizontal: s(10),
-    paddingVertical: s(5),
-    fontFamily: 'Lato',
-  },
-  button: {
-    alignSelf: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: s(50),
-    width: s(150),
-    height: s(50),
-    borderRadius: s(25),
-  },
-});
 
 export default SignUpName;

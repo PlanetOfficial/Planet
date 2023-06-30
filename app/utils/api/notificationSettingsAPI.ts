@@ -21,7 +21,8 @@ export const getNotificationSettings =
     );
 
     if (response.ok) {
-      return response.json();
+      const myJson: NotificationSettings = await response.json();
+      return myJson;
     } else {
       return null;
     }

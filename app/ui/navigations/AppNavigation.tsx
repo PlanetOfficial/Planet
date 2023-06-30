@@ -12,9 +12,11 @@ import LoginScreen from '../authScreens/LogIn';
 import SignUpName from '../authScreens/SignUpName';
 import SignUpCreds from '../authScreens/SignUpCreds';
 import SignUpPhone from '../authScreens/SignUpPhone';
-import VerifyPhone from '../authScreens/VerifyPhone';
+import SignUpVerify from '../authScreens/SignUpVerify';
 import SignUpInfo from '../authScreens/SignUpInfo';
-import ForgotPassword from '../authScreens/!ForgotPwd';
+import ForgotPassword from '../authScreens/ForgotPwd';
+import ForgotPwdVerify from '../authScreens/ForgotPwdVerify';
+import ResetPwd from '../authScreens/ResetPwd';
 import Create from '../createScreens/create/Create';
 import CreateSearch from '../createScreens/createSearch/CreateSearch';
 import SearchCategory from '../searchScreens/searchCategory/SearchCategory';
@@ -135,6 +137,15 @@ type RootStackParamList = {
   SignUpInfo: {
     authToken: string;
   };
+  SignUpVerify: {
+    authToken: string;
+  };
+  ForgotPasswordVerify: {
+    username: string;
+  };
+  ResetPassword: {
+    authToken: string;
+  };
   ForgotPassword: undefined;
 };
 
@@ -173,9 +184,11 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {signUpNameStackScreen()}
           {signUpCredsStackScreen()}
           {signUpPhoneStackScreen()}
-          {verifyPhoneStackScreen()}
+          {signUpVerifyStackScreen()}
           {signUpInfoStackScreen()}
-          {forgetPassStackScreen()}
+          {forgotPassStackScreen()}
+          {forgotPassVerifyStackScreen()}
+          {resetPasswordStackScreen()}
         </Stack.Navigator>
       </BottomSheetModalProvider>
     </NavigationContainer>
@@ -187,9 +200,11 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
           {signUpNameStackScreen()}
           {signUpCredsStackScreen()}
           {signUpPhoneStackScreen()}
-          {verifyPhoneStackScreen()}
+          {signUpVerifyStackScreen()}
           {signUpInfoStackScreen()}
-          {forgetPassStackScreen()}
+          {forgotPassStackScreen()}
+          {forgotPassVerifyStackScreen()}
+          {resetPasswordStackScreen()}
           {tabStack()}
           {searchCategoryScreen()}
           {searchMapScreen()}
@@ -265,11 +280,11 @@ const signUpPhoneStackScreen = () => {
   );
 };
 
-const verifyPhoneStackScreen = () => {
+const signUpVerifyStackScreen = () => {
   return (
     <Stack.Screen
-      name="VerifyPhone"
-      component={VerifyPhone}
+      name="SignUpVerify"
+      component={SignUpVerify}
       options={{headerShown: false}}
     />
   );
@@ -285,11 +300,31 @@ const signUpInfoStackScreen = () => {
   );
 };
 
-const forgetPassStackScreen = () => {
+const forgotPassStackScreen = () => {
   return (
     <Stack.Screen
       name="ForgotPassword"
       component={ForgotPassword}
+      options={{headerShown: false}}
+    />
+  );
+};
+
+const forgotPassVerifyStackScreen = () => {
+  return (
+    <Stack.Screen
+      name="ForgotPasswordVerify"
+      component={ForgotPwdVerify}
+      options={{headerShown: false}}
+    />
+  );
+};
+
+const resetPasswordStackScreen = () => {
+  return (
+    <Stack.Screen
+      name="ResetPassword"
+      component={ResetPwd}
       options={{headerShown: false}}
     />
   );
