@@ -17,7 +17,7 @@ import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 import EventRow from '../../components/EventRow';
 
-import {Event, UserInfo} from '../../../utils/types';
+import {Event, UserInfo, UserStatus} from '../../../utils/types';
 import {getFriend} from '../../../utils/api/friendsAPI';
 
 import ProfileBody from '../../profileScreens/profile/ProfileBody';
