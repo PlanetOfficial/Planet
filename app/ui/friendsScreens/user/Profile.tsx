@@ -141,10 +141,10 @@ const Profile: React.FC<Props> = ({
                   handleAcceptRequest(
                     user.id,
                     setStatus,
-                    requests,
-                    setRequests,
                     friends,
                     setFriends,
+                    requests,
+                    setRequests,
                     user,
                   )
                 }>

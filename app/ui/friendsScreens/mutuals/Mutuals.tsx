@@ -62,7 +62,7 @@ const Mutuals = ({
               })
             }>
             <UserRow user={item}>
-              <Icon size='xs' icon={icons.next} />
+              <Icon size="xs" icon={icons.next} />
             </UserRow>
           </TouchableOpacity>
         )}
