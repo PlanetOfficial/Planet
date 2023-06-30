@@ -1,18 +1,17 @@
 import React from 'react';
 import {StyleSheet, View, Image} from 'react-native';
-
 import {s} from 'react-native-size-matters';
 
 import colors from '../../constants/colors';
 import strings from '../../constants/strings';
 import icons from '../../constants/icons';
+import numbers from '../../constants/numbers';
 
 import Icon from './Icon';
 import Text from './Text';
 
 import {Category, Coordinate, Poi} from '../../utils/types';
 import {getDistanceFromCoordinates} from '../../utils/Misc';
-import numbers from '../../constants/numbers';
 
 interface Props {
   poi: Poi;
@@ -81,17 +80,17 @@ const PoiRow: React.FC<Props> = ({
         <Text size="s" numberOfLines={1}>
           {poi.name}
         </Text>
-        <Text size="xs" weight="l" color={colors.darkgrey} numberOfLines={1}>
+        <Text size="xs" weight="l" color={colors.black} numberOfLines={1}>
           {getAddressString()}
         </Text>
-        <Text size="xs" color={colors.darkgrey}>
+        <Text size="xs" color={colors.black}>
           {getInfoString()}
         </Text>
       </View>
       <Icon
         size="l"
         icon={bookmarked ? icons.bookmarked : icons.bookmark}
-        color={bookmarked ? colors.accent : colors.black}
+        color={bookmarked ? colors.primary : colors.black}
         onPress={() => handleBookmark(poi)}
       />
     </View>
@@ -113,13 +112,14 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: '100%',
+    borderRadius: s(5),
   },
   infoContainer: {
     flex: 1,
+    height: s(64),
     paddingLeft: s(10),
     paddingRight: s(5),
     justifyContent: 'space-evenly',
-    height: s(64),
   },
 });
 

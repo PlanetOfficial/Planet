@@ -8,22 +8,28 @@ import {
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 
+import colors from '../../constants/colors';
+import icons from '../../constants/icons';
+import strings from '../../constants/strings';
+import STYLES from '../../constants/styles';
+
 import Icon from '../components/Icon';
 import Text from '../components/Text';
 
-import icons from '../../constants/icons';
-import colors from '../../constants/colors';
-import styles from '../../constants/styles';
-import strings from '../../constants/strings';
-
 import {signup} from '../../utils/api/authAPI';
 
-/*
- * route params:
- * - firstName: string
- * - lastName: string
- */
-const SignUpCreds = ({navigation, route}: {navigation: any; route: any}) => {
+const SignUpCreds = ({
+  navigation,
+  route,
+}: {
+  navigation: any;
+  route: {
+    params: {
+      firstName: string;
+      lastName: string;
+    };
+  };
+}) => {
   const [firstName] = useState<string>(route.params.firstName);
   const [lastName] = useState<string>(route.params.lastName);
 
@@ -82,9 +88,9 @@ const SignUpCreds = ({navigation, route}: {navigation: any; route: any}) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={STYLES.container}>
       <SafeAreaView>
-        <View style={styles.header}>
+        <View style={STYLES.header}>
           <Icon
             size="m"
             icon={icons.back}
@@ -93,49 +99,49 @@ const SignUpCreds = ({navigation, route}: {navigation: any; route: any}) => {
         </View>
       </SafeAreaView>
 
-      <View style={localStyles.promptContainer}>
+      <View style={styles.promptContainer}>
         <Text size="l" weight="l" center={true}>
           {strings.signUp.credPrompt}
         </Text>
       </View>
 
-      <View style={localStyles.inputContainer}>
-        <View style={localStyles.prompt}>
+      <View style={styles.inputContainer}>
+        <View style={styles.prompt}>
           <Text weight="l">{strings.signUp.username}: </Text>
         </View>
         <TextInput
-          style={localStyles.input}
+          style={styles.input}
           placeholder={strings.signUp.username}
           value={username}
           onChangeText={text => setUsername(text.toLowerCase())}
-          placeholderTextColor={colors.darkgrey}
+          placeholderTextColor={colors.black}
           autoCapitalize="none"
           autoCorrect={false}
         />
       </View>
-      <View style={localStyles.inputContainer}>
-        <View style={localStyles.prompt}>
+      <View style={styles.inputContainer}>
+        <View style={styles.prompt}>
           <Text weight="l">{strings.login.password}: </Text>
         </View>
         <TextInput
-          style={localStyles.input}
+          style={styles.input}
           placeholder={strings.login.password}
           value={password}
           onChangeText={text => setPassword(text)}
-          placeholderTextColor={colors.darkgrey}
+          placeholderTextColor={colors.black}
           secureTextEntry={true}
         />
       </View>
-      <View style={localStyles.inputContainer}>
-        <View style={localStyles.prompt}>
+      <View style={styles.inputContainer}>
+        <View style={styles.prompt}>
           <Text weight="l">{strings.signUp.confirmPassword}: </Text>
         </View>
         <TextInput
-          style={localStyles.input}
+          style={styles.input}
           placeholder={strings.signUp.confirmPassword}
           value={passwordConfirm}
           onChangeText={text => setPasswordConfirm(text)}
-          placeholderTextColor={colors.darkgrey}
+          placeholderTextColor={colors.black}
           secureTextEntry={true}
         />
       </View>
@@ -146,14 +152,14 @@ const SignUpCreds = ({navigation, route}: {navigation: any; route: any}) => {
       ) : null}
       <TouchableOpacity
         style={[
-          localStyles.button,
+          styles.button,
           {
             backgroundColor:
               username.length === 0 ||
               password.length === 0 ||
               password !== passwordConfirm
-                ? colors.darkgrey
-                : colors.accent,
+                ? colors.black
+                : colors.primary,
           },
         ]}
         disabled={
@@ -170,7 +176,7 @@ const SignUpCreds = ({navigation, route}: {navigation: any; route: any}) => {
   );
 };
 
-const localStyles = StyleSheet.create({
+const styles = StyleSheet.create({
   promptContainer: {
     margin: s(40),
     paddingHorizontal: s(20),
@@ -187,7 +193,7 @@ const localStyles = StyleSheet.create({
   input: {
     flex: 1,
     borderBottomWidth: 1,
-    borderColor: colors.darkgrey,
+    borderColor: colors.black,
     marginHorizontal: s(5),
     paddingHorizontal: s(10),
     paddingVertical: s(5),

@@ -17,6 +17,14 @@ const styles = StyleSheet.create({
     paddingVertical: s(50),
     alignItems: 'center',
   },
+  row: {
+    flexDirection: 'row',
+  },
+  dim: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+  },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -24,20 +32,38 @@ const styles = StyleSheet.create({
     paddingHorizontal: s(20),
     marginVertical: s(10),
   },
-  headerTitle: {
-    fontSize: s(24),
-    fontWeight: '700',
-    color: colors.black,
-  },
-  headerIcon: {
-    width: s(20),
-    height: s(20),
-    tintColor: colors.black,
-  },
   separator: {
+    marginHorizontal: s(20),
+    height: 1,
+    backgroundColor: colors.grey,
+  },
+  separatorExtendsToRight: {
     marginLeft: s(20),
-    height: 0.5,
-    backgroundColor: colors.lightgrey,
+    height: 1,
+    backgroundColor: colors.grey,
+  },
+  texts: {
+    flex: 1,
+    marginHorizontal: s(10),
+    justifyContent: 'center',
+  },
+  button: {
+    position: 'absolute',
+    alignSelf: 'center',
+    paddingHorizontal: s(20),
+    paddingVertical: s(10),
+    bottom: s(40),
+    borderRadius: s(10),
+    backgroundColor: colors.primary,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.29,
+    shadowRadius: 4.65,
+
+    elevation: 7,
   },
   shadow: {
     shadowColor: '#000',
@@ -55,6 +81,38 @@ const styles = StyleSheet.create({
   },
   flip: {
     transform: [{rotate: '180deg'}],
+  },
+});
+
+export const sctStyles = StyleSheet.create({
+  container: {
+    marginTop: s(10),
+    paddingHorizontal: s(20),
+    height: s(25),
+  },
+  tab: {
+    borderWidth: 0,
+    borderBottomWidth: 2,
+    borderBottomColor: colors.grey,
+    backgroundColor: colors.white,
+  },
+  activeTab: {
+    borderBottomWidth: 2,
+    borderBottomColor: colors.primary,
+    backgroundColor: colors.white,
+  },
+  firstTab: {
+    borderRightWidth: 0,
+  },
+  text: {
+    fontSize: s(12),
+    fontWeight: '600',
+    fontFamily: 'Lato',
+    color: colors.black,
+  },
+  activeText: {
+    marginBottom: 0,
+    color: colors.primary,
   },
 });
 

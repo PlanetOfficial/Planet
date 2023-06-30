@@ -8,21 +8,27 @@ import {
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 
-import Text from '../components/Text';
-import Icon from '../components/Icon';
-
 import colors from '../../constants/colors';
 import icons from '../../constants/icons';
 import strings from '../../constants/strings';
-import styles from '../../constants/styles';
+import STYLES from '../../constants/styles';
+
+import Text from '../components/Text';
+import Icon from '../components/Icon';
 
 import {verifyCode} from '../../utils/api/authAPI';
 
-/*
- * route params:
- * - authToken: string
- */
-const VerifyPhone = ({navigation, route}: {navigation: any; route: any}) => {
+const VerifyPhone = ({
+  navigation,
+  route,
+}: {
+  navigation: any;
+  route: {
+    params: {
+      authToken: string;
+    };
+  };
+}) => {
   const [authToken] = useState<string>(route.params.authToken);
 
   const [code, setCode] = useState<string>('');
@@ -50,9 +56,9 @@ const VerifyPhone = ({navigation, route}: {navigation: any; route: any}) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={STYLES.container}>
       <SafeAreaView>
-        <View style={styles.header}>
+        <View style={STYLES.header}>
           <Icon
             size="m"
             icon={icons.back}
@@ -61,20 +67,20 @@ const VerifyPhone = ({navigation, route}: {navigation: any; route: any}) => {
         </View>
       </SafeAreaView>
 
-      <View style={localStyles.promptContainer}>
+      <View style={styles.promptContainer}>
         <Text size="l" weight="l" center={true}>
           {strings.signUp.verifyPrompt}
         </Text>
       </View>
 
-      <View style={localStyles.inputContainer}>
+      <View style={styles.inputContainer}>
         <TextInput
-          style={localStyles.input}
+          style={styles.input}
           value={code}
           onChangeText={text =>
             setCode(text.replace(/[^0-9]/g, '').substring(0, 6))
           }
-          placeholderTextColor={colors.darkgrey}
+          placeholderTextColor={colors.black}
           keyboardType="number-pad"
         />
       </View>
@@ -85,10 +91,9 @@ const VerifyPhone = ({navigation, route}: {navigation: any; route: any}) => {
       ) : null}
       <TouchableOpacity
         style={[
-          localStyles.button,
+          styles.button,
           {
-            backgroundColor:
-              code.length !== 6 ? colors.darkgrey : colors.accent,
+            backgroundColor: code.length !== 6 ? colors.black : colors.primary,
           },
         ]}
         disabled={code.length !== 6}
@@ -101,7 +106,7 @@ const VerifyPhone = ({navigation, route}: {navigation: any; route: any}) => {
   );
 };
 
-const localStyles = StyleSheet.create({
+const styles = StyleSheet.create({
   promptContainer: {
     margin: s(40),
     paddingHorizontal: s(20),
@@ -119,7 +124,7 @@ const localStyles = StyleSheet.create({
   input: {
     alignSelf: 'center',
     borderBottomWidth: 1,
-    borderColor: colors.darkgrey,
+    borderColor: colors.black,
     marginHorizontal: s(5),
     paddingHorizontal: s(10),
     paddingVertical: s(5),

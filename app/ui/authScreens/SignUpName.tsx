@@ -8,22 +8,22 @@ import {
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 
-import Icon from '../components/Icon';
-import Text from '../components/Text';
-
 import colors from '../../constants/colors';
 import icons from '../../constants/icons';
 import strings from '../../constants/strings';
-import styles from '../../constants/styles';
+import STYLES from '../../constants/styles';
+
+import Icon from '../components/Icon';
+import Text from '../components/Text';
 
 const SignUpName = ({navigation}: {navigation: any}) => {
   const [firstName, setFirstName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
 
   return (
-    <View style={styles.container}>
+    <View style={STYLES.container}>
       <SafeAreaView>
-        <View style={styles.header}>
+        <View style={STYLES.header}>
           <Icon
             size="m"
             icon={icons.back}
@@ -32,38 +32,38 @@ const SignUpName = ({navigation}: {navigation: any}) => {
         </View>
       </SafeAreaView>
 
-      <View style={localStyles.promptContainer}>
+      <View style={styles.promptContainer}>
         <Text size="l" weight="l" center={true}>
           {strings.signUp.namePrompt}
         </Text>
       </View>
 
-      <View style={localStyles.inputContainer}>
+      <View style={styles.inputContainer}>
         <TextInput
-          style={localStyles.input}
+          style={styles.input}
           placeholder={strings.signUp.firstName}
           value={firstName}
           autoCorrect={false}
           onChangeText={text => setFirstName(text)}
-          placeholderTextColor={colors.darkgrey}
+          placeholderTextColor={colors.black}
         />
         <TextInput
-          style={localStyles.input}
+          style={styles.input}
           placeholder={strings.signUp.lastName}
           value={lastName}
           autoCorrect={false}
           onChangeText={text => setLastName(text)}
-          placeholderTextColor={colors.darkgrey}
+          placeholderTextColor={colors.black}
         />
       </View>
       <TouchableOpacity
         style={[
-          localStyles.button,
+          styles.button,
           {
             backgroundColor:
               firstName.length === 0 || lastName.length === 0
-                ? colors.darkgrey
-                : colors.accent,
+                ? colors.black
+                : colors.primary,
           },
         ]}
         disabled={firstName.length === 0 || lastName.length === 0}
@@ -81,7 +81,7 @@ const SignUpName = ({navigation}: {navigation: any}) => {
   );
 };
 
-const localStyles = StyleSheet.create({
+const styles = StyleSheet.create({
   promptContainer: {
     margin: s(40),
   },
@@ -93,7 +93,7 @@ const localStyles = StyleSheet.create({
   input: {
     flex: 1,
     borderBottomWidth: 1,
-    borderColor: colors.darkgrey,
+    borderColor: colors.black,
     marginHorizontal: s(5),
     paddingHorizontal: s(10),
     paddingVertical: s(5),

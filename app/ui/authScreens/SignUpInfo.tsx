@@ -10,20 +10,26 @@ import {s, vs} from 'react-native-size-matters';
 import messaging from '@react-native-firebase/messaging';
 import DropDownPicker from 'react-native-dropdown-picker';
 
-import Text from '../components/Text';
-
 import colors from '../../constants/colors';
-import styles from '../../constants/styles';
 import strings from '../../constants/strings';
+import STYLES from '../../constants/styles';
+
+import Text from '../components/Text';
 
 import {saveTokenToDatabase, sendMoreInfo} from '../../utils/api/authAPI';
 import {cacheUserInfo} from '../../utils/CacheHelpers';
 
-/*
- * route params:
- * - authToken: string
- */
-const SignUpInfo = ({navigation, route}: {navigation: any; route: any}) => {
+const SignUpInfo = ({
+  navigation,
+  route,
+}: {
+  navigation: any;
+  route: {
+    params: {
+      authToken: string;
+    };
+  };
+}) => {
   const [authToken] = useState<string>(route.params.authToken);
 
   const [ageDPOpen, setAgeDPOpen] = useState(false);
@@ -64,25 +70,25 @@ const SignUpInfo = ({navigation, route}: {navigation: any; route: any}) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={STYLES.container}>
       <SafeAreaView>
-        <View style={localStyles.messageContainer}>
+        <View style={styles.messageContainer}>
           <Text size="l" center={true}>
             {strings.signUp.verifySuccess}
           </Text>
         </View>
       </SafeAreaView>
 
-      <View style={localStyles.promptContainer}>
+      <View style={styles.promptContainer}>
         <Text size="m" weight="l" center={true}>
           {strings.signUp.improveExperience}
         </Text>
       </View>
 
-      <View style={localStyles.inputContainer}>
+      <View style={styles.inputContainer}>
         <View>
           <DropDownPicker
-            style={localStyles.dropDown}
+            style={styles.dropDown}
             open={ageDPOpen}
             value={age}
             items={ageEnum}
@@ -95,7 +101,7 @@ const SignUpInfo = ({navigation, route}: {navigation: any; route: any}) => {
         </View>
         <View>
           <DropDownPicker
-            style={localStyles.dropDown}
+            style={styles.dropDown}
             open={genderDPOpen}
             value={gender}
             items={genderEnum}
@@ -109,9 +115,9 @@ const SignUpInfo = ({navigation, route}: {navigation: any; route: any}) => {
       </View>
       <TouchableOpacity
         style={[
-          localStyles.button,
+          styles.button,
           {
-            backgroundColor: age && gender ? colors.accent : colors.darkgrey,
+            backgroundColor: age && gender ? colors.primary : colors.black,
           },
         ]}
         disabled={!age || !gender}
@@ -124,7 +130,7 @@ const SignUpInfo = ({navigation, route}: {navigation: any; route: any}) => {
   );
 };
 
-const localStyles = StyleSheet.create({
+const styles = StyleSheet.create({
   messageContainer: {
     margin: s(20),
   },

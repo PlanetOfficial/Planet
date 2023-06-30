@@ -1,18 +1,17 @@
 import React from 'react';
 import {StyleSheet, View, Image, Animated} from 'react-native';
-
 import {s} from 'react-native-size-matters';
 
 import colors from '../../constants/colors';
 import icons from '../../constants/icons';
-import styles from '../../constants/styles';
+import STYLES from '../../constants/styles';
 
 import Icon from './Icon';
 import Text from './Text';
+import OptionMenu from './OptionMenu';
 
 import {Option, Poi} from '../../utils/types';
 import {getInfoString} from '../../utils/Misc';
-import OptionMenu from './OptionMenu';
 
 interface Props {
   poi: Poi;
@@ -36,16 +35,15 @@ const PoiCardXL: React.FC<Props> = ({
   onVote,
 }) => {
   return (
-    <Animated.View
-      style={[cardStyles.container, styles.shadow, {width: width}]}>
+    <Animated.View style={[styles.container, STYLES.shadow, {width: width}]}>
       <Image
-        style={cardStyles.image}
+        style={styles.image}
         source={poi.photo ? {uri: poi.photo} : icons.placeholder}
       />
-      <View style={cardStyles.header}>
-        <View style={cardStyles.infoContainer}>
+      <View style={styles.header}>
+        <View style={styles.infoContainer}>
           <Text numberOfLines={1}>{poi.name}</Text>
-          <Text size="xs" color={colors.accent} numberOfLines={1}>
+          <Text size="xs" color={colors.primary} numberOfLines={1}>
             {getInfoString(poi)}
           </Text>
         </View>
@@ -54,7 +52,7 @@ const PoiCardXL: React.FC<Props> = ({
             size="m"
             disabled={disabled}
             icon={bookmarked ? icons.bookmarked : icons.bookmark}
-            color={bookmarked ? colors.accent : colors.black}
+            color={bookmarked ? colors.primary : colors.black}
             onPress={() => handleBookmark(poi)}
           />
         ) : options ? (
@@ -62,12 +60,12 @@ const PoiCardXL: React.FC<Props> = ({
         ) : null}
       </View>
       {onVote ? (
-        <View style={cardStyles.voteButton}>
+        <View style={styles.voteButton}>
           <Icon
             size="m"
             disabled={disabled}
             icon={icons.like}
-            color={voted ? colors.accent : colors.lightgrey}
+            color={voted ? colors.primary : colors.grey}
             onPress={onVote}
           />
         </View>
@@ -76,7 +74,7 @@ const PoiCardXL: React.FC<Props> = ({
   );
 };
 
-const cardStyles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     aspectRatio: 1.6,
     borderRadius: s(10),

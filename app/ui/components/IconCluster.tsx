@@ -1,17 +1,23 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {UserInfo} from '../../utils/types';
 import {s} from 'react-native-size-matters';
-import UserIcon from './UserIcon';
+
 import colors from '../../constants/colors';
 
-const IconCluster = ({users}: {users: UserInfo[]}) => (
+import UserIcon from './UserIcon';
+
+import {UserInfo} from '../../utils/types';
+
+const IconCluster = ({users, self}: {users: UserInfo[]; self: string}) => (
   <View style={styles.iconCluster}>
-    {users.slice(0, 3).map(user => (
-      <View key={user.id} style={styles.icon}>
-        <UserIcon user={user} size={s(12)} />
-      </View>
-    ))}
+    {users
+      .filter((user: UserInfo) => user.username !== self)
+      .slice(0, 3)
+      .map(user => (
+        <View key={user.id} style={styles.icon}>
+          <UserIcon user={user} size={s(12)} />
+        </View>
+      ))}
   </View>
 );
 
@@ -24,7 +30,7 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginLeft: s(-20),
-    borderWidth: s(2),
+    borderWidth: 2,
     borderRadius: s(16),
     borderColor: colors.white,
   },

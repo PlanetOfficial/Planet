@@ -134,7 +134,7 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
               size="xs"
               weight="l"
               color={
-                dropdownStatus === filter.name ? colors.darkgrey : colors.black
+                dropdownStatus === filter.name ? colors.black : colors.black
               }>
               {filter.name + displayFilter(filter, idx)}
             </Text>
@@ -167,7 +167,7 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
                           ? icons.checked
                           : icons.selected
                       }
-                      color={colors.accent}
+                      color={colors.primary}
                     />
                   ) : (
                     <Icon
@@ -176,7 +176,7 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
                           ? icons.unchecked
                           : icons.unselected
                       }
-                      color={colors.accent}
+                      color={colors.primary}
                     />
                   )}
                   <View style={styles.paddingLeft}>
@@ -200,8 +200,8 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    borderBottomWidth: 0.5,
-    borderColor: colors.lightgrey,
+    borderBottomWidth: 1,
+    borderColor: colors.grey,
     zIndex: 10,
   },
   contentContainer: {
@@ -223,7 +223,7 @@ const styles = StyleSheet.create({
 
     borderRadius: s(12.5),
     borderWidth: 0.5,
-    borderColor: colors.darkgrey,
+    borderColor: colors.black,
   },
   chipIcon: {
     marginLeft: s(5),
@@ -256,7 +256,7 @@ const styles = StyleSheet.create({
     paddingLeft: s(10),
   },
   optionSeparator: {
-    height: 0.5,
+    height: 1,
     backgroundColor: colors.grey,
   },
 });
