@@ -55,6 +55,31 @@ export const getFriends = async (): Promise<UserInfo[] | null> => {
 /**
  * @requires auth_token should be set in EncryptedStorage before calling this function
  */
+export const getFriendCount = async (): Promise<number | null> => {
+  const authToken = await EncryptedStorage.getItem('auth_token');
+
+  if (!authToken) {
+    return null;
+  }
+
+  const response = await fetch(
+    FriendAPIURL + `/friendCount?authtoken=${authToken}`,
+    {
+      method: 'GET',
+    },
+  );
+
+  if (response?.ok) {
+    const myJson: number = await response.json();
+    return myJson;
+  } else {
+    return null;
+  }
+};
+
+/**
+ * @requires auth_token should be set in EncryptedStorage before calling this function
+ */
 export const getFriendRequests = async (): Promise<UserInfo[] | null> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 

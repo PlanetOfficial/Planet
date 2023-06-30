@@ -11,11 +11,17 @@ import STYLES from '../../constants/styles';
 
 import {sendCode} from '../../utils/api/authAPI';
 
-/*
- * route params:
- * - authToken: string
- */
-const SignUpPhone = ({navigation, route}: {navigation: any; route: any}) => {
+const SignUpPhone = ({
+  navigation,
+  route,
+}: {
+  navigation: any;
+  route: {
+    params: {
+      authToken: string;
+    };
+  };
+}) => {
   const [authToken] = useState<string>(route.params.authToken);
 
   const [phoneNumber, setPhoneNumber] = useState<E164Number | undefined>();
@@ -73,7 +79,7 @@ const SignUpPhone = ({navigation, route}: {navigation: any; route: any}) => {
         style={[
           STYLES.buttonBig,
           {
-            backgroundColor: phoneNumber ? colors.accent : colors.darkgrey,
+            backgroundColor: phoneNumber ? colors.primary : colors.black,
           },
         ]}
         disabled={!phoneNumber}

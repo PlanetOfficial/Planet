@@ -78,11 +78,11 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
   return (
     <View style={styles.container}>
       <LinearGradient
-        colors={[colors.white, colors.accentLight]}
+        colors={[colors.white, colors.primary]}
         style={styles.container}
         start={{x: 0, y: 0}}
         end={{x: 1, y: 1}}
-        locations={[0.5, 1]}>
+        locations={[0.6, 1]}>
         <RNText style={styles.title}>{strings.main.appName}</RNText>
         <TextInput
           style={styles.input}
@@ -91,7 +91,7 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
           onChangeText={setUsername}
           autoCapitalize="none"
           autoCorrect={false}
-          placeholderTextColor={colors.darkgrey}
+          placeholderTextColor={colors.black}
         />
         <TextInput
           style={styles.input}
@@ -100,13 +100,15 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
           onChangeText={setPassword}
           secureTextEntry={true}
           textContentType="password"
-          placeholderTextColor={colors.darkgrey}
+          placeholderTextColor={colors.black}
         />
-        <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
-          <Text size="s" weight="l">
-            {strings.login.forgotPassword}
-          </Text>
-        </TouchableOpacity>
+        <View>
+          {error.length !== 0 ? (
+            <Text size="s" color={colors.red}>
+              {error}
+            </Text>
+          ) : null}
+        </View>
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
           {loading ? (
             <ActivityIndicator size="small" color={colors.white} />
@@ -116,15 +118,7 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
             </Text>
           )}
         </TouchableOpacity>
-        <View>
-          {error.length !== 0 ? (
-            <Text size="s" color={colors.red}>
-              {error}
-            </Text>
-          ) : null}
-        </View>
         <View style={styles.bottomContainer}>
-          <Text size="s">{strings.login.noAccount}</Text>
           <TouchableOpacity
             style={styles.signUpButton}
             onPress={() => navigation.navigate('SignUpName')}>
@@ -133,6 +127,11 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
             </Text>
           </TouchableOpacity>
         </View>
+        <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
+          <Text size="s" weight="l">
+            {strings.login.forgotPassword}
+          </Text>
+        </TouchableOpacity>
       </LinearGradient>
     </View>
   );
@@ -147,10 +146,10 @@ const styles = StyleSheet.create({
   title: {
     marginTop: vs(110),
     marginBottom: vs(70),
-    fontSize: s(75),
+    fontSize: s(55),
     fontWeight: '900',
     fontFamily: 'Lato',
-    color: colors.accent,
+    color: colors.primary,
   },
   input: {
     paddingHorizontal: s(25),
@@ -158,7 +157,7 @@ const styles = StyleSheet.create({
     width: s(250),
     height: s(50),
     borderRadius: s(25),
-    borderWidth: s(1.5),
+    borderWidth: 1,
     borderColor: colors.grey,
     backgroundColor: colors.white,
     color: colors.black,
@@ -166,6 +165,18 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: vs(10),
+    width: s(150),
+    height: s(50),
+    borderRadius: s(25),
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.primary,
+  },
+  bottomContainer: {
+    alignItems: 'center',
+    marginTop: vs(20),
+  },
+  signUpButton: {
     marginBottom: vs(10),
     width: s(150),
     height: s(50),
@@ -173,19 +184,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: colors.black,
-  },
-  bottomContainer: {
-    alignItems: 'center',
-    marginTop: vs(20),
-  },
-  signUpButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: vs(10),
-    width: s(150),
-    height: s(50),
-    borderRadius: s(25),
-    backgroundColor: colors.accent,
   },
 });
 

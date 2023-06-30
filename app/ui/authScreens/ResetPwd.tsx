@@ -23,13 +23,11 @@ const ResetPwd = ({
   route,
 }: {
   navigation: any;
-  route: any;
-  // add this after merge
-  // route: {
-  //   params: {
-  //     authToken: string;
-  //   };
-  // };
+  route: {
+    params: {
+      authToken: string;
+    };
+  };
 }) => {
   const [authToken] = useState<string>(route.params.authToken);
 
@@ -97,7 +95,7 @@ const ResetPwd = ({
           placeholder={strings.login.password}
           value={password}
           onChangeText={text => setPassword(text)}
-          placeholderTextColor={colors.darkgrey}
+          placeholderTextColor={colors.black}
           secureTextEntry={true}
         />
       </View>
@@ -110,7 +108,7 @@ const ResetPwd = ({
           placeholder={strings.signUp.confirmPassword}
           value={passwordConfirm}
           onChangeText={text => setPasswordConfirm(text)}
-          placeholderTextColor={colors.darkgrey}
+          placeholderTextColor={colors.black}
           secureTextEntry={true}
         />
       </View>
@@ -125,8 +123,8 @@ const ResetPwd = ({
           {
             backgroundColor:
               password.length === 0 || password !== passwordConfirm
-                ? colors.darkgrey
-                : colors.accent,
+                ? colors.grey
+                : colors.primary,
           },
         ]}
         disabled={password.length === 0 || password !== passwordConfirm}

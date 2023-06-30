@@ -1,6 +1,5 @@
 import React from 'react';
 import {Text as RNText, TextStyle} from 'react-native';
-
 import {s} from 'react-native-size-matters';
 
 import colors from '../../constants/colors';
@@ -13,6 +12,7 @@ interface Props {
   underline?: boolean;
   numberOfLines?: number;
   center?: boolean;
+  lineHeight?: number;
 }
 
 const Text: React.FC<Props> = ({
@@ -23,6 +23,7 @@ const Text: React.FC<Props> = ({
   underline = false,
   numberOfLines,
   center = false,
+  lineHeight,
 }) => {
   let fontSize: number = s(17);
   switch (size) {
@@ -67,6 +68,7 @@ const Text: React.FC<Props> = ({
     textDecorationLine: underline ? 'underline' : 'none',
     textAlign: center ? 'center' : 'left',
     fontFamily: 'Lato',
+    lineHeight: lineHeight ? lineHeight : undefined,
   };
 
   return (

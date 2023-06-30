@@ -1,12 +1,5 @@
 import React, {useState} from 'react';
-import {
-  View,
-  SafeAreaView,
-  TouchableOpacity,
-  TextInput,
-  StyleSheet,
-} from 'react-native';
-import {s} from 'react-native-size-matters';
+import {View, SafeAreaView, TouchableOpacity, TextInput} from 'react-native';
 
 import colors from '../../constants/colors';
 import icons from '../../constants/icons';
@@ -23,13 +16,11 @@ const ForgotPwdVerify = ({
   route,
 }: {
   navigation: any;
-  route: any;
-  // add this after merge
-  // {
-  //   params: {
-  //     username: string;
-  //   };
-  // };
+  route: {
+    params: {
+      username: string;
+    };
+  };
 }) => {
   const [username] = useState<string>(route.params.username);
 
@@ -77,14 +68,14 @@ const ForgotPwdVerify = ({
         </Text>
       </View>
 
-      <View style={styles.inputContainer}>
+      <View style={STYLES.inputContainer}>
         <TextInput
-          style={styles.input}
+          style={STYLES.input}
           value={code}
           onChangeText={text =>
             setCode(text.replace(/[^0-9]/g, '').substring(0, 6))
           }
-          placeholderTextColor={colors.darkgrey}
+          placeholderTextColor={colors.black}
           keyboardType="number-pad"
         />
       </View>
@@ -97,8 +88,7 @@ const ForgotPwdVerify = ({
         style={[
           STYLES.buttonBig,
           {
-            backgroundColor:
-              code.length !== 6 ? colors.darkgrey : colors.accent,
+            backgroundColor: code.length !== 6 ? colors.grey : colors.primary,
           },
         ]}
         disabled={code.length !== 6}
@@ -110,27 +100,5 @@ const ForgotPwdVerify = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginVertical: s(30),
-    marginHorizontal: s(50),
-  },
-  input: {
-    alignSelf: 'center',
-    borderBottomWidth: 1,
-    borderColor: colors.darkgrey,
-    marginHorizontal: s(5),
-    paddingHorizontal: s(10),
-    paddingVertical: s(5),
-    fontFamily: 'Lato',
-    letterSpacing: s(10),
-    fontSize: s(20),
-    width: s(150),
-  },
-});
 
 export default ForgotPwdVerify;

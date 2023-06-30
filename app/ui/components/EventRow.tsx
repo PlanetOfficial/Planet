@@ -7,15 +7,16 @@ import colors from '../../constants/colors';
 import icons from '../../constants/icons';
 
 import Text from './Text';
+import IconCluster from './IconCluster';
 
 import {Event} from '../../utils/types';
-import IconCluster from './IconCluster';
 
 interface Props {
   event: Event;
+  self: string;
 }
 
-const EventRow: React.FC<Props> = ({event}) => {
+const EventRow: React.FC<Props> = ({event, self}) => {
   const date = new Date();
 
   return (
@@ -28,19 +29,19 @@ const EventRow: React.FC<Props> = ({event}) => {
         />
       </View>
       <View style={styles.infoContainer}>
-        <Text size="m" numberOfLines={1}>
+        <Text size="s" numberOfLines={1}>
           {event.name}
         </Text>
-        <Text size="xs" color={colors.darkgrey}>
+        <Text size="xs" weight="l" color={colors.black}>
+          {event.vicinity}
+        </Text>
+        <Text size="xs" color={colors.black}>
           {moment(event.datetime)
             .add(date.getTimezoneOffset(), 'minutes')
             .format('MMM Do, h:mm a')}
         </Text>
-        <Text size="xs" weight="l" color={colors.darkgrey}>
-          {event.vicinity}
-        </Text>
       </View>
-      <IconCluster users={event.members} />
+      <IconCluster users={event.members} self={self} />
     </View>
   );
 };
@@ -60,13 +61,14 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: '100%',
+    borderRadius: s(5),
   },
   infoContainer: {
     flex: 1,
+    height: s(64),
     paddingLeft: s(10),
     paddingRight: s(5),
     justifyContent: 'space-evenly',
-    height: s(64),
   },
 });
 

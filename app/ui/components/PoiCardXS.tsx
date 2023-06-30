@@ -1,15 +1,14 @@
 import React from 'react';
 import {StyleSheet, View, Image} from 'react-native';
-
 import {s} from 'react-native-size-matters';
 
 import colors from '../../constants/colors';
-import styles from '../../constants/styles';
+import icons from '../../constants/icons';
+import STYLES from '../../constants/styles';
 
 import Text from './Text';
 
 import {Poi} from '../../utils/types';
-import icons from '../../constants/icons';
 
 interface Props {
   poi: Poi;
@@ -17,13 +16,13 @@ interface Props {
 
 const PoiCardXS: React.FC<Props> = ({poi}) => {
   return (
-    <View style={[cardStyles.container, styles.shadow]}>
+    <View style={[styles.container, STYLES.shadow]}>
       <Image
-        style={cardStyles.image}
+        style={styles.image}
         source={poi.photo ? {uri: poi.photo} : icons.placeholder}
       />
-      <View style={cardStyles.header}>
-        <View style={cardStyles.title}>
+      <View style={styles.header}>
+        <View style={styles.title}>
           <Text size="xs" numberOfLines={1}>
             {poi.name}
           </Text>
@@ -31,13 +30,13 @@ const PoiCardXS: React.FC<Props> = ({poi}) => {
         <Text
           size="xs"
           numberOfLines={1}
-          color={colors.accent}>{`★ ${poi.rating}`}</Text>
+          color={colors.primary}>{`★ ${poi.rating}`}</Text>
       </View>
     </View>
   );
 };
 
-const cardStyles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     width: s(120),
     height: s(75),

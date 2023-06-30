@@ -1,13 +1,13 @@
 import React, {useState} from 'react';
 import {View, SafeAreaView, TouchableOpacity, TextInput} from 'react-native';
 
-import Icon from '../components/Icon';
-import Text from '../components/Text';
-
 import colors from '../../constants/colors';
 import icons from '../../constants/icons';
 import strings from '../../constants/strings';
 import STYLES from '../../constants/styles';
+
+import Icon from '../components/Icon';
+import Text from '../components/Text';
 
 const SignUpName = ({navigation}: {navigation: any}) => {
   const [firstName, setFirstName] = useState<string>('');
@@ -38,7 +38,7 @@ const SignUpName = ({navigation}: {navigation: any}) => {
           value={firstName}
           autoCorrect={false}
           onChangeText={text => setFirstName(text)}
-          placeholderTextColor={colors.darkgrey}
+          placeholderTextColor={colors.black}
         />
         <TextInput
           style={STYLES.input}
@@ -46,7 +46,7 @@ const SignUpName = ({navigation}: {navigation: any}) => {
           value={lastName}
           autoCorrect={false}
           onChangeText={text => setLastName(text)}
-          placeholderTextColor={colors.darkgrey}
+          placeholderTextColor={colors.black}
         />
       </View>
       <TouchableOpacity
@@ -55,8 +55,8 @@ const SignUpName = ({navigation}: {navigation: any}) => {
           {
             backgroundColor:
               firstName.length === 0 || lastName.length === 0
-                ? colors.darkgrey
-                : colors.accent,
+                ? colors.black
+                : colors.primary,
           },
         ]}
         disabled={firstName.length === 0 || lastName.length === 0}

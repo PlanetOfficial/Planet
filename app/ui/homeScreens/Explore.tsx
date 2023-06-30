@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   SafeAreaView,
@@ -18,9 +18,12 @@ import Separator from '../components/Separator';
 import PoiRow from '../components/PoiRow';
 
 import {Poi} from '../../utils/types';
+import {handleBookmark} from '../../utils/Misc';
 
+// TODO: THIS PAGE IS INCOMPLETE
 const Explore = ({navigation, route}: {navigation: any; route: any}) => {
   const {name, pois, location} = route.params;
+  const [bookmarks, setBookmarks] = useState<Poi[]>([]);
 
   return (
     <View style={styles.container}>
@@ -50,7 +53,7 @@ const Explore = ({navigation, route}: {navigation: any; route: any}) => {
           return (
             <TouchableOpacity
               onPress={() =>
-                navigation.navigate('PoiDetail', {
+                navigation.navigate('Poi', {
                   poi: item,
                   bookmarked: true,
                   mode: 'none',
@@ -61,7 +64,7 @@ const Explore = ({navigation, route}: {navigation: any; route: any}) => {
                 bookmarked={true}
                 location={location}
                 handleBookmark={(poi: Poi) =>
-                  console.log('handle bookmark: ', poi.name)
+                  handleBookmark(poi, bookmarks, setBookmarks)
                 }
               />
             </TouchableOpacity>
@@ -71,7 +74,7 @@ const Explore = ({navigation, route}: {navigation: any; route: any}) => {
           <View style={styles.center}>
             <Text>{strings.search.noResultsFound}</Text>
             <Text> </Text>
-            <Text size="s" color={colors.darkgrey}>
+            <Text size="s" color={colors.black}>
               {strings.search.noResultsFoundDescription}
             </Text>
           </View>

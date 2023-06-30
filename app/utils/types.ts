@@ -136,11 +136,11 @@ export interface Spin {
 }
 
 export interface Image {
-  path: string;
-  name: string;
-  size: number;
-  mime: string;
-  meta: {
+  path?: string;
+  name?: string;
+  size?: number;
+  mime?: string;
+  meta?: {
     width: number;
     height: number;
   };

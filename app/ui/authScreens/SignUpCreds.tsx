@@ -1,22 +1,28 @@
 import React, {useState} from 'react';
 import {View, SafeAreaView, TextInput, TouchableOpacity} from 'react-native';
 
-import Icon from '../components/Icon';
-import Text from '../components/Text';
-
-import icons from '../../constants/icons';
 import colors from '../../constants/colors';
+import icons from '../../constants/icons';
 import strings from '../../constants/strings';
 import STYLES from '../../constants/styles';
 
+import Icon from '../components/Icon';
+import Text from '../components/Text';
+
 import {signup} from '../../utils/api/authAPI';
 
-/*
- * route params:
- * - firstName: string
- * - lastName: string
- */
-const SignUpCreds = ({navigation, route}: {navigation: any; route: any}) => {
+const SignUpCreds = ({
+  navigation,
+  route,
+}: {
+  navigation: any;
+  route: {
+    params: {
+      firstName: string;
+      lastName: string;
+    };
+  };
+}) => {
   const [firstName] = useState<string>(route.params.firstName);
   const [lastName] = useState<string>(route.params.lastName);
 
@@ -101,7 +107,7 @@ const SignUpCreds = ({navigation, route}: {navigation: any; route: any}) => {
           placeholder={strings.signUp.username}
           value={username}
           onChangeText={text => setUsername(text.toLowerCase())}
-          placeholderTextColor={colors.darkgrey}
+          placeholderTextColor={colors.black}
           autoCapitalize="none"
           autoCorrect={false}
         />
@@ -115,7 +121,7 @@ const SignUpCreds = ({navigation, route}: {navigation: any; route: any}) => {
           placeholder={strings.login.password}
           value={password}
           onChangeText={text => setPassword(text)}
-          placeholderTextColor={colors.darkgrey}
+          placeholderTextColor={colors.black}
           secureTextEntry={true}
         />
       </View>
@@ -128,7 +134,7 @@ const SignUpCreds = ({navigation, route}: {navigation: any; route: any}) => {
           placeholder={strings.signUp.confirmPassword}
           value={passwordConfirm}
           onChangeText={text => setPasswordConfirm(text)}
-          placeholderTextColor={colors.darkgrey}
+          placeholderTextColor={colors.black}
           secureTextEntry={true}
         />
       </View>
@@ -145,8 +151,8 @@ const SignUpCreds = ({navigation, route}: {navigation: any; route: any}) => {
               username.length === 0 ||
               password.length === 0 ||
               password !== passwordConfirm
-                ? colors.darkgrey
-                : colors.accent,
+                ? colors.black
+                : colors.primary,
           },
         ]}
         disabled={

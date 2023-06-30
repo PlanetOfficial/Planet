@@ -11,7 +11,7 @@ import {
 import {s} from 'react-native-size-matters';
 
 import colors from '../../constants/colors';
-import styles from '../../constants/styles';
+import STYLES from '../../constants/styles';
 
 interface Props {
   size?: 'xs' | 's' | 'm' | 'l' | 'xl';
@@ -71,7 +71,7 @@ const Icon: React.FC<Props> = ({
 
   return onPress ? (
     <TouchableOpacity
-      style={[ButtonStyles, button ? styles.shadow : undefined]}
+      style={[ButtonStyles, button ? STYLES.shadow : undefined]}
       disabled={disabled}
       onPress={onPress}
       hitSlop={{

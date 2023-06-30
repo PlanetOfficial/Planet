@@ -10,20 +10,26 @@ import {s, vs} from 'react-native-size-matters';
 import messaging from '@react-native-firebase/messaging';
 import DropDownPicker from 'react-native-dropdown-picker';
 
-import Text from '../components/Text';
-
 import colors from '../../constants/colors';
-import STYLES from '../../constants/styles';
 import strings from '../../constants/strings';
+import STYLES from '../../constants/styles';
+
+import Text from '../components/Text';
 
 import {saveTokenToDatabase, sendMoreInfo} from '../../utils/api/authAPI';
 import {cacheUserInfo} from '../../utils/CacheHelpers';
 
-/*
- * route params:
- * - authToken: string
- */
-const SignUpInfo = ({navigation, route}: {navigation: any; route: any}) => {
+const SignUpInfo = ({
+  navigation,
+  route,
+}: {
+  navigation: any;
+  route: {
+    params: {
+      authToken: string;
+    };
+  };
+}) => {
   const [authToken] = useState<string>(route.params.authToken);
 
   const [ageDPOpen, setAgeDPOpen] = useState(false);
@@ -111,7 +117,7 @@ const SignUpInfo = ({navigation, route}: {navigation: any; route: any}) => {
         style={[
           styles.button,
           {
-            backgroundColor: age && gender ? colors.accent : colors.darkgrey,
+            backgroundColor: age && gender ? colors.primary : colors.black,
           },
         ]}
         disabled={!age || !gender}
