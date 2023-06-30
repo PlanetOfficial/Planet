@@ -55,7 +55,6 @@ const FriendsList = ({navigation}: {navigation: any}) => {
       keyExtractor={item => item.id.toString()}
       renderItem={({item}: {item: UserInfo}) => (
         <TouchableOpacity
-          key={item.id}
           style={userStyles.container}
           onPress={() =>
             navigation.navigate('User', {
@@ -124,11 +123,6 @@ const userStyles = StyleSheet.create({
     height: s(50),
     justifyContent: 'space-evenly',
     marginHorizontal: s(10),
-  },
-  add: {
-    width: '70%',
-    height: '70%',
-    tintColor: colors.accent,
   },
 });
 

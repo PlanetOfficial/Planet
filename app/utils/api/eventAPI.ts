@@ -147,3 +147,29 @@ export const leaveEvent = async (event_id: number): Promise<Boolean> => {
 
   return response.ok;
 };
+
+/**
+ * @requires auth_token should be set in EncryptedStorage before calling this function
+ */
+export const inviteToEvent = async (
+  event_id: number,
+  user_ids: number[],
+): Promise<Boolean> => {
+  const authToken = await EncryptedStorage.getItem('auth_token');
+
+  if (!authToken) {
+    return false;
+  }
+
+  const response = await fetch(
+    EventAPIURL +
+      `/member?event_id=${event_id}&user_ids=${JSON.stringify(
+        user_ids,
+      )}&authtoken=${authToken}`,
+    {
+      method: 'POST',
+    },
+  );
+
+  return response.ok;
+};

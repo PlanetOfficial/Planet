@@ -4,6 +4,13 @@ export interface UserInfo {
   last_name: string;
   username: string;
   icon?: Image;
+  count?: number;
+}
+
+export interface UserDetail {
+  status: string;
+  mutuals: UserInfo[];
+  shared_events: Event[];
 }
 
 export interface MyInfo {

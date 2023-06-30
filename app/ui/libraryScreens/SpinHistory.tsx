@@ -1,5 +1,12 @@
 import React, {useState} from 'react';
-import {View, SafeAreaView, Alert, FlatList, StyleSheet} from 'react-native';
+import {
+  View,
+  SafeAreaView,
+  Alert,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 import {s} from 'react-native-size-matters';
 import moment from 'moment';
 
@@ -62,16 +69,29 @@ const SpinHistory = ({navigation, route}: {navigation: any; route: any}) => {
         renderItem={({item}: {item: Spin}) => {
           return (
             <View style={localStyles.row}>
-              <PoiCardXS poi={item.result.poi} />
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate('PoiDetail', {
+                    poi: item.result.poi,
+                  })
+                }>
+                <PoiCardXS poi={item.result.poi} />
+              </TouchableOpacity>
 
-              <View style={userStyles.container}>
+              <TouchableOpacity
+                style={userStyles.container}
+                onPress={() =>
+                  navigation.navigate('User', {
+                    user: item.spinner,
+                  })
+                }>
                 <View style={userStyles.profilePic}>
                   <UserIcon user={item.spinner} />
                 </View>
                 <Text size="s" weight="l" numberOfLines={1}>
                   {item.spinner.first_name}
                 </Text>
-              </View>
+              </TouchableOpacity>
 
               <View style={localStyles.texts}>
                 <Text size="s" color={colors.darkgrey} numberOfLines={2}>
