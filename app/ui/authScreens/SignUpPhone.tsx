@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
-import {View, SafeAreaView, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, SafeAreaView, TouchableOpacity} from 'react-native';
 import PhoneInput from 'react-phone-number-input/react-native-input';
-import {s} from 'react-native-size-matters';
 
 import {E164Number} from 'libphonenumber-js/types';
 
@@ -40,7 +39,7 @@ const SignUpPhone = ({
     const response = await sendCode(authToken, phoneNumber);
 
     if (response) {
-      navigation.navigate('VerifyPhone', {authToken});
+      navigation.navigate('SignUpVerify', {authToken});
     } else {
       setError(strings.signUp.codeSendFailed);
     }
@@ -49,23 +48,23 @@ const SignUpPhone = ({
   return (
     <View style={STYLES.container}>
       <SafeAreaView>
-        <View style={styles.messageContainer}>
+        <View style={STYLES.promptContainer}>
           <Text size="l" center={true}>
             {strings.signUp.signUpSuccess}
           </Text>
         </View>
       </SafeAreaView>
 
-      <View style={styles.promptContainer}>
+      <View style={STYLES.promptContainer}>
         <Text size="l" weight="l" center={true}>
           {strings.signUp.phonePrompt}
         </Text>
       </View>
 
-      <View style={styles.inputContainer}>
+      <View style={STYLES.inputContainer}>
         <Text weight="l">{strings.signUp.phoneNumber}: </Text>
         <PhoneInput
-          style={styles.input}
+          style={STYLES.input}
           placeholder={strings.signUp.phoneNumber}
           value={phoneNumber}
           onChange={setPhoneNumber}
@@ -78,7 +77,7 @@ const SignUpPhone = ({
       ) : null}
       <TouchableOpacity
         style={[
-          styles.button,
+          STYLES.buttonBig,
           {
             backgroundColor: phoneNumber ? colors.primary : colors.black,
           },
@@ -92,42 +91,5 @@ const SignUpPhone = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  messageContainer: {
-    margin: s(20),
-  },
-  promptContainer: {
-    margin: s(40),
-    paddingHorizontal: s(20),
-  },
-  prompt: {
-    width: s(100),
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: s(30),
-    marginHorizontal: s(50),
-  },
-  input: {
-    flex: 1,
-    borderBottomWidth: 1,
-    borderColor: colors.black,
-    marginHorizontal: s(5),
-    paddingHorizontal: s(10),
-    paddingVertical: s(5),
-    fontFamily: 'Lato',
-  },
-  button: {
-    alignSelf: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: s(30),
-    width: s(150),
-    height: s(50),
-    borderRadius: s(25),
-  },
-});
 
 export default SignUpPhone;

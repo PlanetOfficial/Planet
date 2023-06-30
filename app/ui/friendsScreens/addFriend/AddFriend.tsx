@@ -9,10 +9,10 @@ import {
   ActivityIndicator,
   LayoutAnimation,
   RefreshControl,
-  TouchableOpacity as RNTO,
+  TouchableOpacity,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {TouchableOpacity as TouchableOpacityGestureHandler} from 'react-native-gesture-handler';
 
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
@@ -48,6 +48,12 @@ const AddFriend = ({
   const [friends, setFriends] = useState<UserInfo[]>([]);
   const [refreshing, setRefreshing] = useState<boolean>(false);
 
+  const searchRef = createRef<TextInput>();
+  const [searchText, setSearchText] = useState<string>('');
+  const [searchResult, setSearchResult] = useState<UserInfo[]>([]);
+  const [searching, setSearching] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+
   const fetchFriends = useCallback(async () => {
     const response = await getFriends();
 
@@ -63,12 +69,6 @@ const AddFriend = ({
   useEffect(() => {
     fetchFriends();
   }, [fetchFriends]);
-
-  const searchRef = createRef<TextInput>();
-  const [searchText, setSearchText] = useState<string>('');
-  const [searchResult, setSearchResult] = useState<UserInfo[]>([]);
-  const [searching, setSearching] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(false);
 
   const search = async (text: string) => {
     setLoading(true);
@@ -87,14 +87,16 @@ const AddFriend = ({
 
   const onAdd = async () => {
     if (event_id) {
-      for (let i = 0; i < invitees.length; i++) {
-        const response = await inviteToEvent(event_id, invitees[i].id);
-        if (!response) {
-          Alert.alert(strings.error.error, strings.error.addFriend);
-          return;
-        }
+      const response = await inviteToEvent(
+        event_id,
+        invitees.map(i => i.id),
+      );
+      if (response) {
+        navigation.goBack();
+      } else {
+        Alert.alert(strings.error.error, strings.error.addFriend);
+        return;
       }
-      navigation.goBack();
     } else {
       navigation.navigate('Create', {members: invitees});
     }
@@ -105,11 +107,11 @@ const AddFriend = ({
       <SafeAreaView>
         <View style={STYLES.header}>
           <Icon icon={icons.close} onPress={() => navigation.goBack()} />
-          <View style={[localStyles.searchBar, STYLES.shadow]}>
+          <View style={[styles.searchBar, STYLES.shadow]}>
             <Icon size="s" icon={icons.search} color={colors.black} />
             <TextInput
               ref={searchRef}
-              style={localStyles.searchText}
+              style={styles.searchText}
               placeholder={strings.search.search}
               placeholderTextColor={colors.black}
               autoCapitalize="none"
@@ -125,15 +127,15 @@ const AddFriend = ({
             />
           </View>
           {searching ? (
-            <TouchableOpacity
-              style={localStyles.cancel}
+            <TouchableOpacityGestureHandler
+              style={styles.cancel}
               onPress={() => {
                 searchRef.current?.clear();
                 setSearching(false);
                 setSearchResult([]);
               }}>
               <Text>{strings.main.cancel}</Text>
-            </TouchableOpacity>
+            </TouchableOpacityGestureHandler>
           ) : null}
         </View>
       </SafeAreaView>
@@ -149,7 +151,7 @@ const AddFriend = ({
             data={searchResult}
             keyExtractor={(_, index) => index.toString()}
             renderItem={({item}: {item: UserInfo}) => (
-              <TouchableOpacity
+              <TouchableOpacityGestureHandler
                 style={userStyles.container}
                 onPress={() => {
                   const _invitees = [...invitees];
@@ -187,7 +189,7 @@ const AddFriend = ({
                   }
                   color={colors.primary}
                 />
-              </TouchableOpacity>
+              </TouchableOpacityGestureHandler>
             )}
             ListEmptyComponent={
               searchText.length > 0 ? (
@@ -207,8 +209,8 @@ const AddFriend = ({
             data={[...invitees, ...friends.filter(f => !invitees.includes(f))]}
             keyExtractor={(_, index) => index.toString()}
             renderItem={({item}: {item: UserInfo}) =>
-              !(event_id && members.some(m => m.id === item.id)) ? (
-                <TouchableOpacity
+              !event_id || !members.some(m => m.id === item.id) ? (
+                <TouchableOpacityGestureHandler
                   style={userStyles.container}
                   onPress={() => {
                     const _invitees = [...invitees];
@@ -246,7 +248,7 @@ const AddFriend = ({
                     }
                     color={colors.primary}
                   />
-                </TouchableOpacity>
+                </TouchableOpacityGestureHandler>
               ) : null
             }
             ListEmptyComponent={
@@ -270,11 +272,13 @@ const AddFriend = ({
             }
           />
           {invitees && invitees.length > 0 ? (
-            <RNTO style={[localStyles.add, STYLES.shadow]} onPress={onAdd}>
+            <TouchableOpacity
+              style={[styles.add, STYLES.shadow]}
+              onPress={onAdd}>
               <Text size="l" weight="b" color={colors.white}>
                 {`${strings.main.add} (${invitees.length})`}
               </Text>
-            </RNTO>
+            </TouchableOpacity>
           ) : null}
         </>
       )}
@@ -282,7 +286,7 @@ const AddFriend = ({
   );
 };
 
-const localStyles = StyleSheet.create({
+const styles = StyleSheet.create({
   searchBar: {
     flex: 1,
     flexDirection: 'row',
