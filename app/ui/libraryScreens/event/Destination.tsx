@@ -96,8 +96,8 @@ const DestinationView: React.FC<Props> = ({
                 !item.suggestions.some(
                   suggestion => suggestion.votes.length > 0,
                 )
-                  ? colors.grey
-                  : colors.primary
+                  ? colors.secondary
+                  : colors.accent
               }
               onPress={() =>
                 navigation.navigate('Roulette', {
@@ -167,7 +167,7 @@ const DestinationView: React.FC<Props> = ({
             setRefreshing(true);
             loadData();
           }}
-          tintColor={colors.primary}
+          tintColor={colors.accent}
         />
       }
     />

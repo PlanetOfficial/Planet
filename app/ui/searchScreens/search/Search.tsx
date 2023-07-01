@@ -178,11 +178,12 @@ const styles = StyleSheet.create({
     width: s(50),
     height: s(50),
     borderRadius: s(25),
-    backgroundColor: colors.white,
+    backgroundColor: colors.primary,
   },
   icon: {
     width: '60%',
     height: '60%',
+    tintColor: colors.neutral,
   },
   flatList: {
     paddingBottom: s(250),

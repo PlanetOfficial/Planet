@@ -80,12 +80,12 @@ const SignUpPhone = ({
         style={[
           STYLES.buttonBig,
           {
-            backgroundColor: phoneNumber ? colors.primary : colors.black,
+            backgroundColor: phoneNumber ? colors.accent : colors.neutral,
           },
         ]}
         disabled={!phoneNumber}
         onPress={() => handleSendCode()}>
-        <Text weight="b" color={colors.white}>
+        <Text weight="b" color={colors.primary}>
           {strings.signUp.sendCode}
         </Text>
       </TouchableOpacity>

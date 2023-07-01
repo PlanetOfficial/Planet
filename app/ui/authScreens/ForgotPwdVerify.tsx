@@ -75,7 +75,7 @@ const ForgotPwdVerify = ({
           onChangeText={text =>
             setCode(text.replace(/[^0-9]/g, '').substring(0, 6))
           }
-          placeholderTextColor={colors.black}
+          placeholderTextColor={colors.neutral}
           keyboardType="number-pad"
         />
       </View>
@@ -88,12 +88,13 @@ const ForgotPwdVerify = ({
         style={[
           STYLES.buttonBig,
           {
-            backgroundColor: code.length !== 6 ? colors.grey : colors.primary,
+            backgroundColor:
+              code.length !== 6 ? colors.secondary : colors.accent,
           },
         ]}
         disabled={code.length !== 6}
         onPress={() => handleVerifyCode()}>
-        <Text weight="b" color={colors.white}>
+        <Text weight="b" color={colors.primary}>
           {strings.signUp.verifyCode}
         </Text>
       </TouchableOpacity>

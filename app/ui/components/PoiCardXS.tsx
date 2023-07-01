@@ -30,7 +30,7 @@ const PoiCardXS: React.FC<Props> = ({poi}) => {
         <Text
           size="xs"
           numberOfLines={1}
-          color={colors.primary}>{`★ ${poi.rating}`}</Text>
+          color={colors.accent}>{`★ ${poi.rating}`}</Text>
       </View>
     </View>
   );
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     width: s(120),
     height: s(75),
     borderRadius: s(5),
-    backgroundColor: colors.white,
+    backgroundColor: colors.primary,
   },
   image: {
     position: 'absolute',

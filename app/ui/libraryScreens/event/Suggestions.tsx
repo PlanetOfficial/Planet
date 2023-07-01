@@ -57,7 +57,7 @@ const Suggestions: React.FC<Props> = ({
             setInsertionDestination(destination);
             navigation.navigate('SuggestSearch');
           }}>
-          <Icon icon={icons.add} size="xl" color={colors.primary} />
+          <Icon icon={icons.add} size="xl" color={colors.accent} />
         </TouchableOpacity>
       </View>
     </View>
@@ -69,7 +69,7 @@ const Suggestions: React.FC<Props> = ({
         setInsertionDestination(destination);
         navigation.navigate('SuggestSearch');
       }}>
-      <Text color={colors.primary} weight="b">
+      <Text color={colors.accent} weight="b">
         {strings.event.addSuggestion}
       </Text>
     </TouchableOpacity>
@@ -95,16 +95,16 @@ const styles = StyleSheet.create({
     paddingRight: s(20),
     width: s(95),
     height: s(85),
-    backgroundColor: colors.white,
+    backgroundColor: colors.primary,
     borderLeftWidth: 1,
-    borderLeftColor: colors.grey,
+    borderLeftColor: colors.secondary,
   },
   addBig: {
     alignItems: 'center',
     marginVertical: s(10),
     paddingVertical: s(10),
     borderRadius: s(10),
-    backgroundColor: colors.white,
+    backgroundColor: colors.primary,
   },
 });
 

@@ -93,7 +93,7 @@ const Header: React.FC<Props> = ({
               );
               setSearching(false);
             },
-            placeholderTextColor: colors.black,
+            placeholderTextColor: colors.neutral,
             onChangeText: text => {
               setSearchText(text);
             },
@@ -109,6 +109,7 @@ const Header: React.FC<Props> = ({
                   }
                 : null,
             ],
+            row: styles.row,
             textInput: styles.textInput,
             separator: styles.separator,
           }}
@@ -144,6 +145,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal: s(20),
   },
+  row: {
+    backgroundColor: colors.primary,
+  },
   text: {
     padding: 0,
     paddingLeft: s(30),
@@ -151,9 +155,10 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     width: '100%',
     fontFamily: 'Lato',
+    color: colors.neutral,
   },
   textInputContainer: {
-    backgroundColor: colors.white,
+    backgroundColor: colors.primary,
     height: s(30),
     justifyContent: 'center',
     borderRadius: s(10),
@@ -163,12 +168,12 @@ const styles = StyleSheet.create({
     marginLeft: s(15),
     paddingLeft: s(10),
     fontSize: s(12),
-    color: colors.black,
+    color: colors.neutral,
     backgroundColor: 'transparent',
   },
   separator: {
     height: 1,
-    backgroundColor: colors.grey,
+    backgroundColor: colors.secondary,
   },
   icon: {
     marginTop: s(7.5),
@@ -176,7 +181,7 @@ const styles = StyleSheet.create({
     marginRight: s(-23),
     width: s(15),
     height: s(15),
-    tintColor: colors.black,
+    tintColor: colors.neutral,
     zIndex: 5,
   },
   cancel: {

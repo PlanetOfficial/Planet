@@ -47,7 +47,7 @@ const DestinationsList: React.FC<Props> = ({
                     onPress: () => {
                       handleMove(index, -1, destinations, setDestinations);
                     },
-                    color: colors.black,
+                    color: colors.neutral,
                     disabled: index === 0,
                   },
                   {
@@ -55,7 +55,7 @@ const DestinationsList: React.FC<Props> = ({
                     onPress: () => {
                       handleMove(index, 1, destinations, setDestinations);
                     },
-                    color: colors.black,
+                    color: colors.neutral,
                     disabled: index === destinations.length - 1,
                   },
                   {
@@ -89,7 +89,7 @@ const DestinationsList: React.FC<Props> = ({
                         },
                       );
                     },
-                    color: colors.black,
+                    color: colors.neutral,
                   },
                 ]}
               />

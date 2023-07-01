@@ -95,7 +95,7 @@ const ResetPwd = ({
           placeholder={strings.login.password}
           value={password}
           onChangeText={text => setPassword(text)}
-          placeholderTextColor={colors.black}
+          placeholderTextColor={colors.neutral}
           secureTextEntry={true}
         />
       </View>
@@ -108,7 +108,7 @@ const ResetPwd = ({
           placeholder={strings.signUp.confirmPassword}
           value={passwordConfirm}
           onChangeText={text => setPasswordConfirm(text)}
-          placeholderTextColor={colors.black}
+          placeholderTextColor={colors.neutral}
           secureTextEntry={true}
         />
       </View>
@@ -123,13 +123,13 @@ const ResetPwd = ({
           {
             backgroundColor:
               password.length === 0 || password !== passwordConfirm
-                ? colors.grey
-                : colors.primary,
+                ? colors.secondary
+                : colors.accent,
           },
         ]}
         disabled={password.length === 0 || password !== passwordConfirm}
         onPress={() => handleNext()}>
-        <Text color={colors.white}>{strings.login.resetPassword}</Text>
+        <Text color={colors.primary}>{strings.login.resetPassword}</Text>
       </TouchableOpacity>
     </View>
   );

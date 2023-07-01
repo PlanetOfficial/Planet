@@ -162,7 +162,7 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
                     destination: destination,
                   });
                 },
-                color: colors.black,
+                color: colors.neutral,
                 disabled: false,
               },
               {
@@ -183,7 +183,7 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
                     ],
                   );
                 },
-                color: colors.primary,
+                color: colors.accent,
                 disabled: false,
               },
               {

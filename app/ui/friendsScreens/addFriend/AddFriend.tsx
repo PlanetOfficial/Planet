@@ -113,7 +113,7 @@ const AddFriend = ({
               ref={searchRef}
               style={styles.searchText}
               placeholder={strings.search.search}
-              placeholderTextColor={colors.black}
+              placeholderTextColor={colors.neutral}
               autoCapitalize="none"
               autoCorrect={false}
               onFocus={() => {
@@ -142,7 +142,7 @@ const AddFriend = ({
       {searching ? (
         loading ? (
           <View style={[STYLES.center, STYLES.container]}>
-            <ActivityIndicator size="small" color={colors.primary} />
+            <ActivityIndicator size="small" color={colors.accent} />
           </View>
         ) : (
           <FlatList
@@ -183,7 +183,7 @@ const AddFriend = ({
                       ? icons.selected
                       : icons.unselected
                   }
-                  color={colors.primary}
+                  color={colors.accent}
                 />
               </TouchableOpacityGestureHandler>
             )}
@@ -238,7 +238,7 @@ const AddFriend = ({
                         ? icons.selected
                         : icons.unselected
                     }
-                    color={colors.primary}
+                    color={colors.accent}
                   />
                 </TouchableOpacityGestureHandler>
               ) : null
@@ -259,7 +259,7 @@ const AddFriend = ({
                   setRefreshing(true);
                   fetchFriends();
                 }}
-                tintColor={colors.primary}
+                tintColor={colors.accent}
               />
             }
           />
@@ -267,7 +267,7 @@ const AddFriend = ({
             <TouchableOpacity
               style={[styles.add, STYLES.shadow]}
               onPress={onAdd}>
-              <Text size="l" weight="b" color={colors.white}>
+              <Text size="l" weight="b" color={colors.primary}>
                 {`${strings.main.add} (${invitees.length})`}
               </Text>
             </TouchableOpacity>
@@ -283,7 +283,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: colors.white,
+    backgroundColor: colors.primary,
     borderRadius: s(10),
     marginLeft: s(10),
     paddingHorizontal: s(10),
@@ -295,6 +295,7 @@ const styles = StyleSheet.create({
     fontSize: s(13),
     fontFamily: 'Lato',
     padding: 0,
+    color: colors.neutral,
   },
   cancel: {
     marginLeft: s(10),
@@ -309,7 +310,7 @@ const styles = StyleSheet.create({
     bottom: s(40),
     height: s(50),
     borderRadius: s(10),
-    backgroundColor: colors.primary,
+    backgroundColor: colors.accent,
   },
 });
 
@@ -320,7 +321,7 @@ const userStyles = StyleSheet.create({
     marginHorizontal: s(20),
     paddingVertical: s(10),
     borderBottomWidth: 1,
-    borderBottomColor: colors.grey,
+    borderBottomColor: colors.secondary,
   },
   profilePic: {
     alignItems: 'center',

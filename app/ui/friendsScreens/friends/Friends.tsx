@@ -63,7 +63,7 @@ const Friends = ({navigation}: {navigation: any}) => {
               ref={searchRef}
               style={styles.searchText}
               placeholder={strings.search.search}
-              placeholderTextColor={colors.black}
+              placeholderTextColor={colors.neutral}
               autoCapitalize="none"
               autoCorrect={false}
               onFocus={() => {
@@ -92,7 +92,7 @@ const Friends = ({navigation}: {navigation: any}) => {
       {searching ? (
         loading ? (
           <View style={[STYLES.center, STYLES.container]}>
-            <ActivityIndicator size="small" color={colors.primary} />
+            <ActivityIndicator size="small" color={colors.accent} />
           </View>
         ) : (
           <FlatList
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: colors.white,
+    backgroundColor: colors.primary,
     borderRadius: s(10),
     marginLeft: s(10),
     paddingHorizontal: s(10),
@@ -145,6 +145,7 @@ const styles = StyleSheet.create({
     fontSize: s(13),
     fontFamily: 'Lato',
     padding: 0,
+    color: colors.neutral,
   },
   cancel: {
     marginLeft: s(10),

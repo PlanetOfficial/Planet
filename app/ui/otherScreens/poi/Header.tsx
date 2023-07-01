@@ -76,7 +76,7 @@ const Header: React.FC<Props> = ({
                 StatusBar.setBarStyle('dark-content', true);
                 navigation.goBack();
               }}
-              color={colors.white}
+              color={colors.primary}
             />
             <Animated.Text
               style={[styles.title, {opacity: topTitleOpacity}]}
@@ -95,18 +95,18 @@ const Header: React.FC<Props> = ({
                   ? handleBookmark(destination, bookmarks, setBookmarks)
                   : null
               }
-              color={colors.white}
+              color={colors.primary}
             />
           </View>
         </SafeAreaView>
         <Animated.View style={[styles.bottom, {opacity: bottomTitleOpacity}]}>
-          <Text size="l" weight="b" color={colors.white}>
+          <Text size="l" weight="b" color={colors.primary}>
             {destination?.name}
           </Text>
           <Icon
             size="l"
             icon={icons.gallery}
-            color={colors.white}
+            color={colors.primary}
             onPress={() => setGalleryVisible(true)}
           />
         </Animated.View>
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     position: 'absolute',
-    backgroundColor: colors.black,
+    backgroundColor: colors.neutral,
   },
   container: {
     width: '100%',
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
     fontSize: s(16),
     fontWeight: '700',
     fontFamily: 'Lato',
-    color: colors.white,
+    color: colors.primary,
     maxWidth: s(280),
     paddingHorizontal: s(10),
   },

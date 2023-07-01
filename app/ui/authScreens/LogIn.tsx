@@ -78,7 +78,7 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
   return (
     <View style={styles.container}>
       <LinearGradient
-        colors={[colors.white, colors.primary]}
+        colors={[colors.primary, colors.accent]}
         style={styles.container}
         start={{x: 0, y: 0}}
         end={{x: 1, y: 1}}
@@ -91,7 +91,7 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
           onChangeText={setUsername}
           autoCapitalize="none"
           autoCorrect={false}
-          placeholderTextColor={colors.black}
+          placeholderTextColor={colors.neutral}
         />
         <TextInput
           style={styles.input}
@@ -100,7 +100,7 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
           onChangeText={setPassword}
           secureTextEntry={true}
           textContentType="password"
-          placeholderTextColor={colors.black}
+          placeholderTextColor={colors.neutral}
         />
         <View>
           {error.length !== 0 ? (
@@ -111,9 +111,9 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
         </View>
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
           {loading ? (
-            <ActivityIndicator size="small" color={colors.white} />
+            <ActivityIndicator size="small" color={colors.primary} />
           ) : (
-            <Text weight="b" color={colors.white}>
+            <Text weight="b" color={colors.primary}>
               {strings.login.login}
             </Text>
           )}
@@ -122,7 +122,7 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
           <TouchableOpacity
             style={styles.signUpButton}
             onPress={() => navigation.navigate('SignUpName')}>
-            <Text weight="b" color={colors.white}>
+            <Text weight="b" color={colors.primary}>
               {strings.login.signUp}
             </Text>
           </TouchableOpacity>
@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
     fontSize: s(55),
     fontWeight: '900',
     fontFamily: 'Lato',
-    color: colors.primary,
+    color: colors.accent,
   },
   input: {
     paddingHorizontal: s(25),
@@ -158,9 +158,9 @@ const styles = StyleSheet.create({
     height: s(50),
     borderRadius: s(25),
     borderWidth: 1,
-    borderColor: colors.grey,
-    backgroundColor: colors.white,
-    color: colors.black,
+    borderColor: colors.secondary,
+    backgroundColor: colors.primary,
+    color: colors.neutral,
     fontFamily: 'Lato',
   },
   button: {
@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
     borderRadius: s(25),
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: colors.primary,
+    backgroundColor: colors.accent,
   },
   bottomContainer: {
     alignItems: 'center',
@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
     borderRadius: s(25),
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: colors.black,
+    backgroundColor: colors.neutral,
   },
 });
 

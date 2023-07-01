@@ -131,7 +131,7 @@ const Destinations: React.FC<Props> = ({
       <TouchableOpacity
         style={destinationStyles.addContainer}
         onPress={() => navigation.navigate('AddSearch')}>
-        <Icon size="l" icon={icons.add} color={colors.primary} />
+        <Icon size="l" icon={icons.add} color={colors.accent} />
         <View style={STYLES.texts}>
           <Text size="s">{strings.event.addDestination}</Text>
         </View>
@@ -148,14 +148,14 @@ const destinationStyles = StyleSheet.create({
     paddingBottom: s(10),
     borderWidth: 1,
     borderRadius: s(20),
-    borderColor: colors.grey,
+    borderColor: colors.secondary,
   },
   header: {
     position: 'absolute',
     left: s(20),
     top: s(-10),
     paddingHorizontal: s(5),
-    backgroundColor: colors.white,
+    backgroundColor: colors.primary,
   },
   flatlist: {
     marginTop: s(10),
@@ -168,7 +168,7 @@ const destinationStyles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: s(10),
     paddingHorizontal: s(10),
-    backgroundColor: colors.white,
+    backgroundColor: colors.primary,
     overflow: 'visible',
   },
   addContainer: {

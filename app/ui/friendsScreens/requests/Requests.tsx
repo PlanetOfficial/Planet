@@ -98,7 +98,7 @@ const Requests = ({navigation}: {navigation: any}) => {
             await loadRequests();
             setLoading(false);
           }}
-          tintColor={colors.primary}
+          tintColor={colors.accent}
         />
       }>
       {requests.length > 0 ? (
@@ -124,7 +124,7 @@ const Requests = ({navigation}: {navigation: any}) => {
               <Icon
                 size="s"
                 icon={icons.check}
-                color={colors.primary}
+                color={colors.accent}
                 onPress={() => handleAcceptRequest(item.id)}
               />
               <Icon

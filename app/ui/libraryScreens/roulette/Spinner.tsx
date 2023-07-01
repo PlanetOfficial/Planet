@@ -114,7 +114,7 @@ const Spinner: React.FC<Props> = ({
               </View>
             </Animated.View>
             <View style={styles.numContainer}>
-              <Text color={colors.primary} size="xl" weight="b">
+              <Text color={colors.accent} size="xl" weight="b">
                 {currentSuggestion.votes.length}
               </Text>
               <View style={styles.separater} />
@@ -126,7 +126,7 @@ const Spinner: React.FC<Props> = ({
       <TouchableOpacity
         style={[
           styles.button,
-          {backgroundColor: isSpinning ? colors.grey : colors.primary},
+          {backgroundColor: isSpinning ? colors.secondary : colors.accent},
         ]}
         disabled={isSpinning}
         onPress={() =>
@@ -139,7 +139,7 @@ const Spinner: React.FC<Props> = ({
             setCurrentAngle,
           )
         }>
-        <Text size="l" weight="b" color={colors.white}>
+        <Text size="l" weight="b" color={colors.primary}>
           {strings.roulette.spin}
         </Text>
       </TouchableOpacity>
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
     zIndex: 600,
     width: s(7),
     height: s(30),
-    backgroundColor: colors.grey,
+    backgroundColor: colors.secondary,
   },
   numContainer: {
     position: 'absolute',
@@ -184,14 +184,14 @@ const styles = StyleSheet.create({
     marginVertical: s(5),
     height: 1,
     width: s(60),
-    backgroundColor: colors.black,
+    backgroundColor: colors.neutral,
   },
   button: {
     alignSelf: 'center',
     paddingHorizontal: s(20),
     paddingVertical: s(10),
     borderRadius: s(10),
-    backgroundColor: colors.primary,
+    backgroundColor: colors.accent,
   },
 });
 

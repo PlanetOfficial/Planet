@@ -67,7 +67,7 @@ const Profile: React.FC<Props> = ({
                 mutuals: mutuals,
               })
             }>
-            <Text size="s" color={colors.primary} numberOfLines={1}>
+            <Text size="s" color={colors.accent} numberOfLines={1}>
               {mutuals.length +
                 ' ' +
                 (mutuals.length === 1
@@ -81,7 +81,7 @@ const Profile: React.FC<Props> = ({
             <TouchableOpacity
               style={{
                 ...styles.button,
-                backgroundColor: colors.primary,
+                backgroundColor: colors.accent,
               }}
               onPress={() =>
                 handleFriendRequest(
@@ -92,7 +92,7 @@ const Profile: React.FC<Props> = ({
                   user,
                 )
               }>
-              <Text size="s" color={colors.white}>
+              <Text size="s" color={colors.primary}>
                 {strings.friends.addFriend}
               </Text>
             </TouchableOpacity>
@@ -101,7 +101,7 @@ const Profile: React.FC<Props> = ({
             <TouchableOpacity
               style={{
                 ...styles.button,
-                backgroundColor: colors.grey,
+                backgroundColor: colors.secondary,
               }}
               onPress={() =>
                 handleUnfriend(user.id, setStatus, friends, setFriends)
@@ -113,7 +113,7 @@ const Profile: React.FC<Props> = ({
             <TouchableOpacity
               style={{
                 ...styles.button,
-                backgroundColor: colors.grey,
+                backgroundColor: colors.secondary,
               }}
               onPress={() =>
                 handleCancelRequest(
@@ -131,7 +131,7 @@ const Profile: React.FC<Props> = ({
               <TouchableOpacity
                 style={{
                   ...styles.button,
-                  backgroundColor: colors.primary,
+                  backgroundColor: colors.accent,
                 }}
                 onPress={() =>
                   handleAcceptRequest(
@@ -144,14 +144,14 @@ const Profile: React.FC<Props> = ({
                     user,
                   )
                 }>
-                <Text size="s" color={colors.white}>
+                <Text size="s" color={colors.primary}>
                   {strings.friends.accept}
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={{
                   ...styles.button,
-                  backgroundColor: colors.grey,
+                  backgroundColor: colors.secondary,
                 }}
                 onPress={() =>
                   handleDeclineRequest(

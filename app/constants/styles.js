@@ -5,7 +5,7 @@ import {s} from 'react-native-size-matters';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.white,
+    backgroundColor: colors.primary,
   },
   flatList: {
     paddingTop: s(10),
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
   dim: {
     width: '100%',
     height: '100%',
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    backgroundColor: colors.dim,
   },
   header: {
     flexDirection: 'row',
@@ -35,12 +35,12 @@ const styles = StyleSheet.create({
   separator: {
     marginHorizontal: s(20),
     height: 1,
-    backgroundColor: colors.grey,
+    backgroundColor: colors.secondary,
   },
   separatorExtendsToRight: {
     marginLeft: s(20),
     height: 1,
-    backgroundColor: colors.grey,
+    backgroundColor: colors.secondary,
   },
   texts: {
     flex: 1,
@@ -54,8 +54,8 @@ const styles = StyleSheet.create({
     paddingVertical: s(10),
     bottom: s(40),
     borderRadius: s(10),
-    backgroundColor: colors.primary,
-    shadowColor: '#000',
+    backgroundColor: colors.accent,
+    shadowColor: colors.neutral,
     shadowOffset: {
       width: 0,
       height: 1,
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     elevation: 7,
   },
   shadow: {
-    shadowColor: '#000',
+    shadowColor: colors.neutral,
     shadowOffset: {
       width: 0,
       height: 1,
@@ -103,6 +103,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: s(10),
     paddingVertical: s(5),
     fontFamily: 'Lato',
+    color: colors.neutral,
   },
   buttonBig: {
     alignSelf: 'center',
@@ -124,26 +125,26 @@ export const sctStyles = StyleSheet.create({
   tab: {
     borderWidth: 0,
     borderBottomWidth: 2,
-    borderBottomColor: colors.grey,
-    backgroundColor: colors.white,
+    borderBottomColor: colors.secondary,
+    backgroundColor: colors.primary,
   },
   activeTab: {
     borderBottomWidth: 2,
-    borderBottomColor: colors.primary,
-    backgroundColor: colors.white,
+    borderBottomColor: colors.accent,
+    backgroundColor: colors.primary,
   },
   firstTab: {
     borderRightWidth: 0,
   },
   text: {
-    fontSize: s(12),
+    fontSize: s(13),
     fontWeight: '600',
     fontFamily: 'Lato',
-    color: colors.black,
+    color: colors.neutral,
   },
   activeText: {
     marginBottom: 0,
-    color: colors.primary,
+    color: colors.accent,
   },
 });
 

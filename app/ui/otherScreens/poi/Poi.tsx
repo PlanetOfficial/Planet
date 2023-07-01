@@ -93,13 +93,13 @@ const PoiPage = ({
   const HeaderComponent = useCallback(
     () => (
       <View style={styles.imageTitle}>
-        <Text center={true} color={colors.white}>
+        <Text center={true} color={colors.primary}>
           {strings.poi.images}
         </Text>
         <View style={styles.closeGallery}>
           <Icon
             icon={icons.close}
-            color={colors.white}
+            color={colors.primary}
             onPress={() => setGalleryVisible(false)}
           />
         </View>
@@ -118,7 +118,7 @@ const PoiPage = ({
           onRequestClose={() => setGalleryVisible(false)}
           animationType="slide"
           presentationStyle="formSheet"
-          backgroundColor={colors.black}
+          backgroundColor={colors.neutral}
           swipeToCloseEnabled={true}
           HeaderComponent={HeaderComponent}
         />

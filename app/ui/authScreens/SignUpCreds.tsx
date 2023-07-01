@@ -107,7 +107,7 @@ const SignUpCreds = ({
           placeholder={strings.signUp.username}
           value={username}
           onChangeText={text => setUsername(text.toLowerCase())}
-          placeholderTextColor={colors.black}
+          placeholderTextColor={colors.neutral}
           autoCapitalize="none"
           autoCorrect={false}
         />
@@ -121,7 +121,7 @@ const SignUpCreds = ({
           placeholder={strings.login.password}
           value={password}
           onChangeText={text => setPassword(text)}
-          placeholderTextColor={colors.black}
+          placeholderTextColor={colors.neutral}
           secureTextEntry={true}
         />
       </View>
@@ -134,7 +134,7 @@ const SignUpCreds = ({
           placeholder={strings.signUp.confirmPassword}
           value={passwordConfirm}
           onChangeText={text => setPasswordConfirm(text)}
-          placeholderTextColor={colors.black}
+          placeholderTextColor={colors.neutral}
           secureTextEntry={true}
         />
       </View>
@@ -151,8 +151,8 @@ const SignUpCreds = ({
               username.length === 0 ||
               password.length === 0 ||
               password !== passwordConfirm
-                ? colors.black
-                : colors.primary,
+                ? colors.neutral
+                : colors.accent,
           },
         ]}
         disabled={
@@ -161,7 +161,7 @@ const SignUpCreds = ({
           password !== passwordConfirm
         }
         onPress={() => handleNext()}>
-        <Text weight="b" color={colors.white}>
+        <Text weight="b" color={colors.primary}>
           {strings.signUp.signUp}
         </Text>
       </TouchableOpacity>

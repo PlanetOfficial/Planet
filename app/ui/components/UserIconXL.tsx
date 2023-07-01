@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: s(40),
-    color: colors.white,
+    color: colors.primary,
     fontFamily: 'VarelaRound-Regular',
     marginTop: s(1),
   },

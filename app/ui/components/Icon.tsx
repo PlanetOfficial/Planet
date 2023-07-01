@@ -25,7 +25,7 @@ interface Props {
 
 const Icon: React.FC<Props> = ({
   size = 's',
-  color = colors.black,
+  color = colors.neutral,
   button = false,
   padding = 0,
   disabled = false,
@@ -59,7 +59,7 @@ const Icon: React.FC<Props> = ({
     width: button ? 2 * z : z,
     height: button ? 2 * z : z,
     padding: padding + (button ? z / 2 : 0),
-    backgroundColor: button ? colors.white : undefined,
+    backgroundColor: button ? colors.primary : undefined,
     borderRadius: button ? z / 2 : undefined,
   };
 

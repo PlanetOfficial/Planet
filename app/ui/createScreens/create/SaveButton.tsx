@@ -35,8 +35,8 @@ const SaveButton: React.FC<Props> = ({
         {
           backgroundColor:
             destinations && destinations.length > 0
-              ? colors.primary
-              : colors.grey,
+              ? colors.accent
+              : colors.secondary,
         },
       ]}
       disabled={loading || !destinations || destinations.length === 0}
@@ -51,9 +51,9 @@ const SaveButton: React.FC<Props> = ({
         )
       }>
       {loading ? (
-        <ActivityIndicator color={colors.white} />
+        <ActivityIndicator color={colors.primary} />
       ) : (
-        <Text size="l" weight="b" color={colors.white}>
+        <Text size="l" weight="b" color={colors.primary}>
           {strings.main.save}
         </Text>
       )}

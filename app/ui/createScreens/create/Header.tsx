@@ -64,6 +64,7 @@ const Header: React.FC<Props> = ({
             style={styles.title}
             value={eventTitle}
             onChangeText={text => setEventTitle(text)}
+            placeholderTextColor={colors.neutral}
             onEndEditing={e => {
               if (e.nativeEvent.text === '') {
                 setEventTitle(strings.event.untitled);
@@ -71,7 +72,7 @@ const Header: React.FC<Props> = ({
             }}
           />
           <TouchableOpacity onPress={() => setDatePickerOpen(true)}>
-            <Text size="xs" weight="l" color={colors.primary} underline={true}>
+            <Text size="xs" weight="l" color={colors.accent} underline={true}>
               {date}
             </Text>
           </TouchableOpacity>
@@ -116,6 +117,7 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
     marginBottom: s(3),
     padding: 0,
+    color: colors.neutral,
   },
 });
 

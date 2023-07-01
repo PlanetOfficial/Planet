@@ -117,12 +117,12 @@ const SignUpInfo = ({
         style={[
           styles.button,
           {
-            backgroundColor: age && gender ? colors.primary : colors.black,
+            backgroundColor: age && gender ? colors.accent : colors.neutral,
           },
         ]}
         disabled={!age || !gender}
         onPress={handleNext}>
-        <Text weight="b" color={colors.white}>
+        <Text weight="b" color={colors.primary}>
           {strings.signUp.enjoy}
         </Text>
       </TouchableOpacity>

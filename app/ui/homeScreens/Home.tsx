@@ -82,7 +82,7 @@ const Home = ({navigation}: {navigation: any}) => {
                     location: location,
                   })
                 }>
-                <Text size="s" color={colors.primary}>
+                <Text size="s" color={colors.accent}>
                   {strings.main.seeAll}
                 </Text>
               </TouchableOpacity>
@@ -147,7 +147,7 @@ const homeStyles = StyleSheet.create({
     width: s(50),
     height: s(50),
     borderRadius: s(25),
-    backgroundColor: colors.white,
+    backgroundColor: colors.primary,
   },
   icon: {
     width: '60%',

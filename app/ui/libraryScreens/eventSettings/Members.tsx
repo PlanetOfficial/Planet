@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     paddingVertical: s(5),
     borderWidth: 1,
     borderRadius: s(20),
-    borderColor: colors.grey,
+    borderColor: colors.secondary,
   },
   user: {
     flexDirection: 'row',
@@ -90,11 +90,11 @@ const styles = StyleSheet.create({
   add: {
     width: '70%',
     height: '70%',
-    tintColor: colors.primary,
+    tintColor: colors.accent,
   },
   border: {
     borderBottomWidth: 1,
-    borderColor: colors.grey,
+    borderColor: colors.secondary,
   },
 });
 

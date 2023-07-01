@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: s(8),
     borderBottomWidth: 1,
-    borderColor: colors.grey,
+    borderColor: colors.secondary,
   },
   profilePic: {
     width: s(35),

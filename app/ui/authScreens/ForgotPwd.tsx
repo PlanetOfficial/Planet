@@ -53,7 +53,7 @@ const ForgotPwd = ({navigation}: {navigation: any}) => {
           placeholder={strings.signUp.username}
           value={username}
           onChangeText={text => setUsername(text.toLowerCase())}
-          placeholderTextColor={colors.black}
+          placeholderTextColor={colors.neutral}
           autoCapitalize="none"
           autoCorrect={false}
         />
@@ -68,12 +68,12 @@ const ForgotPwd = ({navigation}: {navigation: any}) => {
           STYLES.buttonBig,
           {
             backgroundColor:
-              username.length === 0 ? colors.grey : colors.primary,
+              username.length === 0 ? colors.secondary : colors.accent,
           },
         ]}
         disabled={username.length === 0}
         onPress={handleNext}>
-        <Text weight="b" color={colors.white}>
+        <Text weight="b" color={colors.primary}>
           {strings.main.next}
         </Text>
       </TouchableOpacity>

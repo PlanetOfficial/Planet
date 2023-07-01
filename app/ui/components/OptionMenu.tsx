@@ -19,7 +19,7 @@ interface Props {
 
 const OptionMenu: React.FC<Props> = ({
   icon,
-  iconColor = colors.black,
+  iconColor = colors.neutral,
   options,
 }) => {
   const [visible, setVisible] = useState<boolean>(false);
@@ -62,9 +62,9 @@ const OptionMenu: React.FC<Props> = ({
               weight="r"
               color={
                 option.disabled
-                  ? colors.black
+                  ? colors.neutral
                   : pressed[index]
-                  ? colors.grey
+                  ? colors.secondary
                   : option.color
               }>
               {option.name}

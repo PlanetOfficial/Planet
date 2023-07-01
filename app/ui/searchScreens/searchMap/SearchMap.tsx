@@ -68,9 +68,9 @@ const SearchMap = ({
               cx={s(150)}
               cy={s(150)}
               r={s(148)}
-              stroke={colors.white}
+              stroke={colors.primary}
               strokeWidth={4}
-              fill={colors.primary}
+              fill={colors.accent}
               fillOpacity={0.3}
             />
           </Svg>
@@ -106,7 +106,7 @@ const SearchMap = ({
               Alert.alert(strings.search.tooFar, strings.search.tooFarMessage);
             }
           }}>
-          <Text size="s" color={colors.primary}>
+          <Text size="s" color={colors.accent}>
             {strings.main.done}
           </Text>
         </TouchableOpacity>

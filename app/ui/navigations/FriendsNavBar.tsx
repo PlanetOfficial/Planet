@@ -17,24 +17,24 @@ export const FriendsNavBar = () => {
         tabBarShowLabel: true,
         headerShown: false,
         tabBarIndicatorStyle: {
-          backgroundColor: colors.primary,
+          backgroundColor: colors.accent,
         },
         tabBarLabelStyle: {
           textTransform: 'none',
           fontSize: s(12),
           fontWeight: '500',
         },
-        tabBarActiveTintColor: colors.primary,
-        tabBarInactiveTintColor: colors.black,
+        tabBarActiveTintColor: colors.accent,
+        tabBarInactiveTintColor: colors.neutral,
         tabBarItemStyle: {
           margin: -s(5),
         },
         tabBarStyle: {
           elevation: 0,
-          backgroundColor: colors.white,
+          backgroundColor: colors.primary,
           marginHorizontal: s(10),
           borderBottomWidth: 1,
-          borderBottomColor: colors.grey,
+          borderBottomColor: colors.secondary,
         },
       })}>
       <Tab.Screen name="Suggestions" component={Suggestions} />

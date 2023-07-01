@@ -80,7 +80,7 @@ const SignUpVerify = ({
           onChangeText={text =>
             setCode(text.replace(/[^0-9]/g, '').substring(0, 6))
           }
-          placeholderTextColor={colors.black}
+          placeholderTextColor={colors.neutral}
           keyboardType="number-pad"
         />
       </View>
@@ -93,12 +93,12 @@ const SignUpVerify = ({
         style={[
           STYLES.buttonBig,
           {
-            backgroundColor: code.length !== 6 ? colors.black : colors.primary,
+            backgroundColor: code.length !== 6 ? colors.neutral : colors.accent,
           },
         ]}
         disabled={code.length !== 6}
         onPress={() => handleVerifyCode()}>
-        <Text weight="b" color={colors.white}>
+        <Text weight="b" color={colors.primary}>
           {strings.signUp.verifyCode}
         </Text>
       </TouchableOpacity>
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
   input: {
     alignSelf: 'center',
     borderBottomWidth: 1,
-    borderColor: colors.black,
+    borderColor: colors.neutral,
     marginHorizontal: s(5),
     paddingHorizontal: s(10),
     paddingVertical: s(5),
@@ -125,6 +125,7 @@ const styles = StyleSheet.create({
     letterSpacing: s(10),
     fontSize: s(20),
     width: s(150),
+    color: colors.neutral,
   },
 });
 

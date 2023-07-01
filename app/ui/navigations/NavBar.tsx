@@ -61,7 +61,7 @@ export const NavBar = () => {
           <Image
             style={[
               styles.icon,
-              {tintColor: focused ? colors.primary : colors.black},
+              {tintColor: focused ? colors.accent : colors.neutral},
             ]}
             source={source}
           />
@@ -74,13 +74,13 @@ export const NavBar = () => {
 
     return (
       <Svg style={styles.button}>
-        <Circle cx={s(24)} cy={s(24)} r={s(24)} fill={colors.primary} />
+        <Circle cx={s(24)} cy={s(24)} r={s(24)} fill={colors.accent} />
         <Line
           x1={s(24)}
           y1={s(16)}
           x2={s(24)}
           y2={s(32)}
-          stroke={colors.white}
+          stroke={colors.primary}
           strokeWidth={s(2)}
           strokeLinecap={'round'}
         />
@@ -89,7 +89,7 @@ export const NavBar = () => {
           y1={s(24)}
           x2={s(32)}
           y2={s(24)}
-          stroke={colors.white}
+          stroke={colors.primary}
           strokeWidth={s(2)}
           strokeLinecap={'round'}
         />
@@ -109,8 +109,8 @@ export const NavBar = () => {
           tabBarTestID: route.name,
           tabBarStyle: {
             borderTopWidth: 1,
-            borderTopColor: colors.grey,
-            backgroundColor: colors.white,
+            borderTopColor: colors.secondary,
+            backgroundColor: colors.primary,
             height: s(50) + insets.bottom,
           },
           tabBarIcon: ({focused}) => {
@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
     fontSize: s(9),
     fontWeight: '400',
     fontFamily: 'Lato',
-    color: colors.black,
+    color: colors.neutral,
   },
   bold: {
     fontWeight: '700',

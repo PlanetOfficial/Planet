@@ -144,7 +144,7 @@ const SearchCategory = ({
 
       {loading ? (
         <View style={STYLES.center}>
-          <ActivityIndicator size="small" color={colors.primary} />
+          <ActivityIndicator size="small" color={colors.accent} />
         </View>
       ) : (
         <Results

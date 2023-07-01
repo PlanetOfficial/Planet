@@ -134,7 +134,7 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
               size="xs"
               weight="l"
               color={
-                dropdownStatus === filter.name ? colors.black : colors.black
+                dropdownStatus === filter.name ? colors.neutral : colors.neutral
               }>
               {filter.name + displayFilter(filter, idx)}
             </Text>
@@ -167,7 +167,7 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
                           ? icons.checked
                           : icons.selected
                       }
-                      color={colors.primary}
+                      color={colors.accent}
                     />
                   ) : (
                     <Icon
@@ -176,7 +176,7 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
                           ? icons.unchecked
                           : icons.unselected
                       }
-                      color={colors.primary}
+                      color={colors.accent}
                     />
                   )}
                   <View style={styles.paddingLeft}>
@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     borderBottomWidth: 1,
-    borderColor: colors.grey,
+    borderColor: colors.secondary,
     zIndex: 10,
   },
   contentContainer: {
@@ -223,7 +223,7 @@ const styles = StyleSheet.create({
 
     borderRadius: s(12.5),
     borderWidth: 0.5,
-    borderColor: colors.black,
+    borderColor: colors.neutral,
   },
   chipIcon: {
     marginLeft: s(5),
@@ -233,8 +233,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: s(35),
     borderRadius: s(10),
-    backgroundColor: colors.white,
-    shadowColor: '#000',
+    backgroundColor: colors.primary,
+    shadowColor: colors.neutral,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -249,15 +249,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: s(10),
     padding: s(10),
-    borderBottomColor: '#ccc',
-    backgroundColor: colors.white,
+    borderBottomColor: colors.secondary,
+    backgroundColor: colors.primary,
   },
   paddingLeft: {
     paddingLeft: s(10),
   },
   optionSeparator: {
     height: 1,
-    backgroundColor: colors.grey,
+    backgroundColor: colors.secondary,
   },
 });
 

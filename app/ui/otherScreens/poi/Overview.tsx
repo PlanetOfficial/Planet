@@ -26,7 +26,7 @@ const Overview: React.FC<Props> = ({destination, destinationDetails}) => {
     <View style={styles.container}>
       <View style={styles.top}>
         <View style={styles.hours}>
-          <Text color={colors.primary}>{`★ ${destination.rating}/5`}</Text>
+          <Text color={colors.accent}>{`★ ${destination.rating}/5`}</Text>
           <Text size="xs" weight="l">
             {`(${destination.rating_count} ${strings.poi.reviews})`}
           </Text>
@@ -35,10 +35,10 @@ const Overview: React.FC<Props> = ({destination, destinationDetails}) => {
         <View style={styles.price}>
           {destination.price ? (
             <>
-              <Text size="m" weight="b" color={colors.primary}>
+              <Text size="m" weight="b" color={colors.accent}>
                 {'$'.repeat(destination.price)}
               </Text>
-              <Text size="m" weight="b" color={colors.grey}>
+              <Text size="m" weight="b" color={colors.secondary}>
                 {'$'.repeat(4 - destination.price)}
               </Text>
             </>
@@ -95,13 +95,13 @@ const styles = StyleSheet.create({
   },
   separator: {
     width: 1,
-    backgroundColor: colors.grey,
+    backgroundColor: colors.secondary,
   },
   description: {
     paddingVertical: s(5),
     paddingHorizontal: s(10),
     borderTopWidth: 1,
-    borderColor: colors.grey,
+    borderColor: colors.secondary,
   },
   hours: {
     alignItems: 'center',

@@ -19,7 +19,7 @@ const Text: React.FC<Props> = ({
   children,
   size = 'm',
   weight = 'r',
-  color = colors.black,
+  color = colors.neutral,
   underline = false,
   numberOfLines,
   center = false,
@@ -28,19 +28,19 @@ const Text: React.FC<Props> = ({
   let fontSize: number = s(17);
   switch (size) {
     case 'xs':
-      fontSize = s(10);
+      fontSize = s(11);
       break;
     case 's':
-      fontSize = s(13);
+      fontSize = s(14);
       break;
     case 'm':
-      fontSize = s(16);
+      fontSize = s(17);
       break;
     case 'l':
-      fontSize = s(19);
+      fontSize = s(20);
       break;
     case 'xl':
-      fontSize = s(22);
+      fontSize = s(23);
       break;
     default:
       break;

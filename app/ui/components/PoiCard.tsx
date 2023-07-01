@@ -44,7 +44,7 @@ const PoiCard: React.FC<Props> = ({
           size="m"
           disabled={disabled}
           icon={bookmarked ? icons.bookmarked : icons.bookmark}
-          color={bookmarked ? colors.primary : colors.black}
+          color={bookmarked ? colors.accent : colors.neutral}
           onPress={() => handleBookmark(poi)}
         />
       </View>
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     width: s(140),
     height: s(180),
     borderRadius: s(10),
-    backgroundColor: colors.white,
+    backgroundColor: colors.primary,
   },
   image: {
     width: '100%',

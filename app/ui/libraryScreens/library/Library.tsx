@@ -72,7 +72,7 @@ const Library = ({navigation}: {navigation: any}) => {
 
       {loading ? (
         <View style={STYLES.center}>
-          <ActivityIndicator size="small" color={colors.primary} />
+          <ActivityIndicator size="small" color={colors.accent} />
         </View>
       ) : (
         <FlatList
@@ -103,7 +103,7 @@ const Library = ({navigation}: {navigation: any}) => {
             <RefreshControl
               refreshing={refreshing}
               onRefresh={() => loadData()}
-              tintColor={colors.primary}
+              tintColor={colors.accent}
             />
           }
         />
@@ -114,9 +114,8 @@ const Library = ({navigation}: {navigation: any}) => {
 
 const styles = StyleSheet.create({
   list: {
-    marginTop: s(5),
-    paddingTop: s(10),
-    borderTopColor: colors.grey,
+    paddingTop: s(5),
+    borderTopColor: colors.secondary,
   },
   content: {
     paddingBottom: s(20),

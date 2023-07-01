@@ -177,7 +177,7 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
           )}
         </View>
         <View style={[styles.profilePic, styles.overlay]}>
-          <Icon icon={icons.gallery} size="xl" color={colors.white} />
+          <Icon icon={icons.gallery} size="xl" color={colors.primary} />
         </View>
       </TouchableOpacity>
       <View style={styles.container}>
@@ -200,7 +200,7 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
                 gender,
               );
             }}
-            placeholderTextColor={colors.black}
+            placeholderTextColor={colors.neutral}
           />
         </View>
         <View style={styles.inputContainer}>
@@ -222,7 +222,7 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
                 gender,
               );
             }}
-            placeholderTextColor={colors.black}
+            placeholderTextColor={colors.neutral}
           />
         </View>
         <View style={styles.inputContainer}>
@@ -243,7 +243,7 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
                 gender,
               );
             }}
-            placeholderTextColor={colors.black}
+            placeholderTextColor={colors.neutral}
             autoCapitalize="none"
             autoCorrect={false}
           />
@@ -255,12 +255,12 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
           <TextInput
             style={styles.input}
             placeholder={phoneNumber}
-            placeholderTextColor={colors.black}
+            placeholderTextColor={colors.neutral}
             editable={false}
           />
         </View>
         <View style={styles.inputContainer}>
-          <View style={styles.prompt}>
+          <View>
             <Text weight="l">{strings.signUp.age}: </Text>
           </View>
           <TouchableOpacity
@@ -274,11 +274,11 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
               placeholder={
                 strings.ageEnum.find(ageEnum => ageEnum.value === age)?.label
               }
-              placeholderTextColor={colors.black}
+              placeholderTextColor={colors.neutral}
               editable={false}
             />
           </TouchableOpacity>
-          <View style={styles.gender}>
+          <View>
             <Text weight="l">{strings.signUp.gender}: </Text>
           </View>
           <TouchableOpacity
@@ -294,7 +294,7 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
                   genderEnum => genderEnum.value === gender,
                 )?.label
               }
-              placeholderTextColor={colors.black}
+              placeholderTextColor={colors.neutral}
               editable={false}
             />
           </TouchableOpacity>
@@ -406,7 +406,7 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: s(40),
-    color: colors.white,
+    color: colors.primary,
     fontFamily: 'VarelaRound-Regular',
     marginTop: s(1),
   },
@@ -414,7 +414,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(0,0,0,0.2)',
+    backgroundColor: colors.dim,
   },
   inputContainer: {
     flexDirection: 'row',
@@ -424,27 +424,25 @@ const styles = StyleSheet.create({
   input: {
     flex: 5,
     borderBottomWidth: 1,
-    borderColor: colors.black,
-    marginHorizontal: s(5),
+    borderColor: colors.neutral,
+    marginHorizontal: s(2),
     paddingHorizontal: s(10),
     paddingVertical: s(5),
     fontSize: s(14),
     fontFamily: 'Lato',
+    color: colors.neutral,
   },
   prompt: {
     flex: 4,
-  },
-  gender: {
-    flex: 6,
   },
   modalContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,.5)',
+    backgroundColor: colors.dim,
   },
   modal: {
-    backgroundColor: colors.white,
+    backgroundColor: colors.primary,
     width: s(300),
     borderRadius: s(10),
     alignItems: 'center',
@@ -455,6 +453,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     padding: 0,
+    color: colors.neutral,
   },
 });
 

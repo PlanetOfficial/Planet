@@ -123,7 +123,7 @@ const Create = ({
             setInsertionIndex(0);
             navigation.navigate('CreateSearch');
           }}>
-          <Text size="l" weight="b" color={colors.primary}>
+          <Text size="l" weight="b" color={colors.accent}>
             {strings.event.addDestination}
           </Text>
         </TouchableOpacity>
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
     marginHorizontal: s(40),
     paddingVertical: s(20),
     borderRadius: s(10),
-    backgroundColor: colors.white,
+    backgroundColor: colors.primary,
   },
 });
 

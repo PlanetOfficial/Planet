@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     marginLeft: s(-20),
     borderWidth: 2,
     borderRadius: s(16),
-    borderColor: colors.white,
+    borderColor: colors.primary,
   },
 });
 

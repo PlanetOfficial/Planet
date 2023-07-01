@@ -86,7 +86,7 @@ const ProfileBody = ({navigation}: {navigation: any}) => {
             </Text>
           </View>
           <TouchableOpacity onPress={() => navigation.navigate('Friends')}>
-            <Text size="s" color={colors.primary}>
+            <Text size="s" color={colors.accent}>
               {friends.length + ' ' + strings.friends.friends}
             </Text>
           </TouchableOpacity>
@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
     marginRight: s(10),
     minWidth: s(65),
     alignItems: 'center',
-    backgroundColor: colors.grey,
+    backgroundColor: colors.secondary,
   },
 });
 

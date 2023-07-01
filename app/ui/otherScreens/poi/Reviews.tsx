@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
   },
   row: {
     borderTopWidth: 1,
-    borderColor: colors.grey,
+    borderColor: colors.secondary,
     padding: s(12),
   },
   reviewerContainer: {

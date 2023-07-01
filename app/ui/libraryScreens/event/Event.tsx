@@ -143,7 +143,7 @@ const EventPage = ({
 
       {loading || !eventDetail ? (
         <View style={STYLES.center}>
-          <ActivityIndicator size="small" color={colors.primary} />
+          <ActivityIndicator size="small" color={colors.accent} />
         </View>
       ) : (
         <Destinations

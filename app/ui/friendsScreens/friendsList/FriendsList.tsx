@@ -73,7 +73,7 @@ const FriendsList = ({navigation}: {navigation: any}) => {
             await loadFriends();
             setLoading(false);
           }}
-          tintColor={colors.primary}
+          tintColor={colors.accent}
         />
       }
     />
