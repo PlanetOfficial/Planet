@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Text,
   View,
+  useColorScheme,
 } from 'react-native';
 import {Svg, Circle, Line} from 'react-native-svg';
 import {s} from 'react-native-size-matters';
@@ -25,6 +26,9 @@ import Profile from '../profileScreens/profile/Profile';
 const Tab = createBottomTabNavigator();
 
 export const NavBar = () => {
+  const theme = useColorScheme() || 'light';
+  const styles = styling(theme);
+
   const insets = useSafeAreaInsets();
 
   const getIcon = (name: string, focused: boolean) => {
@@ -61,7 +65,11 @@ export const NavBar = () => {
           <Image
             style={[
               styles.icon,
-              {tintColor: focused ? colors.accent : colors.neutral},
+              {
+                tintColor: focused
+                  ? colors[theme].accent
+                  : colors[theme].neutral,
+              },
             ]}
             source={source}
           />
@@ -74,13 +82,13 @@ export const NavBar = () => {
 
     return (
       <Svg style={styles.button}>
-        <Circle cx={s(24)} cy={s(24)} r={s(24)} fill={colors.accent} />
+        <Circle cx={s(24)} cy={s(24)} r={s(24)} fill={colors[theme].accent} />
         <Line
           x1={s(24)}
           y1={s(16)}
           x2={s(24)}
           y2={s(32)}
-          stroke={colors.primary}
+          stroke={colors[theme].primary}
           strokeWidth={s(2)}
           strokeLinecap={'round'}
         />
@@ -89,7 +97,7 @@ export const NavBar = () => {
           y1={s(24)}
           x2={s(32)}
           y2={s(24)}
-          stroke={colors.primary}
+          stroke={colors[theme].primary}
           strokeWidth={s(2)}
           strokeLinecap={'round'}
         />
@@ -109,8 +117,8 @@ export const NavBar = () => {
           tabBarTestID: route.name,
           tabBarStyle: {
             borderTopWidth: 1,
-            borderTopColor: colors.secondary,
-            backgroundColor: colors.primary,
+            borderTopColor: colors[theme].secondary,
+            backgroundColor: colors[theme].primary,
             height: s(50) + insets.bottom,
           },
           tabBarIcon: ({focused}) => {
@@ -147,34 +155,35 @@ const Button = (
   />
 );
 
-const styles = StyleSheet.create({
-  tabView: {
-    flex: 1,
-  },
-  tabIcon: {
-    alignItems: 'center',
-    paddingTop: s(5),
-  },
-  icon: {
-    width: s(21),
-    height: s(21),
-  },
-  name: {
-    marginTop: s(5),
-    fontSize: s(9),
-    fontWeight: '400',
-    fontFamily: 'Lato',
-    color: colors.neutral,
-  },
-  bold: {
-    fontWeight: '700',
-  },
-  button: {
-    position: 'absolute',
-    width: s(50),
-    height: s(50),
-    top: -s(10),
-  },
-});
+const styling = (theme: 'light' | 'dark') =>
+  StyleSheet.create({
+    tabView: {
+      flex: 1,
+    },
+    tabIcon: {
+      alignItems: 'center',
+      paddingTop: s(5),
+    },
+    icon: {
+      width: s(21),
+      height: s(21),
+    },
+    name: {
+      marginTop: s(5),
+      fontSize: s(9),
+      fontWeight: '400',
+      fontFamily: 'Lato',
+      color: colors[theme].neutral,
+    },
+    bold: {
+      fontWeight: '700',
+    },
+    button: {
+      position: 'absolute',
+      width: s(50),
+      height: s(50),
+      top: -s(10),
+    },
+  });
 
 export default NavBar;

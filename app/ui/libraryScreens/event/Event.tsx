@@ -5,7 +5,13 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import {View, Alert, ActivityIndicator, Animated} from 'react-native';
+import {
+  View,
+  Alert,
+  ActivityIndicator,
+  Animated,
+  useColorScheme,
+} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import colors from '../../../constants/colors';
@@ -33,6 +39,8 @@ const EventPage = ({
     };
   };
 }) => {
+  const theme = useColorScheme() || 'light';
+
   const [event] = useState<Event>(route.params.event);
   const [eventDetail, setEventDetail] = useState<EventDetail>();
 
@@ -143,7 +151,7 @@ const EventPage = ({
 
       {loading || !eventDetail ? (
         <View style={STYLES.center}>
-          <ActivityIndicator size="small" color={colors.accent} />
+          <ActivityIndicator size="small" color={colors[theme].accent} />
         </View>
       ) : (
         <Destinations

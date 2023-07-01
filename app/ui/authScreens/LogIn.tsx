@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Alert,
+  useColorScheme,
 } from 'react-native';
 import {s, vs} from 'react-native-size-matters';
 import LinearGradient from 'react-native-linear-gradient';
@@ -21,6 +22,9 @@ import {isVerified, login, saveTokenToDatabase} from '../../utils/api/authAPI';
 import {cacheUserInfo} from '../../utils/CacheHelpers';
 
 const LoginScreen = ({navigation}: {navigation: any}) => {
+  const theme = useColorScheme() || 'light';
+  const styles = styling(theme);
+
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
@@ -78,7 +82,7 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
   return (
     <View style={styles.container}>
       <LinearGradient
-        colors={[colors.primary, colors.accent]}
+        colors={[colors[theme].primary, colors[theme].accent]}
         style={styles.container}
         start={{x: 0, y: 0}}
         end={{x: 1, y: 1}}
@@ -91,7 +95,7 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
           onChangeText={setUsername}
           autoCapitalize="none"
           autoCorrect={false}
-          placeholderTextColor={colors.neutral}
+          placeholderTextColor={colors[theme].neutral}
         />
         <TextInput
           style={styles.input}
@@ -100,20 +104,20 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
           onChangeText={setPassword}
           secureTextEntry={true}
           textContentType="password"
-          placeholderTextColor={colors.neutral}
+          placeholderTextColor={colors[theme].neutral}
         />
         <View>
           {error.length !== 0 ? (
-            <Text size="s" color={colors.red}>
+            <Text size="s" color={colors[theme].red}>
               {error}
             </Text>
           ) : null}
         </View>
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
           {loading ? (
-            <ActivityIndicator size="small" color={colors.primary} />
+            <ActivityIndicator size="small" color={colors[theme].primary} />
           ) : (
-            <Text weight="b" color={colors.primary}>
+            <Text weight="b" color={colors[theme].primary}>
               {strings.login.login}
             </Text>
           )}
@@ -122,7 +126,7 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
           <TouchableOpacity
             style={styles.signUpButton}
             onPress={() => navigation.navigate('SignUpName')}>
-            <Text weight="b" color={colors.primary}>
+            <Text weight="b" color={colors[theme].primary}>
               {strings.login.signUp}
             </Text>
           </TouchableOpacity>
@@ -137,54 +141,55 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: '100%',
-    alignItems: 'center',
-  },
-  title: {
-    marginTop: vs(110),
-    marginBottom: vs(70),
-    fontSize: s(55),
-    fontWeight: '900',
-    fontFamily: 'Lato',
-    color: colors.accent,
-  },
-  input: {
-    paddingHorizontal: s(25),
-    marginBottom: vs(30),
-    width: s(250),
-    height: s(50),
-    borderRadius: s(25),
-    borderWidth: 1,
-    borderColor: colors.secondary,
-    backgroundColor: colors.primary,
-    color: colors.neutral,
-    fontFamily: 'Lato',
-  },
-  button: {
-    marginTop: vs(10),
-    width: s(150),
-    height: s(50),
-    borderRadius: s(25),
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: colors.accent,
-  },
-  bottomContainer: {
-    alignItems: 'center',
-    marginTop: vs(20),
-  },
-  signUpButton: {
-    marginBottom: vs(10),
-    width: s(150),
-    height: s(50),
-    borderRadius: s(25),
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: colors.neutral,
-  },
-});
+const styling = (theme: 'light' | 'dark') =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      width: '100%',
+      alignItems: 'center',
+    },
+    title: {
+      marginTop: vs(110),
+      marginBottom: vs(70),
+      fontSize: s(55),
+      fontWeight: '900',
+      fontFamily: 'Lato',
+      color: colors[theme].accent,
+    },
+    input: {
+      paddingHorizontal: s(25),
+      marginBottom: vs(30),
+      width: s(250),
+      height: s(50),
+      borderRadius: s(25),
+      borderWidth: 1,
+      borderColor: colors[theme].secondary,
+      backgroundColor: colors[theme].primary,
+      color: colors[theme].neutral,
+      fontFamily: 'Lato',
+    },
+    button: {
+      marginTop: vs(10),
+      width: s(150),
+      height: s(50),
+      borderRadius: s(25),
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: colors[theme].accent,
+    },
+    bottomContainer: {
+      alignItems: 'center',
+      marginTop: vs(20),
+    },
+    signUpButton: {
+      marginBottom: vs(10),
+      width: s(150),
+      height: s(50),
+      borderRadius: s(25),
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: colors[theme].neutral,
+    },
+  });
 
 export default LoginScreen;

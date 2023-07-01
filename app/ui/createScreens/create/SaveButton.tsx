@@ -1,5 +1,9 @@
 import React, {useState} from 'react';
-import {TouchableOpacity, ActivityIndicator} from 'react-native';
+import {
+  TouchableOpacity,
+  ActivityIndicator,
+  useColorScheme,
+} from 'react-native';
 
 import colors from '../../../constants/colors';
 import strings from '../../../constants/strings';
@@ -26,6 +30,8 @@ const SaveButton: React.FC<Props> = ({
   members,
   destinations,
 }) => {
+  const theme = useColorScheme() || 'light';
+
   const [loading, setLoading] = useState<boolean>(false);
 
   return (
@@ -35,8 +41,8 @@ const SaveButton: React.FC<Props> = ({
         {
           backgroundColor:
             destinations && destinations.length > 0
-              ? colors.accent
-              : colors.secondary,
+              ? colors[theme].accent
+              : colors[theme].secondary,
         },
       ]}
       disabled={loading || !destinations || destinations.length === 0}
@@ -51,9 +57,9 @@ const SaveButton: React.FC<Props> = ({
         )
       }>
       {loading ? (
-        <ActivityIndicator color={colors.primary} />
+        <ActivityIndicator color={colors[theme].primary} />
       ) : (
-        <Text size="l" weight="b" color={colors.primary}>
+        <Text size="l" weight="b" color={colors[theme].primary}>
           {strings.main.save}
         </Text>
       )}

@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {View, Alert, ScrollView} from 'react-native';
+import {View, Alert, ScrollView, useColorScheme} from 'react-native';
 import moment from 'moment';
 
 import strings from '../../../constants/strings';
@@ -26,6 +26,8 @@ const EventSettings = ({
     };
   };
 }) => {
+  const theme = useColorScheme() || 'light';
+
   const [event] = useState<Event>(route.params.event);
   const [eventDetail, setEventDetail] = useState<EventDetail>();
 

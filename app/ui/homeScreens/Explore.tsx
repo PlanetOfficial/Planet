@@ -5,6 +5,7 @@ import {
   Alert,
   FlatList,
   TouchableOpacity,
+  useColorScheme,
 } from 'react-native';
 
 import icons from '../../constants/icons';

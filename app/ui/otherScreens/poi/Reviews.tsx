@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet, Image} from 'react-native';
+import {View, StyleSheet, Image, useColorScheme} from 'react-native';
 import {s} from 'react-native-size-matters';
 
 import colors from '../../../constants/colors';
@@ -14,6 +14,9 @@ interface Props {
 }
 
 const Reviews: React.FC<Props> = ({reviews}) => {
+  const theme = useColorScheme() || 'light';
+  const styles = styling(theme);
+
   return (
     <View style={styles.container}>
       <View style={styles.title}>
@@ -44,36 +47,37 @@ const Reviews: React.FC<Props> = ({reviews}) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    marginTop: s(20),
-    marginHorizontal: s(20),
-  },
-  title: {
-    marginBottom: s(5),
-  },
-  row: {
-    borderTopWidth: 1,
-    borderColor: colors.secondary,
-    padding: s(12),
-  },
-  reviewerContainer: {
-    flexDirection: 'row',
-    marginBottom: s(5),
-  },
-  reviewer: {
-    width: s(40),
-    height: s(40),
-  },
-  icon: {
-    width: '100%',
-    height: '100%',
-  },
-  texts: {
-    marginLeft: s(10),
-    height: s(40),
-    justifyContent: 'space-evenly',
-  },
-});
+const styling = (theme: 'light' | 'dark') =>
+  StyleSheet.create({
+    container: {
+      marginTop: s(20),
+      marginHorizontal: s(20),
+    },
+    title: {
+      marginBottom: s(5),
+    },
+    row: {
+      borderTopWidth: 1,
+      borderColor: colors[theme].secondary,
+      padding: s(12),
+    },
+    reviewerContainer: {
+      flexDirection: 'row',
+      marginBottom: s(5),
+    },
+    reviewer: {
+      width: s(40),
+      height: s(40),
+    },
+    icon: {
+      width: '100%',
+      height: '100%',
+    },
+    texts: {
+      marginLeft: s(10),
+      height: s(40),
+      justifyContent: 'space-evenly',
+    },
+  });
 
 export default Reviews;

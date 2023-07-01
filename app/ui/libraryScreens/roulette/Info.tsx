@@ -1,5 +1,11 @@
 import React from 'react';
-import {View, StyleSheet, TouchableOpacity, FlatList} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  FlatList,
+  useColorScheme,
+} from 'react-native';
 import {s} from 'react-native-size-matters';
 
 import strings from '../../../constants/strings';
@@ -29,6 +35,9 @@ const Info: React.FC<Props> = ({
   setBookmarks,
   totalVotes,
 }) => {
+  const theme = useColorScheme() || 'light';
+  const styles = styling(theme);
+
   return (
     <View style={styles.top}>
       <TouchableOpacity
@@ -88,44 +97,45 @@ const Info: React.FC<Props> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  top: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginHorizontal: s(20),
-    marginVertical: s(20),
-  },
-  votes: {
-    flex: 1,
-    marginLeft: s(20),
-    height: s(180),
-    paddingTop: s(5),
-  },
-  votesList: {
-    marginTop: s(5),
-  },
-  user: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: s(8),
-    borderBottomWidth: 1,
-    borderColor: colors.secondary,
-  },
-  profilePic: {
-    width: s(35),
-    height: s(35),
-    borderRadius: s(17.5),
-    overflow: 'hidden',
-  },
-  pic: {
-    width: '100%',
-    height: '100%',
-  },
-  texts: {
-    flex: 1,
-    justifyContent: 'center',
-    marginLeft: s(5),
-  },
-});
+const styling = (theme: 'light' | 'dark') =>
+  StyleSheet.create({
+    top: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginHorizontal: s(20),
+      marginVertical: s(20),
+    },
+    votes: {
+      flex: 1,
+      marginLeft: s(20),
+      height: s(180),
+      paddingTop: s(5),
+    },
+    votesList: {
+      marginTop: s(5),
+    },
+    user: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingVertical: s(8),
+      borderBottomWidth: 1,
+      borderColor: colors[theme].secondary,
+    },
+    profilePic: {
+      width: s(35),
+      height: s(35),
+      borderRadius: s(17.5),
+      overflow: 'hidden',
+    },
+    pic: {
+      width: '100%',
+      height: '100%',
+    },
+    texts: {
+      flex: 1,
+      justifyContent: 'center',
+      marginLeft: s(5),
+    },
+  });
 
 export default Info;

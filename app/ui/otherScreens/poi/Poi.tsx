@@ -5,7 +5,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import {View, StyleSheet, Alert, Animated} from 'react-native';
+import {View, StyleSheet, Alert, Animated, useColorScheme} from 'react-native';
 import {s, vs} from 'react-native-size-matters';
 import ImageView from 'react-native-image-viewing';
 
@@ -42,6 +42,8 @@ const PoiPage = ({
     };
   };
 }) => {
+  const theme = useColorScheme() || 'light';
+
   const [destination, setDestination] = useState<Poi>();
   const [destinationDetails, setDestinationDetails] = useState<PoiDetail>();
   const [mode] = useState<'create' | 'suggest' | 'add' | 'none'>(
@@ -93,13 +95,13 @@ const PoiPage = ({
   const HeaderComponent = useCallback(
     () => (
       <View style={styles.imageTitle}>
-        <Text center={true} color={colors.primary}>
+        <Text center={true} color={colors[theme].primary}>
           {strings.poi.images}
         </Text>
         <View style={styles.closeGallery}>
           <Icon
             icon={icons.close}
-            color={colors.primary}
+            color={colors[theme].primary}
             onPress={() => setGalleryVisible(false)}
           />
         </View>
@@ -118,7 +120,7 @@ const PoiPage = ({
           onRequestClose={() => setGalleryVisible(false)}
           animationType="slide"
           presentationStyle="formSheet"
-          backgroundColor={colors.neutral}
+          backgroundColor={colors[theme].neutral}
           swipeToCloseEnabled={true}
           HeaderComponent={HeaderComponent}
         />

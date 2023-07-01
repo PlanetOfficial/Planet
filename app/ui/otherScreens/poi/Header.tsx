@@ -6,6 +6,7 @@ import {
   StatusBar,
   ImageBackground,
   Animated,
+  useColorScheme,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -37,6 +38,9 @@ const Header: React.FC<Props> = ({
   setBookmarks,
   setGalleryVisible,
 }) => {
+  const theme = useColorScheme() || 'light';
+  const styles = styling(theme);
+
   const insets = useSafeAreaInsets();
 
   const headerHeight = scrollPosition.interpolate({
@@ -76,7 +80,7 @@ const Header: React.FC<Props> = ({
                 StatusBar.setBarStyle('dark-content', true);
                 navigation.goBack();
               }}
-              color={colors.primary}
+              color={colors[theme].primary}
             />
             <Animated.Text
               style={[styles.title, {opacity: topTitleOpacity}]}
@@ -95,18 +99,18 @@ const Header: React.FC<Props> = ({
                   ? handleBookmark(destination, bookmarks, setBookmarks)
                   : null
               }
-              color={colors.primary}
+              color={colors[theme].primary}
             />
           </View>
         </SafeAreaView>
         <Animated.View style={[styles.bottom, {opacity: bottomTitleOpacity}]}>
-          <Text size="l" weight="b" color={colors.primary}>
+          <Text size="l" weight="b" color={colors[theme].primary}>
             {destination?.name}
           </Text>
           <Icon
             size="l"
             icon={icons.gallery}
-            color={colors.primary}
+            color={colors[theme].primary}
             onPress={() => setGalleryVisible(true)}
           />
         </Animated.View>
@@ -115,39 +119,40 @@ const Header: React.FC<Props> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  image: {
-    width: '100%',
-    height: '100%',
-    position: 'absolute',
-    backgroundColor: colors.neutral,
-  },
-  container: {
-    width: '100%',
-    justifyContent: 'space-between',
-    paddingHorizontal: s(20),
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    overflow: 'visible',
-  },
-  bottom: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingLeft: s(5),
-    marginBottom: s(15),
-  },
-  title: {
-    fontSize: s(16),
-    fontWeight: '700',
-    fontFamily: 'Lato',
-    color: colors.primary,
-    maxWidth: s(280),
-    paddingHorizontal: s(10),
-  },
-});
+const styling = (theme: 'light' | 'dark') =>
+  StyleSheet.create({
+    image: {
+      width: '100%',
+      height: '100%',
+      position: 'absolute',
+      backgroundColor: colors[theme].neutral,
+    },
+    container: {
+      width: '100%',
+      justifyContent: 'space-between',
+      paddingHorizontal: s(20),
+    },
+    row: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      overflow: 'visible',
+    },
+    bottom: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingLeft: s(5),
+      marginBottom: s(15),
+    },
+    title: {
+      fontSize: s(16),
+      fontWeight: '700',
+      fontFamily: 'Lato',
+      color: colors[theme].primary,
+      maxWidth: s(280),
+      paddingHorizontal: s(10),
+    },
+  });
 
 export default Header;

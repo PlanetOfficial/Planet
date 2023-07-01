@@ -1,5 +1,11 @@
 import React from 'react';
-import {StyleSheet, View, TouchableOpacity, ScrollView} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  ScrollView,
+  useColorScheme,
+} from 'react-native';
 import {s} from 'react-native-size-matters';
 
 import colors from '../../../constants/colors';
@@ -30,6 +36,9 @@ const Suggestions: React.FC<Props> = ({
   suggestionRefs,
   onSuggestionPress,
 }) => {
+  const theme = useColorScheme() || 'light';
+  const styles = styling(theme);
+
   return destination.suggestions.length > 1 ? (
     <View style={styles.container}>
       <ScrollView
@@ -57,7 +66,7 @@ const Suggestions: React.FC<Props> = ({
             setInsertionDestination(destination);
             navigation.navigate('SuggestSearch');
           }}>
-          <Icon icon={icons.add} size="xl" color={colors.accent} />
+          <Icon icon={icons.add} size="xl" color={colors[theme].accent} />
         </TouchableOpacity>
       </View>
     </View>
@@ -69,43 +78,44 @@ const Suggestions: React.FC<Props> = ({
         setInsertionDestination(destination);
         navigation.navigate('SuggestSearch');
       }}>
-      <Text color={colors.accent} weight="b">
+      <Text color={colors[theme].accent} weight="b">
         {strings.event.addSuggestion}
       </Text>
     </TouchableOpacity>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: s(10),
-  },
-  scrollView: {
-    overflow: 'visible',
-  },
-  suggestion: {
-    marginRight: s(10),
-  },
-  add: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: -s(20),
-    paddingRight: s(20),
-    width: s(95),
-    height: s(85),
-    backgroundColor: colors.primary,
-    borderLeftWidth: 1,
-    borderLeftColor: colors.secondary,
-  },
-  addBig: {
-    alignItems: 'center',
-    marginVertical: s(10),
-    paddingVertical: s(10),
-    borderRadius: s(10),
-    backgroundColor: colors.primary,
-  },
-});
+const styling = (theme: 'light' | 'dark') =>
+  StyleSheet.create({
+    container: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginVertical: s(10),
+    },
+    scrollView: {
+      overflow: 'visible',
+    },
+    suggestion: {
+      marginRight: s(10),
+    },
+    add: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginRight: -s(20),
+      paddingRight: s(20),
+      width: s(95),
+      height: s(85),
+      backgroundColor: colors[theme].primary,
+      borderLeftWidth: 1,
+      borderLeftColor: colors[theme].secondary,
+    },
+    addBig: {
+      alignItems: 'center',
+      marginVertical: s(10),
+      paddingVertical: s(10),
+      borderRadius: s(10),
+      backgroundColor: colors[theme].primary,
+    },
+  });
 
 export default Suggestions;

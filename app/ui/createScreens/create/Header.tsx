@@ -6,6 +6,7 @@ import {
   Alert,
   TextInput,
   TouchableOpacity,
+  useColorScheme,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 import DatePicker from 'react-native-date-picker';
@@ -38,6 +39,9 @@ const Header: React.FC<Props> = ({
   setDate,
   members,
 }) => {
+  const theme = useColorScheme() || 'light';
+  const styles = styling(theme);
+
   const [datePickerOpen, setDatePickerOpen] = useState<boolean>(false);
 
   return (
@@ -64,7 +68,7 @@ const Header: React.FC<Props> = ({
             style={styles.title}
             value={eventTitle}
             onChangeText={text => setEventTitle(text)}
-            placeholderTextColor={colors.neutral}
+            placeholderTextColor={colors[theme].neutral}
             onEndEditing={e => {
               if (e.nativeEvent.text === '') {
                 setEventTitle(strings.event.untitled);
@@ -72,7 +76,11 @@ const Header: React.FC<Props> = ({
             }}
           />
           <TouchableOpacity onPress={() => setDatePickerOpen(true)}>
-            <Text size="xs" weight="l" color={colors.accent} underline={true}>
+            <Text
+              size="xs"
+              weight="l"
+              color={colors[theme].accent}
+              underline={true}>
               {date}
             </Text>
           </TouchableOpacity>
@@ -109,16 +117,17 @@ const Header: React.FC<Props> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  title: {
-    fontSize: s(16),
-    fontWeight: '700',
-    fontFamily: 'Lato',
-    textDecorationLine: 'underline',
-    marginBottom: s(3),
-    padding: 0,
-    color: colors.neutral,
-  },
-});
+const styling = (theme: 'light' | 'dark') =>
+  StyleSheet.create({
+    title: {
+      fontSize: s(16),
+      fontWeight: '700',
+      fontFamily: 'Lato',
+      textDecorationLine: 'underline',
+      marginBottom: s(3),
+      padding: 0,
+      color: colors[theme].neutral,
+    },
+  });
 
 export default Header;

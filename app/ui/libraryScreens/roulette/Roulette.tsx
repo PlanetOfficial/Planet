@@ -1,5 +1,5 @@
 import React, {useContext, useState} from 'react';
-import {View, SafeAreaView} from 'react-native';
+import {View, SafeAreaView, useColorScheme} from 'react-native';
 import {useSharedValue} from 'react-native-reanimated';
 
 import icons from '../../../constants/icons';

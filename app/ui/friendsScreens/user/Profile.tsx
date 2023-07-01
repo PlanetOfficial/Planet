@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {View, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, StyleSheet, TouchableOpacity, useColorScheme} from 'react-native';
 import {s} from 'react-native-size-matters';
 
 import colors from '../../../constants/colors';
@@ -33,6 +33,9 @@ const Profile: React.FC<Props> = ({
   status,
   setStatus,
 }) => {
+  const theme = useColorScheme() || 'light';
+  const styles = styling(theme);
+
   const friendsContext = useContext(FriendsContext);
   if (!friendsContext) {
     throw new Error('FriendsContext is not set!');
@@ -67,7 +70,7 @@ const Profile: React.FC<Props> = ({
                 mutuals: mutuals,
               })
             }>
-            <Text size="s" color={colors.accent} numberOfLines={1}>
+            <Text size="s" color={colors[theme].accent} numberOfLines={1}>
               {mutuals.length +
                 ' ' +
                 (mutuals.length === 1
@@ -81,7 +84,7 @@ const Profile: React.FC<Props> = ({
             <TouchableOpacity
               style={{
                 ...styles.button,
-                backgroundColor: colors.accent,
+                backgroundColor: colors[theme].accent,
               }}
               onPress={() =>
                 handleFriendRequest(
@@ -92,7 +95,7 @@ const Profile: React.FC<Props> = ({
                   user,
                 )
               }>
-              <Text size="s" color={colors.primary}>
+              <Text size="s" color={colors[theme].primary}>
                 {strings.friends.addFriend}
               </Text>
             </TouchableOpacity>
@@ -101,7 +104,7 @@ const Profile: React.FC<Props> = ({
             <TouchableOpacity
               style={{
                 ...styles.button,
-                backgroundColor: colors.secondary,
+                backgroundColor: colors[theme].secondary,
               }}
               onPress={() =>
                 handleUnfriend(user.id, setStatus, friends, setFriends)
@@ -113,7 +116,7 @@ const Profile: React.FC<Props> = ({
             <TouchableOpacity
               style={{
                 ...styles.button,
-                backgroundColor: colors.secondary,
+                backgroundColor: colors[theme].secondary,
               }}
               onPress={() =>
                 handleCancelRequest(
@@ -131,7 +134,7 @@ const Profile: React.FC<Props> = ({
               <TouchableOpacity
                 style={{
                   ...styles.button,
-                  backgroundColor: colors.accent,
+                  backgroundColor: colors[theme].accent,
                 }}
                 onPress={() =>
                   handleAcceptRequest(
@@ -144,14 +147,14 @@ const Profile: React.FC<Props> = ({
                     user,
                   )
                 }>
-                <Text size="s" color={colors.primary}>
+                <Text size="s" color={colors[theme].primary}>
                   {strings.friends.accept}
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={{
                   ...styles.button,
-                  backgroundColor: colors.secondary,
+                  backgroundColor: colors[theme].secondary,
                 }}
                 onPress={() =>
                   handleDeclineRequest(
@@ -171,39 +174,40 @@ const Profile: React.FC<Props> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    paddingHorizontal: s(20),
-    marginVertical: s(20),
-  },
-  profilePic: {
-    width: s(120),
-    height: s(120),
-    borderRadius: s(40),
-    overflow: 'hidden',
-    marginRight: s(20),
-  },
-  texts: {
-    height: s(50),
-    justifyContent: 'space-evenly',
-    maxWidth: s(170),
-    marginBottom: s(5),
-  },
-  buttons: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    marginBottom: s(10),
-  },
-  button: {
-    paddingHorizontal: s(10),
-    paddingVertical: s(5),
-    borderRadius: s(5),
-    marginRight: s(10),
-    minWidth: s(65),
-    alignItems: 'center',
-  },
-});
+const styling = (theme: 'light' | 'dark') =>
+  StyleSheet.create({
+    container: {
+      flexDirection: 'row',
+      paddingHorizontal: s(20),
+      marginVertical: s(20),
+    },
+    profilePic: {
+      width: s(120),
+      height: s(120),
+      borderRadius: s(40),
+      overflow: 'hidden',
+      marginRight: s(20),
+    },
+    texts: {
+      height: s(50),
+      justifyContent: 'space-evenly',
+      maxWidth: s(170),
+      marginBottom: s(5),
+    },
+    buttons: {
+      flex: 1,
+      flexDirection: 'row',
+      alignItems: 'flex-end',
+      marginBottom: s(10),
+    },
+    button: {
+      paddingHorizontal: s(10),
+      paddingVertical: s(5),
+      borderRadius: s(5),
+      marginRight: s(10),
+      minWidth: s(65),
+      alignItems: 'center',
+    },
+  });
 
 export default Profile;

@@ -10,6 +10,7 @@ import {
   LayoutAnimation,
   RefreshControl,
   TouchableOpacity,
+  useColorScheme,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 import {TouchableOpacity as TouchableOpacityGestureHandler} from 'react-native-gesture-handler';
@@ -41,6 +42,9 @@ const AddFriend = ({
     };
   };
 }) => {
+  const theme = useColorScheme() || 'light';
+  const styles = styling(theme);
+
   const [event_id] = useState<number | undefined>(route.params.event_id);
   const [members] = useState<UserInfo[]>(route.params.members);
   const [invitees, setInvitees] = useState<UserInfo[]>([]);
@@ -113,7 +117,7 @@ const AddFriend = ({
               ref={searchRef}
               style={styles.searchText}
               placeholder={strings.search.search}
-              placeholderTextColor={colors.neutral}
+              placeholderTextColor={colors[theme].neutral}
               autoCapitalize="none"
               autoCorrect={false}
               onFocus={() => {
@@ -142,7 +146,7 @@ const AddFriend = ({
       {searching ? (
         loading ? (
           <View style={[STYLES.center, STYLES.container]}>
-            <ActivityIndicator size="small" color={colors.accent} />
+            <ActivityIndicator size="small" color={colors[theme].accent} />
           </View>
         ) : (
           <FlatList
@@ -152,7 +156,7 @@ const AddFriend = ({
             keyExtractor={(_, index) => index.toString()}
             renderItem={({item}: {item: UserInfo}) => (
               <TouchableOpacityGestureHandler
-                style={userStyles.container}
+                style={styles.container}
                 onPress={() => {
                   const _invitees = [...invitees];
                   if (_invitees.includes(item)) {
@@ -162,10 +166,10 @@ const AddFriend = ({
                   }
                   setInvitees(_invitees);
                 }}>
-                <View style={userStyles.profilePic}>
+                <View style={styles.profilePic}>
                   <UserIcon user={item} />
                 </View>
-                <View style={userStyles.texts}>
+                <View style={styles.texts}>
                   <Text
                     size="s"
                     numberOfLines={
@@ -183,7 +187,7 @@ const AddFriend = ({
                       ? icons.selected
                       : icons.unselected
                   }
-                  color={colors.accent}
+                  color={colors[theme].accent}
                 />
               </TouchableOpacityGestureHandler>
             )}
@@ -207,7 +211,7 @@ const AddFriend = ({
             renderItem={({item}: {item: UserInfo}) =>
               !event_id || !members.some(m => m.id === item.id) ? (
                 <TouchableOpacityGestureHandler
-                  style={userStyles.container}
+                  style={styles.container}
                   onPress={() => {
                     const _invitees = [...invitees];
                     if (_invitees.includes(item)) {
@@ -217,10 +221,10 @@ const AddFriend = ({
                     }
                     setInvitees(_invitees);
                   }}>
-                  <View style={userStyles.profilePic}>
+                  <View style={styles.profilePic}>
                     <UserIcon user={item} />
                   </View>
-                  <View style={userStyles.texts}>
+                  <View style={styles.texts}>
                     <Text
                       size="s"
                       numberOfLines={
@@ -238,7 +242,7 @@ const AddFriend = ({
                         ? icons.selected
                         : icons.unselected
                     }
-                    color={colors.accent}
+                    color={colors[theme].accent}
                   />
                 </TouchableOpacityGestureHandler>
               ) : null
@@ -259,7 +263,7 @@ const AddFriend = ({
                   setRefreshing(true);
                   fetchFriends();
                 }}
-                tintColor={colors.accent}
+                tintColor={colors[theme].accent}
               />
             }
           />
@@ -267,7 +271,7 @@ const AddFriend = ({
             <TouchableOpacity
               style={[styles.add, STYLES.shadow]}
               onPress={onAdd}>
-              <Text size="l" weight="b" color={colors.primary}>
+              <Text size="l" weight="b" color={colors[theme].primary}>
                 {`${strings.main.add} (${invitees.length})`}
               </Text>
             </TouchableOpacity>
@@ -278,65 +282,63 @@ const AddFriend = ({
   );
 };
 
-const styles = StyleSheet.create({
-  searchBar: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: colors.primary,
-    borderRadius: s(10),
-    marginLeft: s(10),
-    paddingHorizontal: s(10),
-    paddingVertical: s(5),
-  },
-  searchText: {
-    flex: 1,
-    marginLeft: s(10),
-    fontSize: s(13),
-    fontFamily: 'Lato',
-    padding: 0,
-    color: colors.neutral,
-  },
-  cancel: {
-    marginLeft: s(10),
-  },
-  add: {
-    position: 'absolute',
-    alignSelf: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: s(25),
-    paddingVertical: s(12.5),
-    bottom: s(40),
-    height: s(50),
-    borderRadius: s(10),
-    backgroundColor: colors.accent,
-  },
-});
-
-const userStyles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginHorizontal: s(20),
-    paddingVertical: s(10),
-    borderBottomWidth: 1,
-    borderBottomColor: colors.secondary,
-  },
-  profilePic: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: s(45),
-    height: s(45),
-    borderRadius: s(22.5),
-    overflow: 'hidden',
-  },
-  texts: {
-    flex: 1,
-    height: s(50),
-    justifyContent: 'space-evenly',
-    marginHorizontal: s(10),
-  },
-});
+const styling = (theme: 'light' | 'dark') =>
+  StyleSheet.create({
+    searchBar: {
+      flex: 1,
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: colors[theme].primary,
+      borderRadius: s(10),
+      marginLeft: s(10),
+      paddingHorizontal: s(10),
+      paddingVertical: s(5),
+    },
+    searchText: {
+      flex: 1,
+      marginLeft: s(10),
+      fontSize: s(13),
+      fontFamily: 'Lato',
+      padding: 0,
+      color: colors[theme].neutral,
+    },
+    cancel: {
+      marginLeft: s(10),
+    },
+    add: {
+      position: 'absolute',
+      alignSelf: 'center',
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingHorizontal: s(25),
+      paddingVertical: s(12.5),
+      bottom: s(40),
+      height: s(50),
+      borderRadius: s(10),
+      backgroundColor: colors[theme].accent,
+    },
+    container: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginHorizontal: s(20),
+      paddingVertical: s(10),
+      borderBottomWidth: 1,
+      borderBottomColor: colors[theme].secondary,
+    },
+    profilePic: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: s(45),
+      height: s(45),
+      borderRadius: s(22.5),
+      overflow: 'hidden',
+    },
+    texts: {
+      flex: 1,
+      height: s(50),
+      justifyContent: 'space-evenly',
+      marginHorizontal: s(10),
+    },
+  });
 
 export default AddFriend;

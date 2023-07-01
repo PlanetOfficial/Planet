@@ -1,6 +1,12 @@
 import React, {useState} from 'react';
-import {Alert, SafeAreaView, TextInput, TouchableOpacity} from 'react-native';
-import {View} from 'react-native';
+import {
+  View,
+  Alert,
+  SafeAreaView,
+  TextInput,
+  TouchableOpacity,
+  useColorScheme,
+} from 'react-native';
 
 import colors from '../../constants/colors';
 import icons from '../../constants/icons';
@@ -13,6 +19,8 @@ import Text from '../components/Text';
 import {sendCodeForgotPwd} from '../../utils/api/authAPI';
 
 const ForgotPwd = ({navigation}: {navigation: any}) => {
+  const theme = useColorScheme() || 'light';
+
   const [username, setUsername] = useState<string>('');
 
   const [error, setError] = useState<string>('');
@@ -53,13 +61,13 @@ const ForgotPwd = ({navigation}: {navigation: any}) => {
           placeholder={strings.signUp.username}
           value={username}
           onChangeText={text => setUsername(text.toLowerCase())}
-          placeholderTextColor={colors.neutral}
+          placeholderTextColor={colors[theme].neutral}
           autoCapitalize="none"
           autoCorrect={false}
         />
       </View>
       {error.length !== 0 ? (
-        <Text weight="l" center={true} color={colors.red}>
+        <Text weight="l" center={true} color={colors[theme].red}>
           {error}
         </Text>
       ) : null}
@@ -68,12 +76,14 @@ const ForgotPwd = ({navigation}: {navigation: any}) => {
           STYLES.buttonBig,
           {
             backgroundColor:
-              username.length === 0 ? colors.secondary : colors.accent,
+              username.length === 0
+                ? colors[theme].secondary
+                : colors[theme].accent,
           },
         ]}
         disabled={username.length === 0}
         onPress={handleNext}>
-        <Text weight="b" color={colors.primary}>
+        <Text weight="b" color={colors[theme].primary}>
           {strings.main.next}
         </Text>
       </TouchableOpacity>

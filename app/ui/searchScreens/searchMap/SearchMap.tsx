@@ -1,5 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {Alert, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {
+  Alert,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  useColorScheme,
+} from 'react-native';
 import {s} from 'react-native-size-matters';
 import MapView from 'react-native-maps';
 import {Circle, Svg} from 'react-native-svg';
@@ -32,6 +38,8 @@ const SearchMap = ({
     };
   };
 }) => {
+  const theme = useColorScheme() || 'light';
+
   const [region, setRegion] = useState<Region>(
     getRegionFromPointAndDistance(route.params.location, route.params.radius),
   );
@@ -68,9 +76,9 @@ const SearchMap = ({
               cx={s(150)}
               cy={s(150)}
               r={s(148)}
-              stroke={colors.primary}
+              stroke={colors[theme].primary}
               strokeWidth={4}
-              fill={colors.accent}
+              fill={colors[theme].accent}
               fillOpacity={0.3}
             />
           </Svg>
@@ -106,7 +114,7 @@ const SearchMap = ({
               Alert.alert(strings.search.tooFar, strings.search.tooFarMessage);
             }
           }}>
-          <Text size="s" color={colors.accent}>
+          <Text size="s" color={colors[theme].accent}>
             {strings.main.done}
           </Text>
         </TouchableOpacity>

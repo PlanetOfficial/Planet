@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Alert,
+  useColorScheme,
 } from 'react-native';
 import {s, vs} from 'react-native-size-matters';
 import messaging from '@react-native-firebase/messaging';
@@ -30,6 +31,8 @@ const SignUpInfo = ({
     };
   };
 }) => {
+  const theme = useColorScheme() || 'light';
+
   const [authToken] = useState<string>(route.params.authToken);
 
   const [ageDPOpen, setAgeDPOpen] = useState(false);
@@ -117,12 +120,13 @@ const SignUpInfo = ({
         style={[
           styles.button,
           {
-            backgroundColor: age && gender ? colors.accent : colors.neutral,
+            backgroundColor:
+              age && gender ? colors[theme].accent : colors[theme].neutral,
           },
         ]}
         disabled={!age || !gender}
         onPress={handleNext}>
-        <Text weight="b" color={colors.primary}>
+        <Text weight="b" color={colors[theme].primary}>
           {strings.signUp.enjoy}
         </Text>
       </TouchableOpacity>

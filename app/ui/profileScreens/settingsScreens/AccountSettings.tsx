@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Alert,
   TouchableOpacity,
+  useColorScheme,
 } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 import {s} from 'react-native-size-matters';
@@ -23,6 +24,8 @@ import {clearCaches} from '../../../utils/CacheHelpers';
 import {removeAccount} from '../../../utils/api/authAPI';
 
 const AccountSettings = ({navigation}: {navigation: any}) => {
+  const theme = useColorScheme() || 'light';
+
   const handleLogout = async () => {
     try {
       clearCaches();
@@ -109,13 +112,13 @@ const AccountSettings = ({navigation}: {navigation: any}) => {
       </TouchableOpacity>
       <Separator />
       <TouchableOpacity style={styles.row} onPress={handleLogout}>
-        <Text weight="l" color={colors.red}>
+        <Text weight="l" color={colors[theme].red}>
           {strings.settings.logout}
         </Text>
       </TouchableOpacity>
       <Separator />
       <TouchableOpacity style={styles.row} onPress={handleRemoveAccount}>
-        <Text weight="l" color={colors.red}>
+        <Text weight="l" color={colors[theme].red}>
           {strings.settings.removeAccount}
         </Text>
       </TouchableOpacity>

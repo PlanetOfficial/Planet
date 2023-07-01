@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Alert,
   RefreshControl,
+  useColorScheme,
 } from 'react-native';
 
 import colors from '../../../constants/colors';
@@ -22,6 +23,8 @@ import {UserInfo} from '../../../utils/types';
 import {getFriends} from '../../../utils/api/friendsAPI';
 
 const FriendsList = ({navigation}: {navigation: any}) => {
+  const theme = useColorScheme() || 'light';
+
   const friendsContext = useContext(FriendsContext);
   if (!friendsContext) {
     throw new Error('FriendsContext is not set!');
@@ -73,7 +76,7 @@ const FriendsList = ({navigation}: {navigation: any}) => {
             await loadFriends();
             setLoading(false);
           }}
-          tintColor={colors.accent}
+          tintColor={colors[theme].accent}
         />
       }
     />

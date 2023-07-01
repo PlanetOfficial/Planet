@@ -6,6 +6,7 @@ import {
   Alert,
   ScrollView,
   Switch,
+  useColorScheme,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 
@@ -28,6 +29,9 @@ import {
 import {NotificationSettings as NS} from '../../../utils/types';
 
 const NotificationSettings = ({navigation}: {navigation: any}) => {
+  const theme = useColorScheme() || 'light';
+  const styles = styling(theme);
+
   const [notificationsSettings, setNotificationsSettings] = useState<NS>();
 
   const initializeData = async () => {
@@ -132,9 +136,12 @@ const NotificationSettings = ({navigation}: {navigation: any}) => {
                 </View>
               </View>
               <Switch
-                trackColor={{false: colors.secondary, true: colors.accent}}
-                thumbColor={colors.primary}
-                ios_backgroundColor={colors.secondary}
+                trackColor={{
+                  false: colors[theme].secondary,
+                  true: colors[theme].accent,
+                }}
+                thumbColor={colors[theme].primary}
+                ios_backgroundColor={colors[theme].secondary}
                 onValueChange={setting.onPress}
                 value={notificationsSettings[setting.value]}
               />
@@ -146,23 +153,24 @@ const NotificationSettings = ({navigation}: {navigation: any}) => {
   );
 };
 
-const styles = StyleSheet.create({
-  content: {
-    marginTop: s(10),
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginLeft: s(20),
-    paddingRight: s(20),
-    paddingVertical: s(20),
-    borderBottomWidth: 1,
-    borderBottomColor: colors.secondary,
-  },
-  description: {
-    marginTop: s(5),
-    marginRight: s(10),
-  },
-});
+const styling = (theme: 'light' | 'dark') =>
+  StyleSheet.create({
+    content: {
+      marginTop: s(10),
+    },
+    row: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginLeft: s(20),
+      paddingRight: s(20),
+      paddingVertical: s(20),
+      borderBottomWidth: 1,
+      borderBottomColor: colors[theme].secondary,
+    },
+    description: {
+      marginTop: s(5),
+      marginRight: s(10),
+    },
+  });
 
 export default NotificationSettings;

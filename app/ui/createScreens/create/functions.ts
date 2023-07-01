@@ -1,4 +1,4 @@
-import {Alert, LayoutAnimation} from 'react-native';
+import {Alert, LayoutAnimation, useColorScheme} from 'react-native';
 
 import strings from '../../../constants/strings';
 

@@ -2,7 +2,11 @@ import 'react-native-gesture-handler';
 import React, {useEffect, useState} from 'react';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import messaging from '@react-native-firebase/messaging';
-import {Alert, PermissionsAndroid, Platform} from 'react-native';
+import {
+  Alert,
+  PermissionsAndroid,
+  Platform,
+} from 'react-native';
 
 import SplashScreen from './app/ui/otherScreens/splashScreen/SplashScreen';
 import AppNavigation from './app/ui/navigations/AppNavigation';

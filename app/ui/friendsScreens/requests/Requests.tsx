@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
   RefreshControl,
+  useColorScheme,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 
@@ -29,6 +30,8 @@ import {
 } from '../../../utils/api/friendsAPI';
 
 const Requests = ({navigation}: {navigation: any}) => {
+  const theme = useColorScheme() || 'light';
+
   const friendsContext = useContext(FriendsContext);
   if (!friendsContext) {
     throw new Error('FriendsContext is not set!');
@@ -98,7 +101,7 @@ const Requests = ({navigation}: {navigation: any}) => {
             await loadRequests();
             setLoading(false);
           }}
-          tintColor={colors.accent}
+          tintColor={colors[theme].accent}
         />
       }>
       {requests.length > 0 ? (
@@ -124,7 +127,7 @@ const Requests = ({navigation}: {navigation: any}) => {
               <Icon
                 size="s"
                 icon={icons.check}
-                color={colors.accent}
+                color={colors[theme].accent}
                 onPress={() => handleAcceptRequest(item.id)}
               />
               <Icon

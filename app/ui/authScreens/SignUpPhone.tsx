@@ -1,5 +1,10 @@
 import React, {useState} from 'react';
-import {View, SafeAreaView, TouchableOpacity} from 'react-native';
+import {
+  View,
+  SafeAreaView,
+  TouchableOpacity,
+  useColorScheme,
+} from 'react-native';
 import PhoneInput from 'react-phone-number-input/react-native-input';
 
 import {E164Number} from 'libphonenumber-js/types';
@@ -23,6 +28,8 @@ const SignUpPhone = ({
     };
   };
 }) => {
+  const theme = useColorScheme() || 'light';
+
   const [authToken] = useState<string>(route.params.authToken);
 
   const [phoneNumber, setPhoneNumber] = useState<E164Number | undefined>();
@@ -72,7 +79,7 @@ const SignUpPhone = ({
         />
       </View>
       {error.length !== 0 ? (
-        <Text weight="l" center={true} color={colors.red}>
+        <Text weight="l" center={true} color={colors[theme].red}>
           {error}
         </Text>
       ) : null}
@@ -80,12 +87,14 @@ const SignUpPhone = ({
         style={[
           STYLES.buttonBig,
           {
-            backgroundColor: phoneNumber ? colors.accent : colors.neutral,
+            backgroundColor: phoneNumber
+              ? colors[theme].accent
+              : colors[theme].neutral,
           },
         ]}
         disabled={!phoneNumber}
         onPress={() => handleSendCode()}>
-        <Text weight="b" color={colors.primary}>
+        <Text weight="b" color={colors[theme].primary}>
           {strings.signUp.sendCode}
         </Text>
       </TouchableOpacity>

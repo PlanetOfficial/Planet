@@ -1,5 +1,11 @@
 import React, {useState} from 'react';
-import {View, SafeAreaView, TextInput, TouchableOpacity} from 'react-native';
+import {
+  View,
+  SafeAreaView,
+  TextInput,
+  TouchableOpacity,
+  useColorScheme,
+} from 'react-native';
 
 import colors from '../../constants/colors';
 import icons from '../../constants/icons';
@@ -23,6 +29,8 @@ const SignUpCreds = ({
     };
   };
 }) => {
+  const theme = useColorScheme() || 'light';
+
   const [firstName] = useState<string>(route.params.firstName);
   const [lastName] = useState<string>(route.params.lastName);
 
@@ -107,7 +115,7 @@ const SignUpCreds = ({
           placeholder={strings.signUp.username}
           value={username}
           onChangeText={text => setUsername(text.toLowerCase())}
-          placeholderTextColor={colors.neutral}
+          placeholderTextColor={colors[theme].neutral}
           autoCapitalize="none"
           autoCorrect={false}
         />
@@ -121,7 +129,7 @@ const SignUpCreds = ({
           placeholder={strings.login.password}
           value={password}
           onChangeText={text => setPassword(text)}
-          placeholderTextColor={colors.neutral}
+          placeholderTextColor={colors[theme].neutral}
           secureTextEntry={true}
         />
       </View>
@@ -134,12 +142,12 @@ const SignUpCreds = ({
           placeholder={strings.signUp.confirmPassword}
           value={passwordConfirm}
           onChangeText={text => setPasswordConfirm(text)}
-          placeholderTextColor={colors.neutral}
+          placeholderTextColor={colors[theme].neutral}
           secureTextEntry={true}
         />
       </View>
       {error.length !== 0 ? (
-        <Text weight="l" center={true} color={colors.red}>
+        <Text weight="l" center={true} color={colors[theme].red}>
           {error}
         </Text>
       ) : null}
@@ -151,8 +159,8 @@ const SignUpCreds = ({
               username.length === 0 ||
               password.length === 0 ||
               password !== passwordConfirm
-                ? colors.neutral
-                : colors.accent,
+                ? colors[theme].neutral
+                : colors[theme].accent,
           },
         ]}
         disabled={
@@ -161,7 +169,7 @@ const SignUpCreds = ({
           password !== passwordConfirm
         }
         onPress={() => handleNext()}>
-        <Text weight="b" color={colors.primary}>
+        <Text weight="b" color={colors[theme].primary}>
           {strings.signUp.signUp}
         </Text>
       </TouchableOpacity>

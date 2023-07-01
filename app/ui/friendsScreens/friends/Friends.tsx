@@ -8,6 +8,7 @@ import {
   FlatList,
   ActivityIndicator,
   LayoutAnimation,
+  useColorScheme,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 import {TouchableOpacity} from 'react-native-gesture-handler';
@@ -27,6 +28,9 @@ import {searchUsers} from '../../../utils/api/friendsAPI';
 import {UserInfo} from '../../../utils/types';
 
 const Friends = ({navigation}: {navigation: any}) => {
+  const theme = useColorScheme() || 'light';
+  const styles = styling(theme);
+
   const searchRef = createRef<TextInput>();
   const [searchText, setSearchText] = useState<string>('');
   const [searchResults, setSearchResults] = useState<UserInfo[]>([]);
@@ -63,7 +67,7 @@ const Friends = ({navigation}: {navigation: any}) => {
               ref={searchRef}
               style={styles.searchText}
               placeholder={strings.search.search}
-              placeholderTextColor={colors.neutral}
+              placeholderTextColor={colors[theme].neutral}
               autoCapitalize="none"
               autoCorrect={false}
               onFocus={() => {
@@ -92,7 +96,7 @@ const Friends = ({navigation}: {navigation: any}) => {
       {searching ? (
         loading ? (
           <View style={[STYLES.center, STYLES.container]}>
-            <ActivityIndicator size="small" color={colors.accent} />
+            <ActivityIndicator size="small" color={colors[theme].accent} />
           </View>
         ) : (
           <FlatList
@@ -128,28 +132,29 @@ const Friends = ({navigation}: {navigation: any}) => {
   );
 };
 
-const styles = StyleSheet.create({
-  searchBar: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: colors.primary,
-    borderRadius: s(10),
-    marginLeft: s(10),
-    paddingHorizontal: s(10),
-    paddingVertical: s(5),
-  },
-  searchText: {
-    flex: 1,
-    marginLeft: s(10),
-    fontSize: s(13),
-    fontFamily: 'Lato',
-    padding: 0,
-    color: colors.neutral,
-  },
-  cancel: {
-    marginLeft: s(10),
-  },
-});
+const styling = (theme: 'light' | 'dark') =>
+  StyleSheet.create({
+    searchBar: {
+      flex: 1,
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: colors[theme].primary,
+      borderRadius: s(10),
+      marginLeft: s(10),
+      paddingHorizontal: s(10),
+      paddingVertical: s(5),
+    },
+    searchText: {
+      flex: 1,
+      marginLeft: s(10),
+      fontSize: s(13),
+      fontFamily: 'Lato',
+      padding: 0,
+      color: colors[theme].neutral,
+    },
+    cancel: {
+      marginLeft: s(10),
+    },
+  });
 
 export default Friends;

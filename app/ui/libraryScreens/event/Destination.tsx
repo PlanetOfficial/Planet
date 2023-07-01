@@ -6,6 +6,7 @@ import {
   FlatList,
   RefreshControl,
   Animated,
+  useColorScheme,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 
@@ -73,6 +74,9 @@ const DestinationView: React.FC<Props> = ({
   suggestionRefs,
   onSuggestionPress,
 }) => {
+  const theme = useColorScheme() || 'light';
+  const styles = styling(theme);
+
   return (
     <FlatList
       contentContainerStyle={STYLES.scrollView}
@@ -96,8 +100,8 @@ const DestinationView: React.FC<Props> = ({
                 !item.suggestions.some(
                   suggestion => suggestion.votes.length > 0,
                 )
-                  ? colors.secondary
-                  : colors.accent
+                  ? colors[theme].secondary
+                  : colors[theme].accent
               }
               onPress={() =>
                 navigation.navigate('Roulette', {
@@ -167,28 +171,29 @@ const DestinationView: React.FC<Props> = ({
             setRefreshing(true);
             loadData();
           }}
-          tintColor={colors.accent}
+          tintColor={colors[theme].accent}
         />
       }
     />
   );
 };
 
-const styles = StyleSheet.create({
-  destination: {
-    marginHorizontal: s(20),
-  },
-  destinationHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingVertical: s(15),
-    paddingHorizontal: s(5),
-  },
-  destinationCard: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: s(310 / 1.6),
-  },
-});
+const styling = (theme: 'light' | 'dark') =>
+  StyleSheet.create({
+    destination: {
+      marginHorizontal: s(20),
+    },
+    destinationHeader: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      paddingVertical: s(15),
+      paddingHorizontal: s(5),
+    },
+    destinationCard: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: s(310 / 1.6),
+    },
+  });
 
 export default DestinationView;

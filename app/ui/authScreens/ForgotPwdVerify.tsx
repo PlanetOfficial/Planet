@@ -1,5 +1,11 @@
 import React, {useState} from 'react';
-import {View, SafeAreaView, TouchableOpacity, TextInput} from 'react-native';
+import {
+  View,
+  SafeAreaView,
+  TouchableOpacity,
+  TextInput,
+  useColorScheme,
+} from 'react-native';
 
 import colors from '../../constants/colors';
 import icons from '../../constants/icons';
@@ -22,6 +28,8 @@ const ForgotPwdVerify = ({
     };
   };
 }) => {
+  const theme = useColorScheme() || 'light';
+
   const [username] = useState<string>(route.params.username);
 
   const [code, setCode] = useState<string>('');
@@ -75,12 +83,12 @@ const ForgotPwdVerify = ({
           onChangeText={text =>
             setCode(text.replace(/[^0-9]/g, '').substring(0, 6))
           }
-          placeholderTextColor={colors.neutral}
+          placeholderTextColor={colors[theme].neutral}
           keyboardType="number-pad"
         />
       </View>
       {error.length !== 0 ? (
-        <Text weight="l" center={true} color={colors.red}>
+        <Text weight="l" center={true} color={colors[theme].red}>
           {error}
         </Text>
       ) : null}
@@ -89,12 +97,14 @@ const ForgotPwdVerify = ({
           STYLES.buttonBig,
           {
             backgroundColor:
-              code.length !== 6 ? colors.secondary : colors.accent,
+              code.length !== 6
+                ? colors[theme].secondary
+                : colors[theme].accent,
           },
         ]}
         disabled={code.length !== 6}
         onPress={() => handleVerifyCode()}>
-        <Text weight="b" color={colors.primary}>
+        <Text weight="b" color={colors[theme].primary}>
           {strings.signUp.verifyCode}
         </Text>
       </TouchableOpacity>

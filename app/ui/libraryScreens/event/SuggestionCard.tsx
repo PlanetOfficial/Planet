@@ -1,5 +1,11 @@
 import React, {useCallback, useRef, useState, useEffect} from 'react';
-import {Alert, Animated, Easing, TouchableOpacity} from 'react-native';
+import {
+  Alert,
+  Animated,
+  Easing,
+  TouchableOpacity,
+  useColorScheme,
+} from 'react-native';
 import {s} from 'react-native-size-matters';
 
 import colors from '../../../constants/colors';
@@ -42,6 +48,8 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
   voted,
   onVote,
 }) => {
+  const theme = useColorScheme() || 'light';
+
   const animation = useRef(new Animated.Value(0)).current;
 
   const left = animation.interpolate({
@@ -162,7 +170,7 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
                     destination: destination,
                   });
                 },
-                color: colors.neutral,
+                color: colors[theme].neutral,
                 disabled: false,
               },
               {
@@ -183,7 +191,7 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
                     ],
                   );
                 },
-                color: colors.accent,
+                color: colors[theme].accent,
                 disabled: false,
               },
               {
@@ -205,7 +213,7 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
                     ],
                   );
                 },
-                color: colors.red,
+                color: colors[theme].red,
                 disabled: false,
               },
             ]}

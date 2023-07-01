@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, SafeAreaView} from 'react-native';
+import {View, SafeAreaView, useColorScheme} from 'react-native';
 import moment from 'moment';
 
 import colors from '../../../constants/colors';
@@ -26,6 +26,8 @@ const Header: React.FC<Props> = ({
   displayingSuggestion,
   onSuggestionClose,
 }) => {
+  const theme = useColorScheme() || 'light';
+
   const date = new Date();
 
   return (
@@ -41,7 +43,7 @@ const Header: React.FC<Props> = ({
         />
         <View style={STYLES.texts}>
           <Text>{eventDetail ? eventDetail.name : event.name}</Text>
-          <Text size="xs" weight="l" color={colors.accent}>
+          <Text size="xs" weight="l" color={colors[theme].accent}>
             {moment(eventDetail ? eventDetail.datetime : event.datetime)
               .add(date.getTimezoneOffset(), 'minutes')
               .format('MMM Do, h:mm a')}

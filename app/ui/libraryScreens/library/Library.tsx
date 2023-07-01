@@ -8,6 +8,7 @@ import {
   StyleSheet,
   ActivityIndicator,
   RefreshControl,
+  useColorScheme,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -25,6 +26,9 @@ import {getEvents} from '../../../utils/api/eventAPI';
 import {Event} from '../../../utils/types';
 
 const Library = ({navigation}: {navigation: any}) => {
+  const theme = useColorScheme() || 'light';
+  const styles = styling(theme);
+
   const [self, setSelf] = useState<string>('');
   const [events, setEvents] = useState<Event[]>([]);
 
@@ -72,7 +76,7 @@ const Library = ({navigation}: {navigation: any}) => {
 
       {loading ? (
         <View style={STYLES.center}>
-          <ActivityIndicator size="small" color={colors.accent} />
+          <ActivityIndicator size="small" color={colors[theme].accent} />
         </View>
       ) : (
         <FlatList
@@ -103,7 +107,7 @@ const Library = ({navigation}: {navigation: any}) => {
             <RefreshControl
               refreshing={refreshing}
               onRefresh={() => loadData()}
-              tintColor={colors.accent}
+              tintColor={colors[theme].accent}
             />
           }
         />
@@ -112,14 +116,15 @@ const Library = ({navigation}: {navigation: any}) => {
   );
 };
 
-const styles = StyleSheet.create({
-  list: {
-    paddingTop: s(5),
-    borderTopColor: colors.secondary,
-  },
-  content: {
-    paddingBottom: s(20),
-  },
-});
+const styling = (theme: 'light' | 'dark') =>
+  StyleSheet.create({
+    list: {
+      paddingTop: s(5),
+      borderTopColor: colors[theme].secondary,
+    },
+    content: {
+      paddingBottom: s(20),
+    },
+  });
 
 export default Library;

@@ -2,10 +2,10 @@ import {StyleSheet} from 'react-native';
 import colors from './colors';
 import {s} from 'react-native-size-matters';
 
-const styles = StyleSheet.create({
+const styling = (theme : 'light' | 'dark') => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.primary,
+    backgroundColor: colors[theme].primary,
   },
   flatList: {
     paddingTop: s(10),
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
   dim: {
     width: '100%',
     height: '100%',
-    backgroundColor: colors.dim,
+    backgroundColor: colors[theme].dim,
   },
   header: {
     flexDirection: 'row',
@@ -35,12 +35,12 @@ const styles = StyleSheet.create({
   separator: {
     marginHorizontal: s(20),
     height: 1,
-    backgroundColor: colors.secondary,
+    backgroundColor: colors[theme].secondary,
   },
   separatorExtendsToRight: {
     marginLeft: s(20),
     height: 1,
-    backgroundColor: colors.secondary,
+    backgroundColor: colors[theme].secondary,
   },
   texts: {
     flex: 1,
@@ -54,8 +54,8 @@ const styles = StyleSheet.create({
     paddingVertical: s(10),
     bottom: s(40),
     borderRadius: s(10),
-    backgroundColor: colors.accent,
-    shadowColor: colors.neutral,
+    backgroundColor: colors[theme].accent,
+    shadowColor: colors[theme].neutral,
     shadowOffset: {
       width: 0,
       height: 1,
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     elevation: 7,
   },
   shadow: {
-    shadowColor: colors.neutral,
+    shadowColor: colors[theme].neutral,
     shadowOffset: {
       width: 0,
       height: 1,
@@ -98,12 +98,12 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     borderBottomWidth: 1,
-    borderColor: colors.darkgrey,
+    borderColor: colors[theme].secondary,
     marginHorizontal: s(5),
     paddingHorizontal: s(10),
     paddingVertical: s(5),
     fontFamily: 'Lato',
-    color: colors.neutral,
+    color: colors[theme].neutral,
   },
   buttonBig: {
     alignSelf: 'center',
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export const sctStyles = StyleSheet.create({
+export const sctStyling = (theme : 'light' | 'dark') => StyleSheet.create({
   container: {
     marginTop: s(10),
     paddingHorizontal: s(20),
@@ -125,13 +125,13 @@ export const sctStyles = StyleSheet.create({
   tab: {
     borderWidth: 0,
     borderBottomWidth: 2,
-    borderBottomColor: colors.secondary,
-    backgroundColor: colors.primary,
+    borderBottomColor: colors[theme].secondary,
+    backgroundColor: colors[theme].primary,
   },
   activeTab: {
     borderBottomWidth: 2,
-    borderBottomColor: colors.accent,
-    backgroundColor: colors.primary,
+    borderBottomColor: colors[theme].accent,
+    backgroundColor: colors[theme].primary,
   },
   firstTab: {
     borderRightWidth: 0,
@@ -140,12 +140,12 @@ export const sctStyles = StyleSheet.create({
     fontSize: s(13),
     fontWeight: '600',
     fontFamily: 'Lato',
-    color: colors.neutral,
+    color: colors[theme].neutral,
   },
   activeText: {
     marginBottom: 0,
-    color: colors.accent,
+    color: colors[theme].accent,
   },
 });
 
-export default styles;
+export default styling;

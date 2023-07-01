@@ -1,4 +1,4 @@
-import {Alert} from 'react-native';
+import {Alert, useColorScheme} from 'react-native';
 import strings from '../../../constants/strings';
 
 import {UserInfo, UserStatus} from '../../../utils/types';

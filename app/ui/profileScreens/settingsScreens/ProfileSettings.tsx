@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   TextInput,
   Modal,
+  useColorScheme,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 import {
@@ -31,6 +32,9 @@ import {editInfo, saveImage} from '../../../utils/api/authAPI';
 
 // TODO: REFACTOR
 const ProfileSettings = ({navigation}: {navigation: any}) => {
+  const theme = useColorScheme() || 'light';
+  const styles = styling(theme);
+
   const [firstName, setFirstName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
   const [username, setUsername] = useState<string>('');
@@ -167,7 +171,8 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
             <View
               style={{
                 ...styles.profileImage,
-                backgroundColor: colors.profileShades[username.length % 5],
+                backgroundColor:
+                  colors[theme].profileShades[username.length % 5],
               }}>
               <RNText style={styles.name}>
                 {firstName?.charAt(0).toUpperCase() +
@@ -177,7 +182,7 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
           )}
         </View>
         <View style={[styles.profilePic, styles.overlay]}>
-          <Icon icon={icons.gallery} size="xl" color={colors.primary} />
+          <Icon icon={icons.gallery} size="xl" color={colors[theme].primary} />
         </View>
       </TouchableOpacity>
       <View style={styles.container}>
@@ -200,7 +205,7 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
                 gender,
               );
             }}
-            placeholderTextColor={colors.neutral}
+            placeholderTextColor={colors[theme].neutral}
           />
         </View>
         <View style={styles.inputContainer}>
@@ -222,7 +227,7 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
                 gender,
               );
             }}
-            placeholderTextColor={colors.neutral}
+            placeholderTextColor={colors[theme].neutral}
           />
         </View>
         <View style={styles.inputContainer}>
@@ -243,7 +248,7 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
                 gender,
               );
             }}
-            placeholderTextColor={colors.neutral}
+            placeholderTextColor={colors[theme].neutral}
             autoCapitalize="none"
             autoCorrect={false}
           />
@@ -255,7 +260,7 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
           <TextInput
             style={styles.input}
             placeholder={phoneNumber}
-            placeholderTextColor={colors.neutral}
+            placeholderTextColor={colors[theme].neutral}
             editable={false}
           />
         </View>
@@ -274,7 +279,7 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
               placeholder={
                 strings.ageEnum.find(ageEnum => ageEnum.value === age)?.label
               }
-              placeholderTextColor={colors.neutral}
+              placeholderTextColor={colors[theme].neutral}
               editable={false}
             />
           </TouchableOpacity>
@@ -294,7 +299,7 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
                   genderEnum => genderEnum.value === gender,
                 )?.label
               }
-              placeholderTextColor={colors.neutral}
+              placeholderTextColor={colors[theme].neutral}
               editable={false}
             />
           </TouchableOpacity>
@@ -366,95 +371,96 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
   );
 };
 
-const styles = StyleSheet.create({
-  title: {
-    flex: 1,
-    marginLeft: s(10),
-  },
-  profile: {
-    paddingHorizontal: s(20),
-    marginTop: s(30),
-    justifyContent: 'space-evenly',
-  },
-  profilePic: {
-    alignSelf: 'center',
-    width: s(100),
-    height: s(100),
-    borderRadius: s(50),
-    overflow: 'hidden',
-  },
-  pic: {
-    width: '100%',
-    height: '100%',
-  },
-  info: {
-    marginLeft: s(20),
-    paddingTop: s(15),
-    paddingBottom: s(10),
-    justifyContent: 'space-between',
-  },
-  profileImage: {
-    width: '100%',
-    height: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  container: {
-    flex: 1,
-    marginBottom: s(50),
-    justifyContent: 'space-evenly',
-  },
-  name: {
-    fontSize: s(40),
-    color: colors.primary,
-    fontFamily: 'VarelaRound-Regular',
-    marginTop: s(1),
-  },
-  overlay: {
-    position: 'absolute',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: colors.dim,
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginHorizontal: s(50),
-  },
-  input: {
-    flex: 5,
-    borderBottomWidth: 1,
-    borderColor: colors.neutral,
-    marginHorizontal: s(2),
-    paddingHorizontal: s(10),
-    paddingVertical: s(5),
-    fontSize: s(14),
-    fontFamily: 'Lato',
-    color: colors.neutral,
-  },
-  prompt: {
-    flex: 4,
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: colors.dim,
-  },
-  modal: {
-    backgroundColor: colors.primary,
-    width: s(300),
-    borderRadius: s(10),
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  picker: {
-    width: s(300),
-  },
-  textInput: {
-    padding: 0,
-    color: colors.neutral,
-  },
-});
+const styling = (theme: 'light' | 'dark') =>
+  StyleSheet.create({
+    title: {
+      flex: 1,
+      marginLeft: s(10),
+    },
+    profile: {
+      paddingHorizontal: s(20),
+      marginTop: s(30),
+      justifyContent: 'space-evenly',
+    },
+    profilePic: {
+      alignSelf: 'center',
+      width: s(100),
+      height: s(100),
+      borderRadius: s(50),
+      overflow: 'hidden',
+    },
+    pic: {
+      width: '100%',
+      height: '100%',
+    },
+    info: {
+      marginLeft: s(20),
+      paddingTop: s(15),
+      paddingBottom: s(10),
+      justifyContent: 'space-between',
+    },
+    profileImage: {
+      width: '100%',
+      height: '100%',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    container: {
+      flex: 1,
+      marginBottom: s(50),
+      justifyContent: 'space-evenly',
+    },
+    name: {
+      fontSize: s(40),
+      color: colors[theme].primary,
+      fontFamily: 'VarelaRound-Regular',
+      marginTop: s(1),
+    },
+    overlay: {
+      position: 'absolute',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: colors[theme].dim,
+    },
+    inputContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginHorizontal: s(50),
+    },
+    input: {
+      flex: 5,
+      borderBottomWidth: 1,
+      borderColor: colors[theme].neutral,
+      marginHorizontal: s(2),
+      paddingHorizontal: s(10),
+      paddingVertical: s(5),
+      fontSize: s(14),
+      fontFamily: 'Lato',
+      color: colors[theme].neutral,
+    },
+    prompt: {
+      flex: 4,
+    },
+    modalContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: colors[theme].dim,
+    },
+    modal: {
+      backgroundColor: colors[theme].primary,
+      width: s(300),
+      borderRadius: s(10),
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    picker: {
+      width: s(300),
+    },
+    textInput: {
+      padding: 0,
+      color: colors[theme].neutral,
+    },
+  });
 
 export default ProfileSettings;

@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, Image} from 'react-native';
+import {StyleSheet, View, Image, useColorScheme} from 'react-native';
 import {s} from 'react-native-size-matters';
 
 import colors from '../../constants/colors';
@@ -15,6 +15,9 @@ interface Props {
 }
 
 const PoiCardXS: React.FC<Props> = ({poi}) => {
+  const theme = useColorScheme() || 'light';
+  const styles = styling(theme);
+
   return (
     <View style={[styles.container, STYLES.shadow]}>
       <Image
@@ -30,39 +33,40 @@ const PoiCardXS: React.FC<Props> = ({poi}) => {
         <Text
           size="xs"
           numberOfLines={1}
-          color={colors.accent}>{`★ ${poi.rating}`}</Text>
+          color={colors[theme].accent}>{`★ ${poi.rating}`}</Text>
       </View>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    width: s(120),
-    height: s(75),
-    borderRadius: s(5),
-    backgroundColor: colors.primary,
-  },
-  image: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    borderRadius: s(5),
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: s(5),
-    borderTopLeftRadius: s(5),
-    borderTopRightRadius: s(5),
-    width: '100%',
-    height: s(22),
-    backgroundColor: 'rgba(255, 255, 255, 0.8)',
-  },
-  title: {
-    flex: 1,
-  },
-});
+const styling = (theme: 'light' | 'dark') =>
+  StyleSheet.create({
+    container: {
+      width: s(120),
+      height: s(75),
+      borderRadius: s(5),
+      backgroundColor: colors[theme].primary,
+    },
+    image: {
+      position: 'absolute',
+      width: '100%',
+      height: '100%',
+      borderRadius: s(5),
+    },
+    header: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingHorizontal: s(5),
+      borderTopLeftRadius: s(5),
+      borderTopRightRadius: s(5),
+      width: '100%',
+      height: s(22),
+      backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    },
+    title: {
+      flex: 1,
+    },
+  });
 
 export default PoiCardXS;

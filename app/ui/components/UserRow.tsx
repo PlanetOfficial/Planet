@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, View, useColorScheme} from 'react-native';
 import {s} from 'react-native-size-matters';
 
 import Text from './Text';

@@ -1,5 +1,11 @@
 import React, {useState} from 'react';
-import {View, SafeAreaView, TouchableOpacity, TextInput} from 'react-native';
+import {
+  View,
+  SafeAreaView,
+  TouchableOpacity,
+  TextInput,
+  useColorScheme,
+} from 'react-native';
 
 import colors from '../../constants/colors';
 import icons from '../../constants/icons';
@@ -10,6 +16,8 @@ import Icon from '../components/Icon';
 import Text from '../components/Text';
 
 const SignUpName = ({navigation}: {navigation: any}) => {
+  const theme = useColorScheme() || 'light';
+
   const [firstName, setFirstName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
 
@@ -38,7 +46,7 @@ const SignUpName = ({navigation}: {navigation: any}) => {
           value={firstName}
           autoCorrect={false}
           onChangeText={text => setFirstName(text)}
-          placeholderTextColor={colors.neutral}
+          placeholderTextColor={colors[theme].neutral}
         />
         <TextInput
           style={STYLES.input}
@@ -46,7 +54,7 @@ const SignUpName = ({navigation}: {navigation: any}) => {
           value={lastName}
           autoCorrect={false}
           onChangeText={text => setLastName(text)}
-          placeholderTextColor={colors.neutral}
+          placeholderTextColor={colors[theme].neutral}
         />
       </View>
       <TouchableOpacity
@@ -55,8 +63,8 @@ const SignUpName = ({navigation}: {navigation: any}) => {
           {
             backgroundColor:
               firstName.length === 0 || lastName.length === 0
-                ? colors.neutral
-                : colors.accent,
+                ? colors[theme].neutral
+                : colors[theme].accent,
           },
         ]}
         disabled={firstName.length === 0 || lastName.length === 0}
@@ -66,7 +74,7 @@ const SignUpName = ({navigation}: {navigation: any}) => {
             lastName: lastName,
           })
         }>
-        <Text weight="b" color={colors.primary}>
+        <Text weight="b" color={colors[theme].primary}>
           {strings.main.next}
         </Text>
       </TouchableOpacity>

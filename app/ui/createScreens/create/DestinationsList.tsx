@@ -1,5 +1,11 @@
 import React from 'react';
-import {StyleSheet, View, TouchableOpacity, ScrollView} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  ScrollView,
+  useColorScheme,
+} from 'react-native';
 import {s} from 'react-native-size-matters';
 import prompt from 'react-native-prompt-android';
 
@@ -33,6 +39,9 @@ const DestinationsList: React.FC<Props> = ({
   setBookmarks,
   setInsertionIndex,
 }) => {
+  const theme = useColorScheme() || 'light';
+  const styles = styling(theme);
+
   return (
     <ScrollView contentContainerStyle={styles.scrollView}>
       {destinations.map((destination: Poi, index: number) => (
@@ -47,7 +56,7 @@ const DestinationsList: React.FC<Props> = ({
                     onPress: () => {
                       handleMove(index, -1, destinations, setDestinations);
                     },
-                    color: colors.neutral,
+                    color: colors[theme].neutral,
                     disabled: index === 0,
                   },
                   {
@@ -55,7 +64,7 @@ const DestinationsList: React.FC<Props> = ({
                     onPress: () => {
                       handleMove(index, 1, destinations, setDestinations);
                     },
-                    color: colors.neutral,
+                    color: colors[theme].neutral,
                     disabled: index === destinations.length - 1,
                   },
                   {
@@ -63,7 +72,7 @@ const DestinationsList: React.FC<Props> = ({
                     onPress: () => {
                       handleMove(index, 0, destinations, setDestinations);
                     },
-                    color: colors.red,
+                    color: colors[theme].red,
                   },
                   {
                     name: strings.main.rename,
@@ -89,7 +98,7 @@ const DestinationsList: React.FC<Props> = ({
                         },
                       );
                     },
-                    color: colors.neutral,
+                    color: colors[theme].neutral,
                   },
                 ]}
               />
@@ -128,19 +137,20 @@ const DestinationsList: React.FC<Props> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  scrollView: {
-    paddingBottom: s(100),
-  },
-  destination: {
-    marginHorizontal: s(20),
-    marginBottom: s(10),
-  },
-  destinationHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingVertical: s(10),
-    paddingHorizontal: s(5),
-  },
-});
+const styling = (theme: 'light' | 'dark') =>
+  StyleSheet.create({
+    scrollView: {
+      paddingBottom: s(100),
+    },
+    destination: {
+      marginHorizontal: s(20),
+      marginBottom: s(10),
+    },
+    destinationHeader: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      paddingVertical: s(10),
+      paddingHorizontal: s(5),
+    },
+  });
 export default DestinationsList;

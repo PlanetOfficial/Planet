@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {View, FlatList, TouchableOpacity} from 'react-native';
+import {View, FlatList, TouchableOpacity, useColorScheme} from 'react-native';
 
 import icons from '../../../constants/icons';
 import strings from '../../../constants/strings';

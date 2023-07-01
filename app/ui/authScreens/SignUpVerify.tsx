@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   TextInput,
   StyleSheet,
+  useColorScheme,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 
@@ -29,6 +30,9 @@ const SignUpVerify = ({
     };
   };
 }) => {
+  const theme = useColorScheme() || 'light';
+  const styles = styling(theme);
+
   const [authToken] = useState<string>(route.params.authToken);
 
   const [code, setCode] = useState<string>('');
@@ -80,12 +84,12 @@ const SignUpVerify = ({
           onChangeText={text =>
             setCode(text.replace(/[^0-9]/g, '').substring(0, 6))
           }
-          placeholderTextColor={colors.neutral}
+          placeholderTextColor={colors[theme].neutral}
           keyboardType="number-pad"
         />
       </View>
       {error.length !== 0 ? (
-        <Text weight="l" center={true} color={colors.red}>
+        <Text weight="l" center={true} color={colors[theme].red}>
           {error}
         </Text>
       ) : null}
@@ -93,12 +97,13 @@ const SignUpVerify = ({
         style={[
           STYLES.buttonBig,
           {
-            backgroundColor: code.length !== 6 ? colors.neutral : colors.accent,
+            backgroundColor:
+              code.length !== 6 ? colors[theme].neutral : colors[theme].accent,
           },
         ]}
         disabled={code.length !== 6}
         onPress={() => handleVerifyCode()}>
-        <Text weight="b" color={colors.primary}>
+        <Text weight="b" color={colors[theme].primary}>
           {strings.signUp.verifyCode}
         </Text>
       </TouchableOpacity>
@@ -106,27 +111,28 @@ const SignUpVerify = ({
   );
 };
 
-const styles = StyleSheet.create({
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginVertical: s(30),
-    marginHorizontal: s(50),
-  },
-  input: {
-    alignSelf: 'center',
-    borderBottomWidth: 1,
-    borderColor: colors.neutral,
-    marginHorizontal: s(5),
-    paddingHorizontal: s(10),
-    paddingVertical: s(5),
-    fontFamily: 'Lato',
-    letterSpacing: s(10),
-    fontSize: s(20),
-    width: s(150),
-    color: colors.neutral,
-  },
-});
+const styling = (theme: 'light' | 'dark') =>
+  StyleSheet.create({
+    inputContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginVertical: s(30),
+      marginHorizontal: s(50),
+    },
+    input: {
+      alignSelf: 'center',
+      borderBottomWidth: 1,
+      borderColor: colors[theme].neutral,
+      marginHorizontal: s(5),
+      paddingHorizontal: s(10),
+      paddingVertical: s(5),
+      fontFamily: 'Lato',
+      letterSpacing: s(10),
+      fontSize: s(20),
+      width: s(150),
+      color: colors[theme].neutral,
+    },
+  });
 
 export default SignUpVerify;
