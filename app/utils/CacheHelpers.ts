@@ -31,7 +31,6 @@ export const cacheCategories = async () => {
   }
 };
 
-// caches auth_token, user_id, first_name, last_name, username, phone_number, age, gender, pfp_url
 export const cacheUserInfo = async (authToken: string) => {
   // start with clear caches (for user storage)
   clearCaches();
@@ -47,7 +46,6 @@ export const updateCaches = async (authToken: string) => {
   await cacheStorage(authToken);
 };
 
-// clears auth_token, user_id, first_name, last_name, username, phone_number, age, gender, pfp_url, bookmarks from cache
 export const clearCaches = async () => {
   if (await EncryptedStorage.getItem('auth_token')) {
     await EncryptedStorage.removeItem('auth_token');
