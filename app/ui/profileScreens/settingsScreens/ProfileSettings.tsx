@@ -183,7 +183,7 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
           )}
         </View>
         <View style={[styles.profilePic, styles.overlay]}>
-          <Icon icon={icons.gallery} size="xl" color={colors['light'].primary} />
+          <Icon icon={icons.gallery} size="xl" color={colors.light.primary} />
         </View>
       </TouchableOpacity>
       <View style={styles.container}>
