@@ -61,7 +61,6 @@ const SearchMap = ({
           showsScale={true}
           showsCompass={true}
           rotateEnabled={true}
-          userInterfaceStyle={'light'}
           onRegionChangeComplete={setRegion}
           mapPadding={{
             top: s(40),
@@ -76,7 +75,7 @@ const SearchMap = ({
               cx={s(150)}
               cy={s(150)}
               r={s(148)}
-              stroke={colors[theme].primary}
+              stroke={colors.light.primary}
               strokeWidth={4}
               fill={colors[theme].accent}
               fillOpacity={0.3}

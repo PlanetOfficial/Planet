@@ -6,7 +6,6 @@ import {
   StatusBar,
   ImageBackground,
   Animated,
-  useColorScheme,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -38,7 +37,7 @@ const Header: React.FC<Props> = ({
   setBookmarks,
   setGalleryVisible,
 }) => {
-  const theme = useColorScheme() || 'light';
+  const theme = 'light';
   const styles = styling(theme);
   const STYLES = STYLING(theme);
 

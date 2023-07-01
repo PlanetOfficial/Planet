@@ -12,6 +12,7 @@ const light = {
   secondary: '#d9d9d9',
   neutral: '#3c3c3c',
   accent: '#f36f3f',
+  blur: 'rgba(255,255,255,.8)',
 };
 
 const dark = {
@@ -20,6 +21,7 @@ const dark = {
   secondary: '#666666',
   neutral: '#f0f0f0',
   accent: '#f38158',
+  blur: 'rgba(0,0,0,.6)',
 };
 
 export default {light, dark};

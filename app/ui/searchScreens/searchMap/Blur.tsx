@@ -1,12 +1,16 @@
 import React from 'react';
-import {View, ViewStyle, Platform} from 'react-native';
+import {View, ViewStyle, Platform, useColorScheme} from 'react-native';
 import {BlurView} from '@react-native-community/blur';
+
+import colors from '../../../constants/colors';
 
 interface Props {
   height: number;
 }
 
 const Blur: React.FC<Props> = ({height}) => {
+  const theme = useColorScheme() || 'light';
+
   const BlurStyles: ViewStyle = {
     position: 'absolute',
     width: '100%',
@@ -14,11 +18,15 @@ const Blur: React.FC<Props> = ({height}) => {
   };
 
   const AndroidBlurStyles: ViewStyle = {
-    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    backgroundColor: colors[theme].blur,
   };
 
   return Platform.OS === 'ios' ? (
-    <BlurView blurAmount={3} blurType="xlight" style={BlurStyles} />
+    <BlurView
+      blurAmount={3}
+      blurType={theme === 'light' ? 'xlight' : 'dark'}
+      style={BlurStyles}
+    />
   ) : (
     <View style={[BlurStyles, AndroidBlurStyles]} />
   );
