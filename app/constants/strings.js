@@ -18,6 +18,15 @@ const strings = {
     warning: 'Warning',
     milesAbbrev: 'mi',
   },
+  title: {
+    home: 'Home',
+    search: 'Explore',
+    library: 'Events',
+    profile: 'Profile',
+    suggestions: 'Suggestions',
+    friends: 'Friends',
+    requests: 'Requests',
+  },
   login: {
     login: 'Login',
     forgotPassword: 'Forgot Password?',

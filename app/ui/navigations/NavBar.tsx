@@ -17,6 +17,7 @@ import {
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 import colors from '../../constants/colors';
+import strings from '../../constants/strings';
 
 import Home from '../homeScreens/Home';
 import Search from '../searchScreens/search/Search';
@@ -34,22 +35,22 @@ export const NavBar = () => {
   const getIcon = (name: string, focused: boolean) => {
     let source: number;
     switch (name) {
-      case 'Home':
+      case strings.title.home:
         source = focused
           ? require('../../assets/tabIcons/home-2.png')
           : require('../../assets/tabIcons/home.png');
         break;
-      case 'Search':
+      case strings.title.search:
         source = focused
           ? require('../../assets/tabIcons/search-2.png')
           : require('../../assets/tabIcons/search.png');
         break;
-      case 'Library':
+      case strings.title.library:
         source = focused
           ? require('../../assets/tabIcons/library-2.png')
           : require('../../assets/tabIcons/library.png');
         break;
-      case 'Profile':
+      case strings.title.profile:
         source = focused
           ? require('../../assets/tabIcons/profile-2.png')
           : require('../../assets/tabIcons/profile.png');
@@ -110,7 +111,7 @@ export const NavBar = () => {
   return (
     <View style={styles.tabView}>
       <Tab.Navigator
-        initialRouteName="Home"
+        initialRouteName={strings.title.home}
         screenOptions={({route}: {route: {name: string}}) => ({
           tabBarShowLabel: false,
           headerShown: false,
@@ -125,8 +126,8 @@ export const NavBar = () => {
             return getIcon(route.name, focused);
           },
         })}>
-        <Tab.Screen name="Home" component={Home} />
-        <Tab.Screen name="Search" component={Search} />
+        <Tab.Screen name={strings.title.home} component={Home} />
+        <Tab.Screen name={strings.title.search} component={Search} />
         <Tab.Screen
           name="Plus"
           component={ButtonScreen}
@@ -134,8 +135,8 @@ export const NavBar = () => {
             tabBarButton: props => Button(props, navigation),
           })}
         />
-        <Tab.Screen name="Library" component={Library} />
-        <Tab.Screen name="Profile" component={Profile} />
+        <Tab.Screen name={strings.title.library} component={Library} />
+        <Tab.Screen name={strings.title.profile} component={Profile} />
       </Tab.Navigator>
     </View>
   );
