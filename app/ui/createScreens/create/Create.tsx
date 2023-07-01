@@ -6,7 +6,7 @@ import moment from 'moment';
 import colors from '../../../constants/colors';
 import numbers from '../../../constants/numbers';
 import strings from '../../../constants/strings';
-import STYLES from '../../../constants/styles';
+import STYLING from '../../../constants/styles';
 
 import Text from '../../components/Text';
 
@@ -32,6 +32,7 @@ const Create = ({
 }) => {
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
+  const STYLES = STYLING(theme);
 
   const [eventTitle, setEventTitle] = useState<string>();
   const [date, setDate] = useState<string>();

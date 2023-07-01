@@ -6,18 +6,22 @@ import {
   TouchableOpacity,
   Linking,
   Alert,
+  useColorScheme,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 
 import icons from '../../../constants/icons';
 import strings from '../../../constants/strings';
-import STYLES from '../../../constants/styles';
+import STYLING from '../../../constants/styles';
 
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 import Separator from '../../components/Separator';
 
 const LocationsSettings = ({navigation}: {navigation: any}) => {
+  const theme = useColorScheme() || 'light';
+  const STYLES = STYLING(theme);
+
   return (
     <View style={STYLES.container}>
       <SafeAreaView>

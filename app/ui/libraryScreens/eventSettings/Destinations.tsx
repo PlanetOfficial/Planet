@@ -13,7 +13,7 @@ import DraggableFlatList from 'react-native-draggable-flatlist';
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
 import strings from '../../../constants/strings';
-import STYLES from '../../../constants/styles';
+import STYLING from '../../../constants/styles';
 
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
@@ -44,6 +44,7 @@ const Destinations: React.FC<Props> = ({
 }) => {
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
+  const STYLES = STYLING(theme);
 
   return (
     <View style={styles.container}>

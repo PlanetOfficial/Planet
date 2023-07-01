@@ -18,7 +18,7 @@ import FriendsNavBar from '../../navigations/FriendsNavBar';
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
 import strings from '../../../constants/strings';
-import STYLES from '../../../constants/styles';
+import STYLING from '../../../constants/styles';
 
 import Icon from '../../components/Icon';
 import Text from '../../components/Text';
@@ -30,6 +30,7 @@ import {UserInfo} from '../../../utils/types';
 const Friends = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
+  const STYLES = STYLING(theme);
 
   const searchRef = createRef<TextInput>();
   const [searchText, setSearchText] = useState<string>('');

@@ -34,7 +34,6 @@ const Profile: React.FC<Props> = ({
   setStatus,
 }) => {
   const theme = useColorScheme() || 'light';
-  const styles = styling(theme);
 
   const friendsContext = useContext(FriendsContext);
   if (!friendsContext) {
@@ -174,40 +173,39 @@ const Profile: React.FC<Props> = ({
   );
 };
 
-const styling = (theme: 'light' | 'dark') =>
-  StyleSheet.create({
-    container: {
-      flexDirection: 'row',
-      paddingHorizontal: s(20),
-      marginVertical: s(20),
-    },
-    profilePic: {
-      width: s(120),
-      height: s(120),
-      borderRadius: s(40),
-      overflow: 'hidden',
-      marginRight: s(20),
-    },
-    texts: {
-      height: s(50),
-      justifyContent: 'space-evenly',
-      maxWidth: s(170),
-      marginBottom: s(5),
-    },
-    buttons: {
-      flex: 1,
-      flexDirection: 'row',
-      alignItems: 'flex-end',
-      marginBottom: s(10),
-    },
-    button: {
-      paddingHorizontal: s(10),
-      paddingVertical: s(5),
-      borderRadius: s(5),
-      marginRight: s(10),
-      minWidth: s(65),
-      alignItems: 'center',
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    paddingHorizontal: s(20),
+    marginVertical: s(20),
+  },
+  profilePic: {
+    width: s(120),
+    height: s(120),
+    borderRadius: s(40),
+    overflow: 'hidden',
+    marginRight: s(20),
+  },
+  texts: {
+    height: s(50),
+    justifyContent: 'space-evenly',
+    maxWidth: s(170),
+    marginBottom: s(5),
+  },
+  buttons: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    marginBottom: s(10),
+  },
+  button: {
+    paddingHorizontal: s(10),
+    paddingVertical: s(5),
+    borderRadius: s(5),
+    marginRight: s(10),
+    minWidth: s(65),
+    alignItems: 'center',
+  },
+});
 
 export default Profile;

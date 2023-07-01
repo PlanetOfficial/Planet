@@ -13,7 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import colors from '../../../constants/colors';
 import strings from '../../../constants/strings';
-import STYLES, {sctStyles} from '../../../constants/styles';
+import STYLING, {sctStyling} from '../../../constants/styles';
 
 import Text from '../../components/Text';
 import PoiRow from '../../components/PoiRow';
@@ -28,6 +28,8 @@ import {Coordinate, Poi} from '../../../utils/types';
 const ProfileBody = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
+  const STYLES = STYLING(theme);
+  const sctStyles = sctStyling(theme);
 
   const [selectedIndex, setIndex] = useState<number>(0);
 

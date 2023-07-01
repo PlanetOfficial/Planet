@@ -16,7 +16,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import colors from '../../../constants/colors';
 import strings from '../../../constants/strings';
-import STYLES from '../../../constants/styles';
+import STYLING from '../../../constants/styles';
 
 import BookmarkContext from '../../../context/BookmarkContext';
 
@@ -40,6 +40,7 @@ const EventPage = ({
   };
 }) => {
   const theme = useColorScheme() || 'light';
+  const STYLES = STYLING(theme);
 
   const [event] = useState<Event>(route.params.event);
   const [eventDetail, setEventDetail] = useState<EventDetail>();

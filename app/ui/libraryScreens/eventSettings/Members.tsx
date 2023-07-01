@@ -11,7 +11,7 @@ import {s} from 'react-native-size-matters';
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
 import strings from '../../../constants/strings';
-import STYLES from '../../../constants/styles';
+import STYLING from '../../../constants/styles';
 
 import Text from '../../components/Text';
 import UserIcon from '../../components/UserIcon';
@@ -27,6 +27,7 @@ interface Props {
 const Members: React.FC<Props> = ({navigation, event, eventDetail}) => {
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
+  const STYLES = STYLING(theme);
 
   return (
     <View style={styles.container}>

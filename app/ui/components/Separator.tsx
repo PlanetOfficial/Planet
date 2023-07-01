@@ -1,8 +1,13 @@
 import React from 'react';
 import {View, useColorScheme} from 'react-native';
 
-import STYLES from '../../constants/styles';
+import STYLING from '../../constants/styles';
 
-const Separator = () => <View style={STYLES.separator} />;
+const Separator = () => {
+  const theme = useColorScheme() || 'light';
+  const STYLES = STYLING(theme);
+
+  return <View style={STYLES.separator} />;
+};
 
 export default Separator;

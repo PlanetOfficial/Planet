@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, Image, useColorScheme} from 'react-native';
+import {StyleSheet, View, Image} from 'react-native';
 import {s} from 'react-native-size-matters';
 import moment from 'moment';
 

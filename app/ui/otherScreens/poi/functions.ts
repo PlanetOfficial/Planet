@@ -1,4 +1,4 @@
-import {Linking, useColorScheme} from 'react-native';
+import {Linking} from 'react-native';
 import {showLocation} from 'react-native-map-link';
 
 import {Poi, PoiDetail, PlaceOpeningHoursPeriod} from '../../../utils/types';

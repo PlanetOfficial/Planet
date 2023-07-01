@@ -7,7 +7,7 @@ import {
 
 import colors from '../../../constants/colors';
 import strings from '../../../constants/strings';
-import STYLES from '../../../constants/styles';
+import STYLING from '../../../constants/styles';
 
 import Text from '../../components/Text';
 
@@ -31,6 +31,7 @@ const SaveButton: React.FC<Props> = ({
   destinations,
 }) => {
   const theme = useColorScheme() || 'light';
+  const STYLES = STYLING(theme);
 
   const [loading, setLoading] = useState<boolean>(false);
 

@@ -13,7 +13,7 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
-import STYLES from '../../../constants/styles';
+import STYLING from '../../../constants/styles';
 
 import Icon from '../../components/Icon';
 import Text from '../../components/Text';
@@ -40,6 +40,7 @@ const Header: React.FC<Props> = ({
 }) => {
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
+  const STYLES = STYLING(theme);
 
   const insets = useSafeAreaInsets();
 

@@ -3,7 +3,7 @@ import {View, Alert, ScrollView, useColorScheme} from 'react-native';
 import moment from 'moment';
 
 import strings from '../../../constants/strings';
-import STYLES from '../../../constants/styles';
+import STYLING from '../../../constants/styles';
 
 import {getEvent} from '../../../utils/api/eventAPI';
 import {postDestination} from '../../../utils/api/destinationAPI';
@@ -27,6 +27,7 @@ const EventSettings = ({
   };
 }) => {
   const theme = useColorScheme() || 'light';
+  const STYLES = STYLING(theme);
 
   const [event] = useState<Event>(route.params.event);
   const [eventDetail, setEventDetail] = useState<EventDetail>();

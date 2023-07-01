@@ -1,9 +1,4 @@
-import {
-  Platform,
-  PermissionsAndroid,
-  Alert,
-  useColorScheme,
-} from 'react-native';
+import {Platform, PermissionsAndroid, Alert} from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 
 import haversine from 'haversine-distance';

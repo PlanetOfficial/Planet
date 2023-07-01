@@ -40,7 +40,6 @@ const DestinationsList: React.FC<Props> = ({
   setInsertionIndex,
 }) => {
   const theme = useColorScheme() || 'light';
-  const styles = styling(theme);
 
   return (
     <ScrollView contentContainerStyle={styles.scrollView}>
@@ -137,20 +136,19 @@ const DestinationsList: React.FC<Props> = ({
   );
 };
 
-const styling = (theme: 'light' | 'dark') =>
-  StyleSheet.create({
-    scrollView: {
-      paddingBottom: s(100),
-    },
-    destination: {
-      marginHorizontal: s(20),
-      marginBottom: s(10),
-    },
-    destinationHeader: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      paddingVertical: s(10),
-      paddingHorizontal: s(5),
-    },
-  });
+const styles = StyleSheet.create({
+  scrollView: {
+    paddingBottom: s(100),
+  },
+  destination: {
+    marginHorizontal: s(20),
+    marginBottom: s(10),
+  },
+  destinationHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: s(10),
+    paddingHorizontal: s(5),
+  },
+});
 export default DestinationsList;

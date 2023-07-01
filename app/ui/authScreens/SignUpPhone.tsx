@@ -11,7 +11,7 @@ import {E164Number} from 'libphonenumber-js/types';
 
 import colors from '../../constants/colors';
 import strings from '../../constants/strings';
-import STYLES from '../../constants/styles';
+import STYLING from '../../constants/styles';
 
 import Text from '../components/Text';
 
@@ -29,6 +29,7 @@ const SignUpPhone = ({
   };
 }) => {
   const theme = useColorScheme() || 'light';
+  const STYLES = STYLING(theme);
 
   const [authToken] = useState<string>(route.params.authToken);
 

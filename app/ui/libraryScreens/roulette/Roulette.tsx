@@ -3,7 +3,7 @@ import {View, SafeAreaView, useColorScheme} from 'react-native';
 import {useSharedValue} from 'react-native-reanimated';
 
 import icons from '../../../constants/icons';
-import STYLES from '../../../constants/styles';
+import STYLING from '../../../constants/styles';
 
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
@@ -28,6 +28,9 @@ const Roulette = ({
     };
   };
 }) => {
+  const theme = useColorScheme() || 'light';
+  const STYLES = STYLING(theme);
+
   const [eventId] = useState(route.params.eventId);
   const [destination] = useState<Destination>(route.params.destination);
 

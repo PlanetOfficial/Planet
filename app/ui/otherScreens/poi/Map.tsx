@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, LayoutAnimation, useColorScheme} from 'react-native';
+import {StyleSheet, LayoutAnimation} from 'react-native';
 import {s} from 'react-native-size-matters';
 import MapView, {Marker} from 'react-native-maps';
 

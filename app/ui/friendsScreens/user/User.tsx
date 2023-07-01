@@ -5,13 +5,14 @@ import {
   Alert,
   FlatList,
   TouchableOpacity,
+  useColorScheme,
 } from 'react-native';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 import EncryptedStorage from 'react-native-encrypted-storage';
 
 import icons from '../../../constants/icons';
 import strings from '../../../constants/strings';
-import STYLES, {sctStyles} from '../../../constants/styles';
+import STYLING, {sctStyling} from '../../../constants/styles';
 
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
@@ -35,6 +36,10 @@ const User = ({
     };
   };
 }) => {
+  const theme = useColorScheme() || 'light';
+  const STYLES = STYLING(theme);
+  const sctStyles = sctStyling(theme);
+
   const [selectedIndex, setIndex] = useState<number>(0);
   const [self, setSelf] = useState<string>('');
   const [status, setStatus] = useState<UserStatus>('');

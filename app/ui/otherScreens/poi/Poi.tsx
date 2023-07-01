@@ -12,7 +12,7 @@ import ImageView from 'react-native-image-viewing';
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
 import strings from '../../../constants/strings';
-import STYLES from '../../../constants/styles';
+import STYLING from '../../../constants/styles';
 
 import Icon from '../../components/Icon';
 import Text from '../../components/Text';
@@ -43,6 +43,7 @@ const PoiPage = ({
   };
 }) => {
   const theme = useColorScheme() || 'light';
+  const STYLES = STYLING(theme);
 
   const [destination, setDestination] = useState<Poi>();
   const [destinationDetails, setDestinationDetails] = useState<PoiDetail>();
@@ -107,7 +108,7 @@ const PoiPage = ({
         </View>
       </View>
     ),
-    [],
+    [theme],
   );
 
   return (

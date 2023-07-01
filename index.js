@@ -3,7 +3,7 @@
  */
 
 import 'react-native-gesture-handler';
-import {AppRegistry, Text, TextInput, useColorScheme} from 'react-native';
+import {AppRegistry, Text, TextInput} from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 import App from './App';
 import {name as appName} from './app.json';

@@ -1,11 +1,5 @@
 import React, {useState} from 'react';
-import {
-  View,
-  Alert,
-  TouchableOpacity,
-  StyleSheet,
-  useColorScheme,
-} from 'react-native';
+import {View, Alert, TouchableOpacity, StyleSheet} from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import {s} from 'react-native-size-matters';
 import prompt from 'react-native-prompt-android';

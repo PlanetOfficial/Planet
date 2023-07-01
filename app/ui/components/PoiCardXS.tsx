@@ -4,7 +4,7 @@ import {s} from 'react-native-size-matters';
 
 import colors from '../../constants/colors';
 import icons from '../../constants/icons';
-import STYLES from '../../constants/styles';
+import STYLING from '../../constants/styles';
 
 import Text from './Text';
 
@@ -17,6 +17,7 @@ interface Props {
 const PoiCardXS: React.FC<Props> = ({poi}) => {
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
+  const STYLES = STYLING(theme);
 
   return (
     <View style={[styles.container, STYLES.shadow]}>

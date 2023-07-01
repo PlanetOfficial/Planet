@@ -1,4 +1,4 @@
-import {Alert, useColorScheme} from 'react-native';
+import {Alert} from 'react-native';
 import {
   withTiming,
   Easing,

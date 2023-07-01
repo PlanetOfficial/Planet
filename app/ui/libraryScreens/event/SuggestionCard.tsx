@@ -10,7 +10,7 @@ import {s} from 'react-native-size-matters';
 
 import colors from '../../../constants/colors';
 import strings from '../../../constants/strings';
-import STYLES from '../../../constants/styles';
+import STYLING from '../../../constants/styles';
 
 import PoiCardXL from '../../components/PoiCardXL';
 
@@ -49,6 +49,7 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
   onVote,
 }) => {
   const theme = useColorScheme() || 'light';
+  const STYLES = STYLING(theme);
 
   const animation = useRef(new Animated.Value(0)).current;
 

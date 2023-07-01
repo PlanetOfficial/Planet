@@ -11,7 +11,7 @@ import {
 import colors from '../../constants/colors';
 import icons from '../../constants/icons';
 import strings from '../../constants/strings';
-import STYLES from '../../constants/styles';
+import STYLING from '../../constants/styles';
 
 import Icon from '../components/Icon';
 import Text from '../components/Text';
@@ -31,6 +31,7 @@ const ResetPwd = ({
   };
 }) => {
   const theme = useColorScheme() || 'light';
+  const STYLES = STYLING(theme);
 
   const [authToken] = useState<string>(route.params.authToken);
 

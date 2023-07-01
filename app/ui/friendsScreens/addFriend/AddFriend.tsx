@@ -18,7 +18,7 @@ import {TouchableOpacity as TouchableOpacityGestureHandler} from 'react-native-g
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
 import strings from '../../../constants/strings';
-import STYLES from '../../../constants/styles';
+import STYLING from '../../../constants/styles';
 
 import Icon from '../../components/Icon';
 import Separator from '../../components/Separator';
@@ -44,6 +44,7 @@ const AddFriend = ({
 }) => {
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
+  const STYLES = STYLING(theme);
 
   const [event_id] = useState<number | undefined>(route.params.event_id);
   const [members] = useState<UserInfo[]>(route.params.members);

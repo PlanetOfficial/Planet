@@ -10,13 +10,14 @@ import {
 import colors from '../../constants/colors';
 import icons from '../../constants/icons';
 import strings from '../../constants/strings';
-import STYLES from '../../constants/styles';
+import STYLING from '../../constants/styles';
 
 import Icon from '../components/Icon';
 import Text from '../components/Text';
 
 const SignUpName = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';
+  const STYLES = STYLING(theme);
 
   const [firstName, setFirstName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');

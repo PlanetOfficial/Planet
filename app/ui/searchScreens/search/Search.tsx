@@ -15,7 +15,7 @@ import {s} from 'react-native-size-matters';
 import colors from '../../../constants/colors';
 import numbers from '../../../constants/numbers';
 import strings from '../../../constants/strings';
-import STYLES from '../../../constants/styles';
+import STYLING from '../../../constants/styles';
 
 import Text from '../../components/Text';
 import Separator from '../../components/SeparatorR';
@@ -37,6 +37,7 @@ const Search = ({
 }) => {
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
+  const STYLES = STYLING(theme);
 
   const [genres, setGenres] = useState<Genre[]>([]);
   const [location, setLocation] = useState<Coordinate>();

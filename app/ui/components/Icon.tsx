@@ -12,7 +12,7 @@ import {
 import {s} from 'react-native-size-matters';
 
 import colors from '../../constants/colors';
-import STYLES from '../../constants/styles';
+import STYLING from '../../constants/styles';
 
 interface Props {
   size?: 'xs' | 's' | 'm' | 'l' | 'xl';
@@ -34,6 +34,7 @@ const Icon: React.FC<Props> = ({
   onPress,
 }) => {
   const theme = useColorScheme() || 'light';
+  const STYLES = STYLING(theme);
 
   if (!color) {
     color = colors[theme].neutral;
