@@ -6,6 +6,7 @@ import {
   Alert,
   TouchableOpacity,
   useColorScheme,
+  StatusBar,
 } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 import {s} from 'react-native-size-matters';
@@ -26,6 +27,7 @@ import {removeAccount} from '../../../utils/api/authAPI';
 const AccountSettings = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';
   const STYLES = STYLING(theme);
+  StatusBar.setBarStyle(colors[theme].statusBar, true);
 
   const handleLogout = async () => {
     try {

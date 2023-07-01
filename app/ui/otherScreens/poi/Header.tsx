@@ -3,7 +3,6 @@ import {
   View,
   StyleSheet,
   SafeAreaView,
-  StatusBar,
   ImageBackground,
   Animated,
 } from 'react-native';
@@ -76,10 +75,7 @@ const Header: React.FC<Props> = ({
             <Icon
               size="m"
               icon={icons.back}
-              onPress={() => {
-                StatusBar.setBarStyle('dark-content', true);
-                navigation.goBack();
-              }}
+              onPress={() => navigation.goBack()}
               color={colors[theme].primary}
             />
             <Animated.Text
@@ -104,9 +100,11 @@ const Header: React.FC<Props> = ({
           </View>
         </SafeAreaView>
         <Animated.View style={[styles.bottom, {opacity: bottomTitleOpacity}]}>
-          <Text size="l" weight="b" color={colors[theme].primary}>
-            {destination?.name}
-          </Text>
+          <View style={styles.mainTitle}>
+            <Text size="l" weight="b" color={colors[theme].primary}>
+              {destination?.name}
+            </Text>
+          </View>
           <Icon
             size="l"
             icon={icons.gallery}
@@ -152,6 +150,9 @@ const styling = (theme: 'light' | 'dark') =>
       color: colors[theme].primary,
       maxWidth: s(280),
       paddingHorizontal: s(10),
+    },
+    mainTitle: {
+      paddingRight: s(10),
     },
   });
 

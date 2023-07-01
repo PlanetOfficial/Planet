@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   useColorScheme,
+  StatusBar,
 } from 'react-native';
 
 import colors from '../../constants/colors';
@@ -21,6 +22,7 @@ import {sendCodeForgotPwd} from '../../utils/api/authAPI';
 const ForgotPwd = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';
   const STYLES = STYLING(theme);
+  StatusBar.setBarStyle(colors[theme].statusBar, true);
 
   const [username, setUsername] = useState<string>('');
 

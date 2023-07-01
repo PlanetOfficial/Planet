@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Alert,
   useColorScheme,
+  StatusBar,
 } from 'react-native';
 
 import colors from '../../constants/colors';
@@ -32,6 +33,7 @@ const ResetPwd = ({
 }) => {
   const theme = useColorScheme() || 'light';
   const STYLES = STYLING(theme);
+  StatusBar.setBarStyle(colors[theme].statusBar, true);
 
   const [authToken] = useState<string>(route.params.authToken);
 

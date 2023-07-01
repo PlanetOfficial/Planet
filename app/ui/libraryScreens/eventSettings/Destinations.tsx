@@ -153,7 +153,6 @@ const styling = (theme: 'light' | 'dark') =>
   StyleSheet.create({
     container: {
       marginHorizontal: s(30),
-      paddingHorizontal: s(10),
       marginVertical: s(20),
       paddingBottom: s(10),
       borderWidth: 1,
@@ -177,7 +176,7 @@ const styling = (theme: 'light' | 'dark') =>
       flexDirection: 'row',
       alignItems: 'center',
       paddingVertical: s(10),
-      paddingHorizontal: s(10),
+      paddingHorizontal: s(20),
       backgroundColor: colors[theme].primary,
       overflow: 'visible',
     },

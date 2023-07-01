@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   View,
   useColorScheme,
+  StatusBar,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 import MapView from 'react-native-maps';
@@ -39,6 +40,7 @@ const SearchMap = ({
   };
 }) => {
   const theme = useColorScheme() || 'light';
+  StatusBar.setBarStyle(colors[theme].statusBar, true);
 
   const [region, setRegion] = useState<Region>(
     getRegionFromPointAndDistance(route.params.location, route.params.radius),

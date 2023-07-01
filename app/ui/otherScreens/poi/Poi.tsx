@@ -5,7 +5,14 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import {View, StyleSheet, Alert, Animated, useColorScheme} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Alert,
+  Animated,
+  useColorScheme,
+  StatusBar,
+} from 'react-native';
 import {s, vs} from 'react-native-size-matters';
 import ImageView from 'react-native-image-viewing';
 
@@ -44,6 +51,7 @@ const PoiPage = ({
 }) => {
   const theme = useColorScheme() || 'light';
   const STYLES = STYLING(theme);
+  StatusBar.setBarStyle(colors.dark.statusBar, true);
 
   const [destination, setDestination] = useState<Poi>();
   const [destinationDetails, setDestinationDetails] = useState<PoiDetail>();

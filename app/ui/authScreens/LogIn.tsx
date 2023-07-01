@@ -8,6 +8,7 @@ import {
   StyleSheet,
   Alert,
   useColorScheme,
+  StatusBar,
 } from 'react-native';
 import {s, vs} from 'react-native-size-matters';
 import LinearGradient from 'react-native-linear-gradient';
@@ -24,6 +25,7 @@ import {cacheUserInfo} from '../../utils/CacheHelpers';
 const LoginScreen = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
+  StatusBar.setBarStyle(colors[theme].statusBar, true);
 
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');

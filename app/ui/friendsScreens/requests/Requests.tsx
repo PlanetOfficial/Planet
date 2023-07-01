@@ -7,6 +7,7 @@ import {
   ScrollView,
   RefreshControl,
   useColorScheme,
+  StatusBar,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 
@@ -32,6 +33,7 @@ import {
 const Requests = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';
   const STYLES = STYLING(theme);
+  StatusBar.setBarStyle(colors[theme].statusBar, true);
 
   const friendsContext = useContext(FriendsContext);
   if (!friendsContext) {

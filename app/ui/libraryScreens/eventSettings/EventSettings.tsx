@@ -1,7 +1,8 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {View, Alert, ScrollView, useColorScheme} from 'react-native';
+import {View, Alert, ScrollView, useColorScheme, StatusBar} from 'react-native';
 import moment from 'moment';
 
+import colors from '../../../constants/colors';
 import strings from '../../../constants/strings';
 import STYLING from '../../../constants/styles';
 
@@ -28,6 +29,7 @@ const EventSettings = ({
 }) => {
   const theme = useColorScheme() || 'light';
   const STYLES = STYLING(theme);
+  StatusBar.setBarStyle(colors[theme].statusBar, true);
 
   const [event] = useState<Event>(route.params.event);
   const [eventDetail, setEventDetail] = useState<EventDetail>();

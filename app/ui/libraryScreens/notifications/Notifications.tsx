@@ -1,6 +1,7 @@
 import React from 'react';
-import {View, SafeAreaView, useColorScheme} from 'react-native';
+import {View, SafeAreaView, useColorScheme, StatusBar} from 'react-native';
 
+import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
 import strings from '../../../constants/strings';
 import STYLING from '../../../constants/styles';
@@ -12,6 +13,7 @@ import Icon from '../../components/Icon';
 const Notifications = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';
   const STYLES = STYLING(theme);
+  StatusBar.setBarStyle(colors[theme].statusBar, true);
 
   return (
     <View style={STYLES.container}>

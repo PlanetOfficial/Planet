@@ -4,6 +4,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
   useColorScheme,
+  StatusBar,
 } from 'react-native';
 import PhoneInput from 'react-phone-number-input/react-native-input';
 
@@ -30,6 +31,7 @@ const SignUpPhone = ({
 }) => {
   const theme = useColorScheme() || 'light';
   const STYLES = STYLING(theme);
+  StatusBar.setBarStyle(colors[theme].statusBar, true);
 
   const [authToken] = useState<string>(route.params.authToken);
 

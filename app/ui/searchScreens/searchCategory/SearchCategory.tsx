@@ -11,6 +11,7 @@ import {
   Alert,
   ActivityIndicator,
   useColorScheme,
+  StatusBar,
 } from 'react-native';
 
 import colors from '../../../constants/colors';
@@ -45,6 +46,7 @@ const SearchCategory = ({
 }) => {
   const theme = useColorScheme() || 'light';
   const STYLES = STYLING(theme);
+  StatusBar.setBarStyle(colors[theme].statusBar, true);
 
   const {mode, location, radius, category} = route.params;
 
