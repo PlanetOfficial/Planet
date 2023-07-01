@@ -1,5 +1,4 @@
 const colors = {
-  accent: '#f36f3f',
   red: '#ff0000',
   green: '#2ac42c',
   dim: 'rgba(0,0,0,.3)',
@@ -12,6 +11,7 @@ const light = {
   primary: '#ffffff',
   secondary: '#d9d9d9',
   neutral: '#3c3c3c',
+  accent: '#f36f3f',
 };
 
 const dark = {
@@ -19,6 +19,7 @@ const dark = {
   primary: '#2c2c2c',
   secondary: '#666666',
   neutral: '#f0f0f0',
+  accent: '#f38158',
 };
 
 export default {light, dark};
