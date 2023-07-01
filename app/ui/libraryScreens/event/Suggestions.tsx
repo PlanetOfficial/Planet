@@ -65,7 +65,9 @@ const Suggestions: React.FC<Props> = ({
           disabled={displayingSuggestion}
           onPress={() => {
             setInsertionDestination(destination);
-            navigation.navigate('SuggestSearch');
+            navigation.navigate('ModeSearch', {
+              mode: 'suggest',
+            });
           }}>
           <Icon icon={icons.add} size="xl" color={colors[theme].accent} />
         </TouchableOpacity>
@@ -77,7 +79,9 @@ const Suggestions: React.FC<Props> = ({
       disabled={displayingSuggestion}
       onPress={() => {
         setInsertionDestination(destination);
-        navigation.navigate('SuggestSearch');
+        navigation.navigate('ModeSearch', {
+          mode: 'suggest',
+        });
       }}>
       <Text color={colors[theme].accent} weight="b">
         {strings.event.addSuggestion}

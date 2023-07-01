@@ -30,14 +30,22 @@ import Header from './Header';
 
 const Search = ({
   navigation,
-  mode = 'none',
+  route,
 }: {
   navigation: any;
-  mode?: 'create' | 'suggest' | 'add' | 'none';
+  route: {
+    params:
+      | {
+          mode: 'create' | 'suggest' | 'add' | 'none';
+        }
+      | undefined;
+  };
 }) => {
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
   const STYLES = STYLING(theme);
+
+  const mode = route.params?.mode || 'none';
 
   const [genres, setGenres] = useState<Genre[]>([]);
   const [location, setLocation] = useState<Coordinate>();
@@ -61,12 +69,15 @@ const Search = ({
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', async () => {
-      initializeData();
       setLocation(await fetchUserLocation());
     });
 
     return unsubscribe;
   }, [navigation]);
+
+  useEffect(() => {
+    initializeData();
+  }, []);
 
   return (
     <View style={STYLES.container}>

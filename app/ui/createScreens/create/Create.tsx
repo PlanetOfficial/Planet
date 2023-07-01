@@ -125,7 +125,9 @@ const Create = ({
           style={[styles.addButton, STYLES.shadow]}
           onPress={() => {
             setInsertionIndex(0);
-            navigation.navigate('CreateSearch');
+            navigation.navigate('ModeSearch', {
+              mode: 'create',
+            });
           }}>
           <Text size="l" weight="b" color={colors[theme].accent}>
             {strings.event.addDestination}
