@@ -21,8 +21,9 @@ export const handleFriendRequest = async (
 
   if (response) {
     setStatus('REQSENT');
-    const newRequestsSent = [...requestsSent, user];
-    setRequestsSent(newRequestsSent);
+    const requestsSentUpdated = [user, ...requestsSent];
+    requestsSentUpdated;
+    setRequestsSent(requestsSentUpdated);
   } else {
     Alert.alert(strings.error.error, strings.error.friendRequest);
   }
@@ -38,10 +39,10 @@ export const handleUnfriend = async (
 
   if (response) {
     setStatus('NONE');
-    const newFriends = friends.filter(
+    const friendsUpdated = friends.filter(
       (friend: UserInfo) => friend.id !== userId,
     );
-    setFriends(newFriends);
+    setFriends(friendsUpdated);
   } else {
     Alert.alert(strings.error.error, strings.error.unfriend);
   }
@@ -61,13 +62,13 @@ export const handleAcceptRequest = async (
   if (response) {
     setStatus('FRIENDS');
 
-    const newFriends = [...friends, user];
-    setFriends(newFriends);
+    const friendsUpdated = [user, ...friends];
+    setFriends(friendsUpdated);
 
-    const newRequests = requests.filter(
+    const requestsUpdated = requests.filter(
       (request: UserInfo) => request.id !== userId,
     );
-    setRequests(newRequests);
+    setRequests(requestsUpdated);
   } else {
     Alert.alert(strings.error.error, strings.error.acceptFriendRequest);
   }
@@ -83,10 +84,10 @@ export const handleDeclineRequest = async (
 
   if (response) {
     setStatus('NONE');
-    const newRequests = requests.filter(
+    const requestsUpdated = requests.filter(
       (request: UserInfo) => request.id !== userId,
     );
-    setRequests(newRequests);
+    setRequests(requestsUpdated);
   } else {
     Alert.alert(strings.error.error, strings.error.declineFriendRequest);
   }
@@ -102,10 +103,12 @@ export const handleCancelRequest = async (
 
   if (response) {
     setStatus('NONE');
-    const newRequestsSent = requestsSent.filter(
+    console.log(requestsSent);
+    const requestsSentUpdated = requestsSent.filter(
       (request: UserInfo) => request.id !== userId,
     );
-    setRequestsSent(newRequestsSent);
+    console.log(requestsSentUpdated);
+    setRequestsSent(requestsSentUpdated);
   } else {
     Alert.alert(strings.error.error, strings.error.cancelFriendRequest);
   }

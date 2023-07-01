@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {
   View,
   SafeAreaView,
@@ -22,9 +22,40 @@ import Separator from '../../components/Separator';
 import {clearCaches} from '../../../utils/CacheHelpers';
 import {removeAccount} from '../../../utils/api/authAPI';
 
+import FriendsContext from '../../../context/FriendsContext';
+import BookmarkContext from '../../../context/BookmarkContext';
+
 const AccountSettings = ({navigation}: {navigation: any}) => {
+  const bookmarkContext = useContext(BookmarkContext);
+  if (!bookmarkContext) {
+    throw new Error('BookmarkContext is not set!');
+  }
+  const {setBookmarks} = bookmarkContext;
+
+  const friendsContext = useContext(FriendsContext);
+  if (!friendsContext) {
+    throw new Error('FriendsContext is not set!');
+  }
+  const {
+    setRequests,
+    setRequestsSent,
+    setFriends,
+    setSuggestions,
+    setFriendGroups,
+  } = friendsContext;
+
+  const resetContexts = () => {
+    setBookmarks([]);
+    setRequests([]);
+    setRequestsSent([]);
+    setFriends([]);
+    setSuggestions([]);
+    setFriendGroups([]);
+  };
+
   const handleLogout = async () => {
     try {
+      resetContexts();
       clearCaches();
     } catch (error) {
       Alert.alert('Error', 'Unable to logout. Please try again.');
@@ -67,6 +98,7 @@ const AccountSettings = ({navigation}: {navigation: any}) => {
                   const response = await removeAccount();
 
                   if (response) {
+                    resetContexts();
                     clearCaches();
                     await messaging().deleteToken();
                     navigation.reset({

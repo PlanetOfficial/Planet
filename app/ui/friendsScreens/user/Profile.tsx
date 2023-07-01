@@ -88,7 +88,7 @@ const Profile: React.FC<Props> = ({
                   user.id,
                   setStatus,
                   requestsSent,
-                  setRequests,
+                  setRequestsSent,
                   user,
                 )
               }>

@@ -1,5 +1,5 @@
-import React, {useEffect, useMemo, useState} from 'react';
-import {Alert, Animated} from 'react-native';
+import React from 'react';
+import {Animated} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {
   StackCardInterpolatedStyle,
@@ -43,22 +43,10 @@ import NotificationSettings from '../profileScreens/settingsScreens/Notification
 import PrivacySettings from '../profileScreens/settingsScreens/PrivacySettings';
 import ProfileSettings from '../profileScreens/settingsScreens/ProfileSettings';
 
-import strings from '../../constants/strings';
+import BookmarkStateProvider from '../../context/BookmarkState';
+import FriendsStateProvider from '../../context/FriendsState';
 
-import BookmarkContext from '../../context/BookmarkContext';
-import FriendsContext from '../../context/FriendsContext';
-
-import {
-  Event,
-  Coordinate,
-  Category,
-  Poi as PoiType,
-  UserInfo,
-  Destination,
-  FriendGroup,
-} from '../../utils/types';
-import {getBookmarks} from '../../utils/api/bookmarkAPI';
-import {getFriendsInfo} from '../../utils/api/friendsAPI';
+import RootStackParamList from './RootStackParamList';
 
 interface AppNavigationProps {
   isLoggedIn: boolean;
@@ -68,152 +56,11 @@ function TabStack() {
   return <NavBar />;
 }
 
-type RootStackParamList = {
-  TabStack: undefined;
-  SearchCategory: {
-    mode: 'create' | 'suggest' | 'add' | 'none';
-    location: Coordinate;
-    radius: number;
-    category: Category;
-  };
-  SearchMap: {
-    mode: 'create' | 'suggest' | 'add' | 'none';
-    location: Coordinate;
-    radius: number;
-    category: Category;
-  };
-  Poi: {
-    mode: 'create' | 'suggest' | 'add' | 'none';
-    place_id: string | undefined;
-    poi: PoiType | undefined;
-  };
-  Friends: undefined;
-  AddFriend: {
-    members: UserInfo[];
-    event_id: number | undefined;
-  };
-  Mutuals: {
-    mutuals: UserInfo[];
-  };
-  User: {
-    user: UserInfo;
-  };
-  Explore: undefined;
-  Settings: undefined;
-  AccountSettings: undefined;
-  ContactUs: undefined;
-  LocationsSettings: undefined;
-  NotificationSettings: undefined;
-  PrivacySettings: undefined;
-  ProfileSettings: undefined;
-  Create:
-    | {
-        members: UserInfo[] | undefined;
-        destination: PoiType | undefined;
-      }
-    | undefined;
-  CreateSearch: undefined;
-  Event: {
-    event: Event;
-    destination: PoiType;
-  };
-  EventSettings: {
-    event: Event;
-    destination: Destination;
-  };
-  Roulette: {
-    destination: Destination;
-    eventId: number;
-  };
-  SpinHistory: {
-    destination: Destination;
-  };
-  SuggestSearch: undefined;
-  AddSearch: undefined;
-  Notifications: undefined;
-  Login: undefined;
-  SignUpName: undefined;
-  SignUpCreds: {
-    firstName: string;
-    lastName: string;
-  };
-  SignUpPhone: {
-    authToken: string;
-  };
-  VerifyPhone: {
-    authToken: string;
-  };
-  SignUpInfo: {
-    authToken: string;
-  };
-  SignUpVerify: {
-    authToken: string;
-  };
-  ForgotPasswordVerify: {
-    username: string;
-  };
-  ResetPassword: {
-    authToken: string;
-  };
-  ForgotPassword: undefined;
-};
-
 const Stack = createStackNavigator<RootStackParamList>();
 const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
-  const [bookmarks, setBookmarks] = useState<PoiType[]>([]);
-  const bookmarkValue = useMemo(() => ({bookmarks, setBookmarks}), [bookmarks]);
-  const initializeBookmarks = async () => {
-    const result = await getBookmarks();
-    if (result) {
-      setBookmarks(result);
-    } else {
-      Alert.alert(strings.error.error, strings.error.loadBookmarks);
-    }
-  };
-
-  const [suggestions, setSuggestions] = useState<UserInfo[]>([]);
-  const [friends, setFriends] = useState<UserInfo[]>([]);
-  const [requests, setRequests] = useState<UserInfo[]>([]);
-  const [requestsSent, setRequestsSent] = useState<UserInfo[]>([]);
-  const [friendGroups, setFriendGroups] = useState<FriendGroup[]>([]);
-  const friendsInfo = useMemo(
-    () => ({
-      suggestions,
-      setSuggestions,
-      friends,
-      setFriends,
-      requests,
-      setRequests,
-      requestsSent,
-      setRequestsSent,
-      friendGroups,
-      setFriendGroups,
-    }),
-    [suggestions, friends, requests, requestsSent, friendGroups],
-  );
-  const initializeFriendsInfo = async () => {
-    const result = await getFriendsInfo();
-    if (result) {
-      setSuggestions(result.suggestions);
-      setFriends(result.friends);
-      setRequests(result.requests);
-      setRequestsSent(result.requests_sent);
-      setFriendGroups(result.friendgroups);
-    } else {
-      Alert.alert(strings.error.error, strings.error.loadFriendsList);
-    }
-  };
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      initializeBookmarks();
-      initializeFriendsInfo();
-    }
-  }, [isLoggedIn]);
-
   return isLoggedIn ? (
-    <FriendsContext.Provider value={friendsInfo}>
-      <BookmarkContext.Provider value={bookmarkValue}>
+    <FriendsStateProvider isLoggedIn={isLoggedIn}>
+      <BookmarkStateProvider isLoggedIn={isLoggedIn}>
         <NavigationContainer>
           <BottomSheetModalProvider>
             <Stack.Navigator initialRouteName="TabStack">
@@ -254,11 +101,11 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
             </Stack.Navigator>
           </BottomSheetModalProvider>
         </NavigationContainer>
-      </BookmarkContext.Provider>
-    </FriendsContext.Provider>
+      </BookmarkStateProvider>
+    </FriendsStateProvider>
   ) : (
-    <FriendsContext.Provider value={friendsInfo}>
-      <BookmarkContext.Provider value={bookmarkValue}>
+    <FriendsStateProvider isLoggedIn={isLoggedIn}>
+      <BookmarkStateProvider isLoggedIn={isLoggedIn}>
         <NavigationContainer>
           <BottomSheetModalProvider>
             <Stack.Navigator initialRouteName="Login">
@@ -299,8 +146,8 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
             </Stack.Navigator>
           </BottomSheetModalProvider>
         </NavigationContainer>
-      </BookmarkContext.Provider>
-    </FriendsContext.Provider>
+      </BookmarkStateProvider>
+    </FriendsStateProvider>
   );
 };
 
