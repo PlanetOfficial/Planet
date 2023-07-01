@@ -103,11 +103,9 @@ export const handleCancelRequest = async (
 
   if (response) {
     setStatus('NONE');
-    console.log(requestsSent);
     const requestsSentUpdated = requestsSent.filter(
       (request: UserInfo) => request.id !== userId,
     );
-    console.log(requestsSentUpdated);
     setRequestsSent(requestsSentUpdated);
   } else {
     Alert.alert(strings.error.error, strings.error.cancelFriendRequest);
