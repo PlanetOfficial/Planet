@@ -33,13 +33,13 @@ const Search = ({
   route,
 }: {
   navigation: any;
-  route: {
-    params:
-      | {
+  route:
+    | {
+        params: {
           mode: 'create' | 'suggest' | 'add' | 'none';
-        }
-      | undefined;
-  };
+        };
+      }
+    | any;
 }) => {
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
