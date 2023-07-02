@@ -55,7 +55,7 @@ const Overview: React.FC<Props> = ({destination, destinationDetails}) => {
               </Text>
             </>
           ) : (
-            <Text>{strings.poi.noPrice}</Text>
+            <Text color={colors[theme].secondary}>{strings.poi.noPrice}</Text>
           )}
         </View>
         <View style={styles.separator} />
