@@ -29,11 +29,19 @@ const Overview: React.FC<Props> = ({destination, destinationDetails}) => {
     <View style={styles.container}>
       <View style={styles.top}>
         <View style={styles.hours}>
-          <Text
-            color={colors[theme].accent}>{`★ ${destination.rating}/5`}</Text>
-          <Text size="xs" weight="l">
-            {`(${destination.rating_count} ${strings.poi.reviews})`}
-          </Text>
+          {destination.rating ? (
+            <>
+              <Text
+                color={
+                  colors[theme].accent
+                }>{`★ ${destination.rating}/5`}</Text>
+              <Text size="xs" weight="l">
+                {`(${destination.rating_count} ${strings.poi.reviews})`}
+              </Text>
+            </>
+          ) : (
+            <Text size="s">{strings.poi.noRating}</Text>
+          )}
         </View>
         <View style={styles.separator} />
         <View style={styles.price}>

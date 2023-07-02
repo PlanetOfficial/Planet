@@ -108,12 +108,14 @@ const Header: React.FC<Props> = ({
           <Text size="l" weight="b" color={colors[theme].primary}>
             {destination?.name}
           </Text>
-          <Icon
-            size="l"
-            icon={icons.gallery}
-            color={colors[theme].primary}
-            onPress={() => setGalleryVisible(true)}
-          />
+          {destination?.photo && destination?.photo.length > 1 ? (
+            <Icon
+              size="l"
+              icon={icons.gallery}
+              color={colors[theme].primary}
+              onPress={() => setGalleryVisible(true)}
+            />
+          ) : null}
         </Animated.View>
       </Animated.View>
     </Animated.View>

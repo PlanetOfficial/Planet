@@ -5,12 +5,12 @@ import {
   Alert,
   ScrollView,
   FlatList,
-  Image,
   TouchableOpacity,
   useColorScheme,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {s} from 'react-native-size-matters';
+import FastImage from 'react-native-fast-image';
 
 import colors from '../../../constants/colors';
 import numbers from '../../../constants/numbers';
@@ -99,7 +99,7 @@ const Search = ({
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={styles.scrollView}>
-                {genre.categories.map((category: Category) => (
+                {genre.categories.map((category: Category, idx: number) => (
                   <TouchableOpacity
                     key={category.id}
                     style={styles.categoryContainer}
@@ -112,9 +112,15 @@ const Search = ({
                       });
                     }}>
                     <View style={[styles.iconContainer, STYLES.shadow]}>
-                      <Image
+                      <FastImage
                         style={styles.icon}
-                        source={{uri: category.icon.url}}
+                        source={{
+                          uri: category.icon.url,
+                          priority:
+                            idx < 4
+                              ? FastImage.priority.high
+                              : FastImage.priority.low,
+                        }}
                       />
                     </View>
                     <Text size="xs" weight="l" center={true}>

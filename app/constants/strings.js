@@ -77,6 +77,7 @@ const strings = {
     website: 'Website',
     noPrice: 'No Price',
     noHours: 'No Hours',
+    noRating: 'No Rating',
     attributes: 'Attributes',
     open: 'Open',
     closed: 'Closed',
