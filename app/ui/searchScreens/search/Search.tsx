@@ -124,6 +124,7 @@ const Search = ({
                               ? FastImage.priority.high
                               : FastImage.priority.low,
                         }}
+                        tintColor={colors[theme].neutral}
                       />
                     </View>
                     <Text size="xs" weight="l" center={true}>
@@ -208,9 +209,8 @@ const styling = (theme: 'light' | 'dark') =>
       backgroundColor: colors[theme].primary,
     },
     icon: {
-      width: '60%',
-      height: '60%',
-      tintColor: colors[theme].neutral,
+      width: '55%',
+      height: '55%',
     },
     flatList: {
       paddingBottom: s(250),
