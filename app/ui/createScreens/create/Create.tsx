@@ -116,6 +116,7 @@ const Create = ({
           date={date}
           setDate={setDate}
           members={members}
+          destinations={destinations}
         />
       ) : null}
       {destinations && destinations.length > 0 ? (

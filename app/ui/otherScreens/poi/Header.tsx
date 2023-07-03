@@ -155,6 +155,7 @@ const styling = (theme: 'light' | 'dark') =>
     },
     mainTitle: {
       paddingRight: s(10),
+      maxWidth: s(280),
     },
   });
 

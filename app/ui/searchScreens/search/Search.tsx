@@ -73,6 +73,7 @@ const Search = ({
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', async () => {
       setLocation(await fetchUserLocation());
+      setSearchText('');
     });
 
     return unsubscribe;
@@ -88,6 +89,7 @@ const Search = ({
         navigation={navigation}
         searching={searching}
         setSearching={setSearching}
+        searchText={searchText}
         setSearchText={setSearchText}
         mode={mode}
       />
