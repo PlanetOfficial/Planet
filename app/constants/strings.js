@@ -104,7 +104,7 @@ const strings = {
     friendRequests: 'Friend Requests',
     pendingRequest: 'Pending Request',
     pendingRequests: 'Pending Requests',
-    mutualEvents: 'Common Events',
+    mutualEvents: 'Shared Events',
     addFriend: 'Add Friend',
     unfriend: 'Unfriend',
     cancelRequest: 'Cancel Request',

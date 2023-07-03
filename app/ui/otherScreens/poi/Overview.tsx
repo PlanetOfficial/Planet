@@ -40,7 +40,9 @@ const Overview: React.FC<Props> = ({destination, destinationDetails}) => {
               </Text>
             </>
           ) : (
-            <Text size="s">{strings.poi.noRating}</Text>
+            <Text size="s" color={colors[theme].secondary}>
+              {strings.poi.noRating}
+            </Text>
           )}
         </View>
         <View style={styles.separator} />

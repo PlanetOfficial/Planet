@@ -48,6 +48,7 @@ const Search = ({
   StatusBar.setBarStyle(colors[theme].statusBar, true);
 
   const mode = route.params?.mode || 'none';
+  console.log('mode: ', mode);
 
   const [genres, setGenres] = useState<Genre[]>([]);
   const [location, setLocation] = useState<Coordinate>();

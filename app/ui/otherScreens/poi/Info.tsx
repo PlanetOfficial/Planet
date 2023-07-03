@@ -131,7 +131,8 @@ const Info: React.FC<Props> = ({destination, destinationDetails}) => {
           />
         </View>
       ) : null}
-      {destinationDetails?.attributes ? (
+      {destinationDetails?.attributes &&
+      destinationDetails?.attributes.length > 0 ? (
         <View style={styles.row}>
           <View style={styles.texts}>
             <Text size="s">{strings.poi.attributes}:</Text>

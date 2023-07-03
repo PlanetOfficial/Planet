@@ -100,7 +100,7 @@ const ProfileBody = ({navigation}: {navigation: any}) => {
             <TouchableOpacity
               style={styles.button}
               onPress={() => navigation.navigate('ProfileSettings')}>
-              <Text size="s">{strings.profile.editProfile}</Text>
+              <Text size="xs">{strings.profile.editProfile}</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -175,7 +175,7 @@ const styling = (theme: 'light' | 'dark') =>
       marginRight: s(20),
     },
     texts: {
-      height: s(50),
+      height: s(55),
       justifyContent: 'space-evenly',
       maxWidth: s(170),
       marginBottom: s(5),
