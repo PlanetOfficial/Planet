@@ -6,8 +6,10 @@ import {
   FlatList,
   TouchableOpacity,
   useColorScheme,
+  StatusBar,
 } from 'react-native';
 
+import colors from '../../constants/colors';
 import icons from '../../constants/icons';
 import strings from '../../constants/strings';
 import STYLING from '../../constants/styles';
@@ -24,6 +26,7 @@ import {handleBookmark} from '../../utils/Misc';
 const Explore = ({navigation, route}: {navigation: any; route: any}) => {
   const theme = useColorScheme() || 'light';
   const STYLES = STYLING(theme);
+  StatusBar.setBarStyle(colors[theme].statusBar, true);
 
   const {name, pois, location} = route.params;
   const [bookmarks, setBookmarks] = useState<Poi[]>([]);

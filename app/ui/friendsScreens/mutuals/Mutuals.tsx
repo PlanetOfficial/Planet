@@ -6,8 +6,10 @@ import {
   FlatList,
   TouchableOpacity,
   useColorScheme,
+  StatusBar,
 } from 'react-native';
 
+import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
 import strings from '../../../constants/strings';
 import STYLING from '../../../constants/styles';
@@ -31,6 +33,7 @@ const Mutuals = ({
 }) => {
   const theme = useColorScheme() || 'light';
   const STYLES = STYLING(theme);
+  StatusBar.setBarStyle(colors[theme].statusBar, true);
 
   const [mutuals] = useState<UserInfo[]>(route.params.mutuals);
 

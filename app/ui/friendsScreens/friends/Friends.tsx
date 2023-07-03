@@ -9,6 +9,7 @@ import {
   ActivityIndicator,
   LayoutAnimation,
   useColorScheme,
+  StatusBar,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 import {TouchableOpacity} from 'react-native-gesture-handler';
@@ -31,6 +32,7 @@ const Friends = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
   const STYLES = STYLING(theme);
+  StatusBar.setBarStyle(colors[theme].statusBar, true);
 
   const searchRef = createRef<TextInput>();
   const [searchText, setSearchText] = useState<string>('');

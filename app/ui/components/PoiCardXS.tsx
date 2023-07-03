@@ -63,7 +63,7 @@ const styling = (theme: 'light' | 'dark') =>
       borderTopRightRadius: s(5),
       width: '100%',
       height: s(22),
-      backgroundColor: 'rgba(255, 255, 255, 0.8)',
+      backgroundColor: colors[theme].blur,
     },
     title: {
       flex: 1,

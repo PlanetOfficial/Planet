@@ -6,10 +6,12 @@ import {
   FlatList,
   TouchableOpacity,
   useColorScheme,
+  StatusBar,
 } from 'react-native';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 import EncryptedStorage from 'react-native-encrypted-storage';
 
+import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
 import strings from '../../../constants/strings';
 import STYLING, {sctStyling} from '../../../constants/styles';
@@ -39,6 +41,7 @@ const User = ({
   const theme = useColorScheme() || 'light';
   const STYLES = STYLING(theme);
   const sctStyles = sctStyling(theme);
+  StatusBar.setBarStyle(colors[theme].statusBar, true);
 
   const [selectedIndex, setIndex] = useState<number>(0);
   const [self, setSelf] = useState<string>('');

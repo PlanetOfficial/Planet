@@ -1,5 +1,11 @@
 import React, {useCallback, useContext, useEffect, useState} from 'react';
-import {StyleSheet, View, TouchableOpacity, useColorScheme} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  useColorScheme,
+  StatusBar,
+} from 'react-native';
 import {s} from 'react-native-size-matters';
 import moment from 'moment';
 
@@ -33,6 +39,7 @@ const Create = ({
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
   const STYLES = STYLING(theme);
+  StatusBar.setBarStyle(colors[theme].statusBar, true);
 
   const [eventTitle, setEventTitle] = useState<string>();
   const [date, setDate] = useState<string>();

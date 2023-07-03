@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Alert,
   useColorScheme,
+  StatusBar,
 } from 'react-native';
 import {s, vs} from 'react-native-size-matters';
 import messaging from '@react-native-firebase/messaging';
@@ -33,6 +34,7 @@ const SignUpInfo = ({
 }) => {
   const theme = useColorScheme() || 'light';
   const STYLES = STYLING(theme);
+  StatusBar.setBarStyle(colors[theme].statusBar, true);
 
   const [authToken] = useState<string>(route.params.authToken);
 

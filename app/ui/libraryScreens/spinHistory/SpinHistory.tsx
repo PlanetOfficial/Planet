@@ -7,6 +7,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   useColorScheme,
+  StatusBar,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 import moment from 'moment';
@@ -38,6 +39,7 @@ const SpinHistory = ({
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
   const STYLES = STYLING(theme);
+  StatusBar.setBarStyle(colors[theme].statusBar, true);
 
   const [destination] = useState<Destination>(route.params.destination);
 

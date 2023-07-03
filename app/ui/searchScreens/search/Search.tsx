@@ -8,6 +8,7 @@ import {
   Image,
   TouchableOpacity,
   useColorScheme,
+  StatusBar,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {s} from 'react-native-size-matters';
@@ -38,6 +39,7 @@ const Search = ({
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
   const STYLES = STYLING(theme);
+  StatusBar.setBarStyle(colors[theme].statusBar, true);
 
   const [genres, setGenres] = useState<Genre[]>([]);
   const [location, setLocation] = useState<Coordinate>();

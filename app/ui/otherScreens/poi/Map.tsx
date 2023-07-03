@@ -20,7 +20,6 @@ const Map: React.FC<Props> = ({latitude, longitude}) => {
         setExpanded(!expanded);
       }}
       style={[styles.map, {height: expanded ? s(360) : s(180)}]}
-      userInterfaceStyle={'light'}
       initialRegion={{
         latitude: latitude,
         longitude: longitude,
