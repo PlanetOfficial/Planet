@@ -31,7 +31,7 @@ const AccountSettings = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';
   const STYLES = STYLING(theme);
   StatusBar.setBarStyle(colors[theme].statusBar, true);
-  
+
   const bookmarkContext = useContext(BookmarkContext);
   if (!bookmarkContext) {
     throw new Error('BookmarkContext is not set!');
