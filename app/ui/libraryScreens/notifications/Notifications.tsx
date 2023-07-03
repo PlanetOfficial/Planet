@@ -8,7 +8,7 @@ import STYLES from '../../../constants/styles';
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 
-// TODO: Implement Notifications screen
+// TODO: INCOMPLETE
 const Notifications = ({navigation}: {navigation: any}) => {
   return (
     <View style={STYLES.container}>

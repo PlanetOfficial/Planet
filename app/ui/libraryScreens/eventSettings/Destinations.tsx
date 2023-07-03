@@ -14,6 +14,7 @@ import Icon from '../../components/Icon';
 import Separator from '../../components/Separator';
 
 import {Destination, Event, EventDetail} from '../../../utils/types';
+
 import {
   handleRemoveDestination,
   handleRenameDestination,
@@ -66,7 +67,7 @@ const Destinations: React.FC<Props> = ({
                 delayLongPress={1}
                 onLongPress={drag}
                 disabled={isActive}>
-                <Icon size="m" icon={icons.drag} color={colors.black} />
+                <Icon size="m" icon={icons.drag} />
               </TouchableOpacity>
               <TouchableOpacity
                 style={destinationStyles.title}
@@ -96,7 +97,7 @@ const Destinations: React.FC<Props> = ({
                 }>
                 <Text size="s">{item.name}</Text>
                 <View style={destinationStyles.pencil}>
-                  <Icon size="xs" icon={icons.edit} color={colors.black} />
+                  <Icon size="xs" icon={icons.edit} />
                 </View>
               </TouchableOpacity>
               <Icon

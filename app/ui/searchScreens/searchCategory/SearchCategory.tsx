@@ -42,7 +42,6 @@ const SearchCategory = ({
   const [places, setPlaces] = useState<Poi[]>([]);
   const [filters, setFilters] = useState<(number | number[])[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [refreshing, setRefreshing] = useState<boolean>(false);
 
   const bookmarkContext = useContext(BookmarkContext);
   if (!bookmarkContext) {
@@ -53,7 +52,6 @@ const SearchCategory = ({
   const filterRef = useRef<any>(null); // due to forwardRef
 
   const loadData = useCallback(async () => {
-    setRefreshing(true);
     const _filters: {[key: string]: string | string[]} = {};
     for (let i = 0; i < category.filter.length; i++) {
       const filter = category.filter[i];
@@ -82,7 +80,6 @@ const SearchCategory = ({
     } else {
       Alert.alert(strings.error.error, strings.error.loadPlaces);
     }
-    setRefreshing(false);
     setLoading(false);
   }, [category, filters, location.latitude, location.longitude, radius]);
 
@@ -154,8 +151,6 @@ const SearchCategory = ({
           navigation={navigation}
           results={places}
           filterRef={filterRef}
-          refreshing={refreshing}
-          loadData={loadData}
           bookmarks={bookmarks}
           setBookmarks={setBookmarks}
           location={location}

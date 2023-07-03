@@ -35,7 +35,7 @@ const Members: React.FC<Props> = ({navigation, event, eventDetail}) => {
               numberOfLines={
                 1
               }>{`${member.first_name} ${member.last_name}`}</Text>
-            <Text size="xs" weight="l" color={colors.black} numberOfLines={1}>
+            <Text size="xs" weight="l" numberOfLines={1}>
               {'@' + member.username}
             </Text>
           </View>

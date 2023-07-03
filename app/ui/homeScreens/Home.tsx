@@ -24,7 +24,7 @@ import BookmarkContext from '../../context/BookmarkContext';
 import {Coordinate, Poi} from '../../utils/types';
 import {fetchUserLocation, handleBookmark} from '../../utils/Misc';
 
-// TODO: THIS PAGE IS INCOMPLETE
+// TODO: INCOMPLETE
 const Home = ({navigation}: {navigation: any}) => {
   const [location, setLocation] = useState<Coordinate>();
 

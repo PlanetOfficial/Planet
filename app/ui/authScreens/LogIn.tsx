@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   ActivityIndicator,
   View,
@@ -19,6 +19,10 @@ import Text from '../components/Text';
 
 import {isVerified, login, saveTokenToDatabase} from '../../utils/api/authAPI';
 import {cacheUserInfo} from '../../utils/CacheHelpers';
+import {getFriendsInfo} from '../../utils/api/friendsAPI';
+import BookmarkContext from '../../context/BookmarkContext';
+import FriendsContext from '../../context/FriendsContext';
+import {getBookmarks} from '../../utils/api/bookmarkAPI';
 
 const LoginScreen = ({navigation}: {navigation: any}) => {
   const [username, setUsername] = useState<string>('');
@@ -26,6 +30,44 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
 
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
+
+  const bookmarkContext = useContext(BookmarkContext);
+  if (!bookmarkContext) {
+    throw new Error('BookmarkContext is not set!');
+  }
+  const {setBookmarks} = bookmarkContext;
+
+  const friendsContext = useContext(FriendsContext);
+  if (!friendsContext) {
+    throw new Error('FriendsContext is not set!');
+  }
+  const {
+    setRequests,
+    setRequestsSent,
+    setFriends,
+    setSuggestions,
+    setFriendGroups,
+  } = friendsContext;
+
+  const initializeContext = async () => {
+    const _bookmarks = await getBookmarks();
+    if (_bookmarks) {
+      setBookmarks(_bookmarks);
+    } else {
+      Alert.alert(strings.error.error, strings.error.loadBookmarks);
+    }
+
+    const result = await getFriendsInfo();
+    if (result) {
+      setSuggestions(result.suggestions);
+      setFriends(result.friends);
+      setRequests(result.requests);
+      setRequestsSent(result.requests_sent);
+      setFriendGroups(result.friendgroups);
+    } else {
+      Alert.alert(strings.error.error, strings.error.loadFriendsList);
+    }
+  };
 
   const handleLogin = async () => {
     // Perform login logic, e.g. send login request to API
@@ -55,12 +97,13 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
 
         return;
       }
-
       const cacheSuccess = await cacheUserInfo(response?.authToken);
       if (!cacheSuccess) {
         Alert.alert('Something went wrong. Please try again.');
         return;
       }
+
+      initializeContext();
 
       // save to firebase
       const fcm_token = await messaging().getToken();

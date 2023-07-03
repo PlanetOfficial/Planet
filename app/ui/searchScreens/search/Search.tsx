@@ -141,7 +141,7 @@ const Search = ({
             <View style={STYLES.center}>
               <Text>{strings.profile.noBookmarksFound}</Text>
               <Text> </Text>
-              <Text size="s" color={colors.black}>
+              <Text size="s">
                 {strings.profile.noBookmarksFoundDescription}
               </Text>
             </View>

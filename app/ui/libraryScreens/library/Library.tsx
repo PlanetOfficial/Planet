@@ -10,6 +10,7 @@ import {
   RefreshControl,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
@@ -22,7 +23,6 @@ import EventRow from '../../components/EventRow';
 
 import {getEvents} from '../../../utils/api/eventAPI';
 import {Event} from '../../../utils/types';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Library = ({navigation}: {navigation: any}) => {
   const [self, setSelf] = useState<string>('');
@@ -95,9 +95,7 @@ const Library = ({navigation}: {navigation: any}) => {
             <View style={STYLES.center}>
               <Text>{strings.event.noEventsFound}</Text>
               <Text> </Text>
-              <Text size="s" color={colors.black}>
-                {strings.event.noEventsFoundDescription}
-              </Text>
+              <Text size="s">{strings.event.noEventsFoundDescription}</Text>
             </View>
           }
           keyExtractor={(item: Event) => item.id.toString()}

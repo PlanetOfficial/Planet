@@ -1,5 +1,11 @@
 import React, {useContext} from 'react';
-import {View, FlatList, TouchableOpacity} from 'react-native';
+import {
+  View,
+  FlatList,
+  TouchableOpacity,
+  Alert,
+  RefreshControl,
+} from 'react-native';
 
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
@@ -8,18 +14,31 @@ import STYLES from '../../../constants/styles';
 
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
+import UserRow from '../../components/UserRow';
 
 import FriendsContext from '../../../context/FriendsContext';
 
 import {UserInfo} from '../../../utils/types';
-import UserRow from '../../components/UserRow';
+import {getFriends} from '../../../utils/api/friendsAPI';
 
 const FriendsList = ({navigation}: {navigation: any}) => {
   const friendsContext = useContext(FriendsContext);
   if (!friendsContext) {
     throw new Error('FriendsContext is not set!');
   }
-  const {friends} = friendsContext;
+  const {friends, setFriends, setFriendGroups} = friendsContext;
+
+  const [loading, setLoading] = React.useState(false);
+  const loadFriends = async () => {
+    const response = await getFriends();
+
+    if (response) {
+      setFriends(response.friends);
+      setFriendGroups(response.friendgroups);
+    } else {
+      Alert.alert(strings.error.error, strings.error.loadFriendsList);
+    }
+  };
 
   return (
     <FlatList
@@ -43,10 +62,19 @@ const FriendsList = ({navigation}: {navigation: any}) => {
         <View style={STYLES.center}>
           <Text>{strings.friends.noFriendsFound}</Text>
           <Text> </Text>
-          <Text size="s" color={colors.black}>
-            {strings.friends.noFriendsFoundDescription}
-          </Text>
+          <Text size="s">{strings.friends.noFriendsFoundDescription}</Text>
         </View>
+      }
+      refreshControl={
+        <RefreshControl
+          refreshing={loading}
+          onRefresh={async () => {
+            setLoading(true);
+            await loadFriends();
+            setLoading(false);
+          }}
+          tintColor={colors.primary}
+        />
       }
     />
   );

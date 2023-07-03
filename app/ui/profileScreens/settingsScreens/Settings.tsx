@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 
-import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
 import strings from '../../../constants/strings';
 import STYLES from '../../../constants/styles';
@@ -70,7 +69,7 @@ const Settings = ({navigation}: {navigation: any}) => {
         {settingsItems.map((settingsItem, index) => (
           <View key={index}>
             <TouchableOpacity style={styles.row} onPress={settingsItem.onPress}>
-              <Icon size="l" icon={settingsItem.icon} color={colors.black} />
+              <Icon size="l" icon={settingsItem.icon} />
               <View style={STYLES.texts}>
                 <Text>{settingsItem.name}</Text>
               </View>
@@ -80,7 +79,7 @@ const Settings = ({navigation}: {navigation: any}) => {
           </View>
         ))}
         <View style={styles.footer}>
-          <Text size="s" weight="l" color={colors.black}>
+          <Text size="s" weight="l">
             Privacy Policy and Stuff. This is a totally legit app and our
             company is not run by babies.
           </Text>

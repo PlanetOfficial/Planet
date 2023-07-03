@@ -27,7 +27,7 @@ const Overview: React.FC<Props> = ({destination, destinationDetails}) => {
       <View style={styles.top}>
         <View style={styles.hours}>
           <Text color={colors.primary}>{`★ ${destination.rating}/5`}</Text>
-          <Text size="xs" weight="l" color={colors.black}>
+          <Text size="xs" weight="l">
             {`(${destination.rating_count} ${strings.poi.reviews})`}
           </Text>
         </View>
@@ -43,7 +43,7 @@ const Overview: React.FC<Props> = ({destination, destinationDetails}) => {
               </Text>
             </>
           ) : (
-            <Text color={colors.black}>{strings.poi.noPrice}</Text>
+            <Text>{strings.poi.noPrice}</Text>
           )}
         </View>
         <View style={styles.separator} />
@@ -56,7 +56,7 @@ const Overview: React.FC<Props> = ({destination, destinationDetails}) => {
                 <Text color={colors.red}>{strings.poi.closed}</Text>
               )}
 
-              <Text size="xs" weight="l" color={colors.black}>
+              <Text size="xs" weight="l">
                 {
                   destinationDetails.hours[(date.getDay() + 6) % 7].split(
                     ' ',
@@ -65,7 +65,7 @@ const Overview: React.FC<Props> = ({destination, destinationDetails}) => {
               </Text>
             </>
           ) : (
-            <Text color={colors.black}>{strings.poi.noHours}</Text>
+            <Text>{strings.poi.noHours}</Text>
           )}
         </View>
       </View>

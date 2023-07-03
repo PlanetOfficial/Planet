@@ -70,6 +70,7 @@ const Header: React.FC<Props> = ({
         <SafeAreaView>
           <View style={styles.row}>
             <Icon
+              size="m"
               icon={icons.back}
               onPress={() => {
                 StatusBar.setBarStyle('dark-content', true);

@@ -1,5 +1,7 @@
 import {Alert, LayoutAnimation} from 'react-native';
+
 import strings from '../../../constants/strings';
+
 import {Poi, UserInfo} from '../../../utils/types';
 import {postEvent} from '../../../utils/api/eventAPI';
 

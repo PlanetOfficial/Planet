@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: s(20),
-    marginVertical: s(10),
+    marginVertical: s(15),
   },
   separator: {
     marginHorizontal: s(20),

@@ -1,7 +1,6 @@
 import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {StyleSheet, View, TouchableOpacity} from 'react-native';
 import {s} from 'react-native-size-matters';
-
 import moment from 'moment';
 
 import colors from '../../../constants/colors';

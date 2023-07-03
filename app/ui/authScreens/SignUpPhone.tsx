@@ -4,10 +4,11 @@ import PhoneInput from 'react-phone-number-input/react-native-input';
 
 import {E164Number} from 'libphonenumber-js/types';
 
-import Text from '../components/Text';
 import colors from '../../constants/colors';
 import strings from '../../constants/strings';
 import STYLES from '../../constants/styles';
+
+import Text from '../components/Text';
 
 import {sendCode} from '../../utils/api/authAPI';
 

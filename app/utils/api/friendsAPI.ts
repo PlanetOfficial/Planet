@@ -1,6 +1,6 @@
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {FriendAPIURL} from './APIConstants';
-import {UserDetail, UserInfo} from '../types';
+import {FriendGroup, UserDetail, UserInfo} from '../types';
 
 /**
  * @requires auth_token should be set in EncryptedStorage before calling this function
@@ -30,7 +30,13 @@ export const getFriend = async (id: number): Promise<UserDetail | null> => {
 /**
  * @requires auth_token should be set in EncryptedStorage before calling this function
  */
-export const getFriends = async () => {
+export const getFriendsInfo = async (): Promise<{
+  suggestions: UserInfo[];
+  requests: UserInfo[];
+  requests_sent: UserInfo[];
+  friends: UserInfo[];
+  friendgroups: FriendGroup[];
+} | null> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
   if (!authToken) {
@@ -39,6 +45,62 @@ export const getFriends = async () => {
 
   const response = await fetch(
     FriendAPIURL + `/friends?authtoken=${authToken}`,
+    {
+      method: 'GET',
+    },
+  );
+
+  if (response?.ok) {
+    const myJson = await response.json();
+    return myJson;
+  } else {
+    return null;
+  }
+};
+
+/**
+ * @requires auth_token should be set in EncryptedStorage before calling this function
+ */
+export const getFriends = async (): Promise<{
+  friends: UserInfo[];
+  friendgroups: FriendGroup[];
+} | null> => {
+  const authToken = await EncryptedStorage.getItem('auth_token');
+
+  if (!authToken) {
+    return null;
+  }
+
+  const response = await fetch(
+    FriendAPIURL + `/friend?authtoken=${authToken}`,
+    {
+      method: 'GET',
+    },
+  );
+
+  if (response?.ok) {
+    const myJson = await response.json();
+    return myJson;
+  } else {
+    return null;
+  }
+};
+
+/**
+ * @requires auth_token should be set in EncryptedStorage before calling this function
+ */
+export const getFriendRequests = async (): Promise<{
+  requests: UserInfo[];
+  requests_sent: UserInfo[];
+} | null> => {
+  const authToken = await EncryptedStorage.getItem('auth_token');
+
+  if (!authToken) {
+    return null;
+  }
+
+  const response = await fetch(
+    FriendAPIURL + `/request?authtoken=${authToken}`,
     {
       method: 'GET',
     },
