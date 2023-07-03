@@ -6851,10 +6851,10 @@ react-native-linear-gradient@^2.6.2:
   resolved "https://registry.yarnpkg.com/react-native-linear-gradient/-/react-native-linear-gradient-2.6.2.tgz#56598a76832724b2afa7889747635b5c80948f38"
   integrity sha512-Z8Xxvupsex+9BBFoSYS87bilNPWcRfRsGC0cpJk72Nxb5p2nEkGSBv73xZbEHnW2mUFvP+huYxrVvjZkr/gRjQ==
 
-react-native-map-link@^2.11.0:
-  version "2.11.0"
-  resolved "https://registry.yarnpkg.com/react-native-map-link/-/react-native-map-link-2.11.0.tgz#1d124cbea382e7992a7aa0e48d79565d2073515b"
-  integrity sha512-mVKthGOATj19vhnux7CvGGXd8ei0/6dL0xqTNLeZJO7gH/aV20Ql5SZ4HoMOI7mqsxtdBHnZoyyqn+/v+QvMrQ==
+react-native-map-link@^2.11.1:
+  version "2.11.1"
+  resolved "https://registry.yarnpkg.com/react-native-map-link/-/react-native-map-link-2.11.1.tgz#7bb74b65693573cf712048ea633e24ce23c64495"
+  integrity sha512-LfSRt9ixNKy9lDZF6kXiY9zCsLXf8DaSfWeKDpBO25EBMT1307fbR+vAlv3mITwcYzEc51WiVgBeMxjQN+bfpA==
   dependencies:
     prop-types "^15.8.1"
     react-native-modal "^13.0.1"
