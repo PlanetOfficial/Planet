@@ -55,7 +55,9 @@ const Overview: React.FC<Props> = ({destination, destinationDetails}) => {
               </Text>
             </>
           ) : (
-            <Text color={colors[theme].secondary}>{strings.poi.noPrice}</Text>
+            <Text size="s" color={colors[theme].secondary}>
+              {strings.poi.noPrice}
+            </Text>
           )}
         </View>
         <View style={styles.separator} />
@@ -77,7 +79,9 @@ const Overview: React.FC<Props> = ({destination, destinationDetails}) => {
               </Text>
             </>
           ) : (
-            <Text>{strings.poi.noHours}</Text>
+            <Text size="s" color={colors[theme].secondary}>
+              {strings.poi.noHours}
+            </Text>
           )}
         </View>
       </View>
@@ -102,17 +106,16 @@ const styling = (theme: 'light' | 'dark') =>
       flexDirection: 'row',
       justifyContent: 'space-between',
       height: s(45),
-      paddingHorizontal: s(20),
-      paddingVertical: s(5),
+      padding: s(5),
       marginVertical: s(5),
+      paddingHorizontal: s(10),
     },
     separator: {
       width: 1,
       backgroundColor: colors[theme].secondary,
     },
     description: {
-      paddingVertical: s(5),
-      paddingHorizontal: s(10),
+      padding: s(5),
       borderTopWidth: 1,
       borderColor: colors[theme].secondary,
     },

@@ -6,6 +6,7 @@ import {
   Alert,
   RefreshControl,
   useColorScheme,
+  StatusBar,
 } from 'react-native';
 
 import colors from '../../../constants/colors';
@@ -25,6 +26,7 @@ import {getFriends} from '../../../utils/api/friendsAPI';
 const FriendsList = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';
   const STYLES = STYLING(theme);
+  StatusBar.setBarStyle(colors[theme].statusBar, true);
 
   const friendsContext = useContext(FriendsContext);
   if (!friendsContext) {

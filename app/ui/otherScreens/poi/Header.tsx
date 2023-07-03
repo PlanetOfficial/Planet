@@ -3,10 +3,8 @@ import {
   View,
   StyleSheet,
   SafeAreaView,
-  StatusBar,
   ImageBackground,
   Animated,
-  useColorScheme,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -38,7 +36,7 @@ const Header: React.FC<Props> = ({
   setBookmarks,
   setGalleryVisible,
 }) => {
-  const theme = useColorScheme() || 'light';
+  const theme = 'light';
   const styles = styling(theme);
   const STYLES = STYLING(theme);
 
@@ -77,10 +75,7 @@ const Header: React.FC<Props> = ({
             <Icon
               size="m"
               icon={icons.back}
-              onPress={() => {
-                StatusBar.setBarStyle('dark-content', true);
-                navigation.goBack();
-              }}
+              onPress={() => navigation.goBack()}
               color={colors[theme].primary}
             />
             <Animated.Text
@@ -105,9 +100,11 @@ const Header: React.FC<Props> = ({
           </View>
         </SafeAreaView>
         <Animated.View style={[styles.bottom, {opacity: bottomTitleOpacity}]}>
-          <Text size="l" weight="b" color={colors[theme].primary}>
-            {destination?.name}
-          </Text>
+          <View style={styles.mainTitle}>
+            <Text size="l" weight="b" color={colors[theme].primary}>
+              {destination?.name}
+            </Text>
+          </View>
           {destination?.photo && destination?.photo.length > 1 ? (
             <Icon
               size="l"
@@ -155,6 +152,9 @@ const styling = (theme: 'light' | 'dark') =>
       color: colors[theme].primary,
       maxWidth: s(280),
       paddingHorizontal: s(10),
+    },
+    mainTitle: {
+      paddingRight: s(10),
     },
   });
 

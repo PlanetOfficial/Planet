@@ -7,9 +7,11 @@ import {
   ScrollView,
   Alert,
   useColorScheme,
+  StatusBar,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 
+import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
 import strings from '../../../constants/strings';
 import STYLING from '../../../constants/styles';
@@ -21,6 +23,7 @@ import Separator from '../../components/SeparatorR';
 const Settings = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';
   const STYLES = STYLING(theme);
+  StatusBar.setBarStyle(colors[theme].statusBar, true);
 
   const settingsItems = [
     {

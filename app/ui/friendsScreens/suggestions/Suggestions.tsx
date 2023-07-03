@@ -1,6 +1,13 @@
 import React, {useContext} from 'react';
-import {View, FlatList, TouchableOpacity, useColorScheme} from 'react-native';
+import {
+  View,
+  FlatList,
+  TouchableOpacity,
+  useColorScheme,
+  StatusBar,
+} from 'react-native';
 
+import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
 import strings from '../../../constants/strings';
 import STYLING from '../../../constants/styles';
@@ -16,6 +23,7 @@ import {UserInfo} from '../../../utils/types';
 const Friends = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';
   const STYLES = STYLING(theme);
+  StatusBar.setBarStyle(colors[theme].statusBar, true);
 
   const friendsContext = useContext(FriendsContext);
   if (!friendsContext) {

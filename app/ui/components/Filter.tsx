@@ -241,7 +241,7 @@ const styling = (theme: 'light' | 'dark') =>
       top: s(35),
       borderRadius: s(10),
       backgroundColor: colors[theme].primary,
-      shadowColor: colors[theme].neutral,
+      shadowColor: '#000',
       shadowOffset: {
         width: 0,
         height: 2,

@@ -152,7 +152,7 @@ const styling = (theme: 'light' | 'dark') =>
       marginHorizontal: s(20),
     },
     row: {
-      backgroundColor: colors[theme].primary,
+      backgroundColor: colors[theme].background,
     },
     text: {
       padding: 0,

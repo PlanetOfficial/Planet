@@ -11,6 +11,7 @@ import {
   RefreshControl,
   TouchableOpacity,
   useColorScheme,
+  StatusBar,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 import {TouchableOpacity as TouchableOpacityGestureHandler} from 'react-native-gesture-handler';
@@ -45,6 +46,7 @@ const AddFriend = ({
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
   const STYLES = STYLING(theme);
+  StatusBar.setBarStyle(colors[theme].statusBar, true);
 
   const [event_id] = useState<number | undefined>(route.params.event_id);
   const [members] = useState<UserInfo[]>(route.params.members);

@@ -100,7 +100,7 @@ const styling = (theme: 'light' | 'dark') =>
       borderTopRightRadius: s(10),
       width: '100%',
       height: s(45),
-      backgroundColor: 'rgba(255, 255, 255, 0.8)',
+      backgroundColor: colors[theme].blur,
     },
     infoContainer: {
       flex: 1,

@@ -110,7 +110,7 @@ const styling = (theme: 'light' | 'dark') =>
       paddingRight: s(20),
       width: s(95),
       height: s(85),
-      backgroundColor: colors[theme].primary,
+      backgroundColor: colors[theme].background,
       borderLeftWidth: 1,
       borderLeftColor: colors[theme].secondary,
     },

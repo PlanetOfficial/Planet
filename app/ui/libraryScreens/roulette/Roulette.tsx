@@ -1,7 +1,8 @@
 import React, {useContext, useState} from 'react';
-import {View, SafeAreaView, useColorScheme} from 'react-native';
+import {View, SafeAreaView, useColorScheme, StatusBar} from 'react-native';
 import {useSharedValue} from 'react-native-reanimated';
 
+import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
 import STYLING from '../../../constants/styles';
 
@@ -30,6 +31,7 @@ const Roulette = ({
 }) => {
   const theme = useColorScheme() || 'light';
   const STYLES = STYLING(theme);
+  StatusBar.setBarStyle(colors[theme].statusBar, true);
 
   const [eventId] = useState(route.params.eventId);
   const [destination] = useState<Destination>(route.params.destination);

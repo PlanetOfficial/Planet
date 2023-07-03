@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   TextInput,
   useColorScheme,
+  StatusBar,
 } from 'react-native';
 
 import colors from '../../constants/colors';
@@ -30,6 +31,7 @@ const ForgotPwdVerify = ({
 }) => {
   const theme = useColorScheme() || 'light';
   const STYLES = STYLING(theme);
+  StatusBar.setBarStyle(colors[theme].statusBar, true);
 
   const [username] = useState<string>(route.params.username);
 

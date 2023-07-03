@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {StyleSheet, Animated, useColorScheme} from 'react-native';
+import {StyleSheet, Animated} from 'react-native';
 import {s} from 'react-native-size-matters';
 
 import colors from '../../../constants/colors';
@@ -55,9 +55,6 @@ const Destinations: React.FC<Props> = ({
   setInsertionDestination,
   loadData,
 }) => {
-  const theme = useColorScheme() || 'light';
-  const styles = styling(theme);
-
   const [xPos, setXPos] = useState<number>(0);
   const [yPos, setYPos] = useState<number>(0);
   const [animateFlag, setAnimateFlag] = useState<boolean>(false);
@@ -176,16 +173,15 @@ const Destinations: React.FC<Props> = ({
   );
 };
 
-const styling = (theme: 'light' | 'dark') =>
-  StyleSheet.create({
-    dim: {
-      position: 'absolute',
-      top: 0,
-      bottom: 0,
-      left: 0,
-      right: 0,
-      backgroundColor: colors[theme].neutral,
-    },
-  });
+const styles = StyleSheet.create({
+  dim: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: colors.dark.background,
+  },
+});
 
 export default Destinations;

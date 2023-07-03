@@ -76,7 +76,11 @@ const Destinations: React.FC<Props> = ({
                 delayLongPress={1}
                 onLongPress={drag}
                 disabled={isActive}>
-                <Icon size="m" icon={icons.drag} />
+                <Icon
+                  size="m"
+                  icon={icons.drag}
+                  color={colors[theme].secondary}
+                />
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.title}
@@ -106,7 +110,11 @@ const Destinations: React.FC<Props> = ({
                 }>
                 <Text size="s">{item.name}</Text>
                 <View style={styles.pencil}>
-                  <Icon size="xs" icon={icons.edit} />
+                  <Icon
+                    size="xs"
+                    icon={icons.edit}
+                    color={colors[theme].secondary}
+                  />
                 </View>
               </TouchableOpacity>
               <Icon
@@ -157,7 +165,6 @@ const styling = (theme: 'light' | 'dark') =>
   StyleSheet.create({
     container: {
       marginHorizontal: s(30),
-      paddingHorizontal: s(10),
       marginVertical: s(20),
       paddingBottom: s(10),
       borderWidth: 1,
@@ -169,7 +176,7 @@ const styling = (theme: 'light' | 'dark') =>
       left: s(20),
       top: s(-10),
       paddingHorizontal: s(5),
-      backgroundColor: colors[theme].primary,
+      backgroundColor: colors[theme].background,
     },
     flatlist: {
       marginTop: s(10),
@@ -181,15 +188,15 @@ const styling = (theme: 'light' | 'dark') =>
       flexDirection: 'row',
       alignItems: 'center',
       paddingVertical: s(10),
-      paddingHorizontal: s(10),
-      backgroundColor: colors[theme].primary,
-      overflow: 'visible',
+      paddingHorizontal: s(20),
+      backgroundColor: colors[theme].background,
+      borderRadius: s(20),
     },
     addContainer: {
       flexDirection: 'row',
       alignItems: 'center',
       paddingVertical: s(5),
-      paddingHorizontal: s(10),
+      paddingHorizontal: s(20),
     },
     title: {
       flex: 1,
