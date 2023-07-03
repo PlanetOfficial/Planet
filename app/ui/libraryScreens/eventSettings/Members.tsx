@@ -75,7 +75,7 @@ const styling = (theme: 'light' | 'dark') =>
     container: {
       marginHorizontal: s(40),
       marginVertical: s(20),
-      paddingHorizontal: s(15),
+      paddingHorizontal: s(20),
       paddingVertical: s(5),
       borderWidth: 1,
       borderRadius: s(20),

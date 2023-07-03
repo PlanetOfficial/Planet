@@ -35,7 +35,7 @@ export const FriendsNavBar = () => {
         },
         tabBarStyle: {
           elevation: 0,
-          backgroundColor: colors[theme].primary,
+          backgroundColor: colors[theme].background,
           marginHorizontal: s(10),
           borderBottomWidth: 1,
           borderBottomColor: colors[theme].secondary,
