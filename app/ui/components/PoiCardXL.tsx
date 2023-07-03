@@ -1,6 +1,7 @@
 import React from 'react';
-import {StyleSheet, View, Image, Animated, useColorScheme} from 'react-native';
+import {StyleSheet, View, Animated, useColorScheme} from 'react-native';
 import {s} from 'react-native-size-matters';
+import FastImage from 'react-native-fast-image';
 
 import colors from '../../constants/colors';
 import icons from '../../constants/icons';
@@ -40,7 +41,7 @@ const PoiCardXL: React.FC<Props> = ({
 
   return (
     <Animated.View style={[styles.container, STYLES.shadow, {width: width}]}>
-      <Image
+      <FastImage
         style={styles.image}
         source={poi.photo ? {uri: poi.photo} : icons.placeholder}
       />

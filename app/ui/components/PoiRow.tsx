@@ -1,6 +1,7 @@
 import React from 'react';
-import {StyleSheet, View, Image, useColorScheme} from 'react-native';
+import {StyleSheet, View, useColorScheme} from 'react-native';
 import {s} from 'react-native-size-matters';
+import FastImage from 'react-native-fast-image';
 
 import colors from '../../constants/colors';
 import strings from '../../constants/strings';
@@ -66,7 +67,7 @@ const PoiRow: React.FC<Props> = ({
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
-        <Image
+        <FastImage
           style={styles.image}
           source={
             poi.photo

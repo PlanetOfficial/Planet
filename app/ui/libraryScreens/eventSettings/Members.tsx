@@ -1,12 +1,7 @@
 import React from 'react';
-import {
-  View,
-  TouchableOpacity,
-  StyleSheet,
-  Image,
-  useColorScheme,
-} from 'react-native';
+import {View, TouchableOpacity, StyleSheet, useColorScheme} from 'react-native';
 import {s} from 'react-native-size-matters';
+import FastImage from 'react-native-fast-image';
 
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
@@ -60,7 +55,7 @@ const Members: React.FC<Props> = ({navigation, event, eventDetail}) => {
           });
         }}>
         <View style={styles.profilePic}>
-          <Image style={[styles.pic, styles.add]} source={icons.add} />
+          <FastImage style={[styles.pic, styles.add]} source={icons.add} />
         </View>
         <View style={STYLES.texts}>
           <Text>{strings.event.inviteAFriend}</Text>
