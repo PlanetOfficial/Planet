@@ -19,7 +19,8 @@ import strings from '../../../constants/strings';
 import STYLING from '../../../constants/styles';
 
 import Text from '../../components/Text';
-import Separator from '../../components/SeparatorR';
+import Separator from '../../components/Separator';
+import SeparatorR from '../../components/SeparatorR';
 import PoiRow from '../../components/PoiRow';
 
 import BookmarkContext from '../../../context/BookmarkContext';
@@ -48,7 +49,6 @@ const Search = ({
   StatusBar.setBarStyle(colors[theme].statusBar, true);
 
   const mode = route.params?.mode || 'none';
-  console.log('mode: ', mode);
 
   const [genres, setGenres] = useState<Genre[]>([]);
   const [location, setLocation] = useState<Coordinate>();
@@ -132,7 +132,7 @@ const Search = ({
                   </TouchableOpacity>
                 ))}
               </ScrollView>
-              {index !== genres.length - 1 ? <Separator /> : null}
+              {index !== genres.length - 1 ? <SeparatorR /> : null}
             </View>
           ))}
         </ScrollView>
@@ -172,6 +172,7 @@ const Search = ({
             </View>
           }
           keyExtractor={(item: Poi) => item.id.toString()}
+          ItemSeparatorComponent={Separator}
         />
       ) : null}
     </View>

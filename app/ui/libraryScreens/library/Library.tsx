@@ -22,6 +22,7 @@ import STYLING from '../../../constants/styles';
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 import EventRow from '../../components/EventRow';
+import Separator from '../../components/Separator';
 
 import {getEvents} from '../../../utils/api/eventAPI';
 import {Event} from '../../../utils/types';
@@ -113,6 +114,7 @@ const Library = ({navigation}: {navigation: any}) => {
               tintColor={colors[theme].accent}
             />
           }
+          ItemSeparatorComponent={Separator}
         />
       )}
     </View>
@@ -123,7 +125,8 @@ const styling = (theme: 'light' | 'dark') =>
   StyleSheet.create({
     list: {
       paddingTop: s(5),
-      borderTopColor: colors[theme].secondary,
+      borderTopWidth: 1,
+      borderColor: colors[theme].secondary,
     },
     content: {
       paddingBottom: s(20),
