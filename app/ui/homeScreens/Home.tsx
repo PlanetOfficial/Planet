@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -19,13 +19,20 @@ import Icon from '../components/Icon';
 import Separator from '../components/SeparatorR';
 import PoiCard from '../components/PoiCard';
 
+import BookmarkContext from '../../context/BookmarkContext';
+
 import {Coordinate, Poi} from '../../utils/types';
 import {fetchUserLocation, handleBookmark} from '../../utils/Misc';
 
-// TODO: THIS PAGE IS INCOMPLETE
+// TODO: INCOMPLETE
 const Home = ({navigation}: {navigation: any}) => {
   const [location, setLocation] = useState<Coordinate>();
-  const [bookmarks, setBookmarks] = useState<Poi[]>([]);
+
+  const bookmarkContext = useContext(BookmarkContext);
+  if (!bookmarkContext) {
+    throw new Error('BookmarkContext is not set!');
+  }
+  const {bookmarks, setBookmarks} = bookmarkContext;
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', async () => {

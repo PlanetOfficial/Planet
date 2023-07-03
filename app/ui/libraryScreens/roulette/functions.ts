@@ -5,9 +5,7 @@ import {
   runOnJS,
   SharedValue,
 } from 'react-native-reanimated';
-
 import strings from '../../../constants/strings';
-
 import {makePrimary, spinRoulette} from '../../../utils/api/suggestionAPI';
 import {Destination, Suggestion} from '../../../utils/types';
 

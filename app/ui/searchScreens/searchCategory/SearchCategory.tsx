@@ -1,6 +1,11 @@
-import React, {useEffect, useState, useCallback, useRef} from 'react';
+import React, {
+  useEffect,
+  useState,
+  useCallback,
+  useRef,
+  useContext,
+} from 'react';
 import {View, SafeAreaView, Alert, ActivityIndicator} from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
@@ -10,6 +15,8 @@ import STYLES from '../../../constants/styles';
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 import Filter from '../../components/Filter';
+
+import BookmarkContext from '../../../context/BookmarkContext';
 
 import {getPois} from '../../../utils/api/poiAPI';
 import {Poi, Coordinate, Category} from '../../../utils/types';
@@ -35,13 +42,16 @@ const SearchCategory = ({
   const [places, setPlaces] = useState<Poi[]>([]);
   const [filters, setFilters] = useState<(number | number[])[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [refreshing, setRefreshing] = useState<boolean>(false);
-  const [bookmarks, setBookmarks] = useState<Poi[]>([]);
+
+  const bookmarkContext = useContext(BookmarkContext);
+  if (!bookmarkContext) {
+    throw new Error('BookmarkContext is not set!');
+  }
+  const {bookmarks, setBookmarks} = bookmarkContext;
 
   const filterRef = useRef<any>(null); // due to forwardRef
 
   const loadData = useCallback(async () => {
-    setRefreshing(true);
     const _filters: {[key: string]: string | string[]} = {};
     for (let i = 0; i < category.filter.length; i++) {
       const filter = category.filter[i];
@@ -70,27 +80,16 @@ const SearchCategory = ({
     } else {
       Alert.alert(strings.error.error, strings.error.loadPlaces);
     }
-    setRefreshing(false);
     setLoading(false);
   }, [category, filters, location.latitude, location.longitude, radius]);
 
-  const loadBookmarks = useCallback(async () => {
-    const _bookmarks = await AsyncStorage.getItem('bookmarks');
-    if (_bookmarks) {
-      setBookmarks(JSON.parse(_bookmarks));
-    } else {
-      Alert.alert(strings.error.error, strings.error.loadBookmarks);
-    }
-  }, []);
-
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      loadBookmarks();
       loadData();
     });
 
     return unsubscribe;
-  }, [navigation, loadBookmarks, loadData]);
+  }, [navigation, loadData]);
 
   useEffect(() => {
     const _filters: (number | number[])[] = [];
@@ -152,8 +151,6 @@ const SearchCategory = ({
           navigation={navigation}
           results={places}
           filterRef={filterRef}
-          refreshing={refreshing}
-          loadData={loadData}
           bookmarks={bookmarks}
           setBookmarks={setBookmarks}
           location={location}

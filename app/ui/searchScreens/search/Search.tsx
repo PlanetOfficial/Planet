@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -20,6 +20,8 @@ import Text from '../../components/Text';
 import Separator from '../../components/SeparatorR';
 import PoiRow from '../../components/PoiRow';
 
+import BookmarkContext from '../../../context/BookmarkContext';
+
 import {fetchUserLocation, handleBookmark} from '../../../utils/Misc';
 import {Category, Coordinate, Genre, Poi} from '../../../utils/types';
 
@@ -36,7 +38,12 @@ const Search = ({
   const [location, setLocation] = useState<Coordinate>();
   const [searching, setSearching] = useState<boolean>(false);
   const [searchText, setSearchText] = useState<string>('');
-  const [bookmarks, setBookmarks] = useState<Poi[]>([]);
+
+  const bookmarkContext = useContext(BookmarkContext);
+  if (!bookmarkContext) {
+    throw new Error('BookmarkContext is not set!');
+  }
+  const {bookmarks, setBookmarks} = bookmarkContext;
 
   const initializeData = async () => {
     const data = await AsyncStorage.getItem('genres');
@@ -44,13 +51,6 @@ const Search = ({
       setGenres(JSON.parse(data));
     } else {
       Alert.alert(strings.error.error, strings.error.loadGenres);
-    }
-
-    const _bookmarks = await AsyncStorage.getItem('bookmarks');
-    if (_bookmarks) {
-      setBookmarks(JSON.parse(_bookmarks));
-    } else {
-      Alert.alert(strings.error.error, strings.error.loadBookmarks);
     }
   };
 
@@ -141,7 +141,7 @@ const Search = ({
             <View style={STYLES.center}>
               <Text>{strings.profile.noBookmarksFound}</Text>
               <Text> </Text>
-              <Text size="s" color={colors.black}>
+              <Text size="s">
                 {strings.profile.noBookmarksFoundDescription}
               </Text>
             </View>

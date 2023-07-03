@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import colors from '../../constants/colors';
 import icons from '../../constants/icons';
 import strings from '../../constants/strings';
 import styles from '../../constants/styles';
@@ -20,7 +19,7 @@ import PoiRow from '../components/PoiRow';
 import {Poi} from '../../utils/types';
 import {handleBookmark} from '../../utils/Misc';
 
-// TODO: THIS PAGE IS INCOMPLETE
+// TODO: INCOMPLETE
 const Explore = ({navigation, route}: {navigation: any; route: any}) => {
   const {name, pois, location} = route.params;
   const [bookmarks, setBookmarks] = useState<Poi[]>([]);
@@ -74,9 +73,7 @@ const Explore = ({navigation, route}: {navigation: any; route: any}) => {
           <View style={styles.center}>
             <Text>{strings.search.noResultsFound}</Text>
             <Text> </Text>
-            <Text size="s" color={colors.black}>
-              {strings.search.noResultsFoundDescription}
-            </Text>
+            <Text size="s">{strings.search.noResultsFoundDescription}</Text>
           </View>
         }
         ItemSeparatorComponent={Separator}

@@ -1,7 +1,6 @@
 import React from 'react';
-import {View, FlatList, TouchableOpacity, RefreshControl} from 'react-native';
+import {View, FlatList, TouchableOpacity} from 'react-native';
 
-import colors from '../../../constants/colors';
 import strings from '../../../constants/strings';
 import STYLES from '../../../constants/styles';
 
@@ -15,8 +14,6 @@ interface Props {
   navigation: any;
   results: Poi[];
   filterRef: any;
-  refreshing: boolean;
-  loadData: () => void;
   bookmarks: Poi[];
   setBookmarks: (bookmarks: Poi[]) => void;
   location: Coordinate;
@@ -28,8 +25,6 @@ const Results: React.FC<Props> = ({
   navigation,
   results: places,
   filterRef,
-  refreshing,
-  loadData,
   bookmarks,
   setBookmarks,
   location,
@@ -66,19 +61,10 @@ const Results: React.FC<Props> = ({
         <View style={STYLES.center}>
           <Text>{strings.search.noResultsFound}</Text>
           <Text> </Text>
-          <Text size="s" color={colors.black}>
-            {strings.search.noResultsFoundDescription}
-          </Text>
+          <Text size="s">{strings.search.noResultsFoundDescription}</Text>
         </View>
       }
       keyExtractor={(item: Poi) => item.id.toString()}
-      refreshControl={
-        <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => loadData()}
-          tintColor={colors.primary}
-        />
-      }
     />
   );
 };

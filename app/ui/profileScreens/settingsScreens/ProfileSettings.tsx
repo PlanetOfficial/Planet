@@ -29,7 +29,7 @@ import Icon from '../../components/Icon';
 
 import {editInfo, saveImage} from '../../../utils/api/authAPI';
 
-// TODO: REFACTOR THIS PAGE: compartmentalize and optimize, save button maybe?
+// TODO: REFACTOR
 const ProfileSettings = ({navigation}: {navigation: any}) => {
   const [firstName, setFirstName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');

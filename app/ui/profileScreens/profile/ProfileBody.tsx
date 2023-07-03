@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -16,7 +16,10 @@ import STYLES, {sctStyles} from '../../../constants/styles';
 
 import Text from '../../components/Text';
 import PoiRow from '../../components/PoiRow';
-import UserIcon from '../../components/UserIcon';
+import UserIconXL from '../../components/UserIconXL';
+
+import BookmarkContext from '../../../context/BookmarkContext';
+import FriendsContext from '../../../context/FriendsContext';
 
 import {fetchUserLocation, handleBookmark} from '../../../utils/Misc';
 import {Coordinate, Poi} from '../../../utils/types';
@@ -31,7 +34,17 @@ const ProfileBody = ({navigation}: {navigation: any}) => {
   const [username, setUsername] = useState<string>('');
   const [pfpURL, setPfpURL] = useState<string>('');
 
-  const [bookmarks, setBookmarks] = useState<Poi[]>([]);
+  const bookmarkContext = useContext(BookmarkContext);
+  if (!bookmarkContext) {
+    throw new Error('BookmarkContext is not set!');
+  }
+  const {bookmarks, setBookmarks} = bookmarkContext;
+
+  const friendsContext = useContext(FriendsContext);
+  if (!friendsContext) {
+    throw new Error('FriendsContext is not set!');
+  }
+  const {friends} = friendsContext;
 
   const initializeData = async () => {
     setLocation(await fetchUserLocation());
@@ -43,13 +56,6 @@ const ProfileBody = ({navigation}: {navigation: any}) => {
     setLastName(_lastName || '');
     setUsername(_username || '');
     setPfpURL(_pfpURL || '');
-
-    const _bookmarks = await AsyncStorage.getItem('bookmarks');
-    if (_bookmarks) {
-      setBookmarks(JSON.parse(_bookmarks));
-    } else {
-      Alert.alert(strings.error.error, strings.error.loadBookmarks);
-    }
   };
 
   useEffect(() => {
@@ -60,7 +66,7 @@ const ProfileBody = ({navigation}: {navigation: any}) => {
     <>
       <View style={styles.container}>
         <View style={styles.profilePic}>
-          <UserIcon
+          <UserIconXL
             user={{
               id: 0,
               first_name: firstName,
@@ -68,21 +74,29 @@ const ProfileBody = ({navigation}: {navigation: any}) => {
               username: username,
               icon: {url: pfpURL},
             }}
-            size={s(40)}
           />
         </View>
-        <View style={styles.info}>
-          <Text size="l" numberOfLines={1}>
-            {firstName} {lastName}
-          </Text>
-          <Text size="s" color={colors.black} numberOfLines={1}>
-            @{username}
-          </Text>
+        <View>
+          <View style={styles.texts}>
+            <Text size="l" numberOfLines={1}>
+              {firstName} {lastName}
+            </Text>
+            <Text size="s" weight="l" numberOfLines={1}>
+              @{username}
+            </Text>
+          </View>
           <TouchableOpacity onPress={() => navigation.navigate('Friends')}>
             <Text size="s" color={colors.primary}>
-              {strings.friends.friends}
+              {friends.length + ' ' + strings.friends.friends}
             </Text>
           </TouchableOpacity>
+          <View style={styles.buttons}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => navigation.navigate('ProfileSettings')}>
+              <Text size="s">{strings.profile.editProfile}</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
       <SegmentedControlTab
@@ -131,9 +145,7 @@ const ProfileBody = ({navigation}: {navigation: any}) => {
           <View style={STYLES.center}>
             <Text>{strings.profile.noBookmarksFound}</Text>
             <Text> </Text>
-            <Text size="s" color={colors.black}>
-              {strings.profile.noBookmarksFoundDescription}
-            </Text>
+            <Text size="s">{strings.profile.noBookmarksFoundDescription}</Text>
           </View>
         }
         keyExtractor={(item: Poi) => item.id.toString()}
@@ -149,32 +161,32 @@ const styles = StyleSheet.create({
     marginVertical: s(10),
   },
   profilePic: {
-    width: s(100),
-    height: s(100),
-    borderRadius: s(50),
+    width: s(120),
+    height: s(120),
+    borderRadius: s(40),
     overflow: 'hidden',
+    marginRight: s(20),
   },
-  pic: {
-    width: '100%',
-    height: '100%',
+  texts: {
+    height: s(50),
+    justifyContent: 'space-evenly',
+    maxWidth: s(170),
+    marginBottom: s(5),
   },
-  info: {
-    marginLeft: s(20),
-    paddingTop: s(15),
-    paddingBottom: s(10),
-    justifyContent: 'space-between',
+  buttons: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    marginBottom: s(10),
   },
-  profileImage: {
-    width: '100%',
-    height: '100%',
+  button: {
+    paddingHorizontal: s(10),
+    paddingVertical: s(5),
+    borderRadius: s(5),
+    marginRight: s(10),
+    minWidth: s(65),
     alignItems: 'center',
-    justifyContent: 'center',
-  },
-  name: {
-    fontSize: s(40),
-    color: colors.white,
-    fontFamily: 'VarelaRound-Regular',
-    marginTop: s(1),
+    backgroundColor: colors.grey,
   },
 });
 

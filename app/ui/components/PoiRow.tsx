@@ -80,12 +80,10 @@ const PoiRow: React.FC<Props> = ({
         <Text size="s" numberOfLines={1}>
           {poi.name}
         </Text>
-        <Text size="xs" weight="l" color={colors.black} numberOfLines={1}>
+        <Text size="xs" weight="l" numberOfLines={1}>
           {getAddressString()}
         </Text>
-        <Text size="xs" color={colors.black}>
-          {getInfoString()}
-        </Text>
+        <Text size="xs">{getInfoString()}</Text>
       </View>
       <Icon
         size="l"

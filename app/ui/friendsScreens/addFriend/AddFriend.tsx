@@ -28,7 +28,7 @@ import {getFriends, searchUsers} from '../../../utils/api/friendsAPI';
 import {UserInfo} from '../../../utils/types';
 import {inviteToEvent} from '../../../utils/api/eventAPI';
 
-// TODO: Refactor
+// TODO: INCOMPLETE
 const AddFriend = ({
   navigation,
   route,
@@ -58,7 +58,7 @@ const AddFriend = ({
     const response = await getFriends();
 
     if (response) {
-      setFriends(response);
+      setFriends(response.friends);
     } else {
       Alert.alert(strings.error.error, strings.error.loadFriendsList);
     }
@@ -108,7 +108,7 @@ const AddFriend = ({
         <View style={STYLES.header}>
           <Icon icon={icons.close} onPress={() => navigation.goBack()} />
           <View style={[styles.searchBar, STYLES.shadow]}>
-            <Icon size="s" icon={icons.search} color={colors.black} />
+            <Icon size="s" icon={icons.search} />
             <TextInput
               ref={searchRef}
               style={styles.searchText}
@@ -171,11 +171,7 @@ const AddFriend = ({
                     numberOfLines={
                       1
                     }>{`${item.first_name} ${item.last_name}`}</Text>
-                  <Text
-                    size="s"
-                    weight="l"
-                    color={colors.black}
-                    numberOfLines={1}>
+                  <Text size="s" weight="l" numberOfLines={1}>
                     {'@' + item.username}
                   </Text>
                 </View>
@@ -230,11 +226,7 @@ const AddFriend = ({
                       numberOfLines={
                         1
                       }>{`${item.first_name} ${item.last_name}`}</Text>
-                    <Text
-                      size="s"
-                      weight="l"
-                      color={colors.black}
-                      numberOfLines={1}>
+                    <Text size="s" weight="l" numberOfLines={1}>
                       {'@' + item.username}
                     </Text>
                   </View>
@@ -255,7 +247,7 @@ const AddFriend = ({
               <View style={STYLES.center}>
                 <Text>{strings.friends.noFriendsFound}</Text>
                 <Text> </Text>
-                <Text size="s" color={colors.black}>
+                <Text size="s">
                   {strings.friends.noFriendsFoundDescription}
                 </Text>
               </View>

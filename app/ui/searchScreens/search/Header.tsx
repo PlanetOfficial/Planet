@@ -117,10 +117,10 @@ const Header: React.FC<Props> = ({
           )}
           renderRow={rowData => (
             <View>
-              <Text size="s" weight="r" color={colors.black}>
+              <Text size="s" weight="r">
                 {rowData.structured_formatting.main_text}
               </Text>
-              <Text size="xs" weight="l" color={colors.black}>
+              <Text size="xs" weight="l">
                 {rowData.structured_formatting.secondary_text}
               </Text>
             </View>

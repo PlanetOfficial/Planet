@@ -1,16 +1,16 @@
-import React, {useEffect, useState} from 'react';
-import {View, SafeAreaView, Alert} from 'react-native';
+import React, {useContext, useState} from 'react';
+import {View, SafeAreaView} from 'react-native';
 import {useSharedValue} from 'react-native-reanimated';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import icons from '../../../constants/icons';
-import strings from '../../../constants/strings';
 import STYLES from '../../../constants/styles';
 
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 
-import {Destination, Poi, Suggestion} from '../../../utils/types';
+import BookmarkContext from '../../../context/BookmarkContext';
+
+import {Destination, Suggestion} from '../../../utils/types';
 
 import {getCurrentSuggestion} from './functions';
 import Spinner from './Spinner';
@@ -31,23 +31,11 @@ const Roulette = ({
   const [eventId] = useState(route.params.eventId);
   const [destination] = useState<Destination>(route.params.destination);
 
-  const [bookmarks, setBookmarks] = useState<Poi[]>([]);
-  const loadBookmarks = async () => {
-    const _bookmarks = await AsyncStorage.getItem('bookmarks');
-    if (_bookmarks) {
-      setBookmarks(JSON.parse(_bookmarks));
-    } else {
-      Alert.alert(strings.error.error, strings.error.loadBookmarks);
-    }
-  };
-
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      loadBookmarks();
-    });
-
-    return unsubscribe;
-  }, [navigation]);
+  const bookmarkContext = useContext(BookmarkContext);
+  if (!bookmarkContext) {
+    throw new Error('BookmarkContext is not set!');
+  }
+  const {bookmarks, setBookmarks} = bookmarkContext;
 
   const rotation = useSharedValue(0);
   const [currentAngle, setCurrentAngle] = useState(rotation.value);
