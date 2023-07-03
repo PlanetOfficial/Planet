@@ -6,7 +6,7 @@ const styling = (theme: 'light' | 'dark') =>
   StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: colors[theme].primary,
+      backgroundColor: colors[theme].background,
     },
     flatList: {
       paddingTop: s(10),
@@ -56,7 +56,7 @@ const styling = (theme: 'light' | 'dark') =>
       bottom: s(40),
       borderRadius: s(10),
       backgroundColor: colors[theme].accent,
-      shadowColor: colors[theme].neutral,
+      shadowColor: '#000',
       shadowOffset: {
         width: 0,
         height: 1,
@@ -67,7 +67,7 @@ const styling = (theme: 'light' | 'dark') =>
       elevation: 7,
     },
     shadow: {
-      shadowColor: colors[theme].neutral,
+      shadowColor: '#000',
       shadowOffset: {
         width: 0,
         height: 1,
@@ -128,12 +128,12 @@ export const sctStyling = (theme: 'light' | 'dark') =>
       borderWidth: 0,
       borderBottomWidth: 2,
       borderBottomColor: colors[theme].secondary,
-      backgroundColor: colors[theme].primary,
+      backgroundColor: colors[theme].background,
     },
     activeTab: {
       borderBottomWidth: 2,
       borderBottomColor: colors[theme].accent,
-      backgroundColor: colors[theme].primary,
+      backgroundColor: colors[theme].background,
     },
     firstTab: {
       borderRightWidth: 0,

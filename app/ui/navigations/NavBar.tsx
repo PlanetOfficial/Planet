@@ -117,8 +117,11 @@ export const NavBar = () => {
           tabBarTestID: route.name,
           tabBarStyle: {
             borderTopWidth: 1,
-            borderTopColor: colors[theme].secondary,
-            backgroundColor: colors[theme].primary,
+            borderTopColor:
+              theme === 'light'
+                ? colors[theme].secondary
+                : colors[theme].primary,
+            backgroundColor: colors[theme].background,
             height: s(50) + insets.bottom,
           },
           tabBarIcon: ({focused}) => {
