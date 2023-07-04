@@ -1492,10 +1492,10 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@react-native-async-storage/async-storage@^1.17.12":
-  version "1.17.12"
-  resolved "https://registry.yarnpkg.com/@react-native-async-storage/async-storage/-/async-storage-1.17.12.tgz#a39e4df5b06795ce49b2ca5b7ca9b8faadf8e621"
-  integrity sha512-BXg4OxFdjPTRt+8MvN6jz4muq0/2zII3s7HeT/11e4Zeh3WCgk/BleLzUcDfVqF3OzFHUqEkSrb76d6Ndjd/Nw==
+"@react-native-async-storage/async-storage@^1.18.2":
+  version "1.18.2"
+  resolved "https://registry.yarnpkg.com/@react-native-async-storage/async-storage/-/async-storage-1.18.2.tgz#ec8fd487a0b6c9500b43ece4b8779d1561f12e91"
+  integrity sha512-dM8AfdoeIxlh+zqgr0o5+vCTPQ0Ru1mrPzONZMsr7ufp5h+6WgNxQNza7t0r5qQ6b04AJqTlBNixTWZxqP649Q==
   dependencies:
     merge-options "^3.0.4"
 
@@ -1695,18 +1695,18 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/geolocation/-/geolocation-3.0.5.tgz#de6a0519277133be46df556f09c5691fe1ed8eaf"
   integrity sha512-dpigB7ni085rCBi85rIHNrs8hcKaLtDQVxNm1zgXrYZNO7XKN/GSL3AjYBBG7z9pG6qNyQNl4Xge8jWUCudTyQ==
 
-"@react-native-firebase/app@^17.5.0":
-  version "17.5.0"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-17.5.0.tgz#faccb298f1e7f78cab06a20f232857a0edf3e6e8"
-  integrity sha512-8DWjguVmVYmuPWI7mhXlmLB6GxKnPjUjZ4Wnnyj3Wh5uqHzgUREHEA1aH92PT84LJLZL8F6dJZk+fIyo9UyXnA==
+"@react-native-firebase/app@^18.0.0":
+  version "18.1.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-18.1.0.tgz#35b21dc8003026542b2b545ee924d367302dd9fc"
+  integrity sha512-GZSlkNjSZlyB6I2t/5MmD9uDvnteyPOzvYNshaffS/hzRK6LL+3xYTnxqwPl6Kntm8z28FdaQM06OIlkPGQ3+g==
   dependencies:
     opencollective-postinstall "^2.0.1"
     superstruct "^0.6.2"
 
-"@react-native-firebase/messaging@^17.5.0":
-  version "17.5.0"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/messaging/-/messaging-17.5.0.tgz#9c6db50423c67760dd61e553189187b9e5a2b75e"
-  integrity sha512-9jB7jEt4ySdALio2qwquAkXI106GTdPEuGY+vUFuNT6Wwwc5VQhyiJ5yforaF0BEsppFgK151PLYQQdIhahgzA==
+"@react-native-firebase/messaging@^18.0.0":
+  version "18.1.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/messaging/-/messaging-18.1.0.tgz#812df55cf2c42cbfbf16b9c5150ec26e8762d4f1"
+  integrity sha512-eNWmXGo+HT45b81dzdQa5g5wz4d4EGv78ywwoh0ONM5wcVZ0bl5a+Ak2HPOruCkGa2adkiKstHkGEZRdWPdJkg==
 
 "@react-native-picker/picker@^2.4.10":
   version "2.4.10"
@@ -6831,7 +6831,7 @@ react-native-google-places-autocomplete@^2.5.1:
     prop-types "^15.7.2"
     qs "~6.9.1"
 
-react-native-gradle-plugin@^0.71.18:
+react-native-gradle-plugin@^0.71.19:
   version "0.71.19"
   resolved "https://registry.yarnpkg.com/react-native-gradle-plugin/-/react-native-gradle-plugin-0.71.19.tgz#3379e28341fcd189bc1f4691cefc84c1a4d7d232"
   integrity sha512-1dVk9NwhoyKHCSxcrM6vY6cxmojeATsBobDicX0ZKr7DgUF2cBQRTKsimQFvzH8XhOVXyH8p4HyDSZNIFI8OlQ==
@@ -6851,10 +6851,10 @@ react-native-linear-gradient@^2.6.2:
   resolved "https://registry.yarnpkg.com/react-native-linear-gradient/-/react-native-linear-gradient-2.6.2.tgz#56598a76832724b2afa7889747635b5c80948f38"
   integrity sha512-Z8Xxvupsex+9BBFoSYS87bilNPWcRfRsGC0cpJk72Nxb5p2nEkGSBv73xZbEHnW2mUFvP+huYxrVvjZkr/gRjQ==
 
-react-native-map-link@^2.11.0:
-  version "2.11.0"
-  resolved "https://registry.yarnpkg.com/react-native-map-link/-/react-native-map-link-2.11.0.tgz#1d124cbea382e7992a7aa0e48d79565d2073515b"
-  integrity sha512-mVKthGOATj19vhnux7CvGGXd8ei0/6dL0xqTNLeZJO7gH/aV20Ql5SZ4HoMOI7mqsxtdBHnZoyyqn+/v+QvMrQ==
+react-native-map-link@^2.11.1:
+  version "2.11.1"
+  resolved "https://registry.yarnpkg.com/react-native-map-link/-/react-native-map-link-2.11.1.tgz#7bb74b65693573cf712048ea633e24ce23c64495"
+  integrity sha512-LfSRt9ixNKy9lDZF6kXiY9zCsLXf8DaSfWeKDpBO25EBMT1307fbR+vAlv3mITwcYzEc51WiVgBeMxjQN+bfpA==
   dependencies:
     prop-types "^15.8.1"
     react-native-modal "^13.0.1"
@@ -6976,17 +6976,17 @@ react-native-swipeable-item@^2.0.9:
   dependencies:
     "@babel/preset-typescript" "^7.17.12"
 
-react-native-tab-view@^3.4.2:
-  version "3.4.2"
-  resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-3.4.2.tgz#20c0a7716a0344505ec19f1b3b67ac64b7cb06d9"
-  integrity sha512-TBWTC7N1VfvK2bxZPj9LtqWfJpxz/pK8GLn5O8bc6cTPgJefk5II0P+9ftrlMGwbksZy+7AELkrw/I8ra41Brw==
+react-native-tab-view@^3.5.1:
+  version "3.5.2"
+  resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-3.5.2.tgz#2789b8af6148b16835869566bf13dc3b0e6c1b46"
+  integrity sha512-nE5WqjbeEPsWQx4mtz81QGVvgHRhujTNIIZiMCx3Bj6CBFDafbk7XZp9ocmtzXUQaZ4bhtVS43R4FIiR4LboJw==
   dependencies:
     use-latest-callback "^0.1.5"
 
-react-native@0.71.8:
-  version "0.71.8"
-  resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.71.8.tgz#4314145341c49448cf7465b93ced52a433a5e191"
-  integrity sha512-ftMAuhpgTkbHU9brrqsEyxcNrpYvXKeATY+if22Nfhhg1zW+6wn95w9otwTnA3xHkljPCbng8mUhmmERjGEl7g==
+react-native@0.71.10:
+  version "0.71.10"
+  resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.71.10.tgz#4294d289b4226a3f35bd627bb157fc1f18395d58"
+  integrity sha512-O+sWH9ln7euxhHdooVL8is2FiVc7CfAp2zsKgIRhbq/8lGbJr5ZyT6QkCQK0M8Sx1zNe9puebr+BE8uBFsartg==
   dependencies:
     "@jest/create-cache-key-function" "^29.2.1"
     "@react-native-community/cli" "10.2.2"
@@ -7013,7 +7013,7 @@ react-native@0.71.8:
     promise "^8.3.0"
     react-devtools-core "^4.26.1"
     react-native-codegen "^0.71.5"
-    react-native-gradle-plugin "^0.71.18"
+    react-native-gradle-plugin "^0.71.19"
     react-refresh "^0.4.0"
     react-shallow-renderer "^16.15.0"
     regenerator-runtime "^0.13.2"
