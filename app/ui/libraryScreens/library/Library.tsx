@@ -39,7 +39,7 @@ const Library = ({navigation}: {navigation: any}) => {
   const [refreshing, setRefreshing] = useState<boolean>(false);
 
   const loadData = async () => {
-    const myUserId = await EncryptedStorage.getItem('userId');
+    const myUserId = await EncryptedStorage.getItem('user_id');
     if (myUserId) {
       setSelf(parseInt(myUserId, 10));
     }
