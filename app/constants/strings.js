@@ -121,6 +121,7 @@ const strings = {
     noSuggestionsFound: 'No Suggestions Found',
     noRequestsFound: 'No Requests Found',
     createFriendGroup: 'Create a Friend Group',
+    fgCreateBackConfirmation: 'Are you sure you want to go back?',
   },
   profile: {
     yourProfile: 'Your Profile',
@@ -162,6 +163,8 @@ const strings = {
     leaveInfo: 'Are you sure you want to leave this event?',
     deleteDestination: 'Remove Destination',
     deleteDestinationInfo: 'Are you sure you want to remove this destination?',
+    create: 'Create',
+    suggest: 'Suggest',
   },
   roulette: {
     total: 'Total',
@@ -244,6 +247,7 @@ const strings = {
     friendRequest: 'Unable to send friend request. Please try again later.',
     unfriend: 'Unable to unfriend. Please try again later.',
     addFriend: 'Unable to invite friend. Please try again later.',
+    createFG: 'Unable to create friend group. Please try again later.',
   },
   ageEnum: [
     {label: '-17', value: '-17'},

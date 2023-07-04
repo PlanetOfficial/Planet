@@ -91,8 +91,6 @@ const DestinationsList: React.FC<Props> = ({
                           },
                         ],
                         {
-                          type: 'plain-text',
-                          cancelable: false,
                           defaultValue: destination.category_name,
                         },
                       );

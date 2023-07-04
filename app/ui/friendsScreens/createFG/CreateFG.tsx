@@ -10,9 +10,11 @@ import {
   SafeAreaView,
   TextInput,
   StyleSheet,
+  TouchableOpacity as TO,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import prompt from 'react-native-prompt-android';
 
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
@@ -26,7 +28,8 @@ import UserRow from '../../components/UserRow';
 import FriendsContext from '../../../context/FriendsContext';
 
 import {UserInfo} from '../../../utils/types';
-import {searchUsers} from '../../../utils/api/friendsAPI';
+import {getFriends, searchUsers} from '../../../utils/api/friendsAPI';
+import {postFG} from '../../../utils/api/fgAPI';
 
 const CreateFG = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';
@@ -66,11 +69,55 @@ const CreateFG = ({navigation}: {navigation: any}) => {
     setLoading(false);
   };
 
+  const loadFriends = async () => {
+    const response = await getFriends();
+
+    if (response) {
+      setFriendGroups(response.friendgroups);
+    } else {
+      Alert.alert(strings.error.error, strings.error.loadFriendsList);
+    }
+  };
+
+  const createFG = async (name: string) => {
+    const response = await postFG(selectedId, name);
+
+    if (response) {
+      loadFriends();
+      navigation.goBack();
+    } else {
+      Alert.alert(strings.error.error, strings.error.createFG);
+    }
+  };
+
   return (
     <View style={STYLES.container}>
       <SafeAreaView>
         <View style={STYLES.header}>
-          <Icon icon={icons.close} onPress={() => navigation.goBack()} />
+          <Icon
+            icon={icons.close}
+            onPress={() => {
+              if (selectedId.length > 0) {
+                Alert.alert(
+                  strings.main.warning,
+                  strings.friends.fgCreateBackConfirmation,
+                  [
+                    {
+                      text: strings.main.cancel,
+                      style: 'cancel',
+                    },
+                    {
+                      text: strings.main.discard,
+                      onPress: () => navigation.goBack(),
+                      style: 'destructive',
+                    },
+                  ],
+                );
+              } else {
+                navigation.goBack();
+              }
+            }}
+          />
           <View style={[styles.searchBar, STYLES.shadow]}>
             <Icon size="s" icon={icons.search} />
             <TextInput
@@ -186,6 +233,33 @@ const CreateFG = ({navigation}: {navigation: any}) => {
           }
         />
       )}
+      <TO
+        style={[
+          STYLES.button,
+          {
+            backgroundColor:
+              selectedId.length === 0
+                ? colors[theme].secondary
+                : colors[theme].accent,
+          },
+        ]}
+        disabled={selectedId.length === 0}
+        onPress={() =>
+          prompt(strings.main.rename, strings.event.renamePrompt, [
+            {text: 'Cancel', style: 'cancel'},
+            {
+              text: 'Save',
+              onPress: name => {
+                createFG(name);
+              },
+            },
+          ])
+        }>
+        <Text color={colors[theme].primary}>
+          {strings.event.create +
+            (selectedId.length > 0 ? ` (${selectedId.length})` : '')}
+        </Text>
+      </TO>
     </View>
   );
 };

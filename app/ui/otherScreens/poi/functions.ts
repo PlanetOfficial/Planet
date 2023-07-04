@@ -2,16 +2,17 @@ import {Linking} from 'react-native';
 import {showLocation} from 'react-native-map-link';
 
 import {Poi, PoiDetail, PlaceOpeningHoursPeriod} from '../../../utils/types';
+import strings from '../../../constants/strings';
 
 export const getButtonString = (
   mode: 'create' | 'suggest' | 'add' | 'none',
 ) => {
   if (mode === 'create' || mode === 'add') {
-    return 'Add';
+    return strings.main.add;
   } else if (mode === 'suggest') {
-    return 'Suggest';
+    return strings.event.suggest;
   } else {
-    return 'Create';
+    return strings.event.create;
   }
 };
 
