@@ -30,6 +30,7 @@ import {getFriends} from '../../../utils/api/friendsAPI';
 import FGIcon from './FGIcon';
 import {FlatList} from 'react-native-gesture-handler';
 import UserIcon from '../../components/UserIcon';
+import {reorderFG} from '../../../utils/api/fgAPI';
 
 const FriendsList = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';
@@ -73,6 +74,13 @@ const FriendsList = ({navigation}: {navigation: any}) => {
     [STYLES, styles, theme, navigation],
   );
 
+  const handleReorder = async (data: FriendGroup[]) => {
+    const response = await reorderFG(data.map(fg => fg.id));
+    if (!response) {
+      Alert.alert(strings.error.error, strings.error.reorderFG);
+    }
+  };
+
   return (
     <ScrollView
       style={STYLES.container}
@@ -108,7 +116,8 @@ const FriendsList = ({navigation}: {navigation: any}) => {
         showsHorizontalScrollIndicator={false}
         keyExtractor={(item: FriendGroup) => item.id.toString()}
         onDragEnd={({data}) => {
-          console.log(data);
+          setFriendGroups(data);
+          handleReorder(data);
         }}
         renderItem={({
           item,

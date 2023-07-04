@@ -251,6 +251,7 @@ const strings = {
     addFriend: 'Unable to invite friend. Please try again later.',
     createFG: 'Unable to create friend group. Please try again later.',
     fgNameEmpty: 'Friend group name cannot be empty.',
+    reorderFG: 'Unable to reorder friend groups. Please try again later.',
   },
   ageEnum: [
     {label: '-17', value: '-17'},

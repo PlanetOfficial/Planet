@@ -73,3 +73,26 @@ export const deleteFG = async (id: number): Promise<Boolean> => {
 
   return response.ok;
 };
+
+/**
+ * @requires auth_token should be set in EncryptedStorage before calling this function
+ */
+export const reorderFG = async (fg_ids: number[]): Promise<Boolean> => {
+  const authToken = await EncryptedStorage.getItem('auth_token');
+
+  if (!authToken) {
+    return false;
+  }
+
+  const response = await fetch(
+    FriendAPIURL +
+      `/groups/reorder?friendgroup_ids=${JSON.stringify(
+        fg_ids,
+      )}&authtoken=${authToken}`,
+    {
+      method: 'POST',
+    },
+  );
+
+  return response.ok;
+};
