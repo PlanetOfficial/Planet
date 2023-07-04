@@ -12,7 +12,7 @@ import {
   StatusBar,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
@@ -39,7 +39,7 @@ const Library = ({navigation}: {navigation: any}) => {
   const [refreshing, setRefreshing] = useState<boolean>(false);
 
   const loadData = async () => {
-    const myUserId = await AsyncStorage.getItem('user_id');
+    const myUserId = await EncryptedStorage.getItem('userId');
     if (myUserId) {
       setSelf(parseInt(myUserId, 10));
     }

@@ -13,7 +13,7 @@ import {
   useColorScheme,
   StatusBar,
 } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 import colors from '../../../constants/colors';
 import strings from '../../../constants/strings';
@@ -65,7 +65,7 @@ const EventPage = ({
   const {bookmarks, setBookmarks} = bookmarkContext;
 
   const loadData = useCallback(async () => {
-    const myUserId = await AsyncStorage.getItem('user_id');
+    const myUserId = await EncryptedStorage.getItem('user_id');
 
     const _eventDetail = await getEvent(event.id);
     if (_eventDetail && myUserId) {
