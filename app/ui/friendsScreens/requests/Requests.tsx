@@ -155,6 +155,11 @@ const Requests = ({navigation}: {navigation: any}) => {
           </UserRow>
         </TouchableOpacity>
       ))}
+      {requests.length === 0 && requestsSent.length === 0 ? (
+        <View style={STYLES.center}>
+          <Text>{strings.friends.noRequestsFound}</Text>
+        </View>
+      ) : null}
     </ScrollView>
   );
 };

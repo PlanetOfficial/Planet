@@ -99,7 +99,6 @@ const strings = {
   friends: {
     friends: 'Friends',
     noFriendsFound: 'No Friends Found',
-    noFriendsFoundDescription: 'Try adding some friends',
     friendRequest: 'Friend Request',
     friendRequests: 'Friend Requests',
     pendingRequest: 'Pending Request',
@@ -119,6 +118,8 @@ const strings = {
     mutualFriends: 'Mutual Friends',
     mutualFriendsDescriptions: 'You have these friends in common',
     noSuggestionsFound: 'No Suggestions Found',
+    noRequestsFound: 'No Requests Found',
+    createFriendGroup: 'Create a Friend Group',
   },
   profile: {
     yourProfile: 'Your Profile',
