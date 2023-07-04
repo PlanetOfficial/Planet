@@ -50,9 +50,9 @@ const User = ({
   const [mutualEvents, setMutualEvents] = useState<Event[]>([]);
 
   const initializeData = useCallback(async () => {
-    const _self = await EncryptedStorage.getItem('user_id');
-    if (_self) {
-      setSelf(parseInt(_self, 10));
+    const myUserId = await EncryptedStorage.getItem('user_id');
+    if (myUserId) {
+      setSelf(parseInt(myUserId, 10));
     }
 
     const userData = await getFriend(route.params.user.id);

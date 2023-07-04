@@ -39,9 +39,9 @@ const Library = ({navigation}: {navigation: any}) => {
   const [refreshing, setRefreshing] = useState<boolean>(false);
 
   const loadData = async () => {
-    const _self = await AsyncStorage.getItem('user_id');
-    if (_self) {
-      setSelf(parseInt(_self, 10));
+    const myUserId = await AsyncStorage.getItem('user_id');
+    if (myUserId) {
+      setSelf(parseInt(myUserId, 10));
     }
 
     const _events = await getEvents();
