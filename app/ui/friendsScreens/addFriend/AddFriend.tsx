@@ -137,6 +137,7 @@ const AddFriend = ({
             <TouchableOpacityGestureHandler
               style={styles.cancel}
               onPress={() => {
+                searchRef.current?.blur();
                 searchRef.current?.clear();
                 setSearching(false);
                 setSearchResult([]);
@@ -253,10 +254,6 @@ const AddFriend = ({
             ListEmptyComponent={
               <View style={STYLES.center}>
                 <Text>{strings.friends.noFriendsFound}</Text>
-                <Text> </Text>
-                <Text size="s">
-                  {strings.friends.noFriendsFoundDescription}
-                </Text>
               </View>
             }
             refreshControl={

@@ -2,7 +2,6 @@ import React, {createRef, useContext, useState} from 'react';
 import {
   View,
   FlatList,
-  TouchableOpacity,
   Alert,
   useColorScheme,
   StatusBar,
@@ -13,6 +12,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
@@ -40,6 +40,8 @@ const CreateFG = ({navigation}: {navigation: any}) => {
   }
   const {friends, setFriendGroups} = friendsContext;
 
+  const [selectedId, setSelectedId] = useState<number[]>([]);
+
   const searchRef = createRef<TextInput>();
   const [searchText, setSearchText] = useState<string>('');
   const [searchResults, setSearchResults] = useState<UserInfo[]>([]);
@@ -50,9 +52,12 @@ const CreateFG = ({navigation}: {navigation: any}) => {
     setLoading(true);
     setSearchText(text);
     if (text.length > 0) {
-      const result = await searchUsers(text);
+      let result = await searchUsers(text);
 
       if (result) {
+        result = result.filter(user =>
+          friends.some(friend => friend.id === user.id),
+        );
         setSearchResults(result);
       } else {
         Alert.alert(strings.error.error, strings.error.searchError);
@@ -65,17 +70,14 @@ const CreateFG = ({navigation}: {navigation: any}) => {
     <View style={STYLES.container}>
       <SafeAreaView>
         <View style={STYLES.header}>
-          <Icon
-            icon={icons.close}
-            onPress={() => navigation.goBack()}
-          />
+          <Icon icon={icons.close} onPress={() => navigation.goBack()} />
           <View style={[styles.searchBar, STYLES.shadow]}>
             <Icon size="s" icon={icons.search} />
             <TextInput
               ref={searchRef}
               style={styles.searchText}
               value={searchText}
-              placeholder={strings.search.search}
+              placeholder={strings.search.searchFriends}
               placeholderTextColor={colors[theme].neutral}
               autoCapitalize="none"
               autoCorrect={false}
@@ -94,8 +96,10 @@ const CreateFG = ({navigation}: {navigation: any}) => {
             <TouchableOpacity
               style={styles.cancel}
               onPress={() => {
+                searchRef.current?.blur();
                 searchRef.current?.clear();
                 setSearching(false);
+                setSearchText('');
                 setSearchResults([]);
               }}>
               <Text>{strings.main.cancel}</Text>
@@ -116,13 +120,25 @@ const CreateFG = ({navigation}: {navigation: any}) => {
             keyExtractor={item => item.id.toString()}
             renderItem={({item}: {item: UserInfo}) => (
               <TouchableOpacity
-                onPress={() =>
-                  navigation.push('User', {
-                    user: item,
-                  })
-                }>
+                onPress={() => {
+                  setSearchText('');
+
+                  if (selectedId.includes(item.id)) {
+                    setSelectedId(selectedId.filter(id => id !== item.id));
+                  } else {
+                    setSelectedId([...selectedId, item.id]);
+                  }
+                }}>
                 <UserRow user={item}>
-                  <Icon size="xs" icon={icons.next} />
+                  <Icon
+                    size="m"
+                    icon={
+                      selectedId.includes(item.id)
+                        ? icons.selected
+                        : icons.unselected
+                    }
+                    color={colors[theme].accent}
+                  />
                 </UserRow>
               </TouchableOpacity>
             )}
@@ -142,9 +158,26 @@ const CreateFG = ({navigation}: {navigation: any}) => {
           data={friends}
           keyExtractor={item => item.id.toString()}
           renderItem={({item}: {item: UserInfo}) => (
-            <UserRow user={item}>
-              <Icon size="xs" icon={icons.next} />
-            </UserRow>
+            <TouchableOpacity
+              onPress={() => {
+                if (selectedId.includes(item.id)) {
+                  setSelectedId(selectedId.filter(id => id !== item.id));
+                } else {
+                  setSelectedId([...selectedId, item.id]);
+                }
+              }}>
+              <UserRow user={item}>
+                <Icon
+                  size="m"
+                  icon={
+                    selectedId.includes(item.id)
+                      ? icons.selected
+                      : icons.unselected
+                  }
+                  color={colors[theme].accent}
+                />
+              </UserRow>
+            </TouchableOpacity>
           )}
           ListEmptyComponent={
             <View style={STYLES.center}>

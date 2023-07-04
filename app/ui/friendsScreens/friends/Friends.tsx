@@ -98,8 +98,10 @@ const Friends = ({navigation}: {navigation: any}) => {
             <TouchableOpacity
               style={styles.cancel}
               onPress={() => {
+                searchRef.current?.blur();
                 searchRef.current?.clear();
                 setSearching(false);
+                setSearchText('');
                 setSearchResults([]);
               }}>
               <Text>{strings.main.cancel}</Text>
@@ -119,16 +121,11 @@ const Friends = ({navigation}: {navigation: any}) => {
             data={searchResults}
             keyExtractor={item => item.id.toString()}
             renderItem={({item}: {item: UserInfo}) => (
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.push('User', {
-                    user: item,
-                  })
-                }>
+              <View>
                 <UserRow user={item}>
                   <Icon size="xs" icon={icons.next} />
                 </UserRow>
-              </TouchableOpacity>
+              </View>
             )}
             ListEmptyComponent={
               searchText.length > 0 ? (

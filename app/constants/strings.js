@@ -85,6 +85,7 @@ const strings = {
   },
   search: {
     search: 'Search',
+    searchFriends: 'Search Friends',
     noResultsFound: 'No Results Found',
     noResultsFoundDescription: 'Try searching for something else',
     setLocation: 'Set Location',
