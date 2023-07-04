@@ -10,10 +10,10 @@ import {
   SafeAreaView,
   TextInput,
   StyleSheet,
-  TouchableOpacity as TO,
+  TouchableOpacity,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {TouchableOpacity as TouchableOpacityGestureHandler} from 'react-native-gesture-handler';
 import prompt from 'react-native-prompt-android';
 
 import colors from '../../../constants/colors';
@@ -80,6 +80,10 @@ const CreateFG = ({navigation}: {navigation: any}) => {
   };
 
   const createFG = async (name: string) => {
+    if (name.length === 0) {
+      Alert.alert(strings.error.error, strings.error.fgNameEmpty);
+      return;
+    }
     const response = await postFG(selectedId, name);
 
     if (response) {
@@ -140,7 +144,7 @@ const CreateFG = ({navigation}: {navigation: any}) => {
             />
           </View>
           {searching ? (
-            <TouchableOpacity
+            <TouchableOpacityGestureHandler
               style={styles.cancel}
               onPress={() => {
                 searchRef.current?.blur();
@@ -150,7 +154,7 @@ const CreateFG = ({navigation}: {navigation: any}) => {
                 setSearchResults([]);
               }}>
               <Text>{strings.main.cancel}</Text>
-            </TouchableOpacity>
+            </TouchableOpacityGestureHandler>
           ) : null}
         </View>
       </SafeAreaView>
@@ -166,7 +170,7 @@ const CreateFG = ({navigation}: {navigation: any}) => {
             data={searchResults}
             keyExtractor={item => item.id.toString()}
             renderItem={({item}: {item: UserInfo}) => (
-              <TouchableOpacity
+              <TouchableOpacityGestureHandler
                 onPress={() => {
                   setSearchText('');
 
@@ -187,7 +191,7 @@ const CreateFG = ({navigation}: {navigation: any}) => {
                     color={colors[theme].accent}
                   />
                 </UserRow>
-              </TouchableOpacity>
+              </TouchableOpacityGestureHandler>
             )}
             ListEmptyComponent={
               searchText.length > 0 ? (
@@ -205,7 +209,7 @@ const CreateFG = ({navigation}: {navigation: any}) => {
           data={friends}
           keyExtractor={item => item.id.toString()}
           renderItem={({item}: {item: UserInfo}) => (
-            <TouchableOpacity
+            <TouchableOpacityGestureHandler
               onPress={() => {
                 if (selectedId.includes(item.id)) {
                   setSelectedId(selectedId.filter(id => id !== item.id));
@@ -224,7 +228,7 @@ const CreateFG = ({navigation}: {navigation: any}) => {
                   color={colors[theme].accent}
                 />
               </UserRow>
-            </TouchableOpacity>
+            </TouchableOpacityGestureHandler>
           )}
           ListEmptyComponent={
             <View style={STYLES.center}>
@@ -233,7 +237,7 @@ const CreateFG = ({navigation}: {navigation: any}) => {
           }
         />
       )}
-      <TO
+      <TouchableOpacity
         style={[
           STYLES.button,
           {
@@ -245,21 +249,26 @@ const CreateFG = ({navigation}: {navigation: any}) => {
         ]}
         disabled={selectedId.length === 0}
         onPress={() =>
-          prompt(strings.main.rename, strings.event.renamePrompt, [
-            {text: 'Cancel', style: 'cancel'},
-            {
-              text: 'Save',
-              onPress: name => {
-                createFG(name);
+          prompt(
+            strings.main.rename,
+            strings.event.renamePrompt,
+            [
+              {text: 'Cancel', style: 'cancel'},
+              {
+                text: 'Save',
+                onPress: name => {
+                  createFG(name);
+                },
               },
-            },
-          ])
+            ],
+            {},
+          )
         }>
         <Text color={colors[theme].primary}>
           {strings.event.create +
             (selectedId.length > 0 ? ` (${selectedId.length})` : '')}
         </Text>
-      </TO>
+      </TouchableOpacity>
     </View>
   );
 };

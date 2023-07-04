@@ -122,6 +122,8 @@ const strings = {
     noRequestsFound: 'No Requests Found',
     createFriendGroup: 'Create a Friend Group',
     fgCreateBackConfirmation: 'Are you sure you want to go back?',
+    friendGroup: 'Friend Group',
+    friendGroups: 'Friend Groups',
   },
   profile: {
     yourProfile: 'Your Profile',
@@ -248,6 +250,7 @@ const strings = {
     unfriend: 'Unable to unfriend. Please try again later.',
     addFriend: 'Unable to invite friend. Please try again later.',
     createFG: 'Unable to create friend group. Please try again later.',
+    fgNameEmpty: 'Friend group name cannot be empty.',
   },
   ageEnum: [
     {label: '-17', value: '-17'},

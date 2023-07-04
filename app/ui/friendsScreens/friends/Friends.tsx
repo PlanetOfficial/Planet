@@ -121,11 +121,12 @@ const Friends = ({navigation}: {navigation: any}) => {
             data={searchResults}
             keyExtractor={item => item.id.toString()}
             renderItem={({item}: {item: UserInfo}) => (
-              <View>
+              <TouchableOpacity
+                onPress={() => navigation.push('User', {user: item})}>
                 <UserRow user={item}>
                   <Icon size="xs" icon={icons.next} />
                 </UserRow>
-              </View>
+              </TouchableOpacity>
             )}
             ListEmptyComponent={
               searchText.length > 0 ? (
