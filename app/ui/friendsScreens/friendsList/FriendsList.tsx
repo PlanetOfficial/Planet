@@ -89,7 +89,7 @@ const FriendsList = ({navigation}: {navigation: any}) => {
         />
       }>
       <View style={styles.title}>
-        <Text size="s" weight="l">
+        <Text weight="l">
           {friendGroups.length === 1
             ? strings.friends.friendGroup
             : strings.friends.friendGroups}
@@ -151,7 +151,6 @@ const FriendsList = ({navigation}: {navigation: any}) => {
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={[styles.friendIcons, STYLES.shadow]}
           data={friendGroups.find(fg => fg.id === fgSelected)?.members}
-          
           keyExtractor={(item: UserInfo) => item.id.toString()}
           renderItem={({item}: {item: UserInfo}) => (
             <View style={styles.friendIconContainer}>
@@ -176,9 +175,7 @@ const FriendsList = ({navigation}: {navigation: any}) => {
       ) : null}
 
       <View style={styles.title}>
-        <Text size="s" weight="l">
-          {strings.friends.friends}:
-        </Text>
+        <Text weight="l">{strings.friends.friends}:</Text>
       </View>
 
       {friends.map((item: UserInfo) => (

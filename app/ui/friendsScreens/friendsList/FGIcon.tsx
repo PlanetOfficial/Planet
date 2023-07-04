@@ -12,7 +12,7 @@ interface Props {
   selected?: boolean;
 }
 
-const FGIcon: React.FC<Props> = ({users, selected=false}) => {
+const FGIcon: React.FC<Props> = ({users, selected = false}) => {
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
 
@@ -44,12 +44,7 @@ const FGIcon: React.FC<Props> = ({users, selected=false}) => {
   ];
 
   return (
-    <View style={[styles.container, 
-    {
-      borderWidth: selected ? 2 : 0,
-      borderColor: colors[theme].accent,
-
-    }]}>
+    <View style={[styles.container, selected ? styles.border : undefined]}>
       {usersSorted.reverse().map((user, index) => (
         <View
           key={index}
@@ -81,9 +76,13 @@ const styling = (theme: 'light' | 'dark') =>
       height: s(75),
       borderRadius: s(37.5),
       backgroundColor: colors[theme].secondary,
+      borderColor: colors[theme].accent,
     },
     icon: {
       position: 'absolute',
+    },
+    border: {
+      borderWidth: 2,
     },
   });
 
