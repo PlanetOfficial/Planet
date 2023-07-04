@@ -32,16 +32,16 @@ const Library = ({navigation}: {navigation: any}) => {
   const STYLES = STYLING(theme);
   StatusBar.setBarStyle(colors[theme].statusBar, true);
 
-  const [self, setSelf] = useState<string>('');
+  const [self, setSelf] = useState<number>(0);
   const [events, setEvents] = useState<Event[]>([]);
 
   const [loading, setLoading] = useState<boolean>(true);
   const [refreshing, setRefreshing] = useState<boolean>(false);
 
   const loadData = async () => {
-    const _self = await AsyncStorage.getItem('username');
+    const _self = await AsyncStorage.getItem('user_id');
     if (_self) {
-      setSelf(_self);
+      setSelf(parseInt(_self, 10));
     }
 
     const _events = await getEvents();

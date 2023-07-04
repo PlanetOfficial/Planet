@@ -117,7 +117,7 @@ const styling = (theme: 'light' | 'dark') =>
     },
   });
 
-export const sctStyling = (theme: 'light' | 'dark') =>
+export const segControlTabStyling = (theme: 'light' | 'dark') =>
   StyleSheet.create({
     container: {
       marginTop: s(10),

@@ -65,16 +65,16 @@ const EventPage = ({
   const {bookmarks, setBookmarks} = bookmarkContext;
 
   const loadData = useCallback(async () => {
-    const _username = await AsyncStorage.getItem('username');
+    const _self = await AsyncStorage.getItem('user_id');
 
     const _eventDetail = await getEvent(event.id);
-    if (_eventDetail) {
+    if (_eventDetail && _self) {
       setEventDetail(_eventDetail);
 
       const _myVotes = new Map<number, number>();
       _eventDetail.destinations.forEach(dest => {
         dest.suggestions.forEach(sugg => {
-          if (sugg.votes.some(_vote => _vote.username === _username)) {
+          if (sugg.votes.some(_vote => _vote.id === parseInt(_self, 10))) {
             _myVotes.set(dest.id, sugg.id);
           }
         });
