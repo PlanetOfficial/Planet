@@ -15,7 +15,13 @@ export const handleFGSelect = (
       member => invitees?.find(user => user.id === member.id) !== undefined,
     )
   ) {
-    setInvitees([...(invitees || []), ...item.members]);
+    setInvitees(
+      invitees.concat(
+        item.members.filter(
+          member => invitees?.find(user => user.id === member.id) === undefined,
+        ),
+      ),
+    );
   } else {
     setInvitees(
       invitees.filter(

@@ -1,11 +1,8 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {View, useColorScheme, StatusBar, SafeAreaView, TouchableOpacity, StyleSheet} from 'react-native';
-import { s } from 'react-native-size-matters';
+import {View, useColorScheme, StatusBar} from 'react-native';
 
 import colors from '../../../constants/colors';
 import STYLING from '../../../constants/styles';
-
-import Text from '../../components/Text';
 
 import FriendsContext from '../../../context/FriendsContext';
 
@@ -14,6 +11,7 @@ import {UserInfo} from '../../../utils/types';
 import Header from './Header';
 import SearchResult from './SearchResult';
 import Friends from './Friends';
+import Footer from './Footer';
 
 const AddFriend = ({
   navigation,
@@ -53,10 +51,6 @@ const AddFriend = ({
     return unsubscribe;
   }, [navigation, route.params.members]);
 
-  const onAdd = async () => {
-    navigation.navigate('Create', {members: invitees});
-  };
-
   return (
     <View style={STYLES.container}>
       <Header
@@ -86,21 +80,13 @@ const AddFriend = ({
         />
       )}
 
-      <View style={styles.footer}>
-        
-      </View>
+      <Footer
+        navigation={navigation}
+        invitees={invitees}
+        setInvitees={setInvitees}
+      />
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  footer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: s(10),
-    backgroundColor: colors.light.background,
-  },
-});
 
 export default AddFriend;
