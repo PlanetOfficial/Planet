@@ -69,7 +69,7 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
       setFriends(result.friends);
       setRequests(result.requests);
       setRequestsSent(result.requests_sent);
-      setFriendGroups(result.friendgroups);
+      setFriendGroups(result.friend_groups);
     } else {
       Alert.alert(strings.error.error, strings.error.loadFriendsList);
     }

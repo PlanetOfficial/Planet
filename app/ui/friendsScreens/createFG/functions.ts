@@ -36,7 +36,7 @@ const loadFriends = async (
   const response = await getFriends();
 
   if (response) {
-    setFriendGroups(response.friendgroups);
+    setFriendGroups(response.friend_groups);
   } else {
     Alert.alert(strings.error.error, strings.error.loadFriendsList);
   }

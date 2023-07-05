@@ -86,7 +86,7 @@ export const reorderFG = async (fg_ids: number[]): Promise<Boolean> => {
 
   const response = await fetch(
     FriendAPIURL +
-      `/groups/reorder?friendgroup_ids=${JSON.stringify(
+      `/groups/reorder?friend_group_ids=${JSON.stringify(
         fg_ids,
       )}&authtoken=${authToken}`,
     {
