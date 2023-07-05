@@ -3,7 +3,6 @@ import {
   StyleSheet,
   View,
   TouchableOpacity,
-  Alert,
   useColorScheme,
   LayoutAnimation,
 } from 'react-native';
@@ -23,11 +22,10 @@ import FriendsContext from '../../../context/FriendsContext';
 import {FriendGroup, UserInfo} from '../../../utils/types';
 
 import FGIcon from './FGIcon';
-import {handleFGReorder, handleRemoveFG, resetFGEditing} from './functions';
+import {handleFGReorder, resetFGEditing} from './functions';
 
 interface Props {
   navigation: any;
-  fgEditing: boolean;
   setFgEditing: (editing: boolean) => void;
   fgSelected: number;
   setFgSelected: (id: number) => void;
@@ -37,7 +35,6 @@ interface Props {
 
 const FriendGroupComponent: React.FC<Props> = ({
   navigation,
-  fgEditing,
   setFgEditing,
   fgSelected,
   setFgSelected,
@@ -52,7 +49,7 @@ const FriendGroupComponent: React.FC<Props> = ({
   if (!friendsContext) {
     throw new Error('FriendsContext is not set!');
   }
-  const {setFriends, friendGroups, setFriendGroups} = friendsContext;
+  const {friendGroups, setFriendGroups} = friendsContext;
 
   const AddButton = useMemo(
     () => (
@@ -104,64 +101,29 @@ const FriendGroupComponent: React.FC<Props> = ({
           drag: () => void;
           isActive: boolean;
         }) => (
-          <>
-            <TouchableOpacity
-              key={item.id}
-              style={styles.friendGroup}
-              delayLongPress={500}
-              onLongPress={drag}
-              disabled={isActive}
-              onPress={() => {
-                LayoutAnimation.configureNext(
-                  LayoutAnimation.Presets.easeInEaseOut,
-                );
-                if (fgSelected === item.id) {
-                  setFgSelected(0);
-                  resetFGEditing(setFgEditing, setTempName, setTempMembers);
-                } else {
-                  setFgSelected(item.id);
-                  resetFGEditing(setFgEditing, setTempName, setTempMembers);
-                }
-              }}>
-              <FGIcon users={item.members} selected={fgSelected === item.id} />
-              <Text size="s" weight={fgSelected === item.id ? 'r' : 'l'}>
-                {item.name}
-              </Text>
-            </TouchableOpacity>
-            {fgSelected === item.id && fgEditing ? (
-              <TouchableOpacity
-                style={styles.minusBig}
-                onPress={() =>
-                  Alert.alert(
-                    strings.friends.deleteFriendGroup,
-                    strings.friends.deleteFriendGroupInfo,
-                    [
-                      {text: 'Cancel', style: 'cancel'},
-                      {
-                        text: 'Delete',
-                        onPress: () =>
-                          handleRemoveFG(
-                            fgSelected,
-                            setFgSelected,
-                            setFgEditing,
-                            setTempName,
-                            setTempMembers,
-                            setFriends,
-                            setFriendGroups,
-                          ),
-                        style: 'destructive',
-                      },
-                    ],
-                  )
-                }>
-                <Icon
-                  size="l"
-                  icon={icons.minus}
-                  color={colors[theme].accent}
-                />
-              </TouchableOpacity>
-            ) : null}
-          </>
+          <TouchableOpacity
+            key={item.id}
+            style={styles.friendGroup}
+            delayLongPress={500}
+            onLongPress={drag}
+            disabled={isActive}
+            onPress={() => {
+              LayoutAnimation.configureNext(
+                LayoutAnimation.Presets.easeInEaseOut,
+              );
+              if (fgSelected === item.id) {
+                setFgSelected(0);
+                resetFGEditing(setFgEditing, setTempName, setTempMembers);
+              } else {
+                setFgSelected(item.id);
+                resetFGEditing(setFgEditing, setTempName, setTempMembers);
+              }
+            }}>
+            <FGIcon users={item.members} selected={fgSelected === item.id} />
+            <Text size="s" weight={fgSelected === item.id ? 'r' : 'l'}>
+              {item.name}
+            </Text>
+          </TouchableOpacity>
         )}
         ListEmptyComponent={AddButton}
       />
@@ -201,15 +163,6 @@ const styling = (theme: 'light' | 'dark') =>
       marginHorizontal: s(20),
       marginTop: s(10),
       marginBottom: s(5),
-    },
-    minusBig: {
-      position: 'absolute',
-      top: s(62),
-      left: s(62),
-      height: s(24),
-      width: s(24),
-      borderRadius: s(12),
-      backgroundColor: colors[theme].primary,
     },
   });
 

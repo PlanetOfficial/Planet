@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   useColorScheme,
   ScrollView,
+  Alert,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 import prompt from 'react-native-prompt-android';
@@ -21,13 +22,14 @@ import UserIcon from '../../components/UserIcon';
 import FriendsContext from '../../../context/FriendsContext';
 
 import {UserInfo} from '../../../utils/types';
-import {beginFGEditing, saveFGEditing} from './functions';
+import {beginFGEditing, handleRemoveFG, saveFGEditing} from './functions';
 
 interface Props {
   navigation: any;
   fgEditing: boolean;
   setFgEditing: (editing: boolean) => void;
   fgSelected: number;
+  setFgSelected: (id: number) => void;
   tempName: string | undefined;
   setTempName: (tempName: string | undefined) => void;
   tempMembers: UserInfo[] | undefined;
@@ -39,6 +41,7 @@ const FriendGroupEdit: React.FC<Props> = ({
   fgEditing,
   setFgEditing,
   fgSelected,
+  setFgSelected,
   tempName,
   setTempName,
   tempMembers,
@@ -79,31 +82,64 @@ const FriendGroupEdit: React.FC<Props> = ({
             {tempName || friendGroups.find(fg => fg.id === fgSelected)?.name}
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            if (fgEditing) {
-              saveFGEditing(
-                fgSelected,
-                tempName,
-                tempMembers,
-                setFgEditing,
-                setFriends,
-                setFriendGroups,
-              );
-            } else {
-              beginFGEditing(
-                friendGroups,
-                setFgEditing,
-                setTempName,
-                setTempMembers,
-                fgSelected,
-              );
-            }
-          }}>
-          <Text size="s">
-            {fgEditing ? strings.main.save : strings.main.edit}
-          </Text>
-        </TouchableOpacity>
+        <View style={STYLES.row}>
+          <TouchableOpacity
+            onPress={() => {
+              if (fgEditing) {
+                saveFGEditing(
+                  fgSelected,
+                  tempName,
+                  tempMembers,
+                  setFgEditing,
+                  setFriends,
+                  setFriendGroups,
+                );
+              } else {
+                beginFGEditing(
+                  friendGroups,
+                  setFgEditing,
+                  setTempName,
+                  setTempMembers,
+                  fgSelected,
+                );
+              }
+            }}>
+            <Text size="s">
+              {fgEditing ? strings.main.save : strings.main.edit}
+            </Text>
+          </TouchableOpacity>
+          {fgEditing ? (
+            <TouchableOpacity
+              style={styles.delete}
+              onPress={() =>
+                Alert.alert(
+                  strings.friends.deleteFriendGroup,
+                  strings.friends.deleteFriendGroupInfo,
+                  [
+                    {text: 'Cancel', style: 'cancel'},
+                    {
+                      text: 'Delete',
+                      onPress: () =>
+                        handleRemoveFG(
+                          fgSelected,
+                          setFgSelected,
+                          setFgEditing,
+                          setTempName,
+                          setTempMembers,
+                          setFriends,
+                          setFriendGroups,
+                        ),
+                      style: 'destructive',
+                    },
+                  ],
+                )
+              }>
+              <Text size="s" color={colors[theme].red}>
+                {strings.main.remove}
+              </Text>
+            </TouchableOpacity>
+          ) : null}
+        </View>
       </View>
       <ScrollView
         horizontal={true}
@@ -208,6 +244,9 @@ const styling = (theme: 'light' | 'dark') =>
       width: s(20),
       borderRadius: s(10),
       backgroundColor: colors[theme].primary,
+    },
+    delete: {
+      marginLeft: s(20),
     },
   });
 

@@ -61,7 +61,6 @@ const FriendsList = ({navigation}: {navigation: any}) => {
       }>
       <FriendGroupComponent
         navigation={navigation}
-        fgEditing={fgEditing}
         setFgEditing={setFgEditing}
         fgSelected={fgSelected}
         setFgSelected={setFgSelected}
@@ -75,6 +74,7 @@ const FriendsList = ({navigation}: {navigation: any}) => {
           fgEditing={fgEditing}
           setFgEditing={setFgEditing}
           fgSelected={fgSelected}
+          setFgSelected={setFgSelected}
           tempName={tempName}
           setTempName={setTempName}
           tempMembers={tempMembers}
