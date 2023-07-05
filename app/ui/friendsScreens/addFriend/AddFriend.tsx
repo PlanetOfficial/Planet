@@ -1,8 +1,11 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {View, useColorScheme, StatusBar} from 'react-native';
+import {View, useColorScheme, StatusBar, SafeAreaView, TouchableOpacity, StyleSheet} from 'react-native';
+import { s } from 'react-native-size-matters';
 
 import colors from '../../../constants/colors';
 import STYLING from '../../../constants/styles';
+
+import Text from '../../components/Text';
 
 import FriendsContext from '../../../context/FriendsContext';
 
@@ -82,8 +85,22 @@ const AddFriend = ({
           setInvitees={setInvitees}
         />
       )}
+
+      <View style={styles.footer}>
+        
+      </View>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  footer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: s(10),
+    backgroundColor: colors.light.background,
+  },
+});
 
 export default AddFriend;

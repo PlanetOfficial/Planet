@@ -56,8 +56,7 @@ const Friends: React.FC<Props> = ({
 
   return (
     <ScrollView
-      style={STYLES.container}
-      contentContainerStyle={STYLES.flatList}>
+      style={STYLES.container}>
       <View style={styles.title}>
         <Text weight="l">
           {friendGroups.length === 1
