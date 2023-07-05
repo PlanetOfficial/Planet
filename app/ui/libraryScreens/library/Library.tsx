@@ -22,7 +22,6 @@ import STYLING from '../../../constants/styles';
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 import EventRow from '../../components/EventRow';
-import Separator from '../../components/Separator';
 
 import {getEvents} from '../../../utils/api/eventAPI';
 import {Event} from '../../../utils/types';
@@ -114,7 +113,6 @@ const Library = ({navigation}: {navigation: any}) => {
               tintColor={colors[theme].accent}
             />
           }
-          ItemSeparatorComponent={Separator}
         />
       )}
     </View>

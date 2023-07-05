@@ -54,7 +54,6 @@ const AddFriend = ({
   return (
     <View style={STYLES.container}>
       <Header
-        navigation={navigation}
         searching={searching}
         setSearching={setSearching}
         setLoading={setLoading}

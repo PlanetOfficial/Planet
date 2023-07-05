@@ -118,7 +118,6 @@ const styling = (theme: 'light' | 'dark') =>
       flexDirection: 'row',
       alignItems: 'center',
       paddingVertical: s(8),
-      borderBottomWidth: 1,
       borderColor: colors[theme].secondary,
     },
     profilePic: {

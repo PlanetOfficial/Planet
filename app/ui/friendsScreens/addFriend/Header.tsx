@@ -23,7 +23,6 @@ import {searchUsers} from '../../../utils/api/friendsAPI';
 import {UserInfo} from '../../../utils/types';
 
 interface Props {
-  navigation: any;
   searching: boolean;
   setSearching: (searching: boolean) => void;
   setLoading: (loading: boolean) => void;
@@ -33,7 +32,6 @@ interface Props {
 }
 
 const Header: React.FC<Props> = ({
-  navigation,
   searching,
   setSearching,
   setLoading,
@@ -65,7 +63,6 @@ const Header: React.FC<Props> = ({
   return (
     <SafeAreaView>
       <View style={STYLES.header}>
-        <Icon icon={icons.close} onPress={() => navigation.goBack()} />
         <View style={[styles.searchBar, STYLES.shadow]}>
           <Icon size="s" icon={icons.search} />
           <TextInput
@@ -113,7 +110,6 @@ const styling = (theme: 'light' | 'dark') =>
       alignItems: 'center',
       backgroundColor: colors[theme].primary,
       borderRadius: s(10),
-      marginLeft: s(10),
       paddingHorizontal: s(10),
       paddingVertical: s(5),
     },

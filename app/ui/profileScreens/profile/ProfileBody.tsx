@@ -18,7 +18,6 @@ import STYLING, {sctStyling} from '../../../constants/styles';
 import Text from '../../components/Text';
 import PoiRow from '../../components/PoiRow';
 import UserIconXL from '../../components/UserIconXL';
-import Separator from '../../components/Separator';
 
 import BookmarkContext from '../../../context/BookmarkContext';
 import FriendsContext from '../../../context/FriendsContext';
@@ -156,7 +155,6 @@ const ProfileBody = ({navigation}: {navigation: any}) => {
           </View>
         }
         keyExtractor={(item: Poi) => item.id.toString()}
-        ItemSeparatorComponent={Separator}
       />
     </>
   );
