@@ -4,7 +4,6 @@ import {
   SafeAreaView,
   TouchableOpacity,
   TextInput,
-  useColorScheme,
   StatusBar,
 } from 'react-native';
 
@@ -29,7 +28,7 @@ const ForgotPwdVerify = ({
     };
   };
 }) => {
-  const theme = useColorScheme() || 'light';
+  const theme = 'light';
   const STYLES = STYLING(theme);
   StatusBar.setBarStyle(colors[theme].statusBar, true);
 
@@ -69,12 +68,13 @@ const ForgotPwdVerify = ({
             size="m"
             icon={icons.back}
             onPress={() => navigation.goBack()}
+            color={colors[theme].neutral}
           />
         </View>
       </SafeAreaView>
 
       <View style={STYLES.promptContainer}>
-        <Text size="l" weight="l" center={true}>
+        <Text size="l" weight="l" center={true} color={colors[theme].neutral}>
           {strings.signUp.verifyPrompt}
         </Text>
       </View>

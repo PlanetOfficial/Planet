@@ -5,7 +5,6 @@ import {
   SafeAreaView,
   TextInput,
   TouchableOpacity,
-  useColorScheme,
   StatusBar,
 } from 'react-native';
 
@@ -20,7 +19,7 @@ import Text from '../components/Text';
 import {sendCodeForgotPwd} from '../../utils/api/authAPI';
 
 const ForgotPwd = ({navigation}: {navigation: any}) => {
-  const theme = useColorScheme() || 'light';
+  const theme = 'light';
   const STYLES = STYLING(theme);
   StatusBar.setBarStyle(colors[theme].statusBar, true);
 
@@ -54,6 +53,7 @@ const ForgotPwd = ({navigation}: {navigation: any}) => {
             size="m"
             icon={icons.back}
             onPress={() => navigation.goBack()}
+            color={colors[theme].neutral}
           />
         </View>
       </SafeAreaView>
