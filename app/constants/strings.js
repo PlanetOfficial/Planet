@@ -17,6 +17,7 @@ const strings = {
     seeAll: 'See All',
     warning: 'Warning',
     milesAbbrev: 'mi',
+    edit: 'Edit',
   },
   title: {
     home: 'Home',
@@ -124,6 +125,14 @@ const strings = {
     fgCreateBackConfirmation: 'Are you sure you want to go back?',
     friendGroup: 'Friend Group',
     friendGroups: 'Friend Groups',
+    customize: 'Customize',
+    members: 'Members',
+    renameFriendGroup: 'Enter a new name for this friend group:',
+    deleteFriendGroup: 'Delete Friend Group',
+    deleteFriendGroupInfo: 'Are you sure you want to delete this friend group?',
+    friendGroupName: 'Friend Group Name',
+    friendGroupNameInfo:
+      'Enter a name for this friend group:\nNote: friend groups are for your own and will not be shared with others.',
   },
   profile: {
     yourProfile: 'Your Profile',
@@ -252,6 +261,8 @@ const strings = {
     createFG: 'Unable to create friend group. Please try again later.',
     fgNameEmpty: 'Friend group name cannot be empty.',
     reorderFG: 'Unable to reorder friend groups. Please try again later.',
+    editFGName: 'Unable to edit friend group name. Please try again later.',
+    deleteFG: 'Unable to delete friend group. Please try again later.',
   },
   ageEnum: [
     {label: '-17', value: '-17'},

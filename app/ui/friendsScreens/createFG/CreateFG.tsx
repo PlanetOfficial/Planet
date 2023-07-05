@@ -250,8 +250,8 @@ const CreateFG = ({navigation}: {navigation: any}) => {
         disabled={selectedId.length === 0}
         onPress={() =>
           prompt(
-            strings.main.rename,
-            strings.event.renamePrompt,
+            strings.friends.friendGroupName,
+            strings.friends.friendGroupNameInfo,
             [
               {text: 'Cancel', style: 'cancel'},
               {

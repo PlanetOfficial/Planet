@@ -68,15 +68,13 @@ const Mutuals = ({
               })
             }>
             <UserRow user={item}>
-              <Icon size="xs" icon={icons.next} />
+              <Icon size="s" icon={icons.next} />
             </UserRow>
           </TouchableOpacity>
         )}
         ListEmptyComponent={
           <View style={STYLES.center}>
             <Text>{strings.friends.noFriendsFound}</Text>
-            <Text> </Text>
-            <Text size="s">{strings.friends.noFriendsFoundDescription}</Text>
           </View>
         }
       />

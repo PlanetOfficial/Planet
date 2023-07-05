@@ -124,7 +124,7 @@ const Friends = ({navigation}: {navigation: any}) => {
               <TouchableOpacity
                 onPress={() => navigation.push('User', {user: item})}>
                 <UserRow user={item}>
-                  <Icon size="xs" icon={icons.next} />
+                  <Icon size="s" icon={icons.next} />
                 </UserRow>
               </TouchableOpacity>
             )}
