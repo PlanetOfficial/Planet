@@ -18,9 +18,15 @@ export const postSuggestion = async (
 
   const response = await fetch(
     EventAPIURL +
-      `/suggestion?event_id=${event_id}&destination_id=${destination_id}&poi_id=${poi_id}&authtoken=${authToken}`,
+      `/suggestion`,
     {
       method: 'POST',
+      body: JSON.stringify({event_id, destination_id, poi_id}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authToken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
     },
   );
 
@@ -43,9 +49,15 @@ export const removeSuggestion = async (
 
   const response = await fetch(
     EventAPIURL +
-      `/suggestion?event_id=${event_id}&destination_id=${destination_id}&poi_id=${poi_id}&authtoken=${authToken}`,
+      `/suggestion`,
     {
       method: 'DELETE',
+      body: JSON.stringify({event_id, destination_id, poi_id}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authToken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
     },
   );
 
@@ -68,9 +80,15 @@ export const makePrimary = async (
 
   const response = await fetch(
     EventAPIURL +
-      `/suggestion/primary?event_id=${event_id}&destination_id=${destination_id}&suggestion_id=${suggestion_id}&authtoken=${authToken}`,
+      `/suggestion/primary`,
     {
       method: 'POST',
+      body: JSON.stringify({event_id, destination_id, suggestion_id}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authToken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
     },
   );
 
@@ -93,9 +111,15 @@ export const spinRoulette = async (
 
   const response = await fetch(
     EventAPIURL +
-      `/suggestion/spin?event_id=${event_id}&destination_id=${destination_id}&suggestion_id=${suggestion_id}&authtoken=${authToken}`,
+      `/suggestion/spin`,
     {
       method: 'POST',
+      body: JSON.stringify({event_id, destination_id, suggestion_id}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authToken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
     },
   );
 
@@ -122,9 +146,15 @@ export const vote = async (
 
   const response = await fetch(
     EventAPIURL +
-      `/suggestion/vote?event_id=${event_id}&destination_id=${destination_id}&suggestion_id=${suggestion_id}&authtoken=${authToken}`,
+      `/suggestion/vote`,
     {
       method: 'POST',
+      body: JSON.stringify({event_id, destination_id, suggestion_id}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authToken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
     },
   );
 

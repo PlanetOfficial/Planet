@@ -13,9 +13,13 @@ export const getFriend = async (id: number): Promise<UserDetail | null> => {
   }
 
   const response = await fetch(
-    FriendAPIURL + `/friend/${id}?authtoken=${authToken}`,
+    FriendAPIURL + `/friend/${id}`,
     {
       method: 'GET',
+      headers: {
+        'X-Xano-Authorization': `Bearer ${authToken}`,
+        'X-Xano-Authorization-Only': 'true',
+      }
     },
   );
 
@@ -44,9 +48,13 @@ export const getFriendsInfo = async (): Promise<{
   }
 
   const response = await fetch(
-    FriendAPIURL + `/friends?authtoken=${authToken}`,
+    FriendAPIURL + `/friends`,
     {
       method: 'GET',
+      headers: {
+        'X-Xano-Authorization': `Bearer ${authToken}`,
+        'X-Xano-Authorization-Only': 'true',
+      }
     },
   );
 
@@ -72,9 +80,13 @@ export const getFriends = async (): Promise<{
   }
 
   const response = await fetch(
-    FriendAPIURL + `/friend?authtoken=${authToken}`,
+    FriendAPIURL + `/friend`,
     {
       method: 'GET',
+      headers: {
+        'X-Xano-Authorization': `Bearer ${authToken}`,
+        'X-Xano-Authorization-Only': 'true',
+      }
     },
   );
 
@@ -100,9 +112,13 @@ export const getFriendRequests = async (): Promise<{
   }
 
   const response = await fetch(
-    FriendAPIURL + `/request?authtoken=${authToken}`,
+    FriendAPIURL + `/request`,
     {
       method: 'GET',
+      headers: {
+        'X-Xano-Authorization': `Bearer ${authToken}`,
+        'X-Xano-Authorization-Only': 'true',
+      }
     },
   );
 
@@ -125,9 +141,15 @@ export const postFriendRequest = async (id: number): Promise<boolean> => {
   }
 
   const response = await fetch(
-    FriendAPIURL + `/request?requestee=${id}&authtoken=${authToken}`,
+    FriendAPIURL + `/request`,
     {
       method: 'POST',
+      body: JSON.stringify({requestee: id}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authToken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
     },
   );
 
@@ -145,9 +167,15 @@ export const deleteFriendRequest = async (id: number): Promise<boolean> => {
   }
 
   const response = await fetch(
-    FriendAPIURL + `/request?requestee=${id}&authtoken=${authToken}`,
+    FriendAPIURL + `/request`,
     {
       method: 'DELETE',
+      body: JSON.stringify({requestee: id}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authToken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
     },
   );
 
@@ -165,9 +193,15 @@ export const acceptFriendRequest = async (id: number): Promise<boolean> => {
   }
 
   const response = await fetch(
-    FriendAPIURL + `/request/accept?requester=${id}&authtoken=${authToken}`,
+    FriendAPIURL + `/request/accept`,
     {
       method: 'POST',
+      body: JSON.stringify({requester: id}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authToken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
     },
   );
 
@@ -185,9 +219,15 @@ export const rejectFriendRequest = async (id: number): Promise<boolean> => {
   }
 
   const response = await fetch(
-    FriendAPIURL + `/request/reject?requester=${id}&authtoken=${authToken}`,
+    FriendAPIURL + `/request/reject`,
     {
       method: 'DELETE',
+      body: JSON.stringify({requester: id}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authToken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
     },
   );
 
@@ -205,9 +245,15 @@ export const deleteFriend = async (id: number): Promise<boolean> => {
   }
 
   const response = await fetch(
-    FriendAPIURL + `/friend?friend=${id}&authtoken=${authToken}`,
+    FriendAPIURL + `/friend`,
     {
       method: 'DELETE',
+      body: JSON.stringify({friend: id}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authToken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
     },
   );
 
@@ -225,9 +271,13 @@ export const getSuggestions = async (): Promise<UserInfo[] | null> => {
   }
 
   const response = await fetch(
-    FriendAPIURL + `/suggestion?authtoken=${authToken}`,
+    FriendAPIURL + `/suggestion`,
     {
       method: 'GET',
+      headers: {
+        'X-Xano-Authorization': `Bearer ${authToken}`,
+        'X-Xano-Authorization-Only': 'true',
+      }
     },
   );
 

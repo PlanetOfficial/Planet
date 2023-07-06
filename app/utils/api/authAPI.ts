@@ -5,9 +5,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const login = async (username: string, password: string) => {
   const response = await fetch(
-    UserAPIURL + `/auth/login?username=${username}&password=${password}`,
+    UserAPIURL + `/auth/login`,
     {
       method: 'POST',
+      body: JSON.stringify({username, password}),
+      headers: {
+        'Content-Type': 'application/json',
+      },
     },
   );
 
@@ -24,9 +28,13 @@ export const signup = async (
 ) => {
   const response = await fetch(
     UserAPIURL +
-      `/auth/signup?first_name=${first_name}&last_name=${last_name}&username=${username}&password=${password}`,
+      `/auth/signup`,
     {
       method: 'POST',
+      body: JSON.stringify({first_name, last_name, username, password}),
+      headers: {
+        'Content-Type': 'application/json',
+      },
     },
   );
 
@@ -38,9 +46,15 @@ export const signup = async (
 export const sendCode = async (authToken: string, phone_number: string) => {
   const response = await fetch(
     UserAPIURL +
-      `/auth/sendCode?phone_number=${phone_number}&authtoken=${authToken}`,
+      `/auth/sendCode`,
     {
       method: 'POST',
+      body: JSON.stringify({phone_number}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authToken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
     },
   );
 
@@ -49,9 +63,13 @@ export const sendCode = async (authToken: string, phone_number: string) => {
 
 export const sendCodeForgotPwd = async (username: string) => {
   const response = await fetch(
-    UserAPIURL + `/auth/sendCodeForgotPwd?username=${username}`,
+    UserAPIURL + `/auth/sendCodeForgotPwd`,
     {
       method: 'POST',
+      body: JSON.stringify({username}),
+      headers: {
+        'Content-Type': 'application/json',
+      },
     },
   );
 
@@ -60,9 +78,15 @@ export const sendCodeForgotPwd = async (username: string) => {
 
 export const verifyCode = async (authToken: string, code: string) => {
   const response = await fetch(
-    UserAPIURL + `/auth/verifyCode?code=${code}&authtoken=${authToken}`,
+    UserAPIURL + `/auth/verifyCode`,
     {
       method: 'POST',
+      body: JSON.stringify({code}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authToken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
     },
   );
 
@@ -74,9 +98,13 @@ export const verifyCodeUsername = async (
   code: string,
 ): Promise<{authToken: string} | null> => {
   const response = await fetch(
-    UserAPIURL + `/auth/verifyCodeUsername?code=${code}&username=${username}`,
+    UserAPIURL + `/auth/verifyCodeUsername`,
     {
       method: 'POST',
+      body: JSON.stringify({code, username}),
+      headers: {
+        'Content-Type': 'application/json',
+      },
     },
   );
 
@@ -92,9 +120,15 @@ export const verifyCodeUsername = async (
 export const resetPassword = async (authToken: string, password: string) => {
   const response = await fetch(
     UserAPIURL +
-      `/auth/resetPassword?password=${password}&authtoken=${authToken}`,
+      `/auth/resetPassword`,
     {
       method: 'POST',
+      body: JSON.stringify({password}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authToken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
     },
   );
 
@@ -108,9 +142,15 @@ export const sendMoreInfo = async (
 ) => {
   const response = await fetch(
     UserAPIURL +
-      `/auth/moreInfo?authtoken=${authToken}&age=${age}&gender=${gender}`,
+      `/auth/moreInfo`,
     {
       method: 'POST',
+      body: JSON.stringify({age, gender}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authToken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
     },
   );
 
@@ -120,8 +160,12 @@ export const sendMoreInfo = async (
 export const getUserInfo = async (
   authToken: string,
 ): Promise<MyInfo | undefined> => {
-  const response = await fetch(UserAPIURL + `/auth/me?authtoken=${authToken}`, {
+  const response = await fetch(UserAPIURL + `/auth/me`, {
     method: 'GET',
+    headers: {
+      'X-Xano-Authorization': `Bearer ${authToken}`,
+      'X-Xano-Authorization-Only': 'true',
+    },
   });
 
   if (response?.ok) {
@@ -135,9 +179,13 @@ export const getUserInfo = async (
 
 export const isVerified = async (authToken: string) => {
   const response = await fetch(
-    UserAPIURL + `/auth/isVerified?authtoken=${authToken}`,
+    UserAPIURL + `/auth/isVerified`,
     {
       method: 'GET',
+      headers: {
+        'X-Xano-Authorization': `Bearer ${authToken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
     },
   );
 
@@ -158,9 +206,15 @@ export const saveTokenToDatabase = async (fcm_token: string) => {
 
   const response = await fetch(
     UserAPIURL +
-      `/firebase/updateToken?authtoken=${authToken}&token=${fcm_token}`,
+      `/firebase/updateToken`,
     {
       method: 'POST',
+      body: JSON.stringify({token: fcm_token}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authToken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
     },
   );
 
@@ -181,12 +235,14 @@ export const saveImage = async (base64: string): Promise<string | null> => {
   }
 
   const response = await fetch(
-    UserAPIURL + `/auth/uploadImage?authtoken=${authToken}`,
+    UserAPIURL + `/auth/uploadImage`,
     {
       method: 'POST',
       body: JSON.stringify({content: 'data:image/png;base64,' + base64}),
       headers: {
         'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authToken}`,
+        'X-Xano-Authorization-Only': 'true',
       },
     },
   );
@@ -219,9 +275,15 @@ export const editInfo = async (
 
   const response = await fetch(
     UserAPIURL +
-      `/auth/editInfo?authtoken=${authToken}&first_name=${first_name}&last_name=${last_name}&username=${username}&age=${age}&gender=${gender}`,
+      `/auth/editInfo`,
     {
       method: 'POST',
+      body: JSON.stringify({first_name, last_name, username, age, gender}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authToken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
     },
   );
 
@@ -239,9 +301,14 @@ export const removeAccount = async (): Promise<Boolean> => {
   }
 
   const response = await fetch(
-    UserAPIURL + `/auth/removeAccount?authtoken=${authToken}`,
+    UserAPIURL + `/auth/removeAccount`,
     {
       method: 'DELETE',
+      headers: {
+        'X-Xano-Authorization': 'Bearer ' + authToken,
+        'X-Xano-Authorization-Only': 'true',
+      },
+      
     },
   );
 

@@ -14,9 +14,13 @@ export const getNotificationSettings =
     }
 
     const response = await fetch(
-      UserAPIURL + `/notifications/settings?authtoken=${authToken}`,
+      UserAPIURL + `/notifications/settings`,
       {
         method: 'GET',
+        headers: {
+          'X-Xano-Authorization': `Bearer ${authToken}`,
+          'X-Xano-Authorization-Only': 'true',
+        }
       },
     );
 
@@ -39,9 +43,13 @@ export const toggleNotifyFriendRequest = async (): Promise<Boolean> => {
   }
 
   const response = await fetch(
-    UserAPIURL + `/notifications/notify_friend_request?authtoken=${authToken}`,
+    UserAPIURL + `/notifications/notify_friend_request`,
     {
       method: 'POST',
+      headers: {
+        'X-Xano-Authorization': `Bearer ${authToken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
     },
   );
 
@@ -60,9 +68,13 @@ export const toggleNotifyFriendRequestAccept = async (): Promise<Boolean> => {
 
   const response = await fetch(
     UserAPIURL +
-      `/notifications/notify_friend_request_accept?authtoken=${authToken}`,
+      `/notifications/notify_friend_request_accept`,
     {
       method: 'POST',
+      headers: {
+        'X-Xano-Authorization': `Bearer ${authToken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
     },
   );
 
@@ -80,9 +92,13 @@ export const toggleNotifyEventInvite = async (): Promise<Boolean> => {
   }
 
   const response = await fetch(
-    UserAPIURL + `/notifications/notify_event_invite?authtoken=${authToken}`,
+    UserAPIURL + `/notifications/notify_event_invite`,
     {
       method: 'POST',
+      headers: {
+        'X-Xano-Authorization': `Bearer ${authToken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
     },
   );
 
@@ -100,9 +116,13 @@ export const toggleNotifyNewSuggestion = async (): Promise<Boolean> => {
   }
 
   const response = await fetch(
-    UserAPIURL + `/notifications/notify_new_suggestion?authtoken=${authToken}`,
+    UserAPIURL + `/notifications/notify_new_suggestion`,
     {
       method: 'POST',
+      body: JSON.stringify({authtoken: authToken}),
+      headers: {
+        'Content-Type': 'application/json',
+      },
     },
   );
 
@@ -120,9 +140,13 @@ export const toggleNotifySetPrimary = async (): Promise<Boolean> => {
   }
 
   const response = await fetch(
-    UserAPIURL + `/notifications/notify_set_primary?authtoken=${authToken}`,
+    UserAPIURL + `/notifications/notify_set_primary`,
     {
       method: 'POST',
+      headers: {
+        'X-Xano-Authorization': `Bearer ${authToken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
     },
   );
 

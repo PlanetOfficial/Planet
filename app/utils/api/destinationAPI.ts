@@ -16,9 +16,15 @@ export const postDestination = async (
 
   const response = await fetch(
     EventAPIURL +
-      `/destination?event_id=${event_id}&poi_id=${poi_id}&authtoken=${authToken}`,
+      `/destination`,
     {
       method: 'POST',
+      body: JSON.stringify({event_id, poi_id}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authToken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
     },
   );
 
@@ -41,9 +47,15 @@ export const renameDestination = async (
 
   const response = await fetch(
     EventAPIURL +
-      `/destination/name?event_id=${event_id}&destination_id=${destination_id}&name=${name}&authtoken=${authToken}`,
+      `/destination/name`,
     {
       method: 'POST',
+      body: JSON.stringify({event_id, destination_id, name}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authToken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
     },
   );
 
@@ -65,9 +77,15 @@ export const removeDestination = async (
 
   const response = await fetch(
     EventAPIURL +
-      `/destination?event_id=${event_id}&destination_id=${destination_id}&authtoken=${authToken}`,
+      `/destination`,
     {
       method: 'DELETE',
+      body: JSON.stringify({event_id, destination_id}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authToken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
     },
   );
 
@@ -89,11 +107,15 @@ export const reorderDestinations = async (
 
   const response = await fetch(
     EventAPIURL +
-      `/destination/order?event_id=${event_id}&destination_ids=${JSON.stringify(
-        destination_ids,
-      )}&authtoken=${authToken}`,
+      `/destination/order`,
     {
       method: 'POST',
+      body: JSON.stringify({event_id, destination_ids}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authToken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
     },
   );
 
