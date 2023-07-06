@@ -12,12 +12,12 @@ export const getBookmarks = async (): Promise<Poi[] | null> => {
     return null;
   }
 
-  const response = await fetch(PoiAPIURL + `/bookmark`, {
+  const response = await fetch(PoiAPIURL + '/bookmark', {
     method: 'GET',
     headers: {
       'X-Xano-Authorization': `Bearer ${authToken}`,
       'X-Xano-Authorization-Only': 'true',
-    }
+    },
   });
 
   if (response?.ok) {
@@ -38,16 +38,13 @@ export const bookmark = async (poi: Poi): Promise<boolean> => {
     return false;
   }
 
-  const response = await fetch(
-    PoiAPIURL + `/bookmark/${poi.id}`,
-    {
-      method: 'POST',
-      headers: {
-        'X-Xano-Authorization': `Bearer ${authToken}`,
-        'X-Xano-Authorization-Only': 'true',
-      },
+  const response = await fetch(PoiAPIURL + `/bookmark/${poi.id}`, {
+    method: 'POST',
+    headers: {
+      'X-Xano-Authorization': `Bearer ${authToken}`,
+      'X-Xano-Authorization-Only': 'true',
     },
-  );
+  });
 
   return response.ok;
 };

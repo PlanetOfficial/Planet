@@ -14,19 +14,15 @@ export const postDestination = async (
     return false;
   }
 
-  const response = await fetch(
-    EventAPIURL +
-      `/destination`,
-    {
-      method: 'POST',
-      body: JSON.stringify({event_id, poi_id}),
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Xano-Authorization': `Bearer ${authToken}`,
-        'X-Xano-Authorization-Only': 'true',
-      },
+  const response = await fetch(EventAPIURL + '/destination', {
+    method: 'POST',
+    body: JSON.stringify({event_id, poi_id}),
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Xano-Authorization': `Bearer ${authToken}`,
+      'X-Xano-Authorization-Only': 'true',
     },
-  );
+  });
 
   return response.ok;
 };
@@ -45,19 +41,15 @@ export const renameDestination = async (
     return false;
   }
 
-  const response = await fetch(
-    EventAPIURL +
-      `/destination/name`,
-    {
-      method: 'POST',
-      body: JSON.stringify({event_id, destination_id, name}),
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Xano-Authorization': `Bearer ${authToken}`,
-        'X-Xano-Authorization-Only': 'true',
-      },
+  const response = await fetch(EventAPIURL + '/destination/name', {
+    method: 'POST',
+    body: JSON.stringify({event_id, destination_id, name}),
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Xano-Authorization': `Bearer ${authToken}`,
+      'X-Xano-Authorization-Only': 'true',
     },
-  );
+  });
 
   return response.ok;
 };
@@ -75,19 +67,15 @@ export const removeDestination = async (
     return false;
   }
 
-  const response = await fetch(
-    EventAPIURL +
-      `/destination`,
-    {
-      method: 'DELETE',
-      body: JSON.stringify({event_id, destination_id}),
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Xano-Authorization': `Bearer ${authToken}`,
-        'X-Xano-Authorization-Only': 'true',
-      },
+  const response = await fetch(EventAPIURL + '/destination', {
+    method: 'DELETE',
+    body: JSON.stringify({event_id, destination_id}),
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Xano-Authorization': `Bearer ${authToken}`,
+      'X-Xano-Authorization-Only': 'true',
     },
-  );
+  });
 
   return response.ok;
 };
@@ -105,19 +93,15 @@ export const reorderDestinations = async (
     return false;
   }
 
-  const response = await fetch(
-    EventAPIURL +
-      `/destination/order`,
-    {
-      method: 'POST',
-      body: JSON.stringify({event_id, destination_ids}),
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Xano-Authorization': `Bearer ${authToken}`,
-        'X-Xano-Authorization-Only': 'true',
-      },
+  const response = await fetch(EventAPIURL + '/destination/order', {
+    method: 'POST',
+    body: JSON.stringify({event_id, destination_ids}),
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Xano-Authorization': `Bearer ${authToken}`,
+      'X-Xano-Authorization-Only': 'true',
     },
-  );
+  });
 
   return response.ok;
 };
