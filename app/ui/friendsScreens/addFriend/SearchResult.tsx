@@ -14,18 +14,20 @@ import UserRow from '../../components/UserRow';
 import {UserInfo} from '../../../utils/types';
 
 interface Props {
+  searchText: string;
   searchResults: UserInfo[];
+  members: UserInfo[];
   invitees: UserInfo[];
   setInvitees: (invitees: UserInfo[]) => void;
-  searchText: string;
   loading: boolean;
 }
 
 const SearchResult: React.FC<Props> = ({
+  searchText,
   searchResults,
+  members,
   invitees,
   setInvitees,
-  searchText,
   loading,
 }) => {
   const theme = useColorScheme() || 'light';
@@ -40,10 +42,10 @@ const SearchResult: React.FC<Props> = ({
       style={STYLES.container}
       contentContainerStyle={STYLES.flatList}
       data={searchResults}
-      keyboardShouldPersistTaps="always"
       keyExtractor={item => item.id.toString()}
       renderItem={({item}: {item: UserInfo}) => (
         <TouchableOpacity
+          disabled={members.some(user => user.id === item.id)}
           onPress={() => {
             if (invitees?.find(user => user.id === item.id)) {
               setInvitees(invitees.filter(user => user.id !== item.id));
@@ -54,9 +56,13 @@ const SearchResult: React.FC<Props> = ({
           <UserRow user={item}>
             <Icon
               size="m"
-              color={colors[theme].accent}
+              color={
+                members.some(user => user.id === item.id)
+                  ? colors[theme].secondary
+                  : colors[theme].accent
+              }
               icon={
-                invitees?.find(user => user.id === item.id)
+                members.concat(invitees)?.find(user => user.id === item.id)
                   ? icons.selected
                   : icons.unselected
               }

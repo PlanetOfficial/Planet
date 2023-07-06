@@ -23,6 +23,9 @@ import {searchUsers} from '../../../utils/api/friendsAPI';
 import {UserInfo} from '../../../utils/types';
 
 interface Props {
+  navigation: any;
+  isEvent: boolean;
+  invitees: UserInfo[];
   searching: boolean;
   setSearching: (searching: boolean) => void;
   setLoading: (loading: boolean) => void;
@@ -32,6 +35,9 @@ interface Props {
 }
 
 const Header: React.FC<Props> = ({
+  navigation,
+  isEvent,
+  invitees,
   searching,
   setSearching,
   setLoading,
@@ -63,6 +69,34 @@ const Header: React.FC<Props> = ({
   return (
     <SafeAreaView>
       <View style={STYLES.header}>
+        {isEvent ? (
+          <View style={styles.x}>
+            <Icon
+              icon={icons.close}
+              onPress={() => {
+                if (invitees.length > 0) {
+                  Alert.alert(
+                    strings.main.warning,
+                    strings.friends.inviteFriendsBackConfirmation,
+                    [
+                      {
+                        text: strings.main.cancel,
+                        style: 'cancel',
+                      },
+                      {
+                        text: strings.main.discard,
+                        onPress: () => navigation.goBack(),
+                        style: 'destructive',
+                      },
+                    ],
+                  );
+                } else {
+                  navigation.goBack();
+                }
+              }}
+            />
+          </View>
+        ) : null}
         <View style={[styles.searchBar, STYLES.shadow]}>
           <Icon size="s" icon={icons.search} />
           <TextInput
@@ -123,6 +157,9 @@ const styling = (theme: 'light' | 'dark') =>
     },
     cancel: {
       marginLeft: s(10),
+    },
+    x: {
+      marginRight: s(10),
     },
   });
 

@@ -18,20 +18,25 @@ import UserIcon from '../../components/UserIcon';
 import Icon from '../../components/Icon';
 
 import {UserInfo} from '../../../utils/types';
+import {onAdd} from './functions';
 
 interface Props {
   navigation: any;
+  isEvent: boolean;
+  eventId?: number;
   invitees: UserInfo[];
   setInvitees: (invitees: UserInfo[]) => void;
 }
 
-const Footer: React.FC<Props> = ({navigation, invitees, setInvitees}) => {
+const Footer: React.FC<Props> = ({
+  navigation,
+  isEvent,
+  eventId,
+  invitees,
+  setInvitees,
+}) => {
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
-
-  const onAdd = async () => {
-    navigation.navigate('Create', {members: invitees});
-  };
 
   return (
     <SafeAreaView style={styles.footer}>
@@ -67,10 +72,25 @@ const Footer: React.FC<Props> = ({navigation, invitees, setInvitees}) => {
           </View>
         )}
       />
-      <TouchableOpacity style={styles.button} onPress={onAdd}>
-        <Text size="l" weight="b" color={colors[theme].primary}>
+      <TouchableOpacity
+        style={[
+          styles.button,
+          {
+            backgroundColor:
+              isEvent && invitees.length === 0
+                ? colors[theme].secondary
+                : colors[theme].accent,
+          },
+        ]}
+        onPress={() => onAdd(navigation, isEvent, eventId, invitees)}
+        disabled={isEvent && invitees.length === 0}>
+        <Text size="l" color={colors[theme].primary}>
           {invitees.length > 0
-            ? `${strings.main.save} (${invitees.length})`
+            ? `${isEvent ? strings.friends.invite : strings.main.save} (${
+                invitees.length
+              })`
+            : isEvent
+            ? strings.friends.invite
             : strings.main.save}
         </Text>
       </TouchableOpacity>
@@ -84,7 +104,9 @@ const styling = (theme: 'light' | 'dark') =>
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-      backgroundColor: colors[theme].secondary,
+      backgroundColor: colors[theme].primary,
+      borderTopWidth: s(1),
+      borderTopColor: colors[theme].accent,
     },
     button: {
       marginLeft: s(10),
@@ -94,7 +116,6 @@ const styling = (theme: 'light' | 'dark') =>
       height: s(45),
       justifyContent: 'center',
       borderRadius: s(10),
-      backgroundColor: colors[theme].accent,
     },
     invitees: {
       marginTop: s(10),

@@ -32,15 +32,19 @@ import {
 } from './functions';
 
 interface Props {
+  isEvent: boolean;
   fgSelected: number;
   setFgSelected: (id: number) => void;
+  members: UserInfo[];
   invitees: UserInfo[];
   setInvitees: (invitees: UserInfo[]) => void;
 }
 
 const Friends: React.FC<Props> = ({
+  isEvent,
   fgSelected,
   setFgSelected,
+  members,
   invitees,
   setInvitees,
 }) => {
@@ -76,17 +80,20 @@ const Friends: React.FC<Props> = ({
             style={styles.friendGroup}
             onPress={() => handleFGPress(item, fgSelected, setFgSelected)}>
             <FGIcon users={item.members} selected={fgSelected === item.id} />
-            <TouchableOpacity
-              style={styles.checkmarkBig}
-              onPress={() =>
-                handleFGSelect(item, invitees, setInvitees, setFgSelected)
-              }>
-              <Icon
-                size="l"
-                icon={findFGIcon(item, invitees)}
-                color={colors[theme].accent}
-              />
-            </TouchableOpacity>
+            {!isEvent ? (
+              <TouchableOpacity
+                style={styles.checkmarkBig}
+                disabled={members.some(user => user.id === item.id)}
+                onPress={() =>
+                  handleFGSelect(item, invitees, setInvitees, setFgSelected)
+                }>
+                <Icon
+                  size="l"
+                  icon={findFGIcon(item, invitees.concat(members))}
+                  color={colors[theme].accent}
+                />
+              </TouchableOpacity>
+            ) : null}
             <Text size="s" weight={fgSelected === item.id ? 'r' : 'l'}>
               {item.name}
             </Text>
@@ -106,6 +113,7 @@ const Friends: React.FC<Props> = ({
                 <TouchableOpacity
                   style={styles.friendIconContainer}
                   key={item.id}
+                  disabled={members.some(user => user.id === item.id)}
                   onPress={() => handleUserSelect(item, invitees, setInvitees)}>
                   <View style={styles.friendIcon}>
                     <UserIcon user={item} />
@@ -113,12 +121,18 @@ const Friends: React.FC<Props> = ({
                   <View style={styles.checkmark}>
                     <Icon
                       size="m"
+                      color={
+                        members.some(user => user.id === item.id)
+                          ? colors[theme].secondary
+                          : colors[theme].accent
+                      }
                       icon={
-                        invitees?.find(user => user.id === item.id)
+                        members
+                          .concat(invitees)
+                          ?.find(user => user.id === item.id)
                           ? icons.selected
                           : icons.unselected
                       }
-                      color={colors[theme].accent}
                     />
                   </View>
                   <View style={styles.text}>
@@ -138,13 +152,18 @@ const Friends: React.FC<Props> = ({
       {friends.map((item: UserInfo) => (
         <TouchableOpacity
           key={item.id}
+          disabled={members.some(user => user.id === item.id)}
           onPress={() => handleUserSelect(item, invitees, setInvitees)}>
           <UserRow user={item}>
             <Icon
               size="m"
-              color={colors[theme].accent}
+              color={
+                members.some(user => user.id === item.id)
+                  ? colors[theme].secondary
+                  : colors[theme].accent
+              }
               icon={
-                invitees?.find(user => user.id === item.id)
+                members.concat(invitees)?.find(user => user.id === item.id)
                   ? icons.selected
                   : icons.unselected
               }

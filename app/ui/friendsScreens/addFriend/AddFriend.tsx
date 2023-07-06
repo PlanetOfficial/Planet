@@ -29,6 +29,8 @@ const AddFriend = ({
   const STYLES = STYLING(theme);
   StatusBar.setBarStyle(colors[theme].statusBar, true);
 
+  const [eventId, setEventId] = useState<number>();
+  const [members, setMembers] = useState<UserInfo[]>([]);
   const [invitees, setInvitees] = useState<UserInfo[]>([]);
 
   const [searchText, setSearchText] = useState<string>('');
@@ -45,15 +47,23 @@ const AddFriend = ({
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      setInvitees(route.params.members);
+      if (route.params.event_id) {
+        setEventId(route.params.event_id);
+        setMembers(route.params.members);
+      } else {
+        setInvitees(route.params.members);
+      }
     });
 
     return unsubscribe;
-  }, [navigation, route.params.members]);
+  }, [navigation, route.params]);
 
   return (
     <View style={STYLES.container}>
       <Header
+        navigation={navigation}
+        isEvent={!!eventId}
+        invitees={invitees}
         searching={searching}
         setSearching={setSearching}
         setLoading={setLoading}
@@ -66,14 +76,17 @@ const AddFriend = ({
         <SearchResult
           searchText={searchText}
           searchResults={searchResults}
+          members={members}
           invitees={invitees}
           setInvitees={setInvitees}
           loading={loading}
         />
       ) : (
         <Friends
+          isEvent={!!eventId}
           fgSelected={fgSelected}
           setFgSelected={setFgSelected}
+          members={members}
           invitees={invitees}
           setInvitees={setInvitees}
         />
@@ -81,6 +94,8 @@ const AddFriend = ({
 
       <Footer
         navigation={navigation}
+        isEvent={!!eventId}
+        eventId={eventId}
         invitees={invitees}
         setInvitees={setInvitees}
       />

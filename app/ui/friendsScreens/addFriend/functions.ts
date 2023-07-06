@@ -1,8 +1,10 @@
-import {LayoutAnimation} from 'react-native';
+import {LayoutAnimation, Alert} from 'react-native';
 
 import icons from '../../../constants/icons';
+import strings from '../../../constants/strings';
 
 import {FriendGroup, UserInfo} from '../../../utils/types';
+import {inviteToEvent} from '../../../utils/api/eventAPI';
 
 export const handleFGSelect = (
   item: FriendGroup,
@@ -67,5 +69,27 @@ export const handleUserSelect = (
     setInvitees(invitees.filter(user => user.id !== item.id));
   } else {
     setInvitees([...(invitees || []), item]);
+  }
+};
+
+export const onAdd = async (
+  navigation: any,
+  isEvent: boolean,
+  eventId: number | undefined,
+  invitees: UserInfo[],
+) => {
+  if (isEvent && eventId) {
+    const response = await inviteToEvent(
+      eventId,
+      invitees.map(invitee => invitee.id),
+    );
+
+    if (response) {
+      navigation.goBack();
+    } else {
+      Alert.alert(strings.error.error, strings.error.inviteUsers);
+    }
+  } else {
+    navigation.navigate('Create', {members: invitees});
   }
 };

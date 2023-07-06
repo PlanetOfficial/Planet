@@ -55,7 +55,11 @@ const Members: React.FC<Props> = ({navigation, event, eventDetail}) => {
           });
         }}>
         <View style={styles.profilePic}>
-          <FastImage style={[styles.pic, styles.add]} source={icons.add} />
+          <FastImage
+            style={[styles.pic, styles.add]}
+            source={icons.add}
+            tintColor={colors[theme].accent}
+          />
         </View>
         <View style={STYLES.texts}>
           <Text>{strings.event.inviteAFriend}</Text>
@@ -96,7 +100,6 @@ const styling = (theme: 'light' | 'dark') =>
     add: {
       width: '70%',
       height: '70%',
-      tintColor: colors[theme].accent,
     },
     border: {
       borderBottomWidth: 1,

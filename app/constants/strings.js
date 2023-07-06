@@ -133,6 +133,9 @@ const strings = {
     friendGroupName: 'Friend Group Name',
     friendGroupNameInfo:
       'Enter a name for this friend group:\nNote: friend groups are for your own and will not be shared with others.',
+    inviteFriendsBackConfirmation:
+      'Are you sure you want to go back? Your changes will not be saved.',
+    invite: 'Invite',
   },
   profile: {
     yourProfile: 'Your Profile',
@@ -263,6 +266,7 @@ const strings = {
     reorderFG: 'Unable to reorder friend groups. Please try again later.',
     editFGName: 'Unable to edit friend group name. Please try again later.',
     deleteFG: 'Unable to delete friend group. Please try again later.',
+    inviteUsers: 'Unable to invite users. Please try again later.',
   },
   ageEnum: [
     {label: '-17', value: '-17'},
