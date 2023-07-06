@@ -130,9 +130,3 @@ export const getInfoString = (poi: Poi): string => {
 
   return poiString;
 };
-
-export const apiErrorCheck = (response: Response, apiFunctionName: string) => {
-  if (!response.ok) {
-    
-  }
-}
