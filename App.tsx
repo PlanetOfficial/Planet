@@ -58,7 +58,7 @@ export default function App() {
       .then(token => {
         return saveTokenToDatabase(token);
       }).catch(err => {
-        console.log(err);
+        console.warn(err);
       });
 
     // Listen to whether the token changes
