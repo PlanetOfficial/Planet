@@ -120,12 +120,14 @@ const styling = (theme: 'light' | 'dark') =>
     invitees: {
       marginTop: s(10),
       paddingHorizontal: s(20),
-      height: s(60),
+      height: s(75),
+      paddingTop: s(10),
     },
     user: {
       marginRight: s(5),
       width: s(50),
       alignItems: 'center',
+      overflow: 'visible',
     },
     userIcon: {
       height: s(40),
