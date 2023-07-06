@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState, useCallback} from 'react';
 import {
   View,
   StyleSheet,
@@ -46,7 +46,7 @@ const ProfileBody = ({navigation}: {navigation: any}) => {
   }
   const {friends} = friendsContext;
 
-  const initializeData = async () => {
+  const initializeData = useCallback(async () => {
     setLocation(await fetchUserLocation());
     const _firstName = await AsyncStorage.getItem('first_name');
     const _lastName = await AsyncStorage.getItem('last_name');
@@ -56,11 +56,15 @@ const ProfileBody = ({navigation}: {navigation: any}) => {
     setLastName(_lastName || '');
     setUsername(_username || '');
     setPfpURL(_pfpURL || '');
-  };
+  }, []);
 
   useEffect(() => {
-    initializeData();
-  }, []);
+    const unsubscribe = navigation.addListener('focus', () => {
+      initializeData();
+    });
+
+    return unsubscribe;
+  }, [navigation, initializeData]);
 
   return (
     <>
