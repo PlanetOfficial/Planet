@@ -5,7 +5,6 @@ import {
   TouchableOpacity,
   StyleSheet,
   Alert,
-  useColorScheme,
   StatusBar,
 } from 'react-native';
 import {s, vs} from 'react-native-size-matters';
@@ -32,7 +31,7 @@ const SignUpInfo = ({
     };
   };
 }) => {
-  const theme = useColorScheme() || 'light';
+  const theme = 'light';
   const STYLES = STYLING(theme);
   StatusBar.setBarStyle(colors[theme].statusBar, true);
 
@@ -79,14 +78,14 @@ const SignUpInfo = ({
     <View style={STYLES.container}>
       <SafeAreaView>
         <View style={styles.messageContainer}>
-          <Text size="l" center={true}>
+          <Text size="l" center={true} color={colors[theme].neutral}>
             {strings.signUp.verifySuccess}
           </Text>
         </View>
       </SafeAreaView>
 
       <View style={styles.promptContainer}>
-        <Text size="m" weight="l" center={true}>
+        <Text size="m" weight="l" center={true} color={colors[theme].neutral}>
           {strings.signUp.improveExperience}
         </Text>
       </View>

@@ -4,7 +4,6 @@ import {
   SafeAreaView,
   TextInput,
   TouchableOpacity,
-  useColorScheme,
   StatusBar,
 } from 'react-native';
 
@@ -30,7 +29,7 @@ const SignUpCreds = ({
     };
   };
 }) => {
-  const theme = useColorScheme() || 'light';
+  const theme = 'light';
   const STYLES = STYLING(theme);
   StatusBar.setBarStyle(colors[theme].statusBar, true);
 
@@ -99,19 +98,22 @@ const SignUpCreds = ({
             size="m"
             icon={icons.back}
             onPress={() => navigation.goBack()}
+            color={colors[theme].neutral}
           />
         </View>
       </SafeAreaView>
 
       <View style={STYLES.promptContainer}>
-        <Text size="l" weight="l" center={true}>
+        <Text size="l" weight="l" center={true} color={colors[theme].neutral}>
           {strings.signUp.credPrompt}
         </Text>
       </View>
 
       <View style={STYLES.inputContainer}>
         <View style={STYLES.prompt}>
-          <Text weight="l">{strings.signUp.username}: </Text>
+          <Text weight="l" color={colors[theme].neutral}>
+            {strings.signUp.username}:{' '}
+          </Text>
         </View>
         <TextInput
           style={STYLES.input}
@@ -125,7 +127,9 @@ const SignUpCreds = ({
       </View>
       <View style={STYLES.inputContainer}>
         <View style={STYLES.prompt}>
-          <Text weight="l">{strings.login.password}: </Text>
+          <Text weight="l" color={colors[theme].neutral}>
+            {strings.login.password}:{' '}
+          </Text>
         </View>
         <TextInput
           style={STYLES.input}
@@ -138,7 +142,9 @@ const SignUpCreds = ({
       </View>
       <View style={STYLES.inputContainer}>
         <View style={STYLES.prompt}>
-          <Text weight="l">{strings.signUp.confirmPassword}: </Text>
+          <Text weight="l" color={colors[theme].neutral}>
+            {strings.signUp.confirmPassword}:{' '}
+          </Text>
         </View>
         <TextInput
           style={STYLES.input}

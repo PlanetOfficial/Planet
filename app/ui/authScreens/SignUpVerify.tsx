@@ -5,7 +5,6 @@ import {
   TouchableOpacity,
   TextInput,
   StyleSheet,
-  useColorScheme,
   StatusBar,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
@@ -31,7 +30,7 @@ const SignUpVerify = ({
     };
   };
 }) => {
-  const theme = useColorScheme() || 'light';
+  const theme = 'light';
   const styles = styling(theme);
   const STYLES = STYLING(theme);
   StatusBar.setBarStyle(colors[theme].statusBar, true);
@@ -70,12 +69,13 @@ const SignUpVerify = ({
             size="m"
             icon={icons.back}
             onPress={() => navigation.goBack()}
+            color={colors[theme].neutral}
           />
         </View>
       </SafeAreaView>
 
       <View style={STYLES.promptContainer}>
-        <Text size="l" weight="l" center={true}>
+        <Text size="l" weight="l" center={true} color={colors[theme].neutral}>
           {strings.signUp.verifyPrompt}
         </Text>
       </View>
