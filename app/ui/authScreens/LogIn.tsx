@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   StyleSheet,
   Alert,
-  useColorScheme,
   StatusBar,
 } from 'react-native';
 import {s, vs} from 'react-native-size-matters';
@@ -27,7 +26,7 @@ import FriendsContext from '../../context/FriendsContext';
 import {getBookmarks} from '../../utils/api/bookmarkAPI';
 
 const LoginScreen = ({navigation}: {navigation: any}) => {
-  const theme = useColorScheme() || 'light';
+  const theme = 'light';
   const styles = styling(theme);
   StatusBar.setBarStyle(colors[theme].statusBar, true);
 
@@ -177,7 +176,7 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
           </TouchableOpacity>
         </View>
         <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
-          <Text size="s" weight="l">
+          <Text size="s" weight="l" color={colors[theme].neutral}>
             {strings.login.forgotPassword}
           </Text>
         </TouchableOpacity>

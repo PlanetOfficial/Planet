@@ -13,7 +13,7 @@ import {Event} from '../../utils/types';
 
 interface Props {
   event: Event;
-  self: string;
+  self: number;
 }
 
 const EventRow: React.FC<Props> = ({event, self}) => {
