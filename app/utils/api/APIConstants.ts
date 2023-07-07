@@ -1,6 +1,8 @@
-export const UserAPIURL = 'https://xvwn-ch2s-yzi8.n7c.xano.io/api:zzeFKgFc';
-export const PoiAPIURL = 'https://xvwn-ch2s-yzi8.n7c.xano.io/api:tlXz--kT';
-export const EventAPIURL = 'https://xvwn-ch2s-yzi8.n7c.xano.io/api:zQ01rdgp';
-export const FriendAPIURL = 'https://xvwn-ch2s-yzi8.n7c.xano.io/api:ZLc0N8Gv';
+import { USER_API_URL, POI_API_URL, EVENT_API_URL, FRIEND_API_URL, GOOGLE_MAPS_API_KEY } from "@env";
 
-export const GoogleMapsAPIKey = 'AIzaSyCMdtw6YsdNKg20WXR86h6YDBX4JpfmB1M';
+export const UserAPIURL = USER_API_URL;
+export const PoiAPIURL = POI_API_URL;
+export const EventAPIURL = EVENT_API_URL;
+export const FriendAPIURL = FRIEND_API_URL;
+
+export const GoogleMapsAPIKey = GOOGLE_MAPS_API_KEY;
