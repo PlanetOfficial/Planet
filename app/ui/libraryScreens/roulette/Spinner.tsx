@@ -1,5 +1,11 @@
 import React from 'react';
-import {View, StyleSheet, TouchableOpacity, Alert, useColorScheme} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Alert,
+  useColorScheme,
+} from 'react-native';
 import {Gesture, GestureDetector} from 'react-native-gesture-handler';
 import Animated, {
   useAnimatedStyle,
@@ -171,9 +177,10 @@ const Spinner: React.FC<Props> = ({
         style={[
           styles.button,
           {
-            backgroundColor: totalVotes < 2 || isSpinning
-              ? colors[theme].secondary
-              : colors[theme].accent,
+            backgroundColor:
+              totalVotes < 2 || isSpinning
+                ? colors[theme].secondary
+                : colors[theme].accent,
           },
         ]}
         disabled={totalVotes < 2 || isSpinning}
