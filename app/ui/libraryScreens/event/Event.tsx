@@ -13,7 +13,7 @@ import {
   useColorScheme,
   StatusBar,
 } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 import colors from '../../../constants/colors';
 import strings from '../../../constants/strings';
@@ -65,16 +65,16 @@ const EventPage = ({
   const {bookmarks, setBookmarks} = bookmarkContext;
 
   const loadData = useCallback(async () => {
-    const _username = await AsyncStorage.getItem('username');
+    const myUserId = await EncryptedStorage.getItem('user_id');
 
     const _eventDetail = await getEvent(event.id);
-    if (_eventDetail) {
+    if (_eventDetail && myUserId) {
       setEventDetail(_eventDetail);
 
       const _myVotes = new Map<number, number>();
       _eventDetail.destinations.forEach(dest => {
         dest.suggestions.forEach(sugg => {
-          if (sugg.votes.some(_vote => _vote.username === _username)) {
+          if (sugg.votes.some(_vote => _vote.id === parseInt(myUserId, 10))) {
             _myVotes.set(dest.id, sugg.id);
           }
         });

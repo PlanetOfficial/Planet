@@ -24,6 +24,7 @@ interface Props {
 
 const OptionMenu: React.FC<Props> = ({icon, iconColor, options}) => {
   const theme = useColorScheme() || 'light';
+  const styles = styling(theme);
 
   if (!iconColor) {
     iconColor = colors[theme].neutral;
@@ -84,11 +85,13 @@ const OptionMenu: React.FC<Props> = ({icon, iconColor, options}) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    marginTop: s(20),
-    borderRadius: s(10),
-  },
-});
+const styling = (theme: 'light' | 'dark') =>
+  StyleSheet.create({
+    container: {
+      marginTop: s(20),
+      borderRadius: s(10),
+      backgroundColor: colors[theme].background,
+    },
+  });
 
 export default OptionMenu;

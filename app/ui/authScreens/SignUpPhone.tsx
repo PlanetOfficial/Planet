@@ -1,11 +1,5 @@
 import React, {useState} from 'react';
-import {
-  View,
-  SafeAreaView,
-  TouchableOpacity,
-  useColorScheme,
-  StatusBar,
-} from 'react-native';
+import {View, SafeAreaView, TouchableOpacity, StatusBar} from 'react-native';
 import PhoneInput from 'react-phone-number-input/react-native-input';
 
 import {E164Number} from 'libphonenumber-js/types';
@@ -29,7 +23,7 @@ const SignUpPhone = ({
     };
   };
 }) => {
-  const theme = useColorScheme() || 'light';
+  const theme = 'light';
   const STYLES = STYLING(theme);
   StatusBar.setBarStyle(colors[theme].statusBar, true);
 
@@ -60,25 +54,28 @@ const SignUpPhone = ({
     <View style={STYLES.container}>
       <SafeAreaView>
         <View style={STYLES.promptContainer}>
-          <Text size="l" center={true}>
+          <Text size="l" center={true} color={colors[theme].neutral}>
             {strings.signUp.signUpSuccess}
           </Text>
         </View>
       </SafeAreaView>
 
       <View style={STYLES.promptContainer}>
-        <Text size="l" weight="l" center={true}>
+        <Text size="l" weight="l" center={true} color={colors[theme].neutral}>
           {strings.signUp.phonePrompt}
         </Text>
       </View>
 
       <View style={STYLES.inputContainer}>
-        <Text weight="l">{strings.signUp.phoneNumber}: </Text>
+        <Text weight="l" color={colors[theme].neutral}>
+          {strings.signUp.phoneNumber}:{' '}
+        </Text>
         <PhoneInput
           style={STYLES.input}
           placeholder={strings.signUp.phoneNumber}
           value={phoneNumber}
           onChange={setPhoneNumber}
+          placeholderTextColor={colors[theme].neutral}
         />
       </View>
       {error.length !== 0 ? (
