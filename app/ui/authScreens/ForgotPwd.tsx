@@ -1,11 +1,17 @@
 import React, {useState} from 'react';
-import {Alert, SafeAreaView, TextInput, TouchableOpacity} from 'react-native';
-import {View} from 'react-native';
+import {
+  View,
+  Alert,
+  SafeAreaView,
+  TextInput,
+  TouchableOpacity,
+  StatusBar,
+} from 'react-native';
 
 import colors from '../../constants/colors';
 import icons from '../../constants/icons';
 import strings from '../../constants/strings';
-import STYLES from '../../constants/styles';
+import STYLING from '../../constants/styles';
 
 import Icon from '../components/Icon';
 import Text from '../components/Text';
@@ -13,6 +19,10 @@ import Text from '../components/Text';
 import {sendCodeForgotPwd} from '../../utils/api/authAPI';
 
 const ForgotPwd = ({navigation}: {navigation: any}) => {
+  const theme = 'light';
+  const STYLES = STYLING(theme);
+  StatusBar.setBarStyle(colors[theme].statusBar, true);
+
   const [username, setUsername] = useState<string>('');
 
   const [error, setError] = useState<string>('');
@@ -43,6 +53,7 @@ const ForgotPwd = ({navigation}: {navigation: any}) => {
             size="m"
             icon={icons.back}
             onPress={() => navigation.goBack()}
+            color={colors[theme].neutral}
           />
         </View>
       </SafeAreaView>
@@ -53,13 +64,13 @@ const ForgotPwd = ({navigation}: {navigation: any}) => {
           placeholder={strings.signUp.username}
           value={username}
           onChangeText={text => setUsername(text.toLowerCase())}
-          placeholderTextColor={colors.black}
+          placeholderTextColor={colors[theme].neutral}
           autoCapitalize="none"
           autoCorrect={false}
         />
       </View>
       {error.length !== 0 ? (
-        <Text weight="l" center={true} color={colors.red}>
+        <Text weight="l" center={true} color={colors[theme].red}>
           {error}
         </Text>
       ) : null}
@@ -68,12 +79,14 @@ const ForgotPwd = ({navigation}: {navigation: any}) => {
           STYLES.buttonBig,
           {
             backgroundColor:
-              username.length === 0 ? colors.grey : colors.primary,
+              username.length === 0
+                ? colors[theme].secondary
+                : colors[theme].accent,
           },
         ]}
         disabled={username.length === 0}
         onPress={handleNext}>
-        <Text weight="b" color={colors.white}>
+        <Text weight="b" color={colors[theme].primary}>
           {strings.main.next}
         </Text>
       </TouchableOpacity>

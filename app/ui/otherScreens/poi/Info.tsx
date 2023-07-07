@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
-import {View, StyleSheet, LayoutAnimation} from 'react-native';
+import {View, StyleSheet, LayoutAnimation, useColorScheme} from 'react-native';
 import {s} from 'react-native-size-matters';
 
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
 import strings from '../../../constants/strings';
-import STYLES from '../../../constants/styles';
+import STYLING from '../../../constants/styles';
 
 import Icon from '../../components/Icon';
 import Text from '../../components/Text';
@@ -20,6 +20,10 @@ interface Props {
 }
 
 const Info: React.FC<Props> = ({destination, destinationDetails}) => {
+  const theme = useColorScheme() || 'light';
+  const styles = styling(theme);
+  const STYLES = STYLING(theme);
+
   const date = new Date();
   const [hoursExpanded, setHoursExpanded] = useState<boolean>(false);
 
@@ -147,33 +151,34 @@ const Info: React.FC<Props> = ({destination, destinationDetails}) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    marginTop: s(20),
-    marginHorizontal: s(20),
-  },
-  title: {
-    marginBottom: s(5),
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    borderTopWidth: 1,
-    borderColor: colors.grey,
-    padding: s(12),
-  },
-  texts: {
-    flex: 1,
-    marginRight: s(5),
-  },
-  info: {
-    marginTop: s(5),
-    marginLeft: s(5),
-  },
-  drop: {
-    marginRight: s(7),
-  },
-});
+const styling = (theme: 'light' | 'dark') =>
+  StyleSheet.create({
+    container: {
+      marginTop: s(20),
+      marginHorizontal: s(20),
+    },
+    title: {
+      marginBottom: s(5),
+    },
+    row: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      borderTopWidth: 1,
+      borderColor: colors[theme].secondary,
+      padding: s(12),
+    },
+    texts: {
+      flex: 1,
+      marginRight: s(5),
+    },
+    info: {
+      marginTop: s(5),
+      marginLeft: s(5),
+    },
+    drop: {
+      marginRight: s(7),
+    },
+  });
 
 export default Info;

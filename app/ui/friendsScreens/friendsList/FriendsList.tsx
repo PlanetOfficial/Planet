@@ -5,12 +5,14 @@ import {
   TouchableOpacity,
   Alert,
   RefreshControl,
+  useColorScheme,
+  StatusBar,
 } from 'react-native';
 
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
 import strings from '../../../constants/strings';
-import STYLES from '../../../constants/styles';
+import STYLING from '../../../constants/styles';
 
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
@@ -22,6 +24,10 @@ import {UserInfo} from '../../../utils/types';
 import {getFriends} from '../../../utils/api/friendsAPI';
 
 const FriendsList = ({navigation}: {navigation: any}) => {
+  const theme = useColorScheme() || 'light';
+  const STYLES = STYLING(theme);
+  StatusBar.setBarStyle(colors[theme].statusBar, true);
+
   const friendsContext = useContext(FriendsContext);
   if (!friendsContext) {
     throw new Error('FriendsContext is not set!');
@@ -73,7 +79,7 @@ const FriendsList = ({navigation}: {navigation: any}) => {
             await loadFriends();
             setLoading(false);
           }}
-          tintColor={colors.primary}
+          tintColor={colors[theme].accent}
         />
       }
     />

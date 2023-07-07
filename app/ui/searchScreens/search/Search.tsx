@@ -7,6 +7,8 @@ import {
   FlatList,
   Image,
   TouchableOpacity,
+  useColorScheme,
+  StatusBar,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {s} from 'react-native-size-matters';
@@ -14,7 +16,7 @@ import {s} from 'react-native-size-matters';
 import colors from '../../../constants/colors';
 import numbers from '../../../constants/numbers';
 import strings from '../../../constants/strings';
-import STYLES from '../../../constants/styles';
+import STYLING from '../../../constants/styles';
 
 import Text from '../../components/Text';
 import Separator from '../../components/SeparatorR';
@@ -34,6 +36,11 @@ const Search = ({
   navigation: any;
   mode?: 'create' | 'suggest' | 'add' | 'none';
 }) => {
+  const theme = useColorScheme() || 'light';
+  const styles = styling(theme);
+  const STYLES = STYLING(theme);
+  StatusBar.setBarStyle(colors[theme].statusBar, true);
+
   const [genres, setGenres] = useState<Genre[]>([]);
   const [location, setLocation] = useState<Coordinate>();
   const [searching, setSearching] = useState<boolean>(false);
@@ -153,40 +160,42 @@ const Search = ({
   );
 };
 
-const styles = StyleSheet.create({
-  header: {
-    marginTop: s(10),
-    paddingHorizontal: s(20),
-    paddingTop: s(5),
-    paddingBottom: s(10),
-  },
-  scrollView: {
-    paddingHorizontal: s(20),
-    paddingVertical: s(5),
-    marginBottom: s(10),
-  },
-  categoryContainer: {
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    width: s(75),
-    height: s(70),
-    overflow: 'visible',
-  },
-  iconContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: s(50),
-    height: s(50),
-    borderRadius: s(25),
-    backgroundColor: colors.white,
-  },
-  icon: {
-    width: '60%',
-    height: '60%',
-  },
-  flatList: {
-    paddingBottom: s(250),
-  },
-});
+const styling = (theme: 'light' | 'dark') =>
+  StyleSheet.create({
+    header: {
+      marginTop: s(10),
+      paddingHorizontal: s(20),
+      paddingTop: s(5),
+      paddingBottom: s(10),
+    },
+    scrollView: {
+      paddingHorizontal: s(20),
+      paddingVertical: s(5),
+      marginBottom: s(10),
+    },
+    categoryContainer: {
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      width: s(75),
+      height: s(70),
+      overflow: 'visible',
+    },
+    iconContainer: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: s(50),
+      height: s(50),
+      borderRadius: s(25),
+      backgroundColor: colors[theme].primary,
+    },
+    icon: {
+      width: '60%',
+      height: '60%',
+      tintColor: colors[theme].neutral,
+    },
+    flatList: {
+      paddingBottom: s(250),
+    },
+  });
 
 export default Search;

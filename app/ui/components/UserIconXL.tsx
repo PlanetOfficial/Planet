@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, View, Text, StyleSheet} from 'react-native';
+import {Image, View, Text, StyleSheet, useColorScheme} from 'react-native';
 import {s} from 'react-native-size-matters';
 
 import colors from '../../constants/colors';
@@ -11,6 +11,9 @@ interface Props {
 }
 
 const UserIconXL: React.FC<Props> = ({user}) => {
+  const theme = useColorScheme() || 'light';
+  const styles = styling(theme);
+
   return user.icon?.url ? (
     <Image style={styles.image} source={{uri: user.icon.url}} />
   ) : (
@@ -18,8 +21,8 @@ const UserIconXL: React.FC<Props> = ({user}) => {
       style={{
         ...styles.image,
         backgroundColor:
-          colors.profileShades[
-            user.username.length % colors.profileShades.length
+          colors[theme].profileShades[
+            user.username.length % colors[theme].profileShades.length
           ],
       }}>
       <Text style={styles.name}>
@@ -30,19 +33,20 @@ const UserIconXL: React.FC<Props> = ({user}) => {
   );
 };
 
-const styles = StyleSheet.create({
-  image: {
-    width: '100%',
-    height: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  name: {
-    fontSize: s(40),
-    color: colors.white,
-    fontFamily: 'VarelaRound-Regular',
-    marginTop: s(1),
-  },
-});
+const styling = (theme: 'light' | 'dark') =>
+  StyleSheet.create({
+    image: {
+      width: '100%',
+      height: '100%',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    name: {
+      fontSize: s(40),
+      color: colors[theme].primary,
+      fontFamily: 'VarelaRound-Regular',
+      marginTop: s(1),
+    },
+  });
 
 export default UserIconXL;

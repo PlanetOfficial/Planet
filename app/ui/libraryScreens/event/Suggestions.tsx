@@ -1,11 +1,17 @@
 import React from 'react';
-import {StyleSheet, View, TouchableOpacity, ScrollView} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  ScrollView,
+  useColorScheme,
+} from 'react-native';
 import {s} from 'react-native-size-matters';
 
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
 import strings from '../../../constants/strings';
-import STYLES from '../../../constants/styles';
+import STYLING from '../../../constants/styles';
 
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
@@ -30,6 +36,10 @@ const Suggestions: React.FC<Props> = ({
   suggestionRefs,
   onSuggestionPress,
 }) => {
+  const theme = useColorScheme() || 'light';
+  const styles = styling(theme);
+  const STYLES = STYLING(theme);
+
   return destination.suggestions.length > 1 ? (
     <View style={styles.container}>
       <ScrollView
@@ -57,7 +67,7 @@ const Suggestions: React.FC<Props> = ({
             setInsertionDestination(destination);
             navigation.navigate('SuggestSearch');
           }}>
-          <Icon icon={icons.add} size="xl" color={colors.primary} />
+          <Icon icon={icons.add} size="xl" color={colors[theme].accent} />
         </TouchableOpacity>
       </View>
     </View>
@@ -69,43 +79,44 @@ const Suggestions: React.FC<Props> = ({
         setInsertionDestination(destination);
         navigation.navigate('SuggestSearch');
       }}>
-      <Text color={colors.primary} weight="b">
+      <Text color={colors[theme].accent} weight="b">
         {strings.event.addSuggestion}
       </Text>
     </TouchableOpacity>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: s(10),
-  },
-  scrollView: {
-    overflow: 'visible',
-  },
-  suggestion: {
-    marginRight: s(10),
-  },
-  add: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: -s(20),
-    paddingRight: s(20),
-    width: s(95),
-    height: s(85),
-    backgroundColor: colors.white,
-    borderLeftWidth: 1,
-    borderLeftColor: colors.grey,
-  },
-  addBig: {
-    alignItems: 'center',
-    marginVertical: s(10),
-    paddingVertical: s(10),
-    borderRadius: s(10),
-    backgroundColor: colors.white,
-  },
-});
+const styling = (theme: 'light' | 'dark') =>
+  StyleSheet.create({
+    container: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginVertical: s(10),
+    },
+    scrollView: {
+      overflow: 'visible',
+    },
+    suggestion: {
+      marginRight: s(10),
+    },
+    add: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginRight: -s(20),
+      paddingRight: s(20),
+      width: s(95),
+      height: s(85),
+      backgroundColor: colors[theme].background,
+      borderLeftWidth: 1,
+      borderLeftColor: colors[theme].secondary,
+    },
+    addBig: {
+      alignItems: 'center',
+      marginVertical: s(10),
+      paddingVertical: s(10),
+      borderRadius: s(10),
+      backgroundColor: colors[theme].primary,
+    },
+  });
 
 export default Suggestions;

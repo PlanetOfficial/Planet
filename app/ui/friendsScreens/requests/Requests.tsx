@@ -6,13 +6,15 @@ import {
   TouchableOpacity,
   ScrollView,
   RefreshControl,
+  useColorScheme,
+  StatusBar,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
 import strings from '../../../constants/strings';
-import STYLES from '../../../constants/styles';
+import STYLING from '../../../constants/styles';
 
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
@@ -29,6 +31,10 @@ import {
 } from './functions';
 
 const Requests = ({navigation}: {navigation: any}) => {
+  const theme = useColorScheme() || 'light';
+  const STYLES = STYLING(theme);
+  StatusBar.setBarStyle(colors[theme].statusBar, true);
+
   const friendsContext = useContext(FriendsContext);
   if (!friendsContext) {
     throw new Error('FriendsContext is not set!');
@@ -72,7 +78,7 @@ const Requests = ({navigation}: {navigation: any}) => {
             await loadRequests();
             setLoading(false);
           }}
-          tintColor={colors.primary}
+          tintColor={colors[theme].accent}
         />
       }>
       {requests.length > 0 ? (
@@ -98,7 +104,7 @@ const Requests = ({navigation}: {navigation: any}) => {
               <Icon
                 size="s"
                 icon={icons.check}
-                color={colors.primary}
+                color={colors[theme].accent}
                 onPress={() =>
                   handleAcceptRequest(
                     item,

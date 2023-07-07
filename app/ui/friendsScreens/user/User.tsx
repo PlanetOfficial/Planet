@@ -5,13 +5,16 @@ import {
   Alert,
   FlatList,
   TouchableOpacity,
+  useColorScheme,
+  StatusBar,
 } from 'react-native';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 import EncryptedStorage from 'react-native-encrypted-storage';
 
+import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
 import strings from '../../../constants/strings';
-import STYLES, {sctStyles} from '../../../constants/styles';
+import STYLING, {segControlTabStyling} from '../../../constants/styles';
 
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
@@ -35,16 +38,21 @@ const User = ({
     };
   };
 }) => {
+  const theme = useColorScheme() || 'light';
+  const STYLES = STYLING(theme);
+  const segControlTabStyles = segControlTabStyling(theme);
+  StatusBar.setBarStyle(colors[theme].statusBar, true);
+
   const [selectedIndex, setIndex] = useState<number>(0);
-  const [self, setSelf] = useState<string>('');
+  const [self, setSelf] = useState<number>(0);
   const [status, setStatus] = useState<UserStatus>('');
   const [mutuals, setMutuals] = useState<UserInfo[]>([]);
   const [mutualEvents, setMutualEvents] = useState<Event[]>([]);
 
   const initializeData = useCallback(async () => {
-    const _self = await EncryptedStorage.getItem('username');
-    if (_self) {
-      setSelf(_self);
+    const myUserId = await EncryptedStorage.getItem('user_id');
+    if (myUserId) {
+      setSelf(parseInt(myUserId, 10));
     }
 
     const userData = await getFriend(route.params.user.id);
@@ -90,12 +98,12 @@ const User = ({
           />
 
           <SegmentedControlTab
-            tabsContainerStyle={sctStyles.container}
-            tabStyle={sctStyles.tab}
-            activeTabStyle={sctStyles.activeTab}
-            tabTextStyle={sctStyles.text}
-            firstTabStyle={sctStyles.firstTab}
-            activeTabTextStyle={sctStyles.activeText}
+            tabsContainerStyle={segControlTabStyles.container}
+            tabStyle={segControlTabStyles.tab}
+            activeTabStyle={segControlTabStyles.activeTab}
+            tabTextStyle={segControlTabStyles.text}
+            firstTabStyle={segControlTabStyles.firstTab}
+            activeTabTextStyle={segControlTabStyles.activeText}
             borderRadius={0}
             values={[strings.friends.mutualEvents, strings.profile.albums]}
             selectedIndex={selectedIndex}

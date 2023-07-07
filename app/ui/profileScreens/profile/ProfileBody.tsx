@@ -5,6 +5,7 @@ import {
   Alert,
   FlatList,
   TouchableOpacity,
+  useColorScheme,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
@@ -12,7 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import colors from '../../../constants/colors';
 import strings from '../../../constants/strings';
-import STYLES, {sctStyles} from '../../../constants/styles';
+import STYLING, {segControlTabStyling} from '../../../constants/styles';
 
 import Text from '../../components/Text';
 import PoiRow from '../../components/PoiRow';
@@ -25,6 +26,11 @@ import {fetchUserLocation, handleBookmark} from '../../../utils/Misc';
 import {Coordinate, Poi} from '../../../utils/types';
 
 const ProfileBody = ({navigation}: {navigation: any}) => {
+  const theme = useColorScheme() || 'light';
+  const styles = styling(theme);
+  const STYLES = STYLING(theme);
+  const segControlTabStyles = segControlTabStyling(theme);
+
   const [selectedIndex, setIndex] = useState<number>(0);
 
   const [location, setLocation] = useState<Coordinate>();
@@ -86,7 +92,7 @@ const ProfileBody = ({navigation}: {navigation: any}) => {
             </Text>
           </View>
           <TouchableOpacity onPress={() => navigation.navigate('Friends')}>
-            <Text size="s" color={colors.primary}>
+            <Text size="s" color={colors[theme].accent}>
               {friends.length + ' ' + strings.friends.friends}
             </Text>
           </TouchableOpacity>
@@ -100,12 +106,12 @@ const ProfileBody = ({navigation}: {navigation: any}) => {
         </View>
       </View>
       <SegmentedControlTab
-        tabsContainerStyle={sctStyles.container}
-        tabStyle={sctStyles.tab}
-        activeTabStyle={sctStyles.activeTab}
-        tabTextStyle={sctStyles.text}
-        firstTabStyle={sctStyles.firstTab}
-        activeTabTextStyle={sctStyles.activeText}
+        tabsContainerStyle={segControlTabStyles.container}
+        tabStyle={segControlTabStyles.tab}
+        activeTabStyle={segControlTabStyles.activeTab}
+        tabTextStyle={segControlTabStyles.text}
+        firstTabStyle={segControlTabStyles.firstTab}
+        activeTabTextStyle={segControlTabStyles.activeText}
         borderRadius={0}
         values={[strings.profile.bookmarks, strings.profile.yourAlbums]}
         selectedIndex={selectedIndex}
@@ -154,40 +160,41 @@ const ProfileBody = ({navigation}: {navigation: any}) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    paddingHorizontal: s(20),
-    marginVertical: s(10),
-  },
-  profilePic: {
-    width: s(120),
-    height: s(120),
-    borderRadius: s(40),
-    overflow: 'hidden',
-    marginRight: s(20),
-  },
-  texts: {
-    height: s(50),
-    justifyContent: 'space-evenly',
-    maxWidth: s(170),
-    marginBottom: s(5),
-  },
-  buttons: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    marginBottom: s(10),
-  },
-  button: {
-    paddingHorizontal: s(10),
-    paddingVertical: s(5),
-    borderRadius: s(5),
-    marginRight: s(10),
-    minWidth: s(65),
-    alignItems: 'center',
-    backgroundColor: colors.grey,
-  },
-});
+const styling = (theme: 'light' | 'dark') =>
+  StyleSheet.create({
+    container: {
+      flexDirection: 'row',
+      paddingHorizontal: s(20),
+      marginVertical: s(10),
+    },
+    profilePic: {
+      width: s(120),
+      height: s(120),
+      borderRadius: s(40),
+      overflow: 'hidden',
+      marginRight: s(20),
+    },
+    texts: {
+      height: s(50),
+      justifyContent: 'space-evenly',
+      maxWidth: s(170),
+      marginBottom: s(5),
+    },
+    buttons: {
+      flex: 1,
+      flexDirection: 'row',
+      alignItems: 'flex-end',
+      marginBottom: s(10),
+    },
+    button: {
+      paddingHorizontal: s(10),
+      paddingVertical: s(5),
+      borderRadius: s(5),
+      marginRight: s(10),
+      minWidth: s(65),
+      alignItems: 'center',
+      backgroundColor: colors[theme].secondary,
+    },
+  });
 
 export default ProfileBody;

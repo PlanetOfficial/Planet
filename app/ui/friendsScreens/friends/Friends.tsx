@@ -8,6 +8,8 @@ import {
   FlatList,
   ActivityIndicator,
   LayoutAnimation,
+  useColorScheme,
+  StatusBar,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 import {TouchableOpacity} from 'react-native-gesture-handler';
@@ -17,7 +19,7 @@ import FriendsNavBar from '../../navigations/FriendsNavBar';
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
 import strings from '../../../constants/strings';
-import STYLES from '../../../constants/styles';
+import STYLING from '../../../constants/styles';
 
 import Icon from '../../components/Icon';
 import Text from '../../components/Text';
@@ -27,6 +29,11 @@ import {searchUsers} from '../../../utils/api/friendsAPI';
 import {UserInfo} from '../../../utils/types';
 
 const Friends = ({navigation}: {navigation: any}) => {
+  const theme = useColorScheme() || 'light';
+  const styles = styling(theme);
+  const STYLES = STYLING(theme);
+  StatusBar.setBarStyle(colors[theme].statusBar, true);
+
   const searchRef = createRef<TextInput>();
   const [searchText, setSearchText] = useState<string>('');
   const [searchResults, setSearchResults] = useState<UserInfo[]>([]);
@@ -63,7 +70,7 @@ const Friends = ({navigation}: {navigation: any}) => {
               ref={searchRef}
               style={styles.searchText}
               placeholder={strings.search.search}
-              placeholderTextColor={colors.black}
+              placeholderTextColor={colors[theme].neutral}
               autoCapitalize="none"
               autoCorrect={false}
               onFocus={() => {
@@ -92,7 +99,7 @@ const Friends = ({navigation}: {navigation: any}) => {
       {searching ? (
         loading ? (
           <View style={[STYLES.center, STYLES.container]}>
-            <ActivityIndicator size="small" color={colors.primary} />
+            <ActivityIndicator size="small" color={colors[theme].accent} />
           </View>
         ) : (
           <FlatList
@@ -128,27 +135,29 @@ const Friends = ({navigation}: {navigation: any}) => {
   );
 };
 
-const styles = StyleSheet.create({
-  searchBar: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: colors.white,
-    borderRadius: s(10),
-    marginLeft: s(10),
-    paddingHorizontal: s(10),
-    paddingVertical: s(5),
-  },
-  searchText: {
-    flex: 1,
-    marginLeft: s(10),
-    fontSize: s(13),
-    fontFamily: 'Lato',
-    padding: 0,
-  },
-  cancel: {
-    marginLeft: s(10),
-  },
-});
+const styling = (theme: 'light' | 'dark') =>
+  StyleSheet.create({
+    searchBar: {
+      flex: 1,
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: colors[theme].primary,
+      borderRadius: s(10),
+      marginLeft: s(10),
+      paddingHorizontal: s(10),
+      paddingVertical: s(5),
+    },
+    searchText: {
+      flex: 1,
+      marginLeft: s(10),
+      fontSize: s(13),
+      fontFamily: 'Lato',
+      padding: 0,
+      color: colors[theme].neutral,
+    },
+    cancel: {
+      marginLeft: s(10),
+    },
+  });
 
 export default Friends;

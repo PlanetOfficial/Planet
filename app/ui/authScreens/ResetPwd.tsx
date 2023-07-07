@@ -5,12 +5,14 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
+  useColorScheme,
+  StatusBar,
 } from 'react-native';
 
 import colors from '../../constants/colors';
 import icons from '../../constants/icons';
 import strings from '../../constants/strings';
-import STYLES from '../../constants/styles';
+import STYLING from '../../constants/styles';
 
 import Icon from '../components/Icon';
 import Text from '../components/Text';
@@ -29,6 +31,10 @@ const ResetPwd = ({
     };
   };
 }) => {
+  const theme = useColorScheme() || 'light';
+  const STYLES = STYLING(theme);
+  StatusBar.setBarStyle(colors[theme].statusBar, true);
+
   const [authToken] = useState<string>(route.params.authToken);
 
   const [password, setPassword] = useState<string>('');
@@ -95,7 +101,7 @@ const ResetPwd = ({
           placeholder={strings.login.password}
           value={password}
           onChangeText={text => setPassword(text)}
-          placeholderTextColor={colors.black}
+          placeholderTextColor={colors[theme].neutral}
           secureTextEntry={true}
         />
       </View>
@@ -108,12 +114,12 @@ const ResetPwd = ({
           placeholder={strings.signUp.confirmPassword}
           value={passwordConfirm}
           onChangeText={text => setPasswordConfirm(text)}
-          placeholderTextColor={colors.black}
+          placeholderTextColor={colors[theme].neutral}
           secureTextEntry={true}
         />
       </View>
       {error.length !== 0 ? (
-        <Text weight="l" center={true} color={colors.red}>
+        <Text weight="l" center={true} color={colors[theme].red}>
           {error}
         </Text>
       ) : null}
@@ -123,13 +129,13 @@ const ResetPwd = ({
           {
             backgroundColor:
               password.length === 0 || password !== passwordConfirm
-                ? colors.grey
-                : colors.primary,
+                ? colors[theme].secondary
+                : colors[theme].accent,
           },
         ]}
         disabled={password.length === 0 || password !== passwordConfirm}
         onPress={() => handleNext()}>
-        <Text color={colors.white}>{strings.login.resetPassword}</Text>
+        <Text color={colors[theme].primary}>{strings.login.resetPassword}</Text>
       </TouchableOpacity>
     </View>
   );

@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, StyleSheet, TouchableOpacity, useColorScheme} from 'react-native';
 import {Gesture, GestureDetector} from 'react-native-gesture-handler';
 import Animated, {
   useAnimatedStyle,
@@ -39,6 +39,9 @@ const Spinner: React.FC<Props> = ({
   currentAngle,
   setCurrentAngle,
 }) => {
+  const theme = useColorScheme() || 'light';
+  const styles = styling(theme);
+
   const startRotation = useSharedValue(0);
   const startAngle = useSharedValue(0);
 
@@ -102,8 +105,8 @@ const Spinner: React.FC<Props> = ({
                           key: index,
                           value: _suggestion.votes.length,
                           svg: {
-                            fill: colors.primaryShades[
-                              index % colors.primaryShades.length
+                            fill: colors[theme].primaryShades[
+                              index % colors[theme].primaryShades.length
                             ],
                           },
                         };
@@ -114,7 +117,7 @@ const Spinner: React.FC<Props> = ({
               </View>
             </Animated.View>
             <View style={styles.numContainer}>
-              <Text color={colors.primary} size="xl" weight="b">
+              <Text color={colors[theme].accent} size="xl" weight="b">
                 {currentSuggestion.votes.length}
               </Text>
               <View style={styles.separater} />
@@ -126,7 +129,11 @@ const Spinner: React.FC<Props> = ({
       <TouchableOpacity
         style={[
           styles.button,
-          {backgroundColor: isSpinning ? colors.grey : colors.primary},
+          {
+            backgroundColor: isSpinning
+              ? colors[theme].secondary
+              : colors[theme].accent,
+          },
         ]}
         disabled={isSpinning}
         onPress={() =>
@@ -139,7 +146,7 @@ const Spinner: React.FC<Props> = ({
             setCurrentAngle,
           )
         }>
-        <Text size="l" weight="b" color={colors.white}>
+        <Text size="l" weight="b" color={colors[theme].primary}>
           {strings.roulette.spin}
         </Text>
       </TouchableOpacity>
@@ -147,52 +154,53 @@ const Spinner: React.FC<Props> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    marginVertical: s(20),
-  },
-  circle: {
-    width: s(300),
-    height: s(300),
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: s(150),
-  },
-  circleContainer: {
-    width: s(300),
-    height: s(300),
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  pointer: {
-    position: 'absolute',
-    top: s(10),
-    zIndex: 600,
-    width: s(7),
-    height: s(30),
-    backgroundColor: colors.grey,
-  },
-  numContainer: {
-    position: 'absolute',
-    width: s(300),
-    height: s(300),
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  separater: {
-    marginVertical: s(5),
-    height: 1,
-    width: s(60),
-    backgroundColor: colors.black,
-  },
-  button: {
-    alignSelf: 'center',
-    paddingHorizontal: s(20),
-    paddingVertical: s(10),
-    borderRadius: s(10),
-    backgroundColor: colors.primary,
-  },
-});
+const styling = (theme: 'light' | 'dark') =>
+  StyleSheet.create({
+    container: {
+      alignItems: 'center',
+      marginVertical: s(20),
+    },
+    circle: {
+      width: s(300),
+      height: s(300),
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderRadius: s(150),
+    },
+    circleContainer: {
+      width: s(300),
+      height: s(300),
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    pointer: {
+      position: 'absolute',
+      top: s(10),
+      zIndex: 600,
+      width: s(7),
+      height: s(30),
+      backgroundColor: colors[theme].secondary,
+    },
+    numContainer: {
+      position: 'absolute',
+      width: s(300),
+      height: s(300),
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    separater: {
+      marginVertical: s(5),
+      height: 1,
+      width: s(60),
+      backgroundColor: colors[theme].neutral,
+    },
+    button: {
+      alignSelf: 'center',
+      paddingHorizontal: s(20),
+      paddingVertical: s(10),
+      borderRadius: s(10),
+      backgroundColor: colors[theme].accent,
+    },
+  });
 
 export default Spinner;

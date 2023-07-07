@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Alert,
+  StatusBar,
 } from 'react-native';
 import {s, vs} from 'react-native-size-matters';
 import messaging from '@react-native-firebase/messaging';
@@ -12,7 +13,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 
 import colors from '../../constants/colors';
 import strings from '../../constants/strings';
-import STYLES from '../../constants/styles';
+import STYLING from '../../constants/styles';
 
 import Text from '../components/Text';
 
@@ -30,6 +31,10 @@ const SignUpInfo = ({
     };
   };
 }) => {
+  const theme = 'light';
+  const STYLES = STYLING(theme);
+  StatusBar.setBarStyle(colors[theme].statusBar, true);
+
   const [authToken] = useState<string>(route.params.authToken);
 
   const [ageDPOpen, setAgeDPOpen] = useState(false);
@@ -73,14 +78,14 @@ const SignUpInfo = ({
     <View style={STYLES.container}>
       <SafeAreaView>
         <View style={styles.messageContainer}>
-          <Text size="l" center={true}>
+          <Text size="l" center={true} color={colors[theme].neutral}>
             {strings.signUp.verifySuccess}
           </Text>
         </View>
       </SafeAreaView>
 
       <View style={styles.promptContainer}>
-        <Text size="m" weight="l" center={true}>
+        <Text size="m" weight="l" center={true} color={colors[theme].neutral}>
           {strings.signUp.improveExperience}
         </Text>
       </View>
@@ -117,12 +122,13 @@ const SignUpInfo = ({
         style={[
           styles.button,
           {
-            backgroundColor: age && gender ? colors.primary : colors.black,
+            backgroundColor:
+              age && gender ? colors[theme].accent : colors[theme].neutral,
           },
         ]}
         disabled={!age || !gender}
         onPress={handleNext}>
-        <Text weight="b" color={colors.white}>
+        <Text weight="b" color={colors[theme].primary}>
           {strings.signUp.enjoy}
         </Text>
       </TouchableOpacity>

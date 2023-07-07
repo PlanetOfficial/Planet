@@ -1,5 +1,11 @@
 import React from 'react';
-import {View, Alert, TouchableOpacity, StyleSheet} from 'react-native';
+import {
+  View,
+  Alert,
+  TouchableOpacity,
+  StyleSheet,
+  useColorScheme,
+} from 'react-native';
 import {s} from 'react-native-size-matters';
 import prompt from 'react-native-prompt-android';
 import DraggableFlatList from 'react-native-draggable-flatlist';
@@ -7,7 +13,7 @@ import DraggableFlatList from 'react-native-draggable-flatlist';
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
 import strings from '../../../constants/strings';
-import STYLES from '../../../constants/styles';
+import STYLING from '../../../constants/styles';
 
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
@@ -36,14 +42,18 @@ const Destinations: React.FC<Props> = ({
   setEventDetail,
   loadData,
 }) => {
+  const theme = useColorScheme() || 'light';
+  const styles = styling(theme);
+  const STYLES = STYLING(theme);
+
   return (
-    <View style={destinationStyles.container}>
-      <View style={destinationStyles.header}>
+    <View style={styles.container}>
+      <View style={styles.header}>
         <Text>{strings.event.destinations}:</Text>
       </View>
       <DraggableFlatList
-        style={destinationStyles.flatlist}
-        contentContainerStyle={destinationStyles.contentContainer}
+        style={styles.flatlist}
+        contentContainerStyle={styles.contentContainer}
         data={eventDetail.destinations}
         scrollEnabled={false}
         keyExtractor={(item: Destination) => item.id.toString()}
@@ -61,16 +71,19 @@ const Destinations: React.FC<Props> = ({
           isActive: boolean;
         }) => (
           <>
-            <View
-              style={[destinationStyles.row, isActive ? STYLES.shadow : null]}>
+            <View style={[styles.row, isActive ? STYLES.shadow : null]}>
               <TouchableOpacity
                 delayLongPress={1}
                 onLongPress={drag}
                 disabled={isActive}>
-                <Icon size="m" icon={icons.drag} />
+                <Icon
+                  size="m"
+                  icon={icons.drag}
+                  color={colors[theme].secondary}
+                />
               </TouchableOpacity>
               <TouchableOpacity
-                style={destinationStyles.title}
+                style={styles.title}
                 onPress={() =>
                   prompt(
                     strings.main.rename,
@@ -96,13 +109,17 @@ const Destinations: React.FC<Props> = ({
                   )
                 }>
                 <Text size="s">{item.name}</Text>
-                <View style={destinationStyles.pencil}>
-                  <Icon size="xs" icon={icons.edit} />
+                <View style={styles.pencil}>
+                  <Icon
+                    size="xs"
+                    icon={icons.edit}
+                    color={colors[theme].secondary}
+                  />
                 </View>
               </TouchableOpacity>
               <Icon
                 icon={icons.minus}
-                color={colors.red}
+                color={colors[theme].red}
                 onPress={() =>
                   Alert.alert(
                     strings.event.deleteDestination,
@@ -129,9 +146,9 @@ const Destinations: React.FC<Props> = ({
         )}
       />
       <TouchableOpacity
-        style={destinationStyles.addContainer}
+        style={styles.addContainer}
         onPress={() => navigation.navigate('AddSearch')}>
-        <Icon size="l" icon={icons.add} color={colors.primary} />
+        <Icon size="l" icon={icons.add} color={colors[theme].accent} />
         <View style={STYLES.texts}>
           <Text size="s">{strings.event.addDestination}</Text>
         </View>
@@ -140,52 +157,52 @@ const Destinations: React.FC<Props> = ({
   );
 };
 
-const destinationStyles = StyleSheet.create({
-  container: {
-    marginHorizontal: s(30),
-    paddingHorizontal: s(10),
-    marginVertical: s(20),
-    paddingBottom: s(10),
-    borderWidth: 1,
-    borderRadius: s(20),
-    borderColor: colors.grey,
-  },
-  header: {
-    position: 'absolute',
-    left: s(20),
-    top: s(-10),
-    paddingHorizontal: s(5),
-    backgroundColor: colors.white,
-  },
-  flatlist: {
-    marginTop: s(10),
-  },
-  contentContainer: {
-    paddingBottom: s(10),
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: s(10),
-    paddingHorizontal: s(10),
-    backgroundColor: colors.white,
-    overflow: 'visible',
-  },
-  addContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: s(5),
-    paddingHorizontal: s(10),
-  },
-  title: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginLeft: s(10),
-  },
-  pencil: {
-    marginLeft: s(5),
-  },
-});
+const styling = (theme: 'light' | 'dark') =>
+  StyleSheet.create({
+    container: {
+      marginHorizontal: s(30),
+      marginVertical: s(20),
+      paddingBottom: s(10),
+      borderWidth: 1,
+      borderRadius: s(20),
+      borderColor: colors[theme].secondary,
+    },
+    header: {
+      position: 'absolute',
+      left: s(20),
+      top: s(-10),
+      paddingHorizontal: s(5),
+      backgroundColor: colors[theme].background,
+    },
+    flatlist: {
+      marginTop: s(10),
+    },
+    contentContainer: {
+      paddingBottom: s(10),
+    },
+    row: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingVertical: s(10),
+      paddingHorizontal: s(20),
+      backgroundColor: colors[theme].background,
+      borderRadius: s(20),
+    },
+    addContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingVertical: s(5),
+      paddingHorizontal: s(20),
+    },
+    title: {
+      flex: 1,
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginLeft: s(10),
+    },
+    pencil: {
+      marginLeft: s(5),
+    },
+  });
 
 export default Destinations;

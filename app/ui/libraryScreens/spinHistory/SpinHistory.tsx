@@ -6,6 +6,8 @@ import {
   FlatList,
   StyleSheet,
   TouchableOpacity,
+  useColorScheme,
+  StatusBar,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 import moment from 'moment';
@@ -13,7 +15,7 @@ import moment from 'moment';
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
 import strings from '../../../constants/strings';
-import STYLES from '../../../constants/styles';
+import STYLING from '../../../constants/styles';
 
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
@@ -34,6 +36,11 @@ const SpinHistory = ({
     };
   };
 }) => {
+  const theme = useColorScheme() || 'light';
+  const styles = styling(theme);
+  const STYLES = STYLING(theme);
+  StatusBar.setBarStyle(colors[theme].statusBar, true);
+
   const [destination] = useState<Destination>(route.params.destination);
 
   return (
@@ -118,54 +125,55 @@ const SpinHistory = ({
   );
 };
 
-const styles = StyleSheet.create({
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: s(20),
-    marginHorizontal: s(20),
-    paddingHorizontal: s(10),
-    paddingBottom: s(5),
-    borderBottomWidth: 1,
-    borderColor: colors.black,
-  },
-  result: {
-    alignItems: 'center',
-    width: s(120),
-  },
-  spunBy: {
-    alignItems: 'center',
-    width: s(100),
-  },
-  time: {
-    alignItems: 'center',
-    width: s(70),
-  },
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginHorizontal: s(30),
-    marginTop: s(15),
-    paddingBottom: s(15),
-  },
-  texts: {
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: s(18),
-    width: s(70),
-  },
-  user: {
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: s(10),
-    width: s(100),
-  },
-  profilePic: {
-    width: s(35),
-    height: s(35),
-    borderRadius: s(17.5),
-    overflow: 'hidden',
-  },
-});
+const styling = (theme: 'light' | 'dark') =>
+  StyleSheet.create({
+    header: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginTop: s(20),
+      marginHorizontal: s(20),
+      paddingHorizontal: s(10),
+      paddingBottom: s(5),
+      borderBottomWidth: 1,
+      borderColor: colors[theme].neutral,
+    },
+    result: {
+      alignItems: 'center',
+      width: s(120),
+    },
+    spunBy: {
+      alignItems: 'center',
+      width: s(100),
+    },
+    time: {
+      alignItems: 'center',
+      width: s(70),
+    },
+    row: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginHorizontal: s(30),
+      marginTop: s(15),
+      paddingBottom: s(15),
+    },
+    texts: {
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingVertical: s(18),
+      width: s(70),
+    },
+    user: {
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingVertical: s(10),
+      width: s(100),
+    },
+    profilePic: {
+      width: s(35),
+      height: s(35),
+      borderRadius: s(17.5),
+      overflow: 'hidden',
+    },
+  });
 
 export default SpinHistory;

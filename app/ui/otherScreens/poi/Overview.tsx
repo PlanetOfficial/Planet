@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, useColorScheme} from 'react-native';
 import {s} from 'react-native-size-matters';
 
 import colors from '../../../constants/colors';
@@ -17,6 +17,9 @@ interface Props {
 }
 
 const Overview: React.FC<Props> = ({destination, destinationDetails}) => {
+  const theme = useColorScheme() || 'light';
+  const styles = styling(theme);
+
   const date = new Date();
   const open = destinationDetails.periods
     ? isOpen(destinationDetails.periods)
@@ -26,7 +29,8 @@ const Overview: React.FC<Props> = ({destination, destinationDetails}) => {
     <View style={styles.container}>
       <View style={styles.top}>
         <View style={styles.hours}>
-          <Text color={colors.primary}>{`★ ${destination.rating}/5`}</Text>
+          <Text
+            color={colors[theme].accent}>{`★ ${destination.rating}/5`}</Text>
           <Text size="xs" weight="l">
             {`(${destination.rating_count} ${strings.poi.reviews})`}
           </Text>
@@ -35,15 +39,17 @@ const Overview: React.FC<Props> = ({destination, destinationDetails}) => {
         <View style={styles.price}>
           {destination.price ? (
             <>
-              <Text size="m" weight="b" color={colors.primary}>
+              <Text size="m" weight="b" color={colors[theme].accent}>
                 {'$'.repeat(destination.price)}
               </Text>
-              <Text size="m" weight="b" color={colors.grey}>
+              <Text size="m" weight="b" color={colors[theme].secondary}>
                 {'$'.repeat(4 - destination.price)}
               </Text>
             </>
           ) : (
-            <Text>{strings.poi.noPrice}</Text>
+            <Text size="s" color={colors[theme].secondary}>
+              {strings.poi.noPrice}
+            </Text>
           )}
         </View>
         <View style={styles.separator} />
@@ -51,9 +57,9 @@ const Overview: React.FC<Props> = ({destination, destinationDetails}) => {
           {destinationDetails.hours?.length === 7 ? (
             <>
               {open ? (
-                <Text color={colors.green}>{strings.poi.open}</Text>
+                <Text color={colors[theme].green}>{strings.poi.open}</Text>
               ) : (
-                <Text color={colors.red}>{strings.poi.closed}</Text>
+                <Text color={colors[theme].red}>{strings.poi.closed}</Text>
               )}
 
               <Text size="xs" weight="l">
@@ -65,7 +71,9 @@ const Overview: React.FC<Props> = ({destination, destinationDetails}) => {
               </Text>
             </>
           ) : (
-            <Text>{strings.poi.noHours}</Text>
+            <Text size="s" color={colors[theme].secondary}>
+              {strings.poi.noHours}
+            </Text>
           )}
         </View>
       </View>
@@ -80,38 +88,37 @@ const Overview: React.FC<Props> = ({destination, destinationDetails}) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    marginHorizontal: s(20),
-    marginVertical: s(5),
-  },
-  top: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    height: s(45),
-    paddingHorizontal: s(20),
-    paddingVertical: s(5),
-    marginVertical: s(5),
-  },
-  separator: {
-    width: 1,
-    backgroundColor: colors.grey,
-  },
-  description: {
-    paddingVertical: s(5),
-    paddingHorizontal: s(10),
-    borderTopWidth: 1,
-    borderColor: colors.grey,
-  },
-  hours: {
-    alignItems: 'center',
-    justifyContent: 'space-evenly',
-  },
-  price: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+const styling = (theme: 'light' | 'dark') =>
+  StyleSheet.create({
+    container: {
+      marginHorizontal: s(20),
+      marginVertical: s(5),
+    },
+    top: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      height: s(45),
+      padding: s(5),
+      marginVertical: s(5),
+    },
+    separator: {
+      width: 1,
+      backgroundColor: colors[theme].secondary,
+    },
+    description: {
+      padding: s(5),
+      borderTopWidth: 1,
+      borderColor: colors[theme].secondary,
+    },
+    hours: {
+      alignItems: 'center',
+      justifyContent: 'space-evenly',
+    },
+    price: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+  });
 
 export default Overview;

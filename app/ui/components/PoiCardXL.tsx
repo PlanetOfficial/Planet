@@ -1,10 +1,10 @@
 import React from 'react';
-import {StyleSheet, View, Image, Animated} from 'react-native';
+import {StyleSheet, View, Image, Animated, useColorScheme} from 'react-native';
 import {s} from 'react-native-size-matters';
 
 import colors from '../../constants/colors';
 import icons from '../../constants/icons';
-import STYLES from '../../constants/styles';
+import STYLING from '../../constants/styles';
 
 import Icon from './Icon';
 import Text from './Text';
@@ -34,6 +34,10 @@ const PoiCardXL: React.FC<Props> = ({
   voted,
   onVote,
 }) => {
+  const theme = useColorScheme() || 'light';
+  const styles = styling(theme);
+  const STYLES = STYLING(theme);
+
   return (
     <Animated.View style={[styles.container, STYLES.shadow, {width: width}]}>
       <Image
@@ -43,7 +47,7 @@ const PoiCardXL: React.FC<Props> = ({
       <View style={styles.header}>
         <View style={styles.infoContainer}>
           <Text numberOfLines={1}>{poi.name}</Text>
-          <Text size="xs" color={colors.primary} numberOfLines={1}>
+          <Text size="xs" color={colors[theme].accent} numberOfLines={1}>
             {getInfoString(poi)}
           </Text>
         </View>
@@ -52,7 +56,7 @@ const PoiCardXL: React.FC<Props> = ({
             size="m"
             disabled={disabled}
             icon={bookmarked ? icons.bookmarked : icons.bookmark}
-            color={bookmarked ? colors.primary : colors.black}
+            color={bookmarked ? colors[theme].accent : colors[theme].neutral}
             onPress={() => handleBookmark(poi)}
           />
         ) : options ? (
@@ -65,7 +69,7 @@ const PoiCardXL: React.FC<Props> = ({
             size="m"
             disabled={disabled}
             icon={icons.like}
-            color={voted ? colors.primary : colors.grey}
+            color={voted ? colors[theme].accent : colors[theme].secondary}
             onPress={onVote}
           />
         </View>
@@ -74,46 +78,47 @@ const PoiCardXL: React.FC<Props> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    aspectRatio: 1.6,
-    borderRadius: s(10),
-    backgroundColor: colors.white,
-  },
-  image: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    borderRadius: s(10),
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: s(15),
-    borderTopLeftRadius: s(10),
-    borderTopRightRadius: s(10),
-    width: '100%',
-    height: s(45),
-    backgroundColor: 'rgba(255, 255, 255, 0.8)',
-  },
-  infoContainer: {
-    flex: 1,
-    justifyContent: 'space-between',
-    height: s(40),
-    paddingVertical: s(2),
-  },
-  voteButton: {
-    position: 'absolute',
-    bottom: s(10),
-    right: s(10),
-    width: s(40),
-    height: s(40),
-    borderRadius: s(20),
-    backgroundColor: colors.white,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+const styling = (theme: 'light' | 'dark') =>
+  StyleSheet.create({
+    container: {
+      aspectRatio: 1.6,
+      borderRadius: s(10),
+      backgroundColor: colors[theme].primary,
+    },
+    image: {
+      position: 'absolute',
+      width: '100%',
+      height: '100%',
+      borderRadius: s(10),
+    },
+    header: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingHorizontal: s(15),
+      borderTopLeftRadius: s(10),
+      borderTopRightRadius: s(10),
+      width: '100%',
+      height: s(45),
+      backgroundColor: colors[theme].blur,
+    },
+    infoContainer: {
+      flex: 1,
+      justifyContent: 'space-between',
+      height: s(40),
+      paddingVertical: s(2),
+    },
+    voteButton: {
+      position: 'absolute',
+      bottom: s(10),
+      right: s(10),
+      width: s(40),
+      height: s(40),
+      borderRadius: s(20),
+      backgroundColor: colors[theme].primary,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+  });
 
 export default PoiCardXL;
