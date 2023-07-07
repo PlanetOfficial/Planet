@@ -1,4 +1,5 @@
 import React from 'react';
+import {useColorScheme} from 'react-native';
 import {s} from 'react-native-size-matters';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 
@@ -10,6 +11,8 @@ import Suggestions from '../friendsScreens/suggestions/Suggestions';
 
 const Tab = createMaterialTopTabNavigator();
 export const FriendsNavBar = () => {
+  const theme = useColorScheme() || 'light';
+
   return (
     <Tab.Navigator
       initialRouteName="FriendsList"
@@ -17,24 +20,24 @@ export const FriendsNavBar = () => {
         tabBarShowLabel: true,
         headerShown: false,
         tabBarIndicatorStyle: {
-          backgroundColor: colors.primary,
+          backgroundColor: colors[theme].accent,
         },
         tabBarLabelStyle: {
           textTransform: 'none',
           fontSize: s(12),
           fontWeight: '500',
         },
-        tabBarActiveTintColor: colors.primary,
-        tabBarInactiveTintColor: colors.black,
+        tabBarActiveTintColor: colors[theme].accent,
+        tabBarInactiveTintColor: colors[theme].neutral,
         tabBarItemStyle: {
           margin: -s(5),
         },
         tabBarStyle: {
           elevation: 0,
-          backgroundColor: colors.white,
+          backgroundColor: colors[theme].background,
           marginHorizontal: s(10),
           borderBottomWidth: 1,
-          borderBottomColor: colors.grey,
+          borderBottomColor: colors[theme].secondary,
         },
       })}>
       <Tab.Screen name="Suggestions" component={Suggestions} />

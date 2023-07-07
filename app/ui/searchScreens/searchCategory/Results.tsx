@@ -1,8 +1,8 @@
 import React from 'react';
-import {View, FlatList, TouchableOpacity} from 'react-native';
+import {View, FlatList, TouchableOpacity, useColorScheme} from 'react-native';
 
 import strings from '../../../constants/strings';
-import STYLES from '../../../constants/styles';
+import STYLING from '../../../constants/styles';
 
 import Text from '../../components/Text';
 import PoiRow from '../../components/PoiRow';
@@ -31,6 +31,9 @@ const Results: React.FC<Props> = ({
   category,
   mode,
 }) => {
+  const theme = useColorScheme() || 'light';
+  const STYLES = STYLING(theme);
+
   return (
     <FlatList
       data={places}

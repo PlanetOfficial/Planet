@@ -1,5 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {Alert, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {
+  Alert,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  useColorScheme,
+  StatusBar,
+} from 'react-native';
 import {s} from 'react-native-size-matters';
 import MapView from 'react-native-maps';
 import {Circle, Svg} from 'react-native-svg';
@@ -32,6 +39,9 @@ const SearchMap = ({
     };
   };
 }) => {
+  const theme = useColorScheme() || 'light';
+  StatusBar.setBarStyle(colors[theme].statusBar, true);
+
   const [region, setRegion] = useState<Region>(
     getRegionFromPointAndDistance(route.params.location, route.params.radius),
   );
@@ -53,7 +63,6 @@ const SearchMap = ({
           showsScale={true}
           showsCompass={true}
           rotateEnabled={true}
-          userInterfaceStyle={'light'}
           onRegionChangeComplete={setRegion}
           mapPadding={{
             top: s(40),
@@ -68,9 +77,9 @@ const SearchMap = ({
               cx={s(150)}
               cy={s(150)}
               r={s(148)}
-              stroke={colors.white}
+              stroke={colors.light.primary}
               strokeWidth={4}
-              fill={colors.primary}
+              fill={colors[theme].accent}
               fillOpacity={0.3}
             />
           </Svg>
@@ -106,7 +115,7 @@ const SearchMap = ({
               Alert.alert(strings.search.tooFar, strings.search.tooFarMessage);
             }
           }}>
-          <Text size="s" color={colors.primary}>
+          <Text size="s" color={colors[theme].accent}>
             {strings.main.done}
           </Text>
         </TouchableOpacity>

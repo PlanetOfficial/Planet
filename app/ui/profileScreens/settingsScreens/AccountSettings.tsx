@@ -5,6 +5,8 @@ import {
   StyleSheet,
   Alert,
   TouchableOpacity,
+  useColorScheme,
+  StatusBar,
 } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 import {s} from 'react-native-size-matters';
@@ -13,7 +15,7 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
 import strings from '../../../constants/strings';
-import STYLES from '../../../constants/styles';
+import STYLING from '../../../constants/styles';
 
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
@@ -26,6 +28,10 @@ import FriendsContext from '../../../context/FriendsContext';
 import BookmarkContext from '../../../context/BookmarkContext';
 
 const AccountSettings = ({navigation}: {navigation: any}) => {
+  const theme = useColorScheme() || 'light';
+  const STYLES = STYLING(theme);
+  StatusBar.setBarStyle(colors[theme].statusBar, true);
+
   const bookmarkContext = useContext(BookmarkContext);
   if (!bookmarkContext) {
     throw new Error('BookmarkContext is not set!');
@@ -141,13 +147,13 @@ const AccountSettings = ({navigation}: {navigation: any}) => {
       </TouchableOpacity>
       <Separator />
       <TouchableOpacity style={styles.row} onPress={handleLogout}>
-        <Text weight="l" color={colors.red}>
+        <Text weight="l" color={colors[theme].red}>
           {strings.settings.logout}
         </Text>
       </TouchableOpacity>
       <Separator />
       <TouchableOpacity style={styles.row} onPress={handleRemoveAccount}>
-        <Text weight="l" color={colors.red}>
+        <Text weight="l" color={colors[theme].red}>
           {strings.settings.removeAccount}
         </Text>
       </TouchableOpacity>

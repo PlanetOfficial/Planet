@@ -1,5 +1,11 @@
 import React from 'react';
-import {StyleSheet, View, TouchableOpacity, ScrollView} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  ScrollView,
+  useColorScheme,
+} from 'react-native';
 import {s} from 'react-native-size-matters';
 import prompt from 'react-native-prompt-android';
 
@@ -33,6 +39,8 @@ const DestinationsList: React.FC<Props> = ({
   setBookmarks,
   setInsertionIndex,
 }) => {
+  const theme = useColorScheme() || 'light';
+
   return (
     <ScrollView contentContainerStyle={styles.scrollView}>
       {destinations.map((destination: Poi, index: number) => (
@@ -47,7 +55,7 @@ const DestinationsList: React.FC<Props> = ({
                     onPress: () => {
                       handleMove(index, -1, destinations, setDestinations);
                     },
-                    color: colors.black,
+                    color: colors[theme].neutral,
                     disabled: index === 0,
                   },
                   {
@@ -55,7 +63,7 @@ const DestinationsList: React.FC<Props> = ({
                     onPress: () => {
                       handleMove(index, 1, destinations, setDestinations);
                     },
-                    color: colors.black,
+                    color: colors[theme].neutral,
                     disabled: index === destinations.length - 1,
                   },
                   {
@@ -63,7 +71,7 @@ const DestinationsList: React.FC<Props> = ({
                     onPress: () => {
                       handleMove(index, 0, destinations, setDestinations);
                     },
-                    color: colors.red,
+                    color: colors[theme].red,
                   },
                   {
                     name: strings.main.rename,
@@ -89,7 +97,7 @@ const DestinationsList: React.FC<Props> = ({
                         },
                       );
                     },
-                    color: colors.black,
+                    color: colors[theme].neutral,
                   },
                 ]}
               />

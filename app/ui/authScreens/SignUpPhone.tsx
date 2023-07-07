@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
-import {View, SafeAreaView, TouchableOpacity} from 'react-native';
+import {View, SafeAreaView, TouchableOpacity, StatusBar} from 'react-native';
 import PhoneInput from 'react-phone-number-input/react-native-input';
 
 import {E164Number} from 'libphonenumber-js/types';
 
 import colors from '../../constants/colors';
 import strings from '../../constants/strings';
-import STYLES from '../../constants/styles';
+import STYLING from '../../constants/styles';
 
 import Text from '../components/Text';
 
@@ -23,6 +23,10 @@ const SignUpPhone = ({
     };
   };
 }) => {
+  const theme = 'light';
+  const STYLES = STYLING(theme);
+  StatusBar.setBarStyle(colors[theme].statusBar, true);
+
   const [authToken] = useState<string>(route.params.authToken);
 
   const [phoneNumber, setPhoneNumber] = useState<E164Number | undefined>();
@@ -50,29 +54,32 @@ const SignUpPhone = ({
     <View style={STYLES.container}>
       <SafeAreaView>
         <View style={STYLES.promptContainer}>
-          <Text size="l" center={true}>
+          <Text size="l" center={true} color={colors[theme].neutral}>
             {strings.signUp.signUpSuccess}
           </Text>
         </View>
       </SafeAreaView>
 
       <View style={STYLES.promptContainer}>
-        <Text size="l" weight="l" center={true}>
+        <Text size="l" weight="l" center={true} color={colors[theme].neutral}>
           {strings.signUp.phonePrompt}
         </Text>
       </View>
 
       <View style={STYLES.inputContainer}>
-        <Text weight="l">{strings.signUp.phoneNumber}: </Text>
+        <Text weight="l" color={colors[theme].neutral}>
+          {strings.signUp.phoneNumber}:{' '}
+        </Text>
         <PhoneInput
           style={STYLES.input}
           placeholder={strings.signUp.phoneNumber}
           value={phoneNumber}
           onChange={setPhoneNumber}
+          placeholderTextColor={colors[theme].neutral}
         />
       </View>
       {error.length !== 0 ? (
-        <Text weight="l" center={true} color={colors.red}>
+        <Text weight="l" center={true} color={colors[theme].red}>
           {error}
         </Text>
       ) : null}
@@ -80,12 +87,14 @@ const SignUpPhone = ({
         style={[
           STYLES.buttonBig,
           {
-            backgroundColor: phoneNumber ? colors.primary : colors.black,
+            backgroundColor: phoneNumber
+              ? colors[theme].accent
+              : colors[theme].neutral,
           },
         ]}
         disabled={!phoneNumber}
         onPress={() => handleSendCode()}>
-        <Text weight="b" color={colors.white}>
+        <Text weight="b" color={colors[theme].primary}>
           {strings.signUp.sendCode}
         </Text>
       </TouchableOpacity>

@@ -5,12 +5,19 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import {View, Alert, ActivityIndicator, Animated} from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {
+  View,
+  Alert,
+  ActivityIndicator,
+  Animated,
+  useColorScheme,
+  StatusBar,
+} from 'react-native';
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 import colors from '../../../constants/colors';
 import strings from '../../../constants/strings';
-import STYLES from '../../../constants/styles';
+import STYLING from '../../../constants/styles';
 
 import BookmarkContext from '../../../context/BookmarkContext';
 
@@ -33,6 +40,10 @@ const EventPage = ({
     };
   };
 }) => {
+  const theme = useColorScheme() || 'light';
+  const STYLES = STYLING(theme);
+  StatusBar.setBarStyle(colors[theme].statusBar, true);
+
   const [event] = useState<Event>(route.params.event);
   const [eventDetail, setEventDetail] = useState<EventDetail>();
 
@@ -54,16 +65,16 @@ const EventPage = ({
   const {bookmarks, setBookmarks} = bookmarkContext;
 
   const loadData = useCallback(async () => {
-    const _username = await AsyncStorage.getItem('username');
+    const myUserId = await EncryptedStorage.getItem('user_id');
 
     const _eventDetail = await getEvent(event.id);
-    if (_eventDetail) {
+    if (_eventDetail && myUserId) {
       setEventDetail(_eventDetail);
 
       const _myVotes = new Map<number, number>();
       _eventDetail.destinations.forEach(dest => {
         dest.suggestions.forEach(sugg => {
-          if (sugg.votes.some(_vote => _vote.username === _username)) {
+          if (sugg.votes.some(_vote => _vote.id === parseInt(myUserId, 10))) {
             _myVotes.set(dest.id, sugg.id);
           }
         });
@@ -143,7 +154,7 @@ const EventPage = ({
 
       {loading || !eventDetail ? (
         <View style={STYLES.center}>
-          <ActivityIndicator size="small" color={colors.primary} />
+          <ActivityIndicator size="small" color={colors[theme].accent} />
         </View>
       ) : (
         <Destinations

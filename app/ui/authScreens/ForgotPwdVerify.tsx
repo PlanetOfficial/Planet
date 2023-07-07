@@ -1,10 +1,16 @@
 import React, {useState} from 'react';
-import {View, SafeAreaView, TouchableOpacity, TextInput} from 'react-native';
+import {
+  View,
+  SafeAreaView,
+  TouchableOpacity,
+  TextInput,
+  StatusBar,
+} from 'react-native';
 
 import colors from '../../constants/colors';
 import icons from '../../constants/icons';
 import strings from '../../constants/strings';
-import STYLES from '../../constants/styles';
+import STYLING from '../../constants/styles';
 
 import Text from '../components/Text';
 import Icon from '../components/Icon';
@@ -22,6 +28,10 @@ const ForgotPwdVerify = ({
     };
   };
 }) => {
+  const theme = 'light';
+  const STYLES = STYLING(theme);
+  StatusBar.setBarStyle(colors[theme].statusBar, true);
+
   const [username] = useState<string>(route.params.username);
 
   const [code, setCode] = useState<string>('');
@@ -58,12 +68,13 @@ const ForgotPwdVerify = ({
             size="m"
             icon={icons.back}
             onPress={() => navigation.goBack()}
+            color={colors[theme].neutral}
           />
         </View>
       </SafeAreaView>
 
       <View style={STYLES.promptContainer}>
-        <Text size="l" weight="l" center={true}>
+        <Text size="l" weight="l" center={true} color={colors[theme].neutral}>
           {strings.signUp.verifyPrompt}
         </Text>
       </View>
@@ -75,12 +86,12 @@ const ForgotPwdVerify = ({
           onChangeText={text =>
             setCode(text.replace(/[^0-9]/g, '').substring(0, 6))
           }
-          placeholderTextColor={colors.black}
+          placeholderTextColor={colors[theme].neutral}
           keyboardType="number-pad"
         />
       </View>
       {error.length !== 0 ? (
-        <Text weight="l" center={true} color={colors.red}>
+        <Text weight="l" center={true} color={colors[theme].red}>
           {error}
         </Text>
       ) : null}
@@ -88,12 +99,15 @@ const ForgotPwdVerify = ({
         style={[
           STYLES.buttonBig,
           {
-            backgroundColor: code.length !== 6 ? colors.grey : colors.primary,
+            backgroundColor:
+              code.length !== 6
+                ? colors[theme].secondary
+                : colors[theme].accent,
           },
         ]}
         disabled={code.length !== 6}
         onPress={() => handleVerifyCode()}>
-        <Text weight="b" color={colors.white}>
+        <Text weight="b" color={colors[theme].primary}>
           {strings.signUp.verifyCode}
         </Text>
       </TouchableOpacity>

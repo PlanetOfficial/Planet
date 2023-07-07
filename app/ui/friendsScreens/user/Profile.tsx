@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {View, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, StyleSheet, TouchableOpacity, useColorScheme} from 'react-native';
 import {s} from 'react-native-size-matters';
 
 import colors from '../../../constants/colors';
@@ -33,6 +33,8 @@ const Profile: React.FC<Props> = ({
   status,
   setStatus,
 }) => {
+  const theme = useColorScheme() || 'light';
+
   const friendsContext = useContext(FriendsContext);
   if (!friendsContext) {
     throw new Error('FriendsContext is not set!');
@@ -67,7 +69,7 @@ const Profile: React.FC<Props> = ({
                 mutuals: mutuals,
               })
             }>
-            <Text size="s" color={colors.primary} numberOfLines={1}>
+            <Text size="s" color={colors[theme].accent} numberOfLines={1}>
               {mutuals.length +
                 ' ' +
                 (mutuals.length === 1
@@ -81,7 +83,7 @@ const Profile: React.FC<Props> = ({
             <TouchableOpacity
               style={{
                 ...styles.button,
-                backgroundColor: colors.primary,
+                backgroundColor: colors[theme].accent,
               }}
               onPress={() =>
                 handleFriendRequest(
@@ -92,7 +94,7 @@ const Profile: React.FC<Props> = ({
                   user,
                 )
               }>
-              <Text size="s" color={colors.white}>
+              <Text size="s" color={colors[theme].primary}>
                 {strings.friends.addFriend}
               </Text>
             </TouchableOpacity>
@@ -101,7 +103,7 @@ const Profile: React.FC<Props> = ({
             <TouchableOpacity
               style={{
                 ...styles.button,
-                backgroundColor: colors.grey,
+                backgroundColor: colors[theme].secondary,
               }}
               onPress={() =>
                 handleUnfriend(user.id, setStatus, friends, setFriends)
@@ -113,7 +115,7 @@ const Profile: React.FC<Props> = ({
             <TouchableOpacity
               style={{
                 ...styles.button,
-                backgroundColor: colors.grey,
+                backgroundColor: colors[theme].secondary,
               }}
               onPress={() =>
                 handleCancelRequest(
@@ -131,7 +133,7 @@ const Profile: React.FC<Props> = ({
               <TouchableOpacity
                 style={{
                   ...styles.button,
-                  backgroundColor: colors.primary,
+                  backgroundColor: colors[theme].accent,
                 }}
                 onPress={() =>
                   handleAcceptRequest(
@@ -144,14 +146,14 @@ const Profile: React.FC<Props> = ({
                     user,
                   )
                 }>
-                <Text size="s" color={colors.white}>
+                <Text size="s" color={colors[theme].primary}>
                   {strings.friends.accept}
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={{
                   ...styles.button,
-                  backgroundColor: colors.grey,
+                  backgroundColor: colors[theme].secondary,
                 }}
                 onPress={() =>
                   handleDeclineRequest(

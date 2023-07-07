@@ -5,11 +5,14 @@ import {
   Alert,
   FlatList,
   TouchableOpacity,
+  useColorScheme,
+  StatusBar,
 } from 'react-native';
 
+import colors from '../../constants/colors';
 import icons from '../../constants/icons';
 import strings from '../../constants/strings';
-import styles from '../../constants/styles';
+import STYLING from '../../constants/styles';
 
 import Text from '../components/Text';
 import Icon from '../components/Icon';
@@ -21,13 +24,17 @@ import {handleBookmark} from '../../utils/Misc';
 
 // TODO: INCOMPLETE
 const Explore = ({navigation, route}: {navigation: any; route: any}) => {
+  const theme = useColorScheme() || 'light';
+  const STYLES = STYLING(theme);
+  StatusBar.setBarStyle(colors[theme].statusBar, true);
+
   const {name, pois, location} = route.params;
   const [bookmarks, setBookmarks] = useState<Poi[]>([]);
 
   return (
-    <View style={styles.container}>
+    <View style={STYLES.container}>
       <SafeAreaView>
-        <View style={styles.header}>
+        <View style={STYLES.header}>
           <Icon
             size="m"
             icon={icons.back}
@@ -70,7 +77,7 @@ const Explore = ({navigation, route}: {navigation: any; route: any}) => {
           );
         }}
         ListEmptyComponent={
-          <View style={styles.center}>
+          <View style={STYLES.center}>
             <Text>{strings.search.noResultsFound}</Text>
             <Text> </Text>
             <Text size="s">{strings.search.noResultsFoundDescription}</Text>

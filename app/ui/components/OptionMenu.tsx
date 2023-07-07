@@ -1,5 +1,10 @@
 import React, {useState} from 'react';
-import {StyleSheet, View, ImageSourcePropType} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  ImageSourcePropType,
+  useColorScheme,
+} from 'react-native';
 import {s} from 'react-native-size-matters';
 import {Menu, MenuItem, MenuDivider} from 'react-native-material-menu';
 
@@ -17,11 +22,14 @@ interface Props {
   options: Option[];
 }
 
-const OptionMenu: React.FC<Props> = ({
-  icon,
-  iconColor = colors.black,
-  options,
-}) => {
+const OptionMenu: React.FC<Props> = ({icon, iconColor, options}) => {
+  const theme = useColorScheme() || 'light';
+  const styles = styling(theme);
+
+  if (!iconColor) {
+    iconColor = colors[theme].neutral;
+  }
+
   const [visible, setVisible] = useState<boolean>(false);
   const [pressed, setPressed] = useState<boolean[]>(
     Array(options.length).fill(false),
@@ -62,9 +70,9 @@ const OptionMenu: React.FC<Props> = ({
               weight="r"
               color={
                 option.disabled
-                  ? colors.black
+                  ? colors[theme].neutral
                   : pressed[index]
-                  ? colors.grey
+                  ? colors[theme].secondary
                   : option.color
               }>
               {option.name}
@@ -77,11 +85,13 @@ const OptionMenu: React.FC<Props> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    marginTop: s(20),
-    borderRadius: s(10),
-  },
-});
+const styling = (theme: 'light' | 'dark') =>
+  StyleSheet.create({
+    container: {
+      marginTop: s(20),
+      borderRadius: s(10),
+      backgroundColor: colors[theme].background,
+    },
+  });
 
 export default OptionMenu;

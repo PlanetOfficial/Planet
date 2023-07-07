@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   ScrollView,
   LayoutAnimation,
+  useColorScheme,
 } from 'react-native';
 
 import {s} from 'react-native-size-matters';
@@ -25,6 +26,9 @@ interface ChildComponentProps {
 }
 
 const Filter = forwardRef((props: ChildComponentProps, ref) => {
+  const theme = useColorScheme() || 'light';
+  const styles = styling(theme);
+
   const {filters, currFilters, setCurrFilters} = props;
 
   useImperativeHandle(ref, () => ({
@@ -134,7 +138,9 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
               size="xs"
               weight="l"
               color={
-                dropdownStatus === filter.name ? colors.black : colors.black
+                dropdownStatus === filter.name
+                  ? colors[theme].neutral
+                  : colors[theme].neutral
               }>
               {filter.name + displayFilter(filter, idx)}
             </Text>
@@ -167,7 +173,7 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
                           ? icons.checked
                           : icons.selected
                       }
-                      color={colors.primary}
+                      color={colors[theme].accent}
                     />
                   ) : (
                     <Icon
@@ -176,7 +182,7 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
                           ? icons.unchecked
                           : icons.unselected
                       }
-                      color={colors.primary}
+                      color={colors[theme].accent}
                     />
                   )}
                   <View style={styles.paddingLeft}>
@@ -197,68 +203,69 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
   );
 });
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    borderBottomWidth: 1,
-    borderColor: colors.grey,
-    zIndex: 10,
-  },
-  contentContainer: {
-    paddingLeft: s(20),
-    paddingRight: s(5),
-    paddingVertical: s(10),
-  },
-  chipContainer: {
-    marginRight: s(5),
-  },
-  chip: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-
-    height: s(25),
-    paddingHorizontal: s(10),
-    paddingVertical: s(5),
-
-    borderRadius: s(12.5),
-    borderWidth: 0.5,
-    borderColor: colors.black,
-  },
-  chipIcon: {
-    marginLeft: s(5),
-    marginRight: -s(1),
-  },
-  optionContainer: {
-    position: 'absolute',
-    top: s(35),
-    borderRadius: s(10),
-    backgroundColor: colors.white,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
+const styling = (theme: 'light' | 'dark') =>
+  StyleSheet.create({
+    container: {
+      flexDirection: 'row',
+      borderBottomWidth: 1,
+      borderColor: colors[theme].secondary,
+      zIndex: 10,
     },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-    zIndex: 10,
-  },
-  option: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderRadius: s(10),
-    padding: s(10),
-    borderBottomColor: '#ccc',
-    backgroundColor: colors.white,
-  },
-  paddingLeft: {
-    paddingLeft: s(10),
-  },
-  optionSeparator: {
-    height: 1,
-    backgroundColor: colors.grey,
-  },
-});
+    contentContainer: {
+      paddingLeft: s(20),
+      paddingRight: s(5),
+      paddingVertical: s(10),
+    },
+    chipContainer: {
+      marginRight: s(5),
+    },
+    chip: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+
+      height: s(25),
+      paddingHorizontal: s(10),
+      paddingVertical: s(5),
+
+      borderRadius: s(12.5),
+      borderWidth: 0.5,
+      borderColor: colors[theme].neutral,
+    },
+    chipIcon: {
+      marginLeft: s(5),
+      marginRight: -s(1),
+    },
+    optionContainer: {
+      position: 'absolute',
+      top: s(35),
+      borderRadius: s(10),
+      backgroundColor: colors[theme].primary,
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+      elevation: 5,
+      zIndex: 10,
+    },
+    option: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      borderRadius: s(10),
+      padding: s(10),
+      borderBottomColor: colors[theme].secondary,
+      backgroundColor: colors[theme].primary,
+    },
+    paddingLeft: {
+      paddingLeft: s(10),
+    },
+    optionSeparator: {
+      height: 1,
+      backgroundColor: colors[theme].secondary,
+    },
+  });
 
 export default Filter;
