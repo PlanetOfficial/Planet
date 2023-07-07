@@ -1,4 +1,10 @@
-import { USER_API_URL, POI_API_URL, EVENT_API_URL, FRIEND_API_URL, GOOGLE_MAPS_API_KEY } from "@env";
+import {
+  USER_API_URL,
+  POI_API_URL,
+  EVENT_API_URL,
+  FRIEND_API_URL,
+  GOOGLE_MAPS_API_KEY,
+} from '@env';
 
 export const UserAPIURL = USER_API_URL;
 export const PoiAPIURL = POI_API_URL;
