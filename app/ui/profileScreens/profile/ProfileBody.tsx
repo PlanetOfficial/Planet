@@ -18,6 +18,7 @@ import STYLING, {segControlTabStyling} from '../../../constants/styles';
 import Text from '../../components/Text';
 import PoiRow from '../../components/PoiRow';
 import UserIconXL from '../../components/UserIconXL';
+import Separator from '../../components/Separator';
 
 import BookmarkContext from '../../../context/BookmarkContext';
 import FriendsContext from '../../../context/FriendsContext';
@@ -100,7 +101,7 @@ const ProfileBody = ({navigation}: {navigation: any}) => {
             <TouchableOpacity
               style={styles.button}
               onPress={() => navigation.navigate('ProfileSettings')}>
-              <Text size="s">{strings.profile.editProfile}</Text>
+              <Text size="xs">{strings.profile.editProfile}</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -155,6 +156,7 @@ const ProfileBody = ({navigation}: {navigation: any}) => {
           </View>
         }
         keyExtractor={(item: Poi) => item.id.toString()}
+        ItemSeparatorComponent={Separator}
       />
     </>
   );
@@ -175,7 +177,7 @@ const styling = (theme: 'light' | 'dark') =>
       marginRight: s(20),
     },
     texts: {
-      height: s(50),
+      height: s(55),
       justifyContent: 'space-evenly',
       maxWidth: s(170),
       marginBottom: s(5),

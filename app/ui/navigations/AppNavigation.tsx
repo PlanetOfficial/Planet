@@ -19,7 +19,6 @@ import ForgotPassword from '../authScreens/ForgotPwd';
 import ForgotPwdVerify from '../authScreens/ForgotPwdVerify';
 import ResetPwd from '../authScreens/ResetPwd';
 import Create from '../createScreens/create/Create';
-import CreateSearch from '../createScreens/createSearch/CreateSearch';
 import SearchCategory from '../searchScreens/searchCategory/SearchCategory';
 import SearchMap from '../searchScreens/searchMap/SearchMap';
 import Poi from '../otherScreens/poi/Poi';
@@ -32,8 +31,6 @@ import Explore from '../homeScreens/Explore';
 import EventSettings from '../libraryScreens/eventSettings/EventSettings';
 import Roulette from '../libraryScreens/roulette/Roulette';
 import SpinHistory from '../libraryScreens/spinHistory/SpinHistory';
-import SuggestSearch from '../libraryScreens/suggestSearch/SuggestSearch';
-import AddSearch from '../libraryScreens/addSearch/AddSearch';
 import Notifications from '../libraryScreens/notifications/Notifications';
 import Settings from '../profileScreens/settingsScreens/Settings';
 import AccountSettings from '../profileScreens/settingsScreens/AccountSettings';
@@ -42,6 +39,7 @@ import LocationsSettings from '../profileScreens/settingsScreens/LocationsSettin
 import NotificationSettings from '../profileScreens/settingsScreens/NotificationSettings';
 import PrivacySettings from '../profileScreens/settingsScreens/PrivacySettings';
 import ProfileSettings from '../profileScreens/settingsScreens/ProfileSettings';
+import Search from '../searchScreens/search/Search';
 
 import BookmarkStateProvider from '../../context/BookmarkState';
 import FriendsStateProvider from '../../context/FriendsState';
@@ -81,13 +79,11 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
               {privacySettingsScreen()}
               {profileSettingsScreen()}
               {createScreen()}
-              {createSearchScreen()}
+              {modeSearchScreen()}
               {eventScreen()}
               {eventSettingsScreen()}
               {rouletteScreen()}
               {spinHistoryScreen()}
-              {suggestSearchScreen()}
-              {addSearchScreen()}
               {notificationsScreen()}
               {loginStackScreen()}
               {signUpNameStackScreen()}
@@ -135,13 +131,11 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
               {privacySettingsScreen()}
               {profileSettingsScreen()}
               {createScreen()}
-              {createSearchScreen()}
+              {modeSearchScreen()}
               {eventScreen()}
               {eventSettingsScreen()}
               {rouletteScreen()}
               {spinHistoryScreen()}
-              {suggestSearchScreen()}
-              {addSearchScreen()}
               {notificationsScreen()}
             </Stack.Navigator>
           </BottomSheetModalProvider>
@@ -452,32 +446,6 @@ const createScreen = () => {
   );
 };
 
-const createSearchScreen = () => {
-  return (
-    <Stack.Screen
-      name="CreateSearch"
-      component={CreateSearch}
-      options={{
-        headerShown: false,
-        cardStyleInterpolator: verticalAnimation,
-      }}
-    />
-  );
-};
-
-const addSearchScreen = () => {
-  return (
-    <Stack.Screen
-      name="AddSearch"
-      component={AddSearch}
-      options={{
-        headerShown: false,
-        cardStyleInterpolator: verticalAnimation,
-      }}
-    />
-  );
-};
-
 const eventScreen = () => {
   return (
     <Stack.Screen
@@ -527,11 +495,11 @@ const spinHistoryScreen = () => {
   );
 };
 
-const suggestSearchScreen = () => {
+const modeSearchScreen = () => {
   return (
     <Stack.Screen
-      name="SuggestSearch"
-      component={SuggestSearch}
+      name="ModeSearch"
+      component={Search}
       options={{
         headerShown: false,
         cardStyleInterpolator: verticalAnimation,

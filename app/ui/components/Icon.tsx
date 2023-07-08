@@ -8,7 +8,6 @@ import {
   ImageSourcePropType,
   useColorScheme,
 } from 'react-native';
-
 import {s} from 'react-native-size-matters';
 
 import colors from '../../constants/colors';

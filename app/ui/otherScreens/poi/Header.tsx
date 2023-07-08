@@ -105,12 +105,14 @@ const Header: React.FC<Props> = ({
               {destination?.name}
             </Text>
           </View>
-          <Icon
-            size="l"
-            icon={icons.gallery}
-            color={colors[theme].primary}
-            onPress={() => setGalleryVisible(true)}
-          />
+          {destination?.photo && destination?.photo.length > 1 ? (
+            <Icon
+              size="l"
+              icon={icons.gallery}
+              color={colors[theme].primary}
+              onPress={() => setGalleryVisible(true)}
+            />
+          ) : null}
         </Animated.View>
       </Animated.View>
     </Animated.View>
@@ -153,6 +155,7 @@ const styling = (theme: 'light' | 'dark') =>
     },
     mainTitle: {
       paddingRight: s(10),
+      maxWidth: s(280),
     },
   });
 

@@ -30,6 +30,7 @@ interface Props {
   navigation: any;
   searching: boolean;
   setSearching: (searching: boolean) => void;
+  searchText: string;
   setSearchText: (searchText: string) => void;
   mode: 'create' | 'suggest' | 'add' | 'none';
 }
@@ -38,6 +39,7 @@ const Header: React.FC<Props> = ({
   navigation,
   searching,
   setSearching,
+  searchText,
   setSearchText,
   mode,
 }) => {
@@ -86,6 +88,7 @@ const Header: React.FC<Props> = ({
             selectTextOnFocus: true,
             style: styles.text,
             autoCapitalize: 'none',
+            value: searchText,
             onFocus: () => {
               LayoutAnimation.configureNext(
                 LayoutAnimation.create(200, 'easeInEaseOut', 'opacity'),
@@ -97,6 +100,7 @@ const Header: React.FC<Props> = ({
                 LayoutAnimation.create(100, 'easeInEaseOut', 'opacity'),
               );
               setSearching(false);
+              autocompleteRef.current?.setAddressText('');
             },
             placeholderTextColor: colors[theme].neutral,
             onChangeText: text => {
@@ -135,7 +139,11 @@ const Header: React.FC<Props> = ({
         {searching ? (
           <TouchableOpacity
             style={styles.cancel}
-            onPress={() => autocompleteRef.current?.blur()}>
+            onPress={() => {
+              autocompleteRef.current?.blur();
+              autocompleteRef.current?.setAddressText('');
+              setSearchText('');
+            }}>
             <Text>{strings.main.cancel}</Text>
           </TouchableOpacity>
         ) : null}

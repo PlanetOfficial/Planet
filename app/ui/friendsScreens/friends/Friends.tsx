@@ -1,4 +1,4 @@
-import React, {useState, createRef} from 'react';
+import React, {useState, createRef, useEffect} from 'react';
 import {
   View,
   SafeAreaView,
@@ -55,6 +55,15 @@ const Friends = ({navigation}: {navigation: any}) => {
     setLoading(false);
   };
 
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      setSearchText('');
+      searchRef.current?.clear();
+    });
+
+    return unsubscribe;
+  }, [navigation, searchRef]);
+
   return (
     <View style={STYLES.container}>
       <SafeAreaView>
@@ -69,6 +78,7 @@ const Friends = ({navigation}: {navigation: any}) => {
             <TextInput
               ref={searchRef}
               style={styles.searchText}
+              value={searchText}
               placeholder={strings.search.search}
               placeholderTextColor={colors[theme].neutral}
               autoCapitalize="none"
@@ -81,6 +91,7 @@ const Friends = ({navigation}: {navigation: any}) => {
               }}
               onBlur={() => setSearching(false)}
               onChangeText={text => search(text)}
+              clearButtonMode="while-editing"
             />
           </View>
           {searching ? (

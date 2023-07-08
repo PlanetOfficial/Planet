@@ -94,7 +94,7 @@ const Profile: React.FC<Props> = ({
                   user,
                 )
               }>
-              <Text size="s" color={colors[theme].primary}>
+              <Text size="xs" color={colors[theme].primary}>
                 {strings.friends.addFriend}
               </Text>
             </TouchableOpacity>
@@ -108,7 +108,7 @@ const Profile: React.FC<Props> = ({
               onPress={() =>
                 handleUnfriend(user.id, setStatus, friends, setFriends)
               }>
-              <Text size="s">{strings.friends.unfriend}</Text>
+              <Text size="xs">{strings.friends.unfriend}</Text>
             </TouchableOpacity>
           ) : null}
           {status === 'REQSENT' ? (
@@ -125,7 +125,7 @@ const Profile: React.FC<Props> = ({
                   setRequestsSent,
                 )
               }>
-              <Text size="s">{strings.friends.cancelRequest}</Text>
+              <Text size="xs">{strings.friends.cancelRequest}</Text>
             </TouchableOpacity>
           ) : null}
           {status === 'REQRECEIVED' ? (
@@ -146,7 +146,7 @@ const Profile: React.FC<Props> = ({
                     user,
                   )
                 }>
-                <Text size="s" color={colors[theme].primary}>
+                <Text size="xs" color={colors[theme].primary}>
                   {strings.friends.accept}
                 </Text>
               </TouchableOpacity>
@@ -163,7 +163,7 @@ const Profile: React.FC<Props> = ({
                     setRequests,
                   )
                 }>
-                <Text size="s">{strings.friends.reject}</Text>
+                <Text size="xs">{strings.friends.reject}</Text>
               </TouchableOpacity>
             </>
           ) : null}
@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
     marginRight: s(20),
   },
   texts: {
-    height: s(50),
+    height: s(55),
     justifyContent: 'space-evenly',
     maxWidth: s(170),
     marginBottom: s(5),

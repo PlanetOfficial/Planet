@@ -20,7 +20,7 @@ import STYLING from '../../../constants/styles';
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 
-import {UserInfo} from '../../../utils/types';
+import {Poi, UserInfo} from '../../../utils/types';
 
 interface Props {
   navigation: any;
@@ -29,6 +29,7 @@ interface Props {
   date: string;
   setDate: (date: string) => void;
   members: UserInfo[];
+  destinations: Poi[];
 }
 
 const Header: React.FC<Props> = ({
@@ -38,6 +39,7 @@ const Header: React.FC<Props> = ({
   date,
   setDate,
   members,
+  destinations,
 }) => {
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
@@ -51,17 +53,25 @@ const Header: React.FC<Props> = ({
         <Icon
           icon={icons.close}
           onPress={() => {
-            Alert.alert(strings.main.warning, strings.event.backConfirmation, [
-              {
-                text: strings.main.cancel,
-                style: 'cancel',
-              },
-              {
-                text: strings.main.discard,
-                onPress: () => navigation.goBack(),
-                style: 'destructive',
-              },
-            ]);
+            if (destinations.length > 0) {
+              Alert.alert(
+                strings.main.warning,
+                strings.event.backConfirmation,
+                [
+                  {
+                    text: strings.main.cancel,
+                    style: 'cancel',
+                  },
+                  {
+                    text: strings.main.discard,
+                    onPress: () => navigation.goBack(),
+                    style: 'destructive',
+                  },
+                ],
+              );
+            } else {
+              navigation.goBack();
+            }
           }}
         />
         <View style={STYLES.texts}>
