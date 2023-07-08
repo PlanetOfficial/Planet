@@ -4,6 +4,7 @@ import {s} from 'react-native-size-matters';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 
 import colors from '../../constants/colors';
+import strings from '../../constants/strings';
 
 import FriendsList from '../friendsScreens/friendsList/FriendsList';
 import Requests from '../friendsScreens/requests/Requests';
@@ -40,15 +41,27 @@ export const FriendsNavBar = () => {
           borderBottomColor: colors[theme].secondary,
         },
       })}>
-      <Tab.Screen name="Suggestions" component={Suggestions} />
+      <Tab.Screen
+        name="Suggestions"
+        component={Suggestions}
+        options={{
+          tabBarLabel: strings.title.suggestions,
+        }}
+      />
       <Tab.Screen
         name="FriendsList"
         component={FriendsList}
         options={{
-          tabBarLabel: 'Friends',
+          tabBarLabel: strings.title.friends,
         }}
       />
-      <Tab.Screen name={'Requests'} component={Requests} />
+      <Tab.Screen
+        name="Requests"
+        component={Requests}
+        options={{
+          tabBarLabel: strings.title.requests,
+        }}
+      />
     </Tab.Navigator>
   );
 };

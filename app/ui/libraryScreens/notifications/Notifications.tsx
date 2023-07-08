@@ -29,7 +29,7 @@ const Notifications = ({navigation}: {navigation: any}) => {
             icon={icons.settings}
             button={true}
             padding={-2}
-            onPress={() => navigation.navigate('Settings')}
+            onPress={() => navigation.navigate('NotificationSettings')}
           />
         </View>
       </SafeAreaView>
