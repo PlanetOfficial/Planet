@@ -893,21 +893,12 @@ SPEC CHECKSUMS:
   ReactCommon: 65718685d4095d06b4b1af8042e12f1df2925c31
   RNCAsyncStorage: ddc4ee162bfd41b0d2c68bf2d95acd81dd7f1f93
   RNCPicker: 0bc2f0a29abcca7b7ed44a2d036aac9ab6d25700
-<<<<<<< HEAD
-  RNFastImage: 5c9c9fed9c076e521b3f509fe79e790418a544e8
-=======
->>>>>>> main
   RNFBApp: fdbde65110240cd843e644270e974e9b455b0fc1
   RNFBMessaging: 3aca7a5b3b1f79a9ee75026662ea57693436a338
   RNGestureHandler: dec4645026e7401a0899f2846d864403478ff6a5
   RNReanimated: 9976fbaaeb8a188c36026154c844bf374b3b7eeb
   RNScreens: 218801c16a2782546d30bd2026bb625c0302d70f
   RNSVG: 53c661b76829783cdaf9b7a57258f3d3b4c28315
-<<<<<<< HEAD
-  SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
-  SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
-=======
->>>>>>> main
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   Yoga: e7ea9e590e27460d28911403b894722354d73479
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
