@@ -1,3 +1,7 @@
+/**
+ * WARNING: DO NOT TOUCH THIS FILE UNLESS YOU HAVE A VALID REASON
+ */
+
 const categories = [
   require('../assets/categoryIcons/Restaurant/anything.png'),
   require('../assets/categoryIcons/Restaurant/italian.png'),
