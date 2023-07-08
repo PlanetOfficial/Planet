@@ -21,6 +21,7 @@ interface Props {
   date: string;
   members: UserInfo[];
   destinations: Poi[] | undefined;
+  destinationNames: Map<number, string>;
 }
 
 const SaveButton: React.FC<Props> = ({
@@ -29,6 +30,7 @@ const SaveButton: React.FC<Props> = ({
   date,
   members,
   destinations,
+  destinationNames,
 }) => {
   const theme = useColorScheme() || 'light';
   const STYLES = STYLING(theme);
@@ -55,6 +57,7 @@ const SaveButton: React.FC<Props> = ({
           members,
           setLoading,
           destinations,
+          destinationNames,
         )
       }>
       {loading ? (

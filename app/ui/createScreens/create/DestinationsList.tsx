@@ -29,6 +29,7 @@ interface Props {
   bookmarks: Poi[];
   setBookmarks: (bookmarks: Poi[]) => void;
   setInsertionIndex: (insertionIndex: number) => void;
+  destinationNames: Map<number, string>;
 }
 
 const DestinationsList: React.FC<Props> = ({
@@ -38,6 +39,7 @@ const DestinationsList: React.FC<Props> = ({
   bookmarks,
   setBookmarks,
   setInsertionIndex,
+  destinationNames,
 }) => {
   const theme = useColorScheme() || 'light';
 
@@ -47,7 +49,7 @@ const DestinationsList: React.FC<Props> = ({
         <View key={index}>
           <View style={styles.destination}>
             <View style={styles.destinationHeader}>
-              <Text>{destination.category_name}</Text>
+              <Text>{destinationNames.get(destination.id)}</Text>
               <OptionMenu
                 options={[
                   {
@@ -85,7 +87,10 @@ const DestinationsList: React.FC<Props> = ({
                             text: 'Save',
                             onPress: name => {
                               const _destinations = [...destinations];
-                              _destinations[index].category_name = name;
+                              destinationNames.set(
+                                destination.id,
+                                name as string,
+                              );
                               setDestinations(_destinations);
                             },
                           },
@@ -93,7 +98,7 @@ const DestinationsList: React.FC<Props> = ({
                         {
                           type: 'plain-text',
                           cancelable: false,
-                          defaultValue: destination.category_name,
+                          defaultValue: destinationNames.get(destination.id),
                         },
                       );
                     },

@@ -46,6 +46,7 @@ const PoiPage = ({
       mode: 'create' | 'suggest' | 'add' | 'none';
       place_id?: string;
       poi?: Poi;
+      category?: string;
     };
   };
 }) => {
@@ -175,7 +176,12 @@ const PoiPage = ({
         ) : null}
       </Animated.ScrollView>
 
-      <Button navigation={navigation} destination={destination} mode={mode} />
+      <Button
+        navigation={navigation}
+        destination={destination}
+        mode={mode}
+        category={route.params.category}
+      />
     </View>
   );
 };

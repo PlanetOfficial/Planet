@@ -128,6 +128,7 @@ const strings = {
     destinations: 'Destinations',
     yourEvents: 'Your Events',
     untitled: 'Untitled Event',
+    destinationDefaultName: 'Untitled Destination',
     backConfirmation:
       'Are you sure you want to go back? Your event will not be saved.',
     addDestination: 'Add a Destination',

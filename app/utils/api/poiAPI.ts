@@ -8,6 +8,10 @@ export const getPois = async (
   longitude: number,
   filters?: {[key: string]: string | string[]},
 ): Promise<Poi[] | null> => {
+  // round latitude and longitude to nearest ~100m ish so that we can cache the results
+  latitude = Math.round(latitude * 1000) / 1000;
+  longitude = Math.round(longitude * 1000) / 1000;
+
   const response = await fetch(
     PoiAPIURL +
       `/poi?category=${JSON.stringify(

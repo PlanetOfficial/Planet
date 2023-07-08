@@ -33,6 +33,7 @@ const Create = ({
     params?: {
       members?: UserInfo[];
       destination?: Poi;
+      category?: string;
     };
   };
 }) => {
@@ -46,6 +47,9 @@ const Create = ({
   const [members, setMembers] = useState<UserInfo[]>([]);
   const [destinations, setDestinations] = useState<Poi[]>([]);
   const [insertionIndex, setInsertionIndex] = useState<number>(0);
+  const [destinationNames, setDestinationNames] = useState<Map<number, string>>(
+    new Map(),
+  );
 
   const bookmarkContext = useContext(BookmarkContext);
   if (!bookmarkContext) {
@@ -77,9 +81,22 @@ const Create = ({
       _destinations.splice(insertionIndex, 0, destination);
       setDestinations(_destinations);
 
+      const _destinationNames = new Map(destinationNames);
+      _destinationNames.set(
+        destination.id,
+        route.params?.category || strings.event.destinationDefaultName,
+      );
+      setDestinationNames(_destinationNames);
+
       navigation.setParams({destination: undefined});
     }
-  }, [navigation, route.params?.destination, destinations, insertionIndex]);
+  }, [
+    navigation,
+    route.params,
+    destinations,
+    insertionIndex,
+    destinationNames,
+  ]);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -126,6 +143,7 @@ const Create = ({
           bookmarks={bookmarks}
           setBookmarks={setBookmarks}
           setInsertionIndex={setInsertionIndex}
+          destinationNames={destinationNames}
         />
       ) : (
         <TouchableOpacity
@@ -146,6 +164,7 @@ const Create = ({
           date={date}
           members={members}
           destinations={destinations}
+          destinationNames={destinationNames}
         />
       ) : null}
     </View>

@@ -15,9 +15,10 @@ interface Props {
   navigation: any;
   destination: Poi | undefined;
   mode: 'create' | 'suggest' | 'add' | 'none';
+  category: string | undefined;
 }
 
-const Button: React.FC<Props> = ({navigation, destination, mode}) => {
+const Button: React.FC<Props> = ({navigation, destination, mode, category}) => {
   const theme = useColorScheme() || 'light';
   const STYLES = STYLING(theme);
 
@@ -28,6 +29,7 @@ const Button: React.FC<Props> = ({navigation, destination, mode}) => {
         if (mode === 'create') {
           navigation.navigate('Create', {
             destination: destination,
+            category: category,
           });
         } else if (mode === 'suggest') {
           navigation.navigate('Event', {

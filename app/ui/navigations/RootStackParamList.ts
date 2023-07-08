@@ -25,6 +25,7 @@ type RootStackParamList = {
     mode: 'create' | 'suggest' | 'add' | 'none';
     place_id: string | undefined;
     poi: PoiType | undefined;
+    category: string | undefined;
   };
   Friends: undefined;
   AddFriend: {
@@ -49,6 +50,7 @@ type RootStackParamList = {
     | {
         members: UserInfo[] | undefined;
         destination: PoiType | undefined;
+        category: string | undefined;
       }
     | undefined;
   CreateSearch: undefined;
