@@ -12,7 +12,6 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {s} from 'react-native-size-matters';
-import FastImage from 'react-native-fast-image';
 
 import colors from '../../../constants/colors';
 import numbers from '../../../constants/numbers';
@@ -122,9 +121,11 @@ const Search = ({
                     <View style={[styles.iconContainer, STYLES.shadow]}>
                       <Image
                         style={styles.icon}
-                        source={categories[item.id - 1] || {
-                          uri: item.icon.url,
-                        }}
+                        source={
+                          categories[item.id - 1] || {
+                            uri: item.icon.url,
+                          }
+                        }
                       />
                     </View>
                     <Text size="xs" weight="l" center={true}>

@@ -15,10 +15,7 @@ const UserIconXL: React.FC<Props> = ({user}) => {
   const styles = styling(theme);
 
   return user.icon?.url ? (
-    <Image
-      style={styles.image}
-      source={{uri: user.icon.url}}
-    />
+    <Image style={styles.image} source={{uri: user.icon.url}} />
   ) : (
     <View
       style={{

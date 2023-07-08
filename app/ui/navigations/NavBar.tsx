@@ -64,9 +64,14 @@ export const NavBar = () => {
       return (
         <View style={styles.tabIcon}>
           <Image
-            style={[styles.icon, {
-              tintColor: focused ? colors[theme].accent : colors[theme].neutral,
-            }]}
+            style={[
+              styles.icon,
+              {
+                tintColor: focused
+                  ? colors[theme].accent
+                  : colors[theme].neutral,
+              },
+            ]}
             source={source}
           />
           <Text style={[styles.name, focused ? styles.bold : undefined]}>

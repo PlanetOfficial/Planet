@@ -1,5 +1,11 @@
 import React from 'react';
-import {View, TouchableOpacity, StyleSheet, useColorScheme, Image} from 'react-native';
+import {
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  useColorScheme,
+  Image,
+} from 'react-native';
 import {s} from 'react-native-size-matters';
 
 import colors from '../../../constants/colors';
