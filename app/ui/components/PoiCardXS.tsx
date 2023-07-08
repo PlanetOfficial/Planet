@@ -1,7 +1,6 @@
 import React from 'react';
-import {StyleSheet, View, useColorScheme} from 'react-native';
+import {Image, StyleSheet, View, useColorScheme} from 'react-native';
 import {s} from 'react-native-size-matters';
-import FastImage from 'react-native-fast-image';
 
 import colors from '../../constants/colors';
 import icons from '../../constants/icons';
@@ -22,7 +21,7 @@ const PoiCardXS: React.FC<Props> = ({poi}) => {
 
   return (
     <View style={[styles.container, STYLES.shadow]}>
-      <FastImage
+      <Image
         style={styles.image}
         source={poi.photo ? {uri: poi.photo} : icons.placeholder}
       />

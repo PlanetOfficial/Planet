@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Image,
   Pressable,
   PressableProps,
   StyleSheet,
@@ -14,7 +15,6 @@ import {
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import FastImage from 'react-native-fast-image';
 
 import colors from '../../constants/colors';
 import strings from '../../constants/strings';
@@ -63,10 +63,16 @@ export const NavBar = () => {
     if (source !== -1) {
       return (
         <View style={styles.tabIcon}>
-          <FastImage
-            style={styles.icon}
+          <Image
+            style={[
+              styles.icon,
+              {
+                tintColor: focused
+                  ? colors[theme].accent
+                  : colors[theme].neutral,
+              },
+            ]}
             source={source}
-            tintColor={focused ? colors[theme].accent : colors[theme].neutral}
           />
           <Text style={[styles.name, focused ? styles.bold : undefined]}>
             {name}
