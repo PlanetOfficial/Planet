@@ -1,12 +1,9 @@
-import {Alert} from 'react-native';
 import {
   withTiming,
   Easing,
   runOnJS,
   SharedValue,
 } from 'react-native-reanimated';
-import strings from '../../../constants/strings';
-import {makePrimary, spinRoulette} from '../../../utils/api/suggestionAPI';
 import {Destination, Suggestion} from '../../../utils/types';
 
 const SPIN_VELOCITY = 1400;
@@ -39,13 +36,11 @@ export const getCurrentSuggestion = (
   return destination.suggestions[0];
 };
 
-export const onSpinPress = (
-  eventId: number,
-  destination: Destination,
-  totalVotes: number,
+export const onSpinPress = async (
   rotation: SharedValue<number>,
   setIsSpinning: (isSpinning: boolean) => void,
   setCurrentAngle: (angle: number) => void,
+  handleSpinEnd: (angle: number) => void,
 ) => {
   runOnJS(setIsSpinning)(true);
   rotation.value = withTiming(
@@ -58,42 +53,7 @@ export const onSpinPress = (
       const angle = parseInt((rotation.value % 360).toFixed(), 10);
       runOnJS(setCurrentAngle)(angle);
       runOnJS(setIsSpinning)(false);
-      runOnJS(handleSpinEnd)(eventId, angle, destination, totalVotes);
+      runOnJS(handleSpinEnd)(angle);
     },
   );
-};
-
-export const handleSpinEnd = async (
-  eventId: number,
-  angle: number,
-  destination: Destination,
-  totalVotes: number,
-) => {
-  const suggestion = getCurrentSuggestion(angle, destination, totalVotes);
-
-  const spin = await spinRoulette(eventId, destination.id, suggestion.id);
-  if (!spin) {
-    Alert.alert(strings.error.error, strings.error.recordRouletteSpin);
-  }
-
-  Alert.alert(suggestion.poi.name, strings.roulette.rouletteSpinInfo, [
-    {
-      text: strings.main.cancel,
-      style: 'cancel',
-    },
-    {
-      text: strings.main.confirm,
-      onPress: async () => {
-        const response = await makePrimary(
-          eventId,
-          destination.id,
-          suggestion.id,
-        );
-
-        if (!response) {
-          Alert.alert(strings.error.error, strings.error.makeSuggestionPrimary);
-        }
-      },
-    },
-  ]);
 };

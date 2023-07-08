@@ -1,5 +1,11 @@
 import React from 'react';
-import {View, StyleSheet, TouchableOpacity, useColorScheme} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Alert,
+  useColorScheme,
+} from 'react-native';
 import {Gesture, GestureDetector} from 'react-native-gesture-handler';
 import Animated, {
   useAnimatedStyle,
@@ -19,10 +25,12 @@ import Text from '../../components/Text';
 import {Destination, Suggestion} from '../../../utils/types';
 
 import {getCurrentSuggestion, onSpinPress} from './functions';
+import {makePrimary, spinRoulette} from '../../../utils/api/suggestionAPI';
 
 interface Props {
   eventId: number;
   destination: Destination;
+  setDestination: (destination: Destination) => void;
   rotation: SharedValue<number>;
   isSpinning: boolean;
   setIsSpinning: (isSpinning: boolean) => void;
@@ -33,6 +41,7 @@ interface Props {
 const Spinner: React.FC<Props> = ({
   eventId,
   destination,
+  setDestination,
   rotation,
   isSpinning,
   setIsSpinning,
@@ -87,6 +96,43 @@ const Spinner: React.FC<Props> = ({
     totalVotes,
   );
 
+  const handleSpinEnd = async (angle: number) => {
+    const suggestion = getCurrentSuggestion(angle, destination, totalVotes);
+
+    const spin = await spinRoulette(eventId, destination.id, suggestion.id);
+    if (spin) {
+      const newDestination = {...destination};
+      newDestination.spin_history.unshift(spin);
+      setDestination(newDestination);
+    } else {
+      Alert.alert(strings.error.error, strings.error.recordRouletteSpin);
+    }
+
+    Alert.alert(suggestion.poi.name, strings.roulette.rouletteSpinInfo, [
+      {
+        text: strings.main.cancel,
+        style: 'cancel',
+      },
+      {
+        text: strings.main.confirm,
+        onPress: async () => {
+          const response = await makePrimary(
+            eventId,
+            destination.id,
+            suggestion.id,
+          );
+
+          if (!response) {
+            Alert.alert(
+              strings.error.error,
+              strings.error.makeSuggestionPrimary,
+            );
+          }
+        },
+      },
+    ]);
+  };
+
   return (
     <>
       <View style={styles.container}>
@@ -130,21 +176,15 @@ const Spinner: React.FC<Props> = ({
         style={[
           styles.button,
           {
-            backgroundColor: isSpinning
-              ? colors[theme].secondary
-              : colors[theme].accent,
+            backgroundColor:
+              totalVotes < 2 || isSpinning
+                ? colors[theme].secondary
+                : colors[theme].accent,
           },
         ]}
-        disabled={isSpinning}
+        disabled={totalVotes < 2 || isSpinning}
         onPress={() =>
-          onSpinPress(
-            eventId,
-            destination,
-            totalVotes,
-            rotation,
-            setIsSpinning,
-            setCurrentAngle,
-          )
+          onSpinPress(rotation, setIsSpinning, setCurrentAngle, handleSpinEnd)
         }>
         <Text size="l" weight="b" color={colors[theme].primary}>
           {strings.roulette.spin}
