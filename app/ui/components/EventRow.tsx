@@ -1,7 +1,6 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, View, Image} from 'react-native';
 import {s} from 'react-native-size-matters';
-import FastImage from 'react-native-fast-image';
 import moment from 'moment';
 
 import icons from '../../constants/icons';
@@ -22,7 +21,7 @@ const EventRow: React.FC<Props> = ({event, self}) => {
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
-        <FastImage
+        <Image
           style={styles.image}
           source={event.photo ? {uri: event.photo} : icons.placeholder}
           resizeMode={'cover'}

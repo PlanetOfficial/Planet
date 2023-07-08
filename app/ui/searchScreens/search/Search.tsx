@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   useColorScheme,
   StatusBar,
+  Image,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {s} from 'react-native-size-matters';
@@ -29,6 +30,7 @@ import {fetchUserLocation, handleBookmark} from '../../../utils/Misc';
 import {Category, Coordinate, Genre, Poi} from '../../../utils/types';
 
 import Header from './Header';
+import categories from '../../../constants/categories';
 
 const Search = ({
   navigation,
@@ -100,41 +102,38 @@ const Search = ({
               <View style={styles.header}>
                 <Text size="s">{genre.name}</Text>
               </View>
-              <ScrollView
+              <FlatList
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
-                contentContainerStyle={styles.scrollView}>
-                {genre.categories.map((category: Category, idx: number) => (
+                contentContainerStyle={styles.scrollView}
+                data={genre.categories}
+                initialNumToRender={5}
+                renderItem={({item}: {item: Category}) => (
                   <TouchableOpacity
-                    key={category.id}
                     style={styles.categoryContainer}
                     onPress={() => {
                       navigation.navigate('SearchCategory', {
-                        category,
+                        category: item,
                         location,
                         radius: numbers.defaultRadius,
                         mode: mode,
                       });
                     }}>
                     <View style={[styles.iconContainer, STYLES.shadow]}>
-                      <FastImage
+                      <Image
                         style={styles.icon}
-                        source={{
-                          uri: category.icon.url,
-                          priority:
-                            idx < 4
-                              ? FastImage.priority.high
-                              : FastImage.priority.low,
+                        source={categories[item.id - 1] || {
+                          uri: item.icon.url,
                         }}
-                        tintColor={colors[theme].neutral}
                       />
                     </View>
                     <Text size="xs" weight="l" center={true}>
-                      {category.name}
+                      {item.name}
                     </Text>
                   </TouchableOpacity>
-                ))}
-              </ScrollView>
+                )}
+                keyExtractor={(item: Category) => item.id.toString()}
+              />
               {index !== genres.length - 1 ? <SeparatorR /> : null}
             </View>
           ))}
@@ -213,6 +212,7 @@ const styling = (theme: 'light' | 'dark') =>
     icon: {
       width: '55%',
       height: '55%',
+      tintColor: colors[theme].neutral,
     },
     flatList: {
       paddingBottom: s(250),

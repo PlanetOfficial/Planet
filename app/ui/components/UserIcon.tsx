@@ -1,7 +1,6 @@
 import React from 'react';
-import {View, Text, StyleSheet, useColorScheme} from 'react-native';
+import {View, Text, StyleSheet, useColorScheme, Image} from 'react-native';
 import {s} from 'react-native-size-matters';
-import FastImage from 'react-native-fast-image';
 
 import colors from '../../constants/colors';
 
@@ -17,7 +16,7 @@ const UserIcon: React.FC<Props> = ({user, size = s(16)}) => {
   const styles = styling(theme);
 
   return user.icon?.url ? (
-    <FastImage style={styles.image} source={{uri: user.icon.url}} />
+    <Image style={styles.image} source={{uri: user.icon.url}} />
   ) : (
     <View
       style={{
