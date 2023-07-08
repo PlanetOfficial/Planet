@@ -101,7 +101,6 @@ const Spinner: React.FC<Props> = ({
 
     const spin = await spinRoulette(eventId, destination.id, suggestion.id);
     if (spin) {
-      console.log(spin);
       const newDestination = {...destination};
       newDestination.spin_history.unshift(spin);
       setDestination(newDestination);
