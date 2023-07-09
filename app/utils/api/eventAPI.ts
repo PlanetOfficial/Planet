@@ -70,7 +70,7 @@ export const postEvent = async (
     return false;
   }
 
-  if(!datetime) {
+  if (!datetime) {
     datetime = '';
   }
 
