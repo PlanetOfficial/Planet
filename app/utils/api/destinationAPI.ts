@@ -14,13 +14,15 @@ export const postDestination = async (
     return false;
   }
 
-  const response = await fetch(
-    EventAPIURL +
-      `/destination?event_id=${event_id}&poi_id=${poi_id}&authtoken=${authToken}`,
-    {
-      method: 'POST',
+  const response = await fetch(EventAPIURL + '/destination', {
+    method: 'POST',
+    body: JSON.stringify({event_id, poi_id}),
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Xano-Authorization': `Bearer ${authToken}`,
+      'X-Xano-Authorization-Only': 'true',
     },
-  );
+  });
 
   return response.ok;
 };
@@ -39,13 +41,15 @@ export const renameDestination = async (
     return false;
   }
 
-  const response = await fetch(
-    EventAPIURL +
-      `/destination/name?event_id=${event_id}&destination_id=${destination_id}&name=${name}&authtoken=${authToken}`,
-    {
-      method: 'POST',
+  const response = await fetch(EventAPIURL + '/destination/name', {
+    method: 'POST',
+    body: JSON.stringify({event_id, destination_id, name}),
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Xano-Authorization': `Bearer ${authToken}`,
+      'X-Xano-Authorization-Only': 'true',
     },
-  );
+  });
 
   return response.ok;
 };
@@ -63,13 +67,15 @@ export const removeDestination = async (
     return false;
   }
 
-  const response = await fetch(
-    EventAPIURL +
-      `/destination?event_id=${event_id}&destination_id=${destination_id}&authtoken=${authToken}`,
-    {
-      method: 'DELETE',
+  const response = await fetch(EventAPIURL + '/destination', {
+    method: 'DELETE',
+    body: JSON.stringify({event_id, destination_id}),
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Xano-Authorization': `Bearer ${authToken}`,
+      'X-Xano-Authorization-Only': 'true',
     },
-  );
+  });
 
   return response.ok;
 };
@@ -87,15 +93,15 @@ export const reorderDestinations = async (
     return false;
   }
 
-  const response = await fetch(
-    EventAPIURL +
-      `/destination/order?event_id=${event_id}&destination_ids=${JSON.stringify(
-        destination_ids,
-      )}&authtoken=${authToken}`,
-    {
-      method: 'POST',
+  const response = await fetch(EventAPIURL + '/destination/order', {
+    method: 'POST',
+    body: JSON.stringify({event_id, destination_ids}),
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Xano-Authorization': `Bearer ${authToken}`,
+      'X-Xano-Authorization-Only': 'true',
     },
-  );
+  });
 
   return response.ok;
 };
