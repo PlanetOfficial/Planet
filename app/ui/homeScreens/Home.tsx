@@ -6,13 +6,15 @@ import {
   ScrollView,
   FlatList,
   TouchableOpacity,
+  useColorScheme,
+  StatusBar,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 
 import colors from '../../constants/colors';
 import icons from '../../constants/icons';
 import strings from '../../constants/strings';
-import styles from '../../constants/styles';
+import STYLING from '../../constants/styles';
 
 import Text from '../components/Text';
 import Icon from '../components/Icon';
@@ -26,6 +28,11 @@ import {fetchUserLocation, handleBookmark} from '../../utils/Misc';
 
 // TODO: INCOMPLETE
 const Home = ({navigation}: {navigation: any}) => {
+  const theme = useColorScheme() || 'light';
+  const styles = styling(theme);
+  const STYLES = STYLING(theme);
+  StatusBar.setBarStyle(colors[theme].statusBar, true);
+
   const [location, setLocation] = useState<Coordinate>();
 
   const bookmarkContext = useContext(BookmarkContext);
@@ -56,9 +63,9 @@ const Home = ({navigation}: {navigation: any}) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={STYLES.container}>
       <SafeAreaView>
-        <View style={styles.header}>
+        <View style={STYLES.header}>
           <Text size="l">{GetGreetings()}</Text>
           <Icon
             icon={icons.friends}
@@ -71,8 +78,8 @@ const Home = ({navigation}: {navigation: any}) => {
       <FlatList
         data={temp_data}
         renderItem={({item}) => (
-          <View style={homeStyles.container}>
-            <View style={homeStyles.header}>
+          <View style={styles.container}>
+            <View style={styles.header}>
               <Text>{item.name}</Text>
               <TouchableOpacity
                 onPress={() =>
@@ -82,7 +89,7 @@ const Home = ({navigation}: {navigation: any}) => {
                     location: location,
                   })
                 }>
-                <Text size="s" color={colors.primary}>
+                <Text size="s" color={colors[theme].accent}>
                   {strings.main.seeAll}
                 </Text>
               </TouchableOpacity>
@@ -90,11 +97,11 @@ const Home = ({navigation}: {navigation: any}) => {
             <ScrollView
               horizontal={true}
               showsHorizontalScrollIndicator={false}
-              contentContainerStyle={homeStyles.scrollView}>
+              contentContainerStyle={styles.scrollView}>
               {item.pois.map((poi: Poi) => (
                 <TouchableOpacity
                   key={poi.id}
-                  style={homeStyles.cardContainer}
+                  style={styles.cardContainer}
                   onPress={() => {
                     navigation.navigate('Poi', {
                       poi: poi,
@@ -121,39 +128,40 @@ const Home = ({navigation}: {navigation: any}) => {
   );
 };
 
-const homeStyles = StyleSheet.create({
-  container: {
-    paddingVertical: s(10),
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    justifyContent: 'space-between',
-    paddingHorizontal: s(20),
-    paddingTop: s(5),
-    paddingBottom: s(5),
-  },
-  scrollView: {
-    paddingLeft: s(20),
-    paddingVertical: s(5),
-  },
-  cardContainer: {
-    marginRight: s(15),
-    overflow: 'visible',
-  },
-  iconContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: s(50),
-    height: s(50),
-    borderRadius: s(25),
-    backgroundColor: colors.white,
-  },
-  icon: {
-    width: '60%',
-    height: '60%',
-  },
-});
+const styling = (theme: 'light' | 'dark') =>
+  StyleSheet.create({
+    container: {
+      paddingVertical: s(10),
+    },
+    header: {
+      flexDirection: 'row',
+      alignItems: 'flex-end',
+      justifyContent: 'space-between',
+      paddingHorizontal: s(20),
+      paddingTop: s(5),
+      paddingBottom: s(5),
+    },
+    scrollView: {
+      paddingLeft: s(20),
+      paddingVertical: s(5),
+    },
+    cardContainer: {
+      marginRight: s(15),
+      overflow: 'visible',
+    },
+    iconContainer: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: s(50),
+      height: s(50),
+      borderRadius: s(25),
+      backgroundColor: colors[theme].primary,
+    },
+    icon: {
+      width: '60%',
+      height: '60%',
+    },
+  });
 
 const temp_data = [
   {

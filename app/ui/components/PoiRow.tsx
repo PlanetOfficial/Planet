@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, Image} from 'react-native';
+import {Image, StyleSheet, View, useColorScheme} from 'react-native';
 import {s} from 'react-native-size-matters';
 
 import colors from '../../constants/colors';
@@ -28,6 +28,8 @@ const PoiRow: React.FC<Props> = ({
   location,
   category,
 }) => {
+  const theme = useColorScheme() || 'light';
+
   const getAddressString = (): string => {
     let poiString: string = '';
 
@@ -88,7 +90,7 @@ const PoiRow: React.FC<Props> = ({
       <Icon
         size="l"
         icon={bookmarked ? icons.bookmarked : icons.bookmark}
-        color={bookmarked ? colors.primary : colors.black}
+        color={bookmarked ? colors[theme].accent : colors[theme].neutral}
         onPress={() => handleBookmark(poi)}
       />
     </View>

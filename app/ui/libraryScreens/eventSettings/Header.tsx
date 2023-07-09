@@ -1,10 +1,16 @@
 import React from 'react';
-import {View, SafeAreaView, Alert, TouchableOpacity} from 'react-native';
+import {
+  View,
+  SafeAreaView,
+  Alert,
+  TouchableOpacity,
+  useColorScheme,
+} from 'react-native';
 
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
 import strings from '../../../constants/strings';
-import STYLES from '../../../constants/styles';
+import STYLING from '../../../constants/styles';
 
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
@@ -17,6 +23,9 @@ interface Props {
 }
 
 const Header: React.FC<Props> = ({navigation, eventId}) => {
+  const theme = useColorScheme() || 'light';
+  const STYLES = STYLING(theme);
+
   const handleLeave = async () => {
     const response = await leaveEvent(eventId);
 
@@ -45,7 +54,7 @@ const Header: React.FC<Props> = ({navigation, eventId}) => {
               },
             ]);
           }}>
-          <Text size="m" color={colors.red}>
+          <Text size="m" color={colors[theme].red}>
             {strings.event.leave}
           </Text>
         </TouchableOpacity>

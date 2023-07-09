@@ -1,4 +1,4 @@
-import React, {useState, createRef} from 'react';
+import React, {useState, createRef, useEffect} from 'react';
 import {
   View,
   SafeAreaView,
@@ -8,6 +8,8 @@ import {
   FlatList,
   ActivityIndicator,
   LayoutAnimation,
+  useColorScheme,
+  StatusBar,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 import {TouchableOpacity} from 'react-native-gesture-handler';
@@ -17,7 +19,7 @@ import FriendsNavBar from '../../navigations/FriendsNavBar';
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
 import strings from '../../../constants/strings';
-import STYLES from '../../../constants/styles';
+import STYLING from '../../../constants/styles';
 
 import Icon from '../../components/Icon';
 import Text from '../../components/Text';
@@ -25,8 +27,17 @@ import UserRow from '../../components/UserRow';
 
 import {searchUsers} from '../../../utils/api/friendsAPI';
 import {UserInfo} from '../../../utils/types';
+import ActionButtons from '../user/ActionButtons';
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 const Friends = ({navigation}: {navigation: any}) => {
+  const theme = useColorScheme() || 'light';
+  const styles = styling(theme);
+  const STYLES = STYLING(theme);
+  StatusBar.setBarStyle(colors[theme].statusBar, true);
+
+  const [self, setSelf] = useState<number>(0);
+
   const searchRef = createRef<TextInput>();
   const [searchText, setSearchText] = useState<string>('');
   const [searchResults, setSearchResults] = useState<UserInfo[]>([]);
@@ -40,13 +51,32 @@ const Friends = ({navigation}: {navigation: any}) => {
       const result = await searchUsers(text);
 
       if (result) {
-        setSearchResults(result);
+        // exclude current user from search results
+        const filtered = result.filter(user => user.id !== self) as UserInfo[];
+        setSearchResults(filtered);
       } else {
         Alert.alert(strings.error.error, strings.error.searchError);
       }
     }
     setLoading(false);
   };
+
+  const loadSelf = async () => {
+    const myUserId = await EncryptedStorage.getItem('user_id');
+    if (myUserId) {
+      setSelf(parseInt(myUserId, 10));
+    }
+  };
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      setSearchText('');
+      searchRef.current?.clear();
+      loadSelf();
+    });
+
+    return unsubscribe;
+  }, [navigation, searchRef]);
 
   return (
     <View style={STYLES.container}>
@@ -62,8 +92,9 @@ const Friends = ({navigation}: {navigation: any}) => {
             <TextInput
               ref={searchRef}
               style={styles.searchText}
+              value={searchText}
               placeholder={strings.search.search}
-              placeholderTextColor={colors.black}
+              placeholderTextColor={colors[theme].neutral}
               autoCapitalize="none"
               autoCorrect={false}
               onFocus={() => {
@@ -74,14 +105,17 @@ const Friends = ({navigation}: {navigation: any}) => {
               }}
               onBlur={() => setSearching(false)}
               onChangeText={text => search(text)}
+              clearButtonMode="while-editing"
             />
           </View>
           {searching ? (
             <TouchableOpacity
               style={styles.cancel}
               onPress={() => {
+                searchRef.current?.blur();
                 searchRef.current?.clear();
                 setSearching(false);
+                setSearchText('');
                 setSearchResults([]);
               }}>
               <Text>{strings.main.cancel}</Text>
@@ -92,7 +126,7 @@ const Friends = ({navigation}: {navigation: any}) => {
       {searching ? (
         loading ? (
           <View style={[STYLES.center, STYLES.container]}>
-            <ActivityIndicator size="small" color={colors.primary} />
+            <ActivityIndicator size="small" color={colors[theme].accent} />
           </View>
         ) : (
           <FlatList
@@ -102,13 +136,11 @@ const Friends = ({navigation}: {navigation: any}) => {
             keyExtractor={item => item.id.toString()}
             renderItem={({item}: {item: UserInfo}) => (
               <TouchableOpacity
-                onPress={() =>
-                  navigation.push('User', {
-                    user: item,
-                  })
-                }>
+                onPress={() => navigation.push('User', {user: item})}>
                 <UserRow user={item}>
-                  <Icon size="xs" icon={icons.next} />
+                  <View style={styles.buttons}>
+                    <ActionButtons user={item} />
+                  </View>
                 </UserRow>
               </TouchableOpacity>
             )}
@@ -128,27 +160,36 @@ const Friends = ({navigation}: {navigation: any}) => {
   );
 };
 
-const styles = StyleSheet.create({
-  searchBar: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: colors.white,
-    borderRadius: s(10),
-    marginLeft: s(10),
-    paddingHorizontal: s(10),
-    paddingVertical: s(5),
-  },
-  searchText: {
-    flex: 1,
-    marginLeft: s(10),
-    fontSize: s(13),
-    fontFamily: 'Lato',
-    padding: 0,
-  },
-  cancel: {
-    marginLeft: s(10),
-  },
-});
+const styling = (theme: 'light' | 'dark') =>
+  StyleSheet.create({
+    searchBar: {
+      flex: 1,
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: colors[theme].primary,
+      borderRadius: s(10),
+      marginLeft: s(10),
+      paddingHorizontal: s(10),
+      paddingVertical: s(5),
+    },
+    searchText: {
+      flex: 1,
+      marginLeft: s(10),
+      fontSize: s(13),
+      fontFamily: 'Lato',
+      padding: 0,
+      color: colors[theme].neutral,
+    },
+    cancel: {
+      marginLeft: s(10),
+    },
+    buttons: {
+      flex: 1,
+      flexDirection: 'row',
+      alignItems: 'flex-end',
+      justifyContent: 'flex-end',
+      marginBottom: s(10),
+    },
+  });
 
 export default Friends;

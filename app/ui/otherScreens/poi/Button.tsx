@@ -1,9 +1,9 @@
 import React from 'react';
-import {TouchableOpacity} from 'react-native';
+import {TouchableOpacity, useColorScheme} from 'react-native';
 import {CommonActions} from '@react-navigation/native';
 
 import colors from '../../../constants/colors';
-import STYLES from '../../../constants/styles';
+import STYLING from '../../../constants/styles';
 
 import Text from '../../components/Text';
 
@@ -18,6 +18,9 @@ interface Props {
 }
 
 const Button: React.FC<Props> = ({navigation, destination, mode}) => {
+  const theme = useColorScheme() || 'light';
+  const STYLES = STYLING(theme);
+
   return (
     <TouchableOpacity
       style={STYLES.button}
@@ -50,7 +53,7 @@ const Button: React.FC<Props> = ({navigation, destination, mode}) => {
           );
         }
       }}>
-      <Text size="m" weight="b" color={colors.white}>
+      <Text size="m" weight="b" color={colors[theme].primary}>
         {getButtonString(mode)}
       </Text>
     </TouchableOpacity>

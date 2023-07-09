@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text as RNText, TextStyle} from 'react-native';
+import {Text as RNText, TextStyle, useColorScheme} from 'react-native';
 import {s} from 'react-native-size-matters';
 
 import colors from '../../constants/colors';
@@ -19,22 +19,28 @@ const Text: React.FC<Props> = ({
   children,
   size = 'm',
   weight = 'r',
-  color = colors.black,
+  color,
   underline = false,
   numberOfLines,
   center = false,
   lineHeight,
 }) => {
+  const theme = useColorScheme() || 'light';
+
+  if (!color) {
+    color = colors[theme].neutral;
+  }
+
   let fontSize: number = s(17);
   switch (size) {
     case 'xs':
-      fontSize = s(10);
+      fontSize = s(12);
       break;
     case 's':
-      fontSize = s(13);
+      fontSize = s(14);
       break;
     case 'm':
-      fontSize = s(16);
+      fontSize = s(17);
       break;
     case 'l':
       fontSize = s(19);

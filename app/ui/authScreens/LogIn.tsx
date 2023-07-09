@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Alert,
+  StatusBar,
 } from 'react-native';
 import {s, vs} from 'react-native-size-matters';
 import LinearGradient from 'react-native-linear-gradient';
@@ -25,6 +26,10 @@ import FriendsContext from '../../context/FriendsContext';
 import {getBookmarks} from '../../utils/api/bookmarkAPI';
 
 const LoginScreen = ({navigation}: {navigation: any}) => {
+  const theme = 'light';
+  const styles = styling(theme);
+  StatusBar.setBarStyle(colors[theme].statusBar, true);
+
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
@@ -63,7 +68,7 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
       setFriends(result.friends);
       setRequests(result.requests);
       setRequestsSent(result.requests_sent);
-      setFriendGroups(result.friendgroups);
+      setFriendGroups(result.friend_groups);
     } else {
       Alert.alert(strings.error.error, strings.error.loadFriendsList);
     }
@@ -121,7 +126,7 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
   return (
     <View style={styles.container}>
       <LinearGradient
-        colors={[colors.white, colors.primary]}
+        colors={[colors[theme].primary, colors[theme].accent]}
         style={styles.container}
         start={{x: 0, y: 0}}
         end={{x: 1, y: 1}}
@@ -134,7 +139,7 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
           onChangeText={setUsername}
           autoCapitalize="none"
           autoCorrect={false}
-          placeholderTextColor={colors.black}
+          placeholderTextColor={colors[theme].neutral}
         />
         <TextInput
           style={styles.input}
@@ -143,20 +148,20 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
           onChangeText={setPassword}
           secureTextEntry={true}
           textContentType="password"
-          placeholderTextColor={colors.black}
+          placeholderTextColor={colors[theme].neutral}
         />
         <View>
           {error.length !== 0 ? (
-            <Text size="s" color={colors.red}>
+            <Text size="s" color={colors[theme].red}>
               {error}
             </Text>
           ) : null}
         </View>
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
           {loading ? (
-            <ActivityIndicator size="small" color={colors.white} />
+            <ActivityIndicator size="small" color={colors[theme].primary} />
           ) : (
-            <Text weight="b" color={colors.white}>
+            <Text weight="b" color={colors[theme].primary}>
               {strings.login.login}
             </Text>
           )}
@@ -165,13 +170,13 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
           <TouchableOpacity
             style={styles.signUpButton}
             onPress={() => navigation.navigate('SignUpName')}>
-            <Text weight="b" color={colors.white}>
+            <Text weight="b" color={colors[theme].primary}>
               {strings.login.signUp}
             </Text>
           </TouchableOpacity>
         </View>
         <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
-          <Text size="s" weight="l">
+          <Text size="s" weight="l" color={colors[theme].neutral}>
             {strings.login.forgotPassword}
           </Text>
         </TouchableOpacity>
@@ -180,54 +185,55 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: '100%',
-    alignItems: 'center',
-  },
-  title: {
-    marginTop: vs(110),
-    marginBottom: vs(70),
-    fontSize: s(55),
-    fontWeight: '900',
-    fontFamily: 'Lato',
-    color: colors.primary,
-  },
-  input: {
-    paddingHorizontal: s(25),
-    marginBottom: vs(30),
-    width: s(250),
-    height: s(50),
-    borderRadius: s(25),
-    borderWidth: 1,
-    borderColor: colors.grey,
-    backgroundColor: colors.white,
-    color: colors.black,
-    fontFamily: 'Lato',
-  },
-  button: {
-    marginTop: vs(10),
-    width: s(150),
-    height: s(50),
-    borderRadius: s(25),
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: colors.primary,
-  },
-  bottomContainer: {
-    alignItems: 'center',
-    marginTop: vs(20),
-  },
-  signUpButton: {
-    marginBottom: vs(10),
-    width: s(150),
-    height: s(50),
-    borderRadius: s(25),
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: colors.black,
-  },
-});
+const styling = (theme: 'light' | 'dark') =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      width: '100%',
+      alignItems: 'center',
+    },
+    title: {
+      marginTop: vs(110),
+      marginBottom: vs(70),
+      fontSize: s(55),
+      fontWeight: '900',
+      fontFamily: 'Lato',
+      color: colors[theme].accent,
+    },
+    input: {
+      paddingHorizontal: s(25),
+      marginBottom: vs(30),
+      width: s(250),
+      height: s(50),
+      borderRadius: s(25),
+      borderWidth: 1,
+      borderColor: colors[theme].secondary,
+      backgroundColor: colors[theme].primary,
+      color: colors[theme].neutral,
+      fontFamily: 'Lato',
+    },
+    button: {
+      marginTop: vs(10),
+      width: s(150),
+      height: s(50),
+      borderRadius: s(25),
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: colors[theme].accent,
+    },
+    bottomContainer: {
+      alignItems: 'center',
+      marginTop: vs(20),
+    },
+    signUpButton: {
+      marginBottom: vs(10),
+      width: s(150),
+      height: s(50),
+      borderRadius: s(25),
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: colors[theme].neutral,
+    },
+  });
 
 export default LoginScreen;

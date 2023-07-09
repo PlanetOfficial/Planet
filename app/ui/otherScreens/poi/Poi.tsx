@@ -5,14 +5,21 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import {View, StyleSheet, Alert, Animated} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Alert,
+  Animated,
+  useColorScheme,
+  StatusBar,
+} from 'react-native';
 import {s, vs} from 'react-native-size-matters';
 import ImageView from 'react-native-image-viewing';
 
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
 import strings from '../../../constants/strings';
-import STYLES from '../../../constants/styles';
+import STYLING from '../../../constants/styles';
 
 import Icon from '../../components/Icon';
 import Text from '../../components/Text';
@@ -42,6 +49,10 @@ const PoiPage = ({
     };
   };
 }) => {
+  const theme = useColorScheme() || 'light';
+  const STYLES = STYLING(theme);
+  StatusBar.setBarStyle(colors.dark.statusBar, true);
+
   const [destination, setDestination] = useState<Poi>();
   const [destinationDetails, setDestinationDetails] = useState<PoiDetail>();
   const [mode] = useState<'create' | 'suggest' | 'add' | 'none'>(
@@ -93,13 +104,13 @@ const PoiPage = ({
   const HeaderComponent = useCallback(
     () => (
       <View style={styles.imageTitle}>
-        <Text center={true} color={colors.white}>
+        <Text center={true} color={colors.light.primary}>
           {strings.poi.images}
         </Text>
         <View style={styles.closeGallery}>
           <Icon
             icon={icons.close}
-            color={colors.white}
+            color={colors.light.primary}
             onPress={() => setGalleryVisible(false)}
           />
         </View>
@@ -118,7 +129,7 @@ const PoiPage = ({
           onRequestClose={() => setGalleryVisible(false)}
           animationType="slide"
           presentationStyle="formSheet"
-          backgroundColor={colors.black}
+          backgroundColor={colors.dark.secondary}
           swipeToCloseEnabled={true}
           HeaderComponent={HeaderComponent}
         />

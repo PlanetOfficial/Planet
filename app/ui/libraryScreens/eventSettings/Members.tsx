@@ -1,11 +1,17 @@
 import React from 'react';
-import {View, TouchableOpacity, StyleSheet, Image} from 'react-native';
+import {
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  useColorScheme,
+  Image,
+} from 'react-native';
 import {s} from 'react-native-size-matters';
 
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
 import strings from '../../../constants/strings';
-import STYLES from '../../../constants/styles';
+import STYLING from '../../../constants/styles';
 
 import Text from '../../components/Text';
 import UserIcon from '../../components/UserIcon';
@@ -19,6 +25,10 @@ interface Props {
 }
 
 const Members: React.FC<Props> = ({navigation, event, eventDetail}) => {
+  const theme = useColorScheme() || 'light';
+  const styles = styling(theme);
+  const STYLES = STYLING(theme);
+
   return (
     <View style={styles.container}>
       {eventDetail.members.map((member: UserInfo) => (
@@ -60,42 +70,43 @@ const Members: React.FC<Props> = ({navigation, event, eventDetail}) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    marginHorizontal: s(40),
-    marginVertical: s(20),
-    paddingHorizontal: s(15),
-    paddingVertical: s(5),
-    borderWidth: 1,
-    borderRadius: s(20),
-    borderColor: colors.grey,
-  },
-  user: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: s(10),
-  },
-  profilePic: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: s(35),
-    height: s(35),
-    borderRadius: s(17.5),
-    overflow: 'hidden',
-  },
-  pic: {
-    width: '100%',
-    height: '100%',
-  },
-  add: {
-    width: '70%',
-    height: '70%',
-    tintColor: colors.primary,
-  },
-  border: {
-    borderBottomWidth: 1,
-    borderColor: colors.grey,
-  },
-});
+const styling = (theme: 'light' | 'dark') =>
+  StyleSheet.create({
+    container: {
+      marginHorizontal: s(40),
+      marginVertical: s(20),
+      paddingHorizontal: s(20),
+      paddingVertical: s(5),
+      borderWidth: 1,
+      borderRadius: s(20),
+      borderColor: colors[theme].secondary,
+    },
+    user: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingVertical: s(10),
+    },
+    profilePic: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: s(35),
+      height: s(35),
+      borderRadius: s(17.5),
+      overflow: 'hidden',
+    },
+    pic: {
+      width: '100%',
+      height: '100%',
+    },
+    add: {
+      width: '70%',
+      height: '70%',
+      tintColor: colors[theme].accent,
+    },
+    border: {
+      borderBottomWidth: 1,
+      borderColor: colors[theme].secondary,
+    },
+  });
 
 export default Members;

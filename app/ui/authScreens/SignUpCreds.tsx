@@ -1,10 +1,16 @@
 import React, {useState} from 'react';
-import {View, SafeAreaView, TextInput, TouchableOpacity} from 'react-native';
+import {
+  View,
+  SafeAreaView,
+  TextInput,
+  TouchableOpacity,
+  StatusBar,
+} from 'react-native';
 
 import colors from '../../constants/colors';
 import icons from '../../constants/icons';
 import strings from '../../constants/strings';
-import STYLES from '../../constants/styles';
+import STYLING from '../../constants/styles';
 
 import Icon from '../components/Icon';
 import Text from '../components/Text';
@@ -23,6 +29,10 @@ const SignUpCreds = ({
     };
   };
 }) => {
+  const theme = 'light';
+  const STYLES = STYLING(theme);
+  StatusBar.setBarStyle(colors[theme].statusBar, true);
+
   const [firstName] = useState<string>(route.params.firstName);
   const [lastName] = useState<string>(route.params.lastName);
 
@@ -88,58 +98,65 @@ const SignUpCreds = ({
             size="m"
             icon={icons.back}
             onPress={() => navigation.goBack()}
+            color={colors[theme].neutral}
           />
         </View>
       </SafeAreaView>
 
       <View style={STYLES.promptContainer}>
-        <Text size="l" weight="l" center={true}>
+        <Text size="l" weight="l" center={true} color={colors[theme].neutral}>
           {strings.signUp.credPrompt}
         </Text>
       </View>
 
       <View style={STYLES.inputContainer}>
         <View style={STYLES.prompt}>
-          <Text weight="l">{strings.signUp.username}: </Text>
+          <Text weight="l" color={colors[theme].neutral}>
+            {strings.signUp.username}:{' '}
+          </Text>
         </View>
         <TextInput
           style={STYLES.input}
           placeholder={strings.signUp.username}
           value={username}
           onChangeText={text => setUsername(text.toLowerCase())}
-          placeholderTextColor={colors.black}
+          placeholderTextColor={colors[theme].neutral}
           autoCapitalize="none"
           autoCorrect={false}
         />
       </View>
       <View style={STYLES.inputContainer}>
         <View style={STYLES.prompt}>
-          <Text weight="l">{strings.login.password}: </Text>
+          <Text weight="l" color={colors[theme].neutral}>
+            {strings.login.password}:{' '}
+          </Text>
         </View>
         <TextInput
           style={STYLES.input}
           placeholder={strings.login.password}
           value={password}
           onChangeText={text => setPassword(text)}
-          placeholderTextColor={colors.black}
+          placeholderTextColor={colors[theme].neutral}
           secureTextEntry={true}
         />
       </View>
       <View style={STYLES.inputContainer}>
         <View style={STYLES.prompt}>
-          <Text weight="l">{strings.signUp.confirmPassword}: </Text>
+          <Text weight="l" color={colors[theme].neutral}>
+            {strings.signUp.confirmPassword}:{' '}
+          </Text>
         </View>
         <TextInput
           style={STYLES.input}
           placeholder={strings.signUp.confirmPassword}
           value={passwordConfirm}
           onChangeText={text => setPasswordConfirm(text)}
-          placeholderTextColor={colors.black}
+          placeholderTextColor={colors[theme].neutral}
           secureTextEntry={true}
         />
       </View>
       {error.length !== 0 ? (
-        <Text weight="l" center={true} color={colors.red}>
+        <Text weight="l" center={true} color={colors[theme].red}>
           {error}
         </Text>
       ) : null}
@@ -151,8 +168,8 @@ const SignUpCreds = ({
               username.length === 0 ||
               password.length === 0 ||
               password !== passwordConfirm
-                ? colors.black
-                : colors.primary,
+                ? colors[theme].neutral
+                : colors[theme].accent,
           },
         ]}
         disabled={
@@ -161,7 +178,7 @@ const SignUpCreds = ({
           password !== passwordConfirm
         }
         onPress={() => handleNext()}>
-        <Text weight="b" color={colors.white}>
+        <Text weight="b" color={colors[theme].primary}>
           {strings.signUp.signUp}
         </Text>
       </TouchableOpacity>
