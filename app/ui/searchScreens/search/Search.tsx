@@ -193,13 +193,12 @@ const styling = (theme: 'light' | 'dark') =>
     scrollView: {
       paddingHorizontal: s(20),
       paddingVertical: s(5),
-      marginBottom: s(10),
+      marginBottom: s(5),
     },
     categoryContainer: {
       alignItems: 'center',
-      justifyContent: 'space-between',
       width: s(75),
-      height: s(70),
+      minHeight: s(70),
       overflow: 'visible',
     },
     iconContainer: {
@@ -208,6 +207,7 @@ const styling = (theme: 'light' | 'dark') =>
       width: s(50),
       height: s(50),
       borderRadius: s(25),
+      marginBottom: s(5),
       backgroundColor: colors[theme].primary,
     },
     icon: {
