@@ -16,11 +16,15 @@ export const postFG = async (
 
   const response = await fetch(
     FriendAPIURL +
-      `/group?user_ids=${JSON.stringify(
-        user_ids,
-      )}&name=${name}&authtoken=${authToken}`,
+      `/group`,
     {
       method: 'POST',
+      body: JSON.stringify({user_ids, name}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authToken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
     },
   );
 
@@ -43,11 +47,15 @@ export const editFG = async (
 
   const response = await fetch(
     FriendAPIURL +
-      `/group/${id}?user_ids=${JSON.stringify(
-        user_ids,
-      )}&name=${name}&authtoken=${authToken}`,
+      `/group/${id}`,
     {
       method: 'POST',
+      body: JSON.stringify({user_ids, name}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authToken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
     },
   );
 
@@ -65,9 +73,13 @@ export const deleteFG = async (id: number): Promise<Boolean> => {
   }
 
   const response = await fetch(
-    FriendAPIURL + `/group/${id}?authtoken=${authToken}`,
+    FriendAPIURL + `/group/${id}`,
     {
       method: 'DELETE',
+      headers: {
+        'X-Xano-Authorization': `Bearer ${authToken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
     },
   );
 
@@ -86,11 +98,15 @@ export const reorderFG = async (fg_ids: number[]): Promise<Boolean> => {
 
   const response = await fetch(
     FriendAPIURL +
-      `/groups/reorder?friend_group_ids=${JSON.stringify(
-        fg_ids,
-      )}&authtoken=${authToken}`,
+      `/groups/reorder`,
     {
       method: 'POST',
+      body: JSON.stringify({friend_group_ids: fg_ids}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authToken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
     },
   );
 

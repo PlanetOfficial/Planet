@@ -261,7 +261,7 @@ export const removeAccount = async (): Promise<Boolean> => {
   const response = await fetch(UserAPIURL + '/auth/removeAccount', {
     method: 'DELETE',
     headers: {
-      'X-Xano-Authorization': 'Bearer ' + authToken,
+      'X-Xano-Authorization': `Bearer ${authToken}`,
       'X-Xano-Authorization-Only': 'true',
     },
   });
