@@ -6,12 +6,12 @@ import {
   Image,
   ImageStyle,
   ImageSourcePropType,
+  useColorScheme,
 } from 'react-native';
-
 import {s} from 'react-native-size-matters';
 
 import colors from '../../constants/colors';
-import STYLES from '../../constants/styles';
+import STYLING from '../../constants/styles';
 
 interface Props {
   size?: 'xs' | 's' | 'm' | 'l' | 'xl';
@@ -25,13 +25,20 @@ interface Props {
 
 const Icon: React.FC<Props> = ({
   size = 's',
-  color = colors.black,
+  color,
   button = false,
   padding = 0,
   disabled = false,
   icon,
   onPress,
 }) => {
+  const theme = useColorScheme() || 'light';
+  const STYLES = STYLING(theme);
+
+  if (!color) {
+    color = colors[theme].neutral;
+  }
+
   let z: number = s(18);
   switch (size) {
     case 'xs':
@@ -59,7 +66,7 @@ const Icon: React.FC<Props> = ({
     width: button ? 2 * z : z,
     height: button ? 2 * z : z,
     padding: padding + (button ? z / 2 : 0),
-    backgroundColor: button ? colors.white : undefined,
+    backgroundColor: button ? colors[theme].primary : undefined,
     borderRadius: button ? z / 2 : undefined,
   };
 

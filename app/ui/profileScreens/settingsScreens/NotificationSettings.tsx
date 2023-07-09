@@ -6,13 +6,15 @@ import {
   Alert,
   ScrollView,
   Switch,
+  useColorScheme,
+  StatusBar,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
 import strings from '../../../constants/strings';
-import STYLES from '../../../constants/styles';
+import STYLING from '../../../constants/styles';
 
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
@@ -28,6 +30,11 @@ import {
 import {NotificationSettings as NS} from '../../../utils/types';
 
 const NotificationSettings = ({navigation}: {navigation: any}) => {
+  const theme = useColorScheme() || 'light';
+  const styles = styling(theme);
+  const STYLES = STYLING(theme);
+  StatusBar.setBarStyle(colors[theme].statusBar, true);
+
   const [notificationsSettings, setNotificationsSettings] = useState<NS>();
 
   const initializeData = async () => {
@@ -132,9 +139,12 @@ const NotificationSettings = ({navigation}: {navigation: any}) => {
                 </View>
               </View>
               <Switch
-                trackColor={{false: colors.grey, true: colors.primary}}
-                thumbColor={colors.white}
-                ios_backgroundColor={colors.grey}
+                trackColor={{
+                  false: colors[theme].secondary,
+                  true: colors[theme].accent,
+                }}
+                thumbColor={colors[theme].primary}
+                ios_backgroundColor={colors[theme].secondary}
                 onValueChange={setting.onPress}
                 value={notificationsSettings[setting.value]}
               />
@@ -146,23 +156,24 @@ const NotificationSettings = ({navigation}: {navigation: any}) => {
   );
 };
 
-const styles = StyleSheet.create({
-  content: {
-    marginTop: s(10),
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginLeft: s(20),
-    paddingRight: s(20),
-    paddingVertical: s(20),
-    borderBottomWidth: 1,
-    borderBottomColor: colors.grey,
-  },
-  description: {
-    marginTop: s(5),
-    marginRight: s(10),
-  },
-});
+const styling = (theme: 'light' | 'dark') =>
+  StyleSheet.create({
+    content: {
+      marginTop: s(10),
+    },
+    row: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginLeft: s(20),
+      paddingRight: s(20),
+      paddingVertical: s(20),
+      borderBottomWidth: 1,
+      borderBottomColor: colors[theme].secondary,
+    },
+    description: {
+      marginTop: s(5),
+      marginRight: s(10),
+    },
+  });
 
 export default NotificationSettings;

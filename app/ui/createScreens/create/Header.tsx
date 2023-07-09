@@ -6,6 +6,7 @@ import {
   Alert,
   TextInput,
   TouchableOpacity,
+  useColorScheme,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 import DatePicker from 'react-native-date-picker';
@@ -14,12 +15,12 @@ import moment from 'moment';
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
 import strings from '../../../constants/strings';
-import STYLES from '../../../constants/styles';
+import STYLING from '../../../constants/styles';
 
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 
-import {UserInfo} from '../../../utils/types';
+import {Poi, UserInfo} from '../../../utils/types';
 
 interface Props {
   navigation: any;
@@ -28,6 +29,7 @@ interface Props {
   date: string;
   setDate: (date: string) => void;
   members: UserInfo[];
+  destinations: Poi[];
 }
 
 const Header: React.FC<Props> = ({
@@ -37,7 +39,12 @@ const Header: React.FC<Props> = ({
   date,
   setDate,
   members,
+  destinations,
 }) => {
+  const theme = useColorScheme() || 'light';
+  const styles = styling(theme);
+  const STYLES = STYLING(theme);
+
   const [datePickerOpen, setDatePickerOpen] = useState<boolean>(false);
 
   return (
@@ -46,17 +53,25 @@ const Header: React.FC<Props> = ({
         <Icon
           icon={icons.close}
           onPress={() => {
-            Alert.alert(strings.main.warning, strings.event.backConfirmation, [
-              {
-                text: strings.main.cancel,
-                style: 'cancel',
-              },
-              {
-                text: strings.main.discard,
-                onPress: () => navigation.goBack(),
-                style: 'destructive',
-              },
-            ]);
+            if (destinations.length > 0) {
+              Alert.alert(
+                strings.main.warning,
+                strings.event.backConfirmation,
+                [
+                  {
+                    text: strings.main.cancel,
+                    style: 'cancel',
+                  },
+                  {
+                    text: strings.main.discard,
+                    onPress: () => navigation.goBack(),
+                    style: 'destructive',
+                  },
+                ],
+              );
+            } else {
+              navigation.goBack();
+            }
           }}
         />
         <View style={STYLES.texts}>
@@ -64,6 +79,7 @@ const Header: React.FC<Props> = ({
             style={styles.title}
             value={eventTitle}
             onChangeText={text => setEventTitle(text)}
+            placeholderTextColor={colors[theme].neutral}
             onEndEditing={e => {
               if (e.nativeEvent.text === '') {
                 setEventTitle(strings.event.untitled);
@@ -71,7 +87,11 @@ const Header: React.FC<Props> = ({
             }}
           />
           <TouchableOpacity onPress={() => setDatePickerOpen(true)}>
-            <Text size="xs" weight="l" color={colors.primary} underline={true}>
+            <Text
+              size="xs"
+              weight="l"
+              color={colors[theme].accent}
+              underline={true}>
               {date}
             </Text>
           </TouchableOpacity>
@@ -108,15 +128,17 @@ const Header: React.FC<Props> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  title: {
-    fontSize: s(16),
-    fontWeight: '700',
-    fontFamily: 'Lato',
-    textDecorationLine: 'underline',
-    marginBottom: s(3),
-    padding: 0,
-  },
-});
+const styling = (theme: 'light' | 'dark') =>
+  StyleSheet.create({
+    title: {
+      fontSize: s(16),
+      fontWeight: '700',
+      fontFamily: 'Lato',
+      textDecorationLine: 'underline',
+      marginBottom: s(3),
+      padding: 0,
+      color: colors[theme].neutral,
+    },
+  });
 
 export default Header;

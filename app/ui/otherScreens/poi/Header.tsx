@@ -3,7 +3,6 @@ import {
   View,
   StyleSheet,
   SafeAreaView,
-  StatusBar,
   ImageBackground,
   Animated,
 } from 'react-native';
@@ -12,7 +11,7 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
-import STYLES from '../../../constants/styles';
+import STYLING from '../../../constants/styles';
 
 import Icon from '../../components/Icon';
 import Text from '../../components/Text';
@@ -37,11 +36,15 @@ const Header: React.FC<Props> = ({
   setBookmarks,
   setGalleryVisible,
 }) => {
+  const theme = 'light';
+  const styles = styling(theme);
+  const STYLES = STYLING(theme);
+
   const insets = useSafeAreaInsets();
 
   const headerHeight = scrollPosition.interpolate({
     inputRange: [s(35), s(170)],
-    outputRange: [insets.top + s(170), insets.top + s(35)],
+    outputRange: [insets.top + s(170), insets.top + s(50)],
     extrapolate: 'clamp',
   });
   const topTitleOpacity = scrollPosition.interpolate({
@@ -72,11 +75,8 @@ const Header: React.FC<Props> = ({
             <Icon
               size="m"
               icon={icons.back}
-              onPress={() => {
-                StatusBar.setBarStyle('dark-content', true);
-                navigation.goBack();
-              }}
-              color={colors.white}
+              onPress={() => navigation.goBack()}
+              color={colors[theme].primary}
             />
             <Animated.Text
               style={[styles.title, {opacity: topTitleOpacity}]}
@@ -95,59 +95,69 @@ const Header: React.FC<Props> = ({
                   ? handleBookmark(destination, bookmarks, setBookmarks)
                   : null
               }
-              color={colors.white}
+              color={colors[theme].primary}
             />
           </View>
         </SafeAreaView>
         <Animated.View style={[styles.bottom, {opacity: bottomTitleOpacity}]}>
-          <Text size="l" weight="b" color={colors.white}>
-            {destination?.name}
-          </Text>
-          <Icon
-            size="l"
-            icon={icons.gallery}
-            color={colors.white}
-            onPress={() => setGalleryVisible(true)}
-          />
+          <View style={styles.mainTitle}>
+            <Text size="l" weight="b" color={colors[theme].primary}>
+              {destination?.name}
+            </Text>
+          </View>
+          {destination?.photo && destination?.photo.length > 1 ? (
+            <Icon
+              size="l"
+              icon={icons.gallery}
+              color={colors[theme].primary}
+              onPress={() => setGalleryVisible(true)}
+            />
+          ) : null}
         </Animated.View>
       </Animated.View>
     </Animated.View>
   );
 };
 
-const styles = StyleSheet.create({
-  image: {
-    width: '100%',
-    height: '100%',
-    position: 'absolute',
-    backgroundColor: colors.black,
-  },
-  container: {
-    width: '100%',
-    justifyContent: 'space-between',
-    paddingHorizontal: s(20),
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    overflow: 'visible',
-  },
-  bottom: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingLeft: s(5),
-    marginBottom: s(15),
-  },
-  title: {
-    fontSize: s(16),
-    fontWeight: '700',
-    fontFamily: 'Lato',
-    color: colors.white,
-    maxWidth: s(280),
-    paddingHorizontal: s(10),
-  },
-});
+const styling = (theme: 'light' | 'dark') =>
+  StyleSheet.create({
+    image: {
+      width: '100%',
+      height: '100%',
+      position: 'absolute',
+      backgroundColor: colors[theme].neutral,
+    },
+    container: {
+      width: '100%',
+      justifyContent: 'space-between',
+      paddingHorizontal: s(20),
+    },
+    row: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      overflow: 'visible',
+      marginVertical: s(15),
+    },
+    bottom: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingLeft: s(5),
+      marginBottom: s(15),
+    },
+    title: {
+      fontSize: s(16),
+      fontWeight: '700',
+      fontFamily: 'Lato',
+      color: colors[theme].primary,
+      maxWidth: s(280),
+      paddingHorizontal: s(10),
+    },
+    mainTitle: {
+      paddingRight: s(10),
+      maxWidth: s(280),
+    },
+  });
 
 export default Header;

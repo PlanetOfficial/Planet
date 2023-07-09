@@ -1,9 +1,10 @@
 import React, {useContext, useState} from 'react';
-import {View, SafeAreaView} from 'react-native';
+import {View, SafeAreaView, useColorScheme, StatusBar} from 'react-native';
 import {useSharedValue} from 'react-native-reanimated';
 
+import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
-import STYLES from '../../../constants/styles';
+import STYLING from '../../../constants/styles';
 
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
@@ -28,8 +29,14 @@ const Roulette = ({
     };
   };
 }) => {
+  const theme = useColorScheme() || 'light';
+  const STYLES = STYLING(theme);
+  StatusBar.setBarStyle(colors[theme].statusBar, true);
+
   const [eventId] = useState(route.params.eventId);
-  const [destination] = useState<Destination>(route.params.destination);
+  const [destination, setDestination] = useState<Destination>(
+    route.params.destination,
+  );
 
   const bookmarkContext = useContext(BookmarkContext);
   if (!bookmarkContext) {
@@ -89,6 +96,7 @@ const Roulette = ({
       <Spinner
         eventId={eventId}
         destination={destination}
+        setDestination={setDestination}
         rotation={rotation}
         isSpinning={isSpinning}
         setIsSpinning={setIsSpinning}

@@ -8,19 +8,9 @@ export interface UserInfo {
 }
 
 export interface UserDetail {
-  status: UserStatus;
   mutuals: UserInfo[];
   shared_events: Event[];
 }
-
-export type UserStatus =
-  | ''
-  | 'SELF'
-  | 'NONE'
-  | 'FRIENDS'
-  | 'PENDING'
-  | 'REQSENT'
-  | 'REQRECEIVED';
 
 export interface MyInfo {
   id: number;

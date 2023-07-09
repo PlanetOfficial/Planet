@@ -1,12 +1,18 @@
 import React, {useCallback, useContext, useEffect, useState} from 'react';
-import {StyleSheet, View, TouchableOpacity} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  useColorScheme,
+  StatusBar,
+} from 'react-native';
 import {s} from 'react-native-size-matters';
 import moment from 'moment';
 
 import colors from '../../../constants/colors';
 import numbers from '../../../constants/numbers';
 import strings from '../../../constants/strings';
-import STYLES from '../../../constants/styles';
+import STYLING from '../../../constants/styles';
 
 import Text from '../../components/Text';
 
@@ -30,6 +36,11 @@ const Create = ({
     };
   };
 }) => {
+  const theme = useColorScheme() || 'light';
+  const styles = styling(theme);
+  const STYLES = STYLING(theme);
+  StatusBar.setBarStyle(colors[theme].statusBar, true);
+
   const [eventTitle, setEventTitle] = useState<string>();
   const [date, setDate] = useState<string>();
   const [members, setMembers] = useState<UserInfo[]>([]);
@@ -105,6 +116,7 @@ const Create = ({
           date={date}
           setDate={setDate}
           members={members}
+          destinations={destinations}
         />
       ) : null}
       {destinations && destinations.length > 0 ? (
@@ -121,9 +133,11 @@ const Create = ({
           style={[styles.addButton, STYLES.shadow]}
           onPress={() => {
             setInsertionIndex(0);
-            navigation.navigate('CreateSearch');
+            navigation.navigate('ModeSearch', {
+              mode: 'create',
+            });
           }}>
-          <Text size="l" weight="b" color={colors.primary}>
+          <Text size="l" weight="b" color={colors[theme].accent}>
             {strings.event.addDestination}
           </Text>
         </TouchableOpacity>
@@ -141,15 +155,16 @@ const Create = ({
   );
 };
 
-const styles = StyleSheet.create({
-  addButton: {
-    alignItems: 'center',
-    marginTop: s(30),
-    marginHorizontal: s(40),
-    paddingVertical: s(20),
-    borderRadius: s(10),
-    backgroundColor: colors.white,
-  },
-});
+const styling = (theme: 'light' | 'dark') =>
+  StyleSheet.create({
+    addButton: {
+      alignItems: 'center',
+      marginTop: s(30),
+      marginHorizontal: s(40),
+      paddingVertical: s(20),
+      borderRadius: s(10),
+      backgroundColor: colors[theme].primary,
+    },
+  });
 
 export default Create;

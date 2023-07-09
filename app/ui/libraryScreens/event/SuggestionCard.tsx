@@ -1,10 +1,16 @@
 import React, {useCallback, useRef, useState, useEffect} from 'react';
-import {Alert, Animated, Easing, TouchableOpacity} from 'react-native';
+import {
+  Alert,
+  Animated,
+  Easing,
+  TouchableOpacity,
+  useColorScheme,
+} from 'react-native';
 import {s} from 'react-native-size-matters';
 
 import colors from '../../../constants/colors';
 import strings from '../../../constants/strings';
-import STYLES from '../../../constants/styles';
+import STYLING from '../../../constants/styles';
 
 import PoiCardXL from '../../components/PoiCardXL';
 
@@ -42,6 +48,9 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
   voted,
   onVote,
 }) => {
+  const theme = useColorScheme() || 'light';
+  const STYLES = STYLING(theme);
+
   const animation = useRef(new Animated.Value(0)).current;
 
   const left = animation.interpolate({
@@ -162,7 +171,7 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
                     destination: destination,
                   });
                 },
-                color: colors.black,
+                color: colors[theme].neutral,
                 disabled: false,
               },
               {
@@ -183,7 +192,7 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
                     ],
                   );
                 },
-                color: colors.primary,
+                color: colors[theme].accent,
                 disabled: false,
               },
               {
@@ -205,7 +214,7 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
                     ],
                   );
                 },
-                color: colors.red,
+                color: colors[theme].red,
                 disabled: false,
               },
             ]}

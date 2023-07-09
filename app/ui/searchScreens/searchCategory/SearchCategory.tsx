@@ -5,12 +5,19 @@ import React, {
   useRef,
   useContext,
 } from 'react';
-import {View, SafeAreaView, Alert, ActivityIndicator} from 'react-native';
+import {
+  View,
+  SafeAreaView,
+  Alert,
+  ActivityIndicator,
+  useColorScheme,
+  StatusBar,
+} from 'react-native';
 
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
 import strings from '../../../constants/strings';
-import STYLES from '../../../constants/styles';
+import STYLING from '../../../constants/styles';
 
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
@@ -37,6 +44,10 @@ const SearchCategory = ({
     };
   };
 }) => {
+  const theme = useColorScheme() || 'light';
+  const STYLES = STYLING(theme);
+  StatusBar.setBarStyle(colors[theme].statusBar, true);
+
   const {mode, location, radius, category} = route.params;
 
   const [places, setPlaces] = useState<Poi[]>([]);
@@ -144,7 +155,7 @@ const SearchCategory = ({
 
       {loading ? (
         <View style={STYLES.center}>
-          <ActivityIndicator size="small" color={colors.primary} />
+          <ActivityIndicator size="small" color={colors[theme].accent} />
         </View>
       ) : (
         <Results

@@ -1,10 +1,10 @@
 import React from 'react';
-import {StyleSheet, View, Image} from 'react-native';
+import {Image, StyleSheet, View, useColorScheme} from 'react-native';
 import {s} from 'react-native-size-matters';
 
 import colors from '../../constants/colors';
 import icons from '../../constants/icons';
-import STYLES from '../../constants/styles';
+import STYLING from '../../constants/styles';
 
 import Icon from './Icon';
 import Text from './Text';
@@ -25,6 +25,10 @@ const PoiCard: React.FC<Props> = ({
   bookmarked,
   handleBookmark,
 }) => {
+  const theme = useColorScheme() || 'light';
+  const styles = styling(theme);
+  const STYLES = STYLING(theme);
+
   return (
     <View style={[styles.container, STYLES.shadow]}>
       <Image
@@ -44,7 +48,7 @@ const PoiCard: React.FC<Props> = ({
           size="m"
           disabled={disabled}
           icon={bookmarked ? icons.bookmarked : icons.bookmark}
-          color={bookmarked ? colors.primary : colors.black}
+          color={bookmarked ? colors[theme].accent : colors[theme].neutral}
           onPress={() => handleBookmark(poi)}
         />
       </View>
@@ -52,32 +56,33 @@ const PoiCard: React.FC<Props> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    width: s(140),
-    height: s(180),
-    borderRadius: s(10),
-    backgroundColor: colors.white,
-  },
-  image: {
-    width: '100%',
-    height: s(140),
-    borderTopLeftRadius: s(10),
-    borderTopRightRadius: s(10),
-  },
-  footer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: s(7),
-    height: s(40),
-  },
-  infoContainer: {
-    flex: 1,
-    justifyContent: 'space-between',
-    height: s(40),
-    paddingVertical: s(4),
-  },
-});
+const styling = (theme: 'light' | 'dark') =>
+  StyleSheet.create({
+    container: {
+      width: s(140),
+      height: s(180),
+      borderRadius: s(10),
+      backgroundColor: colors[theme].primary,
+    },
+    image: {
+      width: '100%',
+      height: s(140),
+      borderTopLeftRadius: s(10),
+      borderTopRightRadius: s(10),
+    },
+    footer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingHorizontal: s(7),
+      height: s(40),
+    },
+    infoContainer: {
+      flex: 1,
+      justifyContent: 'space-between',
+      height: s(40),
+      paddingVertical: s(4),
+    },
+  });
 
 export default PoiCard;

@@ -5,8 +5,10 @@ import {
   Alert,
   ScrollView,
   FlatList,
-  Image,
   TouchableOpacity,
+  useColorScheme,
+  StatusBar,
+  Image,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {s} from 'react-native-size-matters';
@@ -14,10 +16,10 @@ import {s} from 'react-native-size-matters';
 import colors from '../../../constants/colors';
 import numbers from '../../../constants/numbers';
 import strings from '../../../constants/strings';
-import STYLES from '../../../constants/styles';
+import STYLING from '../../../constants/styles';
 
 import Text from '../../components/Text';
-import Separator from '../../components/SeparatorR';
+import SeparatorR from '../../components/SeparatorR';
 import PoiRow from '../../components/PoiRow';
 
 import BookmarkContext from '../../../context/BookmarkContext';
@@ -26,14 +28,28 @@ import {fetchUserLocation, handleBookmark} from '../../../utils/Misc';
 import {Category, Coordinate, Genre, Poi} from '../../../utils/types';
 
 import Header from './Header';
+import categories from '../../../constants/categories';
 
 const Search = ({
   navigation,
-  mode = 'none',
+  route,
 }: {
   navigation: any;
-  mode?: 'create' | 'suggest' | 'add' | 'none';
+  route:
+    | {
+        params: {
+          mode: 'create' | 'suggest' | 'add' | 'none';
+        };
+      }
+    | any;
 }) => {
+  const theme = useColorScheme() || 'light';
+  const styles = styling(theme);
+  const STYLES = STYLING(theme);
+  StatusBar.setBarStyle(colors[theme].statusBar, true);
+
+  const mode = route.params?.mode || 'none';
+
   const [genres, setGenres] = useState<Genre[]>([]);
   const [location, setLocation] = useState<Coordinate>();
   const [searching, setSearching] = useState<boolean>(false);
@@ -56,12 +72,16 @@ const Search = ({
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', async () => {
-      initializeData();
       setLocation(await fetchUserLocation());
+      setSearchText('');
     });
 
     return unsubscribe;
   }, [navigation]);
+
+  useEffect(() => {
+    initializeData();
+  }, []);
 
   return (
     <View style={STYLES.container}>
@@ -69,6 +89,7 @@ const Search = ({
         navigation={navigation}
         searching={searching}
         setSearching={setSearching}
+        searchText={searchText}
         setSearchText={setSearchText}
         mode={mode}
       />
@@ -79,17 +100,18 @@ const Search = ({
               <View style={styles.header}>
                 <Text size="s">{genre.name}</Text>
               </View>
-              <ScrollView
+              <FlatList
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
-                contentContainerStyle={styles.scrollView}>
-                {genre.categories.map((category: Category) => (
+                contentContainerStyle={styles.scrollView}
+                data={genre.categories}
+                initialNumToRender={5}
+                renderItem={({item}: {item: Category}) => (
                   <TouchableOpacity
-                    key={category.id}
                     style={styles.categoryContainer}
                     onPress={() => {
                       navigation.navigate('SearchCategory', {
-                        category,
+                        category: item,
                         location,
                         radius: numbers.defaultRadius,
                         mode: mode,
@@ -98,16 +120,21 @@ const Search = ({
                     <View style={[styles.iconContainer, STYLES.shadow]}>
                       <Image
                         style={styles.icon}
-                        source={{uri: category.icon.url}}
+                        source={
+                          categories[item.id - 1] || {
+                            uri: item.icon.url,
+                          }
+                        }
                       />
                     </View>
                     <Text size="xs" weight="l" center={true}>
-                      {category.name}
+                      {item.name}
                     </Text>
                   </TouchableOpacity>
-                ))}
-              </ScrollView>
-              {index !== genres.length - 1 ? <Separator /> : null}
+                )}
+                keyExtractor={(item: Category) => item.id.toString()}
+              />
+              {index !== genres.length - 1 ? <SeparatorR /> : null}
             </View>
           ))}
         </ScrollView>
@@ -153,40 +180,42 @@ const Search = ({
   );
 };
 
-const styles = StyleSheet.create({
-  header: {
-    marginTop: s(10),
-    paddingHorizontal: s(20),
-    paddingTop: s(5),
-    paddingBottom: s(10),
-  },
-  scrollView: {
-    paddingHorizontal: s(20),
-    paddingVertical: s(5),
-    marginBottom: s(10),
-  },
-  categoryContainer: {
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    width: s(75),
-    height: s(70),
-    overflow: 'visible',
-  },
-  iconContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: s(50),
-    height: s(50),
-    borderRadius: s(25),
-    backgroundColor: colors.white,
-  },
-  icon: {
-    width: '60%',
-    height: '60%',
-  },
-  flatList: {
-    paddingBottom: s(250),
-  },
-});
+const styling = (theme: 'light' | 'dark') =>
+  StyleSheet.create({
+    header: {
+      marginTop: s(10),
+      paddingHorizontal: s(20),
+      paddingTop: s(5),
+      paddingBottom: s(10),
+    },
+    scrollView: {
+      paddingHorizontal: s(20),
+      paddingVertical: s(5),
+      marginBottom: s(10),
+    },
+    categoryContainer: {
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      width: s(75),
+      height: s(70),
+      overflow: 'visible',
+    },
+    iconContainer: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: s(50),
+      height: s(50),
+      borderRadius: s(25),
+      backgroundColor: colors[theme].primary,
+    },
+    icon: {
+      width: '55%',
+      height: '55%',
+      tintColor: colors[theme].neutral,
+    },
+    flatList: {
+      paddingBottom: s(250),
+    },
+  });
 
 export default Search;
