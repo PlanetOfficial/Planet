@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   ScrollView,
   useColorScheme,
+  Keyboard,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 import prompt from 'react-native-prompt-android';
@@ -42,7 +43,9 @@ const DestinationsList: React.FC<Props> = ({
   const theme = useColorScheme() || 'light';
 
   return (
-    <ScrollView contentContainerStyle={styles.scrollView}>
+    <ScrollView
+      contentContainerStyle={styles.scrollView}
+      onTouchStart={() => Keyboard.dismiss()}>
       {destinations.map((destination: Poi, index: number) => (
         <View key={index}>
           <View style={styles.destination}>

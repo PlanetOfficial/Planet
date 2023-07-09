@@ -27,7 +27,7 @@ export const handleMove = (
 export const handleSave = async (
   navigation: any,
   eventTitle: string,
-  date: string,
+  date: string | undefined,
   members: UserInfo[],
   setLoading: (loading: boolean) => void,
   destinations: Poi[] | undefined,

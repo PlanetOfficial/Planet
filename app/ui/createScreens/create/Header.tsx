@@ -21,12 +21,13 @@ import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 
 import {Poi, UserInfo} from '../../../utils/types';
+import numbers from '../../../constants/numbers';
 
 interface Props {
   navigation: any;
   eventTitle: string;
   setEventTitle: (text: string) => void;
-  date: string;
+  date: string | undefined;
   setDate: (date: string) => void;
   members: UserInfo[];
   destinations: Poi[];
@@ -41,6 +42,8 @@ const Header: React.FC<Props> = ({
   members,
   destinations,
 }) => {
+  const d = new Date();
+
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
   const STYLES = STYLING(theme);
@@ -74,38 +77,55 @@ const Header: React.FC<Props> = ({
             }
           }}
         />
-        <View style={STYLES.texts}>
+        <View style={[styles.container, STYLES.shadow]}>
           <TextInput
             style={styles.title}
+            autoFocus={true}
             value={eventTitle}
+            selectTextOnFocus={true}
             onChangeText={text => setEventTitle(text)}
-            placeholderTextColor={colors[theme].neutral}
+            placeholder={strings.event.eventName}
+            placeholderTextColor={colors[theme].secondary}
             onEndEditing={e => {
               if (e.nativeEvent.text === '') {
                 setEventTitle(strings.event.untitled);
               }
             }}
           />
-          <TouchableOpacity onPress={() => setDatePickerOpen(true)}>
-            <Text
-              size="xs"
-              weight="l"
-              color={colors[theme].accent}
-              underline={true}>
-              {date}
-            </Text>
+          <TouchableOpacity
+            style={styles.date}
+            onPress={() => setDatePickerOpen(true)}>
+            {date ? (
+              <Text size="xs" color={colors[theme].accent}>
+                {date}
+              </Text>
+            ) : (
+              <Icon
+                icon={icons.calendar}
+                size="m"
+                padding={1}
+                color={colors[theme].accent}
+              />
+            )}
           </TouchableOpacity>
           <DatePicker
             modal
             open={datePickerOpen}
             minuteInterval={5}
-            date={moment(date, 'MMM Do, h:mm a').toDate()}
+            date={
+              date
+                ? moment(date, 'M/D, h:mma').toDate()
+                : moment(
+                    new Date(
+                      Math.ceil(d.getTime() / numbers.fiveMinutes) *
+                        numbers.fiveMinutes,
+                    ),
+                  ).toDate()
+            }
             onConfirm={newDate => {
               setDatePickerOpen(false);
               setDate(
-                moment(newDate, 'YYYY-MM-DD HH:mm:ssZ').format(
-                  'MMM Do, h:mm a',
-                ),
+                moment(newDate, 'YYYY-MM-DD HH:mm:ssZ').format('M/D, h:mma'),
               );
             }}
             onCancel={() => {
@@ -131,13 +151,30 @@ const Header: React.FC<Props> = ({
 const styling = (theme: 'light' | 'dark') =>
   StyleSheet.create({
     title: {
-      fontSize: s(16),
+      flex: 1,
+      fontSize: s(15),
       fontWeight: '700',
       fontFamily: 'Lato',
-      textDecorationLine: 'underline',
-      marginBottom: s(3),
       padding: 0,
       color: colors[theme].neutral,
+    },
+    container: {
+      flex: 1,
+      flexDirection: 'row',
+      alignItems: 'center',
+      height: s(32),
+      marginHorizontal: s(15),
+      paddingLeft: s(10),
+      borderRadius: s(8),
+      backgroundColor: colors[theme].primary,
+    },
+    date: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: s(32),
+      paddingHorizontal: s(10),
+      borderLeftWidth: 1,
+      borderColor: colors[theme].secondary,
     },
   });
 

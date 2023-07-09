@@ -5,6 +5,7 @@ const icons = {
   bell: require('../assets/icons/bell.png'),
   bookmark: require('../assets/icons/bookmark.png'),
   bookmarked: require('../assets/icons/bookmarked.png'),
+  calendar: require('../assets/icons/calendar.png'),
   call: require('../assets/icons/call.png'),
   chat: require('../assets/icons/chat.png'),
   check: require('../assets/icons/check.png'),

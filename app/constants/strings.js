@@ -160,6 +160,7 @@ const strings = {
     leaveInfo: 'Are you sure you want to leave this event?',
     deleteDestination: 'Remove Destination',
     deleteDestinationInfo: 'Are you sure you want to remove this destination?',
+    eventName: 'Event Name',
   },
   roulette: {
     total: 'Total',
