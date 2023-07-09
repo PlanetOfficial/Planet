@@ -90,8 +90,6 @@ const Info: React.FC<Props> = ({
               },
             ],
             {
-              type: 'plain-text',
-              cancelable: false,
               defaultValue: eventTitle,
             },
           )

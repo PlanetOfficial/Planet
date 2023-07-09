@@ -34,7 +34,9 @@ const Roulette = ({
   StatusBar.setBarStyle(colors[theme].statusBar, true);
 
   const [eventId] = useState(route.params.eventId);
-  const [destination] = useState<Destination>(route.params.destination);
+  const [destination, setDestination] = useState<Destination>(
+    route.params.destination,
+  );
 
   const bookmarkContext = useContext(BookmarkContext);
   if (!bookmarkContext) {
@@ -94,6 +96,7 @@ const Roulette = ({
       <Spinner
         eventId={eventId}
         destination={destination}
+        setDestination={setDestination}
         rotation={rotation}
         isSpinning={isSpinning}
         setIsSpinning={setIsSpinning}

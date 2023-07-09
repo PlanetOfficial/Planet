@@ -44,7 +44,7 @@ const Header: React.FC<Props> = ({
 
   const headerHeight = scrollPosition.interpolate({
     inputRange: [s(35), s(170)],
-    outputRange: [insets.top + s(170), insets.top + s(35)],
+    outputRange: [insets.top + s(170), insets.top + s(50)],
     extrapolate: 'clamp',
   });
   const topTitleOpacity = scrollPosition.interpolate({
@@ -105,12 +105,14 @@ const Header: React.FC<Props> = ({
               {destination?.name}
             </Text>
           </View>
-          <Icon
-            size="l"
-            icon={icons.gallery}
-            color={colors[theme].primary}
-            onPress={() => setGalleryVisible(true)}
-          />
+          {destination?.photo && destination?.photo.length > 1 ? (
+            <Icon
+              size="l"
+              icon={icons.gallery}
+              color={colors[theme].primary}
+              onPress={() => setGalleryVisible(true)}
+            />
+          ) : null}
         </Animated.View>
       </Animated.View>
     </Animated.View>
@@ -135,6 +137,7 @@ const styling = (theme: 'light' | 'dark') =>
       alignItems: 'center',
       justifyContent: 'space-between',
       overflow: 'visible',
+      marginVertical: s(15),
     },
     bottom: {
       flexDirection: 'row',
@@ -153,6 +156,7 @@ const styling = (theme: 'light' | 'dark') =>
     },
     mainTitle: {
       paddingRight: s(10),
+      maxWidth: s(280),
     },
   });
 

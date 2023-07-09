@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, View, Text, StyleSheet, useColorScheme} from 'react-native';
+import {View, Text, StyleSheet, useColorScheme, Image} from 'react-native';
 import {s} from 'react-native-size-matters';
 
 import colors from '../../constants/colors';
@@ -21,9 +21,9 @@ const UserIcon: React.FC<Props> = ({user, size = s(16)}) => {
     <View
       style={{
         ...styles.image,
-        backgroundColor: colors[theme].profileShades[user.username.length % 5],
+        backgroundColor: colors[theme].profileShades[user.username?.length % 5],
       }}>
-      {user.first_name.length > 0 && user.last_name.length > 0 ? (
+      {user.first_name?.length > 0 && user.last_name?.length > 0 ? (
         <Text style={[styles.name, {fontSize: size}]}>
           {user.first_name[0].toUpperCase() + user.last_name[0].toUpperCase()}
         </Text>

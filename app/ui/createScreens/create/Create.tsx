@@ -133,6 +133,7 @@ const Create = ({
           date={date}
           setDate={setDate}
           members={members}
+          destinations={destinations}
         />
       ) : null}
       {destinations && destinations.length > 0 ? (
@@ -150,7 +151,9 @@ const Create = ({
           style={[styles.addButton, STYLES.shadow]}
           onPress={() => {
             setInsertionIndex(0);
-            navigation.navigate('CreateSearch');
+            navigation.navigate('ModeSearch', {
+              mode: 'create',
+            });
           }}>
           <Text size="l" weight="b" color={colors[theme].accent}>
             {strings.event.addDestination}

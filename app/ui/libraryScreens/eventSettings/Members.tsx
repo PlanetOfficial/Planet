@@ -3,8 +3,8 @@ import {
   View,
   TouchableOpacity,
   StyleSheet,
-  Image,
   useColorScheme,
+  Image,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 

@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {View, StyleSheet, TouchableOpacity, useColorScheme} from 'react-native';
 import {s} from 'react-native-size-matters';
 
@@ -6,47 +6,19 @@ import colors from '../../../constants/colors';
 import strings from '../../../constants/strings';
 
 import Text from '../../components/Text';
-
-import {UserInfo, UserStatus} from '../../../utils/types';
-import FriendsContext from '../../../context/FriendsContext';
-import {
-  handleAcceptRequest,
-  handleCancelRequest,
-  handleDeclineRequest,
-  handleFriendRequest,
-  handleUnfriend,
-} from './functions';
 import UserIconXL from '../../components/UserIconXL';
+
+import {UserInfo} from '../../../utils/types';
+import ActionButtons from './ActionButtons';
 
 interface Props {
   navigation: any;
   user: UserInfo;
   mutuals: UserInfo[];
-  status: UserStatus;
-  setStatus: (status: UserStatus) => void;
 }
 
-const Profile: React.FC<Props> = ({
-  navigation,
-  user,
-  mutuals,
-  status,
-  setStatus,
-}) => {
+const Profile: React.FC<Props> = ({navigation, user, mutuals}) => {
   const theme = useColorScheme() || 'light';
-
-  const friendsContext = useContext(FriendsContext);
-  if (!friendsContext) {
-    throw new Error('FriendsContext is not set!');
-  }
-  const {
-    friends,
-    setFriends,
-    requests,
-    setRequests,
-    requestsSent,
-    setRequestsSent,
-  } = friendsContext;
 
   return (
     <View style={styles.container}>
@@ -79,94 +51,7 @@ const Profile: React.FC<Props> = ({
           </TouchableOpacity>
         ) : null}
         <View style={styles.buttons}>
-          {status === 'NONE' ? (
-            <TouchableOpacity
-              style={{
-                ...styles.button,
-                backgroundColor: colors[theme].accent,
-              }}
-              onPress={() =>
-                handleFriendRequest(
-                  user.id,
-                  setStatus,
-                  requestsSent,
-                  setRequestsSent,
-                  user,
-                )
-              }>
-              <Text size="s" color={colors[theme].primary}>
-                {strings.friends.addFriend}
-              </Text>
-            </TouchableOpacity>
-          ) : null}
-          {status === 'FRIENDS' ? (
-            <TouchableOpacity
-              style={{
-                ...styles.button,
-                backgroundColor: colors[theme].secondary,
-              }}
-              onPress={() =>
-                handleUnfriend(user.id, setStatus, friends, setFriends)
-              }>
-              <Text size="s">{strings.friends.unfriend}</Text>
-            </TouchableOpacity>
-          ) : null}
-          {status === 'REQSENT' ? (
-            <TouchableOpacity
-              style={{
-                ...styles.button,
-                backgroundColor: colors[theme].secondary,
-              }}
-              onPress={() =>
-                handleCancelRequest(
-                  user.id,
-                  setStatus,
-                  requestsSent,
-                  setRequestsSent,
-                )
-              }>
-              <Text size="s">{strings.friends.cancelRequest}</Text>
-            </TouchableOpacity>
-          ) : null}
-          {status === 'REQRECEIVED' ? (
-            <>
-              <TouchableOpacity
-                style={{
-                  ...styles.button,
-                  backgroundColor: colors[theme].accent,
-                }}
-                onPress={() =>
-                  handleAcceptRequest(
-                    user.id,
-                    setStatus,
-                    friends,
-                    setFriends,
-                    requests,
-                    setRequests,
-                    user,
-                  )
-                }>
-                <Text size="s" color={colors[theme].primary}>
-                  {strings.friends.accept}
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{
-                  ...styles.button,
-                  backgroundColor: colors[theme].secondary,
-                }}
-                onPress={() =>
-                  handleDeclineRequest(
-                    user.id,
-                    setStatus,
-                    requests,
-                    setRequests,
-                  )
-                }>
-                <Text size="s">{strings.friends.reject}</Text>
-              </TouchableOpacity>
-            </>
-          ) : null}
+          <ActionButtons user={user} />
         </View>
       </View>
     </View>
@@ -187,7 +72,7 @@ const styles = StyleSheet.create({
     marginRight: s(20),
   },
   texts: {
-    height: s(50),
+    height: s(55),
     justifyContent: 'space-evenly',
     maxWidth: s(170),
     marginBottom: s(5),
@@ -197,14 +82,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-end',
     marginBottom: s(10),
-  },
-  button: {
-    paddingHorizontal: s(10),
-    paddingVertical: s(5),
-    borderRadius: s(5),
-    marginRight: s(10),
-    minWidth: s(65),
-    alignItems: 'center',
   },
 });
 

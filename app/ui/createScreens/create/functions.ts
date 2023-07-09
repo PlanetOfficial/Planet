@@ -52,7 +52,7 @@ export const handleSave = async (
     members.map(member => member.id),
   );
   if (response) {
-    navigation.navigate('Library', {event: response});
+    navigation.navigate(strings.title.library, {event: response});
   } else {
     Alert.alert(strings.error.error, strings.error.saveEvent);
   }

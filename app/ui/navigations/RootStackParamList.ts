@@ -28,6 +28,7 @@ type RootStackParamList = {
     category: string | undefined;
   };
   Friends: undefined;
+  CreateFG: undefined;
   AddFriend: {
     members: UserInfo[];
     event_id: number | undefined;
@@ -53,7 +54,9 @@ type RootStackParamList = {
         category: string | undefined;
       }
     | undefined;
-  CreateSearch: undefined;
+  ModeSearch: {
+    mode: 'create' | 'suggest' | 'add' | 'none';
+  };
   Event: {
     event: Event;
     destination: PoiType;
@@ -70,8 +73,6 @@ type RootStackParamList = {
   SpinHistory: {
     destination: Destination;
   };
-  SuggestSearch: undefined;
-  AddSearch: undefined;
   Notifications: undefined;
   Login: undefined;
   SignUpName: undefined;

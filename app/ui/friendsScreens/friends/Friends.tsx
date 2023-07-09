@@ -1,4 +1,4 @@
-import React, {useState, createRef} from 'react';
+import React, {useState, createRef, useEffect} from 'react';
 import {
   View,
   SafeAreaView,
@@ -27,12 +27,16 @@ import UserRow from '../../components/UserRow';
 
 import {searchUsers} from '../../../utils/api/friendsAPI';
 import {UserInfo} from '../../../utils/types';
+import ActionButtons from '../user/ActionButtons';
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 const Friends = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
   const STYLES = STYLING(theme);
   StatusBar.setBarStyle(colors[theme].statusBar, true);
+
+  const [self, setSelf] = useState<number>(0);
 
   const searchRef = createRef<TextInput>();
   const [searchText, setSearchText] = useState<string>('');
@@ -47,13 +51,32 @@ const Friends = ({navigation}: {navigation: any}) => {
       const result = await searchUsers(text);
 
       if (result) {
-        setSearchResults(result);
+        // exclude current user from search results
+        const filtered = result.filter(user => user.id !== self) as UserInfo[];
+        setSearchResults(filtered);
       } else {
         Alert.alert(strings.error.error, strings.error.searchError);
       }
     }
     setLoading(false);
   };
+
+  const loadSelf = async () => {
+    const myUserId = await EncryptedStorage.getItem('user_id');
+    if (myUserId) {
+      setSelf(parseInt(myUserId, 10));
+    }
+  };
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      setSearchText('');
+      searchRef.current?.clear();
+      loadSelf();
+    });
+
+    return unsubscribe;
+  }, [navigation, searchRef]);
 
   return (
     <View style={STYLES.container}>
@@ -69,6 +92,7 @@ const Friends = ({navigation}: {navigation: any}) => {
             <TextInput
               ref={searchRef}
               style={styles.searchText}
+              value={searchText}
               placeholder={strings.search.search}
               placeholderTextColor={colors[theme].neutral}
               autoCapitalize="none"
@@ -81,14 +105,17 @@ const Friends = ({navigation}: {navigation: any}) => {
               }}
               onBlur={() => setSearching(false)}
               onChangeText={text => search(text)}
+              clearButtonMode="while-editing"
             />
           </View>
           {searching ? (
             <TouchableOpacity
               style={styles.cancel}
               onPress={() => {
+                searchRef.current?.blur();
                 searchRef.current?.clear();
                 setSearching(false);
+                setSearchText('');
                 setSearchResults([]);
               }}>
               <Text>{strings.main.cancel}</Text>
@@ -109,13 +136,11 @@ const Friends = ({navigation}: {navigation: any}) => {
             keyExtractor={item => item.id.toString()}
             renderItem={({item}: {item: UserInfo}) => (
               <TouchableOpacity
-                onPress={() =>
-                  navigation.push('User', {
-                    user: item,
-                  })
-                }>
+                onPress={() => navigation.push('User', {user: item})}>
                 <UserRow user={item}>
-                  <Icon size="xs" icon={icons.next} />
+                  <View style={styles.buttons}>
+                    <ActionButtons user={item} />
+                  </View>
                 </UserRow>
               </TouchableOpacity>
             )}
@@ -157,6 +182,13 @@ const styling = (theme: 'light' | 'dark') =>
     },
     cancel: {
       marginLeft: s(10),
+    },
+    buttons: {
+      flex: 1,
+      flexDirection: 'row',
+      alignItems: 'flex-end',
+      justifyContent: 'flex-end',
+      marginBottom: s(10),
     },
   });
 

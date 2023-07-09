@@ -123,7 +123,8 @@ const styling = (theme: 'light' | 'dark') =>
   StyleSheet.create({
     list: {
       paddingTop: s(5),
-      borderTopColor: colors[theme].secondary,
+      borderTopWidth: 1,
+      borderColor: colors[theme].secondary,
     },
     content: {
       paddingBottom: s(20),

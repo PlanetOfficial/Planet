@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState, useCallback} from 'react';
 import {
   View,
   StyleSheet,
@@ -52,7 +52,7 @@ const ProfileBody = ({navigation}: {navigation: any}) => {
   }
   const {friends} = friendsContext;
 
-  const initializeData = async () => {
+  const initializeData = useCallback(async () => {
     setLocation(await fetchUserLocation());
     const _firstName = await AsyncStorage.getItem('first_name');
     const _lastName = await AsyncStorage.getItem('last_name');
@@ -62,11 +62,15 @@ const ProfileBody = ({navigation}: {navigation: any}) => {
     setLastName(_lastName || '');
     setUsername(_username || '');
     setPfpURL(_pfpURL || '');
-  };
+  }, []);
 
   useEffect(() => {
-    initializeData();
-  }, []);
+    const unsubscribe = navigation.addListener('focus', () => {
+      initializeData();
+    });
+
+    return unsubscribe;
+  }, [navigation, initializeData]);
 
   return (
     <>
@@ -100,7 +104,7 @@ const ProfileBody = ({navigation}: {navigation: any}) => {
             <TouchableOpacity
               style={styles.button}
               onPress={() => navigation.navigate('ProfileSettings')}>
-              <Text size="s">{strings.profile.editProfile}</Text>
+              <Text size="xs">{strings.profile.editProfile}</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -175,7 +179,7 @@ const styling = (theme: 'light' | 'dark') =>
       marginRight: s(20),
     },
     texts: {
-      height: s(50),
+      height: s(55),
       justifyContent: 'space-evenly',
       maxWidth: s(170),
       marginBottom: s(5),
