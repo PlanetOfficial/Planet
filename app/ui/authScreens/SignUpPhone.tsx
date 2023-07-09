@@ -66,8 +66,8 @@ const SignUpPhone = ({
 
       <View style={STYLES.inputContainer}>
         <PhoneInput
-          containerStyle={STYLES.input}
-          placeholder={strings.signUp.phoneNumber}
+          autoFocus={true}
+          textContainerStyle={STYLES.input}
           value={phoneNumber}
           onChangeFormattedText={setPhoneNumber}
           defaultCode="US"
