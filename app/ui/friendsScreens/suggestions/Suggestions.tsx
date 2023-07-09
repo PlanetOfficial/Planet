@@ -45,7 +45,7 @@ const Friends = ({navigation}: {navigation: any}) => {
             })
           }>
           <UserRow user={item}>
-            <Icon size="xs" icon={icons.next} />
+            <Icon size="s" icon={icons.next} />
           </UserRow>
         </TouchableOpacity>
       )}

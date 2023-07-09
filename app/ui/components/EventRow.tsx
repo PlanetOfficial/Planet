@@ -31,7 +31,7 @@ const EventRow: React.FC<Props> = ({event, self}) => {
         <Text size="s" numberOfLines={1}>
           {event.name}
         </Text>
-        <Text size="xs" weight="l">
+        <Text size="xs" weight="l" numberOfLines={1}>
           {event.vicinity}
         </Text>
         <Text size="xs">

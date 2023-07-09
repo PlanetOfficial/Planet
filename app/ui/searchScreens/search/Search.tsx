@@ -19,7 +19,6 @@ import strings from '../../../constants/strings';
 import STYLING from '../../../constants/styles';
 
 import Text from '../../components/Text';
-import Separator from '../../components/Separator';
 import SeparatorR from '../../components/SeparatorR';
 import PoiRow from '../../components/PoiRow';
 
@@ -175,7 +174,6 @@ const Search = ({
             </View>
           }
           keyExtractor={(item: Poi) => item.id.toString()}
-          ItemSeparatorComponent={Separator}
         />
       ) : null}
     </View>
