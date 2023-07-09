@@ -61,6 +61,7 @@ type RootStackParamList = {
   EventSettings: {
     event: Event;
     destination: Destination;
+    category: string | undefined;
   };
   Roulette: {
     destination: Destination;

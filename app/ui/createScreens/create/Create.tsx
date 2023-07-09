@@ -31,9 +31,9 @@ const Create = ({
   navigation: any;
   route: {
     params?: {
-      members?: UserInfo[];
-      destination?: Poi;
-      category?: string;
+      members: UserInfo[] | undefined;
+      destination: Poi | undefined;
+      category: string | undefined;
     };
   };
 }) => {

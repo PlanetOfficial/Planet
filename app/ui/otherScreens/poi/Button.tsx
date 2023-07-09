@@ -36,7 +36,10 @@ const Button: React.FC<Props> = ({navigation, destination, mode, category}) => {
             destination: destination,
           });
         } else if (mode === 'add') {
-          navigation.navigate('EventSettings', {destination});
+          navigation.navigate('EventSettings', {
+            destination: destination,
+            category: category,
+          });
         } else {
           // mode is none, create a fresh event with this destination
           navigation.dispatch(

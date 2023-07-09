@@ -7,6 +7,7 @@ import {EventAPIURL} from './APIConstants';
 export const postDestination = async (
   event_id: number,
   poi_id: number,
+  name: string,
 ): Promise<Boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
@@ -16,7 +17,7 @@ export const postDestination = async (
 
   const response = await fetch(
     EventAPIURL +
-      `/destination?event_id=${event_id}&poi_id=${poi_id}&authtoken=${authToken}`,
+      `/destination?event_id=${event_id}&poi_id=${poi_id}&name=${name}&authtoken=${authToken}`,
     {
       method: 'POST',
     },
