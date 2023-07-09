@@ -6,7 +6,6 @@ import STYLING from '../../../constants/styles';
 
 import Text from '../../components/Text';
 import PoiRow from '../../components/PoiRow';
-import Separator from '../../components/Separator';
 
 import {handleBookmark} from '../../../utils/Misc';
 import {Poi, Coordinate, Category} from '../../../utils/types';
@@ -69,7 +68,6 @@ const Results: React.FC<Props> = ({
         </View>
       }
       keyExtractor={(item: Poi) => item.id.toString()}
-      ItemSeparatorComponent={Separator}
     />
   );
 };

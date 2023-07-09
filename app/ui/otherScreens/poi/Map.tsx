@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, LayoutAnimation} from 'react-native';
 import {s} from 'react-native-size-matters';
 import MapView, {Marker} from 'react-native-maps';
@@ -11,7 +11,7 @@ interface Props {
 }
 
 const Map: React.FC<Props> = ({latitude, longitude}) => {
-  const [expanded, setExpanded] = React.useState(false);
+  const [expanded, setExpanded] = useState(false);
 
   return (
     <MapView

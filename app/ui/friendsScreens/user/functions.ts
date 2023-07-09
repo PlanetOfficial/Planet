@@ -1,7 +1,7 @@
 import {Alert} from 'react-native';
 import strings from '../../../constants/strings';
 
-import {UserInfo, UserStatus} from '../../../utils/types';
+import {UserInfo} from '../../../utils/types';
 import {
   acceptFriendRequest,
   deleteFriend,
@@ -12,7 +12,6 @@ import {
 
 export const handleFriendRequest = async (
   userId: number,
-  setStatus: (status: UserStatus) => void,
   requestsSent: UserInfo[],
   setRequestsSent: (requestsSent: UserInfo[]) => void,
   user: UserInfo,
@@ -20,7 +19,6 @@ export const handleFriendRequest = async (
   const response = await postFriendRequest(userId);
 
   if (response) {
-    setStatus('REQSENT');
     const requestsSentUpdated = [user, ...requestsSent];
     requestsSentUpdated;
     setRequestsSent(requestsSentUpdated);
@@ -31,14 +29,12 @@ export const handleFriendRequest = async (
 
 export const handleUnfriend = async (
   userId: number,
-  setStatus: (status: UserStatus) => void,
   friends: UserInfo[],
   setFriends: (friends: UserInfo[]) => void,
 ) => {
   const response = await deleteFriend(userId);
 
   if (response) {
-    setStatus('NONE');
     const friendsUpdated = friends.filter(
       (friend: UserInfo) => friend.id !== userId,
     );
@@ -50,7 +46,6 @@ export const handleUnfriend = async (
 
 export const handleAcceptRequest = async (
   userId: number,
-  setStatus: (status: UserStatus) => void,
   friends: UserInfo[],
   setFriends: (friends: UserInfo[]) => void,
   requests: UserInfo[],
@@ -60,8 +55,6 @@ export const handleAcceptRequest = async (
   const response = await acceptFriendRequest(userId);
 
   if (response) {
-    setStatus('FRIENDS');
-
     const friendsUpdated = [user, ...friends];
     setFriends(friendsUpdated);
 
@@ -76,14 +69,12 @@ export const handleAcceptRequest = async (
 
 export const handleDeclineRequest = async (
   userId: number,
-  setStatus: (status: UserStatus) => void,
   requests: UserInfo[],
   setRequests: (requests: UserInfo[]) => void,
 ) => {
   const response = await rejectFriendRequest(userId);
 
   if (response) {
-    setStatus('NONE');
     const requestsUpdated = requests.filter(
       (request: UserInfo) => request.id !== userId,
     );
@@ -95,14 +86,12 @@ export const handleDeclineRequest = async (
 
 export const handleCancelRequest = async (
   userId: number,
-  setStatus: (status: UserStatus) => void,
   requestsSent: UserInfo[],
   setRequestsSent: (requestsSent: UserInfo[]) => void,
 ) => {
   const response = await deleteFriendRequest(userId);
 
   if (response) {
-    setStatus('NONE');
     const requestsSentUpdated = requestsSent.filter(
       (request: UserInfo) => request.id !== userId,
     );

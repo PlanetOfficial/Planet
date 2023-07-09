@@ -35,7 +35,7 @@ export const getFriendsInfo = async (): Promise<{
   requests: UserInfo[];
   requests_sent: UserInfo[];
   friends: UserInfo[];
-  friendgroups: FriendGroup[];
+  friend_groups: FriendGroup[];
 } | null> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
@@ -63,7 +63,7 @@ export const getFriendsInfo = async (): Promise<{
  */
 export const getFriends = async (): Promise<{
   friends: UserInfo[];
-  friendgroups: FriendGroup[];
+  friend_groups: FriendGroup[];
 } | null> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 

@@ -40,6 +40,7 @@ import NotificationSettings from '../profileScreens/settingsScreens/Notification
 import PrivacySettings from '../profileScreens/settingsScreens/PrivacySettings';
 import ProfileSettings from '../profileScreens/settingsScreens/ProfileSettings';
 import Search from '../searchScreens/search/Search';
+import CreateFG from '../friendsScreens/createFG/CreateFG';
 
 import BookmarkStateProvider from '../../context/BookmarkState';
 import FriendsStateProvider from '../../context/FriendsState';
@@ -67,6 +68,7 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
               {searchMapScreen()}
               {poiScreen()}
               {friendsScreen()}
+              {createFGScreen()}
               {addFriendScreen()}
               {mutualsScreen()}
               {userScreen()}
@@ -119,6 +121,7 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
               {searchMapScreen()}
               {poiScreen()}
               {friendsScreen()}
+              {createFGScreen()}
               {addFriendScreen()}
               {mutualsScreen()}
               {userScreen()}
@@ -294,6 +297,19 @@ const friendsScreen = () => {
       component={Friends}
       options={{
         headerShown: false,
+      }}
+    />
+  );
+};
+
+const createFGScreen = () => {
+  return (
+    <Stack.Screen
+      name="CreateFG"
+      component={CreateFG}
+      options={{
+        headerShown: false,
+        presentation: 'modal',
       }}
     />
   );
