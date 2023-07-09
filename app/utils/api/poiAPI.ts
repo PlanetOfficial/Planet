@@ -54,8 +54,12 @@ export const getPoi = async (
 export const postPoi = async (
   place_id: string,
 ): Promise<{poi: Poi; poiDetail: PoiDetail} | null> => {
-  const response = await fetch(PoiAPIURL + `/poi?place_id=${place_id}`, {
+  const response = await fetch(PoiAPIURL + '/poi', {
     method: 'POST',
+    body: JSON.stringify({place_id}),
+    headers: {
+      'Content-Type': 'application/json',
+    },
   });
 
   if (response?.ok) {
