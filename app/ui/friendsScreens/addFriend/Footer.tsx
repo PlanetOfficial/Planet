@@ -59,7 +59,7 @@ const Footer: React.FC<Props> = ({
             <View style={styles.checkmark}>
               <Icon
                 size="m"
-                icon={icons.minus}
+                icon={icons.add}
                 color={colors[theme].accent}
                 onPress={() => {
                   const newInvitees = invitees.filter(
@@ -137,12 +137,16 @@ const styling = (theme: 'light' | 'dark') =>
     },
     checkmark: {
       position: 'absolute',
+      alignItems: 'center',
+      justifyContent: 'center',
       top: -s(3),
       left: s(33),
       height: s(20),
       width: s(20),
       borderRadius: s(10),
       backgroundColor: colors[theme].primary,
+      // rotate by 45 degrees
+      transform: [{rotate: '45deg'}],
     },
   });
 

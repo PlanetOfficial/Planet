@@ -1,6 +1,5 @@
 import {LayoutAnimation, Alert} from 'react-native';
 
-import icons from '../../../constants/icons';
 import strings from '../../../constants/strings';
 
 import {FriendGroup, UserInfo} from '../../../utils/types';
@@ -33,18 +32,6 @@ export const handleFGSelect = (
     );
   }
   setFgSelected(item.id);
-};
-
-export const findFGIcon = (item: FriendGroup, invitees: UserInfo[]) => {
-  return item.members.every(
-    member => invitees?.find(user => user.id === member.id) !== undefined,
-  )
-    ? icons.selected
-    : item.members.some(
-        member => invitees?.find(user => user.id === member.id) !== undefined,
-      )
-    ? icons.minus
-    : icons.unselected;
 };
 
 export const handleFGPress = (

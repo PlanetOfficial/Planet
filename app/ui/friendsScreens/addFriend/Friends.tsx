@@ -24,12 +24,7 @@ import FriendsContext from '../../../context/FriendsContext';
 import {FriendGroup, UserInfo} from '../../../utils/types';
 
 import FGIcon from '../friendsList/FGIcon';
-import {
-  findFGIcon,
-  handleFGPress,
-  handleFGSelect,
-  handleUserSelect,
-} from './functions';
+import {handleFGPress, handleFGSelect, handleUserSelect} from './functions';
 
 interface Props {
   isEvent: boolean;
@@ -83,14 +78,28 @@ const Friends: React.FC<Props> = ({
             {!isEvent ? (
               <TouchableOpacity
                 style={styles.checkmarkBig}
-                disabled={members.some(user => user.id === item.id)}
+                disabled={item.members.every(
+                  member =>
+                    invitees
+                      .concat(members)
+                      .find(user => user.id === member.id) !== undefined,
+                )}
                 onPress={() =>
                   handleFGSelect(item, invitees, setInvitees, setFgSelected)
                 }>
                 <Icon
                   size="l"
-                  icon={findFGIcon(item, invitees.concat(members))}
-                  color={colors[theme].accent}
+                  icon={icons.add}
+                  color={
+                    item.members.every(
+                      member =>
+                        invitees
+                          .concat(members)
+                          .find(user => user.id === member.id) !== undefined,
+                    )
+                      ? colors[theme].secondary
+                      : colors[theme].accent
+                  }
                 />
               </TouchableOpacity>
             ) : null}
