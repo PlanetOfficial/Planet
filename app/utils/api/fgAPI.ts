@@ -14,19 +14,15 @@ export const postFG = async (
     return false;
   }
 
-  const response = await fetch(
-    FriendAPIURL +
-      `/group`,
-    {
-      method: 'POST',
-      body: JSON.stringify({user_ids, name}),
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Xano-Authorization': `Bearer ${authToken}`,
-        'X-Xano-Authorization-Only': 'true',
-      },
+  const response = await fetch(FriendAPIURL + '/group', {
+    method: 'POST',
+    body: JSON.stringify({user_ids, name}),
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Xano-Authorization': `Bearer ${authToken}`,
+      'X-Xano-Authorization-Only': 'true',
     },
-  );
+  });
 
   return response.ok;
 };
@@ -45,19 +41,15 @@ export const editFG = async (
     return false;
   }
 
-  const response = await fetch(
-    FriendAPIURL +
-      `/group/${id}`,
-    {
-      method: 'POST',
-      body: JSON.stringify({user_ids, name}),
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Xano-Authorization': `Bearer ${authToken}`,
-        'X-Xano-Authorization-Only': 'true',
-      },
+  const response = await fetch(FriendAPIURL + `/group/${id}`, {
+    method: 'POST',
+    body: JSON.stringify({user_ids, name}),
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Xano-Authorization': `Bearer ${authToken}`,
+      'X-Xano-Authorization-Only': 'true',
     },
-  );
+  });
 
   return response.ok;
 };
@@ -72,16 +64,13 @@ export const deleteFG = async (id: number): Promise<Boolean> => {
     return false;
   }
 
-  const response = await fetch(
-    FriendAPIURL + `/group/${id}`,
-    {
-      method: 'DELETE',
-      headers: {
-        'X-Xano-Authorization': `Bearer ${authToken}`,
-        'X-Xano-Authorization-Only': 'true',
-      },
+  const response = await fetch(FriendAPIURL + `/group/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'X-Xano-Authorization': `Bearer ${authToken}`,
+      'X-Xano-Authorization-Only': 'true',
     },
-  );
+  });
 
   return response.ok;
 };
@@ -96,19 +85,15 @@ export const reorderFG = async (fg_ids: number[]): Promise<Boolean> => {
     return false;
   }
 
-  const response = await fetch(
-    FriendAPIURL +
-      `/groups/reorder`,
-    {
-      method: 'POST',
-      body: JSON.stringify({friend_group_ids: fg_ids}),
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Xano-Authorization': `Bearer ${authToken}`,
-        'X-Xano-Authorization-Only': 'true',
-      },
+  const response = await fetch(FriendAPIURL + '/groups/reorder', {
+    method: 'POST',
+    body: JSON.stringify({friend_group_ids: fg_ids}),
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Xano-Authorization': `Bearer ${authToken}`,
+      'X-Xano-Authorization-Only': 'true',
     },
-  );
+  });
 
   return response.ok;
 };
