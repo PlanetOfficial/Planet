@@ -70,7 +70,7 @@ const SignUpPhone = ({
           placeholder={strings.signUp.phoneNumber}
           value={phoneNumber}
           onChangeFormattedText={setPhoneNumber}
-          defaultCode='US'
+          defaultCode="US"
         />
       </View>
       {error.length !== 0 ? (
