@@ -69,9 +69,9 @@ export const postEvent = async (
     EventAPIURL +
       `/event?poi_ids=${JSON.stringify(poi_ids)}&names=${JSON.stringify(
         names,
-      )}&name=${name}&datetime=${datetime}&members=${JSON.stringify(
-        members,
-      )}&authtoken=${authToken}`,
+      )}&name=${name}${
+        datetime ? `&datetime=${datetime}` : ''
+      }&members=${JSON.stringify(members)}&authtoken=${authToken}`,
     {
       method: 'POST',
     },

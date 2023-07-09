@@ -161,6 +161,7 @@ const strings = {
     deleteDestination: 'Remove Destination',
     deleteDestinationInfo: 'Are you sure you want to remove this destination?',
     eventName: 'Event Name',
+    noDate: 'No Date Set',
   },
   roulette: {
     total: 'Total',
