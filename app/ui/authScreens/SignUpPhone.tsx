@@ -1,8 +1,6 @@
 import React, {useState} from 'react';
 import {View, SafeAreaView, TouchableOpacity, StatusBar} from 'react-native';
-import PhoneInput from 'react-phone-number-input/react-native-input';
-
-import {E164Number} from 'libphonenumber-js/types';
+import PhoneInput from 'react-native-phone-number-input';
 
 import colors from '../../constants/colors';
 import strings from '../../constants/strings';
@@ -29,14 +27,14 @@ const SignUpPhone = ({
 
   const [authToken] = useState<string>(route.params.authToken);
 
-  const [phoneNumber, setPhoneNumber] = useState<E164Number | undefined>();
+  const [phoneNumber, setPhoneNumber] = useState<string>('');
 
   const [error, setError] = useState<string>('');
 
   const handleSendCode = async () => {
     setError('');
 
-    if (phoneNumber === undefined || phoneNumber.length === 0) {
+    if (phoneNumber === '' || phoneNumber.length === 0) {
       setError(strings.signUp.missingFields);
       return;
     }
@@ -67,15 +65,12 @@ const SignUpPhone = ({
       </View>
 
       <View style={STYLES.inputContainer}>
-        <Text weight="l" color={colors[theme].neutral}>
-          {strings.signUp.phoneNumber}:{' '}
-        </Text>
         <PhoneInput
-          style={STYLES.input}
+          containerStyle={STYLES.input}
           placeholder={strings.signUp.phoneNumber}
           value={phoneNumber}
-          onChange={setPhoneNumber}
-          placeholderTextColor={colors[theme].neutral}
+          onChangeFormattedText={setPhoneNumber}
+          defaultCode='US'
         />
       </View>
       {error.length !== 0 ? (
