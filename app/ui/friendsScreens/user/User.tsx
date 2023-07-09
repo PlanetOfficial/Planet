@@ -19,9 +19,8 @@ import STYLING, {segControlTabStyling} from '../../../constants/styles';
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 import EventRow from '../../components/EventRow';
-import Separator from '../../components/Separator';
 
-import {Event, UserInfo, UserStatus} from '../../../utils/types';
+import {Event, UserInfo} from '../../../utils/types';
 import {getFriend} from '../../../utils/api/friendsAPI';
 
 import ProfileBody from '../../profileScreens/profile/ProfileBody';
@@ -46,7 +45,6 @@ const User = ({
 
   const [selectedIndex, setIndex] = useState<number>(0);
   const [self, setSelf] = useState<number>(0);
-  const [status, setStatus] = useState<UserStatus>('');
   const [mutuals, setMutuals] = useState<UserInfo[]>([]);
   const [mutualEvents, setMutualEvents] = useState<Event[]>([]);
 
@@ -59,7 +57,6 @@ const User = ({
     const userData = await getFriend(route.params.user.id);
 
     if (userData) {
-      setStatus(userData.status);
       setMutuals(userData.mutuals);
       setMutualEvents(userData.shared_events);
     } else {
@@ -86,7 +83,7 @@ const User = ({
           />
         </View>
       </SafeAreaView>
-      {status === 'SELF' ? (
+      {route.params.user.id === self ? (
         <ProfileBody navigation={navigation} />
       ) : (
         <>
@@ -94,8 +91,6 @@ const User = ({
             navigation={navigation}
             user={route.params.user}
             mutuals={mutuals}
-            status={status}
-            setStatus={setStatus}
           />
 
           <SegmentedControlTab
@@ -137,7 +132,6 @@ const User = ({
               </View>
             }
             keyExtractor={(item: Event) => item.id.toString()}
-            ItemSeparatorComponent={Separator}
           />
         </>
       )}

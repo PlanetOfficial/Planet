@@ -17,6 +17,7 @@ const strings = {
     seeAll: 'See All',
     warning: 'Warning',
     milesAbbrev: 'mi',
+    edit: 'Edit',
   },
   title: {
     home: 'Home',
@@ -85,6 +86,7 @@ const strings = {
   },
   search: {
     search: 'Search',
+    searchFriends: 'Search Friends',
     noResultsFound: 'No Results Found',
     noResultsFoundDescription: 'Try searching for something else',
     setLocation: 'Set Location',
@@ -99,7 +101,6 @@ const strings = {
   friends: {
     friends: 'Friends',
     noFriendsFound: 'No Friends Found',
-    noFriendsFoundDescription: 'Try adding some friends',
     friendRequest: 'Friend Request',
     friendRequests: 'Friend Requests',
     pendingRequest: 'Pending Request',
@@ -119,6 +120,22 @@ const strings = {
     mutualFriends: 'Mutual Friends',
     mutualFriendsDescriptions: 'You have these friends in common',
     noSuggestionsFound: 'No Suggestions Found',
+    noRequestsFound: 'No Requests Found',
+    createFriendGroup: 'Create a Friend Group',
+    fgCreateBackConfirmation: 'Are you sure you want to go back?',
+    friendGroup: 'Friend Group',
+    friendGroups: 'Friend Groups',
+    customize: 'Customize',
+    members: 'Members',
+    renameFriendGroup: 'Enter a new name for this friend group:',
+    deleteFriendGroup: 'Delete Friend Group',
+    deleteFriendGroupInfo: 'Are you sure you want to delete this friend group?',
+    friendGroupName: 'Friend Group Name',
+    friendGroupNameInfo:
+      'Enter a name for this friend group:\nNote: friend groups are for your own and will not be shared with others.',
+    inviteFriendsBackConfirmation:
+      'Are you sure you want to go back? Your changes will not be saved.',
+    invite: 'Invite',
   },
   profile: {
     yourProfile: 'Your Profile',
@@ -162,6 +179,8 @@ const strings = {
     deleteDestinationInfo: 'Are you sure you want to remove this destination?',
     eventName: 'Event Name',
     noDate: 'No Date Set',
+    create: 'Create',
+    suggest: 'Suggest',
   },
   roulette: {
     total: 'Total',
@@ -244,6 +263,12 @@ const strings = {
     friendRequest: 'Unable to send friend request. Please try again later.',
     unfriend: 'Unable to unfriend. Please try again later.',
     addFriend: 'Unable to invite friend. Please try again later.',
+    createFG: 'Unable to create friend group. Please try again later.',
+    fgNameEmpty: 'Friend group name cannot be empty.',
+    reorderFG: 'Unable to reorder friend groups. Please try again later.',
+    editFGName: 'Unable to edit friend group name. Please try again later.',
+    deleteFG: 'Unable to delete friend group. Please try again later.',
+    inviteUsers: 'Unable to invite users. Please try again later.',
   },
   ageEnum: [
     {label: '-17', value: '-17'},

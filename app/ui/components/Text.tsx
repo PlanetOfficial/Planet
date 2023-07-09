@@ -34,7 +34,7 @@ const Text: React.FC<Props> = ({
   let fontSize: number = s(17);
   switch (size) {
     case 'xs':
-      fontSize = s(11);
+      fontSize = s(12);
       break;
     case 's':
       fontSize = s(14);
@@ -43,10 +43,10 @@ const Text: React.FC<Props> = ({
       fontSize = s(17);
       break;
     case 'l':
-      fontSize = s(20);
+      fontSize = s(19);
       break;
     case 'xl':
-      fontSize = s(23);
+      fontSize = s(22);
       break;
     default:
       break;

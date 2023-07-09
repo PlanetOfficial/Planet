@@ -16,7 +16,6 @@ import STYLING from '../../constants/styles';
 
 import Text from '../components/Text';
 import Icon from '../components/Icon';
-import Separator from '../components/Separator';
 import PoiRow from '../components/PoiRow';
 
 import {Poi} from '../../utils/types';
@@ -83,7 +82,6 @@ const Explore = ({navigation, route}: {navigation: any; route: any}) => {
             <Text size="s">{strings.search.noResultsFoundDescription}</Text>
           </View>
         }
-        ItemSeparatorComponent={Separator}
         keyExtractor={(item: Poi) => item.id.toString()}
       />
     </View>

@@ -27,6 +27,7 @@ type RootStackParamList = {
     poi: PoiType | undefined;
   };
   Friends: undefined;
+  CreateFG: undefined;
   AddFriend: {
     members: UserInfo[];
     event_id: number | undefined;

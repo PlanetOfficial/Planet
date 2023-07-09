@@ -25,7 +25,7 @@ export const FriendsNavBar = () => {
         },
         tabBarLabelStyle: {
           textTransform: 'none',
-          fontSize: s(12),
+          fontSize: s(13),
           fontWeight: '500',
         },
         tabBarActiveTintColor: colors[theme].accent,
