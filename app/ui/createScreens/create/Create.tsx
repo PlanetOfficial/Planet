@@ -5,12 +5,12 @@ import {
   TouchableOpacity,
   useColorScheme,
   StatusBar,
+  Keyboard,
+  ScrollView,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
-import moment from 'moment';
 
 import colors from '../../../constants/colors';
-import numbers from '../../../constants/numbers';
 import strings from '../../../constants/strings';
 import STYLING from '../../../constants/styles';
 
@@ -42,7 +42,7 @@ const Create = ({
   const STYLES = STYLING(theme);
   StatusBar.setBarStyle(colors[theme].statusBar, true);
 
-  const [eventTitle, setEventTitle] = useState<string>();
+  const [eventTitle, setEventTitle] = useState<string>('');
   const [date, setDate] = useState<string>();
   const [members, setMembers] = useState<UserInfo[]>([]);
   const [destinations, setDestinations] = useState<Poi[]>([]);
@@ -107,25 +107,9 @@ const Create = ({
     return unsubscribe;
   }, [navigation, addMembers, addDestination]);
 
-  const initializeData = useCallback(async () => {
-    const d = new Date();
-    setEventTitle(strings.event.untitled);
-    setDate(
-      moment(
-        new Date(
-          Math.ceil(d.getTime() / numbers.fiveMinutes) * numbers.fiveMinutes,
-        ),
-      ).format('MMM Do, h:mm a'),
-    );
-  }, []);
-
-  useEffect(() => {
-    initializeData();
-  }, [initializeData]);
-
   return (
     <View style={STYLES.container}>
-      {eventTitle !== undefined && date ? (
+      {eventTitle !== undefined ? (
         <Header
           navigation={navigation}
           eventTitle={eventTitle}
@@ -147,20 +131,22 @@ const Create = ({
           destinationNames={destinationNames}
         />
       ) : (
-        <TouchableOpacity
-          style={[styles.addButton, STYLES.shadow]}
-          onPress={() => {
-            setInsertionIndex(0);
-            navigation.navigate('ModeSearch', {
-              mode: 'create',
-            });
-          }}>
-          <Text size="l" weight="b" color={colors[theme].accent}>
-            {strings.event.addDestination}
-          </Text>
-        </TouchableOpacity>
+        <ScrollView onTouchStart={() => Keyboard.dismiss()}>
+          <TouchableOpacity
+            style={[styles.addButton, STYLES.shadow]}
+            onPress={() => {
+              setInsertionIndex(0);
+              navigation.navigate('ModeSearch', {
+                mode: 'create',
+              });
+            }}>
+            <Text size="l" weight="b" color={colors[theme].accent}>
+              {strings.event.addDestination}
+            </Text>
+          </TouchableOpacity>
+        </ScrollView>
       )}
-      {eventTitle && date ? (
+      {eventTitle ? (
         <SaveButton
           navigation={navigation}
           eventTitle={eventTitle}

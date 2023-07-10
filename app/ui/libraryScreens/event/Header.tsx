@@ -44,11 +44,13 @@ const Header: React.FC<Props> = ({
         />
         <View style={STYLES.texts}>
           <Text>{eventDetail ? eventDetail.name : event.name}</Text>
-          <Text size="xs" weight="l" color={colors[theme].accent}>
-            {moment(eventDetail ? eventDetail.datetime : event.datetime)
-              .add(date.getTimezoneOffset(), 'minutes')
-              .format('MMM Do, h:mm a')}
-          </Text>
+          {event.datetime || eventDetail?.datetime ? (
+            <Text size="xs" weight="l" color={colors[theme].accent}>
+              {moment(eventDetail ? eventDetail.datetime : event.datetime)
+                .add(date.getTimezoneOffset(), 'minutes')
+                .format('MMM Do, h:mm a')}
+            </Text>
+          ) : null}
         </View>
         <Icon
           icon={icons.more}

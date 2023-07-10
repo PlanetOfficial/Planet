@@ -34,11 +34,13 @@ const EventRow: React.FC<Props> = ({event, self}) => {
         <Text size="xs" weight="l" numberOfLines={1}>
           {event.vicinity}
         </Text>
-        <Text size="xs">
-          {moment(event.datetime)
-            .add(date.getTimezoneOffset(), 'minutes')
-            .format('MMM Do, h:mm a')}
-        </Text>
+        {event.datetime ? (
+          <Text size="xs">
+            {moment(event.datetime)
+              .add(date.getTimezoneOffset(), 'minutes')
+              .format('MMM Do, h:mm a')}
+          </Text>
+        ) : null}
       </View>
       <IconCluster users={event.members} self={self} />
     </View>

@@ -61,13 +61,17 @@ export const postEvent = async (
   poi_ids: number[],
   names: string[],
   name: string,
-  datetime: string,
+  datetime: string | undefined,
   members: number[],
 ): Promise<Boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
   if (!authToken) {
     return false;
+  }
+
+  if (!datetime) {
+    datetime = '';
   }
 
   const response = await fetch(EventAPIURL + '/event', {

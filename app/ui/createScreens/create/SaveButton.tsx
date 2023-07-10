@@ -18,7 +18,7 @@ import {handleSave} from './functions';
 interface Props {
   navigation: any;
   eventTitle: string;
-  date: string;
+  date: string | undefined;
   members: UserInfo[];
   destinations: Poi[] | undefined;
   destinationNames: Map<number, string>;

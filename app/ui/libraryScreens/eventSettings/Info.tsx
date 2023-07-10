@@ -20,6 +20,7 @@ import Icon from '../../components/Icon';
 import {editDatetime, editName} from '../../../utils/api/eventAPI';
 import {Event, EventDetail} from '../../../utils/types';
 import colors from '../../../constants/colors';
+import numbers from '../../../constants/numbers';
 
 interface Props {
   event: Event;
@@ -40,6 +41,8 @@ const Info: React.FC<Props> = ({
   datetime,
   setDatetime,
 }) => {
+  const currentDate = new Date();
+
   const theme = useColorScheme() || 'light';
 
   const [datePickerOpen, setDatePickerOpen] = useState<boolean>(false);
@@ -101,26 +104,33 @@ const Info: React.FC<Props> = ({
       </TouchableOpacity>
       <TouchableOpacity onPress={() => setDatePickerOpen(true)}>
         <Text size="s" weight="l">
-          {datetime}
+          {datetime ? datetime : strings.event.noDate}
         </Text>
       </TouchableOpacity>
-      {datetime ? (
-        <DatePicker
-          modal
-          open={datePickerOpen}
-          minuteInterval={5}
-          date={moment(datetime, 'MMM Do, h:mm a').toDate()}
-          onConfirm={newDate => {
-            setDatePickerOpen(false);
-            handleEditDate(
-              moment(newDate, 'YYYY-MM-DD HH:mm:ssZ').format('MMM Do, h:mm a'),
-            );
-          }}
-          onCancel={() => {
-            setDatePickerOpen(false);
-          }}
-        />
-      ) : null}
+      <DatePicker
+        modal
+        open={datePickerOpen}
+        minuteInterval={5}
+        date={
+          datetime
+            ? moment(datetime, 'MMM Do, h:mm a').toDate()
+            : moment(
+                new Date(
+                  Math.ceil(currentDate.getTime() / numbers.fiveMinutes) *
+                    numbers.fiveMinutes,
+                ),
+              ).toDate()
+        }
+        onConfirm={newDate => {
+          setDatePickerOpen(false);
+          handleEditDate(
+            moment(newDate, 'YYYY-MM-DD HH:mm:ssZ').format('MMM Do, h:mm a'),
+          );
+        }}
+        onCancel={() => {
+          setDatePickerOpen(false);
+        }}
+      />
     </View>
   );
 };

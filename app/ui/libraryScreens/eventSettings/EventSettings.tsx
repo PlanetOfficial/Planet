@@ -45,11 +45,13 @@ const EventSettings = ({
 
       setEventDetail(_eventDetail);
       setEventTitle(_eventDetail.name);
-      setDatetime(
-        moment(_eventDetail.datetime)
-          .add(date.getTimezoneOffset(), 'minutes')
-          .format('MMM Do, h:mm a'),
-      );
+      if (_eventDetail.datetime) {
+        setDatetime(
+          moment(_eventDetail.datetime)
+            .add(date.getTimezoneOffset(), 'minutes')
+            .format('MMM Do, h:mm a'),
+        );
+      }
     } else {
       Alert.alert(strings.error.error, strings.error.fetchEvent);
     }
