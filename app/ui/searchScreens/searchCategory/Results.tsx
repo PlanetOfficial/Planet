@@ -6,7 +6,6 @@ import STYLING from '../../../constants/styles';
 
 import Text from '../../components/Text';
 import PoiRow from '../../components/PoiRow';
-import Separator from '../../components/Separator';
 
 import {handleBookmark} from '../../../utils/Misc';
 import {Poi, Coordinate, Category} from '../../../utils/types';
@@ -47,6 +46,7 @@ const Results: React.FC<Props> = ({
                 poi: item,
                 bookmarked: bookmarks.some(bookmark => bookmark.id === item.id),
                 mode: mode,
+                category: category.name,
               })
             }>
             <PoiRow
@@ -69,7 +69,6 @@ const Results: React.FC<Props> = ({
         </View>
       }
       keyExtractor={(item: Poi) => item.id.toString()}
-      ItemSeparatorComponent={Separator}
     />
   );
 };

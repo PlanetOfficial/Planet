@@ -102,8 +102,6 @@ const Destinations: React.FC<Props> = ({
                       },
                     ],
                     {
-                      type: 'plain-text',
-                      cancelable: false,
                       defaultValue: item.name,
                     },
                   )

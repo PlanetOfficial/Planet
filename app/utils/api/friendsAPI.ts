@@ -12,12 +12,13 @@ export const getFriend = async (id: number): Promise<UserDetail | null> => {
     return null;
   }
 
-  const response = await fetch(
-    FriendAPIURL + `/friend/${id}?authtoken=${authToken}`,
-    {
-      method: 'GET',
+  const response = await fetch(FriendAPIURL + `/friend/${id}`, {
+    method: 'GET',
+    headers: {
+      'X-Xano-Authorization': `Bearer ${authToken}`,
+      'X-Xano-Authorization-Only': 'true',
     },
-  );
+  });
 
   if (response?.ok) {
     const myJson: UserDetail = await response.json();
@@ -35,7 +36,7 @@ export const getFriendsInfo = async (): Promise<{
   requests: UserInfo[];
   requests_sent: UserInfo[];
   friends: UserInfo[];
-  friendgroups: FriendGroup[];
+  friend_groups: FriendGroup[];
 } | null> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
@@ -43,12 +44,13 @@ export const getFriendsInfo = async (): Promise<{
     return null;
   }
 
-  const response = await fetch(
-    FriendAPIURL + `/friends?authtoken=${authToken}`,
-    {
-      method: 'GET',
+  const response = await fetch(FriendAPIURL + '/friends', {
+    method: 'GET',
+    headers: {
+      'X-Xano-Authorization': `Bearer ${authToken}`,
+      'X-Xano-Authorization-Only': 'true',
     },
-  );
+  });
 
   if (response?.ok) {
     const myJson = await response.json();
@@ -63,7 +65,7 @@ export const getFriendsInfo = async (): Promise<{
  */
 export const getFriends = async (): Promise<{
   friends: UserInfo[];
-  friendgroups: FriendGroup[];
+  friend_groups: FriendGroup[];
 } | null> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
@@ -71,12 +73,13 @@ export const getFriends = async (): Promise<{
     return null;
   }
 
-  const response = await fetch(
-    FriendAPIURL + `/friend?authtoken=${authToken}`,
-    {
-      method: 'GET',
+  const response = await fetch(FriendAPIURL + '/friend', {
+    method: 'GET',
+    headers: {
+      'X-Xano-Authorization': `Bearer ${authToken}`,
+      'X-Xano-Authorization-Only': 'true',
     },
-  );
+  });
 
   if (response?.ok) {
     const myJson = await response.json();
@@ -99,12 +102,13 @@ export const getFriendRequests = async (): Promise<{
     return null;
   }
 
-  const response = await fetch(
-    FriendAPIURL + `/request?authtoken=${authToken}`,
-    {
-      method: 'GET',
+  const response = await fetch(FriendAPIURL + '/request', {
+    method: 'GET',
+    headers: {
+      'X-Xano-Authorization': `Bearer ${authToken}`,
+      'X-Xano-Authorization-Only': 'true',
     },
-  );
+  });
 
   if (response?.ok) {
     const myJson = await response.json();
@@ -124,12 +128,15 @@ export const postFriendRequest = async (id: number): Promise<boolean> => {
     return false;
   }
 
-  const response = await fetch(
-    FriendAPIURL + `/request?requestee=${id}&authtoken=${authToken}`,
-    {
-      method: 'POST',
+  const response = await fetch(FriendAPIURL + '/request', {
+    method: 'POST',
+    body: JSON.stringify({requestee: id}),
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Xano-Authorization': `Bearer ${authToken}`,
+      'X-Xano-Authorization-Only': 'true',
     },
-  );
+  });
 
   return response?.ok;
 };
@@ -144,12 +151,15 @@ export const deleteFriendRequest = async (id: number): Promise<boolean> => {
     return false;
   }
 
-  const response = await fetch(
-    FriendAPIURL + `/request?requestee=${id}&authtoken=${authToken}`,
-    {
-      method: 'DELETE',
+  const response = await fetch(FriendAPIURL + '/request', {
+    method: 'DELETE',
+    body: JSON.stringify({requestee: id}),
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Xano-Authorization': `Bearer ${authToken}`,
+      'X-Xano-Authorization-Only': 'true',
     },
-  );
+  });
 
   return response?.ok;
 };
@@ -164,12 +174,15 @@ export const acceptFriendRequest = async (id: number): Promise<boolean> => {
     return false;
   }
 
-  const response = await fetch(
-    FriendAPIURL + `/request/accept?requester=${id}&authtoken=${authToken}`,
-    {
-      method: 'POST',
+  const response = await fetch(FriendAPIURL + '/request/accept', {
+    method: 'POST',
+    body: JSON.stringify({requester: id}),
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Xano-Authorization': `Bearer ${authToken}`,
+      'X-Xano-Authorization-Only': 'true',
     },
-  );
+  });
 
   return response?.ok;
 };
@@ -184,12 +197,15 @@ export const rejectFriendRequest = async (id: number): Promise<boolean> => {
     return false;
   }
 
-  const response = await fetch(
-    FriendAPIURL + `/request/reject?requester=${id}&authtoken=${authToken}`,
-    {
-      method: 'DELETE',
+  const response = await fetch(FriendAPIURL + '/request/reject', {
+    method: 'DELETE',
+    body: JSON.stringify({requester: id}),
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Xano-Authorization': `Bearer ${authToken}`,
+      'X-Xano-Authorization-Only': 'true',
     },
-  );
+  });
 
   return response?.ok;
 };
@@ -204,12 +220,15 @@ export const deleteFriend = async (id: number): Promise<boolean> => {
     return false;
   }
 
-  const response = await fetch(
-    FriendAPIURL + `/friend?friend=${id}&authtoken=${authToken}`,
-    {
-      method: 'DELETE',
+  const response = await fetch(FriendAPIURL + '/friend', {
+    method: 'DELETE',
+    body: JSON.stringify({friend: id}),
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Xano-Authorization': `Bearer ${authToken}`,
+      'X-Xano-Authorization-Only': 'true',
     },
-  );
+  });
 
   return response?.ok;
 };
@@ -224,12 +243,13 @@ export const getSuggestions = async (): Promise<UserInfo[] | null> => {
     return null;
   }
 
-  const response = await fetch(
-    FriendAPIURL + `/suggestion?authtoken=${authToken}`,
-    {
-      method: 'GET',
+  const response = await fetch(FriendAPIURL + '/suggestion', {
+    method: 'GET',
+    headers: {
+      'X-Xano-Authorization': `Bearer ${authToken}`,
+      'X-Xano-Authorization-Only': 'true',
     },
-  );
+  });
 
   if (response?.ok) {
     const myJson: UserInfo[] = await response.json();

@@ -3,7 +3,6 @@ import {StatusBarStyle} from 'react-native';
 const colors = {
   green: '#2ac42c',
   dim: 'rgba(0,0,0,.3)',
-  primaryShades: ['#f9a67a', '#f6ae2d', '#ff6c32', '#fc2f00'],
   profileShades: ['#8a66cc', '#cc6666', '#94cc66', '#66ccbb', '#6692cc'],
 };
 
@@ -16,6 +15,7 @@ const light = {
   accent: '#f36f3f',
   red: '#ff0000',
   blur: 'rgba(255,255,255,.8)',
+  primaryShades: ['#f9a67a', '#f6ae2d', '#ff6c32', '#fc2f00'],
   statusBar: 'dark-content' as StatusBarStyle,
 };
 
@@ -28,6 +28,7 @@ const dark = {
   accent: '#f38158',
   red: '#ff5533',
   blur: 'rgba(0,0,0,.6)',
+  primaryShades: ['#FAB794', '#F7BE56', '#FF895A', '#E75432'],
   statusBar: 'light-content' as StatusBarStyle,
 };
 

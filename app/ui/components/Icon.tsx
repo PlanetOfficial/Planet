@@ -19,6 +19,7 @@ interface Props {
   button?: boolean;
   padding?: number;
   disabled?: boolean;
+  border?: boolean;
   icon: ImageSourcePropType;
   onPress?: () => void;
 }
@@ -29,6 +30,7 @@ const Icon: React.FC<Props> = ({
   button = false,
   padding = 0,
   disabled = false,
+  border = false,
   icon,
   onPress,
 }) => {
@@ -68,6 +70,9 @@ const Icon: React.FC<Props> = ({
     padding: padding + (button ? z / 2 : 0),
     backgroundColor: button ? colors[theme].primary : undefined,
     borderRadius: button ? z / 2 : undefined,
+    borderWidth: border ? 1 : 0,
+    borderColor:
+      theme === 'light' ? colors[theme].primary : colors[theme].accent,
   };
 
   const IconStyles: ImageStyle = {
