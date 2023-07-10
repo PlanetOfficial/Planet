@@ -41,7 +41,7 @@ const Info: React.FC<Props> = ({
   datetime,
   setDatetime,
 }) => {
-  const d = new Date();
+  const currentDate = new Date();
 
   const theme = useColorScheme() || 'light';
 
@@ -116,7 +116,7 @@ const Info: React.FC<Props> = ({
             ? moment(datetime, 'MMM Do, h:mm a').toDate()
             : moment(
                 new Date(
-                  Math.ceil(d.getTime() / numbers.fiveMinutes) *
+                  Math.ceil(currentDate.getTime() / numbers.fiveMinutes) *
                     numbers.fiveMinutes,
                 ),
               ).toDate()

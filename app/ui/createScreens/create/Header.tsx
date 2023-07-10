@@ -42,7 +42,7 @@ const Header: React.FC<Props> = ({
   members,
   destinations,
 }) => {
-  const d = new Date();
+  const currentDate = new Date();
 
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
@@ -117,7 +117,7 @@ const Header: React.FC<Props> = ({
                 ? moment(date, 'M/D, h:mma').toDate()
                 : moment(
                     new Date(
-                      Math.ceil(d.getTime() / numbers.fiveMinutes) *
+                      Math.ceil(currentDate.getTime() / numbers.fiveMinutes) *
                         numbers.fiveMinutes,
                     ),
                   ).toDate()
