@@ -2,9 +2,12 @@
 
 1. Install React Native (ios or android)
 2. Clone this repository
-3. Install yarn globally if you haven't already (npm install yarn --global)
-4. yarn install
-5. Run!
+3. Create a .env file in the root directory of the project using the .env.example file as a template
+4. Ask for the .env file contents from the project owner
+5. Install yarn globally if you haven't already (npm install yarn --global)
+6. yarn install
+7. Run! (see below)
+8. (optional) If you run into a @env error, try resetting the react native cache with ```npm start -- --reset-cache```
 
 To run on android, run
 ```

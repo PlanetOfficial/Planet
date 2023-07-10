@@ -56,7 +56,6 @@ export interface Poi {
   price: number;
   rating: number;
   rating_count: number;
-  category_name: string;
 }
 
 export interface PoiDetail {

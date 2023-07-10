@@ -24,6 +24,7 @@ const EventSettings = ({
     params: {
       event: Event;
       destination: Destination;
+      category: string | undefined;
     };
   };
 }) => {
@@ -60,7 +61,11 @@ const EventSettings = ({
     const destination = route.params.destination;
 
     if (destination) {
-      const response = await postDestination(event.id, destination.id);
+      const response = await postDestination(
+        event.id,
+        destination.id,
+        route.params?.category || strings.event.destinationDefaultName,
+      );
 
       if (response) {
         loadData();
@@ -70,7 +75,7 @@ const EventSettings = ({
 
       navigation.setParams({destination: undefined});
     }
-  }, [event.id, loadData, navigation, route.params.destination]);
+  }, [event.id, loadData, navigation, route.params]);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {

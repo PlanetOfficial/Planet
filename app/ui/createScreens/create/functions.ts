@@ -31,6 +31,7 @@ export const handleSave = async (
   members: UserInfo[],
   setLoading: (loading: boolean) => void,
   destinations: Poi[] | undefined,
+  destinationNames: Map<number, string>,
 ) => {
   if (!destinations) {
     return;
@@ -39,7 +40,9 @@ export const handleSave = async (
   setLoading(true);
 
   const poi_ids = destinations.map(destination => destination.id);
-  const names = destinations.map(destination => destination.category_name);
+  const names = destinations.map(
+    destination => destinationNames.get(destination.id) || '',
+  );
 
   const response = await postEvent(
     poi_ids,
