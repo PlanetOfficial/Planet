@@ -1,6 +1,13 @@
 import React, {useState} from 'react';
-import {View, SafeAreaView, TouchableOpacity, StatusBar} from 'react-native';
+import {
+  View,
+  SafeAreaView,
+  TouchableOpacity,
+  StatusBar,
+  StyleSheet,
+} from 'react-native';
 import PhoneInput from 'react-native-phone-number-input';
+import {s} from 'react-native-size-matters';
 
 import colors from '../../constants/colors';
 import strings from '../../constants/strings';
@@ -64,7 +71,7 @@ const SignUpPhone = ({
         </Text>
       </View>
 
-      <View style={STYLES.inputContainer}>
+      <View style={styles.inputContainer}>
         <PhoneInput
           autoFocus={true}
           textContainerStyle={STYLES.input}
@@ -96,5 +103,14 @@ const SignUpPhone = ({
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  inputContainer: {
+    alignSelf: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: s(30),
+  },
+});
 
 export default SignUpPhone;
