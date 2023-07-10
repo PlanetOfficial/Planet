@@ -7,6 +7,7 @@
 5. Install yarn globally if you haven't already (npm install yarn --global)
 6. yarn install
 7. Run!
+8. (optional) If you run into a @env error, try resetting the react native cache with ```npm start -- --reset-cache```
 
 To run on android, run
 ```
