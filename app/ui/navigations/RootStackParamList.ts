@@ -25,6 +25,7 @@ type RootStackParamList = {
     mode: 'create' | 'suggest' | 'add' | 'none';
     place_id: string | undefined;
     poi: PoiType | undefined;
+    category: string | undefined;
   };
   Friends: undefined;
   CreateFG: undefined;
@@ -50,6 +51,7 @@ type RootStackParamList = {
     | {
         members: UserInfo[] | undefined;
         destination: PoiType | undefined;
+        category: string | undefined;
       }
     | undefined;
   ModeSearch: {
@@ -62,6 +64,7 @@ type RootStackParamList = {
   EventSettings: {
     event: Event;
     destination: Destination;
+    category: string | undefined;
   };
   Roulette: {
     destination: Destination;

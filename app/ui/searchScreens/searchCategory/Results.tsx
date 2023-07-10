@@ -46,6 +46,7 @@ const Results: React.FC<Props> = ({
                 poi: item,
                 bookmarked: bookmarks.some(bookmark => bookmark.id === item.id),
                 mode: mode,
+                category: category.name,
               })
             }>
             <PoiRow

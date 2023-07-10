@@ -7,6 +7,7 @@ import {EventAPIURL} from './APIConstants';
 export const postDestination = async (
   event_id: number,
   poi_id: number,
+  name: string,
 ): Promise<Boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
@@ -16,7 +17,7 @@ export const postDestination = async (
 
   const response = await fetch(EventAPIURL + '/destination', {
     method: 'POST',
-    body: JSON.stringify({event_id, poi_id}),
+    body: JSON.stringify({event_id, poi_id, name}),
     headers: {
       'Content-Type': 'application/json',
       'X-Xano-Authorization': `Bearer ${authToken}`,
