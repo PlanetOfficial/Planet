@@ -118,7 +118,7 @@ const User = ({
               return (
                 <TouchableOpacity
                   onPress={() =>
-                    navigation.navigate('Event', {
+                    navigation.push('Event', {
                       event: item,
                     })
                   }>
