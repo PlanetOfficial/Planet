@@ -9,7 +9,7 @@ export const login = async (username: string, password: string) => {
     body: JSON.stringify({username, password}),
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': XanoAPIKey,
+      Authorization: XanoAPIKey,
     },
   });
 
@@ -29,7 +29,7 @@ export const signup = async (
     body: JSON.stringify({first_name, last_name, username, password}),
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': XanoAPIKey,
+      Authorization: XanoAPIKey,
     },
   });
 
@@ -58,7 +58,7 @@ export const sendCodeForgotPwd = async (username: string) => {
     body: JSON.stringify({username}),
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': XanoAPIKey,
+      Authorization: XanoAPIKey,
     },
   });
 
@@ -88,7 +88,7 @@ export const verifyCodeUsername = async (
     body: JSON.stringify({code, username}),
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': XanoAPIKey,
+      Authorization: XanoAPIKey,
     },
   });
 

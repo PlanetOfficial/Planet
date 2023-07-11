@@ -263,8 +263,8 @@ export const searchUsers = async (text: string): Promise<UserInfo[] | null> => {
   const response = await fetch(FriendAPIURL + `/search?query=${text}`, {
     method: 'GET',
     headers: {
-      'Authorization': XanoAPIKey,
-    }
+      Authorization: XanoAPIKey,
+    },
   });
 
   if (response?.ok) {

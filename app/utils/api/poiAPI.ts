@@ -23,8 +23,8 @@ export const getPois = async (
     {
       method: 'GET',
       headers: {
-        'Authorization': XanoAPIKey,
-      }
+        Authorization: XanoAPIKey,
+      },
     },
   );
 
@@ -45,8 +45,8 @@ export const getPoi = async (
     {
       method: 'GET',
       headers: {
-        'Authorization': XanoAPIKey,
-      }
+        Authorization: XanoAPIKey,
+      },
     },
   );
 
@@ -66,7 +66,7 @@ export const postPoi = async (
     body: JSON.stringify({place_id}),
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': XanoAPIKey,
+      Authorization: XanoAPIKey,
     },
   });
 
@@ -78,11 +78,11 @@ export const postPoi = async (
   }
 };
 
-export const getCategories = async(): Promise<Response> => {
+export const getCategories = async (): Promise<Response> => {
   const response = await fetch(PoiAPIURL + '/category', {
     method: 'GET',
     headers: {
-      'Authorization': XanoAPIKey,
+      Authorization: XanoAPIKey,
     },
   });
 
