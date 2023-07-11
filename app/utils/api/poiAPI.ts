@@ -1,4 +1,4 @@
-import {PoiAPIURL} from './APIConstants';
+import {PoiAPIURL, XanoAPIKey} from './APIConstants';
 import {Category, Poi, PoiDetail} from '../types';
 
 export const getPois = async (
@@ -22,6 +22,9 @@ export const getPois = async (
       )}`,
     {
       method: 'GET',
+      headers: {
+        'Authorization': XanoAPIKey,
+      }
     },
   );
 
@@ -41,6 +44,9 @@ export const getPoi = async (
     PoiAPIURL + `/poi/${place_id}?supplier=${supplier}`,
     {
       method: 'GET',
+      headers: {
+        'Authorization': XanoAPIKey,
+      }
     },
   );
 
@@ -60,6 +66,7 @@ export const postPoi = async (
     body: JSON.stringify({place_id}),
     headers: {
       'Content-Type': 'application/json',
+      'Authorization': XanoAPIKey,
     },
   });
 
@@ -69,4 +76,15 @@ export const postPoi = async (
   } else {
     return null;
   }
+};
+
+export const getCategories = async(): Promise<Response> => {
+  const response = await fetch(PoiAPIURL + '/category', {
+    method: 'GET',
+    headers: {
+      'Authorization': XanoAPIKey,
+    },
+  });
+
+  return response;
 };

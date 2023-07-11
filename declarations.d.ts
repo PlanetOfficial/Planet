@@ -5,6 +5,7 @@ declare module '*.svg' {
 }
 
 declare module '@env' {
+  export const XANO_API_KEY: string;
   export const USER_API_URL: string;
   export const POI_API_URL: string;
   export const EVENT_API_URL: string;

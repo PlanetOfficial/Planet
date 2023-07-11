@@ -115,9 +115,10 @@ export const toggleNotifyNewSuggestion = async (): Promise<Boolean> => {
     UserAPIURL + '/notifications/notify_new_suggestion',
     {
       method: 'POST',
-      body: JSON.stringify({authtoken: authToken}),
       headers: {
         'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authToken}`,
+        'X-Xano-Authorization-Only': 'true',
       },
     },
   );
