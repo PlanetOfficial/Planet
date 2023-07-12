@@ -1,5 +1,6 @@
-import {PoiAPIURL} from './APIConstants';
+import {PoiAPIURL, XanoAPIKey} from './APIConstants';
 import {Category, Poi, PoiDetail} from '../types';
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 export const getPois = async (
   category: Category,
@@ -22,6 +23,9 @@ export const getPois = async (
       )}`,
     {
       method: 'GET',
+      headers: {
+        Authorization: XanoAPIKey,
+      },
     },
   );
 
@@ -33,14 +37,27 @@ export const getPois = async (
   }
 };
 
+/**
+ * @requires auth_token should be set in EncryptedStorage before calling this function
+ */
 export const getPoi = async (
   place_id: string,
   supplier: string,
 ): Promise<PoiDetail | null> => {
+  const authToken = await EncryptedStorage.getItem('auth_token');
+
+  if (!authToken) {
+    return null;
+  }
+
   const response = await fetch(
     PoiAPIURL + `/poi/${place_id}?supplier=${supplier}`,
     {
       method: 'GET',
+      headers: {
+        'X-Xano-Authorization': `Bearer ${authToken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
     },
   );
 
@@ -60,6 +77,7 @@ export const postPoi = async (
     body: JSON.stringify({place_id}),
     headers: {
       'Content-Type': 'application/json',
+      Authorization: XanoAPIKey,
     },
   });
 
@@ -69,4 +87,15 @@ export const postPoi = async (
   } else {
     return null;
   }
+};
+
+export const getCategories = async (): Promise<Response> => {
+  const response = await fetch(PoiAPIURL + '/category', {
+    method: 'GET',
+    headers: {
+      Authorization: XanoAPIKey,
+    },
+  });
+
+  return response;
 };

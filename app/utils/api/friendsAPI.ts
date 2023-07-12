@@ -1,5 +1,5 @@
 import EncryptedStorage from 'react-native-encrypted-storage';
-import {FriendAPIURL} from './APIConstants';
+import {FriendAPIURL, XanoAPIKey} from './APIConstants';
 import {FriendGroup, UserDetail, UserInfo} from '../types';
 
 /**
@@ -262,6 +262,9 @@ export const getSuggestions = async (): Promise<UserInfo[] | null> => {
 export const searchUsers = async (text: string): Promise<UserInfo[] | null> => {
   const response = await fetch(FriendAPIURL + `/search?query=${text}`, {
     method: 'GET',
+    headers: {
+      Authorization: XanoAPIKey,
+    },
   });
 
   if (response?.ok) {

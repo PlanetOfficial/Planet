@@ -21,10 +21,10 @@ npx react-native start
 npx react-native run-ios
 ```
 
-5. Copy environment variables (if there are any)
-
 **When adding new libraries, don't forget to '''npx pod-install ios''' if on mac
 Upgrade RN library with npx react-native upgrade
+
+**If you add to the .env file, remember to update the '@env' module in declarations.d.ts
 
 <h1>Commits</h1>
 

@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {getUserInfo} from './api/authAPI';
-import {PoiAPIURL} from './api/APIConstants';
+import {getCategories} from './api/poiAPI';
 
 /*
  * Data we cache:
@@ -20,9 +20,7 @@ import {PoiAPIURL} from './api/APIConstants';
 
 // caches categories
 export const cacheCategories = async () => {
-  const response = await fetch(PoiAPIURL + '/category', {
-    method: 'GET',
-  });
+  const response = await getCategories();
 
   if (response?.ok) {
     await AsyncStorage.setItem('genres', JSON.stringify(await response.json()));

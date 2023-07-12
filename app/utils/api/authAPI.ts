@@ -1,5 +1,5 @@
 import EncryptedStorage from 'react-native-encrypted-storage';
-import {UserAPIURL} from './APIConstants';
+import {UserAPIURL, XanoAPIKey} from './APIConstants';
 import {MyInfo} from '../types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -9,6 +9,7 @@ export const login = async (username: string, password: string) => {
     body: JSON.stringify({username, password}),
     headers: {
       'Content-Type': 'application/json',
+      Authorization: XanoAPIKey,
     },
   });
 
@@ -28,6 +29,7 @@ export const signup = async (
     body: JSON.stringify({first_name, last_name, username, password}),
     headers: {
       'Content-Type': 'application/json',
+      Authorization: XanoAPIKey,
     },
   });
 
@@ -56,6 +58,7 @@ export const sendCodeForgotPwd = async (username: string) => {
     body: JSON.stringify({username}),
     headers: {
       'Content-Type': 'application/json',
+      Authorization: XanoAPIKey,
     },
   });
 
@@ -85,6 +88,7 @@ export const verifyCodeUsername = async (
     body: JSON.stringify({code, username}),
     headers: {
       'Content-Type': 'application/json',
+      Authorization: XanoAPIKey,
     },
   });
 
