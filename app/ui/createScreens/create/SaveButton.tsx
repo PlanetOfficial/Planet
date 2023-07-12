@@ -3,7 +3,9 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   useColorScheme,
+  StyleSheet,
 } from 'react-native';
+import {s} from 'react-native-size-matters';
 
 import colors from '../../../constants/colors';
 import strings from '../../../constants/strings';
@@ -41,6 +43,7 @@ const SaveButton: React.FC<Props> = ({
     <TouchableOpacity
       style={[
         STYLES.button,
+        styles.button,
         {
           backgroundColor:
             destinations && destinations.length > 0
@@ -70,5 +73,14 @@ const SaveButton: React.FC<Props> = ({
     </TouchableOpacity>
   );
 };
+
+const styles = StyleSheet.create({
+  button: {
+    minWidth: s(100),
+    minHeight: s(45),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
 
 export default SaveButton;
