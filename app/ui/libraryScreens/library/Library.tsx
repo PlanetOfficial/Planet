@@ -3,13 +3,14 @@ import {
   View,
   SafeAreaView,
   Alert,
-  FlatList,
+  SectionList,
   TouchableOpacity,
   StyleSheet,
   ActivityIndicator,
   RefreshControl,
   useColorScheme,
   StatusBar,
+  SectionListProps,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 import EncryptedStorage from 'react-native-encrypted-storage';
@@ -82,13 +83,57 @@ const Library = ({navigation}: {navigation: any}) => {
           <ActivityIndicator size="small" color={colors[theme].accent} />
         </View>
       ) : (
-        <FlatList
+        <SectionList
+          sections={[
+            {
+              title: strings.event.upcomingEvents,
+              data: events
+                .filter(
+                  (event: Event) =>
+                    event.datetime &&
+                    new Date(event.datetime) >= new Date(Date.now()) &&
+                    !event.completed,
+                )
+                .sort((a: Event, b: Event) => {
+                  if (a.datetime && b.datetime) {
+                    return new Date(a.datetime) < new Date(b.datetime) ? -1 : 1;
+                  }
+                  return 0;
+                }),
+            },
+            {
+              title: strings.event.nonDatedEvents,
+              data: events.filter(
+                (event: Event) => !event.datetime && !event.completed,
+              ),
+            },
+            {
+              title: strings.event.pastEvents,
+              data: events.filter(
+                (event: Event) =>
+                  (event.datetime &&
+                    new Date(event.datetime) < new Date(Date.now())) ||
+                  event.completed,
+              ),
+            },
+          ]}
           style={styles.list}
           contentContainerStyle={styles.content}
-          data={events}
-          renderItem={({item}: {item: Event}) => {
+          initialNumToRender={7}
+          renderItem={({
+            item,
+            section,
+          }: {
+            item: Event;
+            section: SectionListProps<Event>['sections'][number];
+          }) => {
             return (
               <TouchableOpacity
+                style={
+                  section.title === strings.event.pastEvents
+                    ? styles.transparent
+                    : null
+                }
                 onPress={() =>
                   navigation.navigate('Event', {
                     event: item,
@@ -98,6 +143,11 @@ const Library = ({navigation}: {navigation: any}) => {
               </TouchableOpacity>
             );
           }}
+          renderSectionHeader={({section}) => (
+            <View style={styles.sectionHeader}>
+              <Text size="s">{section.title}</Text>
+            </View>
+          )}
           ListEmptyComponent={
             <View style={STYLES.center}>
               <Text>{strings.event.noEventsFound}</Text>
@@ -122,12 +172,21 @@ const Library = ({navigation}: {navigation: any}) => {
 const styling = (theme: 'light' | 'dark') =>
   StyleSheet.create({
     list: {
-      paddingTop: s(5),
-      borderTopWidth: 1,
       borderColor: colors[theme].secondary,
     },
     content: {
       paddingBottom: s(20),
+    },
+    transparent: {
+      opacity: 0.75,
+    },
+    sectionHeader: {
+      marginHorizontal: s(20),
+      paddingTop: s(10),
+      paddingBottom: s(5),
+      backgroundColor: colors[theme].background,
+      borderBottomWidth: 1,
+      borderColor: colors[theme].secondary,
     },
   });
 

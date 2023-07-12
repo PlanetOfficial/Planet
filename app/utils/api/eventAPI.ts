@@ -187,3 +187,26 @@ export const inviteToEvent = async (
 
   return response.ok;
 };
+
+/**
+ * @requires auth_token should be set in EncryptedStorage before calling this function
+ */
+export const changeEventStatus = async (event_id: number): Promise<Boolean> => {
+  const authToken = await EncryptedStorage.getItem('auth_token');
+
+  if (!authToken) {
+    return false;
+  }
+
+  const response = await fetch(EventAPIURL + '/event/completionStatus', {
+    method: 'POST',
+    body: JSON.stringify({event_id}),
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Xano-Authorization': `Bearer ${authToken}`,
+      'X-Xano-Authorization-Only': 'true',
+    },
+  });
+
+  return response.ok;
+};

@@ -1,7 +1,7 @@
 import {Alert} from 'react-native';
 import strings from '../../../constants/strings';
 import {vote} from '../../../utils/api/suggestionAPI';
-import {getEvent} from '../../../utils/api/eventAPI';
+import {changeEventStatus, getEvent} from '../../../utils/api/eventAPI';
 import {
   Destination,
   Suggestion,
@@ -36,5 +36,20 @@ export const onVote = async (
     setEventDetail(_eventDetail);
   } else {
     Alert.alert(strings.error.error, strings.error.refreshEvent);
+  }
+};
+
+export const onStautsChange = async (
+  event: Event,
+  setEvent: (event: Event) => void,
+) => {
+  const response = await changeEventStatus(event.id);
+
+  if (response) {
+    const _event = {...event};
+    _event.completed = !_event.completed;
+    setEvent(_event);
+  } else {
+    Alert.alert(strings.error.error, strings.error.changeCompletionStatus);
   }
 };
