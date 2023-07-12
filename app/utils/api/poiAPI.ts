@@ -9,7 +9,7 @@ export const getPois = async (
   longitude: number,
   filters?: {[key: string]: string | string[]},
 ): Promise<Poi[] | null> => {
-  if(radius >= 5000) {
+  if (radius >= 5000) {
     latitude = Math.round(latitude * 100) / 100;
     longitude = Math.round(longitude * 100) / 100;
   } else {
