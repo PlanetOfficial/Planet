@@ -2,6 +2,7 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 import {FriendAPIURL, XanoAPIKey} from './APIConstants';
 import {FriendGroup, UserDetail, UserInfo} from '../types';
 import {refreshAuthtoken} from './authAPI';
+import { cacheAuthToken } from '../CacheHelpers';
 
 /**
  * @requires auth_token should be set in EncryptedStorage before calling this function
@@ -31,6 +32,7 @@ export const getFriend = async (id: number): Promise<UserDetail | null> => {
     const refreshedAuthtoken = await refreshAuthtoken();
 
     if (refreshedAuthtoken) {
+      await cacheAuthToken(refreshedAuthtoken);
       response = await request(refreshedAuthtoken);
     }
   }
@@ -77,6 +79,7 @@ export const getFriendsInfo = async (): Promise<{
     const refreshedAuthtoken = await refreshAuthtoken();
 
     if (refreshedAuthtoken) {
+      await cacheAuthToken(refreshedAuthtoken);
       response = await request(refreshedAuthtoken);
     }
   }
@@ -120,6 +123,7 @@ export const getFriends = async (): Promise<{
     const refreshedAuthtoken = await refreshAuthtoken();
 
     if (refreshedAuthtoken) {
+      await cacheAuthToken(refreshedAuthtoken);
       response = await request(refreshedAuthtoken);
     }
   }
@@ -163,6 +167,7 @@ export const getFriendRequests = async (): Promise<{
     const refreshedAuthtoken = await refreshAuthtoken();
 
     if (refreshedAuthtoken) {
+      await cacheAuthToken(refreshedAuthtoken);
       response = await request(refreshedAuthtoken);
     }
   }
@@ -205,6 +210,7 @@ export const postFriendRequest = async (id: number): Promise<boolean> => {
     const refreshedAuthtoken = await refreshAuthtoken();
 
     if (refreshedAuthtoken) {
+      await cacheAuthToken(refreshedAuthtoken);
       response = await request(refreshedAuthtoken);
     }
   }
@@ -242,6 +248,7 @@ export const deleteFriendRequest = async (id: number): Promise<boolean> => {
     const refreshedAuthtoken = await refreshAuthtoken();
 
     if (refreshedAuthtoken) {
+      await cacheAuthToken(refreshedAuthtoken);
       response = await request(refreshedAuthtoken);
     }
   }
@@ -279,6 +286,7 @@ export const acceptFriendRequest = async (id: number): Promise<boolean> => {
     const refreshedAuthtoken = await refreshAuthtoken();
 
     if (refreshedAuthtoken) {
+      await cacheAuthToken(refreshedAuthtoken);
       response = await request(refreshedAuthtoken);
     }
   }
@@ -316,6 +324,7 @@ export const rejectFriendRequest = async (id: number): Promise<boolean> => {
     const refreshedAuthtoken = await refreshAuthtoken();
 
     if (refreshedAuthtoken) {
+      await cacheAuthToken(refreshedAuthtoken);
       response = await request(refreshedAuthtoken);
     }
   }
@@ -353,6 +362,7 @@ export const deleteFriend = async (id: number): Promise<boolean> => {
     const refreshedAuthtoken = await refreshAuthtoken();
 
     if (refreshedAuthtoken) {
+      await cacheAuthToken(refreshedAuthtoken);
       response = await request(refreshedAuthtoken);
     }
   }
@@ -388,6 +398,7 @@ export const getSuggestions = async (): Promise<UserInfo[] | null> => {
     const refreshedAuthtoken = await refreshAuthtoken();
 
     if (refreshedAuthtoken) {
+      await cacheAuthToken(refreshedAuthtoken);
       response = await request(refreshedAuthtoken);
     }
   }

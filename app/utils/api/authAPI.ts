@@ -2,6 +2,7 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 import {UserAPIURL, XanoAPIKey} from './APIConstants';
 import {MyInfo} from '../types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { cacheAuthToken } from '../CacheHelpers';
 
 export const login = async (username: string, password: string) => {
   const response = await fetch(UserAPIURL + '/auth/login', {
@@ -59,6 +60,7 @@ export const sendCode = async (authToken: string, phone_number: string) => {
     const refreshedAuthtoken = await refreshAuthtoken();
 
     if (refreshedAuthtoken) {
+      await cacheAuthToken(refreshedAuthtoken);
       response = await request(refreshedAuthtoken);
     }
   }
@@ -100,6 +102,7 @@ export const verifyCode = async (authToken: string, code: string) => {
     const refreshedAuthtoken = await refreshAuthtoken();
 
     if (refreshedAuthtoken) {
+      await cacheAuthToken(refreshedAuthtoken);
       response = await request(refreshedAuthtoken);
     }
   }
@@ -150,6 +153,7 @@ export const resetPassword = async (authToken: string, password: string) => {
     const refreshedAuthtoken = await refreshAuthtoken();
 
     if (refreshedAuthtoken) {
+      await cacheAuthToken(refreshedAuthtoken);
       response = await request(refreshedAuthtoken);
     }
   }
@@ -182,6 +186,7 @@ export const sendMoreInfo = async (
     const refreshedAuthtoken = await refreshAuthtoken();
 
     if (refreshedAuthtoken) {
+      await cacheAuthToken(refreshedAuthtoken);
       response = await request(refreshedAuthtoken);
     }
   }
@@ -210,6 +215,7 @@ export const getUserInfo = async (
     const refreshedAuthtoken = await refreshAuthtoken();
 
     if (refreshedAuthtoken) {
+      await cacheAuthToken(refreshedAuthtoken);
       response = await request(refreshedAuthtoken);
     }
   }
@@ -241,6 +247,7 @@ export const isVerified = async (authToken: string) => {
     const refreshedAuthtoken = await refreshAuthtoken();
 
     if (refreshedAuthtoken) {
+      await cacheAuthToken(refreshedAuthtoken);
       response = await request(refreshedAuthtoken);
     }
   }
@@ -280,6 +287,7 @@ export const saveTokenToDatabase = async (fcm_token: string) => {
     const refreshedAuthtoken = await refreshAuthtoken();
 
     if (refreshedAuthtoken) {
+      await cacheAuthToken(refreshedAuthtoken);
       response = await request(refreshedAuthtoken);
     }
   }
@@ -320,6 +328,7 @@ export const saveImage = async (base64: string): Promise<string | null> => {
     const refreshedAuthtoken = await refreshAuthtoken();
 
     if (refreshedAuthtoken) {
+      await cacheAuthToken(refreshedAuthtoken);
       response = await request(refreshedAuthtoken);
     }
   }
@@ -370,6 +379,7 @@ export const editInfo = async (
     const refreshedAuthtoken = await refreshAuthtoken();
 
     if (refreshedAuthtoken) {
+      await cacheAuthToken(refreshedAuthtoken);
       response = await request(refreshedAuthtoken);
     }
   }
@@ -405,6 +415,7 @@ export const removeAccount = async (): Promise<Boolean> => {
     const refreshedAuthtoken = await refreshAuthtoken();
 
     if (refreshedAuthtoken) {
+      await cacheAuthToken(refreshedAuthtoken);
       response = await request(refreshedAuthtoken);
     }
   }

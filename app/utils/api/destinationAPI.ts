@@ -1,6 +1,7 @@
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {EventAPIURL} from './APIConstants';
 import {refreshAuthtoken} from './authAPI';
+import { cacheAuthToken } from '../CacheHelpers';
 
 /**
  * @requires auth_token should be set in EncryptedStorage before calling this function
@@ -36,6 +37,7 @@ export const postDestination = async (
     const refreshedAuthtoken = await refreshAuthtoken();
 
     if (refreshedAuthtoken) {
+      await cacheAuthToken(refreshedAuthtoken);
       response = await request(refreshedAuthtoken);
     }
   }
@@ -77,6 +79,7 @@ export const renameDestination = async (
     const refreshedAuthtoken = await refreshAuthtoken();
 
     if (refreshedAuthtoken) {
+      await cacheAuthToken(refreshedAuthtoken);
       response = await request(refreshedAuthtoken);
     }
   }
@@ -117,6 +120,7 @@ export const removeDestination = async (
     const refreshedAuthtoken = await refreshAuthtoken();
 
     if (refreshedAuthtoken) {
+      await cacheAuthToken(refreshedAuthtoken);
       response = await request(refreshedAuthtoken);
     }
   }
@@ -157,6 +161,7 @@ export const reorderDestinations = async (
     const refreshedAuthtoken = await refreshAuthtoken();
 
     if (refreshedAuthtoken) {
+      await cacheAuthToken(refreshedAuthtoken);
       response = await request(refreshedAuthtoken);
     }
   }

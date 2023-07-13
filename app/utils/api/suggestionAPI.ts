@@ -2,6 +2,7 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 import {EventAPIURL} from './APIConstants';
 import {Spin} from '../types';
 import {refreshAuthtoken} from './authAPI';
+import { cacheAuthToken } from '../CacheHelpers';
 
 /**
  * @requires auth_token should be set in EncryptedStorage before calling this function
@@ -37,6 +38,7 @@ export const postSuggestion = async (
     const refreshedAuthtoken = await refreshAuthtoken();
 
     if (refreshedAuthtoken) {
+      await cacheAuthToken(refreshedAuthtoken);
       response = await request(refreshedAuthtoken);
     }
   }
@@ -78,6 +80,7 @@ export const removeSuggestion = async (
     const refreshedAuthtoken = await refreshAuthtoken();
 
     if (refreshedAuthtoken) {
+      await cacheAuthToken(refreshedAuthtoken);
       response = await request(refreshedAuthtoken);
     }
   }
@@ -119,6 +122,7 @@ export const makePrimary = async (
     const refreshedAuthtoken = await refreshAuthtoken();
 
     if (refreshedAuthtoken) {
+      await cacheAuthToken(refreshedAuthtoken);
       response = await request(refreshedAuthtoken);
     }
   }
@@ -160,6 +164,7 @@ export const spinRoulette = async (
     const refreshedAuthtoken = await refreshAuthtoken();
 
     if (refreshedAuthtoken) {
+      await cacheAuthToken(refreshedAuthtoken);
       response = await request(refreshedAuthtoken);
     }
   }
@@ -205,6 +210,7 @@ export const vote = async (
     const refreshedAuthtoken = await refreshAuthtoken();
 
     if (refreshedAuthtoken) {
+      await cacheAuthToken(refreshedAuthtoken);
       response = await request(refreshedAuthtoken);
     }
   }

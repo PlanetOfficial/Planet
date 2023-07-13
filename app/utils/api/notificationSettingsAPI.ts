@@ -2,6 +2,7 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 import {UserAPIURL} from './APIConstants';
 import {NotificationSettings} from '../types';
 import {refreshAuthtoken} from './authAPI';
+import { cacheAuthToken } from '../CacheHelpers';
 
 /**
  * @requires auth_token should be set in EncryptedStorage before calling this function
@@ -32,6 +33,7 @@ export const getNotificationSettings =
       const refreshedAuthtoken = await refreshAuthtoken();
 
       if (refreshedAuthtoken) {
+        await cacheAuthToken(refreshedAuthtoken);
         response = await request(refreshedAuthtoken);
       }
     }
@@ -75,6 +77,7 @@ export const toggleNotifyFriendRequest = async (): Promise<Boolean> => {
     const refreshedAuthtoken = await refreshAuthtoken();
 
     if (refreshedAuthtoken) {
+      await cacheAuthToken(refreshedAuthtoken);
       response = await request(refreshedAuthtoken);
     }
   }
@@ -113,6 +116,7 @@ export const toggleNotifyFriendRequestAccept = async (): Promise<Boolean> => {
     const refreshedAuthtoken = await refreshAuthtoken();
 
     if (refreshedAuthtoken) {
+      await cacheAuthToken(refreshedAuthtoken);
       response = await request(refreshedAuthtoken);
     }
   }
@@ -151,6 +155,7 @@ export const toggleNotifyEventInvite = async (): Promise<Boolean> => {
     const refreshedAuthtoken = await refreshAuthtoken();
 
     if (refreshedAuthtoken) {
+      await cacheAuthToken(refreshedAuthtoken);
       response = await request(refreshedAuthtoken);
     }
   }
@@ -190,6 +195,7 @@ export const toggleNotifyNewSuggestion = async (): Promise<Boolean> => {
     const refreshedAuthtoken = await refreshAuthtoken();
 
     if (refreshedAuthtoken) {
+      await cacheAuthToken(refreshedAuthtoken);
       response = await request(refreshedAuthtoken);
     }
   }
@@ -228,6 +234,7 @@ export const toggleNotifySetPrimary = async (): Promise<Boolean> => {
     const refreshedAuthtoken = await refreshAuthtoken();
 
     if (refreshedAuthtoken) {
+      await cacheAuthToken(refreshedAuthtoken);
       response = await request(refreshedAuthtoken);
     }
   }
