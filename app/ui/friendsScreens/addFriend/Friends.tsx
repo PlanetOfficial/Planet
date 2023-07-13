@@ -56,7 +56,7 @@ const Friends: React.FC<Props> = ({
   return (
     <ScrollView style={STYLES.container}>
       <View style={styles.title}>
-        <Text weight="l">
+        <Text size="s">
           {friendGroups.length === 1
             ? strings.friends.friendGroup
             : strings.friends.friendGroups}
@@ -156,7 +156,7 @@ const Friends: React.FC<Props> = ({
       ) : null}
 
       <View style={styles.title}>
-        <Text weight="l">{strings.friends.friends}:</Text>
+        <Text size="s">{strings.friends.friends}:</Text>
       </View>
       {friends.map((item: UserInfo) => (
         <TouchableOpacity

@@ -83,7 +83,7 @@ const Requests = ({navigation}: {navigation: any}) => {
       }>
       {requests.length > 0 ? (
         <View style={styles.title}>
-          <Text weight="l">
+          <Text size="s">
             {requests.length === 1
               ? strings.friends.friendRequest
               : strings.friends.friendRequests}
@@ -128,7 +128,7 @@ const Requests = ({navigation}: {navigation: any}) => {
       ))}
       {requestsSent.length > 0 ? (
         <View style={styles.title}>
-          <Text weight="l">
+          <Text size="s">
             {requestsSent.length === 1
               ? strings.friends.pendingRequest
               : strings.friends.pendingRequests}
