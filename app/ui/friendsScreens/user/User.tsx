@@ -56,9 +56,16 @@ const User = ({
   if (!friendsContext) {
     throw new Error('FriendsContext is not set!');
   }
-  const {blocking, setBlocking} = friendsContext;
-
-  console.log(blocking);
+  const {
+    friends,
+    setFriends,
+    requests,
+    setRequests,
+    requestsSent,
+    setRequestsSent,
+    blocking,
+    setBlocking,
+  } = friendsContext;
 
   const initializeData = useCallback(async () => {
     const myUserId = await EncryptedStorage.getItem('user_id');
@@ -100,6 +107,12 @@ const User = ({
                 onPress: () =>
                   handleBlock(
                     route.params.user.id,
+                    friends,
+                    setFriends,
+                    requests,
+                    setRequests,
+                    requestsSent,
+                    setRequestsSent,
                     blocking,
                     setBlocking,
                     route.params.user,
