@@ -1,4 +1,4 @@
-import React, {createRef} from 'react';
+import React, {createRef, useContext} from 'react';
 import {
   View,
   SafeAreaView,
@@ -19,6 +19,8 @@ import STYLING from '../../../constants/styles';
 import Icon from '../../components/Icon';
 import Text from '../../components/Text';
 
+import FriendsContext from '../../../context/FriendsContext';
+
 import {searchUsers} from '../../../utils/api/friendsAPI';
 import {UserInfo} from '../../../utils/types';
 
@@ -32,6 +34,7 @@ interface Props {
   searchText: string;
   setSearchText: (searchText: string) => void;
   setSearchResults: (searchResults: UserInfo[]) => void;
+  self: number;
 }
 
 const Header: React.FC<Props> = ({
@@ -44,12 +47,19 @@ const Header: React.FC<Props> = ({
   searchText,
   setSearchText,
   setSearchResults,
+  self,
 }) => {
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
   const STYLES = STYLING(theme);
 
   const searchRef = createRef<TextInput>();
+
+  const friendsContext = useContext(FriendsContext);
+  if (!friendsContext) {
+    throw new Error('FriendsContext is not set!');
+  }
+  const {blocked} = friendsContext;
 
   const search = async (text: string) => {
     setLoading(true);
@@ -58,7 +68,11 @@ const Header: React.FC<Props> = ({
       const result = await searchUsers(text);
 
       if (result) {
-        setSearchResults(result);
+        // exclude current user (and users you are blocked by) from search results
+        const filtered = result.filter(
+          user => user.id !== self && !blocked.some(b => b.id === user.id),
+        ) as UserInfo[];
+        setSearchResults(filtered);
       } else {
         Alert.alert(strings.error.error, strings.error.searchError);
       }

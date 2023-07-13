@@ -1,4 +1,4 @@
-import React, {useState, createRef, useEffect} from 'react';
+import React, {useState, createRef, useEffect, useContext} from 'react';
 import {
   View,
   SafeAreaView,
@@ -25,6 +25,8 @@ import Icon from '../../components/Icon';
 import Text from '../../components/Text';
 import UserRow from '../../components/UserRow';
 
+import FriendsContext from '../../../context/FriendsContext';
+
 import {searchUsers} from '../../../utils/api/friendsAPI';
 import {UserInfo} from '../../../utils/types';
 import ActionButtons from '../user/ActionButtons';
@@ -44,6 +46,12 @@ const Friends = ({navigation}: {navigation: any}) => {
   const [searching, setSearching] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
 
+  const friendsContext = useContext(FriendsContext);
+  if (!friendsContext) {
+    throw new Error('FriendsContext is not set!');
+  }
+  const {blocked} = friendsContext;
+
   const search = async (text: string) => {
     setLoading(true);
     setSearchText(text);
@@ -51,8 +59,10 @@ const Friends = ({navigation}: {navigation: any}) => {
       const result = await searchUsers(text);
 
       if (result) {
-        // exclude current user from search results
-        const filtered = result.filter(user => user.id !== self) as UserInfo[];
+        // exclude current user (and users you are blocked by) from search results
+        const filtered = result.filter(
+          user => user.id !== self && !blocked.some(b => b.id === user.id),
+        ) as UserInfo[];
         setSearchResults(filtered);
       } else {
         Alert.alert(strings.error.error, strings.error.searchError);

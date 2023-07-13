@@ -17,6 +17,8 @@ const FriendsStateProvider = ({
   const [requests, setRequests] = useState<UserInfo[]>([]);
   const [requestsSent, setRequestsSent] = useState<UserInfo[]>([]);
   const [friendGroups, setFriendGroups] = useState<FriendGroup[]>([]);
+  const [blocking, setBlocking] = useState<UserInfo[]>([]);
+  const [blocked, setBlocked] = useState<UserInfo[]>([]);
 
   const friendsContext = useMemo(
     () => ({
@@ -30,8 +32,20 @@ const FriendsStateProvider = ({
       setRequestsSent,
       friendGroups,
       setFriendGroups,
+      blocking,
+      setBlocking,
+      blocked,
+      setBlocked,
     }),
-    [suggestions, friends, requests, requestsSent, friendGroups],
+    [
+      suggestions,
+      friends,
+      requests,
+      requestsSent,
+      friendGroups,
+      blocking,
+      blocked,
+    ],
   );
 
   const initializeFriendsInfo = async () => {
@@ -42,6 +56,8 @@ const FriendsStateProvider = ({
       setRequests(result.requests);
       setRequestsSent(result.requests_sent);
       setFriendGroups(result.friend_groups);
+      setBlocking(result.blocking);
+      setBlocked(result.blocked);
     } else {
       Alert.alert(strings.error.error, strings.error.loadFriendsList);
     }
