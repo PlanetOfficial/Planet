@@ -9,6 +9,7 @@ import {
   postFriendRequest,
   rejectFriendRequest,
 } from '../../../utils/api/friendsAPI';
+import {blockFriend, unBlockFriend} from '../../../utils/api/fgAPI';
 
 export const handleFriendRequest = async (
   userId: number,
@@ -98,5 +99,38 @@ export const handleCancelRequest = async (
     setRequestsSent(requestsSentUpdated);
   } else {
     Alert.alert(strings.error.error, strings.error.cancelFriendRequest);
+  }
+};
+
+export const handleBlock = async (
+  userId: number,
+  blocking: UserInfo[],
+  setBlocking: (blocking: UserInfo[]) => void,
+  user: UserInfo,
+) => {
+  const response = await blockFriend(userId);
+
+  if (response) {
+    const blockingUpdated = [user, ...blocking];
+    setBlocking(blockingUpdated);
+  } else {
+    Alert.alert(strings.error.error, strings.error.block);
+  }
+};
+
+export const handleUnblock = async (
+  userId: number,
+  blocking: UserInfo[],
+  setBlocking: (blocked: UserInfo[]) => void,
+) => {
+  const response = await unBlockFriend(userId);
+
+  if (response) {
+    const blockingUpdated = blocking.filter(
+      (block: UserInfo) => block.id !== userId,
+    );
+    setBlocking(blockingUpdated);
+  } else {
+    Alert.alert(strings.error.error, strings.error.unblock);
   }
 };

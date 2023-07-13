@@ -15,6 +15,7 @@ import {
   handleCancelRequest,
   handleDeclineRequest,
   handleFriendRequest,
+  handleUnblock,
   handleUnfriend,
 } from './functions';
 
@@ -36,6 +37,9 @@ const ActionButtons: React.FC<Props> = ({user}) => {
     setRequests,
     requestsSent,
     setRequestsSent,
+    blocking,
+    setBlocking,
+    blocked,
   } = friendsContext;
 
   return friends.some(friend => friend.id === user.id) ? (
@@ -88,12 +92,22 @@ const ActionButtons: React.FC<Props> = ({user}) => {
         <Text size="xs">{strings.friends.reject}</Text>
       </TouchableOpacity>
     </>
+  ) : blocking.some(block => block.id === user.id) ? (
+    <TouchableOpacity
+      style={{
+        ...styles.button,
+        backgroundColor: colors[theme].secondary,
+      }}
+      onPress={() => handleUnblock(user.id, blocking, setBlocking)}>
+      <Text size="xs">{strings.friends.unblock}</Text>
+    </TouchableOpacity>
   ) : (
     <TouchableOpacity
       style={{
         ...styles.button,
         backgroundColor: colors[theme].accent,
       }}
+      disabled={blocked.some(block => block.id === user.id)}
       onPress={() =>
         handleFriendRequest(user.id, requestsSent, setRequestsSent, user)
       }>
