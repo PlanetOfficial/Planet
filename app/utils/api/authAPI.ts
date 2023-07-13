@@ -39,15 +39,29 @@ export const signup = async (
 };
 
 export const sendCode = async (authToken: string, phone_number: string) => {
-  const response = await fetch(UserAPIURL + '/auth/sendCode', {
-    method: 'POST',
-    body: JSON.stringify({phone_number}),
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Xano-Authorization': `Bearer ${authToken}`,
-      'X-Xano-Authorization-Only': 'true',
-    },
-  });
+  const request = async (authtoken: string) => {
+    const response = await fetch(UserAPIURL + '/auth/sendCode', {
+      method: 'POST',
+      body: JSON.stringify({phone_number}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authtoken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
+    });
+
+    return response;
+  };
+
+  let response = await request(authToken);
+
+  if (response.status === 401) {
+    const refreshedAuthtoken = await refreshAuthtoken();
+
+    if (refreshedAuthtoken) {
+      response = await request(refreshedAuthtoken);
+    }
+  }
 
   return response.ok;
 };
@@ -66,15 +80,29 @@ export const sendCodeForgotPwd = async (username: string) => {
 };
 
 export const verifyCode = async (authToken: string, code: string) => {
-  const response = await fetch(UserAPIURL + '/auth/verifyCode', {
-    method: 'POST',
-    body: JSON.stringify({code}),
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Xano-Authorization': `Bearer ${authToken}`,
-      'X-Xano-Authorization-Only': 'true',
-    },
-  });
+  const request = async (authtoken: string) => {
+    const response = await fetch(UserAPIURL + '/auth/verifyCode', {
+      method: 'POST',
+      body: JSON.stringify({code}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authtoken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
+    });
+
+    return response;
+  };
+
+  let response = await request(authToken);
+
+  if (response.status === 401) {
+    const refreshedAuthtoken = await refreshAuthtoken();
+
+    if (refreshedAuthtoken) {
+      response = await request(refreshedAuthtoken);
+    }
+  }
 
   return response.ok;
 };
@@ -102,15 +130,29 @@ export const verifyCodeUsername = async (
 };
 
 export const resetPassword = async (authToken: string, password: string) => {
-  const response = await fetch(UserAPIURL + '/auth/resetPassword', {
-    method: 'POST',
-    body: JSON.stringify({password}),
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Xano-Authorization': `Bearer ${authToken}`,
-      'X-Xano-Authorization-Only': 'true',
-    },
-  });
+  const request = async (authtoken: string) => {
+    const response = await fetch(UserAPIURL + '/auth/resetPassword', {
+      method: 'POST',
+      body: JSON.stringify({password}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authtoken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
+    });
+
+    return response;
+  };
+
+  let response = await request(authToken);
+
+  if (response.status === 401) {
+    const refreshedAuthtoken = await refreshAuthtoken();
+
+    if (refreshedAuthtoken) {
+      response = await request(refreshedAuthtoken);
+    }
+  }
 
   return response.ok;
 };
@@ -120,15 +162,29 @@ export const sendMoreInfo = async (
   age: string,
   gender: string,
 ) => {
-  const response = await fetch(UserAPIURL + '/auth/moreInfo', {
-    method: 'POST',
-    body: JSON.stringify({age, gender}),
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Xano-Authorization': `Bearer ${authToken}`,
-      'X-Xano-Authorization-Only': 'true',
-    },
-  });
+  const request = async (authtoken: string) => {
+    const response = await fetch(UserAPIURL + '/auth/moreInfo', {
+      method: 'POST',
+      body: JSON.stringify({age, gender}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authtoken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
+    });
+
+    return response;
+  };
+
+  let response = await request(authToken);
+
+  if (response.status === 401) {
+    const refreshedAuthtoken = await refreshAuthtoken();
+
+    if (refreshedAuthtoken) {
+      response = await request(refreshedAuthtoken);
+    }
+  }
 
   return response.ok;
 };
@@ -136,17 +192,30 @@ export const sendMoreInfo = async (
 export const getUserInfo = async (
   authToken: string,
 ): Promise<MyInfo | undefined> => {
-  const response = await fetch(UserAPIURL + '/auth/me', {
-    method: 'GET',
-    headers: {
-      'X-Xano-Authorization': `Bearer ${authToken}`,
-      'X-Xano-Authorization-Only': 'true',
-    },
-  });
+  const request = async (authtoken: string) => {
+    const response = await fetch(UserAPIURL + '/auth/me', {
+      method: 'GET',
+      headers: {
+        'X-Xano-Authorization': `Bearer ${authtoken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
+    });
+
+    return response;
+  };
+
+  let response = await request(authToken);
+
+  if (response.status === 401) {
+    const refreshedAuthtoken = await refreshAuthtoken();
+
+    if (refreshedAuthtoken) {
+      response = await request(refreshedAuthtoken);
+    }
+  }
 
   if (response?.ok) {
     const myJson = await response.json();
-
     return myJson;
   } else {
     return undefined;
@@ -154,13 +223,27 @@ export const getUserInfo = async (
 };
 
 export const isVerified = async (authToken: string) => {
-  const response = await fetch(UserAPIURL + '/auth/isVerified', {
-    method: 'GET',
-    headers: {
-      'X-Xano-Authorization': `Bearer ${authToken}`,
-      'X-Xano-Authorization-Only': 'true',
-    },
-  });
+  const request = async (authtoken: string) => {
+    const response = await fetch(UserAPIURL + '/auth/isVerified', {
+      method: 'GET',
+      headers: {
+        'X-Xano-Authorization': `Bearer ${authtoken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
+    });
+
+    return response;
+  };
+  
+  let response = await request(authToken);
+
+  if (response.status === 401) {
+    const refreshedAuthtoken = await refreshAuthtoken();
+
+    if (refreshedAuthtoken) {
+      response = await request(refreshedAuthtoken);
+    }
+  }
 
   const myJson = await response.json();
 
@@ -177,15 +260,29 @@ export const saveTokenToDatabase = async (fcm_token: string) => {
     return;
   }
 
-  const response = await fetch(UserAPIURL + '/firebase/updateToken', {
-    method: 'POST',
-    body: JSON.stringify({token: fcm_token}),
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Xano-Authorization': `Bearer ${authToken}`,
-      'X-Xano-Authorization-Only': 'true',
-    },
-  });
+  const request = async (authtoken: string) => {
+    const response = await fetch(UserAPIURL + '/firebase/updateToken', {
+      method: 'POST',
+      body: JSON.stringify({token: fcm_token}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authtoken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
+    });
+
+    return response;
+  };
+
+  let response = await request(authToken);
+
+  if (response.status === 401) {
+    const refreshedAuthtoken = await refreshAuthtoken();
+
+    if (refreshedAuthtoken) {
+      response = await request(refreshedAuthtoken);
+    }
+  }
 
   const myJson = await response.json();
 
@@ -203,15 +300,29 @@ export const saveImage = async (base64: string): Promise<string | null> => {
     return null;
   }
 
-  const response = await fetch(UserAPIURL + '/auth/uploadImage', {
-    method: 'POST',
-    body: JSON.stringify({content: 'data:image/png;base64,' + base64}),
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Xano-Authorization': `Bearer ${authToken}`,
-      'X-Xano-Authorization-Only': 'true',
-    },
-  });
+  const request = async (authtoken: string) => {
+    const response = await fetch(UserAPIURL + '/auth/uploadImage', {
+      method: 'POST',
+      body: JSON.stringify({content: 'data:image/png;base64,' + base64}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authtoken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
+    });
+
+    return response;
+  }
+
+  let response = await request(authToken);
+
+  if (response.status === 401) {
+    const refreshedAuthtoken = await refreshAuthtoken();
+
+    if (refreshedAuthtoken) {
+      response = await request(refreshedAuthtoken);
+    }
+  }
 
   const myJson: {image_url: string} = await response.json();
 
@@ -239,15 +350,29 @@ export const editInfo = async (
     return null;
   }
 
-  const response = await fetch(UserAPIURL + '/auth/editInfo', {
-    method: 'POST',
-    body: JSON.stringify({first_name, last_name, username, age, gender}),
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Xano-Authorization': `Bearer ${authToken}`,
-      'X-Xano-Authorization-Only': 'true',
-    },
-  });
+  const request = async (authtoken: string) => {
+    const response = await fetch(UserAPIURL + '/auth/editInfo', {
+      method: 'POST',
+      body: JSON.stringify({first_name, last_name, username, age, gender}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authtoken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
+    });
+
+    return response;
+  };
+
+  let response = await request(authToken);
+
+  if (response.status === 401) {
+    const refreshedAuthtoken = await refreshAuthtoken();
+
+    if (refreshedAuthtoken) {
+      response = await request(refreshedAuthtoken);
+    }
+  }
 
   return response;
 };
@@ -262,13 +387,55 @@ export const removeAccount = async (): Promise<Boolean> => {
     return false;
   }
 
-  const response = await fetch(UserAPIURL + '/auth/removeAccount', {
-    method: 'DELETE',
-    headers: {
-      'X-Xano-Authorization': `Bearer ${authToken}`,
-      'X-Xano-Authorization-Only': 'true',
-    },
-  });
+  const request = async (authtoken: string) => {
+    const response = await fetch(UserAPIURL + '/auth/removeAccount', {
+      method: 'DELETE',
+      headers: {
+        'X-Xano-Authorization': `Bearer ${authtoken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
+    });
+
+    return response;
+  };
+
+  let response = await request(authToken);
+
+  if (response.status === 401) {
+    const refreshedAuthtoken = await refreshAuthtoken();
+
+    if (refreshedAuthtoken) {
+      response = await request(refreshedAuthtoken);
+    }
+  }
 
   return response.ok;
+}; 
+
+/**
+ * @requires user_id should be set in EncryptedStorage before calling this function.
+ * USER MUST BE LOGGED IN TO USE THIS.
+ */
+export const refreshAuthtoken = async (): Promise<string | null> => {
+  const user_id = await EncryptedStorage.getItem('user_id');
+
+  if (!user_id) {
+    throw new Error('user_id not found in EncryptedStorage');
+  }
+
+  const response = await fetch(UserAPIURL + '/auth/refreshAuthtoken', {
+    method: 'POST',
+    body: JSON.stringify({user_id}),
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: XanoAPIKey,
+    }
+  });
+
+  if (response.ok) {
+    const myJson: {authtoken: string} = await response.json();
+    return myJson.authtoken;
+  } else {
+    return null;
+  }
 };

@@ -1,6 +1,7 @@
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {FriendAPIURL, XanoAPIKey} from './APIConstants';
 import {FriendGroup, UserDetail, UserInfo} from '../types';
+import { refreshAuthtoken } from './authAPI';
 
 /**
  * @requires auth_token should be set in EncryptedStorage before calling this function
@@ -12,13 +13,27 @@ export const getFriend = async (id: number): Promise<UserDetail | null> => {
     return null;
   }
 
-  const response = await fetch(FriendAPIURL + `/friend/${id}`, {
-    method: 'GET',
-    headers: {
-      'X-Xano-Authorization': `Bearer ${authToken}`,
-      'X-Xano-Authorization-Only': 'true',
-    },
-  });
+  const request = async (authtoken: string) => {
+    const response = await fetch(FriendAPIURL + `/friend/${id}`, {
+      method: 'GET',
+      headers: {
+        'X-Xano-Authorization': `Bearer ${authtoken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
+    });
+
+    return response;
+  };
+
+  let response = await request(authToken);
+
+  if (response.status === 401) {
+    const refreshedAuthtoken = await refreshAuthtoken();
+
+    if (refreshedAuthtoken) {
+      response = await request(refreshedAuthtoken);
+    }
+  }
 
   if (response?.ok) {
     const myJson: UserDetail = await response.json();
@@ -44,13 +59,27 @@ export const getFriendsInfo = async (): Promise<{
     return null;
   }
 
-  const response = await fetch(FriendAPIURL + '/friends', {
-    method: 'GET',
-    headers: {
-      'X-Xano-Authorization': `Bearer ${authToken}`,
-      'X-Xano-Authorization-Only': 'true',
-    },
-  });
+  const request = async (authtoken: string) => {
+    const response = await fetch(FriendAPIURL + '/friends', {
+      method: 'GET',
+      headers: {
+        'X-Xano-Authorization': `Bearer ${authtoken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
+    });
+
+    return response;
+  };
+
+  let response = await request(authToken);
+
+  if (response.status === 401) {
+    const refreshedAuthtoken = await refreshAuthtoken();
+
+    if (refreshedAuthtoken) {
+      response = await request(refreshedAuthtoken);
+    }
+  }
 
   if (response?.ok) {
     const myJson = await response.json();
@@ -73,13 +102,27 @@ export const getFriends = async (): Promise<{
     return null;
   }
 
-  const response = await fetch(FriendAPIURL + '/friend', {
-    method: 'GET',
-    headers: {
-      'X-Xano-Authorization': `Bearer ${authToken}`,
-      'X-Xano-Authorization-Only': 'true',
-    },
-  });
+  const request = async (authtoken: string) => {
+    const response = await fetch(FriendAPIURL + '/friend', {
+      method: 'GET',
+      headers: {
+        'X-Xano-Authorization': `Bearer ${authtoken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
+    });
+
+    return response;
+  };
+
+  let response = await request(authToken);
+
+  if (response.status === 401) {
+    const refreshedAuthtoken = await refreshAuthtoken();
+
+    if (refreshedAuthtoken) {
+      response = await request(refreshedAuthtoken);
+    }
+  }
 
   if (response?.ok) {
     const myJson = await response.json();
@@ -102,13 +145,27 @@ export const getFriendRequests = async (): Promise<{
     return null;
   }
 
-  const response = await fetch(FriendAPIURL + '/request', {
-    method: 'GET',
-    headers: {
-      'X-Xano-Authorization': `Bearer ${authToken}`,
-      'X-Xano-Authorization-Only': 'true',
-    },
-  });
+  const request = async (authtoken: string) => {
+    const response = await fetch(FriendAPIURL + '/request', {
+      method: 'GET',
+      headers: {
+        'X-Xano-Authorization': `Bearer ${authtoken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
+    });
+
+    return response;
+  };
+
+  let response = await request(authToken);
+
+  if (response.status === 401) {
+    const refreshedAuthtoken = await refreshAuthtoken();
+
+    if (refreshedAuthtoken) {
+      response = await request(refreshedAuthtoken);
+    }
+  }
 
   if (response?.ok) {
     const myJson = await response.json();
@@ -128,15 +185,29 @@ export const postFriendRequest = async (id: number): Promise<boolean> => {
     return false;
   }
 
-  const response = await fetch(FriendAPIURL + '/request', {
-    method: 'POST',
-    body: JSON.stringify({requestee: id}),
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Xano-Authorization': `Bearer ${authToken}`,
-      'X-Xano-Authorization-Only': 'true',
-    },
-  });
+  const request = async (authtoken: string) => {
+    const response = await fetch(FriendAPIURL + '/request', {
+      method: 'POST',
+      body: JSON.stringify({requestee: id}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authtoken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
+    });
+
+    return response;
+  };
+
+  let response = await request(authToken);
+
+  if (response.status === 401) {
+    const refreshedAuthtoken = await refreshAuthtoken();
+
+    if (refreshedAuthtoken) {
+      response = await request(refreshedAuthtoken);
+    }
+  }
 
   return response?.ok;
 };
@@ -151,15 +222,29 @@ export const deleteFriendRequest = async (id: number): Promise<boolean> => {
     return false;
   }
 
-  const response = await fetch(FriendAPIURL + '/request', {
-    method: 'DELETE',
-    body: JSON.stringify({requestee: id}),
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Xano-Authorization': `Bearer ${authToken}`,
-      'X-Xano-Authorization-Only': 'true',
-    },
-  });
+  const request = async (authtoken: string) => {
+    const response = await fetch(FriendAPIURL + '/request', {
+      method: 'DELETE',
+      body: JSON.stringify({requestee: id}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authtoken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
+    });
+
+    return response;
+  };
+
+  let response = await request(authToken);
+
+  if (response.status === 401) {
+    const refreshedAuthtoken = await refreshAuthtoken();
+
+    if (refreshedAuthtoken) {
+      response = await request(refreshedAuthtoken);
+    }
+  }
 
   return response?.ok;
 };
@@ -174,15 +259,29 @@ export const acceptFriendRequest = async (id: number): Promise<boolean> => {
     return false;
   }
 
-  const response = await fetch(FriendAPIURL + '/request/accept', {
-    method: 'POST',
-    body: JSON.stringify({requester: id}),
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Xano-Authorization': `Bearer ${authToken}`,
-      'X-Xano-Authorization-Only': 'true',
-    },
-  });
+  const request = async (authtoken: string) => {
+    const response = await fetch(FriendAPIURL + '/request/accept', {
+      method: 'POST',
+      body: JSON.stringify({requester: id}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authtoken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
+    });
+
+    return response;
+  };
+
+  let response = await request(authToken);
+
+  if (response.status === 401) {
+    const refreshedAuthtoken = await refreshAuthtoken();
+
+    if (refreshedAuthtoken) {
+      response = await request(refreshedAuthtoken);
+    }
+  }
 
   return response?.ok;
 };
@@ -197,15 +296,29 @@ export const rejectFriendRequest = async (id: number): Promise<boolean> => {
     return false;
   }
 
-  const response = await fetch(FriendAPIURL + '/request/reject', {
-    method: 'DELETE',
-    body: JSON.stringify({requester: id}),
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Xano-Authorization': `Bearer ${authToken}`,
-      'X-Xano-Authorization-Only': 'true',
-    },
-  });
+  const request = async (authtoken: string) => {
+    const response = await fetch(FriendAPIURL + '/request/reject', {
+      method: 'DELETE',
+      body: JSON.stringify({requester: id}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authtoken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
+    });
+
+    return response;
+  };
+
+  let response = await request(authToken);
+
+  if (response.status === 401) {
+    const refreshedAuthtoken = await refreshAuthtoken();
+
+    if (refreshedAuthtoken) {
+      response = await request(refreshedAuthtoken);
+    }
+  }
 
   return response?.ok;
 };
@@ -220,15 +333,29 @@ export const deleteFriend = async (id: number): Promise<boolean> => {
     return false;
   }
 
-  const response = await fetch(FriendAPIURL + '/friend', {
-    method: 'DELETE',
-    body: JSON.stringify({friend: id}),
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Xano-Authorization': `Bearer ${authToken}`,
-      'X-Xano-Authorization-Only': 'true',
-    },
-  });
+  const request = async (authtoken: string) => {
+    const response = await fetch(FriendAPIURL + '/friend', {
+      method: 'DELETE',
+      body: JSON.stringify({friend: id}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authtoken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
+    });
+
+    return response;
+  };
+
+  let response = await request(authToken);
+
+  if (response.status === 401) {
+    const refreshedAuthtoken = await refreshAuthtoken();
+
+    if (refreshedAuthtoken) {
+      response = await request(refreshedAuthtoken);
+    }
+  }
 
   return response?.ok;
 };
@@ -243,13 +370,27 @@ export const getSuggestions = async (): Promise<UserInfo[] | null> => {
     return null;
   }
 
-  const response = await fetch(FriendAPIURL + '/suggestion', {
-    method: 'GET',
-    headers: {
-      'X-Xano-Authorization': `Bearer ${authToken}`,
-      'X-Xano-Authorization-Only': 'true',
-    },
-  });
+  const request = async (authtoken: string) => {
+    const response = await fetch(FriendAPIURL + '/suggestion', {
+      method: 'GET',
+      headers: {
+        'X-Xano-Authorization': `Bearer ${authtoken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
+    });
+
+    return response;
+  };
+
+  let response = await request(authToken);
+
+  if (response.status === 401) {
+    const refreshedAuthtoken = await refreshAuthtoken();
+
+    if (refreshedAuthtoken) {
+      response = await request(refreshedAuthtoken);
+    }
+  }
 
   if (response?.ok) {
     const myJson: UserInfo[] = await response.json();

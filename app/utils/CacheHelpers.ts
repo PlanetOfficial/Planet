@@ -31,7 +31,7 @@ export const cacheCategories = async () => {
 
 export const cacheUserInfo = async (authToken: string) => {
   // start with clear caches (for user storage)
-  clearCaches();
+  await clearCaches();
 
   // set auth token into encrypted storage
   await EncryptedStorage.setItem('auth_token', authToken);
