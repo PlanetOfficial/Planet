@@ -1,7 +1,7 @@
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {UserAPIURL} from './APIConstants';
 import {NotificationSettings} from '../types';
-import { refreshAuthtoken } from './authAPI';
+import {refreshAuthtoken} from './authAPI';
 
 /**
  * @requires auth_token should be set in EncryptedStorage before calling this function
@@ -30,7 +30,7 @@ export const getNotificationSettings =
 
     if (response.status === 401) {
       const refreshedAuthtoken = await refreshAuthtoken();
-  
+
       if (refreshedAuthtoken) {
         response = await request(refreshedAuthtoken);
       }

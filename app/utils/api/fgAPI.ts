@@ -1,6 +1,6 @@
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {FriendAPIURL} from './APIConstants';
-import { refreshAuthtoken } from './authAPI';
+import {refreshAuthtoken} from './authAPI';
 
 /**
  * @requires auth_token should be set in EncryptedStorage before calling this function
@@ -97,7 +97,7 @@ export const deleteFG = async (id: number): Promise<Boolean> => {
     const response = await fetch(FriendAPIURL + `/group/${id}`, {
       method: 'DELETE',
       headers: {
-        'X-Xano-Authorization': `Bearer ${authToken}`,
+        'X-Xano-Authorization': `Bearer ${authtoken}`,
         'X-Xano-Authorization-Only': 'true',
       },
     });

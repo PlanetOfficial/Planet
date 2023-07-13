@@ -234,7 +234,7 @@ export const isVerified = async (authToken: string) => {
 
     return response;
   };
-  
+
   let response = await request(authToken);
 
   if (response.status === 401) {
@@ -312,7 +312,7 @@ export const saveImage = async (base64: string): Promise<string | null> => {
     });
 
     return response;
-  }
+  };
 
   let response = await request(authToken);
 
@@ -410,7 +410,7 @@ export const removeAccount = async (): Promise<Boolean> => {
   }
 
   return response.ok;
-}; 
+};
 
 /**
  * @requires user_id should be set in EncryptedStorage before calling this function.
@@ -429,7 +429,7 @@ export const refreshAuthtoken = async (): Promise<string | null> => {
     headers: {
       'Content-Type': 'application/json',
       Authorization: XanoAPIKey,
-    }
+    },
   });
 
   if (response.ok) {
