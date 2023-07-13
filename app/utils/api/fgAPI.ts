@@ -101,7 +101,7 @@ export const reorderFG = async (fg_ids: number[]): Promise<Boolean> => {
 /**
  * @requires auth_token should be set in EncryptedStorage before calling this function
  */
-export const blockFriend = async (id: number): Promise<Boolean> => {
+export const blockFriend = async (user_id: number): Promise<Boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
   if (!authToken) {
@@ -110,7 +110,7 @@ export const blockFriend = async (id: number): Promise<Boolean> => {
 
   const response = await fetch(FriendAPIURL + '/block', {
     method: 'POST',
-    body: JSON.stringify({id}),
+    body: JSON.stringify({user_id}),
     headers: {
       'Content-Type': 'application/json',
       'X-Xano-Authorization': `Bearer ${authToken}`,
@@ -124,7 +124,7 @@ export const blockFriend = async (id: number): Promise<Boolean> => {
 /**
  * @requires auth_token should be set in EncryptedStorage before calling this function
  */
-export const unBlockFriend = async (id: number): Promise<Boolean> => {
+export const unBlockFriend = async (user_id: number): Promise<Boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
   if (!authToken) {
@@ -133,7 +133,7 @@ export const unBlockFriend = async (id: number): Promise<Boolean> => {
 
   const response = await fetch(FriendAPIURL + '/unblock', {
     method: 'POST',
-    body: JSON.stringify({id}),
+    body: JSON.stringify({user_id}),
     headers: {
       'Content-Type': 'application/json',
       'X-Xano-Authorization': `Bearer ${authToken}`,

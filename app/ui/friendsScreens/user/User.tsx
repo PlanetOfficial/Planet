@@ -58,6 +58,8 @@ const User = ({
   }
   const {blocking, setBlocking} = friendsContext;
 
+  console.log(blocking);
+
   const initializeData = useCallback(async () => {
     const myUserId = await EncryptedStorage.getItem('user_id');
     if (myUserId) {

@@ -52,6 +52,8 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
     setFriends,
     setSuggestions,
     setFriendGroups,
+    setBlocking,
+    setBlocked,
   } = friendsContext;
 
   const initializeContext = async () => {
@@ -69,6 +71,8 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
       setRequests(result.requests);
       setRequestsSent(result.requests_sent);
       setFriendGroups(result.friend_groups);
+      setBlocking(result.blocking);
+      setBlocked(result.blocked);
     } else {
       Alert.alert(strings.error.error, strings.error.loadFriendsList);
     }
