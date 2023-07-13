@@ -2,7 +2,7 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 import {UserAPIURL, XanoAPIKey} from './APIConstants';
 import {MyInfo} from '../types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { cacheAuthToken } from '../CacheHelpers';
+import {cacheAuthToken} from '../CacheHelpers';
 
 export const login = async (username: string, password: string) => {
   const response = await fetch(UserAPIURL + '/auth/login', {

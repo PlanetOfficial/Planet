@@ -1,7 +1,7 @@
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {FriendAPIURL} from './APIConstants';
 import {refreshAuthtoken} from './authAPI';
-import { cacheAuthToken } from '../CacheHelpers';
+import {cacheAuthToken} from '../CacheHelpers';
 
 /**
  * @requires auth_token should be set in EncryptedStorage before calling this function
