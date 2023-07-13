@@ -2,7 +2,6 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 import {PoiAPIURL} from './APIConstants';
 import {Poi} from '../types';
 import {refreshAuthtoken} from './authAPI';
-import {cacheAuthToken} from '../CacheHelpers';
 
 /**
  * @requires auth_token should be set in EncryptedStorage before calling this function
@@ -32,7 +31,7 @@ export const getBookmarks = async (): Promise<Poi[] | null> => {
     const refreshedAuthtoken = await refreshAuthtoken();
 
     if (refreshedAuthtoken) {
-      await cacheAuthToken(refreshedAuthtoken);
+      await EncryptedStorage.setItem('auth_token', authToken);
       response = await request(refreshedAuthtoken);
     }
   }
@@ -73,7 +72,7 @@ export const bookmark = async (poi: Poi): Promise<boolean> => {
     const refreshedAuthtoken = await refreshAuthtoken();
 
     if (refreshedAuthtoken) {
-      await cacheAuthToken(refreshedAuthtoken);
+      await EncryptedStorage.setItem('auth_token', authToken);
       response = await request(refreshedAuthtoken);
     }
   }
