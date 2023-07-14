@@ -37,9 +37,9 @@ const ActionButtons: React.FC<Props> = ({user}) => {
     setRequests,
     requestsSent,
     setRequestsSent,
-    blocking,
-    setBlocking,
-    blocked,
+    usersIBlock,
+    setUsersIBlock,
+    usersBlockingMe,
   } = friendsContext;
 
   return friends.some(friend => friend.id === user.id) ? (
@@ -92,13 +92,13 @@ const ActionButtons: React.FC<Props> = ({user}) => {
         <Text size="xs">{strings.friends.reject}</Text>
       </TouchableOpacity>
     </>
-  ) : blocking.some(block => block.id === user.id) ? (
+  ) : usersIBlock.some(userIBlock => userIBlock.id === user.id) ? (
     <TouchableOpacity
       style={{
         ...styles.button,
         backgroundColor: colors[theme].secondary,
       }}
-      onPress={() => handleUnblock(user.id, blocking, setBlocking)}>
+      onPress={() => handleUnblock(user.id, usersIBlock, setUsersIBlock)}>
       <Text size="xs">{strings.friends.unblock}</Text>
     </TouchableOpacity>
   ) : (
@@ -107,7 +107,9 @@ const ActionButtons: React.FC<Props> = ({user}) => {
         ...styles.button,
         backgroundColor: colors[theme].accent,
       }}
-      disabled={blocked.some(block => block.id === user.id)}
+      disabled={usersBlockingMe.some(
+        userBlockingMe => userBlockingMe.id === user.id,
+      )}
       onPress={() =>
         handleFriendRequest(user.id, requestsSent, setRequestsSent, user)
       }>

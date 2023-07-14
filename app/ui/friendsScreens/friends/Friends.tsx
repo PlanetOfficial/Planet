@@ -4,7 +4,6 @@ import {
   SafeAreaView,
   StyleSheet,
   TextInput,
-  Alert,
   FlatList,
   ActivityIndicator,
   LayoutAnimation,
@@ -13,6 +12,7 @@ import {
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 import FriendsNavBar from '../../navigations/FriendsNavBar';
 
@@ -27,10 +27,10 @@ import UserRow from '../../components/UserRow';
 
 import FriendsContext from '../../../context/FriendsContext';
 
-import {searchUsers} from '../../../utils/api/friendsAPI';
 import {UserInfo} from '../../../utils/types';
+
 import ActionButtons from '../user/ActionButtons';
-import EncryptedStorage from 'react-native-encrypted-storage';
+import {search} from './functions';
 
 const Friends = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';
@@ -38,7 +38,7 @@ const Friends = ({navigation}: {navigation: any}) => {
   const STYLES = STYLING(theme);
   StatusBar.setBarStyle(colors[theme].statusBar, true);
 
-  const [self, setSelf] = useState<number>(0);
+  const [selfUserId, setSelfUserId] = useState<number>(0);
 
   const searchRef = createRef<TextInput>();
   const [searchText, setSearchText] = useState<string>('');
@@ -50,31 +50,12 @@ const Friends = ({navigation}: {navigation: any}) => {
   if (!friendsContext) {
     throw new Error('FriendsContext is not set!');
   }
-  const {blocked} = friendsContext;
-
-  const search = async (text: string) => {
-    setLoading(true);
-    setSearchText(text);
-    if (text.length > 0) {
-      const result = await searchUsers(text);
-
-      if (result) {
-        // exclude current user (and users you are blocked by) from search results
-        const filtered = result.filter(
-          user => user.id !== self && !blocked.some(b => b.id === user.id),
-        ) as UserInfo[];
-        setSearchResults(filtered);
-      } else {
-        Alert.alert(strings.error.error, strings.error.searchError);
-      }
-    }
-    setLoading(false);
-  };
+  const {usersBlockingMe} = friendsContext;
 
   const loadSelf = async () => {
     const myUserId = await EncryptedStorage.getItem('user_id');
     if (myUserId) {
-      setSelf(parseInt(myUserId, 10));
+      setSelfUserId(parseInt(myUserId, 10));
     }
   };
 
@@ -114,7 +95,16 @@ const Friends = ({navigation}: {navigation: any}) => {
                 setSearching(true);
               }}
               onBlur={() => setSearching(false)}
-              onChangeText={text => search(text)}
+              onChangeText={text =>
+                search(
+                  text,
+                  setLoading,
+                  setSearchText,
+                  setSearchResults,
+                  selfUserId,
+                  usersBlockingMe,
+                )
+              }
               clearButtonMode="while-editing"
             />
           </View>

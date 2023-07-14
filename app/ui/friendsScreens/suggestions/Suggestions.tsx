@@ -29,7 +29,7 @@ const Friends = ({navigation}: {navigation: any}) => {
   if (!friendsContext) {
     throw new Error('FriendsContext is not set!');
   }
-  const {suggestions, blocking, blocked} = friendsContext;
+  const {suggestions, usersIBlock, usersBlockingMe} = friendsContext;
 
   return (
     <FlatList
@@ -37,8 +37,10 @@ const Friends = ({navigation}: {navigation: any}) => {
       contentContainerStyle={STYLES.flatList}
       data={suggestions.filter(
         user =>
-          !blocking.some(block => block.id === user.id) &&
-          !blocked.some(block => block.id === user.id),
+          !usersIBlock.some(userIBlock => userIBlock.id === user.id) &&
+          !usersBlockingMe.some(
+            userBlockingMe => userBlockingMe.id === user.id,
+          ),
       )}
       keyExtractor={item => item.id.toString()}
       renderItem={({item}: {item: UserInfo}) => (

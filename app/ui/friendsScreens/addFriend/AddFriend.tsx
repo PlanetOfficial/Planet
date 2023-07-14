@@ -34,7 +34,7 @@ const AddFriend = ({
   const [members, setMembers] = useState<UserInfo[]>([]);
   const [invitees, setInvitees] = useState<UserInfo[]>([]);
 
-  const [self, setSelf] = useState<number>(0);
+  const [selfUserId, setSelfUserId] = useState<number>(0);
 
   const [searchText, setSearchText] = useState<string>('');
   const [searchResults, setSearchResults] = useState<UserInfo[]>([]);
@@ -51,7 +51,7 @@ const AddFriend = ({
   const loadSelf = async () => {
     const myUserId = await EncryptedStorage.getItem('user_id');
     if (myUserId) {
-      setSelf(parseInt(myUserId, 10));
+      setSelfUserId(parseInt(myUserId, 10));
     }
   };
 
@@ -81,7 +81,7 @@ const AddFriend = ({
         searchText={searchText}
         setSearchText={setSearchText}
         setSearchResults={setSearchResults}
-        self={self}
+        selfUserId={selfUserId}
       />
 
       {searching ? (

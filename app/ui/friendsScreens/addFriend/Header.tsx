@@ -21,8 +21,8 @@ import Text from '../../components/Text';
 
 import FriendsContext from '../../../context/FriendsContext';
 
-import {searchUsers} from '../../../utils/api/friendsAPI';
 import {UserInfo} from '../../../utils/types';
+import {search} from '../friends/functions';
 
 interface Props {
   navigation: any;
@@ -34,7 +34,7 @@ interface Props {
   searchText: string;
   setSearchText: (searchText: string) => void;
   setSearchResults: (searchResults: UserInfo[]) => void;
-  self: number;
+  selfUserId: number;
 }
 
 const Header: React.FC<Props> = ({
@@ -47,7 +47,7 @@ const Header: React.FC<Props> = ({
   searchText,
   setSearchText,
   setSearchResults,
-  self,
+  selfUserId,
 }) => {
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
@@ -59,26 +59,7 @@ const Header: React.FC<Props> = ({
   if (!friendsContext) {
     throw new Error('FriendsContext is not set!');
   }
-  const {blocked} = friendsContext;
-
-  const search = async (text: string) => {
-    setLoading(true);
-    setSearchText(text);
-    if (text.length > 0) {
-      const result = await searchUsers(text);
-
-      if (result) {
-        // exclude current user (and users you are blocked by) from search results
-        const filtered = result.filter(
-          user => user.id !== self && !blocked.some(b => b.id === user.id),
-        ) as UserInfo[];
-        setSearchResults(filtered);
-      } else {
-        Alert.alert(strings.error.error, strings.error.searchError);
-      }
-    }
-    setLoading(false);
-  };
+  const {usersBlockingMe} = friendsContext;
 
   return (
     <SafeAreaView>
@@ -128,7 +109,16 @@ const Header: React.FC<Props> = ({
               setSearching(true);
             }}
             onBlur={() => setSearching(false)}
-            onChangeText={text => search(text)}
+            onChangeText={text =>
+              search(
+                text,
+                setLoading,
+                setSearchText,
+                setSearchResults,
+                selfUserId,
+                usersBlockingMe,
+              )
+            }
             clearButtonMode="while-editing"
           />
         </View>

@@ -48,7 +48,7 @@ const User = ({
   StatusBar.setBarStyle(colors[theme].statusBar, true);
 
   const [selectedIndex, setIndex] = useState<number>(0);
-  const [self, setSelf] = useState<number>(0);
+  const [selfUserId, setSelfUserId] = useState<number>(0);
   const [mutuals, setMutuals] = useState<UserInfo[]>([]);
   const [mutualEvents, setMutualEvents] = useState<Event[]>([]);
 
@@ -63,14 +63,14 @@ const User = ({
     setRequests,
     requestsSent,
     setRequestsSent,
-    blocking,
-    setBlocking,
+    usersIBlock,
+    setUsersIBlock,
   } = friendsContext;
 
   const initializeData = useCallback(async () => {
     const myUserId = await EncryptedStorage.getItem('user_id');
     if (myUserId) {
-      setSelf(parseInt(myUserId, 10));
+      setSelfUserId(parseInt(myUserId, 10));
     }
 
     const userData = await getFriend(route.params.user.id);
@@ -113,18 +113,18 @@ const User = ({
                     setRequests,
                     requestsSent,
                     setRequestsSent,
-                    blocking,
-                    setBlocking,
+                    usersIBlock,
+                    setUsersIBlock,
                     route.params.user,
                   ),
                 color: colors[theme].red,
-                disabled: blocking.some(b => b.id === route.params.user.id),
+                disabled: usersIBlock.some(b => b.id === route.params.user.id),
               },
             ]}
           />
         </View>
       </SafeAreaView>
-      {route.params.user.id === self ? (
+      {route.params.user.id === selfUserId ? (
         <ProfileBody navigation={navigation} />
       ) : (
         <>
@@ -163,7 +163,7 @@ const User = ({
                       event: item,
                     })
                   }>
-                  <EventRow event={item} self={self} />
+                  <EventRow event={item} selfUserId={selfUserId} />
                 </TouchableOpacity>
               );
             }}

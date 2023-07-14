@@ -110,15 +110,15 @@ export const handleBlock = async (
   setRequests: (requests: UserInfo[]) => void,
   requestsSent: UserInfo[],
   setRequestsSent: (requestsSent: UserInfo[]) => void,
-  blocking: UserInfo[],
-  setBlocking: (blocking: UserInfo[]) => void,
+  usersIBlock: UserInfo[],
+  setUsersIBlock: (usersIBlock: UserInfo[]) => void,
   user: UserInfo,
 ) => {
   const response = await blockFriend(userId);
 
   if (response) {
-    const blockingUpdated = [user, ...blocking];
-    setBlocking(blockingUpdated);
+    const usersIBlockUpdated = [user, ...usersIBlock];
+    setUsersIBlock(usersIBlockUpdated);
 
     const friendsUpdated = friends.filter(
       (friend: UserInfo) => friend.id !== userId,
@@ -141,16 +141,16 @@ export const handleBlock = async (
 
 export const handleUnblock = async (
   userId: number,
-  blocking: UserInfo[],
-  setBlocking: (blocked: UserInfo[]) => void,
+  usersIBlock: UserInfo[],
+  setUsersIBlock: (usersBlockingMe: UserInfo[]) => void,
 ) => {
   const response = await unBlockFriend(userId);
 
   if (response) {
-    const blockingUpdated = blocking.filter(
-      (block: UserInfo) => block.id !== userId,
+    const usersIBlockUpdated = usersIBlock.filter(
+      (userIBlock: UserInfo) => userIBlock.id !== userId,
     );
-    setBlocking(blockingUpdated);
+    setUsersIBlock(usersIBlockUpdated);
   } else {
     Alert.alert(strings.error.error, strings.error.unblock);
   }

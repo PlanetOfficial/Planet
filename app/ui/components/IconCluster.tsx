@@ -8,14 +8,20 @@ import UserIcon from './UserIcon';
 
 import {UserInfo} from '../../utils/types';
 
-const IconCluster = ({users, self}: {users: UserInfo[]; self: number}) => {
+const IconCluster = ({
+  users,
+  selfUserId,
+}: {
+  users: UserInfo[];
+  selfUserId: number;
+}) => {
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
 
   return (
     <View style={styles.iconCluster}>
       {users
-        .filter((user: UserInfo) => user.id !== self)
+        .filter((user: UserInfo) => user.id !== selfUserId)
         .slice(0, 3)
         .map(user => (
           <View key={user.id} style={styles.icon}>
