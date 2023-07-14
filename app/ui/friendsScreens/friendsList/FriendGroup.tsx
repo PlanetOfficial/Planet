@@ -70,7 +70,7 @@ const FriendGroupComponent: React.FC<Props> = ({
   return (
     <>
       <View style={styles.title}>
-        <Text weight="l">
+        <Text size="s">
           {friendGroups.length === 1
             ? strings.friends.friendGroup
             : strings.friends.friendGroups}

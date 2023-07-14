@@ -44,7 +44,7 @@ const EventPage = ({
   const STYLES = STYLING(theme);
   StatusBar.setBarStyle(colors[theme].statusBar, true);
 
-  const [event] = useState<Event>(route.params.event);
+  const [event, setEvent] = useState<Event>(route.params.event);
   const [eventDetail, setEventDetail] = useState<EventDetail>();
 
   const [loading, setLoading] = useState<boolean>(true);
@@ -147,6 +147,7 @@ const EventPage = ({
       <Header
         navigation={navigation}
         event={event}
+        setEvent={setEvent}
         eventDetail={eventDetail}
         displayingSuggestion={displayingSuggestion}
         onSuggestionClose={onSuggestionClose}

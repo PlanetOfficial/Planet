@@ -184,6 +184,15 @@ const strings = {
     noDate: 'No Date Set',
     create: 'Create',
     suggest: 'Suggest',
+    upcomingEvents: 'Upcoming Events',
+    nonDatedEvents: 'Non-Dated Events',
+    pastEvents: 'Past/Completed Events',
+    completed: 'Completed',
+    incomplete: 'Incomplete',
+    markAsCompleted: 'Mark as Completed',
+    markAsIncomplete: 'Mark as Incomplete',
+    changeCompletionStatusInfo:
+      'This will only affect the status of your event.',
   },
   roulette: {
     total: 'Total',
@@ -274,6 +283,8 @@ const strings = {
     inviteUsers: 'Unable to invite users. Please try again later.',
     block: 'Unable to block user. Please try again later.',
     unblock: 'Unable to unblock user. Please try again later.',
+    changeCompletionStatus:
+      'Unable to change completion status. Please try again later.',
   },
   ageEnum: [
     {label: '-17', value: '-17'},
