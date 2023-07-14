@@ -22,7 +22,7 @@
     "@react-native-segmented-control/segmented-control": "^2.4.0",
     "@react-navigation/bottom-tabs": "^6.5.4",
     "@react-navigation/material-top-tabs": "^6.6.3",
-    "@react-navigation/native": "^6.1.2",
+    "@react-navigation/native": "^6.1.7",
     "@react-navigation/stack": "^6.3.11",
     "@types/react-native-svg-charts": "^5.0.12",
     "haversine-distance": "^1.2.1",
