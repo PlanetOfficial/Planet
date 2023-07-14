@@ -17,7 +17,7 @@ import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 
 import {Event, EventDetail} from '../../../utils/types';
-import {onStautsChange} from './functions';
+import {onStatusChange} from './functions';
 
 interface Props {
   navigation: any;
@@ -65,7 +65,7 @@ const Header: React.FC<Props> = ({
               onPress={() =>
                 Alert.alert(
                   event.completed
-                    ? strings.event.markAsPending
+                    ? strings.event.markAsIncomplete
                     : strings.event.markAsCompleted,
                   strings.event.changeCompletionStatusInfo,
                   [
@@ -75,7 +75,7 @@ const Header: React.FC<Props> = ({
                     },
                     {
                       text: strings.main.confirm,
-                      onPress: () => onStautsChange(event, setEvent),
+                      onPress: () => onStatusChange(event, setEvent),
                     },
                   ],
                 )
@@ -83,7 +83,7 @@ const Header: React.FC<Props> = ({
               <Text size="xs" color={colors[theme].accent}>
                 {event.completed
                   ? strings.event.completed
-                  : strings.event.pending}
+                  : strings.event.incomplete}
               </Text>
             </TouchableOpacity>
           )}

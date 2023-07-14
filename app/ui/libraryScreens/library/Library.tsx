@@ -95,10 +95,11 @@ const Library = ({navigation}: {navigation: any}) => {
                     !event.completed,
                 )
                 .sort((a: Event, b: Event) => {
-                  if (a.datetime && b.datetime) {
-                    return new Date(a.datetime) < new Date(b.datetime) ? -1 : 1;
-                  }
-                  return 0;
+                  return new Date(a.datetime) === new Date(b.datetime)
+                    ? 0
+                    : new Date(a.datetime) > new Date(b.datetime)
+                    ? 1
+                    : -1;
                 }),
             },
             {

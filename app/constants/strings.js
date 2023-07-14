@@ -186,9 +186,9 @@ const strings = {
     nonDatedEvents: 'Non-Dated Events',
     pastEvents: 'Past/Completed Events',
     completed: 'Completed',
-    pending: 'Pending',
+    incomplete: 'Incomplete',
     markAsCompleted: 'Mark as Completed',
-    markAsPending: 'Mark as Pending',
+    markAsIncomplete: 'Mark as Incomplete',
     changeCompletionStatusInfo:
       'This will only affect the status of your event.',
   },

@@ -39,7 +39,7 @@ export const onVote = async (
   }
 };
 
-export const onStautsChange = async (
+export const onStatusChange = async (
   event: Event,
   setEvent: (event: Event) => void,
 ) => {
