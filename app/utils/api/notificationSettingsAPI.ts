@@ -1,7 +1,7 @@
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {UserAPIURL} from './APIConstants';
 import {NotificationSettings} from '../types';
-import {refreshAuthtoken, requestAndValidate} from './authAPI';
+import {requestAndValidate} from './authAPI';
 
 /**
  * @requires auth_token should be set in EncryptedStorage before calling this function

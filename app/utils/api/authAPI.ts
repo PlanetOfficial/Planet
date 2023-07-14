@@ -360,7 +360,10 @@ export const refreshAuthtoken = async (): Promise<string | null> => {
   }
 };
 
-export const requestAndValidate = async (authToken: string, request: (authtoken: string) => Promise<Response>): Promise<Response> => {
+export const requestAndValidate = async (
+  authToken: string,
+  request: (authtoken: string) => Promise<Response>,
+): Promise<Response> => {
   const response = await request(authToken);
 
   if (response.status === 401) {
@@ -371,7 +374,7 @@ export const requestAndValidate = async (authToken: string, request: (authtoken:
       const updatedResponse = await request(refreshedAuthtoken);
       return updatedResponse;
     } else {
-      console.warn("Request to refresh authtoken failed.");
+      console.warn('Request to refresh authtoken failed.');
       return response;
     }
   } else {
