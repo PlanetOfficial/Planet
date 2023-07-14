@@ -50,7 +50,7 @@ const SearchCategory = ({
   const [filters, setFilters] = useState<(number | number[])[]>(
     category.filter.map(_filter => {
       return _filter.multi ? [] : _filter.defaultIdx;
-    })
+    }),
   );
 
   const bookmarkContext = useContext(BookmarkContext);
