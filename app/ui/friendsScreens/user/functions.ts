@@ -103,7 +103,6 @@ export const handleCancelRequest = async (
 };
 
 export const handleBlock = async (
-  userId: number,
   friends: UserInfo[],
   setFriends: (friends: UserInfo[]) => void,
   requests: UserInfo[],
@@ -114,24 +113,24 @@ export const handleBlock = async (
   setUsersIBlock: (usersIBlock: UserInfo[]) => void,
   user: UserInfo,
 ) => {
-  const response = await blockFriend(userId);
+  const response = await blockFriend(user.id);
 
   if (response) {
     const usersIBlockUpdated = [user, ...usersIBlock];
     setUsersIBlock(usersIBlockUpdated);
 
     const friendsUpdated = friends.filter(
-      (friend: UserInfo) => friend.id !== userId,
+      (friend: UserInfo) => friend.id !== user.id,
     );
     setFriends(friendsUpdated);
 
     const requestsUpdated = requests.filter(
-      (request: UserInfo) => request.id !== userId,
+      (request: UserInfo) => request.id !== user.id,
     );
     setRequests(requestsUpdated);
 
     const requestsSentUpdated = requestsSent.filter(
-      (request: UserInfo) => request.id !== userId,
+      (request: UserInfo) => request.id !== user.id,
     );
     setRequestsSent(requestsSentUpdated);
   } else {

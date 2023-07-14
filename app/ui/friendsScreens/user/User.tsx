@@ -106,7 +106,6 @@ const User = ({
                 name: strings.friends.block,
                 onPress: () =>
                   handleBlock(
-                    route.params.user.id,
                     friends,
                     setFriends,
                     requests,
