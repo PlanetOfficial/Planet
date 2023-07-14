@@ -169,15 +169,30 @@ export const blockFriend = async (user_id: number): Promise<Boolean> => {
     return false;
   }
 
-  const response = await fetch(FriendAPIURL + '/block', {
-    method: 'POST',
-    body: JSON.stringify({user_id}),
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Xano-Authorization': `Bearer ${authToken}`,
-      'X-Xano-Authorization-Only': 'true',
-    },
-  });
+  const request = async (authtoken: string) => {
+    const response = await fetch(FriendAPIURL + '/block', {
+      method: 'POST',
+      body: JSON.stringify({user_id}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authtoken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
+    });
+
+    return response;
+  };
+
+  let response = await request(authToken);
+
+  if (response.status === 401) {
+    const refreshedAuthtoken = await refreshAuthtoken();
+
+    if (refreshedAuthtoken) {
+      await EncryptedStorage.setItem('auth_token', authToken);
+      response = await request(refreshedAuthtoken);
+    }
+  }
 
   return response.ok;
 };
@@ -192,15 +207,30 @@ export const unBlockFriend = async (user_id: number): Promise<Boolean> => {
     return false;
   }
 
-  const response = await fetch(FriendAPIURL + '/unblock', {
-    method: 'POST',
-    body: JSON.stringify({user_id}),
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Xano-Authorization': `Bearer ${authToken}`,
-      'X-Xano-Authorization-Only': 'true',
-    },
-  });
+  const request = async (authtoken: string) => {
+    const response = await fetch(FriendAPIURL + '/unblock', {
+      method: 'POST',
+      body: JSON.stringify({user_id}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authtoken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
+    });
+
+    return response;
+  };
+
+  let response = await request(authToken);
+
+  if (response.status === 401) {
+    const refreshedAuthtoken = await refreshAuthtoken();
+
+    if (refreshedAuthtoken) {
+      await EncryptedStorage.setItem('auth_token', authToken);
+      response = await request(refreshedAuthtoken);
+    }
+  }
 
   return response.ok;
 };
