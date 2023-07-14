@@ -48,13 +48,13 @@ const SearchCategory = ({
   const [loading, setLoading] = useState<boolean>(true);
 
   const filterInit: (number | number[])[] = [];
-  for (let i = 0; i < category.filter.length; i++) {
-    if (category.filter[i].multi) {
+  category.filter.forEach(_filter => {
+    if (_filter.multi) {
       filterInit.push([]);
     } else {
-      filterInit.push(category.filter[i].defaultIdx);
+      filterInit.push(_filter.defaultIdx);
     }
-  }
+  });
   const [filters, setFilters] = useState<(number | number[])[]>(filterInit);
 
   const bookmarkContext = useContext(BookmarkContext);
