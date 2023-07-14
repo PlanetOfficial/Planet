@@ -1,10 +1,4 @@
-import React, {
-  useEffect,
-  useState,
-  useCallback,
-  useRef,
-  useContext,
-} from 'react';
+import React, {useEffect, useState, useRef, useContext} from 'react';
 import {
   View,
   SafeAreaView,
@@ -51,8 +45,17 @@ const SearchCategory = ({
   const {mode, location, radius, category} = route.params;
 
   const [places, setPlaces] = useState<Poi[]>([]);
-  const [filters, setFilters] = useState<(number | number[])[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+
+  const filterInit: (number | number[])[] = [];
+  for (let i = 0; i < category.filter.length; i++) {
+    if (category.filter[i].multi) {
+      filterInit.push([]);
+    } else {
+      filterInit.push(category.filter[i].defaultIdx);
+    }
+  }
+  const [filters, setFilters] = useState<(number | number[])[]>(filterInit);
 
   const bookmarkContext = useContext(BookmarkContext);
   if (!bookmarkContext) {
@@ -62,7 +65,23 @@ const SearchCategory = ({
 
   const filterRef = useRef<any>(null); // due to forwardRef
 
-  const loadData = useCallback(async () => {
+  useEffect(() => {
+    const loadData = async (_filters: {[key: string]: string | string[]}) => {
+      const data = await getPois(
+        category,
+        radius,
+        location.latitude,
+        location.longitude,
+        _filters ? _filters : undefined,
+      );
+      if (data) {
+        setPlaces(data);
+      } else {
+        Alert.alert(strings.error.error, strings.error.loadPlaces);
+      }
+      setLoading(false);
+    };
+
     const _filters: {[key: string]: string | string[]} = {};
     for (let i = 0; i < category.filter.length; i++) {
       const filter = category.filter[i];
@@ -78,45 +97,9 @@ const SearchCategory = ({
           filters[i] === -1 ? '' : filter.options[filters[i] as number];
       }
     }
-
-    const data = await getPois(
-      category,
-      radius,
-      location.latitude,
-      location.longitude,
-      _filters ? _filters : undefined,
-    );
-    if (data) {
-      setPlaces(data);
-    } else {
-      Alert.alert(strings.error.error, strings.error.loadPlaces);
-    }
-    setLoading(false);
+    setLoading(true);
+    loadData(_filters);
   }, [category, filters, location.latitude, location.longitude, radius]);
-
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      loadData();
-    });
-
-    return unsubscribe;
-  }, [navigation, loadData]);
-
-  useEffect(() => {
-    const _filters: (number | number[])[] = [];
-    for (let i = 0; i < category.filter.length; i++) {
-      if (category.filter[i].multi) {
-        _filters.push([]);
-      } else {
-        _filters.push(category.filter[i].defaultIdx);
-      }
-    }
-    setFilters(_filters);
-  }, [category.filter]);
-
-  useEffect(() => {
-    loadData();
-  }, [filters, loadData]);
 
   return (
     <View style={STYLES.container}>
