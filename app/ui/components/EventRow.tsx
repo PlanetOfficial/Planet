@@ -12,10 +12,10 @@ import {Event} from '../../utils/types';
 
 interface Props {
   event: Event;
-  self: number;
+  selfUserId: number;
 }
 
-const EventRow: React.FC<Props> = ({event, self}) => {
+const EventRow: React.FC<Props> = ({event, selfUserId}) => {
   const date = new Date();
 
   return (
@@ -42,7 +42,7 @@ const EventRow: React.FC<Props> = ({event, self}) => {
           </Text>
         ) : null}
       </View>
-      <IconCluster users={event.members} self={self} />
+      <IconCluster users={event.members} selfUserId={selfUserId} />
     </View>
   );
 };

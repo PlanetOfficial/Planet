@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react';
 import {View, useColorScheme, StatusBar} from 'react-native';
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 import colors from '../../../constants/colors';
 import STYLING from '../../../constants/styles';
@@ -33,6 +34,8 @@ const AddFriend = ({
   const [members, setMembers] = useState<UserInfo[]>([]);
   const [invitees, setInvitees] = useState<UserInfo[]>([]);
 
+  const [selfUserId, setSelfUserId] = useState<number>(0);
+
   const [searchText, setSearchText] = useState<string>('');
   const [searchResults, setSearchResults] = useState<UserInfo[]>([]);
   const [searching, setSearching] = useState<boolean>(false);
@@ -45,6 +48,13 @@ const AddFriend = ({
 
   const [fgSelected, setFgSelected] = useState<number>(0);
 
+  const loadSelf = async () => {
+    const myUserId = await EncryptedStorage.getItem('user_id');
+    if (myUserId) {
+      setSelfUserId(parseInt(myUserId, 10));
+    }
+  };
+
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       if (route.params.event_id) {
@@ -53,6 +63,7 @@ const AddFriend = ({
       } else {
         setInvitees(route.params.members);
       }
+      loadSelf();
     });
 
     return unsubscribe;
@@ -70,6 +81,7 @@ const AddFriend = ({
         searchText={searchText}
         setSearchText={setSearchText}
         setSearchResults={setSearchResults}
+        selfUserId={selfUserId}
       />
 
       {searching ? (

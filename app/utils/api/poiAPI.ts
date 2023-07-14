@@ -10,10 +10,13 @@ export const getPois = async (
   longitude: number,
   filters?: {[key: string]: string | string[]},
 ): Promise<Poi[] | null> => {
-  // round latitude and longitude to nearest ~100m ish so that we get similar results between calls,
-  // which minimizes calls to google
-  latitude = Math.round(latitude * 1000) / 1000;
-  longitude = Math.round(longitude * 1000) / 1000;
+  if (radius >= 5000) {
+    latitude = Math.round(latitude * 100) / 100;
+    longitude = Math.round(longitude * 100) / 100;
+  } else {
+    latitude = Math.round(latitude * 1000) / 1000;
+    longitude = Math.round(longitude * 1000) / 1000;
+  }
 
   const response = await fetch(
     PoiAPIURL +

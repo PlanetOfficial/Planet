@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useCallback} from 'react';
+import React, {useEffect, useState, useCallback, useContext} from 'react';
 import {
   View,
   SafeAreaView,
@@ -20,12 +20,16 @@ import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 import EventRow from '../../components/EventRow';
 
+import FriendsContext from '../../../context/FriendsContext';
+
 import {Event, UserInfo} from '../../../utils/types';
 import {getFriend} from '../../../utils/api/friendsAPI';
 
 import ProfileBody from '../../profileScreens/profile/ProfileBody';
 
 import Profile from './Profile';
+import OptionMenu from '../../components/OptionMenu';
+import {handleBlock} from './functions';
 
 const User = ({
   navigation,
@@ -44,14 +48,29 @@ const User = ({
   StatusBar.setBarStyle(colors[theme].statusBar, true);
 
   const [selectedIndex, setIndex] = useState<number>(0);
-  const [self, setSelf] = useState<number>(0);
+  const [selfUserId, setSelfUserId] = useState<number>(0);
   const [mutuals, setMutuals] = useState<UserInfo[]>([]);
   const [mutualEvents, setMutualEvents] = useState<Event[]>([]);
+
+  const friendsContext = useContext(FriendsContext);
+  if (!friendsContext) {
+    throw new Error('FriendsContext is not set!');
+  }
+  const {
+    friends,
+    setFriends,
+    requests,
+    setRequests,
+    requestsSent,
+    setRequestsSent,
+    usersIBlock,
+    setUsersIBlock,
+  } = friendsContext;
 
   const initializeData = useCallback(async () => {
     const myUserId = await EncryptedStorage.getItem('user_id');
     if (myUserId) {
-      setSelf(parseInt(myUserId, 10));
+      setSelfUserId(parseInt(myUserId, 10));
     }
 
     const userData = await getFriend(route.params.user.id);
@@ -81,9 +100,30 @@ const User = ({
             icon={icons.back}
             onPress={() => navigation.goBack()}
           />
+          <OptionMenu
+            options={[
+              {
+                name: strings.friends.block,
+                onPress: () =>
+                  handleBlock(
+                    friends,
+                    setFriends,
+                    requests,
+                    setRequests,
+                    requestsSent,
+                    setRequestsSent,
+                    usersIBlock,
+                    setUsersIBlock,
+                    route.params.user,
+                  ),
+                color: colors[theme].red,
+                disabled: usersIBlock.some(b => b.id === route.params.user.id),
+              },
+            ]}
+          />
         </View>
       </SafeAreaView>
-      {route.params.user.id === self ? (
+      {route.params.user.id === selfUserId ? (
         <ProfileBody navigation={navigation} />
       ) : (
         <>
@@ -122,7 +162,7 @@ const User = ({
                       event: item,
                     })
                   }>
-                  <EventRow event={item} self={self} />
+                  <EventRow event={item} selfUserId={selfUserId} />
                 </TouchableOpacity>
               );
             }}
