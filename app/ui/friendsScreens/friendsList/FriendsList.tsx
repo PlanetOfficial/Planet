@@ -83,7 +83,7 @@ const FriendsList = ({navigation}: {navigation: any}) => {
       ) : null}
 
       <View style={styles.title}>
-        <Text weight="l">{strings.friends.friends}:</Text>
+        <Text size="s">{strings.friends.friends}:</Text>
       </View>
 
       {friends.map((item: UserInfo) => (

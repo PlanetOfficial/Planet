@@ -182,6 +182,15 @@ const strings = {
     noDate: 'No Date Set',
     create: 'Create',
     suggest: 'Suggest',
+    upcomingEvents: 'Upcoming Events',
+    nonDatedEvents: 'Non-Dated Events',
+    pastEvents: 'Past/Completed Events',
+    completed: 'Completed',
+    incomplete: 'Incomplete',
+    markAsCompleted: 'Mark as Completed',
+    markAsIncomplete: 'Mark as Incomplete',
+    changeCompletionStatusInfo:
+      'This will only affect the status of your event.',
   },
   roulette: {
     total: 'Total',
@@ -270,6 +279,8 @@ const strings = {
     editFGName: 'Unable to edit friend group name. Please try again later.',
     deleteFG: 'Unable to delete friend group. Please try again later.',
     inviteUsers: 'Unable to invite users. Please try again later.',
+    changeCompletionStatus:
+      'Unable to change completion status. Please try again later.',
   },
   ageEnum: [
     {label: '-17', value: '-17'},

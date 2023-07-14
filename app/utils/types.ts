@@ -108,6 +108,7 @@ export interface Event {
   members: UserInfo[];
   photo: string;
   vicinity: string;
+  completed: boolean;
 }
 
 export interface EventDetail {
