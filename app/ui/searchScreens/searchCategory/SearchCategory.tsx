@@ -47,15 +47,11 @@ const SearchCategory = ({
   const [places, setPlaces] = useState<Poi[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
-  const filterInit: (number | number[])[] = [];
-  category.filter.forEach(_filter => {
-    if (_filter.multi) {
-      filterInit.push([]);
-    } else {
-      filterInit.push(_filter.defaultIdx);
-    }
-  });
-  const [filters, setFilters] = useState<(number | number[])[]>(filterInit);
+  const [filters, setFilters] = useState<(number | number[])[]>(
+    category.filter.map(_filter => {
+      return _filter.multi ? [] : _filter.defaultIdx;
+    })
+  );
 
   const bookmarkContext = useContext(BookmarkContext);
   if (!bookmarkContext) {
