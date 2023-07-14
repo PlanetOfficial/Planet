@@ -1,4 +1,4 @@
-import React, {createRef} from 'react';
+import React, {createRef, useContext} from 'react';
 import {
   View,
   SafeAreaView,
@@ -19,8 +19,10 @@ import STYLING from '../../../constants/styles';
 import Icon from '../../components/Icon';
 import Text from '../../components/Text';
 
-import {searchUsers} from '../../../utils/api/friendsAPI';
+import FriendsContext from '../../../context/FriendsContext';
+
 import {UserInfo} from '../../../utils/types';
+import {search} from '../friends/functions';
 
 interface Props {
   navigation: any;
@@ -32,6 +34,7 @@ interface Props {
   searchText: string;
   setSearchText: (searchText: string) => void;
   setSearchResults: (searchResults: UserInfo[]) => void;
+  selfUserId: number;
 }
 
 const Header: React.FC<Props> = ({
@@ -44,6 +47,7 @@ const Header: React.FC<Props> = ({
   searchText,
   setSearchText,
   setSearchResults,
+  selfUserId,
 }) => {
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
@@ -51,20 +55,11 @@ const Header: React.FC<Props> = ({
 
   const searchRef = createRef<TextInput>();
 
-  const search = async (text: string) => {
-    setLoading(true);
-    setSearchText(text);
-    if (text.length > 0) {
-      const result = await searchUsers(text);
-
-      if (result) {
-        setSearchResults(result);
-      } else {
-        Alert.alert(strings.error.error, strings.error.searchError);
-      }
-    }
-    setLoading(false);
-  };
+  const friendsContext = useContext(FriendsContext);
+  if (!friendsContext) {
+    throw new Error('FriendsContext is not set!');
+  }
+  const {usersBlockingMe} = friendsContext;
 
   return (
     <SafeAreaView>
@@ -114,7 +109,16 @@ const Header: React.FC<Props> = ({
               setSearching(true);
             }}
             onBlur={() => setSearching(false)}
-            onChangeText={text => search(text)}
+            onChangeText={text =>
+              search(
+                text,
+                setLoading,
+                setSearchText,
+                setSearchResults,
+                selfUserId,
+                usersBlockingMe,
+              )
+            }
             clearButtonMode="while-editing"
           />
         </View>

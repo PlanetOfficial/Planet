@@ -97,3 +97,49 @@ export const reorderFG = async (fg_ids: number[]): Promise<Boolean> => {
 
   return response.ok;
 };
+
+/**
+ * @requires auth_token should be set in EncryptedStorage before calling this function
+ */
+export const blockFriend = async (user_id: number): Promise<Boolean> => {
+  const authToken = await EncryptedStorage.getItem('auth_token');
+
+  if (!authToken) {
+    return false;
+  }
+
+  const response = await fetch(FriendAPIURL + '/block', {
+    method: 'POST',
+    body: JSON.stringify({user_id}),
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Xano-Authorization': `Bearer ${authToken}`,
+      'X-Xano-Authorization-Only': 'true',
+    },
+  });
+
+  return response.ok;
+};
+
+/**
+ * @requires auth_token should be set in EncryptedStorage before calling this function
+ */
+export const unBlockFriend = async (user_id: number): Promise<Boolean> => {
+  const authToken = await EncryptedStorage.getItem('auth_token');
+
+  if (!authToken) {
+    return false;
+  }
+
+  const response = await fetch(FriendAPIURL + '/unblock', {
+    method: 'POST',
+    body: JSON.stringify({user_id}),
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Xano-Authorization': `Bearer ${authToken}`,
+      'X-Xano-Authorization-Only': 'true',
+    },
+  });
+
+  return response.ok;
+};

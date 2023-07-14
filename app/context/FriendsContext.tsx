@@ -12,6 +12,10 @@ type FriendsContextType = {
   setRequestsSent: React.Dispatch<React.SetStateAction<UserInfo[]>>;
   friendGroups: FriendGroup[];
   setFriendGroups: React.Dispatch<React.SetStateAction<FriendGroup[]>>;
+  usersIBlock: UserInfo[];
+  setUsersIBlock: React.Dispatch<React.SetStateAction<UserInfo[]>>;
+  usersBlockingMe: UserInfo[];
+  setUsersBlockingMe: React.Dispatch<React.SetStateAction<UserInfo[]>>;
 };
 
 const FriendsContext = createContext<FriendsContextType | undefined>(undefined);

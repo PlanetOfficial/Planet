@@ -90,7 +90,7 @@ const styling = (theme: 'light' | 'dark') =>
     container: {
       marginTop: s(20),
       borderRadius: s(10),
-      backgroundColor: colors[theme].background,
+      backgroundColor: colors[theme].primary,
     },
   });
 

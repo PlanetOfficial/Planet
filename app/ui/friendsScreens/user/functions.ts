@@ -9,6 +9,7 @@ import {
   postFriendRequest,
   rejectFriendRequest,
 } from '../../../utils/api/friendsAPI';
+import {blockFriend, unBlockFriend} from '../../../utils/api/fgAPI';
 
 export const handleFriendRequest = async (
   userId: number,
@@ -98,5 +99,58 @@ export const handleCancelRequest = async (
     setRequestsSent(requestsSentUpdated);
   } else {
     Alert.alert(strings.error.error, strings.error.cancelFriendRequest);
+  }
+};
+
+export const handleBlock = async (
+  friends: UserInfo[],
+  setFriends: (friends: UserInfo[]) => void,
+  requests: UserInfo[],
+  setRequests: (requests: UserInfo[]) => void,
+  requestsSent: UserInfo[],
+  setRequestsSent: (requestsSent: UserInfo[]) => void,
+  usersIBlock: UserInfo[],
+  setUsersIBlock: (usersIBlock: UserInfo[]) => void,
+  user: UserInfo,
+) => {
+  const response = await blockFriend(user.id);
+
+  if (response) {
+    const usersIBlockUpdated = [user, ...usersIBlock];
+    setUsersIBlock(usersIBlockUpdated);
+
+    const friendsUpdated = friends.filter(
+      (friend: UserInfo) => friend.id !== user.id,
+    );
+    setFriends(friendsUpdated);
+
+    const requestsUpdated = requests.filter(
+      (request: UserInfo) => request.id !== user.id,
+    );
+    setRequests(requestsUpdated);
+
+    const requestsSentUpdated = requestsSent.filter(
+      (request: UserInfo) => request.id !== user.id,
+    );
+    setRequestsSent(requestsSentUpdated);
+  } else {
+    Alert.alert(strings.error.error, strings.error.block);
+  }
+};
+
+export const handleUnblock = async (
+  userId: number,
+  usersIBlock: UserInfo[],
+  setUsersIBlock: (usersBlockingMe: UserInfo[]) => void,
+) => {
+  const response = await unBlockFriend(userId);
+
+  if (response) {
+    const usersIBlockUpdated = usersIBlock.filter(
+      (userIBlock: UserInfo) => userIBlock.id !== userId,
+    );
+    setUsersIBlock(usersIBlockUpdated);
+  } else {
+    Alert.alert(strings.error.error, strings.error.unblock);
   }
 };

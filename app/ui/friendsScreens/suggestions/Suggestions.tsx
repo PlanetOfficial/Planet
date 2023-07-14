@@ -29,13 +29,19 @@ const Friends = ({navigation}: {navigation: any}) => {
   if (!friendsContext) {
     throw new Error('FriendsContext is not set!');
   }
-  const {suggestions} = friendsContext;
+  const {suggestions, usersIBlock, usersBlockingMe} = friendsContext;
 
   return (
     <FlatList
       style={STYLES.container}
       contentContainerStyle={STYLES.flatList}
-      data={suggestions}
+      data={suggestions.filter(
+        user =>
+          !usersIBlock.some(userIBlock => userIBlock.id === user.id) &&
+          !usersBlockingMe.some(
+            userBlockingMe => userBlockingMe.id === user.id,
+          ),
+      )}
       keyExtractor={item => item.id.toString()}
       renderItem={({item}: {item: UserInfo}) => (
         <TouchableOpacity

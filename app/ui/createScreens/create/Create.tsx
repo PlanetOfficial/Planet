@@ -58,20 +58,14 @@ const Create = ({
   const {bookmarks, setBookmarks} = bookmarkContext;
 
   const addMembers = useCallback(() => {
-    const membersToBeAdded = route.params?.members;
+    const _members = route.params?.members;
 
-    if (membersToBeAdded) {
-      const _members = [...members];
-      membersToBeAdded.forEach((member: UserInfo) => {
-        if (!_members.includes(member)) {
-          _members.push(member);
-        }
-      });
+    if (_members) {
       setMembers(_members);
 
       navigation.setParams({member: undefined});
     }
-  }, [navigation, route.params?.members, members]);
+  }, [navigation, route.params?.members]);
 
   const addDestination = useCallback(() => {
     const destination = route.params?.destination;
