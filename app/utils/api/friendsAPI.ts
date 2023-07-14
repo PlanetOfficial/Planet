@@ -1,7 +1,7 @@
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {FriendAPIURL, XanoAPIKey} from './APIConstants';
 import {FriendGroup, UserDetail, UserInfo} from '../types';
-import {refreshAuthtoken} from './authAPI';
+import {refreshAuthtoken, requestAndValidate} from './authAPI';
 
 /**
  * @requires auth_token should be set in EncryptedStorage before calling this function
@@ -25,16 +25,7 @@ export const getFriend = async (id: number): Promise<UserDetail | null> => {
     return response;
   };
 
-  let response = await request(authToken);
-
-  if (response.status === 401) {
-    const refreshedAuthtoken = await refreshAuthtoken();
-
-    if (refreshedAuthtoken) {
-      await EncryptedStorage.setItem('auth_token', authToken);
-      response = await request(refreshedAuthtoken);
-    }
-  }
+  const response = await requestAndValidate(authToken, request);
 
   if (response?.ok) {
     const myJson: UserDetail = await response.json();
@@ -74,16 +65,7 @@ export const getFriendsInfo = async (): Promise<{
     return response;
   };
 
-  let response = await request(authToken);
-
-  if (response.status === 401) {
-    const refreshedAuthtoken = await refreshAuthtoken();
-
-    if (refreshedAuthtoken) {
-      await EncryptedStorage.setItem('auth_token', authToken);
-      response = await request(refreshedAuthtoken);
-    }
-  }
+  const response = await requestAndValidate(authToken, request);
 
   if (response?.ok) {
     const myJson = await response.json();
@@ -120,16 +102,7 @@ export const getFriends = async (): Promise<{
     return response;
   };
 
-  let response = await request(authToken);
-
-  if (response.status === 401) {
-    const refreshedAuthtoken = await refreshAuthtoken();
-
-    if (refreshedAuthtoken) {
-      await EncryptedStorage.setItem('auth_token', authToken);
-      response = await request(refreshedAuthtoken);
-    }
-  }
+  const response = await requestAndValidate(authToken, request);
 
   if (response?.ok) {
     const myJson = await response.json();
@@ -164,16 +137,7 @@ export const getFriendRequests = async (): Promise<{
     return response;
   };
 
-  let response = await request(authToken);
-
-  if (response.status === 401) {
-    const refreshedAuthtoken = await refreshAuthtoken();
-
-    if (refreshedAuthtoken) {
-      await EncryptedStorage.setItem('auth_token', authToken);
-      response = await request(refreshedAuthtoken);
-    }
-  }
+  const response = await requestAndValidate(authToken, request);
 
   if (response?.ok) {
     const myJson = await response.json();
@@ -207,16 +171,7 @@ export const postFriendRequest = async (id: number): Promise<boolean> => {
     return response;
   };
 
-  let response = await request(authToken);
-
-  if (response.status === 401) {
-    const refreshedAuthtoken = await refreshAuthtoken();
-
-    if (refreshedAuthtoken) {
-      await EncryptedStorage.setItem('auth_token', authToken);
-      response = await request(refreshedAuthtoken);
-    }
-  }
+  const response = await requestAndValidate(authToken, request);
 
   return response?.ok;
 };
@@ -245,16 +200,7 @@ export const deleteFriendRequest = async (id: number): Promise<boolean> => {
     return response;
   };
 
-  let response = await request(authToken);
-
-  if (response.status === 401) {
-    const refreshedAuthtoken = await refreshAuthtoken();
-
-    if (refreshedAuthtoken) {
-      await EncryptedStorage.setItem('auth_token', authToken);
-      response = await request(refreshedAuthtoken);
-    }
-  }
+  const response = await requestAndValidate(authToken, request);
 
   return response?.ok;
 };
@@ -283,16 +229,7 @@ export const acceptFriendRequest = async (id: number): Promise<boolean> => {
     return response;
   };
 
-  let response = await request(authToken);
-
-  if (response.status === 401) {
-    const refreshedAuthtoken = await refreshAuthtoken();
-
-    if (refreshedAuthtoken) {
-      await EncryptedStorage.setItem('auth_token', authToken);
-      response = await request(refreshedAuthtoken);
-    }
-  }
+  const response = await requestAndValidate(authToken, request);
 
   return response?.ok;
 };
@@ -321,16 +258,7 @@ export const rejectFriendRequest = async (id: number): Promise<boolean> => {
     return response;
   };
 
-  let response = await request(authToken);
-
-  if (response.status === 401) {
-    const refreshedAuthtoken = await refreshAuthtoken();
-
-    if (refreshedAuthtoken) {
-      await EncryptedStorage.setItem('auth_token', authToken);
-      response = await request(refreshedAuthtoken);
-    }
-  }
+  const response = await requestAndValidate(authToken, request);
 
   return response?.ok;
 };
@@ -359,16 +287,7 @@ export const deleteFriend = async (id: number): Promise<boolean> => {
     return response;
   };
 
-  let response = await request(authToken);
-
-  if (response.status === 401) {
-    const refreshedAuthtoken = await refreshAuthtoken();
-
-    if (refreshedAuthtoken) {
-      await EncryptedStorage.setItem('auth_token', authToken);
-      response = await request(refreshedAuthtoken);
-    }
-  }
+  const response = await requestAndValidate(authToken, request);
 
   return response?.ok;
 };
@@ -395,16 +314,7 @@ export const getSuggestions = async (): Promise<UserInfo[] | null> => {
     return response;
   };
 
-  let response = await request(authToken);
-
-  if (response.status === 401) {
-    const refreshedAuthtoken = await refreshAuthtoken();
-
-    if (refreshedAuthtoken) {
-      await EncryptedStorage.setItem('auth_token', authToken);
-      response = await request(refreshedAuthtoken);
-    }
-  }
+  const response = await requestAndValidate(authToken, request);
 
   if (response?.ok) {
     const myJson: UserInfo[] = await response.json();

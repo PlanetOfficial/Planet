@@ -1,6 +1,6 @@
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {FriendAPIURL} from './APIConstants';
-import {refreshAuthtoken} from './authAPI';
+import {refreshAuthtoken, requestAndValidate} from './authAPI';
 
 /**
  * @requires auth_token should be set in EncryptedStorage before calling this function
@@ -29,16 +29,7 @@ export const postFG = async (
     return response;
   };
 
-  let response = await request(authToken);
-
-  if (response.status === 401) {
-    const refreshedAuthtoken = await refreshAuthtoken();
-
-    if (refreshedAuthtoken) {
-      await EncryptedStorage.setItem('auth_token', authToken);
-      response = await request(refreshedAuthtoken);
-    }
-  }
+  const response = await requestAndValidate(authToken, request);
 
   return response.ok;
 };
@@ -71,16 +62,7 @@ export const editFG = async (
     return response;
   };
 
-  let response = await request(authToken);
-
-  if (response.status === 401) {
-    const refreshedAuthtoken = await refreshAuthtoken();
-
-    if (refreshedAuthtoken) {
-      await EncryptedStorage.setItem('auth_token', authToken);
-      response = await request(refreshedAuthtoken);
-    }
-  }
+  const response = await requestAndValidate(authToken, request);
 
   return response.ok;
 };
@@ -107,16 +89,7 @@ export const deleteFG = async (id: number): Promise<Boolean> => {
     return response;
   };
 
-  let response = await request(authToken);
-
-  if (response.status === 401) {
-    const refreshedAuthtoken = await refreshAuthtoken();
-
-    if (refreshedAuthtoken) {
-      await EncryptedStorage.setItem('auth_token', authToken);
-      response = await request(refreshedAuthtoken);
-    }
-  }
+  const response = await requestAndValidate(authToken, request);
 
   return response.ok;
 };
@@ -145,16 +118,7 @@ export const reorderFG = async (fg_ids: number[]): Promise<Boolean> => {
     return response;
   };
 
-  let response = await request(authToken);
-
-  if (response.status === 401) {
-    const refreshedAuthtoken = await refreshAuthtoken();
-
-    if (refreshedAuthtoken) {
-      await EncryptedStorage.setItem('auth_token', authToken);
-      response = await request(refreshedAuthtoken);
-    }
-  }
+  const response = await requestAndValidate(authToken, request);
 
   return response.ok;
 };
@@ -183,16 +147,7 @@ export const blockFriend = async (user_id: number): Promise<Boolean> => {
     return response;
   };
 
-  let response = await request(authToken);
-
-  if (response.status === 401) {
-    const refreshedAuthtoken = await refreshAuthtoken();
-
-    if (refreshedAuthtoken) {
-      await EncryptedStorage.setItem('auth_token', authToken);
-      response = await request(refreshedAuthtoken);
-    }
-  }
+  const response = await requestAndValidate(authToken, request);
 
   return response.ok;
 };
@@ -221,16 +176,7 @@ export const unBlockFriend = async (user_id: number): Promise<Boolean> => {
     return response;
   };
 
-  let response = await request(authToken);
-
-  if (response.status === 401) {
-    const refreshedAuthtoken = await refreshAuthtoken();
-
-    if (refreshedAuthtoken) {
-      await EncryptedStorage.setItem('auth_token', authToken);
-      response = await request(refreshedAuthtoken);
-    }
-  }
+  const response = await requestAndValidate(authToken, request);
 
   return response.ok;
 };

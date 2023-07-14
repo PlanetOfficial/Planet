@@ -1,7 +1,7 @@
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {EventAPIURL} from './APIConstants';
 import {Event, EventDetail} from '../types';
-import {refreshAuthtoken} from './authAPI';
+import {refreshAuthtoken, requestAndValidate} from './authAPI';
 
 /**
  * @requires auth_token should be set in EncryptedStorage before calling this function
@@ -25,16 +25,7 @@ export const getEvents = async (): Promise<Event[] | null> => {
     return response;
   };
 
-  let response = await request(authToken);
-
-  if (response.status === 401) {
-    const refreshedAuthtoken = await refreshAuthtoken();
-
-    if (refreshedAuthtoken) {
-      await EncryptedStorage.setItem('auth_token', authToken);
-      response = await request(refreshedAuthtoken);
-    }
-  }
+  const response = await requestAndValidate(authToken, request);
 
   if (response?.ok) {
     const myJson: Event[] = await response.json();
@@ -66,16 +57,7 @@ export const getEvent = async (id: number): Promise<EventDetail | null> => {
     return response;
   };
 
-  let response = await request(authToken);
-
-  if (response.status === 401) {
-    const refreshedAuthtoken = await refreshAuthtoken();
-
-    if (refreshedAuthtoken) {
-      await EncryptedStorage.setItem('auth_token', authToken);
-      response = await request(refreshedAuthtoken);
-    }
-  }
+  const response = await requestAndValidate(authToken, request);
 
   if (response?.ok) {
     const myJson: EventDetail = await response.json();
@@ -119,16 +101,7 @@ export const postEvent = async (
     return response;
   };
 
-  let response = await request(authToken);
-
-  if (response.status === 401) {
-    const refreshedAuthtoken = await refreshAuthtoken();
-
-    if (refreshedAuthtoken) {
-      await EncryptedStorage.setItem('auth_token', authToken);
-      response = await request(refreshedAuthtoken);
-    }
-  }
+  const response = await requestAndValidate(authToken, request);
 
   return response.ok;
 };
@@ -160,16 +133,7 @@ export const editName = async (
     return response;
   };
 
-  let response = await request(authToken);
-
-  if (response.status === 401) {
-    const refreshedAuthtoken = await refreshAuthtoken();
-
-    if (refreshedAuthtoken) {
-      await EncryptedStorage.setItem('auth_token', authToken);
-      response = await request(refreshedAuthtoken);
-    }
-  }
+  const response = await requestAndValidate(authToken, request);
 
   return response.ok;
 };
@@ -201,16 +165,7 @@ export const editDatetime = async (
     return response;
   };
 
-  let response = await request(authToken);
-
-  if (response.status === 401) {
-    const refreshedAuthtoken = await refreshAuthtoken();
-
-    if (refreshedAuthtoken) {
-      await EncryptedStorage.setItem('auth_token', authToken);
-      response = await request(refreshedAuthtoken);
-    }
-  }
+  const response = await requestAndValidate(authToken, request);
 
   return response.ok;
 };
@@ -239,16 +194,7 @@ export const leaveEvent = async (event_id: number): Promise<Boolean> => {
     return response;
   };
 
-  let response = await request(authToken);
-
-  if (response.status === 401) {
-    const refreshedAuthtoken = await refreshAuthtoken();
-
-    if (refreshedAuthtoken) {
-      await EncryptedStorage.setItem('auth_token', authToken);
-      response = await request(refreshedAuthtoken);
-    }
-  }
+  const response = await requestAndValidate(authToken, request);
 
   return response.ok;
 };
@@ -280,16 +226,7 @@ export const inviteToEvent = async (
     return response;
   };
 
-  let response = await request(authToken);
-
-  if (response.status === 401) {
-    const refreshedAuthtoken = await refreshAuthtoken();
-
-    if (refreshedAuthtoken) {
-      await EncryptedStorage.setItem('auth_token', authToken);
-      response = await request(refreshedAuthtoken);
-    }
-  }
+  const response = await requestAndValidate(authToken, request);
 
   return response.ok;
 };
@@ -318,16 +255,7 @@ export const changeEventStatus = async (event_id: number): Promise<Boolean> => {
     return response;
   };
 
-  let response = await request(authToken);
-
-  if (response.status === 401) {
-    const refreshedAuthtoken = await refreshAuthtoken();
-
-    if (refreshedAuthtoken) {
-      await EncryptedStorage.setItem('auth_token', authToken);
-      response = await request(refreshedAuthtoken);
-    }
-  }
+  const response = await requestAndValidate(authToken, request);
 
   return response.ok;
 };

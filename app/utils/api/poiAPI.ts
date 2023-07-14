@@ -1,7 +1,7 @@
 import {PoiAPIURL, XanoAPIKey} from './APIConstants';
 import {Category, Poi, PoiDetail} from '../types';
 import EncryptedStorage from 'react-native-encrypted-storage';
-import {refreshAuthtoken} from './authAPI';
+import {refreshAuthtoken, requestAndValidate} from './authAPI';
 
 export const getPois = async (
   category: Category,
@@ -69,16 +69,7 @@ export const getPoi = async (
     return response;
   };
 
-  let response = await request(authToken);
-
-  if (response.status === 401) {
-    const refreshedAuthtoken = await refreshAuthtoken();
-
-    if (refreshedAuthtoken) {
-      await EncryptedStorage.setItem('auth_token', authToken);
-      response = await request(refreshedAuthtoken);
-    }
-  }
+  const response = await requestAndValidate(authToken, request);
 
   if (response?.ok) {
     const myJson = await response.json();

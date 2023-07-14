@@ -1,7 +1,7 @@
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {UserAPIURL} from './APIConstants';
 import {NotificationSettings} from '../types';
-import {refreshAuthtoken} from './authAPI';
+import {refreshAuthtoken, requestAndValidate} from './authAPI';
 
 /**
  * @requires auth_token should be set in EncryptedStorage before calling this function
@@ -26,16 +26,7 @@ export const getNotificationSettings =
       return response;
     };
 
-    let response = await request(authToken);
-
-    if (response.status === 401) {
-      const refreshedAuthtoken = await refreshAuthtoken();
-
-      if (refreshedAuthtoken) {
-        await EncryptedStorage.setItem('auth_token', authToken);
-        response = await request(refreshedAuthtoken);
-      }
-    }
+    const response = await requestAndValidate(authToken, request);
 
     if (response.ok) {
       const myJson: NotificationSettings = await response.json();
@@ -70,16 +61,7 @@ export const toggleNotifyFriendRequest = async (): Promise<Boolean> => {
     return response;
   };
 
-  let response = await request(authToken);
-
-  if (response.status === 401) {
-    const refreshedAuthtoken = await refreshAuthtoken();
-
-    if (refreshedAuthtoken) {
-      await EncryptedStorage.setItem('auth_token', authToken);
-      response = await request(refreshedAuthtoken);
-    }
-  }
+  const response = await requestAndValidate(authToken, request);
 
   return response.ok;
 };
@@ -109,16 +91,7 @@ export const toggleNotifyFriendRequestAccept = async (): Promise<Boolean> => {
     return response;
   };
 
-  let response = await request(authToken);
-
-  if (response.status === 401) {
-    const refreshedAuthtoken = await refreshAuthtoken();
-
-    if (refreshedAuthtoken) {
-      await EncryptedStorage.setItem('auth_token', authToken);
-      response = await request(refreshedAuthtoken);
-    }
-  }
+  const response = await requestAndValidate(authToken, request);
 
   return response.ok;
 };
@@ -148,16 +121,7 @@ export const toggleNotifyEventInvite = async (): Promise<Boolean> => {
     return response;
   };
 
-  let response = await request(authToken);
-
-  if (response.status === 401) {
-    const refreshedAuthtoken = await refreshAuthtoken();
-
-    if (refreshedAuthtoken) {
-      await EncryptedStorage.setItem('auth_token', authToken);
-      response = await request(refreshedAuthtoken);
-    }
-  }
+  const response = await requestAndValidate(authToken, request);
 
   return response.ok;
 };
@@ -188,16 +152,7 @@ export const toggleNotifyNewSuggestion = async (): Promise<Boolean> => {
     return response;
   };
 
-  let response = await request(authToken);
-
-  if (response.status === 401) {
-    const refreshedAuthtoken = await refreshAuthtoken();
-
-    if (refreshedAuthtoken) {
-      await EncryptedStorage.setItem('auth_token', authToken);
-      response = await request(refreshedAuthtoken);
-    }
-  }
+  const response = await requestAndValidate(authToken, request);
 
   return response.ok;
 };
@@ -227,16 +182,7 @@ export const toggleNotifySetPrimary = async (): Promise<Boolean> => {
     return response;
   };
 
-  let response = await request(authToken);
-
-  if (response.status === 401) {
-    const refreshedAuthtoken = await refreshAuthtoken();
-
-    if (refreshedAuthtoken) {
-      await EncryptedStorage.setItem('auth_token', authToken);
-      response = await request(refreshedAuthtoken);
-    }
-  }
+  const response = await requestAndValidate(authToken, request);
 
   return response.ok;
 };
