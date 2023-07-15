@@ -146,7 +146,6 @@ export const getUserInfo = async (
 
   if (response?.ok) {
     const myJson = await response.json();
-
     return myJson;
   } else {
     return undefined;
@@ -177,15 +176,21 @@ export const saveTokenToDatabase = async (fcm_token: string) => {
     return;
   }
 
-  const response = await fetch(UserAPIURL + '/firebase/updateToken', {
-    method: 'POST',
-    body: JSON.stringify({token: fcm_token}),
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Xano-Authorization': `Bearer ${authToken}`,
-      'X-Xano-Authorization-Only': 'true',
-    },
-  });
+  const request = async (authtoken: string) => {
+    const response = await fetch(UserAPIURL + '/firebase/updateToken', {
+      method: 'POST',
+      body: JSON.stringify({token: fcm_token}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authtoken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
+    });
+
+    return response;
+  };
+
+  const response = await requestAndValidate(authToken, request);
 
   const myJson = await response.json();
 
@@ -203,15 +208,21 @@ export const saveImage = async (base64: string): Promise<string | null> => {
     return null;
   }
 
-  const response = await fetch(UserAPIURL + '/auth/uploadImage', {
-    method: 'POST',
-    body: JSON.stringify({content: 'data:image/png;base64,' + base64}),
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Xano-Authorization': `Bearer ${authToken}`,
-      'X-Xano-Authorization-Only': 'true',
-    },
-  });
+  const request = async (authtoken: string) => {
+    const response = await fetch(UserAPIURL + '/auth/uploadImage', {
+      method: 'POST',
+      body: JSON.stringify({content: 'data:image/png;base64,' + base64}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authtoken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
+    });
+
+    return response;
+  };
+
+  const response = await requestAndValidate(authToken, request);
 
   const myJson: {image_url: string} = await response.json();
 
@@ -239,15 +250,21 @@ export const editInfo = async (
     return null;
   }
 
-  const response = await fetch(UserAPIURL + '/auth/editInfo', {
-    method: 'POST',
-    body: JSON.stringify({first_name, last_name, username, age, gender}),
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Xano-Authorization': `Bearer ${authToken}`,
-      'X-Xano-Authorization-Only': 'true',
-    },
-  });
+  const request = async (authtoken: string) => {
+    const response = await fetch(UserAPIURL + '/auth/editInfo', {
+      method: 'POST',
+      body: JSON.stringify({first_name, last_name, username, age, gender}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authtoken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
+    });
+
+    return response;
+  };
+
+  const response = await requestAndValidate(authToken, request);
 
   return response;
 };
@@ -262,13 +279,69 @@ export const removeAccount = async (): Promise<Boolean> => {
     return false;
   }
 
-  const response = await fetch(UserAPIURL + '/auth/removeAccount', {
-    method: 'DELETE',
+  const request = async (authtoken: string) => {
+    const response = await fetch(UserAPIURL + '/auth/removeAccount', {
+      method: 'DELETE',
+      headers: {
+        'X-Xano-Authorization': `Bearer ${authtoken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
+    });
+
+    return response;
+  };
+
+  const response = await requestAndValidate(authToken, request);
+
+  return response.ok;
+};
+
+/**
+ * @requires user_id should be set in EncryptedStorage before calling this function.
+ * USER MUST BE LOGGED IN TO USE THIS.
+ */
+export const refreshAuthtoken = async (): Promise<string | null> => {
+  const user_id = await EncryptedStorage.getItem('user_id');
+
+  if (!user_id) {
+    throw new Error('user_id not found in EncryptedStorage');
+  }
+
+  const response = await fetch(UserAPIURL + '/auth/refreshAuthtoken', {
+    method: 'POST',
+    body: JSON.stringify({user_id}),
     headers: {
-      'X-Xano-Authorization': `Bearer ${authToken}`,
-      'X-Xano-Authorization-Only': 'true',
+      'Content-Type': 'application/json',
+      Authorization: XanoAPIKey,
     },
   });
 
-  return response.ok;
+  if (response.ok) {
+    const myJson: {authtoken: string} = await response.json();
+    return myJson.authtoken;
+  } else {
+    return null;
+  }
+};
+
+export const requestAndValidate = async (
+  authToken: string,
+  request: (authtoken: string) => Promise<Response>,
+): Promise<Response> => {
+  const response = await request(authToken);
+
+  if (response.status === 401) {
+    const refreshedAuthtoken = await refreshAuthtoken();
+
+    if (refreshedAuthtoken) {
+      await EncryptedStorage.setItem('auth_token', refreshedAuthtoken);
+      const updatedResponse = await request(refreshedAuthtoken);
+      return updatedResponse;
+    } else {
+      console.warn('Request to refresh authtoken failed.');
+      return response;
+    }
+  } else {
+    return response;
+  }
 };

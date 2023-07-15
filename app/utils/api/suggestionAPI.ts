@@ -1,6 +1,7 @@
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {EventAPIURL} from './APIConstants';
 import {Spin} from '../types';
+import {requestAndValidate} from './authAPI';
 
 /**
  * @requires auth_token should be set in EncryptedStorage before calling this function
@@ -16,15 +17,21 @@ export const postSuggestion = async (
     return false;
   }
 
-  const response = await fetch(EventAPIURL + '/suggestion', {
-    method: 'POST',
-    body: JSON.stringify({event_id, destination_id, poi_id}),
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Xano-Authorization': `Bearer ${authToken}`,
-      'X-Xano-Authorization-Only': 'true',
-    },
-  });
+  const request = async (authtoken: string) => {
+    const response = await fetch(EventAPIURL + '/suggestion', {
+      method: 'POST',
+      body: JSON.stringify({event_id, destination_id, poi_id}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authtoken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
+    });
+
+    return response;
+  };
+
+  const response = await requestAndValidate(authToken, request);
 
   return response.ok;
 };
@@ -43,15 +50,21 @@ export const removeSuggestion = async (
     return false;
   }
 
-  const response = await fetch(EventAPIURL + '/suggestion', {
-    method: 'DELETE',
-    body: JSON.stringify({event_id, destination_id, poi_id}),
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Xano-Authorization': `Bearer ${authToken}`,
-      'X-Xano-Authorization-Only': 'true',
-    },
-  });
+  const request = async (authtoken: string) => {
+    const response = await fetch(EventAPIURL + '/suggestion', {
+      method: 'DELETE',
+      body: JSON.stringify({event_id, destination_id, poi_id}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authtoken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
+    });
+
+    return response;
+  };
+
+  const response = await requestAndValidate(authToken, request);
 
   return response.ok;
 };
@@ -70,15 +83,21 @@ export const makePrimary = async (
     return false;
   }
 
-  const response = await fetch(EventAPIURL + '/suggestion/primary', {
-    method: 'POST',
-    body: JSON.stringify({event_id, destination_id, suggestion_id}),
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Xano-Authorization': `Bearer ${authToken}`,
-      'X-Xano-Authorization-Only': 'true',
-    },
-  });
+  const request = async (authtoken: string) => {
+    const response = await fetch(EventAPIURL + '/suggestion/primary', {
+      method: 'POST',
+      body: JSON.stringify({event_id, destination_id, suggestion_id}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authtoken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
+    });
+
+    return response;
+  };
+
+  const response = await requestAndValidate(authToken, request);
 
   return response.ok;
 };
@@ -97,15 +116,21 @@ export const spinRoulette = async (
     return null;
   }
 
-  const response = await fetch(EventAPIURL + '/suggestion/spin', {
-    method: 'POST',
-    body: JSON.stringify({event_id, destination_id, suggestion_id}),
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Xano-Authorization': `Bearer ${authToken}`,
-      'X-Xano-Authorization-Only': 'true',
-    },
-  });
+  const request = async (authtoken: string) => {
+    const response = await fetch(EventAPIURL + '/suggestion/spin', {
+      method: 'POST',
+      body: JSON.stringify({event_id, destination_id, suggestion_id}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authtoken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
+    });
+
+    return response;
+  };
+
+  const response = await requestAndValidate(authToken, request);
 
   if (response.ok) {
     return await response.json();
@@ -128,15 +153,21 @@ export const vote = async (
     return false;
   }
 
-  const response = await fetch(EventAPIURL + '/suggestion/vote', {
-    method: 'POST',
-    body: JSON.stringify({event_id, destination_id, suggestion_id}),
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Xano-Authorization': `Bearer ${authToken}`,
-      'X-Xano-Authorization-Only': 'true',
-    },
-  });
+  const request = async (authtoken: string) => {
+    const response = await fetch(EventAPIURL + '/suggestion/vote', {
+      method: 'POST',
+      body: JSON.stringify({event_id, destination_id, suggestion_id}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authtoken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
+    });
+
+    return response;
+  };
+
+  const response = await requestAndValidate(authToken, request);
 
   return response.ok;
 };

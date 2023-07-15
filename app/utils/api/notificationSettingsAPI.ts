@@ -1,6 +1,7 @@
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {UserAPIURL} from './APIConstants';
 import {NotificationSettings} from '../types';
+import {requestAndValidate} from './authAPI';
 
 /**
  * @requires auth_token should be set in EncryptedStorage before calling this function
@@ -13,13 +14,19 @@ export const getNotificationSettings =
       return null;
     }
 
-    const response = await fetch(UserAPIURL + '/notifications/settings', {
-      method: 'GET',
-      headers: {
-        'X-Xano-Authorization': `Bearer ${authToken}`,
-        'X-Xano-Authorization-Only': 'true',
-      },
-    });
+    const request = async (authtoken: string) => {
+      const response = await fetch(UserAPIURL + '/notifications/settings', {
+        method: 'GET',
+        headers: {
+          'X-Xano-Authorization': `Bearer ${authtoken}`,
+          'X-Xano-Authorization-Only': 'true',
+        },
+      });
+
+      return response;
+    };
+
+    const response = await requestAndValidate(authToken, request);
 
     if (response.ok) {
       const myJson: NotificationSettings = await response.json();
@@ -39,16 +46,22 @@ export const toggleNotifyFriendRequest = async (): Promise<Boolean> => {
     return false;
   }
 
-  const response = await fetch(
-    UserAPIURL + '/notifications/notify_friend_request',
-    {
-      method: 'POST',
-      headers: {
-        'X-Xano-Authorization': `Bearer ${authToken}`,
-        'X-Xano-Authorization-Only': 'true',
+  const request = async (authtoken: string) => {
+    const response = await fetch(
+      UserAPIURL + '/notifications/notify_friend_request',
+      {
+        method: 'POST',
+        headers: {
+          'X-Xano-Authorization': `Bearer ${authtoken}`,
+          'X-Xano-Authorization-Only': 'true',
+        },
       },
-    },
-  );
+    );
+
+    return response;
+  };
+
+  const response = await requestAndValidate(authToken, request);
 
   return response.ok;
 };
@@ -63,16 +76,22 @@ export const toggleNotifyFriendRequestAccept = async (): Promise<Boolean> => {
     return false;
   }
 
-  const response = await fetch(
-    UserAPIURL + '/notifications/notify_friend_request_accept',
-    {
-      method: 'POST',
-      headers: {
-        'X-Xano-Authorization': `Bearer ${authToken}`,
-        'X-Xano-Authorization-Only': 'true',
+  const request = async (authtoken: string) => {
+    const response = await fetch(
+      UserAPIURL + '/notifications/notify_friend_request_accept',
+      {
+        method: 'POST',
+        headers: {
+          'X-Xano-Authorization': `Bearer ${authtoken}`,
+          'X-Xano-Authorization-Only': 'true',
+        },
       },
-    },
-  );
+    );
+
+    return response;
+  };
+
+  const response = await requestAndValidate(authToken, request);
 
   return response.ok;
 };
@@ -87,16 +106,22 @@ export const toggleNotifyEventInvite = async (): Promise<Boolean> => {
     return false;
   }
 
-  const response = await fetch(
-    UserAPIURL + '/notifications/notify_event_invite',
-    {
-      method: 'POST',
-      headers: {
-        'X-Xano-Authorization': `Bearer ${authToken}`,
-        'X-Xano-Authorization-Only': 'true',
+  const request = async (authtoken: string) => {
+    const response = await fetch(
+      UserAPIURL + '/notifications/notify_event_invite',
+      {
+        method: 'POST',
+        headers: {
+          'X-Xano-Authorization': `Bearer ${authtoken}`,
+          'X-Xano-Authorization-Only': 'true',
+        },
       },
-    },
-  );
+    );
+
+    return response;
+  };
+
+  const response = await requestAndValidate(authToken, request);
 
   return response.ok;
 };
@@ -111,17 +136,23 @@ export const toggleNotifyNewSuggestion = async (): Promise<Boolean> => {
     return false;
   }
 
-  const response = await fetch(
-    UserAPIURL + '/notifications/notify_new_suggestion',
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Xano-Authorization': `Bearer ${authToken}`,
-        'X-Xano-Authorization-Only': 'true',
+  const request = async (authtoken: string) => {
+    const response = await fetch(
+      UserAPIURL + '/notifications/notify_new_suggestion',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Xano-Authorization': `Bearer ${authtoken}`,
+          'X-Xano-Authorization-Only': 'true',
+        },
       },
-    },
-  );
+    );
+
+    return response;
+  };
+
+  const response = await requestAndValidate(authToken, request);
 
   return response.ok;
 };
@@ -136,16 +167,22 @@ export const toggleNotifySetPrimary = async (): Promise<Boolean> => {
     return false;
   }
 
-  const response = await fetch(
-    UserAPIURL + '/notifications/notify_set_primary',
-    {
-      method: 'POST',
-      headers: {
-        'X-Xano-Authorization': `Bearer ${authToken}`,
-        'X-Xano-Authorization-Only': 'true',
+  const request = async (authtoken: string) => {
+    const response = await fetch(
+      UserAPIURL + '/notifications/notify_set_primary',
+      {
+        method: 'POST',
+        headers: {
+          'X-Xano-Authorization': `Bearer ${authtoken}`,
+          'X-Xano-Authorization-Only': 'true',
+        },
       },
-    },
-  );
+    );
+
+    return response;
+  };
+
+  const response = await requestAndValidate(authToken, request);
 
   return response.ok;
 };

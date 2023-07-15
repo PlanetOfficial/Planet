@@ -1,6 +1,7 @@
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {PoiAPIURL} from './APIConstants';
 import {Poi} from '../types';
+import {requestAndValidate} from './authAPI';
 
 /**
  * @requires auth_token should be set in EncryptedStorage before calling this function
@@ -12,13 +13,19 @@ export const getBookmarks = async (): Promise<Poi[] | null> => {
     return null;
   }
 
-  const response = await fetch(PoiAPIURL + '/bookmark', {
-    method: 'GET',
-    headers: {
-      'X-Xano-Authorization': `Bearer ${authToken}`,
-      'X-Xano-Authorization-Only': 'true',
-    },
-  });
+  const request = async (authtoken: string) => {
+    const response = await fetch(PoiAPIURL + '/bookmark', {
+      method: 'GET',
+      headers: {
+        'X-Xano-Authorization': `Bearer ${authtoken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
+    });
+
+    return response;
+  };
+
+  const response = await requestAndValidate(authToken, request);
 
   if (response?.ok) {
     const myJson: Poi[] = await response.json();
@@ -38,13 +45,19 @@ export const bookmark = async (poi: Poi): Promise<boolean> => {
     return false;
   }
 
-  const response = await fetch(PoiAPIURL + `/bookmark/${poi.id}`, {
-    method: 'POST',
-    headers: {
-      'X-Xano-Authorization': `Bearer ${authToken}`,
-      'X-Xano-Authorization-Only': 'true',
-    },
-  });
+  const request = async (authtoken: string) => {
+    const response = await fetch(PoiAPIURL + `/bookmark/${poi.id}`, {
+      method: 'POST',
+      headers: {
+        'X-Xano-Authorization': `Bearer ${authtoken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
+    });
+
+    return response;
+  };
+
+  const response = await requestAndValidate(authToken, request);
 
   return response.ok;
 };

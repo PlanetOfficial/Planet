@@ -1,6 +1,7 @@
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {EventAPIURL} from './APIConstants';
 import {Event, EventDetail} from '../types';
+import {requestAndValidate} from './authAPI';
 
 /**
  * @requires auth_token should be set in EncryptedStorage before calling this function
@@ -12,13 +13,19 @@ export const getEvents = async (): Promise<Event[] | null> => {
     return null;
   }
 
-  const response = await fetch(EventAPIURL + '/event', {
-    method: 'GET',
-    headers: {
-      'X-Xano-Authorization': `Bearer ${authToken}`,
-      'X-Xano-Authorization-Only': 'true',
-    },
-  });
+  const request = async (authtoken: string) => {
+    const response = await fetch(EventAPIURL + '/event', {
+      method: 'GET',
+      headers: {
+        'X-Xano-Authorization': `Bearer ${authtoken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
+    });
+
+    return response;
+  };
+
+  const response = await requestAndValidate(authToken, request);
 
   if (response?.ok) {
     const myJson: Event[] = await response.json();
@@ -38,13 +45,19 @@ export const getEvent = async (id: number): Promise<EventDetail | null> => {
     return null;
   }
 
-  const response = await fetch(EventAPIURL + `/event/${id}`, {
-    method: 'GET',
-    headers: {
-      'X-Xano-Authorization': `Bearer ${authToken}`,
-      'X-Xano-Authorization-Only': 'true',
-    },
-  });
+  const request = async (authtoken: string) => {
+    const response = await fetch(EventAPIURL + `/event/${id}`, {
+      method: 'GET',
+      headers: {
+        'X-Xano-Authorization': `Bearer ${authtoken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
+    });
+
+    return response;
+  };
+
+  const response = await requestAndValidate(authToken, request);
 
   if (response?.ok) {
     const myJson: EventDetail = await response.json();
@@ -74,15 +87,21 @@ export const postEvent = async (
     datetime = '';
   }
 
-  const response = await fetch(EventAPIURL + '/event', {
-    method: 'POST',
-    body: JSON.stringify({poi_ids, names, name, datetime, members}),
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Xano-Authorization': `Bearer ${authToken}`,
-      'X-Xano-Authorization-Only': 'true',
-    },
-  });
+  const request = async (authtoken: string) => {
+    const response = await fetch(EventAPIURL + '/event', {
+      method: 'POST',
+      body: JSON.stringify({poi_ids, names, name, datetime, members}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authtoken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
+    });
+
+    return response;
+  };
+
+  const response = await requestAndValidate(authToken, request);
 
   return response.ok;
 };
@@ -100,15 +119,21 @@ export const editName = async (
     return false;
   }
 
-  const response = await fetch(EventAPIURL + '/event/name', {
-    method: 'POST',
-    body: JSON.stringify({event_id, name}),
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Xano-Authorization': `Bearer ${authToken}`,
-      'X-Xano-Authorization-Only': 'true',
-    },
-  });
+  const request = async (authtoken: string) => {
+    const response = await fetch(EventAPIURL + '/event/name', {
+      method: 'POST',
+      body: JSON.stringify({event_id, name}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authtoken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
+    });
+
+    return response;
+  };
+
+  const response = await requestAndValidate(authToken, request);
 
   return response.ok;
 };
@@ -126,15 +151,21 @@ export const editDatetime = async (
     return false;
   }
 
-  const response = await fetch(EventAPIURL + '/event/datetime', {
-    method: 'POST',
-    body: JSON.stringify({event_id, datetime}),
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Xano-Authorization': `Bearer ${authToken}`,
-      'X-Xano-Authorization-Only': 'true',
-    },
-  });
+  const request = async (authtoken: string) => {
+    const response = await fetch(EventAPIURL + '/event/datetime', {
+      method: 'POST',
+      body: JSON.stringify({event_id, datetime}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authtoken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
+    });
+
+    return response;
+  };
+
+  const response = await requestAndValidate(authToken, request);
 
   return response.ok;
 };
@@ -149,15 +180,21 @@ export const leaveEvent = async (event_id: number): Promise<Boolean> => {
     return false;
   }
 
-  const response = await fetch(EventAPIURL + '/member', {
-    method: 'DELETE',
-    body: JSON.stringify({event_id}),
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Xano-Authorization': `Bearer ${authToken}`,
-      'X-Xano-Authorization-Only': 'true',
-    },
-  });
+  const request = async (authtoken: string) => {
+    const response = await fetch(EventAPIURL + '/member', {
+      method: 'DELETE',
+      body: JSON.stringify({event_id}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authtoken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
+    });
+
+    return response;
+  };
+
+  const response = await requestAndValidate(authToken, request);
 
   return response.ok;
 };
@@ -175,15 +212,21 @@ export const inviteToEvent = async (
     return false;
   }
 
-  const response = await fetch(EventAPIURL + '/member', {
-    method: 'POST',
-    body: JSON.stringify({event_id, user_ids}),
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Xano-Authorization': `Bearer ${authToken}`,
-      'X-Xano-Authorization-Only': 'true',
-    },
-  });
+  const request = async (authtoken: string) => {
+    const response = await fetch(EventAPIURL + '/member', {
+      method: 'POST',
+      body: JSON.stringify({event_id, user_ids}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authtoken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
+    });
+
+    return response;
+  };
+
+  const response = await requestAndValidate(authToken, request);
 
   return response.ok;
 };
@@ -198,15 +241,21 @@ export const changeEventStatus = async (event_id: number): Promise<Boolean> => {
     return false;
   }
 
-  const response = await fetch(EventAPIURL + '/event/completionStatus', {
-    method: 'POST',
-    body: JSON.stringify({event_id}),
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Xano-Authorization': `Bearer ${authToken}`,
-      'X-Xano-Authorization-Only': 'true',
-    },
-  });
+  const request = async (authtoken: string) => {
+    const response = await fetch(EventAPIURL + '/event/completionStatus', {
+      method: 'POST',
+      body: JSON.stringify({event_id}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authtoken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
+    });
+
+    return response;
+  };
+
+  const response = await requestAndValidate(authToken, request);
 
   return response.ok;
 };

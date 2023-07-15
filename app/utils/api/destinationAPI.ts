@@ -1,5 +1,6 @@
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {EventAPIURL} from './APIConstants';
+import {requestAndValidate} from './authAPI';
 
 /**
  * @requires auth_token should be set in EncryptedStorage before calling this function
@@ -15,15 +16,21 @@ export const postDestination = async (
     return false;
   }
 
-  const response = await fetch(EventAPIURL + '/destination', {
-    method: 'POST',
-    body: JSON.stringify({event_id, poi_id, name}),
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Xano-Authorization': `Bearer ${authToken}`,
-      'X-Xano-Authorization-Only': 'true',
-    },
-  });
+  const request = async (authtoken: string) => {
+    const response = await fetch(EventAPIURL + '/destination', {
+      method: 'POST',
+      body: JSON.stringify({event_id, poi_id, name}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authtoken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
+    });
+
+    return response;
+  };
+
+  const response = await requestAndValidate(authToken, request);
 
   return response.ok;
 };
@@ -42,15 +49,21 @@ export const renameDestination = async (
     return false;
   }
 
-  const response = await fetch(EventAPIURL + '/destination/name', {
-    method: 'POST',
-    body: JSON.stringify({event_id, destination_id, name}),
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Xano-Authorization': `Bearer ${authToken}`,
-      'X-Xano-Authorization-Only': 'true',
-    },
-  });
+  const request = async (authtoken: string) => {
+    const response = await fetch(EventAPIURL + '/destination/name', {
+      method: 'POST',
+      body: JSON.stringify({event_id, destination_id, name}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authtoken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
+    });
+
+    return response;
+  };
+
+  const response = await requestAndValidate(authToken, request);
 
   return response.ok;
 };
@@ -68,15 +81,21 @@ export const removeDestination = async (
     return false;
   }
 
-  const response = await fetch(EventAPIURL + '/destination', {
-    method: 'DELETE',
-    body: JSON.stringify({event_id, destination_id}),
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Xano-Authorization': `Bearer ${authToken}`,
-      'X-Xano-Authorization-Only': 'true',
-    },
-  });
+  const request = async (authtoken: string) => {
+    const response = await fetch(EventAPIURL + '/destination', {
+      method: 'DELETE',
+      body: JSON.stringify({event_id, destination_id}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authtoken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
+    });
+
+    return response;
+  };
+
+  const response = await requestAndValidate(authToken, request);
 
   return response.ok;
 };
@@ -94,15 +113,21 @@ export const reorderDestinations = async (
     return false;
   }
 
-  const response = await fetch(EventAPIURL + '/destination/order', {
-    method: 'POST',
-    body: JSON.stringify({event_id, destination_ids}),
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Xano-Authorization': `Bearer ${authToken}`,
-      'X-Xano-Authorization-Only': 'true',
-    },
-  });
+  const request = async (authtoken: string) => {
+    const response = await fetch(EventAPIURL + '/destination/order', {
+      method: 'POST',
+      body: JSON.stringify({event_id, destination_ids}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authtoken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
+    });
+
+    return response;
+  };
+
+  const response = await requestAndValidate(authToken, request);
 
   return response.ok;
 };
