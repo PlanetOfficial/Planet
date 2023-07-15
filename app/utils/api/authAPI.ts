@@ -39,21 +39,15 @@ export const signup = async (
 };
 
 export const sendCode = async (authToken: string, phone_number: string) => {
-  const request = async (authtoken: string) => {
-    const response = await fetch(UserAPIURL + '/auth/sendCode', {
-      method: 'POST',
-      body: JSON.stringify({phone_number}),
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Xano-Authorization': `Bearer ${authtoken}`,
-        'X-Xano-Authorization-Only': 'true',
-      },
-    });
-
-    return response;
-  };
-
-  const response = await requestAndValidate(authToken, request);
+  const response = await fetch(UserAPIURL + '/auth/sendCode', {
+    method: 'POST',
+    body: JSON.stringify({phone_number}),
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Xano-Authorization': `Bearer ${authToken}`,
+      'X-Xano-Authorization-Only': 'true',
+    },
+  });
 
   return response.ok;
 };
@@ -72,21 +66,15 @@ export const sendCodeForgotPwd = async (username: string) => {
 };
 
 export const verifyCode = async (authToken: string, code: string) => {
-  const request = async (authtoken: string) => {
-    const response = await fetch(UserAPIURL + '/auth/verifyCode', {
-      method: 'POST',
-      body: JSON.stringify({code}),
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Xano-Authorization': `Bearer ${authtoken}`,
-        'X-Xano-Authorization-Only': 'true',
-      },
-    });
-
-    return response;
-  };
-
-  const response = await requestAndValidate(authToken, request);
+  const response = await fetch(UserAPIURL + '/auth/verifyCode', {
+    method: 'POST',
+    body: JSON.stringify({code}),
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Xano-Authorization': `Bearer ${authToken}`,
+      'X-Xano-Authorization-Only': 'true',
+    },
+  });
 
   return response.ok;
 };
@@ -114,21 +102,15 @@ export const verifyCodeUsername = async (
 };
 
 export const resetPassword = async (authToken: string, password: string) => {
-  const request = async (authtoken: string) => {
-    const response = await fetch(UserAPIURL + '/auth/resetPassword', {
-      method: 'POST',
-      body: JSON.stringify({password}),
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Xano-Authorization': `Bearer ${authtoken}`,
-        'X-Xano-Authorization-Only': 'true',
-      },
-    });
-
-    return response;
-  };
-
-  const response = await requestAndValidate(authToken, request);
+  const response = await fetch(UserAPIURL + '/auth/resetPassword', {
+    method: 'POST',
+    body: JSON.stringify({password}),
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Xano-Authorization': `Bearer ${authToken}`,
+      'X-Xano-Authorization-Only': 'true',
+    },
+  });
 
   return response.ok;
 };
@@ -138,21 +120,15 @@ export const sendMoreInfo = async (
   age: string,
   gender: string,
 ) => {
-  const request = async (authtoken: string) => {
-    const response = await fetch(UserAPIURL + '/auth/moreInfo', {
-      method: 'POST',
-      body: JSON.stringify({age, gender}),
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Xano-Authorization': `Bearer ${authtoken}`,
-        'X-Xano-Authorization-Only': 'true',
-      },
-    });
-
-    return response;
-  };
-
-  const response = await requestAndValidate(authToken, request);
+  const response = await fetch(UserAPIURL + '/auth/moreInfo', {
+    method: 'POST',
+    body: JSON.stringify({age, gender}),
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Xano-Authorization': `Bearer ${authToken}`,
+      'X-Xano-Authorization-Only': 'true',
+    },
+  });
 
   return response.ok;
 };
@@ -160,19 +136,13 @@ export const sendMoreInfo = async (
 export const getUserInfo = async (
   authToken: string,
 ): Promise<MyInfo | undefined> => {
-  const request = async (authtoken: string) => {
-    const response = await fetch(UserAPIURL + '/auth/me', {
-      method: 'GET',
-      headers: {
-        'X-Xano-Authorization': `Bearer ${authtoken}`,
-        'X-Xano-Authorization-Only': 'true',
-      },
-    });
-
-    return response;
-  };
-
-  const response = await requestAndValidate(authToken, request);
+  const response = await fetch(UserAPIURL + '/auth/me', {
+    method: 'GET',
+    headers: {
+      'X-Xano-Authorization': `Bearer ${authToken}`,
+      'X-Xano-Authorization-Only': 'true',
+    },
+  });
 
   if (response?.ok) {
     const myJson = await response.json();
@@ -183,19 +153,13 @@ export const getUserInfo = async (
 };
 
 export const isVerified = async (authToken: string) => {
-  const request = async (authtoken: string) => {
-    const response = await fetch(UserAPIURL + '/auth/isVerified', {
-      method: 'GET',
-      headers: {
-        'X-Xano-Authorization': `Bearer ${authtoken}`,
-        'X-Xano-Authorization-Only': 'true',
-      },
-    });
-
-    return response;
-  };
-
-  const response = await requestAndValidate(authToken, request);
+  const response = await fetch(UserAPIURL + '/auth/isVerified', {
+    method: 'GET',
+    headers: {
+      'X-Xano-Authorization': `Bearer ${authToken}`,
+      'X-Xano-Authorization-Only': 'true',
+    },
+  });
 
   const myJson = await response.json();
 
