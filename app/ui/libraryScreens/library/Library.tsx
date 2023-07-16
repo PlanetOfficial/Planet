@@ -91,7 +91,10 @@ const Library = ({navigation}: {navigation: any}) => {
                 .filter(
                   (event: Event) =>
                     event.datetime &&
-                    new Date(event.datetime) >= new Date(Date.now()) &&
+                    new Date(
+                      new Date(event.datetime).getTime() +
+                        new Date(event.datetime).getTimezoneOffset() * 60000,
+                    ) >= new Date(Date.now()) &&
                     !event.completed,
                 )
                 .sort((a: Event, b: Event) => {
@@ -113,7 +116,10 @@ const Library = ({navigation}: {navigation: any}) => {
               data: events.filter(
                 (event: Event) =>
                   (event.datetime &&
-                    new Date(event.datetime) < new Date(Date.now())) ||
+                    new Date(
+                      new Date(event.datetime).getTime() +
+                        new Date(event.datetime).getTimezoneOffset() * 60000,
+                    ) < new Date(Date.now())) ||
                   event.completed,
               ),
             },
