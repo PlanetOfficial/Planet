@@ -82,6 +82,12 @@ const SearchMap = ({
               fill={colors[theme].accent}
               fillOpacity={0.3}
             />
+            <Circle
+              cx={s(150)}
+              cy={s(150)}
+              r={s(3)}
+              fill={colors[theme].accent}
+            />
           </Svg>
         </View>
       </View>
