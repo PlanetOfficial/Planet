@@ -2,6 +2,7 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 import {UserAPIURL, XanoAPIKey} from './APIConstants';
 import {MyInfo} from '../types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Alert } from 'react-native';
 
 export const login = async (username: string, password: string) => {
   const response = await fetch(UserAPIURL + '/auth/login', {
@@ -76,6 +77,10 @@ export const verifyCode = async (authToken: string, code: string) => {
     },
   });
 
+  if (response.status == 429) {
+    Alert.alert('Too many attempts, please try again tomorrow.');
+  }
+
   return response.ok;
 };
 
@@ -91,6 +96,10 @@ export const verifyCodeUsername = async (
       Authorization: XanoAPIKey,
     },
   });
+
+  if (response.status == 429) {
+    Alert.alert('Too many attempts, please try again tomorrow.');
+  }
 
   if (response?.ok) {
     const myJson = await response.json();
