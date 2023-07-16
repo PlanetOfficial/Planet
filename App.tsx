@@ -34,7 +34,7 @@ export default function App() {
         } else {
           setLoggedIn(false);
         }
-        
+
         await cacheCategories();
       } catch (err) {
         console.warn(err);
