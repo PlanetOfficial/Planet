@@ -27,7 +27,7 @@ import AddFriend from '../friendsScreens/addFriend/AddFriend';
 import User from '../friendsScreens/user/User';
 import EventPage from '../libraryScreens/event/Event';
 import Mutuals from '../friendsScreens/mutuals/Mutuals';
-import Explore from '../homeScreens/Explore';
+import ViewHistory from '../homeScreens/ViewHistory/ViewHistory';
 import EventSettings from '../libraryScreens/eventSettings/EventSettings';
 import Roulette from '../libraryScreens/roulette/Roulette';
 import SpinHistory from '../libraryScreens/spinHistory/SpinHistory';
@@ -72,7 +72,7 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
               {addFriendScreen()}
               {mutualsScreen()}
               {userScreen()}
-              {exploreScreen()}
+              {viewHistoryScreen()}
               {settingsScreen()}
               {accountSettingsScreen()}
               {contactUsScreen()}
@@ -125,7 +125,7 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
               {addFriendScreen()}
               {mutualsScreen()}
               {userScreen()}
-              {exploreScreen()}
+              {viewHistoryScreen()}
               {settingsScreen()}
               {accountSettingsScreen()}
               {contactUsScreen()}
@@ -353,11 +353,11 @@ const userScreen = () => {
   );
 };
 
-const exploreScreen = () => {
+const viewHistoryScreen = () => {
   return (
     <Stack.Screen
-      name="Explore"
-      component={Explore}
+      name="ViewHistory"
+      component={ViewHistory}
       options={{
         headerShown: false,
       }}

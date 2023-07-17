@@ -22,6 +22,7 @@ import BookmarkContext from '../../../context/BookmarkContext';
 
 import {Destination, EventDetail, Poi, Suggestion} from '../../../utils/types';
 import {handleBookmark} from '../../../utils/Misc';
+
 interface Props {
   navigation: any;
   upcomingEvent: EventDetail | null;
