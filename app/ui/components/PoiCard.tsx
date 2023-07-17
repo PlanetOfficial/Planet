@@ -17,6 +17,7 @@ interface Props {
   disabled?: boolean;
   bookmarked: boolean;
   handleBookmark: (poi: Poi) => void;
+  index?: number;
 }
 
 const PoiCard: React.FC<Props> = ({
@@ -24,6 +25,7 @@ const PoiCard: React.FC<Props> = ({
   disabled,
   bookmarked,
   handleBookmark,
+  index,
 }) => {
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
@@ -37,7 +39,7 @@ const PoiCard: React.FC<Props> = ({
       />
       <View style={styles.footer}>
         <View style={styles.infoContainer}>
-          <Text size="s" numberOfLines={1}>
+          <Text size="xs" numberOfLines={1}>
             {poi.name}
           </Text>
           <Text size="xs" numberOfLines={1}>
@@ -52,6 +54,13 @@ const PoiCard: React.FC<Props> = ({
           onPress={() => handleBookmark(poi)}
         />
       </View>
+      {index ? (
+        <View style={[STYLES.absolute, styles.indexContainer]}>
+          <Text size="s" color={colors[theme].accent}>
+            {index}
+          </Text>
+        </View>
+      ) : null}
     </View>
   );
 };
@@ -59,14 +68,15 @@ const PoiCard: React.FC<Props> = ({
 const styling = (theme: 'light' | 'dark') =>
   StyleSheet.create({
     container: {
-      width: s(140),
-      height: s(180),
+      width: s(130),
+      height: s(160),
       borderRadius: s(10),
       backgroundColor: colors[theme].primary,
+      overflow: 'visible',
     },
     image: {
       width: '100%',
-      height: s(140),
+      height: s(120),
       borderTopLeftRadius: s(10),
       borderTopRightRadius: s(10),
     },
@@ -79,9 +89,19 @@ const styling = (theme: 'light' | 'dark') =>
     },
     infoContainer: {
       flex: 1,
-      justifyContent: 'space-between',
+      justifyContent: 'space-evenly',
       height: s(40),
       paddingVertical: s(4),
+    },
+    indexContainer: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      top: s(-8),
+      left: s(-8),
+      width: s(20),
+      height: s(20),
+      borderRadius: s(10),
+      backgroundColor: colors[theme].primary,
     },
   });
 

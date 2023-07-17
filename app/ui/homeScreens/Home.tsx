@@ -1,15 +1,16 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {
   View,
   StyleSheet,
   SafeAreaView,
   ScrollView,
-  FlatList,
   TouchableOpacity,
   useColorScheme,
   StatusBar,
+  Alert,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
+import moment from 'moment';
 
 import colors from '../../constants/colors';
 import icons from '../../constants/icons';
@@ -23,15 +24,23 @@ import PoiCard from '../components/PoiCard';
 
 import BookmarkContext from '../../context/BookmarkContext';
 
-import {Coordinate, Poi} from '../../utils/types';
+import {
+  Coordinate,
+  Destination,
+  EventDetail,
+  Poi,
+  Suggestion,
+} from '../../utils/types';
 import {fetchUserLocation, handleBookmark} from '../../utils/Misc';
+import {getUpcomingEvent} from '../../utils/api/eventAPI';
 
-// TODO: INCOMPLETE
 const Home = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
   const STYLES = STYLING(theme);
   StatusBar.setBarStyle(colors[theme].statusBar, true);
+
+  const date = new Date();
 
   const [location, setLocation] = useState<Coordinate>();
 
@@ -41,13 +50,25 @@ const Home = ({navigation}: {navigation: any}) => {
   }
   const {bookmarks, setBookmarks} = bookmarkContext;
 
+  const [upcomingEvent, setUpcomingEvent] = useState<EventDetail | null>(null);
+
+  const initializeUpcomingEvent = useCallback(async () => {
+    const _event = await getUpcomingEvent();
+    if (_event) {
+      setUpcomingEvent(_event);
+    } else {
+      Alert.alert(strings.error.error, strings.error.loadUpcomingEvent);
+    }
+  }, []);
+
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', async () => {
+      initializeUpcomingEvent();
       setLocation(await fetchUserLocation());
     });
 
     return unsubscribe;
-  }, [navigation]);
+  }, [navigation, initializeUpcomingEvent]);
 
   const GetGreetings = () => {
     const myDate = new Date();
@@ -77,239 +98,148 @@ const Home = ({navigation}: {navigation: any}) => {
           />
         </View>
       </SafeAreaView>
-      <FlatList
-        data={temp_data}
-        renderItem={({item}) => (
-          <View style={styles.container}>
-            <View style={styles.header}>
-              <Text>{item.name}</Text>
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate('Explore', {
-                    name: item.name,
-                    pois: item.pois,
-                    location: location,
-                  })
-                }>
-                <Text size="s" color={colors[theme].accent}>
-                  {strings.main.seeAll}
-                </Text>
-              </TouchableOpacity>
-            </View>
-            <ScrollView
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={styles.scrollView}>
-              {item.pois.map((poi: Poi) => (
+
+      <ScrollView
+        style={STYLES.container}
+        contentContainerStyle={STYLES.scrollView}
+        showsVerticalScrollIndicator={false}>
+        <>
+          <View style={styles.header}>
+            <Text>{strings.home.upcomingEvent}</Text>
+          </View>
+          {upcomingEvent ? (
+            <>
+              <View style={[styles.upcomingEvent, styles.shadow]}>
+                <ScrollView
+                  horizontal={true}
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={styles.scrollView}>
+                  {upcomingEvent.destinations.map(
+                    (destination: Destination) => {
+                      const poi = destination.suggestions.find(
+                        (suggestion: Suggestion) => suggestion.is_primary,
+                      )?.poi;
+                      if (!poi) {
+                        return null;
+                      }
+                      return (
+                        <TouchableOpacity
+                          key={destination.id}
+                          style={styles.cardContainer}
+                          onPress={() => {
+                            navigation.navigate('Poi', {
+                              poi: poi,
+                              bookmarked: false,
+                              mode: 'none',
+                            });
+                          }}>
+                          <PoiCard
+                            poi={poi}
+                            bookmarked={false}
+                            handleBookmark={(p: Poi) => {
+                              handleBookmark(p, bookmarks, setBookmarks);
+                            }}
+                            index={destination.idx + 1}
+                          />
+                        </TouchableOpacity>
+                      );
+                    },
+                  )}
+                </ScrollView>
+                {/* <Separator /> */}
                 <TouchableOpacity
-                  key={poi.id}
-                  style={styles.cardContainer}
+                  style={styles.footer}
                   onPress={() => {
-                    navigation.navigate('Poi', {
-                      poi: poi,
-                      bookmarked: false,
-                      mode: 'none',
+                    navigation.navigate('Event', {
+                      event: upcomingEvent,
                     });
                   }}>
-                  <PoiCard
-                    poi={poi}
-                    bookmarked={false}
-                    handleBookmark={(p: Poi) => {
-                      handleBookmark(p, bookmarks, setBookmarks);
-                    }}
+                  <View style={STYLES.texts}>
+                    <Text color={colors[theme].primary}>
+                      {upcomingEvent.name}
+                    </Text>
+                    <Text size="xs" weight="l" color={colors[theme].primary}>
+                      {moment(upcomingEvent.datetime)
+                        .add(date.getTimezoneOffset(), 'minutes')
+                        .format('MMM Do, h:mm a')}
+                    </Text>
+                  </View>
+                  <Icon
+                    size="s"
+                    icon={icons.next}
+                    color={colors[theme].primary}
                   />
                 </TouchableOpacity>
-              ))}
-            </ScrollView>
-          </View>
-        )}
-        ItemSeparatorComponent={Separator}
-        keyExtractor={item => item.id.toString()}
-      />
+              </View>
+              <TouchableOpacity style={styles.button}>
+                <Text size="xs" weight="l">
+                  View All Events
+                </Text>
+              </TouchableOpacity>
+            </>
+          ) : null}
+        </>
+        <Separator />
+      </ScrollView>
     </View>
   );
 };
 
 const styling = (theme: 'light' | 'dark') =>
   StyleSheet.create({
-    container: {
+    upcomingEvent: {
+      backgroundColor: colors[theme].accent,
       paddingVertical: s(10),
+      borderRadius: s(20),
+      marginHorizontal: s(10),
+      marginVertical: s(5),
     },
     header: {
       flexDirection: 'row',
       alignItems: 'flex-end',
       justifyContent: 'space-between',
       paddingHorizontal: s(20),
-      paddingTop: s(5),
-      paddingBottom: s(5),
+      paddingVertical: s(10),
     },
     scrollView: {
-      paddingLeft: s(20),
-      paddingVertical: s(5),
+      paddingHorizontal: s(15),
+      marginBottom: s(5),
     },
     cardContainer: {
       marginRight: s(15),
-      overflow: 'visible',
+      paddingTop: s(15),
+      paddingBottom: s(5),
     },
-    iconContainer: {
+    footer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      marginHorizontal: s(10),
+      paddingRight: s(5),
+      marginTop: s(5),
+      paddingTop: s(5),
+    },
+    button: {
+      alignSelf: 'center',
       alignItems: 'center',
       justifyContent: 'center',
-      width: s(50),
-      height: s(50),
-      borderRadius: s(25),
-      backgroundColor: colors[theme].primary,
+      backgroundColor: colors[theme].secondary,
+      marginVertical: s(10),
+      paddingVertical: s(7.5),
+      paddingHorizontal: s(15),
+      borderRadius: s(5),
     },
-    icon: {
-      width: '60%',
-      height: '60%',
+    shadow: {
+      shadowColor: colors[theme].accent,
+      shadowOffset: {
+        width: 0,
+        height: 3,
+      },
+      shadowOpacity: 0.29,
+      shadowRadius: 4.65,
+
+      elevation: 7,
     },
   });
-
-const temp_data = [
-  {
-    id: 1,
-    name: 'Popular in Seattle',
-    pois: [
-      {
-        id: 1,
-        supplier: 'google',
-        name: 'Cafe on the Ave',
-        photo: 'https://picsum.photos/200',
-        place_id: 'ChIJXeaxcAwVkFQRMyvOL6psoX0',
-        latitude: 47.618834,
-        longitude: -122.3250644,
-        vicinity: '123 Main St',
-        price: 3,
-        rating: 4.5,
-        rating_count: 10000,
-        category_name: 'Category 1',
-      },
-      {
-        id: 2,
-        supplier: 'google',
-        name: 'Poke mon go',
-        photo: 'https://picsum.photos/200',
-        place_id: 'ChIJXeaxcAwVkFQRMyvOL6psoX0',
-        latitude: 47.618834,
-        longitude: -122.3250644,
-        vicinity: '123 Main St',
-        price: 1,
-        rating: 3.5,
-        rating_count: 13845,
-        category_name: 'Category 1',
-      },
-      {
-        id: 3,
-        supplier: 'google',
-        name: 'Poi 3',
-        photo: 'https://picsum.photos/200',
-        place_id: 'ChIJXeaxcAwVkFQRMyvOL6psoX0',
-        latitude: 47.618834,
-        longitude: -122.3250644,
-        vicinity: '123 Main St',
-        price: 4,
-        rating: 4.5,
-        rating_count: 10000,
-        category_name: 'Category 1',
-      },
-    ],
-  },
-  {
-    id: 2,
-    name: 'Not Popular in Seattle',
-    pois: [
-      {
-        id: 1,
-        supplier: 'google',
-        name: 'Local Point',
-        photo: 'https://picsum.photos/200',
-        place_id: 'ChIJXeaxcAwVkFQRMyvOL6psoX0',
-        latitude: 47.618834,
-        longitude: -122.3250644,
-        vicinity: '123 Main St',
-        price: 2,
-        rating: 4.3,
-        rating_count: 10000,
-        category_name: 'Ass',
-      },
-      {
-        id: 2,
-        supplier: 'google',
-        name: 'Center Table',
-        photo: 'https://picsum.photos/200',
-        place_id: 'ChIJXeaxcAwVkFQRMyvOL6psoX0',
-        latitude: 47.618834,
-        longitude: -122.3250644,
-        vicinity: '123 Main St',
-        price: 4,
-        rating: 4.5,
-        rating_count: 32400,
-        category_name: 'Category 1',
-      },
-      {
-        id: 3,
-        supplier: 'google',
-        name: 'Poi 3',
-        photo: 'https://picsum.photos/200',
-        place_id: 'ChIJXeaxcAwVkFQRMyvOL6psoX0',
-        latitude: 47.618834,
-        longitude: -122.3250644,
-        vicinity: '123 Main St',
-        price: 5,
-        rating: 4.5,
-        rating_count: 100,
-        category_name: 'Category 1',
-      },
-    ],
-  },
-  {
-    id: 3,
-    name: 'Kinda Popular in Seattle',
-    pois: [
-      {
-        id: 1,
-        supplier: 'google',
-        name: 'Local Point',
-        photo: 'https://picsum.photos/200',
-        place_id: 'ChIJXeaxcAwVkFQRMyvOL6psoX0',
-        latitude: 47.618834,
-        longitude: -122.3250644,
-        vicinity: '123 Main St',
-        price: 2,
-        rating: 4.3,
-        rating_count: 10000,
-        category_name: 'Ass',
-      },
-      {
-        id: 2,
-        supplier: 'google',
-        name: 'Center Table',
-        photo: 'https://picsum.photos/200',
-        place_id: 'ChIJXeaxcAwVkFQRMyvOL6psoX0',
-        latitude: 47.618834,
-        longitude: -122.3250644,
-        vicinity: '123 Main St',
-        price: 4,
-        rating: 4.5,
-        rating_count: 32400,
-        category_name: 'Category 1',
-      },
-      {
-        id: 3,
-        supplier: 'google',
-        name: 'Poi 3',
-        photo: 'https://picsum.photos/200',
-        place_id: 'ChIJXeaxcAwVkFQRMyvOL6psoX0',
-        latitude: 47.618834,
-        longitude: -122.3250644,
-        vicinity: '123 Main St',
-        price: 5,
-        rating: 4.5,
-        rating_count: 100,
-        category_name: 'Category 1',
-      },
-    ],
-  },
-];
 
 export default Home;

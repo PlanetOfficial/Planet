@@ -122,6 +122,7 @@ export interface EventDetail {
 export interface Destination {
   id: number;
   name: string;
+  idx: number;
   suggestions: Suggestion[];
   spin_history: Spin[];
 }

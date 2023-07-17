@@ -69,6 +69,9 @@ const strings = {
       'Lastly, help us improve your experience by filling out the following:',
     enjoy: 'Enjoy!',
   },
+  home: {
+    upcomingEvent: 'Upcoming Event',
+  },
   poi: {
     reviews: 'Reviews',
     info: 'Info',
@@ -285,6 +288,7 @@ const strings = {
     unblock: 'Unable to unblock user. Please try again later.',
     changeCompletionStatus:
       'Unable to change completion status. Please try again later.',
+    loadUpcomingEvent: 'Unable to load upcoming event. Please try again later.',
   },
   ageEnum: [
     {label: '-17', value: '-17'},
