@@ -182,4 +182,5 @@ export interface NotificationSettings {
 
 export interface Recommendation {
   places: Poi[];
+  categories: string[];
 }

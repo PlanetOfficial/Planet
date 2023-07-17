@@ -72,36 +72,46 @@ const Recommendations: React.FC<Props> = ({
               showsHorizontalScrollIndicator={false}
               contentContainerStyle={styles.scrollView}>
               {recommendation.places.map((place: Poi, idx: number) => (
-                <TouchableOpacity
-                  key={index + idx}
-                  style={styles.cardContainer}
-                  onPress={() => {
-                    navigation.navigate('Poi', {
-                      poi: place,
-                      bookmarked: bookmarks.some(
+                <View key={idx}>
+                  <View style={styles.category}>
+                    <Text size="s" color={colors[theme].accent}>
+                      {recommendation.categories[idx]}
+                    </Text>
+                  </View>
+                  <TouchableOpacity
+                    key={index + idx}
+                    style={styles.cardContainer}
+                    onPress={() => {
+                      navigation.navigate('Poi', {
+                        poi: place,
+                        bookmarked: bookmarks.some(
+                          (bookmark: Poi) => bookmark.id === place.id,
+                        ),
+                        mode: 'none',
+                      });
+                    }}>
+                    <PoiCard
+                      poi={place}
+                      bookmarked={bookmarks.some(
                         (bookmark: Poi) => bookmark.id === place.id,
-                      ),
-                      mode: 'none',
-                    });
-                  }}>
-                  <PoiCard
-                    poi={place}
-                    bookmarked={bookmarks.some(
-                      (bookmark: Poi) => bookmark.id === place.id,
-                    )}
-                    handleBookmark={(p: Poi) => {
-                      handleBookmark(p, bookmarks, setBookmarks);
-                    }}
-                    index={idx + 1}
-                  />
-                </TouchableOpacity>
+                      )}
+                      handleBookmark={(p: Poi) => {
+                        handleBookmark(p, bookmarks, setBookmarks);
+                      }}
+                      index={idx + 1}
+                    />
+                  </TouchableOpacity>
+                </View>
               ))}
             </ScrollView>
             <View style={styles.separator} />
             <TouchableOpacity
               style={styles.footer}
               onPress={() => {
-                console.log('TODO - navigate to customize screen');
+                navigation.navigate('Create', {
+                  destinations: recommendation.places,
+                  names: recommendation.categories,
+                });
               }}>
               <View style={STYLES.texts}>
                 <Text>{strings.home.customize}</Text>
@@ -142,7 +152,7 @@ const styling = (theme: 'light' | 'dark') =>
     },
     cardContainer: {
       marginRight: s(15),
-      paddingTop: s(15),
+      paddingTop: s(10),
       paddingBottom: s(5),
     },
     footer: {
@@ -158,6 +168,20 @@ const styling = (theme: 'light' | 'dark') =>
       height: s(1),
       marginLeft: s(15),
       backgroundColor: colors[theme].secondary,
+    },
+    index: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: s(20),
+      height: s(20),
+      borderRadius: s(10),
+      backgroundColor: colors[theme].accent,
+      marginBottom: s(5),
+    },
+    category: {
+      // flexDirection: 'row',
+      alignItems: 'center',
+      paddingRight: s(20),
     },
   });
 
