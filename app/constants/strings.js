@@ -71,6 +71,9 @@ const strings = {
   },
   home: {
     upcomingEvent: 'Upcoming Event',
+    noUpcomingEvent: 'No Upcoming Event',
+    viewAllEvents: 'View All Events',
+    noUpcomingEvents: 'Create an event',
   },
   poi: {
     reviews: 'Reviews',
