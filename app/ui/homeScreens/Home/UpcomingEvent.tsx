@@ -71,13 +71,17 @@ const UpcomingEvent: React.FC<Props> = ({navigation, upcomingEvent}) => {
                     onPress={() => {
                       navigation.navigate('Poi', {
                         poi: poi,
-                        bookmarked: false,
+                        bookmarked: bookmarks.some(
+                          (bookmark: Poi) => bookmark.id === poi.id,
+                        ),
                         mode: 'none',
                       });
                     }}>
                     <PoiCard
                       poi={poi}
-                      bookmarked={false}
+                      bookmarked={bookmarks.some(
+                        (bookmark: Poi) => bookmark.id === poi.id,
+                      )}
                       handleBookmark={(p: Poi) => {
                         handleBookmark(p, bookmarks, setBookmarks);
                       }}

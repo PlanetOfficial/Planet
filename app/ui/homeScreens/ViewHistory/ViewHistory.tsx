@@ -78,7 +78,9 @@ const ViewHistory = ({
               onPress={() =>
                 navigation.navigate('Poi', {
                   poi: item,
-                  bookmarked: true,
+                  bookmarked: bookmarks.some(
+                    bookmark => bookmark.id === item.id,
+                  ),
                   mode: 'none',
                 })
               }>

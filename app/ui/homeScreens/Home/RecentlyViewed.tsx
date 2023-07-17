@@ -55,7 +55,9 @@ const RecentlyViewed: React.FC<Props> = ({
           onPress={() =>
             navigation.navigate('Poi', {
               poi: poi,
-              bookmarked: true,
+              bookmarked: bookmarks.some(
+                (bookmark: Poi) => bookmark.id === poi.id,
+              ),
               mode: 'none',
             })
           }>

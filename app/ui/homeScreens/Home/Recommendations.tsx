@@ -5,6 +5,7 @@ import {
   ScrollView,
   TouchableOpacity,
   useColorScheme,
+  ActivityIndicator,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 
@@ -19,15 +20,24 @@ import PoiCard from '../../components/PoiCard';
 
 import BookmarkContext from '../../../context/BookmarkContext';
 
-import {Poi, Recommendation} from '../../../utils/types';
+import {Coordinate, Poi, Recommendation} from '../../../utils/types';
 import {handleBookmark} from '../../../utils/Misc';
 
 interface Props {
   navigation: any;
+  location: Coordinate;
   recommendations: Recommendation[];
+  loadRecommendations: (location: Coordinate) => void;
+  recommendationsLoading: boolean;
 }
 
-const Recommendations: React.FC<Props> = ({navigation, recommendations}) => {
+const Recommendations: React.FC<Props> = ({
+  navigation,
+  location,
+  recommendations,
+  loadRecommendations,
+  recommendationsLoading,
+}) => {
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
   const STYLES = STYLING(theme);
@@ -42,44 +52,69 @@ const Recommendations: React.FC<Props> = ({navigation, recommendations}) => {
     <>
       <View style={styles.header}>
         <Text>{strings.home.recommendations}</Text>
+        <Icon
+          size="s"
+          icon={icons.reload}
+          onPress={() => {
+            loadRecommendations(location);
+          }}
+        />
       </View>
-      {recommendations.map((recommendation: Recommendation, index: number) => (
-        <View key={index} style={[styles.container, STYLES.shadow]}>
-          <ScrollView
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.scrollView}>
-            {recommendation.places.map((place: Poi, idx: number) => (
-              <TouchableOpacity
-                key={index + idx}
-                style={styles.cardContainer}
-                onPress={() => {
-                  navigation.navigate('Poi', {
-                    poi: place,
-                    bookmarked: false,
-                    mode: 'none',
-                  });
-                }}>
-                <PoiCard
-                  poi={place}
-                  bookmarked={false}
-                  handleBookmark={(p: Poi) => {
-                    handleBookmark(p, bookmarks, setBookmarks);
-                  }}
-                  index={idx + 1}
-                />
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
-          <View style={styles.separator} />
-          <TouchableOpacity style={styles.footer} onPress={() => {}}>
-            <View style={STYLES.texts}>
-              <Text>{strings.home.customize}</Text>
-            </View>
-            <Icon size="s" icon={icons.next} />
-          </TouchableOpacity>
+      {recommendationsLoading ? (
+        <View style={STYLES.center}>
+          <ActivityIndicator size="small" color={colors[theme].accent} />
         </View>
-      ))}
+      ) : recommendations.length > 0 ? (
+        recommendations.map((recommendation: Recommendation, index: number) => (
+          <View key={index} style={[styles.container, STYLES.shadow]}>
+            <ScrollView
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.scrollView}>
+              {recommendation.places.map((place: Poi, idx: number) => (
+                <TouchableOpacity
+                  key={index + idx}
+                  style={styles.cardContainer}
+                  onPress={() => {
+                    navigation.navigate('Poi', {
+                      poi: place,
+                      bookmarked: bookmarks.some(
+                        (bookmark: Poi) => bookmark.id === place.id,
+                      ),
+                      mode: 'none',
+                    });
+                  }}>
+                  <PoiCard
+                    poi={place}
+                    bookmarked={bookmarks.some(
+                      (bookmark: Poi) => bookmark.id === place.id,
+                    )}
+                    handleBookmark={(p: Poi) => {
+                      handleBookmark(p, bookmarks, setBookmarks);
+                    }}
+                    index={idx + 1}
+                  />
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+            <View style={styles.separator} />
+            <TouchableOpacity
+              style={styles.footer}
+              onPress={() => {
+                console.log('TODO - navigate to customize screen');
+              }}>
+              <View style={STYLES.texts}>
+                <Text>{strings.home.customize}</Text>
+              </View>
+              <Icon size="s" icon={icons.next} />
+            </TouchableOpacity>
+          </View>
+        ))
+      ) : (
+        <View style={STYLES.center}>
+          <Text>{strings.home.noRecommendations}</Text>
+        </View>
+      )}
     </>
   );
 };

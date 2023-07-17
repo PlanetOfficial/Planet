@@ -80,6 +80,7 @@ const strings = {
       'Destinations you have viewed in the past week will show up here.',
     seeAll: 'See All',
     customize: 'Customize this event',
+    noRecommendations: 'No Recommendations Found',
   },
   poi: {
     reviews: 'Reviews',

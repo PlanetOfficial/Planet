@@ -47,6 +47,8 @@ const Home = ({navigation}: {navigation: any}) => {
 
   const [upcomingEvent, setUpcomingEvent] = useState<EventDetail | null>(null);
   const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
+  const [recommendationsLoading, setRecommendationsLoading] =
+    useState<boolean>(false);
   const [recentlyViewed, setRecentlyViewed] = useState<Poi[]>([]);
 
   const initializeUpcomingEvent = useCallback(async () => {
@@ -58,25 +60,32 @@ const Home = ({navigation}: {navigation: any}) => {
     }
   }, []);
 
+  const loadRecommendations = useCallback(async (loc: Coordinate) => {
+    setRecommendationsLoading(true);
+
+    const _recommendations = await getRecommendations(
+      loc?.latitude,
+      loc?.longitude,
+    );
+    if (_recommendations) {
+      setRecommendations(_recommendations);
+    } else {
+      Alert.alert(strings.error.error, strings.error.loadRecommendations);
+    }
+
+    setRecommendationsLoading(false);
+  }, []);
+
   useEffect(() => {
     const initializeRecommendations = async () => {
       const _location = await fetchUserLocation();
 
       setLocation(_location);
-
-      const _recommendations = await getRecommendations(
-        _location?.latitude,
-        _location?.longitude,
-      );
-      if (_recommendations) {
-        setRecommendations(_recommendations);
-      } else {
-        Alert.alert(strings.error.error, strings.error.loadRecommendations);
-      }
+      loadRecommendations(_location);
     };
 
     initializeRecommendations();
-  }, []);
+  }, [loadRecommendations]);
 
   const initializeRecentlyViewed = useCallback(async () => {
     const _recentlyViewed = await getRecentlyViewed();
@@ -131,10 +140,15 @@ const Home = ({navigation}: {navigation: any}) => {
         showsVerticalScrollIndicator={false}>
         <UpcomingEvent navigation={navigation} upcomingEvent={upcomingEvent} />
         <Separator />
-        <Recommendations
-          navigation={navigation}
-          recommendations={recommendations}
-        />
+        {location ? (
+          <Recommendations
+            navigation={navigation}
+            location={location}
+            recommendations={recommendations}
+            loadRecommendations={loadRecommendations}
+            recommendationsLoading={recommendationsLoading}
+          />
+        ) : null}
         <Separator />
         {recentlyViewed.length > 0 && location ? (
           <RecentlyViewed
