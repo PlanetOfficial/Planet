@@ -74,10 +74,12 @@ const strings = {
     noUpcomingEvent: 'No Upcoming Event',
     viewAllEvents: 'View All Events',
     noUpcomingEvents: 'Create an event',
+    recommendations: 'Recommended Events for You',
     recentlyViewed: 'Recently Viewed',
     recentlyViewedInfo:
       'Destinations you have viewed in the past week will show up here.',
     seeAll: 'See All',
+    customize: 'Customize this event',
   },
   poi: {
     reviews: 'Reviews',
@@ -296,6 +298,8 @@ const strings = {
     changeCompletionStatus:
       'Unable to change completion status. Please try again later.',
     loadUpcomingEvent: 'Unable to load upcoming event. Please try again later.',
+    loadRecommendations:
+      'Unable to load recommendations. Please try again later.',
     loadRecentlyViewed:
       'Unable to load recently viewed. Please try again later.',
   },

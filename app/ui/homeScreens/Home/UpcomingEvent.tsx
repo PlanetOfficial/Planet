@@ -82,6 +82,7 @@ const UpcomingEvent: React.FC<Props> = ({navigation, upcomingEvent}) => {
                         handleBookmark(p, bookmarks, setBookmarks);
                       }}
                       index={destination.idx + 1}
+                      accent={true}
                     />
                   </TouchableOpacity>
                 );
@@ -106,7 +107,11 @@ const UpcomingEvent: React.FC<Props> = ({navigation, upcomingEvent}) => {
               <Icon size="s" icon={icons.next} color={colors[theme].primary} />
             </TouchableOpacity>
           </View>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              navigation.navigate('Events');
+            }}>
             <Text size="xs" weight="l">
               {strings.home.viewAllEvents}
             </Text>
@@ -129,7 +134,7 @@ const styling = (theme: 'light' | 'dark') =>
       backgroundColor: colors[theme].accent,
       paddingVertical: s(10),
       borderRadius: s(20),
-      marginHorizontal: s(10),
+      marginHorizontal: s(15),
       marginVertical: s(5),
     },
     header: {
@@ -146,7 +151,7 @@ const styling = (theme: 'light' | 'dark') =>
     cardContainer: {
       marginRight: s(15),
       paddingTop: s(15),
-      paddingBottom: s(5),
+      paddingBottom: s(10),
     },
     footer: {
       flexDirection: 'row',
@@ -161,7 +166,8 @@ const styling = (theme: 'light' | 'dark') =>
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: colors[theme].secondary,
-      marginVertical: s(10),
+      marginTop: s(10),
+      marginBottom: s(20),
       paddingVertical: s(7.5),
       paddingHorizontal: s(15),
       borderRadius: s(5),

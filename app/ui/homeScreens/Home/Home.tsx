@@ -19,12 +19,19 @@ import Separator from '../../components/SeparatorR';
 
 import BookmarkContext from '../../../context/BookmarkContext';
 
-import {Coordinate, EventDetail, Poi} from '../../../utils/types';
+import {
+  Coordinate,
+  EventDetail,
+  Poi,
+  Recommendation,
+} from '../../../utils/types';
 import {fetchUserLocation} from '../../../utils/Misc';
 import {getUpcomingEvent} from '../../../utils/api/eventAPI';
 import UpcomingEvent from './UpcomingEvent';
 import RecentlyViewed from './RecentlyViewed';
 import {getRecentlyViewed} from '../../../utils/api/poiAPI';
+import Recommendations from './Recommendations';
+import {getRecommendations} from '../../../utils/api/recommenderAPI';
 
 const Home = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';
@@ -39,6 +46,7 @@ const Home = ({navigation}: {navigation: any}) => {
   }
 
   const [upcomingEvent, setUpcomingEvent] = useState<EventDetail | null>(null);
+  const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
   const [recentlyViewed, setRecentlyViewed] = useState<Poi[]>([]);
 
   const initializeUpcomingEvent = useCallback(async () => {
@@ -48,6 +56,26 @@ const Home = ({navigation}: {navigation: any}) => {
     } else {
       Alert.alert(strings.error.error, strings.error.loadUpcomingEvent);
     }
+  }, []);
+
+  useEffect(() => {
+    const initializeRecommendations = async () => {
+      const _location = await fetchUserLocation();
+
+      setLocation(_location);
+
+      const _recommendations = await getRecommendations(
+        _location?.latitude,
+        _location?.longitude,
+      );
+      if (_recommendations) {
+        setRecommendations(_recommendations);
+      } else {
+        Alert.alert(strings.error.error, strings.error.loadRecommendations);
+      }
+    };
+
+    initializeRecommendations();
   }, []);
 
   const initializeRecentlyViewed = useCallback(async () => {
@@ -63,7 +91,6 @@ const Home = ({navigation}: {navigation: any}) => {
     const unsubscribe = navigation.addListener('focus', async () => {
       initializeUpcomingEvent();
       initializeRecentlyViewed();
-      setLocation(await fetchUserLocation());
     });
 
     return unsubscribe;
@@ -103,6 +130,11 @@ const Home = ({navigation}: {navigation: any}) => {
         contentContainerStyle={STYLES.scrollView}
         showsVerticalScrollIndicator={false}>
         <UpcomingEvent navigation={navigation} upcomingEvent={upcomingEvent} />
+        <Separator />
+        <Recommendations
+          navigation={navigation}
+          recommendations={recommendations}
+        />
         <Separator />
         {recentlyViewed.length > 0 && location ? (
           <RecentlyViewed

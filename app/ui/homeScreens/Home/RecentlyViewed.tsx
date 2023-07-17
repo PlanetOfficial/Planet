@@ -86,6 +86,7 @@ const styling = (theme: 'light' | 'dark') =>
       flexDirection: 'row',
       alignItems: 'flex-end',
       justifyContent: 'space-between',
+      marginTop: s(5),
       paddingHorizontal: s(20),
       paddingVertical: s(10),
     },
