@@ -55,6 +55,8 @@ type RootStackParamList = {
         members: UserInfo[] | undefined;
         destination: PoiType | undefined;
         category: string | undefined;
+        destinations: PoiType[] | undefined;
+        names: string[] | undefined;
       }
     | undefined;
   ModeSearch: {
