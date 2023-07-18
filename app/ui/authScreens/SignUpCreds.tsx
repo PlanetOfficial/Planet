@@ -188,7 +188,7 @@ const SignUpCreds = ({
       </TouchableOpacity>
 
       <View style={styles.footer}>
-        <Text size="s" weight="l">
+        <Text size="s" weight="l" color={colors[theme].neutral}>
           {strings.signUp.bySigningUpYouAgreeTo}
         </Text>
         <TouchableOpacity
