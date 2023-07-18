@@ -44,11 +44,7 @@ const Home = ({navigation}: {navigation: any}) => {
 
   const initializeUpcomingEvent = useCallback(async () => {
     const _event = await getUpcomingEvent();
-    if (_event) {
-      setUpcomingEvent(_event);
-    } else {
-      Alert.alert(strings.error.error, strings.error.loadUpcomingEvent);
-    }
+    setUpcomingEvent(_event);
   }, []);
 
   const initializeRecentlyViewed = useCallback(async () => {
