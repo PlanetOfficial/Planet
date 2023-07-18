@@ -10,7 +10,7 @@ const SplashScreen = () => {
 
   return (
     <View style={styles.background}>
-      <Image style={styles.image} source={require('../../../assets/images/launchimage.png')} />
+      <Image style={styles.image} source={require('../../../assets/images/splashscreen.png')} />
     </View>
   );
 };
