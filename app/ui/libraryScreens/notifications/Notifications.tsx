@@ -5,7 +5,9 @@ import {
   useColorScheme,
   StatusBar,
   FlatList,
+  StyleSheet,
 } from 'react-native';
+import {s} from 'react-native-size-matters';
 
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
@@ -14,6 +16,8 @@ import STYLING from '../../../constants/styles';
 
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
+import Separator from '../../components/SeparatorR';
+// import UserIcon from '../../components/UserIcon';
 
 import {Notification} from '../../../utils/types';
 import {getEventsNotifications} from '../../../utils/api/eventAPI';
@@ -63,15 +67,33 @@ const Notifications = ({navigation}: {navigation: any}) => {
       </SafeAreaView>
 
       <FlatList
+        style={STYLES.flatList}
         data={notifications}
         renderItem={({item}) => (
-          <View>
-            <Text>{item.body}</Text>
+          <View style={styles.row}>
+            {/* <UserIcon user={}/> */}
+            {/* We need  to bold the name of the user who sent the notification as well as event name */}
+            <Text size="s" weight="l">
+              {item.body}
+            </Text>
+            {/* Event Image */}
           </View>
         )}
+        keyExtractor={(_, index) => index.toString()}
+        ItemSeparatorComponent={Separator}
       />
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: s(20),
+    height: s(60),
+  },
+});
 
 export default Notifications;
