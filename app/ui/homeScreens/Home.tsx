@@ -106,13 +106,17 @@ const Home = ({navigation}: {navigation: any}) => {
                   onPress={() => {
                     navigation.navigate('Poi', {
                       poi: poi,
-                      bookmarked: false,
+                      bookmarked: bookmarks.some(
+                        (bookmark: Poi) => bookmark.id === poi.id,
+                      ),
                       mode: 'none',
                     });
                   }}>
                   <PoiCard
                     place={poi}
-                    bookmarked={false}
+                    bookmarked={bookmarks.some(
+                      (bookmark: Poi) => bookmark.id === poi.id,
+                    )}
                     handleBookmark={(p: Poi) => {
                       handleBookmark(p, bookmarks, setBookmarks);
                     }}
