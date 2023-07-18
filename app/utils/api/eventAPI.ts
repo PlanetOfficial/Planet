@@ -271,7 +271,7 @@ export const getUpcomingEvent = async (): Promise<EventDetail | null> => {
   }
 
   const request = async (authtoken: string) => {
-    const response = await fetch(EventAPIURL + `/upcoming`, {
+    const response = await fetch(EventAPIURL + '/upcoming', {
       method: 'GET',
       headers: {
         'X-Xano-Authorization': `Bearer ${authtoken}`,

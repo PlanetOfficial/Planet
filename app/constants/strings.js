@@ -90,12 +90,6 @@ const strings = {
     closed: 'Closed',
     images: 'Images',
   },
-  home: {
-    upcomingEvent: 'Upcoming Event',
-    noUpcomingEvent: 'No Upcoming Event',
-    viewAllEvents: 'View All Events',
-    noUpcomingEvents: 'Create an event',
-  },
   search: {
     search: 'Search',
     searchFriends: 'Search Friends',
