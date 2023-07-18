@@ -130,11 +130,11 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
   return (
     <View style={styles.container}>
       <LinearGradient
-        colors={[colors[theme].primary, colors[theme].accent]}
+        colors={['#ff8c63', '#e9dc96']}
         style={styles.container}
-        start={{x: 0, y: 0}}
-        end={{x: 1, y: 1}}
-        locations={[0.6, 1]}>
+        start={{x: 2, y: 0}}
+        end={{x: -0.5, y: 0.7}}
+        locations={[0.3, 1]}>
         <RNText style={styles.title}>{strings.main.appName}</RNText>
         <TextInput
           style={styles.input}
@@ -199,10 +199,10 @@ const styling = (theme: 'light' | 'dark') =>
     title: {
       marginTop: vs(110),
       marginBottom: vs(70),
-      fontSize: s(55),
-      fontWeight: '900',
-      fontFamily: 'Lato',
-      color: colors[theme].accent,
+      fontSize: s(60),
+      fontFamily: 'Prompt',
+      color: colors[theme].primary,
+      letterSpacing: 2,
     },
     input: {
       paddingHorizontal: s(25),
@@ -210,8 +210,6 @@ const styling = (theme: 'light' | 'dark') =>
       width: s(250),
       height: s(50),
       borderRadius: s(25),
-      borderWidth: 1,
-      borderColor: colors[theme].secondary,
       backgroundColor: colors[theme].primary,
       color: colors[theme].neutral,
       fontFamily: 'Lato',

@@ -2,7 +2,7 @@ import numbers from './numbers';
 
 const strings = {
   main: {
-    appName: 'Planet',
+    appName: 'planet',
     none: 'None',
     save: 'Save',
     done: 'Done',
