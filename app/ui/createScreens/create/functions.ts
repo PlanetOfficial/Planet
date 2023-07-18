@@ -1,4 +1,5 @@
 import {Alert, LayoutAnimation} from 'react-native';
+import moment from 'moment';
 
 import strings from '../../../constants/strings';
 
@@ -48,7 +49,7 @@ export const handleSave = async (
     poi_ids,
     names,
     eventTitle,
-    date,
+    moment(date, 'M/D, h:mma').toString(),
     members.map(member => member.id),
   );
   if (response) {

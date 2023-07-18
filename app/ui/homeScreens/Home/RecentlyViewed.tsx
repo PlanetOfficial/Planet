@@ -62,7 +62,7 @@ const RecentlyViewed: React.FC<Props> = ({
             })
           }>
           <PoiRow
-            poi={poi}
+            place={poi}
             bookmarked={bookmarks.some(bookmark => bookmark.id === poi.id)}
             location={location}
             handleBookmark={(_poi: Poi) =>

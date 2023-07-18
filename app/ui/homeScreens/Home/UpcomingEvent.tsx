@@ -78,14 +78,14 @@ const UpcomingEvent: React.FC<Props> = ({navigation, upcomingEvent}) => {
                       });
                     }}>
                     <PoiCard
-                      poi={poi}
+                      place={poi}
                       bookmarked={bookmarks.some(
                         (bookmark: Poi) => bookmark.id === poi.id,
                       )}
                       handleBookmark={(p: Poi) => {
                         handleBookmark(p, bookmarks, setBookmarks);
                       }}
-                      index={destination.idx + 1}
+                      position={destination.idx + 1}
                       accent={true}
                     />
                   </TouchableOpacity>

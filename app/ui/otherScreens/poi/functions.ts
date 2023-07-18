@@ -17,16 +17,16 @@ export const getButtonString = (
 };
 
 const convertStringTimeToDate = (timeString: string) => {
-  const date = new Date();
+  const currentDate = new Date();
 
   const hours = timeString.substring(0, 2);
   const minutes = timeString.substring(2, 4);
 
   if (hours && minutes) {
     return new Date(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate(),
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      currentDate.getDate(),
       parseInt(hours, 10),
       parseInt(minutes, 10),
     );
@@ -34,7 +34,7 @@ const convertStringTimeToDate = (timeString: string) => {
 };
 
 export const isOpen = (periods: PlaceOpeningHoursPeriod[]) => {
-  const date = new Date();
+  const currentDate = new Date();
 
   return periods.some(period => {
     const startTime = convertStringTimeToDate(period.open.time);
@@ -45,26 +45,26 @@ export const isOpen = (periods: PlaceOpeningHoursPeriod[]) => {
     }
 
     if (
-      date >= startTime &&
-      date <= endTime &&
-      period.open.day === date.getDay() &&
-      period.close.day === date.getDay()
+      currentDate >= startTime &&
+      currentDate <= endTime &&
+      period.open.day === currentDate.getDay() &&
+      period.close.day === currentDate.getDay()
     ) {
       return true;
     }
 
     if (
-      date >= startTime &&
-      period.open.day === date.getDay() &&
-      period.close.day === date.getDay() + 1
+      currentDate >= startTime &&
+      period.open.day === currentDate.getDay() &&
+      period.close.day === currentDate.getDay() + 1
     ) {
       return true;
     }
 
     if (
-      date <= endTime &&
-      period.open.day === date.getDay() - 1 &&
-      period.close.day === date.getDay()
+      currentDate <= endTime &&
+      period.open.day === currentDate.getDay() - 1 &&
+      period.close.day === currentDate.getDay()
     ) {
       return true;
     }

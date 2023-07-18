@@ -85,7 +85,7 @@ const ViewHistory = ({
                 })
               }>
               <PoiRow
-                poi={item}
+                place={item}
                 bookmarked={bookmarks.some(bookmark => bookmark.id === item.id)}
                 location={location}
                 handleBookmark={(poi: Poi) =>

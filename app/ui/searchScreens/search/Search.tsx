@@ -154,7 +154,7 @@ const Search = ({
                   })
                 }>
                 <PoiRow
-                  poi={item}
+                  place={item}
                   bookmarked={true}
                   location={location}
                   handleBookmark={(poi: Poi) =>

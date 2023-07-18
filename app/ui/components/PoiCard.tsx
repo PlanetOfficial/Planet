@@ -13,20 +13,20 @@ import {Poi} from '../../utils/types';
 import {getInfoString} from '../../utils/Misc';
 
 interface Props {
-  poi: Poi;
+  place: Poi;
   disabled?: boolean;
   bookmarked: boolean;
   handleBookmark: (poi: Poi) => void;
-  index?: number;
+  position?: number;
   accent?: boolean;
 }
 
 const PoiCard: React.FC<Props> = ({
-  poi,
+  place,
   disabled,
   bookmarked,
   handleBookmark,
-  index,
+  position,
   accent,
 }) => {
   const theme = useColorScheme() || 'light';
@@ -37,15 +37,15 @@ const PoiCard: React.FC<Props> = ({
     <View style={[styles.container, STYLES.shadow]}>
       <Image
         style={styles.image}
-        source={poi.photo ? {uri: poi.photo} : icons.placeholder}
+        source={place.photo ? {uri: place.photo} : icons.placeholder}
       />
       <View style={styles.footer}>
         <View style={styles.infoContainer}>
           <Text size="xs" numberOfLines={1}>
-            {poi.name}
+            {place.name}
           </Text>
           <Text size="xs" numberOfLines={1}>
-            {getInfoString(poi)}
+            {getInfoString(place)}
           </Text>
         </View>
         <Icon
@@ -53,10 +53,10 @@ const PoiCard: React.FC<Props> = ({
           disabled={disabled}
           icon={bookmarked ? icons.bookmarked : icons.bookmark}
           color={bookmarked ? colors[theme].accent : colors[theme].neutral}
-          onPress={() => handleBookmark(poi)}
+          onPress={() => handleBookmark(place)}
         />
       </View>
-      {index ? (
+      {position ? (
         <View
           style={[
             STYLES.absolute,
@@ -70,7 +70,7 @@ const PoiCard: React.FC<Props> = ({
           <Text
             size="s"
             color={accent ? colors[theme].accent : colors[theme].primary}>
-            {index}
+            {position}
           </Text>
         </View>
       ) : null}

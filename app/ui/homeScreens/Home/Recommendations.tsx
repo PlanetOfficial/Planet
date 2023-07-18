@@ -91,14 +91,14 @@ const Recommendations: React.FC<Props> = ({
                       });
                     }}>
                     <PoiCard
-                      poi={place}
+                      place={place}
                       bookmarked={bookmarks.some(
                         (bookmark: Poi) => bookmark.id === place.id,
                       )}
                       handleBookmark={(p: Poi) => {
                         handleBookmark(p, bookmarks, setBookmarks);
                       }}
-                      index={idx + 1}
+                      position={idx + 1}
                     />
                   </TouchableOpacity>
                 </View>
