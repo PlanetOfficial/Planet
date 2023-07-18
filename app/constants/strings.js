@@ -69,6 +69,7 @@ const strings = {
     improveExperience:
       'Lastly, help us improve your experience by filling out the following:',
     enjoy: 'Enjoy!',
+    bySigningUpYouAgreeTo: 'By signing up, you agree to our',
   },
   home: {
     upcomingEvent: 'Upcoming Event',
