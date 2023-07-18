@@ -157,7 +157,7 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
             });
           }}>
           <PoiCardXL
-            poi={suggestion.poi}
+            place={suggestion.poi}
             width={width}
             options={[
               {

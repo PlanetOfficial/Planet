@@ -14,7 +14,7 @@ import {Option, Poi} from '../../utils/types';
 import {getInfoString} from '../../utils/Misc';
 
 interface Props {
-  poi: Poi;
+  place: Poi;
   disabled?: boolean;
   width?: Animated.AnimatedInterpolation<string | number> | number;
   bookmarked?: boolean;
@@ -25,7 +25,7 @@ interface Props {
 }
 
 const PoiCardXL: React.FC<Props> = ({
-  poi,
+  place,
   disabled = false,
   width,
   bookmarked,
@@ -42,13 +42,13 @@ const PoiCardXL: React.FC<Props> = ({
     <Animated.View style={[styles.container, STYLES.shadow, {width: width}]}>
       <Image
         style={styles.image}
-        source={poi.photo ? {uri: poi.photo} : icons.placeholder}
+        source={place.photo ? {uri: place.photo} : icons.placeholder}
       />
       <View style={styles.header}>
         <View style={styles.infoContainer}>
-          <Text numberOfLines={1}>{poi.name}</Text>
+          <Text numberOfLines={1}>{place.name}</Text>
           <Text size="xs" color={colors[theme].accent} numberOfLines={1}>
-            {getInfoString(poi)}
+            {getInfoString(place)}
           </Text>
         </View>
         {handleBookmark ? (
@@ -57,7 +57,7 @@ const PoiCardXL: React.FC<Props> = ({
             disabled={disabled}
             icon={bookmarked ? icons.bookmarked : icons.bookmark}
             color={bookmarked ? colors[theme].accent : colors[theme].neutral}
-            onPress={() => handleBookmark(poi)}
+            onPress={() => handleBookmark(place)}
           />
         ) : options ? (
           <OptionMenu options={options} />

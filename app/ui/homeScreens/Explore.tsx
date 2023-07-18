@@ -65,7 +65,7 @@ const Explore = ({navigation, route}: {navigation: any; route: any}) => {
                 })
               }>
               <PoiRow
-                poi={item}
+                place={item}
                 bookmarked={true}
                 location={location}
                 handleBookmark={(poi: Poi) =>

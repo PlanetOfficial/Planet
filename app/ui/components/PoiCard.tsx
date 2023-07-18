@@ -13,17 +13,19 @@ import {Poi} from '../../utils/types';
 import {getInfoString} from '../../utils/Misc';
 
 interface Props {
-  poi: Poi;
+  place: Poi;
   disabled?: boolean;
   bookmarked: boolean;
   handleBookmark: (poi: Poi) => void;
+  position?: number;
 }
 
 const PoiCard: React.FC<Props> = ({
-  poi,
+  place,
   disabled,
   bookmarked,
   handleBookmark,
+  position,
 }) => {
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
@@ -33,15 +35,15 @@ const PoiCard: React.FC<Props> = ({
     <View style={[styles.container, STYLES.shadow]}>
       <Image
         style={styles.image}
-        source={poi.photo ? {uri: poi.photo} : icons.placeholder}
+        source={place.photo ? {uri: place.photo} : icons.placeholder}
       />
       <View style={styles.footer}>
         <View style={styles.infoContainer}>
-          <Text size="s" numberOfLines={1}>
-            {poi.name}
+          <Text size="xs" numberOfLines={1}>
+            {place.name}
           </Text>
           <Text size="xs" numberOfLines={1}>
-            {getInfoString(poi)}
+            {getInfoString(place)}
           </Text>
         </View>
         <Icon
@@ -49,9 +51,16 @@ const PoiCard: React.FC<Props> = ({
           disabled={disabled}
           icon={bookmarked ? icons.bookmarked : icons.bookmark}
           color={bookmarked ? colors[theme].accent : colors[theme].neutral}
-          onPress={() => handleBookmark(poi)}
+          onPress={() => handleBookmark(place)}
         />
       </View>
+      {position ? (
+        <View style={[STYLES.absolute, styles.indexContainer]}>
+          <Text size="s" color={colors[theme].accent}>
+            {position}
+          </Text>
+        </View>
+      ) : null}
     </View>
   );
 };
@@ -59,14 +68,15 @@ const PoiCard: React.FC<Props> = ({
 const styling = (theme: 'light' | 'dark') =>
   StyleSheet.create({
     container: {
-      width: s(140),
-      height: s(180),
+      width: s(130),
+      height: s(160),
       borderRadius: s(10),
       backgroundColor: colors[theme].primary,
+      overflow: 'visible',
     },
     image: {
       width: '100%',
-      height: s(140),
+      height: s(120),
       borderTopLeftRadius: s(10),
       borderTopRightRadius: s(10),
     },
@@ -79,9 +89,19 @@ const styling = (theme: 'light' | 'dark') =>
     },
     infoContainer: {
       flex: 1,
-      justifyContent: 'space-between',
+      justifyContent: 'space-evenly',
       height: s(40),
       paddingVertical: s(4),
+    },
+    indexContainer: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      top: s(-8),
+      left: s(-8),
+      width: s(20),
+      height: s(20),
+      borderRadius: s(10),
+      backgroundColor: colors[theme].primary,
     },
   });
 

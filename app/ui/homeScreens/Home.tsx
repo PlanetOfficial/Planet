@@ -49,7 +49,7 @@ const Home = ({navigation}: {navigation: any}) => {
     return unsubscribe;
   }, [navigation]);
 
-  const GetGreetings = () => {
+  const getGreetings = () => {
     const hours = new Date().getHours();
 
     if (hours < 12) {
@@ -65,7 +65,7 @@ const Home = ({navigation}: {navigation: any}) => {
     <View style={STYLES.container}>
       <SafeAreaView>
         <View style={STYLES.header}>
-          <Text size="l">{GetGreetings()}</Text>
+          <Text size="l">{getGreetings()}</Text>
           <Icon
             icon={icons.friends}
             color={colors[theme].accent}
@@ -111,7 +111,7 @@ const Home = ({navigation}: {navigation: any}) => {
                     });
                   }}>
                   <PoiCard
-                    poi={poi}
+                    place={poi}
                     bookmarked={false}
                     handleBookmark={(p: Poi) => {
                       handleBookmark(p, bookmarks, setBookmarks);

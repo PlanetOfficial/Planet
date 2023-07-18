@@ -19,7 +19,7 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import colors from '../../constants/colors';
 import strings from '../../constants/strings';
 
-import Home from '../homeScreens/Home';
+import Home from '../homeScreens/Home/Home';
 import Search from '../searchScreens/search/Search';
 import Library from '../libraryScreens/library/Library';
 import Profile from '../profileScreens/profile/Profile';

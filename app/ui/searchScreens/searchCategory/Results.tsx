@@ -50,7 +50,7 @@ const Results: React.FC<Props> = ({
               })
             }>
             <PoiRow
-              poi={item}
+              place={item}
               bookmarked={bookmarks.some(bookmark => bookmark.id === item.id)}
               handleBookmark={(poi: Poi) =>
                 handleBookmark(poi, bookmarks, setBookmarks)
