@@ -3,6 +3,7 @@ import numbers from './numbers';
 const strings = {
   main: {
     appName: 'planet',
+    url: 'https://planetapp.us',
     none: 'None',
     save: 'Save',
     done: 'Done',
@@ -232,6 +233,8 @@ const strings = {
     resetPassword: 'Reset Password',
     logout: 'Logout',
     removeAccount: 'Remove Account',
+    privacyPolicy: 'Privacy Policy',
+    termsAndConditions: 'Terms and Conditions',
   },
   error: {
     error: 'Error',

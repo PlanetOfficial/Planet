@@ -5,9 +5,9 @@ import {
   TouchableOpacity,
   StyleSheet,
   ScrollView,
-  Alert,
   useColorScheme,
   StatusBar,
+  Linking,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 
@@ -31,11 +31,11 @@ const Settings = ({navigation}: {navigation: any}) => {
       icon: icons.profile,
       onPress: () => navigation.navigate('ProfileSettings'),
     },
-    {
-      name: 'Privacy',
-      icon: icons.privacy,
-      onPress: () => Alert.alert('Nothing to see here'),
-    },
+    // {
+    //   name: 'Privacy',
+    //   icon: icons.privacy,
+    //   onPress: () => Alert.alert('Nothing to see here'),
+    // },
     {
       name: 'Locations',
       icon: icons.pin,
@@ -53,8 +53,8 @@ const Settings = ({navigation}: {navigation: any}) => {
     },
     {
       name: 'Contact Us',
-      icon: icons.call,
-      onPress: () => Alert.alert('Nothing to see here'),
+      icon: icons.open,
+      onPress: () => Linking.openURL(strings.main.url),
     },
   ];
 
@@ -86,10 +86,30 @@ const Settings = ({navigation}: {navigation: any}) => {
           </View>
         ))}
         <View style={styles.footer}>
-          <Text size="s" weight="l">
-            Privacy Policy and Stuff. This is a totally legit app and our
-            company is not run by babies.
-          </Text>
+          <TouchableOpacity
+            onPress={() =>
+              Linking.openURL(strings.main.url + '/privacy-policy')
+            }>
+            <Text
+              size="s"
+              weight="l"
+              underline={true}
+              color={colors[theme].accent}>
+              {strings.settings.privacyPolicy}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() =>
+              Linking.openURL(strings.main.url + '/terms-and-conditions')
+            }>
+            <Text
+              size="s"
+              weight="l"
+              underline={true}
+              color={colors[theme].accent}>
+              {strings.settings.termsAndConditions}
+            </Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </View>
@@ -105,7 +125,11 @@ const styles = StyleSheet.create({
     paddingVertical: s(25),
   },
   footer: {
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     margin: s(50),
+    height: s(50),
   },
 });
 
