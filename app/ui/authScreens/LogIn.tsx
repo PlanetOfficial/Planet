@@ -202,6 +202,7 @@ const styling = (theme: 'light' | 'dark') =>
       marginTop: vs(110),
       marginBottom: vs(70),
       fontSize: s(60),
+      fontWeight: '900',
       fontFamily: 'Prompt',
       color: colors[theme].primary,
       letterSpacing: 2,
