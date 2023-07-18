@@ -125,7 +125,7 @@ const DestinationView: React.FC<Props> = ({
               })
             }>
             <PoiCardXL
-              poi={findPrimary(item.suggestions).poi}
+              place={findPrimary(item.suggestions).poi}
               disabled={displayingSuggestion}
               bookmarked={bookmarks.some(
                 bookmark =>

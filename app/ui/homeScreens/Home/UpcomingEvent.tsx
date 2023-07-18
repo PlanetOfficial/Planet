@@ -22,6 +22,7 @@ import BookmarkContext from '../../../context/BookmarkContext';
 
 import {Destination, EventDetail, Poi, Suggestion} from '../../../utils/types';
 import {handleBookmark} from '../../../utils/Misc';
+
 interface Props {
   navigation: any;
   upcomingEvent: EventDetail | null;
@@ -75,12 +76,12 @@ const UpcomingEvent: React.FC<Props> = ({navigation, upcomingEvent}) => {
                       });
                     }}>
                     <PoiCard
-                      poi={poi}
+                      place={poi}
                       bookmarked={false}
                       handleBookmark={(p: Poi) => {
                         handleBookmark(p, bookmarks, setBookmarks);
                       }}
-                      index={destination.idx + 1}
+                      position={destination.idx + 1}
                     />
                   </TouchableOpacity>
                 );

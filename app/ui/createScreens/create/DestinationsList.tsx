@@ -121,7 +121,7 @@ const DestinationsList: React.FC<Props> = ({
                 })
               }>
               <PoiCardXL
-                poi={destination}
+                place={destination}
                 bookmarked={bookmarks.some(
                   bookmark => bookmark.id === destination.id,
                 )}

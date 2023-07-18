@@ -11,10 +11,10 @@ import Text from './Text';
 import {Poi} from '../../utils/types';
 
 interface Props {
-  poi: Poi;
+  place: Poi;
 }
 
-const PoiCardXS: React.FC<Props> = ({poi}) => {
+const PoiCardXS: React.FC<Props> = ({place}) => {
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
   const STYLES = STYLING(theme);
@@ -23,18 +23,18 @@ const PoiCardXS: React.FC<Props> = ({poi}) => {
     <View style={[styles.container, STYLES.shadow]}>
       <Image
         style={styles.image}
-        source={poi.photo ? {uri: poi.photo} : icons.placeholder}
+        source={place.photo ? {uri: place.photo} : icons.placeholder}
       />
       <View style={styles.header}>
         <View style={styles.title}>
           <Text size="xs" numberOfLines={1}>
-            {poi.name}
+            {place.name}
           </Text>
         </View>
         <Text
           size="xs"
           numberOfLines={1}
-          color={colors[theme].accent}>{`★ ${poi.rating}`}</Text>
+          color={colors[theme].accent}>{`★ ${place.rating}`}</Text>
       </View>
     </View>
   );

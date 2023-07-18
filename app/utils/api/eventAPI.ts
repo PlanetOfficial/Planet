@@ -270,10 +270,8 @@ export const getUpcomingEvent = async (): Promise<EventDetail | null> => {
     return null;
   }
 
-  const now = new Date().getTime();
-
   const request = async (authtoken: string) => {
-    const response = await fetch(EventAPIURL + `/upcoming?now=${now}`, {
+    const response = await fetch(EventAPIURL + `/upcoming`, {
       method: 'GET',
       headers: {
         'X-Xano-Authorization': `Bearer ${authtoken}`,

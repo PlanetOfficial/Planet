@@ -52,7 +52,7 @@ const Info: React.FC<Props> = ({
           });
         }}>
         <PoiCard
-          poi={currentSuggestion.poi}
+          place={currentSuggestion.poi}
           disabled={isSpinning}
           bookmarked={bookmarks.some(
             bookmark => bookmark.id === currentSuggestion.poi.id,

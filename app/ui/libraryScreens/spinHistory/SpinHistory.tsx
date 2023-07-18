@@ -89,7 +89,7 @@ const SpinHistory = ({
                     poi: item.result.poi,
                   })
                 }>
-                <PoiCardXS poi={item.result.poi} />
+                <PoiCardXS place={item.result.poi} />
               </TouchableOpacity>
 
               <TouchableOpacity

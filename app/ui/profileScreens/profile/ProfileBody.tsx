@@ -141,7 +141,7 @@ const ProfileBody = ({navigation}: {navigation: any}) => {
                 })
               }>
               <PoiRow
-                poi={item}
+                place={item}
                 bookmarked={true}
                 location={location}
                 handleBookmark={(poi: Poi) =>

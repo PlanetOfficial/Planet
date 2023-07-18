@@ -24,6 +24,7 @@ import BookmarkContext from '../../../context/BookmarkContext';
 import {Coordinate, EventDetail} from '../../../utils/types';
 import {fetchUserLocation} from '../../../utils/Misc';
 import {getUpcomingEvent} from '../../../utils/api/eventAPI';
+
 import UpcomingEvent from './UpcomingEvent';
 
 const Home = ({navigation}: {navigation: any}) => {
