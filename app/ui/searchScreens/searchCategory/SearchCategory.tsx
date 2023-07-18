@@ -40,7 +40,14 @@ const SearchCategory = ({
 }) => {
   const theme = useColorScheme() || 'light';
   const STYLES = STYLING(theme);
-  StatusBar.setBarStyle(colors[theme].statusBar, true);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', async () => {
+      StatusBar.setBarStyle(colors[theme].statusBar, true);
+    });
+
+    return unsubscribe;
+  }, [navigation, theme]);
 
   const {mode, location, radius, category} = route.params;
 
