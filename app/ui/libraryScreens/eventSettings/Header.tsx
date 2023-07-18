@@ -30,7 +30,7 @@ const Header: React.FC<Props> = ({navigation, eventId}) => {
     const response = await leaveEvent(eventId);
 
     if (response) {
-      navigation.navigate('Library');
+      navigation.navigate(strings.title.library);
     } else {
       Alert.alert(strings.error.error, strings.error.leaveEvent);
     }

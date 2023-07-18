@@ -114,7 +114,7 @@ const UpcomingEvent: React.FC<Props> = ({navigation, upcomingEvent}) => {
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              navigation.navigate('Events');
+              navigation.navigate(strings.title.library);
             }}>
             <Text size="xs" weight="l">
               {strings.home.viewAllEvents}
