@@ -179,3 +179,10 @@ export interface NotificationSettings {
   notify_new_suggestion: boolean;
   notify_set_primary: boolean;
 }
+
+export interface Notification {
+  created_at: string;
+  event_id: number;
+  body: string;
+  screenToNavigate: 'EVENT' | '';
+}
