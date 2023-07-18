@@ -42,7 +42,9 @@ const Info: React.FC<Props> = ({destination, destinationDetails}) => {
                   <Text
                     key={index}
                     size="s"
-                    weight={index === (currentDate.getDay() + 6) % 7 ? 'r' : 'l'}>
+                    weight={
+                      index === (currentDate.getDay() + 6) % 7 ? 'r' : 'l'
+                    }>
                     {hour.replace(',', '').split(' ').slice(1).join(' ') +
                       ' (' +
                       hour?.split(' ')[0].slice(0, -1) +

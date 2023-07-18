@@ -74,9 +74,9 @@ const Overview: React.FC<Props> = ({destination, destinationDetails}) => {
 
               <Text size="xs" weight="l">
                 {
-                  destinationDetails.hours[(currentDate.getDay() + 6) % 7].split(
-                    ' ',
-                  )[1]
+                  destinationDetails.hours[
+                    (currentDate.getDay() + 6) % 7
+                  ].split(' ')[1]
                 }
               </Text>
             </>

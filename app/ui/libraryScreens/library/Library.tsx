@@ -93,7 +93,8 @@ const Library = ({navigation}: {navigation: any}) => {
                 .filter(
                   (event: Event) =>
                     event.datetime &&
-                    new Date(new Date(event.datetime).getTime()) >= currentDate &&
+                    new Date(new Date(event.datetime).getTime()) >=
+                      currentDate &&
                     !event.completed,
                 )
                 .sort((a: Event, b: Event) => {
@@ -115,7 +116,8 @@ const Library = ({navigation}: {navigation: any}) => {
               data: events.filter(
                 (event: Event) =>
                   (event.datetime &&
-                    new Date(new Date(event.datetime).getTime()) < currentDate) ||
+                    new Date(new Date(event.datetime).getTime()) <
+                      currentDate) ||
                   event.completed,
               ),
             },
