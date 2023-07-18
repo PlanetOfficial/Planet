@@ -110,6 +110,9 @@ const Settings = ({navigation}: {navigation: any}) => {
               {strings.settings.termsAndConditions}
             </Text>
           </TouchableOpacity>
+          <Text size="s" weight="l" color={colors[theme].neutral}>
+            {strings.settings.version}
+          </Text>
         </View>
       </ScrollView>
     </View>
@@ -129,7 +132,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     margin: s(50),
-    height: s(50),
+    height: s(80),
   },
 });
 
