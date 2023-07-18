@@ -41,16 +41,10 @@ const EventSettings = ({
   const loadData = useCallback(async () => {
     const _eventDetail = await getEvent(event.id);
     if (_eventDetail) {
-      const date = new Date();
-
       setEventDetail(_eventDetail);
       setEventTitle(_eventDetail.name);
       if (_eventDetail.datetime) {
-        setDatetime(
-          moment(_eventDetail.datetime)
-            .add(date.getTimezoneOffset(), 'minutes')
-            .format('MMM Do, h:mm a'),
-        );
+        setDatetime(moment(_eventDetail.datetime).format('MMM Do, h:mm a'));
       }
     } else {
       Alert.alert(strings.error.error, strings.error.fetchEvent);

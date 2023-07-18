@@ -24,7 +24,7 @@ const Info: React.FC<Props> = ({destination, destinationDetails}) => {
   const styles = styling(theme);
   const STYLES = STYLING(theme);
 
-  const date = new Date();
+  const currentDate = new Date();
   const [hoursExpanded, setHoursExpanded] = useState<boolean>(false);
 
   return (
@@ -42,7 +42,7 @@ const Info: React.FC<Props> = ({destination, destinationDetails}) => {
                   <Text
                     key={index}
                     size="s"
-                    weight={index === (date.getDay() + 6) % 7 ? 'r' : 'l'}>
+                    weight={index === (currentDate.getDay() + 6) % 7 ? 'r' : 'l'}>
                     {hour.replace(',', '').split(' ').slice(1).join(' ') +
                       ' (' +
                       hour?.split(' ')[0].slice(0, -1) +
@@ -51,13 +51,13 @@ const Info: React.FC<Props> = ({destination, destinationDetails}) => {
                 ))
               ) : (
                 <Text size="s" weight="l">
-                  {destinationDetails?.hours[(date.getDay() + 6) % 7]
+                  {destinationDetails?.hours[(currentDate.getDay() + 6) % 7]
                     .replace(',', '')
                     .split(' ')
                     .slice(1)
                     .join(' ') +
                     ' (' +
-                    destinationDetails?.hours[(date.getDay() + 6) % 7]
+                    destinationDetails?.hours[(currentDate.getDay() + 6) % 7]
                       ?.split(' ')[0]
                       .slice(0, -1) +
                     ')'}
