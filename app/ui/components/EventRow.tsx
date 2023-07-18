@@ -16,8 +16,6 @@ interface Props {
 }
 
 const EventRow: React.FC<Props> = ({event, selfUserId}) => {
-  const date = new Date();
-
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
@@ -36,9 +34,7 @@ const EventRow: React.FC<Props> = ({event, selfUserId}) => {
         </Text>
         {event.datetime ? (
           <Text size="xs">
-            {moment(event.datetime)
-              .add(date.getTimezoneOffset(), 'minutes')
-              .format('MMM Do, h:mm a')}
+            {moment(event.datetime).format('MMM Do, h:mm a')}
           </Text>
         ) : null}
       </View>

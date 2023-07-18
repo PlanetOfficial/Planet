@@ -65,7 +65,10 @@ const Info: React.FC<Props> = ({
   };
 
   const handleEditDate = async (dt: string) => {
-    const response = await editDatetime(event.id, dt);
+    const response = await editDatetime(
+      event.id,
+      moment(dt, 'MMM Do, h:mm a').toString(),
+    );
 
     if (response && eventDetail) {
       const _eventDetail = {...eventDetail};

@@ -27,14 +27,19 @@ export default function App() {
     const initialize = async () => {
       const token = await EncryptedStorage.getItem('auth_token');
 
-      if (token) {
-        setLoggedIn(true);
-        await updateCaches(token);
-      } else {
+      try {
+        if (token) {
+          setLoggedIn(true);
+          await updateCaches(token);
+        } else {
+          setLoggedIn(false);
+        }
+
+        await cacheCategories();
+      } catch (err) {
+        console.warn(err);
         setLoggedIn(false);
       }
-
-      await cacheCategories();
 
       setLoading(false);
       requestNotificationPerms();
