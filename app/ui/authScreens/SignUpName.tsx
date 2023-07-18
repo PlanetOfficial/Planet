@@ -66,7 +66,7 @@ const SignUpName = ({navigation}: {navigation: any}) => {
           {
             backgroundColor:
               firstName.length === 0 || lastName.length === 0
-                ? colors[theme].neutral
+                ? colors[theme].secondary
                 : colors[theme].accent,
           },
         ]}

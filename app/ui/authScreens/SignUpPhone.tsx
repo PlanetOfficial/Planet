@@ -91,7 +91,7 @@ const SignUpPhone = ({
           {
             backgroundColor: phoneNumber
               ? colors[theme].accent
-              : colors[theme].neutral,
+              : colors[theme].secondary,
           },
         ]}
         disabled={!phoneNumber}

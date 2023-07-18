@@ -168,7 +168,7 @@ const SignUpCreds = ({
               username.length === 0 ||
               password.length === 0 ||
               password !== passwordConfirm
-                ? colors[theme].neutral
+                ? colors[theme].secondary
                 : colors[theme].accent,
           },
         ]}
