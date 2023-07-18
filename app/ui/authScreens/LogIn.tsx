@@ -15,6 +15,7 @@ import messaging from '@react-native-firebase/messaging';
 
 import strings from '../../constants/strings';
 import colors from '../../constants/colors';
+import STYLING from '../../constants/styles';
 
 import Text from '../components/Text';
 
@@ -28,6 +29,7 @@ import {getBookmarks} from '../../utils/api/bookmarkAPI';
 const LoginScreen = ({navigation}: {navigation: any}) => {
   const theme = 'light';
   const styles = styling(theme);
+  const STYLES = STYLING(theme);
   StatusBar.setBarStyle(colors[theme].statusBar, true);
 
   const [username, setUsername] = useState<string>('');
@@ -137,7 +139,7 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
         locations={[0.3, 1]}>
         <RNText style={styles.title}>{strings.main.appName}</RNText>
         <TextInput
-          style={styles.input}
+          style={[styles.input, STYLES.shadow]}
           placeholder={strings.login.username}
           value={username}
           onChangeText={setUsername}
@@ -146,7 +148,7 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
           placeholderTextColor={colors[theme].neutral}
         />
         <TextInput
-          style={styles.input}
+          style={[styles.input, STYLES.shadow]}
           placeholder={strings.login.password}
           value={password}
           onChangeText={setPassword}

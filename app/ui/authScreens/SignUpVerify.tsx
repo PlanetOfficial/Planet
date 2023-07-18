@@ -101,7 +101,9 @@ const SignUpVerify = ({
           STYLES.buttonBig,
           {
             backgroundColor:
-              code.length !== 6 ? colors[theme].neutral : colors[theme].accent,
+              code.length !== 6
+                ? colors[theme].secondary
+                : colors[theme].accent,
           },
         ]}
         disabled={code.length !== 6}
