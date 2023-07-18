@@ -34,6 +34,8 @@ const Create = ({
       members: UserInfo[] | undefined;
       destination: Poi | undefined;
       category: string | undefined;
+      destinations: Poi[] | undefined;
+      names: string[] | undefined;
     };
   };
 }) => {
@@ -92,14 +94,36 @@ const Create = ({
     destinationNames,
   ]);
 
+  const initializeDestinations = useCallback(() => {
+    const _destinations = route.params?.destinations;
+    const _names = route.params?.names;
+
+    if (_destinations && _names) {
+      setDestinations(_destinations);
+      const _destinationNames = new Map(destinationNames);
+      for (let i = 0; i < _destinations.length; i++) {
+        _destinationNames.set(_destinations[i].id, _names[i]);
+      }
+      setDestinationNames(_destinationNames);
+
+      navigation.setParams({destinations: undefined, names: undefined});
+    }
+  }, [
+    navigation,
+    route.params?.destinations,
+    route.params?.names,
+    destinationNames,
+  ]);
+
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       addMembers();
       addDestination();
+      initializeDestinations();
     });
 
     return unsubscribe;
-  }, [navigation, addMembers, addDestination]);
+  }, [navigation, addMembers, addDestination, initializeDestinations]);
 
   return (
     <View style={STYLES.container}>

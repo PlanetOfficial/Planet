@@ -1,4 +1,4 @@
-import React, {useCallback, useContext, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   View,
   SafeAreaView,
@@ -17,15 +17,20 @@ import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 import Separator from '../../components/SeparatorR';
 
-import BookmarkContext from '../../../context/BookmarkContext';
-
-import {Coordinate, EventDetail, Poi} from '../../../utils/types';
+import {
+  Coordinate,
+  EventDetail,
+  Poi,
+  Recommendation,
+} from '../../../utils/types';
 import {fetchUserLocation} from '../../../utils/Misc';
 import {getUpcomingEvent} from '../../../utils/api/eventAPI';
 
 import UpcomingEvent from './UpcomingEvent';
 import RecentlyViewed from './RecentlyViewed';
 import {getRecentlyViewed} from '../../../utils/api/poiAPI';
+import Recommendations from './Recommendations';
+import {getRecommendations} from '../../../utils/api/recommenderAPI';
 
 const Home = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';
@@ -34,18 +39,43 @@ const Home = ({navigation}: {navigation: any}) => {
 
   const [location, setLocation] = useState<Coordinate>();
 
-  const bookmarkContext = useContext(BookmarkContext);
-  if (!bookmarkContext) {
-    throw new Error('BookmarkContext is not set!');
-  }
-
   const [upcomingEvent, setUpcomingEvent] = useState<EventDetail | null>(null);
+  const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
+  const [recommendationsLoading, setRecommendationsLoading] =
+    useState<boolean>(false);
   const [recentlyViewed, setRecentlyViewed] = useState<Poi[]>([]);
 
   const initializeUpcomingEvent = useCallback(async () => {
     const _event = await getUpcomingEvent();
     setUpcomingEvent(_event);
   }, []);
+
+  const loadRecommendations = useCallback(async (loc: Coordinate) => {
+    setRecommendationsLoading(true);
+
+    const _recommendations = await getRecommendations(
+      loc?.latitude,
+      loc?.longitude,
+    );
+    if (_recommendations) {
+      setRecommendations(_recommendations);
+    } else {
+      Alert.alert(strings.error.error, strings.error.loadRecommendations);
+    }
+
+    setRecommendationsLoading(false);
+  }, []);
+
+  useEffect(() => {
+    const initializeRecommendations = async () => {
+      const _location = await fetchUserLocation();
+
+      setLocation(_location);
+      loadRecommendations(_location);
+    };
+
+    initializeRecommendations();
+  }, [loadRecommendations]);
 
   const initializeRecentlyViewed = useCallback(async () => {
     const _recentlyViewed = await getRecentlyViewed();
@@ -60,7 +90,6 @@ const Home = ({navigation}: {navigation: any}) => {
     const unsubscribe = navigation.addListener('focus', async () => {
       initializeUpcomingEvent();
       initializeRecentlyViewed();
-      setLocation(await fetchUserLocation());
     });
 
     return unsubscribe;
@@ -100,6 +129,16 @@ const Home = ({navigation}: {navigation: any}) => {
         contentContainerStyle={STYLES.scrollView}
         showsVerticalScrollIndicator={false}>
         <UpcomingEvent navigation={navigation} upcomingEvent={upcomingEvent} />
+        <Separator />
+        {location ? (
+          <Recommendations
+            navigation={navigation}
+            location={location}
+            recommendations={recommendations}
+            loadRecommendations={loadRecommendations}
+            recommendationsLoading={recommendationsLoading}
+          />
+        ) : null}
         <Separator />
         {recentlyViewed.length > 0 && location ? (
           <RecentlyViewed

@@ -179,3 +179,8 @@ export interface NotificationSettings {
   notify_new_suggestion: boolean;
   notify_set_primary: boolean;
 }
+
+export interface Recommendation {
+  places: Poi[];
+  categories: string[];
+}

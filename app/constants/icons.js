@@ -32,6 +32,7 @@ const icons = {
   privacy: require('../assets/icons/privacy.png'),
   profile: require('../assets/tabIcons/profile.png'),
   question: require('../assets/icons/question.png'),
+  reload: require('../assets/icons/reload.png'),
   roulette: require('../assets/icons/roulette.png'),
   search: require('../assets/tabIcons/search-2.png'),
   selected: require('../assets/icons/selected.png'),

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {
   View,
   SafeAreaView,
@@ -17,6 +17,8 @@ import STYLING from '../../../constants/styles';
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 import PoiRow from '../../components/PoiRow';
+
+import BookmarkContext from '../../../context/BookmarkContext';
 
 import {Coordinate, Poi} from '../../../utils/types';
 import {handleBookmark} from '../../../utils/Misc';
@@ -46,7 +48,11 @@ const ViewHistory = ({
 
   const {viewHistory, location} = route.params;
 
-  const [bookmarks, setBookmarks] = useState<Poi[]>([]);
+  const bookmarkContext = useContext(BookmarkContext);
+  if (!bookmarkContext) {
+    throw new Error('BookmarkContext is not set!');
+  }
+  const {bookmarks, setBookmarks} = bookmarkContext;
 
   return (
     <View style={STYLES.container}>
@@ -78,7 +84,9 @@ const ViewHistory = ({
               onPress={() =>
                 navigation.navigate('Poi', {
                   poi: item,
-                  bookmarked: true,
+                  bookmarked: bookmarks.some(
+                    bookmark => bookmark.id === item.id,
+                  ),
                   mode: 'none',
                 })
               }>

@@ -10,16 +10,17 @@ import STYLING from '../../../constants/styles';
 import Icon from '../../components/Icon';
 import Text from '../../components/Text';
 
-import {Poi, PoiDetail} from '../../../utils/types';
+import {Coordinate, Poi, PoiDetail} from '../../../utils/types';
 
 import {handleMapPress, handleCallPress, handleWebsitePress} from './functions';
 
 interface Props {
   destination: Poi;
   destinationDetails: PoiDetail;
+  location: Coordinate;
 }
 
-const Info: React.FC<Props> = ({destination, destinationDetails}) => {
+const Info: React.FC<Props> = ({destination, destinationDetails, location}) => {
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
   const STYLES = STYLING(theme);
@@ -95,7 +96,7 @@ const Info: React.FC<Props> = ({destination, destinationDetails}) => {
             icon={icons.map}
             padding={1}
             button={true}
-            onPress={() => handleMapPress(destination)}
+            onPress={() => handleMapPress(destination, location)}
           />
         </View>
       ) : null}

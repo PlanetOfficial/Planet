@@ -1,7 +1,12 @@
 import {Linking} from 'react-native';
 import {showLocation} from 'react-native-map-link';
 
-import {Poi, PoiDetail, PlaceOpeningHoursPeriod} from '../../../utils/types';
+import {
+  Poi,
+  PoiDetail,
+  PlaceOpeningHoursPeriod,
+  Coordinate,
+} from '../../../utils/types';
 import strings from '../../../constants/strings';
 
 export const getButtonString = (
@@ -79,13 +84,18 @@ export const isOpen = (periods: PlaceOpeningHoursPeriod[]) => {
   });
 };
 
-export const handleMapPress = async (destination: Poi) => {
+export const handleMapPress = async (
+  destination: Poi,
+  location: Coordinate,
+) => {
   if (!destination) {
     return;
   }
   showLocation({
     latitude: destination.latitude,
     longitude: destination.longitude,
+    sourceLatitude: location.latitude,
+    sourceLongitude: location.longitude,
     title: destination.name,
   });
 };
