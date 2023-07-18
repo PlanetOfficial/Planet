@@ -50,8 +50,7 @@ const Home = ({navigation}: {navigation: any}) => {
   }, [navigation]);
 
   const GetGreetings = () => {
-    const myDate = new Date();
-    const hours = myDate.getHours();
+    const hours = new Date().getHours();
 
     if (hours < 12) {
       return strings.greeting.morning;

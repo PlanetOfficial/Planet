@@ -33,6 +33,8 @@ const Library = ({navigation}: {navigation: any}) => {
   const STYLES = STYLING(theme);
   StatusBar.setBarStyle(colors[theme].statusBar, true);
 
+  const currentDate = new Date();
+
   const [selfUserId, setSelfUserId] = useState<number>(0);
   const [events, setEvents] = useState<Event[]>([]);
 
@@ -91,7 +93,8 @@ const Library = ({navigation}: {navigation: any}) => {
                 .filter(
                   (event: Event) =>
                     event.datetime &&
-                    new Date(event.datetime) >= new Date(Date.now()) &&
+                    new Date(new Date(event.datetime).getTime()) >=
+                      currentDate &&
                     !event.completed,
                 )
                 .sort((a: Event, b: Event) => {
@@ -113,7 +116,8 @@ const Library = ({navigation}: {navigation: any}) => {
               data: events.filter(
                 (event: Event) =>
                   (event.datetime &&
-                    new Date(event.datetime) < new Date(Date.now())) ||
+                    new Date(new Date(event.datetime).getTime()) <
+                      currentDate) ||
                   event.completed,
               ),
             },
