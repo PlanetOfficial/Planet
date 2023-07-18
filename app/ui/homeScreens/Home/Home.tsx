@@ -1,4 +1,4 @@
-import React, {useCallback, useContext, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   View,
   SafeAreaView,
@@ -16,8 +16,6 @@ import STYLING from '../../../constants/styles';
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 import Separator from '../../components/SeparatorR';
-
-import BookmarkContext from '../../../context/BookmarkContext';
 
 import {
   Coordinate,
@@ -40,11 +38,6 @@ const Home = ({navigation}: {navigation: any}) => {
   StatusBar.setBarStyle(colors[theme].statusBar, true);
 
   const [location, setLocation] = useState<Coordinate>();
-
-  const bookmarkContext = useContext(BookmarkContext);
-  if (!bookmarkContext) {
-    throw new Error('BookmarkContext is not set!');
-  }
 
   const [upcomingEvent, setUpcomingEvent] = useState<EventDetail | null>(null);
   const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
