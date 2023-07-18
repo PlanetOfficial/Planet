@@ -145,12 +145,7 @@ const UpcomingEvent: React.FC<Props> = ({navigation, upcomingEvent}) => {
         </>
       ) : (
         <View style={[styles.create, styles.shadow]}>
-          <Text
-            size="l"
-            color={
-              theme === 'light' ? colors[theme].primary : colors[theme].neutral
-            }
-            center={true}>
+          <Text size="l" color={colors[theme].primary} center={true}>
             {strings.home.noUpcomingEvents}
           </Text>
         </View>
