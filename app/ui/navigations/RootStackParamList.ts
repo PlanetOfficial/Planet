@@ -39,7 +39,10 @@ type RootStackParamList = {
   User: {
     user: UserInfo;
   };
-  Explore: undefined;
+  ViewHistory: {
+    viewHistory: PoiType[];
+    location: Coordinate;
+  };
   Settings: undefined;
   AccountSettings: undefined;
   ContactUs: undefined;

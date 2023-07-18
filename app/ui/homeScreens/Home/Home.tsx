@@ -1,14 +1,12 @@
 import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {
   View,
-  // StyleSheet,
   SafeAreaView,
   ScrollView,
   useColorScheme,
   StatusBar,
   Alert,
 } from 'react-native';
-// import {s} from 'react-native-size-matters';
 
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
@@ -21,45 +19,52 @@ import Separator from '../../components/SeparatorR';
 
 import BookmarkContext from '../../../context/BookmarkContext';
 
-import {Coordinate, EventDetail} from '../../../utils/types';
+import {Coordinate, EventDetail, Poi} from '../../../utils/types';
 import {fetchUserLocation} from '../../../utils/Misc';
 import {getUpcomingEvent} from '../../../utils/api/eventAPI';
 
 import UpcomingEvent from './UpcomingEvent';
+import RecentlyViewed from './RecentlyViewed';
+import {getRecentlyViewed} from '../../../utils/api/poiAPI';
 
 const Home = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';
-  // const styles = styling(theme);
   const STYLES = STYLING(theme);
   StatusBar.setBarStyle(colors[theme].statusBar, true);
 
-  const [_location, setLocation] = useState<Coordinate>();
+  const [location, setLocation] = useState<Coordinate>();
 
   const bookmarkContext = useContext(BookmarkContext);
   if (!bookmarkContext) {
     throw new Error('BookmarkContext is not set!');
   }
-  // const {bookmarks, setBookmarks} = bookmarkContext;
 
   const [upcomingEvent, setUpcomingEvent] = useState<EventDetail | null>(null);
+  const [recentlyViewed, setRecentlyViewed] = useState<Poi[]>([]);
 
   const initializeUpcomingEvent = useCallback(async () => {
     const _event = await getUpcomingEvent();
-    if (_event) {
-      setUpcomingEvent(_event);
+    setUpcomingEvent(_event);
+  }, []);
+
+  const initializeRecentlyViewed = useCallback(async () => {
+    const _recentlyViewed = await getRecentlyViewed();
+    if (_recentlyViewed) {
+      setRecentlyViewed(_recentlyViewed);
     } else {
-      Alert.alert(strings.error.error, strings.error.loadUpcomingEvent);
+      Alert.alert(strings.error.error, strings.error.loadRecentlyViewed);
     }
   }, []);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', async () => {
       initializeUpcomingEvent();
+      initializeRecentlyViewed();
       setLocation(await fetchUserLocation());
     });
 
     return unsubscribe;
-  }, [navigation, initializeUpcomingEvent]);
+  }, [navigation, initializeUpcomingEvent, initializeRecentlyViewed]);
 
   const GetGreetings = () => {
     const myDate = new Date();
@@ -96,11 +101,16 @@ const Home = ({navigation}: {navigation: any}) => {
         showsVerticalScrollIndicator={false}>
         <UpcomingEvent navigation={navigation} upcomingEvent={upcomingEvent} />
         <Separator />
+        {recentlyViewed.length > 0 && location ? (
+          <RecentlyViewed
+            navigation={navigation}
+            recentlyViewed={recentlyViewed}
+            location={location}
+          />
+        ) : null}
       </ScrollView>
     </View>
   );
 };
-
-// const styling = (theme: 'light' | 'dark') => StyleSheet.create({});
 
 export default Home;
