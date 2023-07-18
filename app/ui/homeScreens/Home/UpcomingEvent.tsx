@@ -86,7 +86,7 @@ const UpcomingEvent: React.FC<Props> = ({navigation, upcomingEvent}) => {
                         handleBookmark(p, bookmarks, setBookmarks);
                       }}
                       position={destination.idx + 1}
-                      isAccent={true}
+                      isAccent={theme === 'light'}
                     />
                   </TouchableOpacity>
                 );
@@ -101,14 +101,36 @@ const UpcomingEvent: React.FC<Props> = ({navigation, upcomingEvent}) => {
                 });
               }}>
               <View style={STYLES.texts}>
-                <Text color={colors[theme].primary}>{upcomingEvent.name}</Text>
-                <Text size="xs" weight="l" color={colors[theme].primary}>
+                <Text
+                  color={
+                    theme === 'light'
+                      ? colors[theme].primary
+                      : colors[theme].neutral
+                  }>
+                  {upcomingEvent.name}
+                </Text>
+                <Text
+                  size="xs"
+                  weight="l"
+                  color={
+                    theme === 'light'
+                      ? colors[theme].primary
+                      : colors[theme].neutral
+                  }>
                   {moment(upcomingEvent.datetime)
                     .add(date.getTimezoneOffset(), 'minutes')
                     .format('MMM Do, h:mm a')}
                 </Text>
               </View>
-              <Icon size="s" icon={icons.next} color={colors[theme].primary} />
+              <Icon
+                size="s"
+                icon={icons.next}
+                color={
+                  theme === 'light'
+                    ? colors[theme].primary
+                    : colors[theme].neutral
+                }
+              />
             </TouchableOpacity>
           </View>
           <TouchableOpacity
@@ -123,7 +145,12 @@ const UpcomingEvent: React.FC<Props> = ({navigation, upcomingEvent}) => {
         </>
       ) : (
         <View style={[styles.create, styles.shadow]}>
-          <Text size="l" color={colors[theme].primary} center={true}>
+          <Text
+            size="l"
+            color={
+              theme === 'light' ? colors[theme].primary : colors[theme].neutral
+            }
+            center={true}>
             {strings.home.noUpcomingEvents}
           </Text>
         </View>
@@ -135,7 +162,8 @@ const UpcomingEvent: React.FC<Props> = ({navigation, upcomingEvent}) => {
 const styling = (theme: 'light' | 'dark') =>
   StyleSheet.create({
     container: {
-      backgroundColor: colors[theme].accent,
+      backgroundColor:
+        theme === 'light' ? colors[theme].accent : colors[theme].primary,
       paddingVertical: s(10),
       borderRadius: s(20),
       marginHorizontal: s(15),
@@ -177,7 +205,8 @@ const styling = (theme: 'light' | 'dark') =>
       borderRadius: s(5),
     },
     shadow: {
-      shadowColor: colors[theme].accent,
+      shadowColor:
+        theme === 'light' ? colors[theme].accent : colors[theme].primary,
       shadowOffset: {
         width: 0,
         height: 3,
@@ -190,7 +219,8 @@ const styling = (theme: 'light' | 'dark') =>
     separator: {
       height: s(1),
       marginLeft: s(15),
-      backgroundColor: colors[theme].primary,
+      backgroundColor:
+        theme === 'light' ? colors[theme].primary : colors[theme].neutral,
     },
     create: {
       alignSelf: 'center',
