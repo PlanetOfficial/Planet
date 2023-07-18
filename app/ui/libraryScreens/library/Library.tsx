@@ -148,11 +148,13 @@ const Library = ({navigation}: {navigation: any}) => {
               </TouchableOpacity>
             );
           }}
-          renderSectionHeader={({section}) => (
-            <View style={styles.sectionHeader}>
-              <Text size="s">{section.title}</Text>
-            </View>
-          )}
+          renderSectionHeader={({section}) =>
+            section.data.length > 0 ? (
+              <View style={styles.sectionHeader}>
+                <Text size="s">{section.title}</Text>
+              </View>
+            ) : null
+          }
           ListEmptyComponent={
             <View style={STYLES.center}>
               <Text>{strings.event.noEventsFound}</Text>

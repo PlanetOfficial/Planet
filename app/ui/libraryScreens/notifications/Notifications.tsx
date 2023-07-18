@@ -1,5 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import {View, SafeAreaView, useColorScheme, StatusBar, FlatList} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+  View,
+  SafeAreaView,
+  useColorScheme,
+  StatusBar,
+  FlatList,
+} from 'react-native';
 
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
@@ -8,8 +14,9 @@ import STYLING from '../../../constants/styles';
 
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
-import { Notification } from '../../../utils/types';
-import { getEventsNotifications } from '../../../utils/api/eventAPI';
+
+import {Notification} from '../../../utils/types';
+import {getEventsNotifications} from '../../../utils/api/eventAPI';
 
 const Notifications = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';

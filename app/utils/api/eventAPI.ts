@@ -295,7 +295,9 @@ export const getUpcomingEvent = async (): Promise<EventDetail | null> => {
 /**
  * @requires auth_token should be set in EncryptedStorage before calling this function
  */
-export const getEventsNotifications = async (): Promise<Notification[] | null> => {
+export const getEventsNotifications = async (): Promise<
+  Notification[] | null
+> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
   if (!authToken) {
