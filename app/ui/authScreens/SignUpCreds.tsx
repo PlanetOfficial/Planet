@@ -195,7 +195,11 @@ const SignUpCreds = ({
           onPress={() =>
             Linking.openURL(strings.main.url + '/terms-and-conditions')
           }>
-          <Text size="s" weight="l" underline={true} color={colors[theme].accent}>
+          <Text
+            size="s"
+            weight="l"
+            underline={true}
+            color={colors[theme].accent}>
             {strings.settings.termsAndConditions}
           </Text>
         </TouchableOpacity>

@@ -15,7 +15,6 @@ import messaging from '@react-native-firebase/messaging';
 
 import strings from '../../constants/strings';
 import colors from '../../constants/colors';
-import STYLING from '../../constants/styles';
 
 import Text from '../components/Text';
 
@@ -29,7 +28,6 @@ import {getBookmarks} from '../../utils/api/bookmarkAPI';
 const LoginScreen = ({navigation}: {navigation: any}) => {
   const theme = 'light';
   const styles = styling(theme);
-  const STYLES = STYLING(theme);
   StatusBar.setBarStyle(colors[theme].statusBar, true);
 
   const [username, setUsername] = useState<string>('');
@@ -141,7 +139,7 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
         locations={[0.3, 1]}>
         <RNText style={styles.title}>{strings.main.appName}</RNText>
         <TextInput
-          style={[styles.input, STYLES.shadow]}
+          style={styles.input}
           placeholder={strings.login.username}
           value={username}
           onChangeText={setUsername}
@@ -150,7 +148,7 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
           placeholderTextColor={colors[theme].neutral}
         />
         <TextInput
-          style={[styles.input, STYLES.shadow]}
+          style={styles.input}
           placeholder={strings.login.password}
           value={password}
           onChangeText={setPassword}
@@ -203,11 +201,11 @@ const styling = (theme: 'light' | 'dark') =>
     title: {
       marginTop: vs(110),
       marginBottom: vs(70),
-      fontSize: s(60),
+      fontSize: s(70),
       fontWeight: '900',
       fontFamily: 'Prompt',
       color: colors[theme].primary,
-      letterSpacing: 2,
+      letterSpacing: 1,
     },
     input: {
       paddingHorizontal: s(25),
