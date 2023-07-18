@@ -86,7 +86,7 @@ const UpcomingEvent: React.FC<Props> = ({navigation, upcomingEvent}) => {
                         handleBookmark(p, bookmarks, setBookmarks);
                       }}
                       position={destination.idx + 1}
-                      accent={true}
+                      isAccent={true}
                     />
                   </TouchableOpacity>
                 );

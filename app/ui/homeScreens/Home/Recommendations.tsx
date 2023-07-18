@@ -79,7 +79,6 @@ const Recommendations: React.FC<Props> = ({
                     </Text>
                   </View>
                   <TouchableOpacity
-                    key={index + idx}
                     style={styles.cardContainer}
                     onPress={() => {
                       navigation.navigate('Poi', {
@@ -95,8 +94,8 @@ const Recommendations: React.FC<Props> = ({
                       bookmarked={bookmarks.some(
                         (bookmark: Poi) => bookmark.id === place.id,
                       )}
-                      handleBookmark={(p: Poi) => {
-                        handleBookmark(p, bookmarks, setBookmarks);
+                      handleBookmark={(poi: Poi) => {
+                        handleBookmark(poi, bookmarks, setBookmarks);
                       }}
                       position={idx + 1}
                     />

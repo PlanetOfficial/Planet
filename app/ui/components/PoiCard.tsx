@@ -18,7 +18,7 @@ interface Props {
   bookmarked: boolean;
   handleBookmark: (poi: Poi) => void;
   position?: number;
-  accent?: boolean;
+  isAccent?: boolean;
 }
 
 const PoiCard: React.FC<Props> = ({
@@ -27,7 +27,7 @@ const PoiCard: React.FC<Props> = ({
   bookmarked,
   handleBookmark,
   position,
-  accent,
+  isAccent,
 }) => {
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
@@ -62,14 +62,14 @@ const PoiCard: React.FC<Props> = ({
             STYLES.absolute,
             styles.indexContainer,
             {
-              backgroundColor: accent
+              backgroundColor: isAccent
                 ? colors[theme].primary
                 : colors[theme].accent,
             },
           ]}>
           <Text
             size="s"
-            color={accent ? colors[theme].accent : colors[theme].primary}>
+            color={isAccent ? colors[theme].accent : colors[theme].primary}>
             {position}
           </Text>
         </View>
