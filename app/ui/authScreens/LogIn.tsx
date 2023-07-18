@@ -19,7 +19,7 @@ import colors from '../../constants/colors';
 import Text from '../components/Text';
 
 import {isVerified, login, saveTokenToDatabase} from '../../utils/api/authAPI';
-import {cacheUserInfo} from '../../utils/CacheHelpers';
+import {cacheCategories, cacheUserInfo} from '../../utils/CacheHelpers';
 import {getFriendsInfo} from '../../utils/api/friendsAPI';
 import BookmarkContext from '../../context/BookmarkContext';
 import FriendsContext from '../../context/FriendsContext';
@@ -111,6 +111,8 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
         Alert.alert('Something went wrong. Please try again.');
         return;
       }
+
+      await cacheCategories();
 
       initializeContext();
 

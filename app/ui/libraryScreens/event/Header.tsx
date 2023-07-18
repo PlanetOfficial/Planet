@@ -39,8 +39,6 @@ const Header: React.FC<Props> = ({
   const theme = useColorScheme() || 'light';
   const STYLES = STYLING(theme);
 
-  const date = new Date();
-
   return (
     <SafeAreaView onTouchStart={onSuggestionClose}>
       <View style={STYLES.header}>
@@ -56,9 +54,9 @@ const Header: React.FC<Props> = ({
           <Text>{eventDetail ? eventDetail.name : event.name}</Text>
           {event.datetime || eventDetail?.datetime ? (
             <Text size="xs" weight="l" color={colors[theme].accent}>
-              {moment(eventDetail ? eventDetail.datetime : event.datetime)
-                .add(date.getTimezoneOffset(), 'minutes')
-                .format('MMM Do, h:mm a')}
+              {moment(
+                eventDetail ? eventDetail.datetime : event.datetime,
+              ).format('MMM Do, h:mm a')}
             </Text>
           ) : (
             <TouchableOpacity

@@ -22,6 +22,7 @@ import BookmarkContext from '../../../context/BookmarkContext';
 import {Coordinate, EventDetail, Poi} from '../../../utils/types';
 import {fetchUserLocation} from '../../../utils/Misc';
 import {getUpcomingEvent} from '../../../utils/api/eventAPI';
+
 import UpcomingEvent from './UpcomingEvent';
 import RecentlyViewed from './RecentlyViewed';
 import {getRecentlyViewed} from '../../../utils/api/poiAPI';

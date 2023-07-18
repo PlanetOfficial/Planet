@@ -54,7 +54,7 @@ const Suggestions: React.FC<Props> = ({
               style={styles.suggestion}
               disabled={displayingSuggestion}
               onPress={() => onSuggestionPress(suggestion, destination)}>
-              <PoiCardXS poi={suggestion.poi} />
+              <PoiCardXS place={suggestion.poi} />
             </TouchableOpacity>
           ) : null,
         )}

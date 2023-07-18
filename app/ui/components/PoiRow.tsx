@@ -14,7 +14,7 @@ import {Category, Coordinate, Poi} from '../../utils/types';
 import {getDistanceFromCoordinates} from '../../utils/Misc';
 
 interface Props {
-  poi: Poi;
+  place: Poi;
   bookmarked: boolean;
   handleBookmark: (poi: Poi) => void;
   location?: Coordinate;
@@ -22,7 +22,7 @@ interface Props {
 }
 
 const PoiRow: React.FC<Props> = ({
-  poi,
+  place,
   bookmarked,
   handleBookmark,
   location,
@@ -33,17 +33,17 @@ const PoiRow: React.FC<Props> = ({
   const getAddressString = (): string => {
     let poiString: string = '';
 
-    if (poi.latitude && poi.longitude && location) {
+    if (place.latitude && place.longitude && location) {
       poiString += `${(
         getDistanceFromCoordinates(
-          {latitude: poi.latitude, longitude: poi.longitude},
+          {latitude: place.latitude, longitude: place.longitude},
           location,
         ) / numbers.milesToMeters
       ).toFixed(1)} ${strings.main.milesAbbrev}`;
     }
 
-    if (poi.vicinity) {
-      poiString += '・' + poi.vicinity;
+    if (place.vicinity) {
+      poiString += '・' + place.vicinity;
     }
 
     return poiString;
@@ -52,12 +52,12 @@ const PoiRow: React.FC<Props> = ({
   const getInfoString = (): string => {
     let poiString: string = '';
 
-    if (poi.rating && poi.rating_count) {
-      poiString += `★ ${poi.rating}  (${poi.rating_count})`;
+    if (place.rating && place.rating_count) {
+      poiString += `★ ${place.rating}  (${place.rating_count})`;
     }
 
-    if (poi.price) {
-      poiString += '・' + '$'.repeat(poi.price);
+    if (place.price) {
+      poiString += '・' + '$'.repeat(place.price);
     }
 
     return poiString;
@@ -69,18 +69,18 @@ const PoiRow: React.FC<Props> = ({
         <Image
           style={styles.image}
           source={
-            poi.photo
-              ? {uri: poi.photo}
+            place.photo
+              ? {uri: place.photo}
               : category
               ? {uri: category.icon.url}
               : icons.placeholder
           }
-          resizeMode={poi.photo || !category ? 'cover' : 'contain'}
+          resizeMode={place.photo || !category ? 'cover' : 'contain'}
         />
       </View>
       <View style={styles.infoContainer}>
         <Text size="s" numberOfLines={1}>
-          {poi.name}
+          {place.name}
         </Text>
         <Text size="xs" weight="l" numberOfLines={1}>
           {getAddressString()}
@@ -91,7 +91,7 @@ const PoiRow: React.FC<Props> = ({
         size="l"
         icon={bookmarked ? icons.bookmarked : icons.bookmark}
         color={bookmarked ? colors[theme].accent : colors[theme].neutral}
-        onPress={() => handleBookmark(poi)}
+        onPress={() => handleBookmark(place)}
       />
     </View>
   );

@@ -20,7 +20,7 @@ const Overview: React.FC<Props> = ({destination, destinationDetails}) => {
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
 
-  const date = new Date();
+  const currentDate = new Date();
   const open = destinationDetails.periods
     ? isOpen(destinationDetails.periods)
     : false;
@@ -74,9 +74,9 @@ const Overview: React.FC<Props> = ({destination, destinationDetails}) => {
 
               <Text size="xs" weight="l">
                 {
-                  destinationDetails.hours[(date.getDay() + 6) % 7].split(
-                    ' ',
-                  )[1]
+                  destinationDetails.hours[
+                    (currentDate.getDay() + 6) % 7
+                  ].split(' ')[1]
                 }
               </Text>
             </>
