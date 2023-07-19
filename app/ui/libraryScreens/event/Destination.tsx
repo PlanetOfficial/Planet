@@ -83,85 +83,87 @@ const DestinationView: React.FC<Props> = ({
       showsVerticalScrollIndicator={false}
       data={eventDetail.destinations}
       onTouchStart={onSuggestionClose}
-      renderItem={({item}: {item: Destination}) => (
-        <View style={styles.destination}>
-          <View style={styles.destinationHeader}>
-            <Text>{item.name}</Text>
-            <Icon
-              icon={icons.roulette}
-              size="l"
-              disabled={
-                displayingSuggestion ||
-                !item.suggestions.some(
-                  suggestion => suggestion.votes.length > 0,
-                )
-              }
-              color={
-                !item.suggestions.some(
-                  suggestion => suggestion.votes.length > 0,
-                )
-                  ? colors[theme].secondary
-                  : colors[theme].accent
-              }
+      renderItem={({item}: {item: Destination}) =>
+        item.suggestions.length > 0 ? (
+          <View style={styles.destination}>
+            <View style={styles.destinationHeader}>
+              <Text>{item.name}</Text>
+              <Icon
+                icon={icons.roulette}
+                size="l"
+                disabled={
+                  displayingSuggestion ||
+                  !item.suggestions.some(
+                    suggestion => suggestion.votes.length > 0,
+                  )
+                }
+                color={
+                  !item.suggestions.some(
+                    suggestion => suggestion.votes.length > 0,
+                  )
+                    ? colors[theme].secondary
+                    : colors[theme].accent
+                }
+                onPress={() =>
+                  navigation.navigate('Roulette', {
+                    eventId: event.id,
+                    destination: item,
+                  })
+                }
+              />
+            </View>
+            <TouchableOpacity
+              style={styles.destinationCard}
+              disabled={displayingSuggestion}
               onPress={() =>
-                navigation.navigate('Roulette', {
-                  eventId: event.id,
-                  destination: item,
+                navigation.navigate('Poi', {
+                  poi: findPrimary(item.suggestions).poi,
+                  bookmarked: bookmarks.some(
+                    bookmark =>
+                      bookmark.id === findPrimary(item.suggestions).poi.id,
+                  ),
+                  mode: 'none',
                 })
-              }
-            />
-          </View>
-          <TouchableOpacity
-            style={styles.destinationCard}
-            disabled={displayingSuggestion}
-            onPress={() =>
-              navigation.navigate('Poi', {
-                poi: findPrimary(item.suggestions).poi,
-                bookmarked: bookmarks.some(
+              }>
+              <PoiCardXL
+                place={findPrimary(item.suggestions).poi}
+                disabled={displayingSuggestion}
+                bookmarked={bookmarks.some(
                   bookmark =>
                     bookmark.id === findPrimary(item.suggestions).poi.id,
-                ),
-                mode: 'none',
-              })
-            }>
-            <PoiCardXL
-              place={findPrimary(item.suggestions).poi}
-              disabled={displayingSuggestion}
-              bookmarked={bookmarks.some(
-                bookmark =>
-                  bookmark.id === findPrimary(item.suggestions).poi.id,
-              )}
-              width={item.id === selectedDestination?.id ? cardWidth : s(310)}
-              handleBookmark={(poi: Poi) =>
-                handleBookmark(poi, bookmarks, setBookmarks)
-              }
-              voted={
-                findPrimary(item.suggestions)
-                  ? myVotes.get(item.id) === findPrimary(item.suggestions).id
-                  : false
-              }
-              onVote={() => {
-                onVote(
-                  event,
-                  setEventDetail,
-                  myVotes,
-                  setMyVotes,
-                  item,
-                  findPrimary(item.suggestions),
-                );
-              }}
+                )}
+                width={item.id === selectedDestination?.id ? cardWidth : s(310)}
+                handleBookmark={(poi: Poi) =>
+                  handleBookmark(poi, bookmarks, setBookmarks)
+                }
+                voted={
+                  findPrimary(item.suggestions)
+                    ? myVotes.get(item.id) === findPrimary(item.suggestions).id
+                    : false
+                }
+                onVote={() => {
+                  onVote(
+                    event,
+                    setEventDetail,
+                    myVotes,
+                    setMyVotes,
+                    item,
+                    findPrimary(item.suggestions),
+                  );
+                }}
+              />
+            </TouchableOpacity>
+            <Suggestions
+              navigation={navigation}
+              destination={item}
+              displayingSuggestion={displayingSuggestion}
+              setInsertionDestination={setInsertionDestination}
+              suggestionRefs={suggestionRefs}
+              onSuggestionPress={onSuggestionPress}
             />
-          </TouchableOpacity>
-          <Suggestions
-            navigation={navigation}
-            destination={item}
-            displayingSuggestion={displayingSuggestion}
-            setInsertionDestination={setInsertionDestination}
-            suggestionRefs={suggestionRefs}
-            onSuggestionPress={onSuggestionPress}
-          />
-        </View>
-      )}
+          </View>
+        ) : null
+      }
       ItemSeparatorComponent={Separator}
       keyExtractor={(item: Destination) => item.id.toString()}
       refreshControl={
