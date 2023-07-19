@@ -1,6 +1,6 @@
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {EventAPIURL} from './APIConstants';
-import {Event, EventDetail, Notification} from '../types';
+import {Event, EventDetail, EventNotification} from '../types';
 import {requestAndValidate} from './authAPI';
 
 /**
@@ -296,7 +296,7 @@ export const getUpcomingEvent = async (): Promise<EventDetail | null> => {
  * @requires auth_token should be set in EncryptedStorage before calling this function
  */
 export const getEventsNotifications = async (): Promise<
-  Notification[] | null
+  EventNotification[] | null
 > => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
@@ -319,7 +319,7 @@ export const getEventsNotifications = async (): Promise<
   const response = await requestAndValidate(authToken, request);
 
   if (response?.ok) {
-    const myJson: Notification[] = await response.json();
+    const myJson: EventNotification[] = await response.json();
     return myJson;
   } else {
     return null;

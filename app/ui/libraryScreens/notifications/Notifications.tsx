@@ -21,7 +21,7 @@ import Icon from '../../components/Icon';
 import Separator from '../../components/SeparatorR';
 import UserIcon from '../../components/UserIcon';
 
-import {Notification} from '../../../utils/types';
+import {EventNotification} from '../../../utils/types';
 import {getEventsNotifications} from '../../../utils/api/eventAPI';
 
 const Notifications = ({navigation}: {navigation: any}) => {
@@ -29,7 +29,7 @@ const Notifications = ({navigation}: {navigation: any}) => {
   const STYLES = STYLING(theme);
   StatusBar.setBarStyle(colors[theme].statusBar, true);
 
-  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [notifications, setNotifications] = useState<EventNotification[]>([]);
 
   const initializeNotifications = async () => {
     const _notifications = await getEventsNotifications();

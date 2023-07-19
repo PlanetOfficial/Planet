@@ -180,7 +180,7 @@ export interface NotificationSettings {
   notify_set_primary: boolean;
 }
 
-export interface Notification {
+export interface EventNotification {
   created_at: string;
   event: Event;
   body: string;
