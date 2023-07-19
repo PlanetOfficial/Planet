@@ -264,7 +264,6 @@ const strings = {
       'Unable to make suggestion primary. Please try again later.',
     loadDestinationDetails:
       'Unable to load destination details. Please try again later.',
-
     loadGenres: 'Unable to load genres. Please try again later.',
     loadPlaces: 'Unable to load places. Please try again later.',
     locationPermission: 'Location permission denied.',

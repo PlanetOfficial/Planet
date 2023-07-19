@@ -44,6 +44,7 @@ import CreateFG from '../friendsScreens/createFG/CreateFG';
 
 import BookmarkStateProvider from '../../context/BookmarkState';
 import FriendsStateProvider from '../../context/FriendsState';
+import LocationStateProvider from '../../context/LocationState';
 
 import RootStackParamList from './RootStackParamList';
 
@@ -60,89 +61,93 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
   return isLoggedIn ? (
     <FriendsStateProvider isLoggedIn={isLoggedIn}>
       <BookmarkStateProvider isLoggedIn={isLoggedIn}>
-        <NavigationContainer>
-          <BottomSheetModalProvider>
-            <Stack.Navigator initialRouteName="TabStack">
-              {tabStack()}
-              {searchCategoryScreen()}
-              {searchMapScreen()}
-              {poiScreen()}
-              {friendsScreen()}
-              {createFGScreen()}
-              {addFriendScreen()}
-              {mutualsScreen()}
-              {userScreen()}
-              {viewHistoryScreen()}
-              {settingsScreen()}
-              {accountSettingsScreen()}
-              {contactUsScreen()}
-              {locationsSettingsScreen()}
-              {notificationSettingsScreen()}
-              {privacySettingsScreen()}
-              {profileSettingsScreen()}
-              {createScreen()}
-              {modeSearchScreen()}
-              {eventScreen()}
-              {eventSettingsScreen()}
-              {rouletteScreen()}
-              {spinHistoryScreen()}
-              {notificationsScreen()}
-              {loginStackScreen()}
-              {signUpNameStackScreen()}
-              {signUpCredsStackScreen()}
-              {signUpPhoneStackScreen()}
-              {signUpVerifyStackScreen()}
-              {signUpInfoStackScreen()}
-              {forgotPassStackScreen()}
-              {forgotPassVerifyStackScreen()}
-              {resetPasswordStackScreen()}
-            </Stack.Navigator>
-          </BottomSheetModalProvider>
-        </NavigationContainer>
+        <LocationStateProvider isLoggedIn={isLoggedIn}>
+          <NavigationContainer>
+            <BottomSheetModalProvider>
+              <Stack.Navigator initialRouteName="TabStack">
+                {tabStack()}
+                {searchCategoryScreen()}
+                {searchMapScreen()}
+                {poiScreen()}
+                {friendsScreen()}
+                {createFGScreen()}
+                {addFriendScreen()}
+                {mutualsScreen()}
+                {userScreen()}
+                {viewHistoryScreen()}
+                {settingsScreen()}
+                {accountSettingsScreen()}
+                {contactUsScreen()}
+                {locationsSettingsScreen()}
+                {notificationSettingsScreen()}
+                {privacySettingsScreen()}
+                {profileSettingsScreen()}
+                {createScreen()}
+                {modeSearchScreen()}
+                {eventScreen()}
+                {eventSettingsScreen()}
+                {rouletteScreen()}
+                {spinHistoryScreen()}
+                {notificationsScreen()}
+                {loginStackScreen()}
+                {signUpNameStackScreen()}
+                {signUpCredsStackScreen()}
+                {signUpPhoneStackScreen()}
+                {signUpVerifyStackScreen()}
+                {signUpInfoStackScreen()}
+                {forgotPassStackScreen()}
+                {forgotPassVerifyStackScreen()}
+                {resetPasswordStackScreen()}
+              </Stack.Navigator>
+            </BottomSheetModalProvider>
+          </NavigationContainer>
+        </LocationStateProvider>
       </BookmarkStateProvider>
     </FriendsStateProvider>
   ) : (
     <FriendsStateProvider isLoggedIn={isLoggedIn}>
       <BookmarkStateProvider isLoggedIn={isLoggedIn}>
-        <NavigationContainer>
-          <BottomSheetModalProvider>
-            <Stack.Navigator initialRouteName="Login">
-              {loginStackScreen()}
-              {signUpNameStackScreen()}
-              {signUpCredsStackScreen()}
-              {signUpPhoneStackScreen()}
-              {signUpVerifyStackScreen()}
-              {signUpInfoStackScreen()}
-              {forgotPassStackScreen()}
-              {forgotPassVerifyStackScreen()}
-              {resetPasswordStackScreen()}
-              {tabStack()}
-              {searchCategoryScreen()}
-              {searchMapScreen()}
-              {poiScreen()}
-              {friendsScreen()}
-              {createFGScreen()}
-              {addFriendScreen()}
-              {mutualsScreen()}
-              {userScreen()}
-              {viewHistoryScreen()}
-              {settingsScreen()}
-              {accountSettingsScreen()}
-              {contactUsScreen()}
-              {locationsSettingsScreen()}
-              {notificationSettingsScreen()}
-              {privacySettingsScreen()}
-              {profileSettingsScreen()}
-              {createScreen()}
-              {modeSearchScreen()}
-              {eventScreen()}
-              {eventSettingsScreen()}
-              {rouletteScreen()}
-              {spinHistoryScreen()}
-              {notificationsScreen()}
-            </Stack.Navigator>
-          </BottomSheetModalProvider>
-        </NavigationContainer>
+        <LocationStateProvider isLoggedIn={isLoggedIn}>
+          <NavigationContainer>
+            <BottomSheetModalProvider>
+              <Stack.Navigator initialRouteName="Login">
+                {loginStackScreen()}
+                {signUpNameStackScreen()}
+                {signUpCredsStackScreen()}
+                {signUpPhoneStackScreen()}
+                {signUpVerifyStackScreen()}
+                {signUpInfoStackScreen()}
+                {forgotPassStackScreen()}
+                {forgotPassVerifyStackScreen()}
+                {resetPasswordStackScreen()}
+                {tabStack()}
+                {searchCategoryScreen()}
+                {searchMapScreen()}
+                {poiScreen()}
+                {friendsScreen()}
+                {createFGScreen()}
+                {addFriendScreen()}
+                {mutualsScreen()}
+                {userScreen()}
+                {viewHistoryScreen()}
+                {settingsScreen()}
+                {accountSettingsScreen()}
+                {contactUsScreen()}
+                {locationsSettingsScreen()}
+                {notificationSettingsScreen()}
+                {privacySettingsScreen()}
+                {profileSettingsScreen()}
+                {createScreen()}
+                {modeSearchScreen()}
+                {eventScreen()}
+                {eventSettingsScreen()}
+                {rouletteScreen()}
+                {spinHistoryScreen()}
+                {notificationsScreen()}
+              </Stack.Navigator>
+            </BottomSheetModalProvider>
+          </NavigationContainer>
+        </LocationStateProvider>
       </BookmarkStateProvider>
     </FriendsStateProvider>
   );
