@@ -11,6 +11,7 @@ import {s} from 'react-native-size-matters';
 
 import colors from '../../constants/colors';
 import icons from '../../constants/icons';
+import numbers from '../../constants/numbers';
 import strings from '../../constants/strings';
 import STYLING from '../../constants/styles';
 
@@ -48,7 +49,7 @@ const SignUpVerify = ({
   if (!locationContext) {
     throw new Error('LocationContext is not set!');
   }
-  const {setLocation} = locationContext;
+  const {setLocation, setRadius} = locationContext;
 
   const handleVerifyCode = async () => {
     setError('');
@@ -64,6 +65,7 @@ const SignUpVerify = ({
       const locationResult = await fetchUserLocation();
       if (locationResult) {
         setLocation(locationResult);
+        setRadius(numbers.defaultRadius);
       }
 
       navigation.reset({

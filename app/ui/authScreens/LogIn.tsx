@@ -15,6 +15,7 @@ import messaging from '@react-native-firebase/messaging';
 
 import strings from '../../constants/strings';
 import colors from '../../constants/colors';
+import numbers from '../../constants/numbers';
 import STYLING from '../../constants/styles';
 
 import Text from '../components/Text';
@@ -23,11 +24,11 @@ import {isVerified, login, saveTokenToDatabase} from '../../utils/api/authAPI';
 import {cacheCategories, cacheUserInfo} from '../../utils/CacheHelpers';
 import {getFriendsInfo} from '../../utils/api/friendsAPI';
 import {getBookmarks} from '../../utils/api/bookmarkAPI';
+import {fetchUserLocation} from '../../utils/Misc';
 
 import BookmarkContext from '../../context/BookmarkContext';
 import FriendsContext from '../../context/FriendsContext';
 import LocationContext from '../../context/LocationContext';
-import {fetchUserLocation} from '../../utils/Misc';
 
 const LoginScreen = ({navigation}: {navigation: any}) => {
   const theme = 'light';
@@ -65,7 +66,7 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
   if (!locationContext) {
     throw new Error('LocationContext is not set!');
   }
-  const {setLocation} = locationContext;
+  const {setLocation, setRadius} = locationContext;
 
   const initializeContext = async () => {
     const _bookmarks = await getBookmarks();
@@ -91,6 +92,7 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
     const locationResult = await fetchUserLocation();
     if (locationResult) {
       setLocation(locationResult);
+      setRadius(numbers.defaultRadius);
     }
   };
 

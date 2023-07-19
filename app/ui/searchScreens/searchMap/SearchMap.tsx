@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import {
   Alert,
   StyleSheet,
@@ -17,6 +17,8 @@ import numbers from '../../../constants/numbers';
 
 import Text from '../../components/Text';
 
+import LocationContext from '../../../context/LocationContext';
+
 import {
   calculateRadius,
   getRegionFromPointAndDistance,
@@ -33,8 +35,7 @@ const SearchMap = ({
   route: {
     params: {
       mode: 'create' | 'suggest' | 'add' | 'none';
-      location: Coordinate;
-      radius: number;
+      myLocation: Coordinate;
       category: Category;
     };
   };
@@ -42,15 +43,21 @@ const SearchMap = ({
   const theme = useColorScheme() || 'light';
   StatusBar.setBarStyle(colors[theme].statusBar, true);
 
+  const {mode, myLocation, category} = route.params;
+
+  const locationContext = useContext(LocationContext);
+  if (!locationContext) {
+    throw new Error('LocationContext is not set!');
+  }
+  const {location, setLocation, radius, setRadius} = locationContext;
+
   const [region, setRegion] = useState<Region>(
-    getRegionFromPointAndDistance(route.params.location, route.params.radius),
+    getRegionFromPointAndDistance(location, radius),
   );
 
   useEffect(() => {
-    setRegion(
-      getRegionFromPointAndDistance(route.params.location, route.params.radius),
-    );
-  }, [route.params.location, route.params.radius]);
+    setRegion(getRegionFromPointAndDistance(location, radius));
+  }, [location, radius]);
 
   return (
     <>
@@ -63,6 +70,7 @@ const SearchMap = ({
           showsScale={true}
           showsCompass={true}
           rotateEnabled={true}
+          region={region}
           onRegionChangeComplete={setRegion}
           mapPadding={{
             top: s(40),
@@ -95,11 +103,27 @@ const SearchMap = ({
       <Blur height={s(40)} />
 
       <View style={styles.header}>
+        <TouchableOpacity
+          onPress={() => {
+            setRegion(
+              getRegionFromPointAndDistance(myLocation, numbers.defaultRadius),
+            );
+          }}>
+          <Text
+            size="s"
+            color={
+              region.latitude.toFixed(2) === myLocation.latitude.toFixed(2) &&
+              region.longitude.toFixed(2) === myLocation.longitude.toFixed(2)
+                ? colors[theme].secondary
+                : colors[theme].neutral
+            }>
+            {strings.main.reset}
+          </Text>
+        </TouchableOpacity>
         <Text>{strings.search.setLocation}</Text>
         <TouchableOpacity
-          style={styles.done}
           onPress={() => {
-            const radius = calculateRadius(
+            const _radius = calculateRadius(
               {
                 latitude: region.latitude,
                 longitude: region.longitude,
@@ -107,15 +131,16 @@ const SearchMap = ({
               region.longitudeDelta,
             );
 
-            if (radius <= numbers.maxRadius) {
+            if (_radius <= numbers.maxRadius) {
+              setLocation({
+                latitude: region.latitude,
+                longitude: region.longitude,
+              });
+              setRadius(_radius);
               navigation.navigate('SearchCategory', {
-                category: route.params.category,
-                location: {
-                  latitude: region.latitude,
-                  longitude: region.longitude,
-                },
-                radius,
-                mode: route.params.mode,
+                category: category,
+                myLocation: myLocation,
+                mode: mode,
               });
             } else {
               Alert.alert(strings.search.tooFar, strings.search.tooFarMessage);
@@ -150,15 +175,10 @@ const styles = StyleSheet.create({
     position: 'absolute',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     width: s(350),
     height: s(40),
-
     paddingHorizontal: s(20),
-  },
-  done: {
-    position: 'absolute',
-    right: s(20),
   },
 });
 

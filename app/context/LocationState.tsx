@@ -17,12 +17,18 @@ const LocationStateProvider = ({
     latitude: numbers.defaultLatitude,
     longitude: numbers.defaultLongitude,
   });
-  const locationContext = useMemo(() => ({location, setLocation}), [location]);
+  const [radius, setRadius] = useState<number>(numbers.defaultRadius);
+
+  const locationContext = useMemo(
+    () => ({location, setLocation, radius, setRadius}),
+    [location, radius],
+  );
 
   const initializeLocation = async () => {
     const result = await fetchUserLocation();
     if (result) {
       setLocation(result);
+      setRadius(numbers.defaultRadius);
     } else {
       Alert.alert(strings.error.error, strings.error.locationPermission);
     }

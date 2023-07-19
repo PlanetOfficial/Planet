@@ -13,6 +13,7 @@ const strings = {
     confirm: 'Confirm',
     add: 'Add',
     next: 'Next',
+    reset: 'Reset',
     search: 'Search',
     seeAll: 'See All',
     warning: 'Warning',

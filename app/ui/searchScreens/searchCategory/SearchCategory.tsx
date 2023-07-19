@@ -18,6 +18,7 @@ import Icon from '../../components/Icon';
 import Filter from '../../components/Filter';
 
 import BookmarkContext from '../../../context/BookmarkContext';
+import LocationContext from '../../../context/LocationContext';
 
 import {getPois} from '../../../utils/api/poiAPI';
 import {Poi, Coordinate, Category} from '../../../utils/types';
@@ -32,8 +33,7 @@ const SearchCategory = ({
   route: {
     params: {
       mode: 'create' | 'suggest' | 'add' | 'none';
-      location: Coordinate;
-      radius: number;
+      myLocation: Coordinate;
       category: Category;
     };
   };
@@ -49,7 +49,7 @@ const SearchCategory = ({
     return unsubscribe;
   }, [navigation, theme]);
 
-  const {mode, location, radius, category} = route.params;
+  const {mode, myLocation, category} = route.params;
 
   const [places, setPlaces] = useState<Poi[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -65,6 +65,12 @@ const SearchCategory = ({
     throw new Error('BookmarkContext is not set!');
   }
   const {bookmarks, setBookmarks} = bookmarkContext;
+
+  const locationContext = useContext(LocationContext);
+  if (!locationContext) {
+    throw new Error('LocationContext is not set!');
+  }
+  const {location, radius} = locationContext;
 
   const filterRef = useRef<any>(null); // due to forwardRef
 
@@ -102,7 +108,7 @@ const SearchCategory = ({
     }
     setLoading(true);
     loadData(_filters);
-  }, [category, filters, location.latitude, location.longitude, radius]);
+  }, [category, filters, location, radius]);
 
   return (
     <View style={STYLES.container}>
@@ -118,11 +124,16 @@ const SearchCategory = ({
             icon={icons.pin}
             button={true}
             padding={-2}
+            color={
+              location.latitude.toFixed(2) === myLocation.latitude.toFixed(2) &&
+              location.longitude.toFixed(2) === myLocation.longitude.toFixed(2)
+                ? colors[theme].neutral
+                : colors[theme].accent
+            }
             onPress={() =>
               navigation.navigate('SearchMap', {
                 category,
-                location,
-                radius,
+                myLocation,
                 mode,
               })
             }
