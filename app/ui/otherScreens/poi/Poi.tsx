@@ -26,7 +26,7 @@ import Text from '../../components/Text';
 
 import BookmarkContext from '../../../context/BookmarkContext';
 
-import {Poi, PoiDetail} from '../../../utils/types';
+import {Coordinate, Poi, PoiDetail} from '../../../utils/types';
 import {getPoi, postPoi} from '../../../utils/api/poiAPI';
 
 import Header from './Header';
@@ -35,6 +35,7 @@ import Map from './Map';
 import Info from './Info';
 import Reviews from './Reviews';
 import Button from './Button';
+import {fetchUserLocation} from '../../../utils/Misc';
 
 const PoiPage = ({
   navigation,
@@ -66,6 +67,8 @@ const PoiPage = ({
   }
   const {bookmarks, setBookmarks} = bookmarkContext;
 
+  const [location, setLocation] = useState<Coordinate>();
+
   const initializeDestinationData = useCallback(async () => {
     if (route.params.place_id) {
       const result = await postPoi(route.params.place_id);
@@ -93,8 +96,9 @@ const PoiPage = ({
   }, [route.params.poi, route.params.place_id]);
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
+    const unsubscribe = navigation.addListener('focus', async () => {
       initializeDestinationData();
+      setLocation(await fetchUserLocation());
     });
 
     return unsubscribe;
@@ -164,10 +168,11 @@ const PoiPage = ({
             longitude={destination.longitude}
           />
         ) : null}
-        {destination && destinationDetails ? (
+        {destination && destinationDetails && location ? (
           <Info
             destination={destination}
             destinationDetails={destinationDetails}
+            location={location}
           />
         ) : null}
         {destinationDetails?.reviews &&

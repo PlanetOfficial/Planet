@@ -55,7 +55,9 @@ const RecentlyViewed: React.FC<Props> = ({
           onPress={() =>
             navigation.navigate('Poi', {
               poi: poi,
-              bookmarked: true,
+              bookmarked: bookmarks.some(
+                (bookmark: Poi) => bookmark.id === poi.id,
+              ),
               mode: 'none',
             })
           }>
@@ -86,6 +88,7 @@ const styling = (theme: 'light' | 'dark') =>
       flexDirection: 'row',
       alignItems: 'flex-end',
       justifyContent: 'space-between',
+      marginTop: s(5),
       paddingHorizontal: s(20),
       paddingVertical: s(10),
     },

@@ -188,3 +188,8 @@ export interface Notification {
   photo: string;
   actor: UserInfo;
 }
+
+export interface Recommendation {
+  places: Poi[];
+  categories: string[];
+}

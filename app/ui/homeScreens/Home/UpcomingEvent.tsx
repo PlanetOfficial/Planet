@@ -71,17 +71,22 @@ const UpcomingEvent: React.FC<Props> = ({navigation, upcomingEvent}) => {
                     onPress={() => {
                       navigation.navigate('Poi', {
                         poi: poi,
-                        bookmarked: false,
+                        bookmarked: bookmarks.some(
+                          (bookmark: Poi) => bookmark.id === poi.id,
+                        ),
                         mode: 'none',
                       });
                     }}>
                     <PoiCard
                       place={poi}
-                      bookmarked={false}
+                      bookmarked={bookmarks.some(
+                        (bookmark: Poi) => bookmark.id === poi.id,
+                      )}
                       handleBookmark={(p: Poi) => {
                         handleBookmark(p, bookmarks, setBookmarks);
                       }}
                       position={destination.idx + 1}
+                      isAccent={theme === 'light'}
                     />
                   </TouchableOpacity>
                 );
@@ -96,17 +101,43 @@ const UpcomingEvent: React.FC<Props> = ({navigation, upcomingEvent}) => {
                 });
               }}>
               <View style={STYLES.texts}>
-                <Text color={colors[theme].primary}>{upcomingEvent.name}</Text>
-                <Text size="xs" weight="l" color={colors[theme].primary}>
+                <Text
+                  color={
+                    theme === 'light'
+                      ? colors[theme].primary
+                      : colors[theme].neutral
+                  }>
+                  {upcomingEvent.name}
+                </Text>
+                <Text
+                  size="xs"
+                  weight="l"
+                  color={
+                    theme === 'light'
+                      ? colors[theme].primary
+                      : colors[theme].neutral
+                  }>
                   {moment(upcomingEvent.datetime)
                     .add(date.getTimezoneOffset(), 'minutes')
                     .format('MMM Do, h:mm a')}
                 </Text>
               </View>
-              <Icon size="s" icon={icons.next} color={colors[theme].primary} />
+              <Icon
+                size="s"
+                icon={icons.next}
+                color={
+                  theme === 'light'
+                    ? colors[theme].primary
+                    : colors[theme].neutral
+                }
+              />
             </TouchableOpacity>
           </View>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              navigation.navigate(strings.title.library);
+            }}>
             <Text size="xs" weight="l">
               {strings.home.viewAllEvents}
             </Text>
@@ -126,10 +157,11 @@ const UpcomingEvent: React.FC<Props> = ({navigation, upcomingEvent}) => {
 const styling = (theme: 'light' | 'dark') =>
   StyleSheet.create({
     container: {
-      backgroundColor: colors[theme].accent,
+      backgroundColor:
+        theme === 'light' ? colors[theme].accent : colors[theme].primary,
       paddingVertical: s(10),
       borderRadius: s(20),
-      marginHorizontal: s(10),
+      marginHorizontal: s(15),
       marginVertical: s(5),
     },
     header: {
@@ -146,7 +178,7 @@ const styling = (theme: 'light' | 'dark') =>
     cardContainer: {
       marginRight: s(15),
       paddingTop: s(15),
-      paddingBottom: s(5),
+      paddingBottom: s(10),
     },
     footer: {
       flexDirection: 'row',
@@ -161,13 +193,15 @@ const styling = (theme: 'light' | 'dark') =>
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: colors[theme].secondary,
-      marginVertical: s(10),
+      marginTop: s(10),
+      marginBottom: s(20),
       paddingVertical: s(7.5),
       paddingHorizontal: s(15),
       borderRadius: s(5),
     },
     shadow: {
-      shadowColor: colors[theme].accent,
+      shadowColor:
+        theme === 'light' ? colors[theme].accent : colors[theme].primary,
       shadowOffset: {
         width: 0,
         height: 3,
@@ -180,7 +214,8 @@ const styling = (theme: 'light' | 'dark') =>
     separator: {
       height: s(1),
       marginLeft: s(15),
-      backgroundColor: colors[theme].primary,
+      backgroundColor:
+        theme === 'light' ? colors[theme].primary : colors[theme].neutral,
     },
     create: {
       alignSelf: 'center',
