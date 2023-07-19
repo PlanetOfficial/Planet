@@ -71,8 +71,7 @@ const Icon: React.FC<Props> = ({
     backgroundColor: button ? colors[theme].primary : undefined,
     borderRadius: button ? z / 2 : undefined,
     borderWidth: border ? 1 : 0,
-    borderColor:
-      theme === 'light' ? colors[theme].primary : colors[theme].accent,
+    borderColor: colors[theme].accent,
   };
 
   const IconStyles: ImageStyle = {

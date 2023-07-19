@@ -73,7 +73,7 @@ export const getEvent = async (id: number): Promise<EventDetail | null> => {
 export const postEvent = async (
   poi_ids: number[],
   names: string[],
-  name: string,
+  name: string | undefined,
   datetime: string | undefined,
   members: number[],
 ): Promise<Boolean> => {

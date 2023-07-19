@@ -115,9 +115,11 @@ const Home = ({navigation}: {navigation: any}) => {
           <Text size="l">{GetGreetings()}</Text>
           <Icon
             icon={icons.friends}
-            color={colors[theme].accent}
+            color={
+              theme === 'light' ? colors[theme].accent : colors[theme].neutral
+            }
             button={true}
-            border={true}
+            border={theme === 'dark'}
             padding={-2}
             onPress={() => navigation.navigate('Friends')}
           />
