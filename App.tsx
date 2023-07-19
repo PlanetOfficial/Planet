@@ -2,16 +2,19 @@ import 'react-native-gesture-handler';
 import React, {useEffect, useState} from 'react';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import messaging from '@react-native-firebase/messaging';
-import {Alert, PermissionsAndroid, Platform} from 'react-native';
+import {PermissionsAndroid, Platform} from 'react-native';
 
 import SplashScreen from './app/ui/otherScreens/splashScreen/SplashScreen';
 import AppNavigation from './app/ui/navigations/AppNavigation';
 import {cacheCategories, updateCaches} from './app/utils/CacheHelpers';
 import {saveTokenToDatabase} from './app/utils/api/authAPI';
+import Notification from './app/ui/components/Notification';
 
 export default function App() {
   const [isLoading, setLoading] = useState<boolean>(true);
   const [isLoggedIn, setLoggedIn] = useState<boolean>(false);
+
+  const [notificationText, setNotificationText] = useState<string>('');
 
   const requestNotificationPerms = async () => {
     if (Platform.OS === 'android') {
@@ -49,7 +52,12 @@ export default function App() {
 
     // handle foreground notifications
     const unsubscribe = messaging().onMessage(async remoteMessage => {
-      Alert.alert('' + remoteMessage?.notification?.body);
+      if (remoteMessage?.notification?.body) {
+        setNotificationText(remoteMessage?.notification?.body);
+        setTimeout(() => {
+          setNotificationText('');
+        }, 5000);
+      }
     });
 
     return unsubscribe;
@@ -73,7 +81,17 @@ export default function App() {
   }, []);
 
   const getCorrectStack = () => {
-    return <AppNavigation isLoggedIn={isLoggedIn} />;
+    return (
+      <>
+        {notificationText !== '' ? 
+          <Notification
+            message={notificationText}
+            onPress={() => {}} 
+          /> : null}
+        <AppNavigation isLoggedIn={isLoggedIn} />
+      </>
+    );
+    
   };
 
   return isLoading ? <SplashScreen /> : getCorrectStack();
