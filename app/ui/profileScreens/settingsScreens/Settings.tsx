@@ -20,6 +20,8 @@ import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 import Separator from '../../components/SeparatorR';
 
+import {version} from '../../../../package.json';
+
 const Settings = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';
   const STYLES = STYLING(theme);
@@ -111,7 +113,7 @@ const Settings = ({navigation}: {navigation: any}) => {
             </Text>
           </TouchableOpacity>
           <Text size="s" weight="l" color={colors[theme].neutral}>
-            {strings.settings.version}
+            {strings.settings.version + ' ' + version}
           </Text>
         </View>
       </ScrollView>

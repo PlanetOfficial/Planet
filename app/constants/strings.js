@@ -236,7 +236,7 @@ const strings = {
     removeAccount: 'Remove Account',
     privacyPolicy: 'Privacy Policy',
     termsAndConditions: 'Terms and Conditions',
-    version: 'Version v1.0.0',
+    version: 'Version:',
   },
   error: {
     error: 'Error',
