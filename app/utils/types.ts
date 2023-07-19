@@ -182,7 +182,9 @@ export interface NotificationSettings {
 
 export interface Notification {
   created_at: string;
-  event_id: number;
+  event: Event;
   body: string;
   screenToNavigate: 'EVENT' | '';
+  photo: string;
+  actor: UserInfo;
 }

@@ -6,6 +6,8 @@ import {
   StatusBar,
   FlatList,
   StyleSheet,
+  Image,
+  TouchableOpacity,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 
@@ -17,7 +19,7 @@ import STYLING from '../../../constants/styles';
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 import Separator from '../../components/SeparatorR';
-// import UserIcon from '../../components/UserIcon';
+import UserIcon from '../../components/UserIcon';
 
 import {Notification} from '../../../utils/types';
 import {getEventsNotifications} from '../../../utils/api/eventAPI';
@@ -70,14 +72,35 @@ const Notifications = ({navigation}: {navigation: any}) => {
         style={STYLES.flatList}
         data={notifications}
         renderItem={({item}) => (
-          <View style={styles.row}>
-            {/* <UserIcon user={}/> */}
-            {/* We need  to bold the name of the user who sent the notification as well as event name */}
-            <Text size="s" weight="l">
-              {item.body}
-            </Text>
-            {/* Event Image */}
-          </View>
+          <TouchableOpacity
+            style={styles.row}
+            onPress={() =>
+              navigation.push('Event', {
+                event: item.event,
+              })
+            }>
+            <TouchableOpacity
+              style={styles.icon}
+              onPress={() =>
+                navigation.push('User', {
+                  user: item.actor,
+                })
+              }>
+              <UserIcon user={item.actor} />
+            </TouchableOpacity>
+            <View style={styles.text}>
+              <Text size="s" weight="l">
+                {item.body}
+              </Text>
+            </View>
+            <View style={styles.imageContainer}>
+              <Image
+                style={styles.image}
+                source={item.photo ? {uri: item.photo} : icons.placeholder}
+                resizeMode={'cover'}
+              />
+            </View>
+          </TouchableOpacity>
         )}
         keyExtractor={(_, index) => index.toString()}
         ItemSeparatorComponent={Separator}
@@ -92,7 +115,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: s(20),
-    height: s(60),
+    paddingVertical: s(10),
+    height: s(70),
+  },
+  icon: {
+    padding: s(5),
+  },
+  text: {
+    flex: 1,
+    marginHorizontal: s(10),
+  },
+  imageContainer: {
+    width: s(60),
+    height: s(40),
+  },
+  image: {
+    width: '100%',
+    height: '100%',
   },
 });
 
