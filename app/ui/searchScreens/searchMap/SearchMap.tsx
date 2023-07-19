@@ -146,7 +146,19 @@ const SearchMap = ({
               Alert.alert(strings.search.tooFar, strings.search.tooFarMessage);
             }
           }}>
-          <Text size="s" color={colors[theme].accent}>
+          <Text
+            size="s"
+            color={
+              calculateRadius(
+                {
+                  latitude: region.latitude,
+                  longitude: region.longitude,
+                },
+                region.longitudeDelta,
+              ) <= numbers.maxRadius
+                ? colors[theme].accent
+                : colors[theme].secondary
+            }>
             {strings.main.done}
           </Text>
         </TouchableOpacity>
