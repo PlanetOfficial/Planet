@@ -123,6 +123,7 @@ const Library = ({navigation}: {navigation: any}) => {
             },
           ]}
           style={styles.list}
+          removeClippedSubviews={true}
           contentContainerStyle={styles.content}
           initialNumToRender={7}
           renderItem={({

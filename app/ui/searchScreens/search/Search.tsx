@@ -189,14 +189,14 @@ const styling = (theme: 'light' | 'dark') =>
       paddingBottom: s(10),
     },
     scrollView: {
-      paddingHorizontal: s(20),
+      paddingHorizontal: s(10),
       paddingVertical: s(5),
       marginBottom: s(5),
     },
     categoryContainer: {
       alignItems: 'center',
       width: s(75),
-      minHeight: s(70),
+      height: s(75),
       overflow: 'visible',
     },
     iconContainer: {
