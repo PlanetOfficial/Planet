@@ -117,7 +117,6 @@ const Home = ({navigation}: {navigation: any}) => {
             icon={icons.friends}
             color={colors[theme].accent}
             button={true}
-            border={true}
             padding={-2}
             onPress={() => navigation.navigate('Friends')}
           />

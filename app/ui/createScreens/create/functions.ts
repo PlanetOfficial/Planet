@@ -49,7 +49,7 @@ export const handleSave = async (
     poi_ids,
     names,
     eventTitle,
-    moment(date, 'M/D, h:mma').toString(),
+    date ? moment(date, 'M/D, h:mma').toString() : undefined,
     members.map(member => member.id),
   );
   if (response) {

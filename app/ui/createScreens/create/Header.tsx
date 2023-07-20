@@ -137,7 +137,7 @@ const Header: React.FC<Props> = ({
           icon={icons.friends}
           button={true}
           padding={-2}
-          color={colors[theme].accent}
+          color={colors[theme].neutral}
           onPress={() => {
             navigation.navigate('AddFriend', {
               members: members,
