@@ -86,42 +86,46 @@ const Library = ({navigation}: {navigation: any}) => {
         </View>
       ) : (
         <SectionList
-          sections={[
-            {
-              title: strings.event.upcomingEvents,
-              data: events
-                .filter(
-                  (event: Event) =>
-                    event.datetime &&
-                    new Date(new Date(event.datetime).getTime()) >=
-                      currentDate &&
-                    !event.completed,
-                )
-                .sort((a: Event, b: Event) => {
-                  return new Date(a.datetime) === new Date(b.datetime)
-                    ? 0
-                    : new Date(a.datetime) > new Date(b.datetime)
-                    ? 1
-                    : -1;
-                }),
-            },
-            {
-              title: strings.event.nonDatedEvents,
-              data: events.filter(
-                (event: Event) => !event.datetime && !event.completed,
-              ),
-            },
-            {
-              title: strings.event.pastEvents,
-              data: events.filter(
-                (event: Event) =>
-                  (event.datetime &&
-                    new Date(new Date(event.datetime).getTime()) <
-                      currentDate) ||
-                  event.completed,
-              ),
-            },
-          ]}
+          sections={
+            events.length === 0
+              ? []
+              : [
+                  {
+                    title: strings.event.upcomingEvents,
+                    data: events
+                      .filter(
+                        (event: Event) =>
+                          event.datetime &&
+                          new Date(new Date(event.datetime).getTime()) >=
+                            currentDate &&
+                          !event.completed,
+                      )
+                      .sort((a: Event, b: Event) => {
+                        return new Date(a.datetime) === new Date(b.datetime)
+                          ? 0
+                          : new Date(a.datetime) > new Date(b.datetime)
+                          ? 1
+                          : -1;
+                      }),
+                  },
+                  {
+                    title: strings.event.nonDatedEvents,
+                    data: events.filter(
+                      (event: Event) => !event.datetime && !event.completed,
+                    ),
+                  },
+                  {
+                    title: strings.event.pastEvents,
+                    data: events.filter(
+                      (event: Event) =>
+                        (event.datetime &&
+                          new Date(new Date(event.datetime).getTime()) <
+                            currentDate) ||
+                        event.completed,
+                    ),
+                  },
+                ]
+          }
           style={styles.list}
           removeClippedSubviews={true}
           contentContainerStyle={styles.content}
@@ -149,11 +153,13 @@ const Library = ({navigation}: {navigation: any}) => {
               </TouchableOpacity>
             );
           }}
-          renderSectionHeader={({section}) => (
-            <View style={styles.sectionHeader}>
-              <Text size="s">{section.title}</Text>
-            </View>
-          )}
+          renderSectionHeader={({section}) =>
+            section.data.length > 0 ? (
+              <View style={styles.sectionHeader}>
+                <Text size="s">{section.title}</Text>
+              </View>
+            ) : null
+          }
           ListEmptyComponent={
             <View style={STYLES.center}>
               <Text>{strings.event.noEventsFound}</Text>
