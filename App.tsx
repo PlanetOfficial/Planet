@@ -83,10 +83,15 @@ export default function App() {
   const getCorrectStack = () => {
     return (
       <>
-        {notificationText !== '' ? (
-          <Notification message={notificationText} onPress={() => {}} />
-        ) : null}
         <AppNavigation isLoggedIn={isLoggedIn} />
+        {notificationText !== '' ? (
+          <Notification
+            message={notificationText}
+            onPress={() => {
+              // TODO: navigate to the correct screen
+            }}
+          />
+        ) : null}
       </>
     );
   };

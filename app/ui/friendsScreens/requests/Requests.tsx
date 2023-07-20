@@ -23,7 +23,7 @@ import UserRow from '../../components/UserRow';
 import FriendsContext from '../../../context/FriendsContext';
 
 import {UserInfo} from '../../../utils/types';
-import {getFriendRequests} from '../../../utils/api/friendsAPI';
+import {getFriends} from '../../../utils/api/friendsAPI';
 import {
   handleAcceptRequest,
   handleCancelRequest,
@@ -46,13 +46,18 @@ const Requests = ({navigation}: {navigation: any}) => {
     setRequestsSent,
     friends,
     setFriends,
+    setUsersIBlock,
+    setUsersBlockingMe,
   } = friendsContext;
 
   const [loading, setLoading] = useState(false);
   const loadRequests = async () => {
-    const response = await getFriendRequests();
+    const response = await getFriends();
 
     if (response) {
+      setFriends(response.friends);
+      setUsersIBlock(response.usersIBlock);
+      setUsersBlockingMe(response.usersBlockingMe);
       setRequests(response.requests);
       setRequestsSent(response.requests_sent);
     } else {
