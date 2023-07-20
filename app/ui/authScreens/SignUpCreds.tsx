@@ -5,7 +5,11 @@ import {
   TextInput,
   TouchableOpacity,
   StatusBar,
+  Linking,
+  StyleSheet,
 } from 'react-native';
+
+import {s} from 'react-native-size-matters';
 
 import colors from '../../constants/colors';
 import icons from '../../constants/icons';
@@ -182,8 +186,36 @@ const SignUpCreds = ({
           {strings.signUp.signUp}
         </Text>
       </TouchableOpacity>
+
+      <View style={styles.footer}>
+        <Text size="s" weight="l" color={colors[theme].neutral}>
+          {strings.signUp.bySigningUpYouAgreeTo}
+        </Text>
+        <TouchableOpacity
+          onPress={() =>
+            Linking.openURL(strings.main.url + '/terms-and-conditions')
+          }>
+          <Text
+            size="s"
+            weight="l"
+            underline={true}
+            color={colors[theme].accent}>
+            {strings.settings.termsAndConditions}
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  footer: {
+    marginTop: s(40),
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    height: s(40),
+  },
+});
 
 export default SignUpCreds;
