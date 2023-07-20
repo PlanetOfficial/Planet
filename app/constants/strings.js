@@ -165,6 +165,8 @@ const strings = {
     }MB`,
     pfpUploadError: 'Error uploading profile picture',
     editProfile: 'Edit Profile',
+    removePfp: 'Remove Profile Picture',
+    removePfpPrompt: 'Are you sure you want to remove your profile picture?',
   },
   event: {
     destinations: 'Destinations',
@@ -303,6 +305,7 @@ const strings = {
       'Unable to load recommendations. Please try again later.',
     loadRecentlyViewed:
       'Unable to load recently viewed. Please try again later.',
+    removePfp: 'Unable to remove profile picture. Please try again later.',
   },
   ageEnum: [
     {label: '-17', value: '-17'},

@@ -236,11 +236,43 @@ export const saveImage = async (base64: string): Promise<string | null> => {
   const myJson: {image_url: string} = await response.json();
 
   if (response?.ok) {
-    await AsyncStorage.setItem('pfp_url', JSON.stringify(myJson.image_url));
+    await AsyncStorage.setItem('pfp_url', myJson.image_url);
     return myJson.image_url;
   } else {
     return null;
   }
+};
+
+/**
+ * @requires auth_token should be set in EncryptedStorage before calling this function
+ * This removes the user's profile in the cache if a succesful response.
+ */
+export const removeImage = async (): Promise<Boolean> => {
+  const authToken = await EncryptedStorage.getItem('auth_token');
+
+  if (!authToken) {
+    return false;
+  }
+
+  const request = async (authtoken: string) => {
+    const response = await fetch(UserAPIURL + '/auth/removeImage', {
+      method: 'DELETE',
+      headers: {
+        'X-Xano-Authorization': `Bearer ${authtoken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
+    });
+
+    return response;
+  };
+
+  const response = await requestAndValidate(authToken, request);
+
+  if (response.ok) {
+    await AsyncStorage.setItem('pfp_url', '');
+  }
+
+  return response.ok;
 };
 
 /**
