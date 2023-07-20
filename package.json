@@ -55,7 +55,8 @@
     "react-native-svg-charts": "^5.4.0",
     "react-native-swipeable-item": "^2.0.9",
     "react-native-tab-view": "^3.5.1",
-    "react-svg": "^16.1.13"
+    "react-phone-number-input": "^3.2.23",
+    "react-svg": "^16.1.17"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
