@@ -12,7 +12,6 @@ import {s} from 'react-native-size-matters';
 
 import icons from '../../constants/icons';
 import colors from '../../constants/colors';
-import strings from '../../constants/strings';
 
 import Text from '../components/Text';
 import Icon from '../components/Icon';
@@ -93,7 +92,7 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
       }
     } else {
       if (_filter === -1) {
-        return ': ' + strings.main.none;
+        return '';
       }
       return ': ' + filter.options[_filter];
     }
