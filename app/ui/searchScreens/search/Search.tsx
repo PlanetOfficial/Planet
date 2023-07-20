@@ -112,7 +112,7 @@ const Search = ({
                     onPress={() => {
                       navigation.navigate('SearchCategory', {
                         category: item,
-                        location,
+                        myLocation: location,
                         radius: numbers.defaultRadius,
                         mode: mode,
                       });

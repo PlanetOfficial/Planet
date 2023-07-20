@@ -11,14 +11,12 @@ type RootStackParamList = {
   TabStack: undefined;
   SearchCategory: {
     mode: 'create' | 'suggest' | 'add' | 'none';
-    location: Coordinate;
-    radius: number;
+    myLocation: Coordinate;
     category: Category;
   };
   SearchMap: {
     mode: 'create' | 'suggest' | 'add' | 'none';
-    location: Coordinate;
-    radius: number;
+    myLocation: Coordinate;
     category: Category;
   };
   Poi: {

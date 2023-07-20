@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   View,
   SafeAreaView,
@@ -11,6 +11,7 @@ import {s} from 'react-native-size-matters';
 
 import colors from '../../constants/colors';
 import icons from '../../constants/icons';
+import numbers from '../../constants/numbers';
 import strings from '../../constants/strings';
 import STYLING from '../../constants/styles';
 
@@ -18,6 +19,9 @@ import Icon from '../components/Icon';
 import Text from '../components/Text';
 
 import {verifyCode} from '../../utils/api/authAPI';
+import {fetchUserLocation} from '../../utils/Misc';
+
+import LocationContext from '../../context/LocationContext';
 
 const SignUpVerify = ({
   navigation,
@@ -41,6 +45,12 @@ const SignUpVerify = ({
 
   const [error, setError] = useState<string>('');
 
+  const locationContext = useContext(LocationContext);
+  if (!locationContext) {
+    throw new Error('LocationContext is not set!');
+  }
+  const {setLocation, setRadius} = locationContext;
+
   const handleVerifyCode = async () => {
     setError('');
 
@@ -52,6 +62,12 @@ const SignUpVerify = ({
     const response = await verifyCode(authToken, code);
 
     if (response) {
+      const locationResult = await fetchUserLocation();
+      if (locationResult) {
+        setLocation(locationResult);
+        setRadius(numbers.defaultRadius);
+      }
+
       navigation.reset({
         index: 0,
         routes: [{name: 'SignUpInfo', params: {authToken: authToken}}],

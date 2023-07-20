@@ -15,15 +15,19 @@ import messaging from '@react-native-firebase/messaging';
 
 import strings from '../../constants/strings';
 import colors from '../../constants/colors';
+import numbers from '../../constants/numbers';
 
 import Text from '../components/Text';
 
 import {isVerified, login, saveTokenToDatabase} from '../../utils/api/authAPI';
 import {cacheCategories, cacheUserInfo} from '../../utils/CacheHelpers';
 import {getFriendsInfo} from '../../utils/api/friendsAPI';
+import {getBookmarks} from '../../utils/api/bookmarkAPI';
+import {fetchUserLocation} from '../../utils/Misc';
+
 import BookmarkContext from '../../context/BookmarkContext';
 import FriendsContext from '../../context/FriendsContext';
-import {getBookmarks} from '../../utils/api/bookmarkAPI';
+import LocationContext from '../../context/LocationContext';
 
 const LoginScreen = ({navigation}: {navigation: any}) => {
   const theme = 'light';
@@ -56,6 +60,12 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
     setUsersBlockingMe,
   } = friendsContext;
 
+  const locationContext = useContext(LocationContext);
+  if (!locationContext) {
+    throw new Error('LocationContext is not set!');
+  }
+  const {setLocation, setRadius} = locationContext;
+
   const initializeContext = async () => {
     const _bookmarks = await getBookmarks();
     if (_bookmarks) {
@@ -75,6 +85,12 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
       setUsersBlockingMe(result.usersBlockingMe);
     } else {
       Alert.alert(strings.error.error, strings.error.loadFriendsList);
+    }
+
+    const locationResult = await fetchUserLocation();
+    if (locationResult) {
+      setLocation(locationResult);
+      setRadius(numbers.defaultRadius);
     }
   };
 
