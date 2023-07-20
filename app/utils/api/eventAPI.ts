@@ -325,3 +325,32 @@ export const getEventsNotifications = async (): Promise<
     return null;
   }
 };
+
+/**
+ * @requires auth_token should be set in EncryptedStorage before calling this function
+ */
+export const reportEvent = async (event_id: number): Promise<Boolean> => {
+  const authToken = await EncryptedStorage.getItem('auth_token');
+
+  if (!authToken) {
+    return false;
+  }
+
+  const request = async (authtoken: string) => {
+    const response = await fetch(EventAPIURL + '/event/report', {
+      method: 'POST',
+      body: JSON.stringify({event_id}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authtoken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
+    });
+
+    return response;
+  };
+
+  const response = await requestAndValidate(authToken, request);
+
+  return response.ok;
+};

@@ -5,6 +5,7 @@ import {
   removeDestination,
   reorderDestinations,
 } from '../../../utils/api/destinationAPI';
+import {reportEvent} from '../../../utils/api/eventAPI';
 import {Destination} from '../../../utils/types';
 
 export const handleRenameDestination = async (
@@ -50,5 +51,15 @@ export const handleReorderDestinations = async (
     loadData();
   } else {
     Alert.alert(strings.error.error, strings.error.reorderDestination);
+  }
+};
+
+export const handleReportEvent = async (eventId: number) => {
+  const response = await reportEvent(eventId);
+
+  if (response) {
+    Alert.alert(strings.main.success, strings.event.reportEventInfo);
+  } else {
+    Alert.alert(strings.error.error, strings.error.reportEvent);
   }
 };
