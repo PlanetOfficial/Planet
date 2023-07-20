@@ -108,29 +108,33 @@ const Spinner: React.FC<Props> = ({
       Alert.alert(strings.error.error, strings.error.recordRouletteSpin);
     }
 
-    Alert.alert(suggestion.poi.name, strings.roulette.rouletteSpinInfo, [
-      {
-        text: strings.main.cancel,
-        style: 'cancel',
-      },
-      {
-        text: strings.main.confirm,
-        onPress: async () => {
-          const response = await makePrimary(
-            eventId,
-            destination.id,
-            suggestion.id,
-          );
-
-          if (!response) {
-            Alert.alert(
-              strings.error.error,
-              strings.error.makeSuggestionPrimary,
-            );
-          }
+    if (suggestion.is_primary) {
+      Alert.alert(suggestion.poi.name, strings.roulette.alreadyPrimary);
+    } else {
+      Alert.alert(suggestion.poi.name, strings.roulette.rouletteSpinInfo, [
+        {
+          text: strings.main.cancel,
+          style: 'cancel',
         },
-      },
-    ]);
+        {
+          text: strings.main.confirm,
+          onPress: async () => {
+            const response = await makePrimary(
+              eventId,
+              destination.id,
+              suggestion.id,
+            );
+
+            if (!response) {
+              Alert.alert(
+                strings.error.error,
+                strings.error.makeSuggestionPrimary,
+              );
+            }
+          },
+        },
+      ]);
+    }
   };
 
   return (

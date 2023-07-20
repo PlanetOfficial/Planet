@@ -218,6 +218,7 @@ const strings = {
     votes: 'Votes',
     rouletteSpinInfo:
       'Do you want to mark this suggestion as the primary destination?',
+    alreadyPrimary: 'This suggestion is already the primary destination.',
     spinHistory: 'Spin History',
     spinHistoryDescription:
       "Records of everyone's spins will be displayed here, whether or not they choose to accept the result.",
