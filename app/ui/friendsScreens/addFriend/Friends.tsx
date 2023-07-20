@@ -55,14 +55,16 @@ const Friends: React.FC<Props> = ({
 
   return (
     <ScrollView style={STYLES.container}>
-      <View style={styles.title}>
-        <Text size="s">
-          {friendGroups.length === 1
-            ? strings.friends.friendGroup
-            : strings.friends.friendGroups}
-          :
-        </Text>
-      </View>
+      {friendGroups.length > 0 ? (
+        <View style={styles.title}>
+          <Text size="s">
+            {friendGroups.length === 1
+              ? strings.friends.friendGroup
+              : strings.friends.friendGroups}
+            :
+          </Text>
+        </View>
+      ) : null}
       <FlatList
         horizontal={true}
         data={friendGroups}
@@ -155,9 +157,15 @@ const Friends: React.FC<Props> = ({
         </ScrollView>
       ) : null}
 
-      <View style={styles.title}>
-        <Text size="s">{strings.friends.friends}:</Text>
-      </View>
+      {friends.length === 0 ? (
+        <View style={STYLES.center}>
+          <Text>{strings.friends.noFriendsFound}</Text>
+        </View>
+      ) : (
+        <View style={styles.title}>
+          <Text size="s">{strings.friends.friends}:</Text>
+        </View>
+      )}
       {friends.map((item: UserInfo) => (
         <TouchableOpacity
           key={item.id}
@@ -180,11 +188,6 @@ const Friends: React.FC<Props> = ({
           </UserRow>
         </TouchableOpacity>
       ))}
-      {friends.length === 0 ? (
-        <View style={STYLES.center}>
-          <Text>{strings.friends.noFriendsFound}</Text>
-        </View>
-      ) : null}
     </ScrollView>
   );
 };

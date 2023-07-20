@@ -8,6 +8,7 @@ import {
   StyleSheet,
   Alert,
   StatusBar,
+  Keyboard,
 } from 'react-native';
 import {s, vs} from 'react-native-size-matters';
 import LinearGradient from 'react-native-linear-gradient';
@@ -146,7 +147,7 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} onTouchStart={Keyboard.dismiss}>
       <LinearGradient
         colors={['#ff8c63', '#e9dc96']}
         style={styles.container}
