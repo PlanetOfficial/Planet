@@ -275,6 +275,8 @@ const strings = {
     loadGenres: 'Unable to load genres. Please try again later.',
     loadPlaces: 'Unable to load places. Please try again later.',
     locationPermission: 'Location permission denied.',
+    locationPermissionInfo:
+      'Please enable location services in the settings app to continue.',
     loadFriendsList: 'Unable to load friends info. Please try again later.',
     loadFriendRequests:
       'Unable to load friend requests. Please try again later.',

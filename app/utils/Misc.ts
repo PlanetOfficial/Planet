@@ -63,25 +63,44 @@ export const getDistanceFromCoordinates = (
 */
 export const fetchUserLocation = async (): Promise<Coordinate> => {
   if (Platform.OS === 'ios') {
-    Geolocation.requestAuthorization();
+    Geolocation.requestAuthorization(
+      () => {},
+      error => {
+        console.warn(error);
+        Alert.alert(
+          strings.error.locationPermission,
+          strings.error.locationPermissionInfo,
+        );
+      },
+    );
   } else if (Platform.OS === 'android') {
     try {
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
       );
       if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
-        Alert.alert(strings.error.error, strings.error.locationPermission);
+        Alert.alert(
+          strings.error.locationPermission,
+          strings.error.locationPermissionInfo,
+        );
       }
     } catch (err) {
       console.warn(err);
     }
   }
   return new Promise(res => {
-    Geolocation.getCurrentPosition(position =>
-      res({
-        latitude: position.coords.latitude,
-        longitude: position.coords.longitude,
-      }),
+    Geolocation.getCurrentPosition(
+      position =>
+        res({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        }),
+      _ => {
+        res({
+          latitude: 0,
+          longitude: 0,
+        });
+      },
     );
   });
 };
