@@ -79,7 +79,6 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
     };
 
     const image = await launchImageLibrary(options);
-    console.log(image);
     if (
       image.assets &&
       image.assets.length > 0 &&
