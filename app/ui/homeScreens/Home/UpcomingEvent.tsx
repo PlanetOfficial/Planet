@@ -33,8 +33,6 @@ const UpcomingEvent: React.FC<Props> = ({navigation, upcomingEvent}) => {
   const styles = styling(theme);
   const STYLES = STYLING(theme);
 
-  const date = new Date();
-
   const bookmarkContext = useContext(BookmarkContext);
   if (!bookmarkContext) {
     throw new Error('BookmarkContext is not set!');
@@ -117,9 +115,7 @@ const UpcomingEvent: React.FC<Props> = ({navigation, upcomingEvent}) => {
                       ? colors[theme].primary
                       : colors[theme].neutral
                   }>
-                  {moment(upcomingEvent.datetime)
-                    .add(date.getTimezoneOffset(), 'minutes')
-                    .format('MMM Do, h:mm a')}
+                  {moment(upcomingEvent.datetime).format('MMM Do, h:mm a')}
                 </Text>
               </View>
               <Icon
@@ -144,11 +140,13 @@ const UpcomingEvent: React.FC<Props> = ({navigation, upcomingEvent}) => {
           </TouchableOpacity>
         </>
       ) : (
-        <View style={[styles.create, styles.shadow]}>
+        <TouchableOpacity
+          style={[styles.create, styles.shadow]}
+          onPress={() => navigation.navigate('Create')}>
           <Text size="l" color={colors[theme].primary} center={true}>
             {strings.home.noUpcomingEvents}
           </Text>
-        </View>
+        </TouchableOpacity>
       )}
     </>
   );

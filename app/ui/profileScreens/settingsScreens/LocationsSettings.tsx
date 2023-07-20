@@ -5,7 +5,6 @@ import {
   StyleSheet,
   TouchableOpacity,
   Linking,
-  Alert,
   useColorScheme,
   StatusBar,
 } from 'react-native';
@@ -39,12 +38,12 @@ const LocationsSettings = ({navigation}: {navigation: any}) => {
           </View>
         </View>
       </SafeAreaView>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={styles.row}
         onPress={() => Alert.alert('Primary Location is not implemented yet')}>
         <Text weight="l">Primary Location: Seattle</Text>
       </TouchableOpacity>
-      <Separator />
+      <Separator /> */}
       <TouchableOpacity style={styles.row} onPress={Linking.openSettings}>
         <Text weight="l">{strings.settings.openLocationSettings}</Text>
       </TouchableOpacity>
