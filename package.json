@@ -23,7 +23,7 @@
     "@react-navigation/bottom-tabs": "^6.5.8",
     "@react-navigation/material-top-tabs": "^6.6.3",
     "@react-navigation/native": "^6.1.2",
-    "@react-navigation/stack": "^6.3.11",
+    "@react-navigation/stack": "^6.3.17",
     "@types/react-native-svg-charts": "^5.0.12",
     "haversine-distance": "^1.2.1",
     "moment": "^2.29.4",
