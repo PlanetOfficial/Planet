@@ -29,9 +29,8 @@ import STYLING from '../../../constants/styles';
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 
-import {editInfo, saveImage} from '../../../utils/api/authAPI';
+import {editInfo, removeImage, saveImage} from '../../../utils/api/authAPI';
 
-// TODO: REFACTOR
 const ProfileSettings = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
@@ -80,6 +79,7 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
     };
 
     const image = await launchImageLibrary(options);
+    console.log(image);
     if (
       image.assets &&
       image.assets.length > 0 &&
@@ -105,6 +105,33 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
         Alert.alert('Error', strings.profile.pfpSelectError);
       }
     }
+  };
+
+  const handleRemovePfp = async () => {
+    Alert.alert(
+      strings.profile.removePfp,
+      strings.profile.removePfpPrompt,
+      [
+        {
+          text: strings.main.cancel,
+          style: 'cancel',
+        },
+        {
+          text: strings.main.remove,
+          onPress: async () => {
+            const response = await removeImage();
+
+            if (response) {
+              setPfpURL('');
+            } else {
+              Alert.alert(strings.error.error, strings.error.removePfp);
+            }
+          },
+          style: 'destructive',
+        },
+      ],
+      {cancelable: false},
+    );
   };
 
   const handleEditInfo = async (
@@ -188,6 +215,13 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
           <Icon icon={icons.gallery} size="xl" color={colors.light.primary} />
         </View>
       </TouchableOpacity>
+      {pfpURL.length > 0 ? (
+        <TouchableOpacity style={styles.remove} onPress={handleRemovePfp}>
+          <Text size="s" color={colors[theme].red}>
+            {strings.main.remove}
+          </Text>
+        </TouchableOpacity>
+      ) : null}
       <View style={styles.container}>
         <View style={styles.inputContainer}>
           <View style={styles.prompt}>
@@ -463,6 +497,10 @@ const styling = (theme: 'light' | 'dark') =>
     textInput: {
       padding: 0,
       color: colors[theme].neutral,
+    },
+    remove: {
+      alignSelf: 'center',
+      marginTop: s(10),
     },
   });
 

@@ -58,6 +58,7 @@ const ProfileBody = ({navigation}: {navigation: any}) => {
     const _lastName = await AsyncStorage.getItem('last_name');
     const _username = await AsyncStorage.getItem('username');
     const _pfpURL = await AsyncStorage.getItem('pfp_url');
+    console.log(_pfpURL);
     setFirstName(_firstName || '');
     setLastName(_lastName || '');
     setUsername(_username || '');
