@@ -44,7 +44,7 @@ const PoiPage = ({
   navigation: any;
   route: {
     params: {
-      mode: 'create' | 'suggest' | 'add' | 'none';
+      mode: 'create' | 'suggest' | 'add' | 'inCreate' | 'none';
       place_id?: string;
       poi?: Poi;
       category?: string;
@@ -57,7 +57,7 @@ const PoiPage = ({
 
   const [destination, setDestination] = useState<Poi>();
   const [destinationDetails, setDestinationDetails] = useState<PoiDetail>();
-  const [mode] = useState<'create' | 'suggest' | 'add' | 'none'>(
+  const [mode] = useState<'create' | 'suggest' | 'add' | 'inCreate' | 'none'>(
     route.params.mode,
   );
 
@@ -181,12 +181,14 @@ const PoiPage = ({
         ) : null}
       </Animated.ScrollView>
 
-      <Button
-        navigation={navigation}
-        destination={destination}
-        mode={mode}
-        category={route.params.category}
-      />
+      {mode !== 'inCreate' ? (
+        <Button
+          navigation={navigation}
+          destination={destination}
+          mode={mode}
+          category={route.params.category}
+        />
+      ) : null}
     </View>
   );
 };

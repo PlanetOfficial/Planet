@@ -117,7 +117,7 @@ const DestinationsList: React.FC<Props> = ({
                   bookmarked: bookmarks.some(
                     bookmark => bookmark.id === destination.id,
                   ),
-                  mode: 'none',
+                  mode: 'inCreate',
                 })
               }>
               <PoiCardXL

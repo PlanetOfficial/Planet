@@ -20,7 +20,7 @@ type RootStackParamList = {
     category: Category;
   };
   Poi: {
-    mode: 'create' | 'suggest' | 'add' | 'none';
+    mode: 'create' | 'suggest' | 'add' | 'inCreate' | 'none';
     place_id: string | undefined;
     poi: PoiType | undefined;
     category: string | undefined;
