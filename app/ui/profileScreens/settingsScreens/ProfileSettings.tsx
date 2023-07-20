@@ -30,6 +30,7 @@ import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 
 import {editInfo, removeImage, saveImage} from '../../../utils/api/authAPI';
+import {ScrollView} from 'react-native';
 
 const ProfileSettings = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';
@@ -192,37 +193,39 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
           </View>
         </View>
       </SafeAreaView>
-      <TouchableOpacity style={styles.profile} onPress={handleEditPfp}>
-        <View style={styles.profilePic}>
-          {pfpURL.length > 0 ? (
-            <Image style={styles.profileImage} source={{uri: pfpURL}} />
-          ) : (
-            <View
-              style={{
-                ...styles.profileImage,
-                backgroundColor:
-                  colors[theme].profileShades[username.length % 5],
-              }}>
-              <RNText style={styles.name}>
-                {firstName?.charAt(0).toUpperCase() +
-                  lastName?.charAt(0).toUpperCase()}
-              </RNText>
-            </View>
-          )}
-        </View>
-        <View style={[styles.profilePic, styles.overlay]}>
-          <Icon icon={icons.gallery} size="xl" color={colors.light.primary} />
-        </View>
-      </TouchableOpacity>
-      {pfpURL.length > 0 ? (
-        <TouchableOpacity style={styles.remove} onPress={handleRemovePfp}>
-          <Text size="s" color={colors[theme].red}>
-            {strings.main.remove}
-          </Text>
+      <ScrollView
+        style={styles.container}
+        automaticallyAdjustKeyboardInsets={true}>
+        <TouchableOpacity style={styles.profile} onPress={handleEditPfp}>
+          <View style={styles.profilePic}>
+            {pfpURL.length > 0 ? (
+              <Image style={styles.profileImage} source={{uri: pfpURL}} />
+            ) : (
+              <View
+                style={{
+                  ...styles.profileImage,
+                  backgroundColor:
+                    colors[theme].profileShades[username.length % 5],
+                }}>
+                <RNText style={styles.name}>
+                  {firstName?.charAt(0).toUpperCase() +
+                    lastName?.charAt(0).toUpperCase()}
+                </RNText>
+              </View>
+            )}
+          </View>
+          <View style={[styles.profilePic, styles.overlay]}>
+            <Icon icon={icons.gallery} size="xl" color={colors.light.primary} />
+          </View>
         </TouchableOpacity>
-      ) : null}
-      <View style={styles.container}>
-        <View style={styles.inputContainer}>
+        {pfpURL.length > 0 ? (
+          <TouchableOpacity style={styles.remove} onPress={handleRemovePfp}>
+            <Text size="s" color={colors[theme].red}>
+              {strings.main.remove}
+            </Text>
+          </TouchableOpacity>
+        ) : null}
+        <View style={[styles.inputContainer, styles.spacing]}>
           <View style={styles.prompt}>
             <Text weight="l">{strings.signUp.firstName}: </Text>
           </View>
@@ -296,7 +299,7 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
           <TextInput
             style={styles.input}
             placeholder={phoneNumber}
-            placeholderTextColor={colors[theme].neutral}
+            placeholderTextColor={colors[theme].secondary}
             editable={false}
           />
         </View>
@@ -340,7 +343,7 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
             />
           </TouchableOpacity>
         </View>
-      </View>
+      </ScrollView>
       <Modal
         visible={ageDPOpen}
         animationType={'fade'}
@@ -442,9 +445,7 @@ const styling = (theme: 'light' | 'dark') =>
       justifyContent: 'center',
     },
     container: {
-      flex: 1,
-      marginBottom: s(50),
-      justifyContent: 'space-evenly',
+      marginTop: s(20),
     },
     name: {
       fontSize: s(40),
@@ -462,6 +463,7 @@ const styling = (theme: 'light' | 'dark') =>
       flexDirection: 'row',
       alignItems: 'center',
       marginHorizontal: s(50),
+      marginBottom: s(40),
     },
     input: {
       flex: 5,
@@ -500,6 +502,9 @@ const styling = (theme: 'light' | 'dark') =>
     remove: {
       alignSelf: 'center',
       marginTop: s(10),
+    },
+    spacing: {
+      marginTop: s(30),
     },
   });
 

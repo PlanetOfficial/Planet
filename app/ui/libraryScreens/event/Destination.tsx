@@ -187,7 +187,8 @@ const styles = StyleSheet.create({
   destinationHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingVertical: s(15),
+    paddingTop: s(15),
+    paddingBottom: s(10),
     paddingHorizontal: s(5),
   },
   destinationCard: {

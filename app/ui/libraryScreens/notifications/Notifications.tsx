@@ -11,6 +11,8 @@ import {
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 
+import moment from 'moment';
+
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
 import strings from '../../../constants/strings';
@@ -92,6 +94,10 @@ const Notifications = ({navigation}: {navigation: any}) => {
               <Text size="s" weight="l">
                 {item.body}
               </Text>
+              <View style={styles.spacer} />
+              <Text size="xs" weight="l">
+                {moment(item.created_at).format('MMM Do, h:mm a')}
+              </Text>
             </View>
             <View style={styles.imageContainer}>
               <Image
@@ -116,10 +122,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: s(20),
     paddingVertical: s(10),
-    height: s(70),
+    minHeight: s(80),
   },
   icon: {
-    padding: s(5),
+    width: s(60),
+    height: s(60),
+    padding: s(10),
   },
   text: {
     flex: 1,
@@ -132,6 +140,9 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: '100%',
+  },
+  spacer: {
+    height: s(5),
   },
 });
 
