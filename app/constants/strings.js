@@ -3,6 +3,7 @@ import numbers from './numbers';
 const strings = {
   main: {
     appName: 'planet',
+    url: 'https://planetapp.us',
     none: 'None',
     save: 'Save',
     done: 'Done',
@@ -69,6 +70,7 @@ const strings = {
     improveExperience:
       'Lastly, help us improve your experience by filling out the following:',
     enjoy: 'Enjoy!',
+    bySigningUpYouAgreeTo: 'By signing up, you agree to our',
   },
   home: {
     upcomingEvent: 'Upcoming Event',
@@ -166,6 +168,8 @@ const strings = {
     }MB`,
     pfpUploadError: 'Error uploading profile picture',
     editProfile: 'Edit Profile',
+    removePfp: 'Remove Profile Picture',
+    removePfpPrompt: 'Are you sure you want to remove your profile picture?',
   },
   event: {
     destinations: 'Destinations',
@@ -236,6 +240,9 @@ const strings = {
     resetPassword: 'Reset Password',
     logout: 'Logout',
     removeAccount: 'Remove Account',
+    privacyPolicy: 'Privacy Policy',
+    termsAndConditions: 'Terms and Conditions',
+    version: 'Version:',
   },
   error: {
     error: 'Error',
@@ -303,6 +310,7 @@ const strings = {
       'Unable to load recommendations. Please try again later.',
     loadRecentlyViewed:
       'Unable to load recently viewed. Please try again later.',
+    removePfp: 'Unable to remove profile picture. Please try again later.',
   },
   ageEnum: [
     {label: '-17', value: '-17'},

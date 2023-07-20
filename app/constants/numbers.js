@@ -6,7 +6,7 @@ const numbers = {
   defaultRadius: 5000,
   maxRadius: 50000,
   milesToMeters: 1609,
-  maxPfpSize: 2000000, // in bytes
+  maxPfpSize: 5000000, // in bytes
   fiveMinutes: 1000 * 60 * 5,
 };
 

@@ -180,6 +180,15 @@ export interface NotificationSettings {
   notify_set_primary: boolean;
 }
 
+export interface EventNotification {
+  created_at: string;
+  event: Event;
+  body: string;
+  screenToNavigate: 'EVENT' | '';
+  photo: string;
+  actor: UserInfo;
+}
+
 export interface Recommendation {
   places: Poi[];
   categories: string[];
