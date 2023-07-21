@@ -371,6 +371,7 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
                     label={ageEnum.label}
                     value={ageEnum.value}
                     style={{fontSize: s(20)}}
+                    color={colors[theme].neutral}
                   />
                 );
               })}
@@ -399,6 +400,7 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
                     label={genderEnum.label}
                     value={genderEnum.value}
                     style={{fontSize: s(20)}}
+                    color={colors[theme].neutral}
                   />
                 );
               })}
