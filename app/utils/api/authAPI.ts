@@ -386,3 +386,32 @@ export const requestAndValidate = async (
     return response;
   }
 };
+
+/**
+ * @requires auth_token should be set in EncryptedStorage before calling this function
+ */
+export const reportUser = async (user_id: number): Promise<Boolean> => {
+  const authToken = await EncryptedStorage.getItem('auth_token');
+
+  if (!authToken) {
+    return false;
+  }
+
+  const request = async (authtoken: string) => {
+    const response = await fetch(UserAPIURL + '/report', {
+      method: 'POST',
+      body: JSON.stringify({user_id}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authtoken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
+    });
+
+    return response;
+  };
+
+  const response = await requestAndValidate(authToken, request);
+
+  return response.ok;
+};

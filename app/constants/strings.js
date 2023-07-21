@@ -154,6 +154,10 @@ const strings = {
     invite: 'Invite',
     block: 'Block',
     unblock: 'Unblock',
+    report: 'Report',
+    reportInfo: 'Are you sure you want to report this user?',
+    reportUser: 'Report User',
+    reportSuccess: 'Thank you, your report has been submitted.',
   },
   profile: {
     yourProfile: 'Your Profile',
@@ -314,6 +318,7 @@ const strings = {
     loadRecentlyViewed:
       'Unable to load recently viewed. Please try again later.',
     removePfp: 'Unable to remove profile picture. Please try again later.',
+    reportUser: 'Unable to report user. Please try again later.',
   },
   ageEnum: [
     {label: '-17', value: '-17'},
