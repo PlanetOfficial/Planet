@@ -48,7 +48,7 @@ const SignUpCreds = ({
 
   const [error, setError] = useState<string>('');
 
-  const [agreed, setAgreed] = useState<boolean>(false);
+  const [userAgreed, setUserAgreed] = useState<boolean>(false);
 
   const handleNext = async () => {
     setError('');
@@ -95,6 +95,12 @@ const SignUpCreds = ({
       setError(response?.message);
     }
   };
+
+  const validState =
+    !userAgreed ||
+    username.length === 0 ||
+    password.length === 0 ||
+    password !== passwordConfirm;
 
   return (
     <View style={STYLES.container}>
@@ -170,8 +176,8 @@ const SignUpCreds = ({
         <TouchableOpacity style={styles.check}>
           <Icon
             size="m"
-            icon={agreed ? icons.checked : icons.unchecked}
-            onPress={() => setAgreed(!agreed)}
+            icon={userAgreed ? icons.checked : icons.unchecked}
+            onPress={() => setUserAgreed(!userAgreed)}
             color={colors[theme].accent}
           />
         </TouchableOpacity>
@@ -195,21 +201,12 @@ const SignUpCreds = ({
         style={[
           STYLES.buttonBig,
           {
-            backgroundColor:
-              !agreed ||
-              username.length === 0 ||
-              password.length === 0 ||
-              password !== passwordConfirm
-                ? colors[theme].secondary
-                : colors[theme].accent,
+            backgroundColor: validState
+              ? colors[theme].secondary
+              : colors[theme].accent,
           },
         ]}
-        disabled={
-          !agreed ||
-          username.length === 0 ||
-          password.length === 0 ||
-          password !== passwordConfirm
-        }
+        disabled={validState}
         onPress={() => handleNext()}>
         <Text weight="b" color={colors[theme].primary}>
           {strings.signUp.signUp}
