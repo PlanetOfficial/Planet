@@ -48,6 +48,8 @@ const SignUpCreds = ({
 
   const [error, setError] = useState<string>('');
 
+  const [userAgreed, setUserAgreed] = useState<boolean>(false);
+
   const handleNext = async () => {
     setError('');
 
@@ -93,6 +95,12 @@ const SignUpCreds = ({
       setError(response?.message);
     }
   };
+
+  const validState =
+    !userAgreed ||
+    username.length === 0 ||
+    password.length === 0 ||
+    password !== passwordConfirm;
 
   return (
     <View style={STYLES.container}>
@@ -164,32 +172,17 @@ const SignUpCreds = ({
           {error}
         </Text>
       ) : null}
-      <TouchableOpacity
-        style={[
-          STYLES.buttonBig,
-          {
-            backgroundColor:
-              username.length === 0 ||
-              password.length === 0 ||
-              password !== passwordConfirm
-                ? colors[theme].secondary
-                : colors[theme].accent,
-          },
-        ]}
-        disabled={
-          username.length === 0 ||
-          password.length === 0 ||
-          password !== passwordConfirm
-        }
-        onPress={() => handleNext()}>
-        <Text weight="b" color={colors[theme].primary}>
-          {strings.signUp.signUp}
-        </Text>
-      </TouchableOpacity>
-
       <View style={styles.footer}>
+        <TouchableOpacity style={styles.check}>
+          <Icon
+            size="m"
+            icon={userAgreed ? icons.checked : icons.unchecked}
+            onPress={() => setUserAgreed(!userAgreed)}
+            color={colors[theme].accent}
+          />
+        </TouchableOpacity>
         <Text size="s" weight="l" color={colors[theme].neutral}>
-          {strings.signUp.bySigningUpYouAgreeTo}
+          {strings.signUp.iAgreeTo + '  '}
         </Text>
         <TouchableOpacity
           onPress={() =>
@@ -204,17 +197,36 @@ const SignUpCreds = ({
           </Text>
         </TouchableOpacity>
       </View>
+      <TouchableOpacity
+        style={[
+          STYLES.buttonBig,
+          {
+            backgroundColor: validState
+              ? colors[theme].secondary
+              : colors[theme].accent,
+          },
+        ]}
+        disabled={validState}
+        onPress={() => handleNext()}>
+        <Text weight="b" color={colors[theme].primary}>
+          {strings.signUp.signUp}
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   footer: {
-    marginTop: s(40),
+    flexDirection: 'row',
+    marginTop: s(20),
     alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'space-between',
     height: s(40),
+  },
+  check: {
+    marginRight: s(5),
   },
 });
 

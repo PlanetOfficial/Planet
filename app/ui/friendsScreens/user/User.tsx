@@ -29,7 +29,7 @@ import ProfileBody from '../../profileScreens/profile/ProfileBody';
 
 import Profile from './Profile';
 import OptionMenu from '../../components/OptionMenu';
-import {handleBlock} from './functions';
+import {handleBlock, handleReport} from './functions';
 
 const User = ({
   navigation,
@@ -118,6 +118,25 @@ const User = ({
                   ),
                 color: colors[theme].red,
                 disabled: usersIBlock.some(b => b.id === route.params.user.id),
+              },
+              {
+                name: strings.friends.report,
+                onPress: () =>
+                  Alert.alert(
+                    strings.friends.report,
+                    strings.friends.reportInfo,
+                    [
+                      {text: strings.main.cancel},
+                      {
+                        text: strings.friends.report,
+                        style: 'destructive',
+                        onPress: () => {
+                          handleReport(route.params.user.id);
+                        },
+                      },
+                    ],
+                  ),
+                color: colors[theme].neutral,
               },
             ]}
           />

@@ -10,6 +10,7 @@ import {
   rejectFriendRequest,
 } from '../../../utils/api/friendsAPI';
 import {blockFriend, unBlockFriend} from '../../../utils/api/fgAPI';
+import {reportUser} from '../../../utils/api/authAPI';
 
 export const handleFriendRequest = async (
   userId: number,
@@ -152,5 +153,15 @@ export const handleUnblock = async (
     setUsersIBlock(usersIBlockUpdated);
   } else {
     Alert.alert(strings.error.error, strings.error.unblock);
+  }
+};
+
+export const handleReport = async (userId: number) => {
+  const response = await reportUser(userId);
+
+  if (response) {
+    Alert.alert(strings.friends.reportUser, strings.friends.reportSuccess);
+  } else {
+    Alert.alert(strings.error.error, strings.error.reportUser);
   }
 };

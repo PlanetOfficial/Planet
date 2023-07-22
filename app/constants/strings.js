@@ -20,6 +20,7 @@ const strings = {
     warning: 'Warning',
     milesAbbrev: 'mi',
     edit: 'Edit',
+    success: 'Success',
   },
   title: {
     home: 'Home',
@@ -70,7 +71,7 @@ const strings = {
     improveExperience:
       'Lastly, help us improve your experience by filling out the following:',
     enjoy: 'Enjoy!',
-    bySigningUpYouAgreeTo: 'By signing up, you agree to our',
+    iAgreeTo: 'I Agree to the',
   },
   home: {
     upcomingEvent: 'Upcoming Event',
@@ -154,6 +155,10 @@ const strings = {
     invite: 'Invite',
     block: 'Block',
     unblock: 'Unblock',
+    report: 'Report',
+    reportInfo: 'Are you sure you want to report this user?',
+    reportUser: 'Report User',
+    reportSuccess: 'Thank you, your report has been submitted.',
   },
   profile: {
     yourProfile: 'Your Profile',
@@ -211,6 +216,8 @@ const strings = {
     markAsIncomplete: 'Mark as Incomplete',
     changeCompletionStatusInfo:
       'This will only affect the status of your event.',
+    reportEvent: 'Report Event',
+    reportEventInfo: 'Thank you, your report has been submitted.',
   },
   roulette: {
     total: 'Total',
@@ -314,6 +321,8 @@ const strings = {
     loadRecentlyViewed:
       'Unable to load recently viewed. Please try again later.',
     removePfp: 'Unable to remove profile picture. Please try again later.',
+    reportEvent: 'Unable to report event. Please try again later.',
+    reportUser: 'Unable to report user. Please try again later.',
   },
   ageEnum: [
     {label: '-17', value: '-17'},
