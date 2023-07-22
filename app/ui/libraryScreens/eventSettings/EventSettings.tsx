@@ -1,10 +1,21 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {View, Alert, ScrollView, useColorScheme, StatusBar} from 'react-native';
+import {
+  View,
+  Alert,
+  ScrollView,
+  useColorScheme,
+  StatusBar,
+  TouchableOpacity,
+  StyleSheet,
+} from 'react-native';
+import {s} from 'react-native-size-matters';
 import moment from 'moment';
 
 import colors from '../../../constants/colors';
 import strings from '../../../constants/strings';
 import STYLING from '../../../constants/styles';
+
+import Text from '../../components/Text';
 
 import {getEvent} from '../../../utils/api/eventAPI';
 import {postDestination} from '../../../utils/api/destinationAPI';
@@ -14,6 +25,7 @@ import Header from './Header';
 import Info from './Info';
 import Members from './Members';
 import Destinations from './Destinations';
+import {handleReportEvent} from './functions';
 
 const EventSettings = ({
   navigation,
@@ -110,9 +122,23 @@ const EventSettings = ({
             />
           </>
         ) : null}
+        <TouchableOpacity
+          style={styles.report}
+          onPress={() => handleReportEvent(event.id)}>
+          <Text size="s" weight="l" color={colors[theme].neutral}>
+            {strings.event.reportEvent}
+          </Text>
+        </TouchableOpacity>
       </ScrollView>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  report: {
+    marginTop: s(30),
+    alignSelf: 'center',
+  },
+});
 
 export default EventSettings;
