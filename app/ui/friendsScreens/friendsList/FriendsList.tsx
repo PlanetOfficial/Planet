@@ -61,14 +61,7 @@ const FriendsList = ({navigation}: {navigation: any}) => {
           refreshing={loading}
           onRefresh={async () => {
             setLoading(true);
-            await loadFriends(
-              setFriends,
-              setFriendGroups,
-              setUsersIBlock,
-              setUsersBlockingMe,
-              setRequests,
-              setRequestsSent,
-            );
+            await loadFriends();
             setLoading(false);
           }}
           tintColor={colors[theme].accent}
