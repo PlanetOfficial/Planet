@@ -25,7 +25,7 @@ import {UserInfo} from '../../../utils/types';
 
 import FriendGroupComponent from './FriendGroup';
 import FriendGroupEdit from './FriendGroupEdit';
-import {loadFriends} from './functions';
+import {loadFriends} from '../functions';
 
 const FriendsList = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';
