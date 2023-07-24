@@ -36,7 +36,15 @@ const FriendsList = ({navigation}: {navigation: any}) => {
   if (!friendsContext) {
     throw new Error('FriendsContext is not set!');
   }
-  const {friends, setFriends, setFriendGroups} = friendsContext;
+  const {
+    friends,
+    setFriends,
+    setFriendGroups,
+    setUsersIBlock,
+    setUsersBlockingMe,
+    setRequests,
+    setRequestsSent,
+  } = friendsContext;
 
   const [loading, setLoading] = useState(false);
   const [fgSelected, setFgSelected] = useState<number>(0);
@@ -53,7 +61,14 @@ const FriendsList = ({navigation}: {navigation: any}) => {
           refreshing={loading}
           onRefresh={async () => {
             setLoading(true);
-            await loadFriends(setFriends, setFriendGroups);
+            await loadFriends(
+              setFriends,
+              setFriendGroups,
+              setUsersIBlock,
+              setUsersBlockingMe,
+              setRequests,
+              setRequestsSent,
+            );
             setLoading(false);
           }}
           tintColor={colors[theme].accent}
