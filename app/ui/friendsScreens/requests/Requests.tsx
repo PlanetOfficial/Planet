@@ -23,12 +23,12 @@ import UserRow from '../../components/UserRow';
 import FriendsContext from '../../../context/FriendsContext';
 
 import {UserInfo} from '../../../utils/types';
+import {getFriends} from '../../../utils/api/friendsAPI';
 import {
   handleAcceptRequest,
   handleCancelRequest,
   handleDeclineRequest,
 } from './functions';
-import { loadFriends } from '../functions';
 
 const Requests = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';
@@ -46,9 +46,24 @@ const Requests = ({navigation}: {navigation: any}) => {
     setRequestsSent,
     friends,
     setFriends,
+    setUsersIBlock,
+    setUsersBlockingMe,
   } = friendsContext;
 
   const [loading, setLoading] = useState(false);
+  const loadRequests = async () => {
+    const response = await getFriends();
+
+    if (response) {
+      setFriends(response.friends);
+      setUsersIBlock(response.usersIBlock);
+      setUsersBlockingMe(response.usersBlockingMe);
+      setRequests(response.requests);
+      setRequestsSent(response.requests_sent);
+    } else {
+      Alert.alert(strings.error.error, strings.error.loadFriendRequests);
+    }
+  };
 
   useEffect(() => {
     navigation.setOptions({
@@ -65,7 +80,7 @@ const Requests = ({navigation}: {navigation: any}) => {
           refreshing={loading}
           onRefresh={async () => {
             setLoading(true);
-            await loadFriends();
+            await loadRequests();
             setLoading(false);
           }}
           tintColor={colors[theme].accent}

@@ -29,7 +29,6 @@ import {fetchUserLocation} from '../../utils/Misc';
 import BookmarkContext from '../../context/BookmarkContext';
 import FriendsContext from '../../context/FriendsContext';
 import LocationContext from '../../context/LocationContext';
-import { initializeFriendsInfo } from '../../context/functions';
 
 const LoginScreen = ({navigation}: {navigation: any}) => {
   const theme = 'light';
@@ -48,6 +47,20 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
   }
   const {setBookmarks} = bookmarkContext;
 
+  const friendsContext = useContext(FriendsContext);
+  if (!friendsContext) {
+    throw new Error('FriendsContext is not set!');
+  }
+  const {
+    setRequests,
+    setRequestsSent,
+    setFriends,
+    setSuggestions,
+    setFriendGroups,
+    setUsersIBlock,
+    setUsersBlockingMe,
+  } = friendsContext;
+
   const locationContext = useContext(LocationContext);
   if (!locationContext) {
     throw new Error('LocationContext is not set!');
@@ -62,7 +75,18 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
       Alert.alert(strings.error.error, strings.error.loadBookmarks);
     }
 
-    await initializeFriendsInfo();
+    const result = await getFriendsInfo();
+    if (result) {
+      setSuggestions(result.suggestions);
+      setFriends(result.friends);
+      setRequests(result.requests);
+      setRequestsSent(result.requests_sent);
+      setFriendGroups(result.friend_groups);
+      setUsersIBlock(result.usersIBlock);
+      setUsersBlockingMe(result.usersBlockingMe);
+    } else {
+      Alert.alert(strings.error.error, strings.error.loadFriendsList);
+    }
 
     const locationResult = await fetchUserLocation();
     if (locationResult) {

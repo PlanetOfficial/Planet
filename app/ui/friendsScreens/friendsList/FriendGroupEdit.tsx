@@ -56,7 +56,13 @@ const FriendGroupEdit: React.FC<Props> = ({
     throw new Error('FriendsContext is not set!');
   }
   const {
+    setFriends,
     friendGroups,
+    setFriendGroups,
+    setUsersIBlock,
+    setUsersBlockingMe,
+    setRequests,
+    setRequestsSent,
   } = friendsContext;
 
   return (
@@ -93,6 +99,12 @@ const FriendGroupEdit: React.FC<Props> = ({
                   tempName,
                   tempMembers,
                   setFgEditing,
+                  setFriends,
+                  setFriendGroups,
+                  setUsersIBlock,
+                  setUsersBlockingMe,
+                  setRequests,
+                  setRequestsSent,
                 );
               } else {
                 beginFGEditing(
@@ -126,6 +138,12 @@ const FriendGroupEdit: React.FC<Props> = ({
                           setFgEditing,
                           setTempName,
                           setTempMembers,
+                          setFriends,
+                          setFriendGroups,
+                          setUsersIBlock,
+                          setUsersBlockingMe,
+                          setRequests,
+                          setRequestsSent,
                         ),
                       style: 'destructive',
                     },
