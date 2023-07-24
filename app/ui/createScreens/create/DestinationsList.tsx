@@ -72,40 +72,42 @@ const DestinationsList: React.FC<Props> = ({
                     disabled: index === destinations.length - 1,
                   },
                   {
+                    name: strings.main.rename,
+                    onPress: () => {
+                      setTimeout(() => {
+                        prompt(
+                          strings.main.rename,
+                          strings.event.renamePrompt,
+                          [
+                            {text: 'Cancel', style: 'cancel'},
+                            {
+                              text: 'Save',
+                              onPress: name => {
+                                const _destinations = [...destinations];
+                                destinationNames.set(
+                                  destination.id,
+                                  name as string,
+                                );
+                                setDestinations(_destinations);
+                              },
+                            },
+                          ],
+                          {
+                            type: 'plain-text',
+                            cancelable: false,
+                            defaultValue: destinationNames.get(destination.id),
+                          },
+                        );
+                      }, 200);
+                    },
+                    color: colors[theme].neutral,
+                  },
+                  {
                     name: strings.main.remove,
                     onPress: () => {
                       handleMove(index, 0, destinations, setDestinations);
                     },
                     color: colors[theme].red,
-                  },
-                  {
-                    name: strings.main.rename,
-                    onPress: () => {
-                      prompt(
-                        strings.main.rename,
-                        strings.event.renamePrompt,
-                        [
-                          {text: 'Cancel', style: 'cancel'},
-                          {
-                            text: 'Save',
-                            onPress: name => {
-                              const _destinations = [...destinations];
-                              destinationNames.set(
-                                destination.id,
-                                name as string,
-                              );
-                              setDestinations(_destinations);
-                            },
-                          },
-                        ],
-                        {
-                          type: 'plain-text',
-                          cancelable: false,
-                          defaultValue: destinationNames.get(destination.id),
-                        },
-                      );
-                    },
-                    color: colors[theme].neutral,
                   },
                 ]}
               />
