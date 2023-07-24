@@ -22,8 +22,9 @@ import EventRow from '../../components/EventRow';
 
 import FriendsContext from '../../../context/FriendsContext';
 
-import {Event, UserInfo} from '../../../utils/types';
+import {Coordinate, Event, UserInfo} from '../../../utils/types';
 import {getFriend} from '../../../utils/api/friendsAPI';
+import {fetchUserLocation} from '../../../utils/Misc';
 
 import ProfileBody from '../../profileScreens/profile/ProfileBody';
 
@@ -52,6 +53,8 @@ const User = ({
   const [mutuals, setMutuals] = useState<UserInfo[]>([]);
   const [mutualEvents, setMutualEvents] = useState<Event[]>([]);
 
+  const [location, setLocation] = useState<Coordinate>();
+
   const friendsContext = useContext(FriendsContext);
   if (!friendsContext) {
     throw new Error('FriendsContext is not set!');
@@ -68,6 +71,8 @@ const User = ({
   } = friendsContext;
 
   const initializeData = useCallback(async () => {
+    setLocation(await fetchUserLocation());
+
     const myUserId = await EncryptedStorage.getItem('user_id');
     if (myUserId) {
       setSelfUserId(parseInt(myUserId, 10));
@@ -100,50 +105,61 @@ const User = ({
             icon={icons.back}
             onPress={() => navigation.goBack()}
           />
-          <OptionMenu
-            options={[
-              {
-                name: strings.friends.block,
-                onPress: () =>
-                  handleBlock(
-                    friends,
-                    setFriends,
-                    requests,
-                    setRequests,
-                    requestsSent,
-                    setRequestsSent,
-                    usersIBlock,
-                    setUsersIBlock,
-                    route.params.user,
+          {route.params.user.id !== selfUserId ? (
+            <OptionMenu
+              options={[
+                {
+                  name: strings.friends.block,
+                  onPress: () =>
+                    handleBlock(
+                      friends,
+                      setFriends,
+                      requests,
+                      setRequests,
+                      requestsSent,
+                      setRequestsSent,
+                      usersIBlock,
+                      setUsersIBlock,
+                      route.params.user,
+                    ),
+                  color: colors[theme].red,
+                  disabled: usersIBlock.some(
+                    b => b.id === route.params.user.id,
                   ),
-                color: colors[theme].red,
-                disabled: usersIBlock.some(b => b.id === route.params.user.id),
-              },
-              {
-                name: strings.friends.report,
-                onPress: () =>
-                  Alert.alert(
-                    strings.friends.report,
-                    strings.friends.reportInfo,
-                    [
-                      {text: strings.main.cancel},
-                      {
-                        text: strings.friends.report,
-                        style: 'destructive',
-                        onPress: () => {
-                          handleReport(route.params.user.id);
+                },
+                {
+                  name: strings.friends.report,
+                  onPress: () =>
+                    Alert.alert(
+                      strings.friends.report,
+                      strings.friends.reportInfo,
+                      [
+                        {text: strings.main.cancel},
+                        {
+                          text: strings.friends.report,
+                          style: 'destructive',
+                          onPress: () => {
+                            handleReport(route.params.user.id);
+                          },
                         },
-                      },
-                    ],
-                  ),
-                color: colors[theme].neutral,
-              },
-            ]}
-          />
+                      ],
+                    ),
+                  color: colors[theme].neutral,
+                },
+              ]}
+            />
+          ) : null}
         </View>
       </SafeAreaView>
       {route.params.user.id === selfUserId ? (
-        <ProfileBody navigation={navigation} />
+        <ProfileBody
+          navigation={navigation}
+          firstName={route.params.user.first_name}
+          lastName={route.params.user.last_name}
+          username={route.params.user.username}
+          pfpURL={route.params.user?.icon?.url || ''}
+          location={location}
+        />
       ) : (
         <>
           <Profile
