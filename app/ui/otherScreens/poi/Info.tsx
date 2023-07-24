@@ -93,8 +93,7 @@ const Info: React.FC<Props> = ({destination, destinationDetails, location}) => {
             </View>
           </View>
           <Icon
-            icon={icons.map}
-            padding={1}
+            icon={icons.directions}
             button={true}
             onPress={() => handleMapPress(destination, location)}
           />
