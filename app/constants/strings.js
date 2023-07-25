@@ -117,6 +117,7 @@ const strings = {
   },
   friends: {
     friends: 'Friends',
+    users: 'Users',
     noFriendsFound: 'No Friends Found',
     friendRequest: 'Friend Request',
     friendRequests: 'Friend Requests',
@@ -251,6 +252,10 @@ const strings = {
     privacyPolicy: 'Privacy Policy',
     termsAndConditions: 'Terms and Conditions',
     version: 'Version:',
+    blockedUsers: 'Blocked Users',
+    blockedUsersInfo:
+      'Users you have blocked cannot search your profile or invite you to events.',
+    noBlockedUsersFound: 'No Blocked Users Found',
   },
   error: {
     error: 'Error',

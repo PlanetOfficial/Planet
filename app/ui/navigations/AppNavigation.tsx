@@ -39,6 +39,7 @@ import LocationsSettings from '../profileScreens/settingsScreens/LocationsSettin
 import NotificationSettings from '../profileScreens/settingsScreens/NotificationSettings';
 import PrivacySettings from '../profileScreens/settingsScreens/PrivacySettings';
 import ProfileSettings from '../profileScreens/settingsScreens/ProfileSettings';
+import BlockedUsers from '../profileScreens/settingsScreens/BlockedUsers/BlockedUsers';
 import Search from '../searchScreens/search/Search';
 import CreateFG from '../friendsScreens/createFG/CreateFG';
 
@@ -99,6 +100,7 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
                   {forgotPassStackScreen()}
                   {forgotPassVerifyStackScreen()}
                   {resetPasswordStackScreen()}
+                  {blockedUsersScreen()}
                 </Stack.Navigator>
               ) : (
                 <Stack.Navigator initialRouteName="Login">
@@ -135,6 +137,7 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
                   {rouletteScreen()}
                   {spinHistoryScreen()}
                   {notificationsScreen()}
+                  {blockedUsersScreen()}
                 </Stack.Navigator>
               )}
             </BottomSheetModalProvider>
@@ -526,6 +529,18 @@ const notificationsScreen = () => {
     <Stack.Screen
       name="Notifications"
       component={Notifications}
+      options={{
+        headerShown: false,
+      }}
+    />
+  );
+};
+
+const blockedUsersScreen = () => {
+  return (
+    <Stack.Screen
+      name="BlockedUsers"
+      component={BlockedUsers}
       options={{
         headerShown: false,
       }}

@@ -1,5 +1,11 @@
 import React from 'react';
-import {View, SafeAreaView, useColorScheme, StatusBar} from 'react-native';
+import {
+  View,
+  SafeAreaView,
+  useColorScheme,
+  StatusBar,
+  TouchableOpacity,
+} from 'react-native';
 
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
@@ -8,6 +14,7 @@ import STYLING from '../../../constants/styles';
 
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
+import Separator from '../../components/Separator';
 
 const PrivacySettings = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';
@@ -28,6 +35,13 @@ const PrivacySettings = ({navigation}: {navigation: any}) => {
           </View>
         </View>
       </SafeAreaView>
+      <TouchableOpacity
+        style={STYLES.settingsRow}
+        onPress={() => navigation.navigate('BlockedUsers')}>
+        <Text weight="l">{strings.settings.blockedUsers}</Text>
+        <Icon icon={icons.next} />
+      </TouchableOpacity>
+      <Separator />
     </View>
   );
 };

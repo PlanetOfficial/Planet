@@ -127,7 +127,6 @@ const Library = ({navigation}: {navigation: any}) => {
                 ]
           }
           style={styles.list}
-          removeClippedSubviews={true}
           contentContainerStyle={styles.content}
           initialNumToRender={7}
           renderItem={({
@@ -136,26 +135,24 @@ const Library = ({navigation}: {navigation: any}) => {
           }: {
             item: Event;
             section: SectionListProps<Event>['sections'][number];
-          }) => {
-            return (
-              <TouchableOpacity
-                style={
-                  section.title === strings.event.pastEvents
-                    ? styles.transparent
-                    : null
-                }
-                onPress={() =>
-                  navigation.navigate('Event', {
-                    event: item,
-                  })
-                }>
-                <EventRow event={item} selfUserId={selfUserId} />
-              </TouchableOpacity>
-            );
-          }}
+          }) => (
+            <TouchableOpacity
+              style={
+                section.title === strings.event.pastEvents
+                  ? styles.transparent
+                  : null
+              }
+              onPress={() =>
+                navigation.navigate('Event', {
+                  event: item,
+                })
+              }>
+              <EventRow event={item} selfUserId={selfUserId} />
+            </TouchableOpacity>
+          )}
           renderSectionHeader={({section}) =>
             section.data.length > 0 ? (
-              <View style={styles.sectionHeader}>
+              <View style={STYLES.sectionHeader}>
                 <Text size="s">{section.title}</Text>
               </View>
             ) : null
@@ -191,14 +188,6 @@ const styling = (theme: 'light' | 'dark') =>
     },
     transparent: {
       opacity: 0.75,
-    },
-    sectionHeader: {
-      marginHorizontal: s(20),
-      paddingTop: s(10),
-      paddingBottom: s(5),
-      backgroundColor: colors[theme].background,
-      borderBottomWidth: 1,
-      borderColor: colors[theme].secondary,
     },
   });
 
