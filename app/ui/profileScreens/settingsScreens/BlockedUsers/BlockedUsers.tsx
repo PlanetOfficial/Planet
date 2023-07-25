@@ -4,10 +4,10 @@ import {
   SafeAreaView,
   useColorScheme,
   StatusBar,
-  TouchableOpacity,
   Alert,
   FlatList,
 } from 'react-native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 import colors from '../../../../constants/colors';
 import icons from '../../../../constants/icons';
