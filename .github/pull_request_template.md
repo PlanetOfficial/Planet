@@ -6,7 +6,8 @@
 - [ ] Wrote comments where necessary, especially in dense areas of code
 - [ ] No console logs
 - [ ] Type checking for all new variables, don't use the any type
-- [ ] Wrote a 2+ sentence description of the PR in the description box for this PR. Write ALL features created or updated in this PR.
+- [ ] Wrote a 2+ sentence description of the PR in the description box for this PR. Write ALL features created or updated in this PR. (if this is a bug fix, please
+write that here too)
 
 Now you are ready for someone to review your beautiful code!
 
