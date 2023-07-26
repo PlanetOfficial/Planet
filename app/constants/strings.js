@@ -325,12 +325,12 @@ const strings = {
     reportUser: 'Unable to report user. Please try again later.',
   },
   ageEnum: [
-    {label: '-17', value: '-17'},
+    {label: '12-17', value: '-17'},
     {label: '18-21', value: '18-21'},
     {label: '22-24', value: '22-24'},
     {label: '25-30', value: '25-30'},
     {label: '30-40', value: '30-40'},
-    {label: '41+', value: '41%2B'},
+    {label: '41+', value: '41+'},
   ],
   genderEnum: [
     {label: 'Male', value: 'Male'},
