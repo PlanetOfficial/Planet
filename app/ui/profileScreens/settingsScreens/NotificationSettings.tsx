@@ -127,7 +127,7 @@ const NotificationSettings = ({navigation}: {navigation: any}) => {
         </View>
       </SafeAreaView>
       {notificationsSettings ? (
-        <ScrollView style={styles.content}>
+        <ScrollView style={styles.content} scrollIndicatorInsets={{right: 1}}>
           {settings.map((setting, index) => (
             <View key={index} style={styles.row}>
               <View style={STYLES.texts}>

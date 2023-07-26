@@ -110,9 +110,9 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
   return (
     <View style={styles.container}>
       <ScrollView
+        horizontal={true}
         contentContainerStyle={styles.contentContainer}
         onScrollBeginDrag={() => closeDropdown()}
-        horizontal={true}
         showsHorizontalScrollIndicator={false}>
         {filters.map((filter: FilterT, idx: number) => (
           <TouchableOpacity

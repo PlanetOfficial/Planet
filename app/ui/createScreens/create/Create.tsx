@@ -149,7 +149,9 @@ const Create = ({
           destinationNames={destinationNames}
         />
       ) : (
-        <ScrollView onTouchStart={() => Keyboard.dismiss()}>
+        <ScrollView
+          scrollIndicatorInsets={{right: 1}}
+          onTouchStart={() => Keyboard.dismiss()}>
           <TouchableOpacity
             style={[styles.addButton, STYLES.shadow]}
             onPress={() => {

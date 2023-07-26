@@ -75,6 +75,7 @@ const Requests = ({navigation}: {navigation: any}) => {
     <ScrollView
       style={STYLES.container}
       contentContainerStyle={STYLES.flatList}
+      scrollIndicatorInsets={{right: 1}}
       refreshControl={
         <RefreshControl
           refreshing={loading}

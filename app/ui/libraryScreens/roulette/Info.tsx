@@ -66,6 +66,7 @@ const Info: React.FC<Props> = ({
         <Text size="s">{`${strings.roulette.votes} (${currentSuggestion.votes.length}/${totalVotes}):`}</Text>
         <FlatList
           style={styles.votesList}
+          scrollIndicatorInsets={{right: 1}}
           data={currentSuggestion.votes}
           renderItem={({item}) => (
             <TouchableOpacity

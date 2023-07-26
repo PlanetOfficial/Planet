@@ -78,6 +78,7 @@ const ViewHistory = ({
       </SafeAreaView>
       <FlatList
         data={viewHistory}
+        scrollIndicatorInsets={{right: 1}}
         renderItem={({item}: {item: Poi}) => {
           return (
             <TouchableOpacity
