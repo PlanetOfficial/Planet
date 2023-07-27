@@ -176,7 +176,7 @@ const Friends = ({navigation}: {navigation: any}) => {
                 </View>
               ) : null
             }
-            keyExtractor={item => item.id.toString()}
+            keyExtractor={user => user.id.toString()}
           />
         )
       ) : (

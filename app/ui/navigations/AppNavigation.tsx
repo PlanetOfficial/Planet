@@ -368,15 +368,7 @@ const notificationsScreen = () => {
 };
 
 const blockedUsersScreen = () => {
-  return (
-    <Stack.Screen
-      name="BlockedUsers"
-      component={BlockedUsers}
-      options={{
-        headerShown: false,
-      }}
-    />
-  );
+  return <Stack.Screen name="BlockedUsers" component={BlockedUsers} />;
 };
 
 const verticalAnimation = ({
