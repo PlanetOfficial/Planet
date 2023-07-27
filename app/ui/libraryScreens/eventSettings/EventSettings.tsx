@@ -93,7 +93,7 @@ const EventSettings = ({
 
   return (
     <View style={STYLES.container}>
-      <Header navigation={navigation} eventId={event.id} />
+      <Header navigation={navigation} event={event} eventDetail={eventDetail} />
 
       <ScrollView>
         <Info

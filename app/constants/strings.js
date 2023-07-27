@@ -220,6 +220,7 @@ const strings = {
     reportEventInfo: 'Thank you, your report has been submitted.',
     removeMember: 'Remove Member',
     removeMemberInfo: 'Are you sure you want to remove this member?',
+    duplicate: 'Duplicate',
   },
   roulette: {
     total: 'Total',

@@ -7,22 +7,25 @@ import strings from '../../../constants/strings';
 import STYLING from '../../../constants/styles';
 
 import Icon from '../../components/Icon';
+import OptionMenu from '../../components/OptionMenu';
 
 import {leaveEvent} from '../../../utils/api/eventAPI';
-import OptionMenu from '../../components/OptionMenu';
+import {Event, EventDetail} from '../../../utils/types';
+
 import {handleReportEvent} from './functions';
 
 interface Props {
   navigation: any;
-  eventId: number;
+  event: Event;
+  eventDetail?: EventDetail;
 }
 
-const Header: React.FC<Props> = ({navigation, eventId}) => {
+const Header: React.FC<Props> = ({navigation, event, eventDetail}) => {
   const theme = useColorScheme() || 'light';
   const STYLES = STYLING(theme);
 
   const handleLeave = async () => {
-    const response = await leaveEvent(eventId);
+    const response = await leaveEvent(event.id);
 
     if (response) {
       navigation.navigate(strings.title.library);
@@ -38,8 +41,28 @@ const Header: React.FC<Props> = ({navigation, eventId}) => {
         <OptionMenu
           options={[
             {
+              name: strings.event.duplicate,
+              onPress: () => {
+                if (!eventDetail) {
+                  return;
+                }
+                navigation.navigate('Create', {
+                  destinations: eventDetail.destinations.map(
+                    destination =>
+                      destination.suggestions.find(
+                        suggestion => suggestion.is_primary,
+                      )?.poi,
+                  ),
+                  names: eventDetail.destinations.map(
+                    destination => destination.name,
+                  ),
+                });
+              },
+              color: colors[theme].neutral,
+            },
+            {
               name: strings.event.report,
-              onPress: () => handleReportEvent(eventId),
+              onPress: () => handleReportEvent(event.id),
               color: colors[theme].neutral,
             },
             {
