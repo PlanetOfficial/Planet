@@ -72,6 +72,7 @@ const Notifications = ({navigation}: {navigation: any}) => {
 
       <FlatList
         style={STYLES.flatList}
+        scrollIndicatorInsets={{right: 1}}
         data={notifications}
         renderItem={({item}) => (
           <TouchableOpacity

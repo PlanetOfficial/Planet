@@ -152,6 +152,8 @@ const Friends = ({navigation}: {navigation: any}) => {
             contentContainerStyle={STYLES.flatList}
             initialNumToRender={10}
             keyboardShouldPersistTaps={'always'}
+            scrollIndicatorInsets={{right: 1}}
+            data={searchResults}
             renderItem={({item}: {item: UserInfo}) => (
               <TouchableOpacity
                 onPress={() => navigation.push('User', {user: item})}>

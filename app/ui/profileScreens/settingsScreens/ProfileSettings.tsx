@@ -195,6 +195,7 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
       </SafeAreaView>
       <ScrollView
         style={styles.container}
+        scrollIndicatorInsets={{right: 1}}
         automaticallyAdjustKeyboardInsets={true}>
         <TouchableOpacity style={styles.profile} onPress={handleEditPfp}>
           <View style={styles.profilePic}>

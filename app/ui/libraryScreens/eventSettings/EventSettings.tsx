@@ -96,7 +96,7 @@ const EventSettings = ({
     <View style={STYLES.container}>
       <Header navigation={navigation} eventId={event.id} />
 
-      <ScrollView>
+      <ScrollView scrollIndicatorInsets={{right: 1}}>
         <Info
           event={event}
           eventDetail={eventDetail}

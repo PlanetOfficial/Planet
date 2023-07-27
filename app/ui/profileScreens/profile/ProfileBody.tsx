@@ -118,6 +118,7 @@ const ProfileBody: React.FC<Props> = ({
       />
       <FlatList
         data={bookmarks}
+        scrollIndicatorInsets={{right: 1}}
         renderItem={({item}: {item: Poi}) => {
           return (
             <TouchableOpacity

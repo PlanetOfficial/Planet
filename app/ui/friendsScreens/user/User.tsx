@@ -189,6 +189,7 @@ const User = ({
           />
           <FlatList
             data={mutualEvents}
+            scrollIndicatorInsets={{right: 1}}
             renderItem={({item}: {item: Event}) => {
               return (
                 <TouchableOpacity

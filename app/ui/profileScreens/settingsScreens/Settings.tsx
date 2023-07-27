@@ -74,7 +74,7 @@ const Settings = ({navigation}: {navigation: any}) => {
           </View>
         </View>
       </SafeAreaView>
-      <ScrollView>
+      <ScrollView scrollIndicatorInsets={{right: 1}}>
         {settingsItems.map((settingsItem, index) => (
           <View key={index}>
             <TouchableOpacity style={styles.row} onPress={settingsItem.onPress}>
