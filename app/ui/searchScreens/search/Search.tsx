@@ -94,7 +94,7 @@ const Search = ({
         mode={mode}
       />
       {!searching ? (
-        <ScrollView>
+        <ScrollView scrollIndicatorInsets={{right: 1}}>
           {genres.map((genre: Genre, index: number) => (
             <View key={genre.id}>
               <View style={styles.header}>
@@ -141,6 +141,7 @@ const Search = ({
       ) : searchText.length === 0 ? (
         <FlatList
           contentContainerStyle={styles.flatList}
+          scrollIndicatorInsets={{right: 1}}
           keyboardShouldPersistTaps={'always'}
           data={bookmarks}
           renderItem={({item}: {item: Poi}) => {

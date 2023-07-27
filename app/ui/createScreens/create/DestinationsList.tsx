@@ -47,6 +47,7 @@ const DestinationsList: React.FC<Props> = ({
   return (
     <ScrollView
       contentContainerStyle={styles.scrollView}
+      scrollIndicatorInsets={{right: 1}}
       onTouchStart={() => Keyboard.dismiss()}>
       {destinations.map((destination: Poi, index: number) => (
         <View key={index}>

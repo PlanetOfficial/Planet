@@ -37,6 +37,7 @@ const Results: React.FC<Props> = ({
   return (
     <FlatList
       data={places}
+      scrollIndicatorInsets={{right: 1}}
       onTouchStart={() => filterRef.current?.closeDropdown()}
       renderItem={({item}: {item: Poi}) => {
         return (
