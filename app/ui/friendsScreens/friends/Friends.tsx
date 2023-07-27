@@ -132,6 +132,7 @@ const Friends = ({navigation}: {navigation: any}) => {
           <FlatList
             style={STYLES.container}
             contentContainerStyle={STYLES.flatList}
+            scrollIndicatorInsets={{right: 1}}
             data={searchResults}
             keyExtractor={item => item.id.toString()}
             renderItem={({item}: {item: UserInfo}) => (

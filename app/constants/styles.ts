@@ -127,12 +127,12 @@ export const segControlTabStyling = (theme: 'light' | 'dark') =>
     tab: {
       borderWidth: 0,
       borderBottomWidth: 2,
-      borderBottomColor: colors[theme].secondary,
+      borderColor: colors[theme].secondary,
       backgroundColor: colors[theme].background,
     },
     activeTab: {
       borderBottomWidth: 2,
-      borderBottomColor: colors[theme].accent,
+      borderColor: colors[theme].accent,
       backgroundColor: colors[theme].background,
     },
     firstTab: {

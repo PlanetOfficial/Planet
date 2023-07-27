@@ -41,10 +41,10 @@ const Footer: React.FC<Props> = ({
   return (
     <SafeAreaView style={styles.footer}>
       <FlatList
+        horizontal={true}
+        showsHorizontalScrollIndicator={false}
         data={invitees}
         contentContainerStyle={styles.invitees}
-        showsHorizontalScrollIndicator={false}
-        horizontal
         keyExtractor={item => item.id.toString()}
         renderItem={({item}: {item: UserInfo}) => (
           <View style={styles.user}>

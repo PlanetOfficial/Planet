@@ -54,7 +54,7 @@ const Friends: React.FC<Props> = ({
   const {friends, friendGroups} = friendsContext;
 
   return (
-    <ScrollView style={STYLES.container}>
+    <ScrollView style={STYLES.container} scrollIndicatorInsets={{right: 1}}>
       {friendGroups.length > 0 ? (
         <View style={styles.title}>
           <Text size="s">

@@ -80,6 +80,7 @@ const DestinationView: React.FC<Props> = ({
   return (
     <FlatList
       contentContainerStyle={STYLES.scrollView}
+      scrollIndicatorInsets={{right: 1}}
       showsVerticalScrollIndicator={false}
       data={eventDetail.destinations}
       onTouchStart={onSuggestionClose}

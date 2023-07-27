@@ -12,6 +12,7 @@ const icons = {
   checked: require('../assets/icons/checked.png'),
   clock: require('../assets/icons/clock.png'),
   close: require('../assets/icons/x.png'),
+  directions: require('../assets/icons/directions.png'),
   drag: require('../assets/icons/drag.png'),
   drop: require('../assets/icons/drop.png'),
   edit: require('../assets/icons/edit.png'),
