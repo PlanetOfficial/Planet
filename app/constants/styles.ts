@@ -115,6 +115,21 @@ const styling = (theme: 'light' | 'dark') =>
       height: s(50),
       borderRadius: s(25),
     },
+    sectionHeader: {
+      marginHorizontal: s(20),
+      paddingTop: s(10),
+      paddingBottom: s(5),
+      backgroundColor: colors[theme].background,
+      borderBottomWidth: 1,
+      borderColor: colors[theme].secondary,
+    },
+    settingsRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingHorizontal: s(35),
+      paddingVertical: s(20),
+    },
   });
 
 export const segControlTabStyling = (theme: 'light' | 'dark') =>

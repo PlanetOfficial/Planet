@@ -39,6 +39,7 @@ import LocationsSettings from '../profileScreens/settingsScreens/LocationsSettin
 import NotificationSettings from '../profileScreens/settingsScreens/NotificationSettings';
 import PrivacySettings from '../profileScreens/settingsScreens/PrivacySettings';
 import ProfileSettings from '../profileScreens/settingsScreens/ProfileSettings';
+import BlockedUsers from '../profileScreens/settingsScreens/BlockedUsers/BlockedUsers';
 import Search from '../searchScreens/search/Search';
 import CreateFG from '../friendsScreens/createFG/CreateFG';
 
@@ -112,6 +113,7 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
                   {forgotPassStackScreen()}
                   {forgotPassVerifyStackScreen()}
                   {resetPasswordStackScreen()}
+                  {blockedUsersScreen()}
                 </Stack.Navigator>
               ) : (
                 <Stack.Navigator
@@ -152,6 +154,7 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
                   {rouletteScreen()}
                   {spinHistoryScreen()}
                   {notificationsScreen()}
+                  {blockedUsersScreen()}
                 </Stack.Navigator>
               )}
             </BottomSheetModalProvider>
@@ -362,6 +365,10 @@ const modeSearchScreen = () => {
 
 const notificationsScreen = () => {
   return <Stack.Screen name="Notifications" component={Notifications} />;
+};
+
+const blockedUsersScreen = () => {
+  return <Stack.Screen name="BlockedUsers" component={BlockedUsers} />;
 };
 
 const verticalAnimation = ({

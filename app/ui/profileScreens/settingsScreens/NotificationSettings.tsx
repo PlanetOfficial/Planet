@@ -165,7 +165,7 @@ const styling = (theme: 'light' | 'dark') =>
       flexDirection: 'row',
       alignItems: 'center',
       marginLeft: s(20),
-      paddingRight: s(20),
+      marginRight: s(20),
       paddingVertical: s(20),
       borderBottomWidth: 1,
       borderBottomColor: colors[theme].secondary,
