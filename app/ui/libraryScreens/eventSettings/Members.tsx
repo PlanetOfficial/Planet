@@ -5,6 +5,7 @@ import {
   StyleSheet,
   useColorScheme,
   Image,
+  Alert,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 
@@ -15,16 +16,27 @@ import STYLING from '../../../constants/styles';
 
 import Text from '../../components/Text';
 import UserIcon from '../../components/UserIcon';
+import Icon from '../../components/Icon';
 
 import {Event, EventDetail, UserInfo} from '../../../utils/types';
+
+import {handleKickMember} from './functions';
 
 interface Props {
   navigation: any;
   event: Event;
   eventDetail: EventDetail;
+  selfUserId: number;
+  loadData: () => void;
 }
 
-const Members: React.FC<Props> = ({navigation, event, eventDetail}) => {
+const Members: React.FC<Props> = ({
+  navigation,
+  event,
+  eventDetail,
+  selfUserId,
+  loadData,
+}) => {
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
   const STYLES = STYLING(theme);
@@ -49,6 +61,34 @@ const Members: React.FC<Props> = ({navigation, event, eventDetail}) => {
               {'@' + member.username}
             </Text>
           </View>
+          <Icon
+            icon={icons.minus}
+            disabled={member.id === selfUserId}
+            color={
+              member.id === selfUserId
+                ? colors[theme].secondary
+                : colors[theme].red
+            }
+            onPress={() =>
+              Alert.alert(
+                strings.event.removeMember,
+                strings.event.removeMemberInfo,
+                [
+                  {
+                    text: strings.main.cancel,
+                    style: 'cancel',
+                  },
+                  {
+                    text: strings.main.remove,
+                    onPress: () => {
+                      handleKickMember(event.id, member.id, loadData);
+                    },
+                    style: 'destructive',
+                  },
+                ],
+              )
+            }
+          />
         </TouchableOpacity>
       ))}
       <TouchableOpacity

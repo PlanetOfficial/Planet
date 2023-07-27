@@ -216,8 +216,10 @@ const strings = {
     markAsIncomplete: 'Mark as Incomplete',
     changeCompletionStatusInfo:
       'This will only affect the status of your event.',
-    reportEvent: 'Report Event',
+    report: 'Report',
     reportEventInfo: 'Thank you, your report has been submitted.',
+    removeMember: 'Remove Member',
+    removeMemberInfo: 'Are you sure you want to remove this member?',
   },
   roulette: {
     total: 'Total',
@@ -323,6 +325,7 @@ const strings = {
     removePfp: 'Unable to remove profile picture. Please try again later.',
     reportEvent: 'Unable to report event. Please try again later.',
     reportUser: 'Unable to report user. Please try again later.',
+    kickMember: 'Unable to kick member. Please try again later.',
   },
   ageEnum: [
     {label: '12-17', value: '-17'},

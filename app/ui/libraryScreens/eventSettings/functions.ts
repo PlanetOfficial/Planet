@@ -5,7 +5,7 @@ import {
   removeDestination,
   reorderDestinations,
 } from '../../../utils/api/destinationAPI';
-import {reportEvent} from '../../../utils/api/eventAPI';
+import {kickFromEvent, reportEvent} from '../../../utils/api/eventAPI';
 import {Destination} from '../../../utils/types';
 
 export const handleRenameDestination = async (
@@ -34,6 +34,20 @@ export const handleRemoveDestination = async (
     loadData();
   } else {
     Alert.alert(strings.error.error, strings.error.removeDestination);
+  }
+};
+
+export const handleKickMember = async (
+  eventId: number,
+  userId: number,
+  loadData: () => void,
+) => {
+  const response = await kickFromEvent(eventId, userId);
+
+  if (response) {
+    loadData();
+  } else {
+    Alert.alert(strings.error.error, strings.error.kickMember);
   }
 };
 

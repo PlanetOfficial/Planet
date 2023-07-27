@@ -1,21 +1,11 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {
-  View,
-  Alert,
-  ScrollView,
-  useColorScheme,
-  StatusBar,
-  TouchableOpacity,
-  StyleSheet,
-} from 'react-native';
-import {s} from 'react-native-size-matters';
+import {View, Alert, ScrollView, useColorScheme, StatusBar} from 'react-native';
+import EncryptedStorage from 'react-native-encrypted-storage';
 import moment from 'moment';
 
 import colors from '../../../constants/colors';
 import strings from '../../../constants/strings';
 import STYLING from '../../../constants/styles';
-
-import Text from '../../components/Text';
 
 import {getEvent} from '../../../utils/api/eventAPI';
 import {postDestination} from '../../../utils/api/destinationAPI';
@@ -25,7 +15,6 @@ import Header from './Header';
 import Info from './Info';
 import Members from './Members';
 import Destinations from './Destinations';
-import {handleReportEvent} from './functions';
 
 const EventSettings = ({
   navigation,
@@ -49,6 +38,15 @@ const EventSettings = ({
 
   const [eventTitle, setEventTitle] = useState<string>();
   const [datetime, setDatetime] = useState<string>();
+
+  const [selfUserId, setSelfUserId] = useState<number>();
+
+  const loadSelf = useCallback(async () => {
+    const myUserId = await EncryptedStorage.getItem('user_id');
+    if (myUserId) {
+      setSelfUserId(parseInt(myUserId, 10));
+    }
+  }, []);
 
   const loadData = useCallback(async () => {
     const _eventDetail = await getEvent(event.id);
@@ -86,11 +84,12 @@ const EventSettings = ({
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       loadData();
+      loadSelf();
       addDestination();
     });
 
     return unsubscribe;
-  }, [navigation, loadData, addDestination]);
+  }, [navigation, loadData, loadSelf, addDestination]);
 
   return (
     <View style={STYLES.container}>
@@ -106,12 +105,14 @@ const EventSettings = ({
           datetime={datetime}
           setDatetime={setDatetime}
         />
-        {eventDetail ? (
+        {eventDetail && selfUserId ? (
           <>
             <Members
               navigation={navigation}
               event={event}
               eventDetail={eventDetail}
+              selfUserId={selfUserId}
+              loadData={loadData}
             />
             <Destinations
               navigation={navigation}
@@ -122,23 +123,9 @@ const EventSettings = ({
             />
           </>
         ) : null}
-        <TouchableOpacity
-          style={styles.report}
-          onPress={() => handleReportEvent(event.id)}>
-          <Text size="s" weight="l" color={colors[theme].neutral}>
-            {strings.event.reportEvent}
-          </Text>
-        </TouchableOpacity>
       </ScrollView>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  report: {
-    marginTop: s(30),
-    alignSelf: 'center',
-  },
-});
 
 export default EventSettings;
