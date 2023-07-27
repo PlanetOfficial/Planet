@@ -12,12 +12,12 @@ export const handleRenameDestination = async (
   eventId: number,
   destinationId: number,
   newName: string,
-  loadData: () => void,
+  loadEventDetail: () => void,
 ) => {
   const response = await renameDestination(eventId, destinationId, newName);
 
   if (response) {
-    loadData();
+    loadEventDetail();
   } else {
     Alert.alert(strings.error.error, strings.error.renameDestination);
   }
@@ -26,12 +26,12 @@ export const handleRenameDestination = async (
 export const handleRemoveDestination = async (
   eventId: number,
   destinationId: number,
-  loadData: () => void,
+  loadEventDetail: () => void,
 ) => {
   const response = await removeDestination(eventId, destinationId);
 
   if (response) {
-    loadData();
+    loadEventDetail();
   } else {
     Alert.alert(strings.error.error, strings.error.removeDestination);
   }
@@ -40,12 +40,12 @@ export const handleRemoveDestination = async (
 export const handleKickMember = async (
   eventId: number,
   userId: number,
-  loadData: () => void,
+  loadEventDetail: () => void,
 ) => {
   const response = await kickFromEvent(eventId, userId);
 
   if (response) {
-    loadData();
+    loadEventDetail();
   } else {
     Alert.alert(strings.error.error, strings.error.kickMember);
   }
@@ -54,7 +54,7 @@ export const handleKickMember = async (
 export const handleReorderDestinations = async (
   eventId: number,
   newOrder: Destination[],
-  loadData: () => void,
+  loadEventDetail: () => void,
 ) => {
   const response = await reorderDestinations(
     eventId,
@@ -62,7 +62,7 @@ export const handleReorderDestinations = async (
   );
 
   if (response) {
-    loadData();
+    loadEventDetail();
   } else {
     Alert.alert(strings.error.error, strings.error.reorderDestination);
   }

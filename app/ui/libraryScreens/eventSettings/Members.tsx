@@ -27,7 +27,7 @@ interface Props {
   event: Event;
   eventDetail: EventDetail;
   selfUserId: number;
-  loadData: () => void;
+  loadEventDetail: () => void;
 }
 
 const Members: React.FC<Props> = ({
@@ -35,7 +35,7 @@ const Members: React.FC<Props> = ({
   event,
   eventDetail,
   selfUserId,
-  loadData,
+  loadEventDetail,
 }) => {
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
@@ -81,7 +81,7 @@ const Members: React.FC<Props> = ({
                   {
                     text: strings.main.remove,
                     onPress: () => {
-                      handleKickMember(event.id, member.id, loadData);
+                      handleKickMember(event.id, member.id, loadEventDetail);
                     },
                     style: 'destructive',
                   },

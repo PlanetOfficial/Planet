@@ -48,7 +48,7 @@ const EventSettings = ({
     }
   }, []);
 
-  const loadData = useCallback(async () => {
+  const loadEventDetail = useCallback(async () => {
     const _eventDetail = await getEvent(event.id);
     if (_eventDetail) {
       setEventDetail(_eventDetail);
@@ -72,28 +72,32 @@ const EventSettings = ({
       );
 
       if (response) {
-        loadData();
+        loadEventDetail();
       } else {
         Alert.alert(strings.error.error, strings.error.addSuggestion);
       }
 
       navigation.setParams({destination: undefined});
     }
-  }, [event.id, loadData, navigation, route.params]);
+  }, [event.id, loadEventDetail, navigation, route.params]);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      loadData();
+      loadEventDetail();
       loadSelf();
       addDestination();
     });
 
     return unsubscribe;
-  }, [navigation, loadData, loadSelf, addDestination]);
+  }, [navigation, loadEventDetail, loadSelf, addDestination]);
 
   return (
     <View style={STYLES.container}>
-      <Header navigation={navigation} event={event} eventDetail={eventDetail} />
+      <Header
+        navigation={navigation}
+        eventId={event.id}
+        eventDetail={eventDetail}
+      />
 
       <ScrollView>
         <Info
@@ -112,14 +116,14 @@ const EventSettings = ({
               event={event}
               eventDetail={eventDetail}
               selfUserId={selfUserId}
-              loadData={loadData}
+              loadEventDetail={loadEventDetail}
             />
             <Destinations
               navigation={navigation}
               event={event}
               eventDetail={eventDetail}
               setEventDetail={setEventDetail}
-              loadData={loadData}
+              loadEventDetail={loadEventDetail}
             />
           </>
         ) : null}

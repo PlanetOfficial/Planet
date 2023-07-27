@@ -10,22 +10,22 @@ import Icon from '../../components/Icon';
 import OptionMenu from '../../components/OptionMenu';
 
 import {leaveEvent} from '../../../utils/api/eventAPI';
-import {Event, EventDetail} from '../../../utils/types';
+import {EventDetail} from '../../../utils/types';
 
 import {handleReportEvent} from './functions';
 
 interface Props {
   navigation: any;
-  event: Event;
+  eventId: number;
   eventDetail?: EventDetail;
 }
 
-const Header: React.FC<Props> = ({navigation, event, eventDetail}) => {
+const Header: React.FC<Props> = ({navigation, eventId, eventDetail}) => {
   const theme = useColorScheme() || 'light';
   const STYLES = STYLING(theme);
 
   const handleLeave = async () => {
-    const response = await leaveEvent(event.id);
+    const response = await leaveEvent(eventId);
 
     if (response) {
       navigation.navigate(strings.title.library);
@@ -62,7 +62,7 @@ const Header: React.FC<Props> = ({navigation, event, eventDetail}) => {
             },
             {
               name: strings.event.report,
-              onPress: () => handleReportEvent(event.id),
+              onPress: () => handleReportEvent(eventId),
               color: colors[theme].neutral,
             },
             {
