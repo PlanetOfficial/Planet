@@ -53,6 +53,7 @@ const categories = [
   require('../assets/categoryIcons/Night-Life/pool-bars.png'),
   require('../assets/categoryIcons/Night-Life/pubs.png'),
   require('../assets/categoryIcons/Night-Life/sports-bars.png'),
+  require('../assets/categoryIcons/Restaurant/indian.png'),
 ];
 
 export default categories;

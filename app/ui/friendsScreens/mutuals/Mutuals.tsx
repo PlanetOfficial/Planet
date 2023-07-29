@@ -58,6 +58,7 @@ const Mutuals = ({
       <FlatList
         style={STYLES.container}
         contentContainerStyle={STYLES.flatList}
+        scrollIndicatorInsets={{right: 1}}
         data={mutuals}
         keyExtractor={item => item.id.toString()}
         renderItem={({item}: {item: UserInfo}) => (

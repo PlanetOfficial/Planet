@@ -102,6 +102,7 @@ type RootStackParamList = {
     authToken: string;
   };
   ForgotPassword: undefined;
+  BlockedUsers: undefined;
 };
 
 export default RootStackParamList;

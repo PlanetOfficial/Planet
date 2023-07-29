@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState, useCallback} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import colors from '../../../constants/colors';
 import strings from '../../../constants/strings';
@@ -22,23 +21,32 @@ import UserIconXL from '../../components/UserIconXL';
 import BookmarkContext from '../../../context/BookmarkContext';
 import FriendsContext from '../../../context/FriendsContext';
 
-import {fetchUserLocation, handleBookmark} from '../../../utils/Misc';
+import {handleBookmark} from '../../../utils/Misc';
 import {Coordinate, Poi} from '../../../utils/types';
 
-const ProfileBody = ({navigation}: {navigation: any}) => {
+interface Props {
+  navigation: any;
+  firstName: string;
+  lastName: string;
+  username: string;
+  pfpURL: string;
+  location?: Coordinate;
+}
+
+const ProfileBody: React.FC<Props> = ({
+  navigation,
+  firstName,
+  lastName,
+  username,
+  pfpURL,
+  location,
+}) => {
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
   const STYLES = STYLING(theme);
   const segControlTabStyles = segControlTabStyling(theme);
 
   const [selectedIndex, setIndex] = useState<number>(0);
-
-  const [location, setLocation] = useState<Coordinate>();
-
-  const [firstName, setFirstName] = useState<string>('');
-  const [lastName, setLastName] = useState<string>('');
-  const [username, setUsername] = useState<string>('');
-  const [pfpURL, setPfpURL] = useState<string>('');
 
   const bookmarkContext = useContext(BookmarkContext);
   if (!bookmarkContext) {
@@ -51,26 +59,6 @@ const ProfileBody = ({navigation}: {navigation: any}) => {
     throw new Error('FriendsContext is not set!');
   }
   const {friends} = friendsContext;
-
-  const initializeData = useCallback(async () => {
-    setLocation(await fetchUserLocation());
-    const _firstName = await AsyncStorage.getItem('first_name');
-    const _lastName = await AsyncStorage.getItem('last_name');
-    const _username = await AsyncStorage.getItem('username');
-    const _pfpURL = await AsyncStorage.getItem('pfp_url');
-    setFirstName(_firstName || '');
-    setLastName(_lastName || '');
-    setUsername(_username || '');
-    setPfpURL(_pfpURL || '');
-  }, []);
-
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      initializeData();
-    });
-
-    return unsubscribe;
-  }, [navigation, initializeData]);
 
   return (
     <>
@@ -130,6 +118,7 @@ const ProfileBody = ({navigation}: {navigation: any}) => {
       />
       <FlatList
         data={bookmarks}
+        scrollIndicatorInsets={{right: 1}}
         renderItem={({item}: {item: Poi}) => {
           return (
             <TouchableOpacity

@@ -117,6 +117,7 @@ const strings = {
   },
   friends: {
     friends: 'Friends',
+    users: 'Users',
     noFriendsFound: 'No Friends Found',
     friendRequest: 'Friend Request',
     friendRequests: 'Friend Requests',
@@ -216,8 +217,11 @@ const strings = {
     markAsIncomplete: 'Mark as Incomplete',
     changeCompletionStatusInfo:
       'This will only affect the status of your event.',
-    reportEvent: 'Report Event',
+    report: 'Report',
     reportEventInfo: 'Thank you, your report has been submitted.',
+    removeMember: 'Remove Member',
+    removeMemberInfo: 'Are you sure you want to remove this member?',
+    duplicate: 'Clone',
   },
   roulette: {
     total: 'Total',
@@ -251,6 +255,10 @@ const strings = {
     privacyPolicy: 'Privacy Policy',
     termsAndConditions: 'Terms and Conditions',
     version: 'Version:',
+    blockedUsers: 'Blocked Users',
+    blockedUsersInfo:
+      'Users you have blocked cannot search your profile or invite you to events.',
+    noBlockedUsersFound: 'No Blocked Users Found',
   },
   error: {
     error: 'Error',
@@ -323,14 +331,15 @@ const strings = {
     removePfp: 'Unable to remove profile picture. Please try again later.',
     reportEvent: 'Unable to report event. Please try again later.',
     reportUser: 'Unable to report user. Please try again later.',
+    kickMember: 'Unable to kick member. Please try again later.',
   },
   ageEnum: [
-    {label: '-17', value: '-17'},
+    {label: '12-17', value: '-17'},
     {label: '18-21', value: '18-21'},
     {label: '22-24', value: '22-24'},
     {label: '25-30', value: '25-30'},
     {label: '30-40', value: '30-40'},
-    {label: '41+', value: '41%2B'},
+    {label: '41+', value: '41+'},
   ],
   genderEnum: [
     {label: 'Male', value: 'Male'},

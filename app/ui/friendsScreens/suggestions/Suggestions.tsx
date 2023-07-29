@@ -35,6 +35,7 @@ const Friends = ({navigation}: {navigation: any}) => {
     <FlatList
       style={STYLES.container}
       contentContainerStyle={STYLES.flatList}
+      scrollIndicatorInsets={{right: 1}}
       data={suggestions.filter(
         user =>
           !usersIBlock.some(userIBlock => userIBlock.id === user.id) &&

@@ -127,7 +127,7 @@ const NotificationSettings = ({navigation}: {navigation: any}) => {
         </View>
       </SafeAreaView>
       {notificationsSettings ? (
-        <ScrollView style={styles.content}>
+        <ScrollView style={styles.content} scrollIndicatorInsets={{right: 1}}>
           {settings.map((setting, index) => (
             <View key={index} style={styles.row}>
               <View style={STYLES.texts}>
@@ -165,7 +165,7 @@ const styling = (theme: 'light' | 'dark') =>
       flexDirection: 'row',
       alignItems: 'center',
       marginLeft: s(20),
-      paddingRight: s(20),
+      marginRight: s(20),
       paddingVertical: s(20),
       borderBottomWidth: 1,
       borderBottomColor: colors[theme].secondary,
