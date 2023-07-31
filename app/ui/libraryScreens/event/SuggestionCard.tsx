@@ -92,7 +92,6 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
       useNativeDriver: false,
     }).start();
 
-    // wait for animation to finish
     setTimeout(() => {
       setSuggestionOpen(false);
     }, 150);
