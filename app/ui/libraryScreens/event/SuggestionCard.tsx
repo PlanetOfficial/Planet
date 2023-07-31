@@ -53,6 +53,8 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
 
   const animation = useRef(new Animated.Value(0)).current;
 
+  const [suggestionOpen, setSuggestionOpen] = useState<boolean>(false);
+
   const left = animation.interpolate({
     inputRange: [0, 1],
     outputRange: [x, s(15)],
@@ -69,6 +71,7 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
   });
 
   const onAnimation = useCallback(() => {
+    setSuggestionOpen(true);
     Animated.timing(animation, {
       toValue: 1,
       duration: 120,
@@ -88,15 +91,16 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
       easing: Easing.linear,
       useNativeDriver: false,
     }).start();
+
+    // wait for animation to finish
+    setTimeout(() => {
+      setSuggestionOpen(false);
+    }, 150);
   }, [animation]);
 
   useEffect(() => {
     onShrinkAnimation();
   }, [resetFlag, onShrinkAnimation]);
-
-  const [animValue, setAnimValue] = useState<number>(0);
-
-  animation.addListener(({value}) => setAnimValue(value));
 
   const onMakePrimaryPress = async () => {
     if (!destination || !suggestion) {
@@ -134,7 +138,7 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
     }
   };
 
-  return animValue > 0 ? (
+  return suggestionOpen ? (
     <Animated.View
       style={[
         STYLES.absolute,
