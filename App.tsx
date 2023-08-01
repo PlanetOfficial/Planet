@@ -2,7 +2,12 @@ import 'react-native-gesture-handler';
 import React, {useEffect, useState} from 'react';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import messaging from '@react-native-firebase/messaging';
-import {PermissionsAndroid, Platform, StatusBar, useColorScheme} from 'react-native';
+import {
+  PermissionsAndroid,
+  Platform,
+  StatusBar,
+  useColorScheme,
+} from 'react-native';
 
 import SplashScreen from './app/ui/otherScreens/splashScreen/SplashScreen';
 import AppNavigation from './app/ui/navigations/AppNavigation';
@@ -69,7 +74,7 @@ export default function App() {
     });
 
     return unsubscribe;
-  }, []);
+  }, [theme]);
 
   useEffect(() => {
     // Get the device token
