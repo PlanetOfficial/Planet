@@ -8,6 +8,7 @@ import {
   StatusBar,
   useColorScheme,
 } from 'react-native';
+import SystemNavigationBar from 'react-native-system-navigation-bar';
 
 import SplashScreen from './app/ui/otherScreens/splashScreen/SplashScreen';
 import AppNavigation from './app/ui/navigations/AppNavigation';
@@ -36,9 +37,10 @@ export default function App() {
 
   useEffect(() => {
     const initialize = async () => {
-      // android specific configurations
+      // android specific ui configurations
       if (Platform.OS === 'android') {
         StatusBar.setBackgroundColor(colors[theme].background);
+        SystemNavigationBar.setNavigationColor(colors[theme].background);
       }
 
       const token = await EncryptedStorage.getItem('auth_token');
