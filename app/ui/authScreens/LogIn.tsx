@@ -108,12 +108,12 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
 
     setLoading(true);
     const response = await login(username, password);
-    setLoading(false);
 
     if (response?.authToken) {
       // check if verified
       const verifiedResponse = await isVerified(response.authToken);
       if (!verifiedResponse) {
+        setLoading(false);
         navigation.reset({
           index: 0,
           routes: [
@@ -125,6 +125,7 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
       }
       const cacheSuccess = await cacheUserInfo(response?.authToken);
       if (!cacheSuccess) {
+        setLoading(false);
         Alert.alert('Something went wrong. Please try again.');
         return;
       }
@@ -144,6 +145,8 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
     } else {
       setError(response?.message);
     }
+
+    setLoading(false);
   };
 
   return (
