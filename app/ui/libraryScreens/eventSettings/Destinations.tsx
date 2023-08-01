@@ -32,7 +32,7 @@ interface Props {
   event: Event;
   eventDetail: EventDetail;
   setEventDetail: (eventDetail: EventDetail) => void;
-  loadData: () => void;
+  loadEventDetail: () => void;
 }
 
 const Destinations: React.FC<Props> = ({
@@ -40,7 +40,7 @@ const Destinations: React.FC<Props> = ({
   event,
   eventDetail,
   setEventDetail,
-  loadData,
+  loadEventDetail,
 }) => {
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
@@ -59,7 +59,7 @@ const Destinations: React.FC<Props> = ({
         keyExtractor={(item: Destination) => item.id.toString()}
         onDragEnd={({data}) => {
           setEventDetail({...eventDetail, destinations: data});
-          handleReorderDestinations(event.id, data, loadData);
+          handleReorderDestinations(event.id, data, loadEventDetail);
         }}
         renderItem={({
           item,
@@ -97,7 +97,7 @@ const Destinations: React.FC<Props> = ({
                             event.id,
                             item.id,
                             name,
-                            loadData,
+                            loadEventDetail,
                           ),
                       },
                     ],
@@ -130,7 +130,11 @@ const Destinations: React.FC<Props> = ({
                       {
                         text: strings.main.remove,
                         onPress: () => {
-                          handleRemoveDestination(event.id, item.id, loadData);
+                          handleRemoveDestination(
+                            event.id,
+                            item.id,
+                            loadEventDetail,
+                          );
                         },
                         style: 'destructive',
                       },

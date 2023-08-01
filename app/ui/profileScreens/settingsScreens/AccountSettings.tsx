@@ -2,14 +2,12 @@ import React, {useContext} from 'react';
 import {
   View,
   SafeAreaView,
-  StyleSheet,
   Alert,
   TouchableOpacity,
   useColorScheme,
   StatusBar,
 } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
-import {s} from 'react-native-size-matters';
 import EncryptedStorage from 'react-native-encrypted-storage';
 
 import colors from '../../../constants/colors';
@@ -142,17 +140,22 @@ const AccountSettings = ({navigation}: {navigation: any}) => {
           </View>
         </View>
       </SafeAreaView>
-      <TouchableOpacity style={styles.row} onPress={handleResetPassword}>
+      <TouchableOpacity
+        style={STYLES.settingsRow}
+        onPress={handleResetPassword}>
         <Text weight="l">{strings.settings.resetPassword}</Text>
+        <Icon icon={icons.next} />
       </TouchableOpacity>
       <Separator />
-      <TouchableOpacity style={styles.row} onPress={handleLogout}>
+      <TouchableOpacity style={STYLES.settingsRow} onPress={handleLogout}>
         <Text weight="l" color={colors[theme].red}>
           {strings.settings.logout}
         </Text>
       </TouchableOpacity>
       <Separator />
-      <TouchableOpacity style={styles.row} onPress={handleRemoveAccount}>
+      <TouchableOpacity
+        style={STYLES.settingsRow}
+        onPress={handleRemoveAccount}>
         <Text weight="l" color={colors[theme].red}>
           {strings.settings.removeAccount}
         </Text>
@@ -160,14 +163,5 @@ const AccountSettings = ({navigation}: {navigation: any}) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: s(35),
-    paddingVertical: s(20),
-  },
-});
 
 export default AccountSettings;

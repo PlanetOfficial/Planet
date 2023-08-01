@@ -4,11 +4,11 @@ import {
   SafeAreaView,
   StyleSheet,
   TextInput,
-  FlatList,
   ActivityIndicator,
   LayoutAnimation,
   useColorScheme,
   StatusBar,
+  SectionList,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 import {TouchableOpacity} from 'react-native-gesture-handler';
@@ -50,7 +50,7 @@ const Friends = ({navigation}: {navigation: any}) => {
   if (!friendsContext) {
     throw new Error('FriendsContext is not set!');
   }
-  const {usersBlockingMe} = friendsContext;
+  const {friends, usersBlockingMe} = friendsContext;
 
   const loadSelf = async () => {
     const myUserId = await EncryptedStorage.getItem('user_id');
@@ -129,11 +129,31 @@ const Friends = ({navigation}: {navigation: any}) => {
             <ActivityIndicator size="small" color={colors[theme].accent} />
           </View>
         ) : (
-          <FlatList
+          <SectionList
+            sections={
+              searchResults.length > 0
+                ? [
+                    {
+                      title: strings.friends.friends,
+                      data: searchResults.filter(user =>
+                        friends.some(friend => friend.id === user.id),
+                      ),
+                    },
+                    {
+                      title: strings.friends.users,
+                      data: searchResults.filter(
+                        user => !friends.some(friend => friend.id === user.id),
+                      ),
+                    },
+                  ]
+                : []
+            }
             style={STYLES.container}
             contentContainerStyle={STYLES.flatList}
+            initialNumToRender={10}
+            keyboardShouldPersistTaps={'always'}
+            scrollIndicatorInsets={{right: 1}}
             data={searchResults}
-            keyExtractor={item => item.id.toString()}
             renderItem={({item}: {item: UserInfo}) => (
               <TouchableOpacity
                 onPress={() => navigation.push('User', {user: item})}>
@@ -144,6 +164,13 @@ const Friends = ({navigation}: {navigation: any}) => {
                 </UserRow>
               </TouchableOpacity>
             )}
+            renderSectionHeader={({section}) =>
+              section.data.length > 0 ? (
+                <View style={STYLES.sectionHeader}>
+                  <Text size="s">{section.title}</Text>
+                </View>
+              ) : null
+            }
             ListEmptyComponent={
               searchText.length > 0 ? (
                 <View style={STYLES.center}>
@@ -151,6 +178,7 @@ const Friends = ({navigation}: {navigation: any}) => {
                 </View>
               ) : null
             }
+            keyExtractor={user => user.id.toString()}
           />
         )
       ) : (
@@ -189,6 +217,7 @@ const styling = (theme: 'light' | 'dark') =>
       alignItems: 'flex-end',
       justifyContent: 'flex-end',
       marginBottom: s(10),
+      marginRight: -s(10),
     },
   });
 

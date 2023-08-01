@@ -80,6 +80,7 @@ const SpinHistory = ({
       </View>
       <FlatList
         data={destination.spin_history}
+        scrollIndicatorInsets={{right: 1}}
         renderItem={({item}: {item: Spin}) => {
           return (
             <View style={styles.row}>

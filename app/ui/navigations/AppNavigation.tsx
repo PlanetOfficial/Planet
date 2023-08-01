@@ -1,6 +1,6 @@
 import React from 'react';
-import {Animated} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
+import {Animated, useColorScheme} from 'react-native';
+import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
 import {
   StackCardInterpolatedStyle,
   StackCardInterpolationProps,
@@ -39,6 +39,7 @@ import LocationsSettings from '../profileScreens/settingsScreens/LocationsSettin
 import NotificationSettings from '../profileScreens/settingsScreens/NotificationSettings';
 import PrivacySettings from '../profileScreens/settingsScreens/PrivacySettings';
 import ProfileSettings from '../profileScreens/settingsScreens/ProfileSettings';
+import BlockedUsers from '../profileScreens/settingsScreens/BlockedUsers/BlockedUsers';
 import Search from '../searchScreens/search/Search';
 import CreateFG from '../friendsScreens/createFG/CreateFG';
 
@@ -47,6 +48,7 @@ import FriendsStateProvider from '../../context/FriendsState';
 import LocationStateProvider from '../../context/LocationState';
 
 import RootStackParamList from './RootStackParamList';
+import colors from '../../constants/colors';
 
 interface AppNavigationProps {
   isLoggedIn: boolean;
@@ -58,14 +60,26 @@ function TabStack() {
 
 const Stack = createStackNavigator<RootStackParamList>();
 const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
+  const theme = useColorScheme() || 'light';
   return (
     <FriendsStateProvider isLoggedIn={isLoggedIn}>
       <BookmarkStateProvider isLoggedIn={isLoggedIn}>
         <LocationStateProvider isLoggedIn={isLoggedIn}>
-          <NavigationContainer>
+          <NavigationContainer
+            theme={{
+              ...DefaultTheme,
+              colors: {
+                ...DefaultTheme.colors,
+                background: colors[theme].background,
+              },
+            }}>
             <BottomSheetModalProvider>
               {isLoggedIn ? (
-                <Stack.Navigator initialRouteName="TabStack">
+                <Stack.Navigator
+                  initialRouteName="TabStack"
+                  screenOptions={{
+                    headerShown: false,
+                  }}>
                   {tabStack()}
                   {searchCategoryScreen()}
                   {searchMapScreen()}
@@ -99,9 +113,14 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
                   {forgotPassStackScreen()}
                   {forgotPassVerifyStackScreen()}
                   {resetPasswordStackScreen()}
+                  {blockedUsersScreen()}
                 </Stack.Navigator>
               ) : (
-                <Stack.Navigator initialRouteName="Login">
+                <Stack.Navigator
+                  initialRouteName="Login"
+                  screenOptions={{
+                    headerShown: false,
+                  }}>
                   {loginStackScreen()}
                   {signUpNameStackScreen()}
                   {signUpCredsStackScreen()}
@@ -135,6 +154,7 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
                   {rouletteScreen()}
                   {spinHistoryScreen()}
                   {notificationsScreen()}
+                  {blockedUsersScreen()}
                 </Stack.Navigator>
               )}
             </BottomSheetModalProvider>
@@ -150,115 +170,49 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
 */
 
 const loginStackScreen = () => {
-  return (
-    <Stack.Screen
-      name="Login"
-      component={LoginScreen}
-      options={{headerShown: false}}
-    />
-  );
+  return <Stack.Screen name="Login" component={LoginScreen} />;
 };
 
 const signUpNameStackScreen = () => {
-  return (
-    <Stack.Screen
-      name="SignUpName"
-      component={SignUpName}
-      options={{headerShown: false}}
-    />
-  );
+  return <Stack.Screen name="SignUpName" component={SignUpName} />;
 };
 
 const signUpCredsStackScreen = () => {
-  return (
-    <Stack.Screen
-      name="SignUpCreds"
-      component={SignUpCreds}
-      options={{headerShown: false}}
-    />
-  );
+  return <Stack.Screen name="SignUpCreds" component={SignUpCreds} />;
 };
 
 const signUpPhoneStackScreen = () => {
-  return (
-    <Stack.Screen
-      name="SignUpPhone"
-      component={SignUpPhone}
-      options={{headerShown: false}}
-    />
-  );
+  return <Stack.Screen name="SignUpPhone" component={SignUpPhone} />;
 };
 
 const signUpVerifyStackScreen = () => {
-  return (
-    <Stack.Screen
-      name="SignUpVerify"
-      component={SignUpVerify}
-      options={{headerShown: false}}
-    />
-  );
+  return <Stack.Screen name="SignUpVerify" component={SignUpVerify} />;
 };
 
 const signUpInfoStackScreen = () => {
-  return (
-    <Stack.Screen
-      name="SignUpInfo"
-      component={SignUpInfo}
-      options={{headerShown: false}}
-    />
-  );
+  return <Stack.Screen name="SignUpInfo" component={SignUpInfo} />;
 };
 
 const forgotPassStackScreen = () => {
-  return (
-    <Stack.Screen
-      name="ForgotPassword"
-      component={ForgotPassword}
-      options={{headerShown: false}}
-    />
-  );
+  return <Stack.Screen name="ForgotPassword" component={ForgotPassword} />;
 };
 
 const forgotPassVerifyStackScreen = () => {
   return (
-    <Stack.Screen
-      name="ForgotPasswordVerify"
-      component={ForgotPwdVerify}
-      options={{headerShown: false}}
-    />
+    <Stack.Screen name="ForgotPasswordVerify" component={ForgotPwdVerify} />
   );
 };
 
 const resetPasswordStackScreen = () => {
-  return (
-    <Stack.Screen
-      name="ResetPassword"
-      component={ResetPwd}
-      options={{headerShown: false}}
-    />
-  );
+  return <Stack.Screen name="ResetPassword" component={ResetPwd} />;
 };
 
 const tabStack = () => {
-  return (
-    <Stack.Screen
-      name="TabStack"
-      component={TabStack}
-      options={{headerShown: false}}
-    />
-  );
+  return <Stack.Screen name="TabStack" component={TabStack} />;
 };
 
 const searchCategoryScreen = () => {
-  return (
-    <Stack.Screen
-      name="SearchCategory"
-      component={SearchCategory}
-      options={{
-        headerShown: false,
-      }}
-    />
-  );
+  return <Stack.Screen name="SearchCategory" component={SearchCategory} />;
 };
 
 const searchMapScreen = () => {
@@ -267,7 +221,6 @@ const searchMapScreen = () => {
       name="SearchMap"
       component={SearchMap}
       options={{
-        headerShown: false,
         presentation: 'modal',
         gestureEnabled: false,
       }}
@@ -276,27 +229,11 @@ const searchMapScreen = () => {
 };
 
 const poiScreen = () => {
-  return (
-    <Stack.Screen
-      name="Poi"
-      component={Poi}
-      options={{
-        headerShown: false,
-      }}
-    />
-  );
+  return <Stack.Screen name="Poi" component={Poi} />;
 };
 
 const friendsScreen = () => {
-  return (
-    <Stack.Screen
-      name="Friends"
-      component={Friends}
-      options={{
-        headerShown: false,
-      }}
-    />
-  );
+  return <Stack.Screen name="Friends" component={Friends} />;
 };
 
 const createFGScreen = () => {
@@ -305,7 +242,6 @@ const createFGScreen = () => {
       name="CreateFG"
       component={CreateFG}
       options={{
-        headerShown: false,
         presentation: 'modal',
       }}
     />
@@ -318,7 +254,6 @@ const addFriendScreen = () => {
       name="AddFriend"
       component={AddFriend}
       options={{
-        headerShown: false,
         presentation: 'modal',
       }}
     />
@@ -331,7 +266,6 @@ const mutualsScreen = () => {
       name="Mutuals"
       component={Mutuals}
       options={{
-        headerShown: false,
         presentation: 'modal',
       }}
     />
@@ -339,74 +273,28 @@ const mutualsScreen = () => {
 };
 
 const userScreen = () => {
-  return (
-    <Stack.Screen
-      name="User"
-      component={User}
-      options={{
-        headerShown: false,
-      }}
-    />
-  );
+  return <Stack.Screen name="User" component={User} />;
 };
 
 const viewHistoryScreen = () => {
-  return (
-    <Stack.Screen
-      name="ViewHistory"
-      component={ViewHistory}
-      options={{
-        headerShown: false,
-      }}
-    />
-  );
+  return <Stack.Screen name="ViewHistory" component={ViewHistory} />;
 };
 
 const settingsScreen = () => {
-  return (
-    <Stack.Screen
-      name="Settings"
-      component={Settings}
-      options={{
-        headerShown: false,
-      }}
-    />
-  );
+  return <Stack.Screen name="Settings" component={Settings} />;
 };
 
 const accountSettingsScreen = () => {
-  return (
-    <Stack.Screen
-      name="AccountSettings"
-      component={AccountSettings}
-      options={{
-        headerShown: false,
-      }}
-    />
-  );
+  return <Stack.Screen name="AccountSettings" component={AccountSettings} />;
 };
 
 const contactUsScreen = () => {
-  return (
-    <Stack.Screen
-      name="ContactUs"
-      component={ContactUs}
-      options={{
-        headerShown: false,
-      }}
-    />
-  );
+  return <Stack.Screen name="ContactUs" component={ContactUs} />;
 };
 
 const locationsSettingsScreen = () => {
   return (
-    <Stack.Screen
-      name="LocationsSettings"
-      component={LocationsSettings}
-      options={{
-        headerShown: false,
-      }}
-    />
+    <Stack.Screen name="LocationsSettings" component={LocationsSettings} />
   );
 };
 
@@ -415,35 +303,16 @@ const notificationSettingsScreen = () => {
     <Stack.Screen
       name="NotificationSettings"
       component={NotificationSettings}
-      options={{
-        headerShown: false,
-      }}
     />
   );
 };
 
 const privacySettingsScreen = () => {
-  return (
-    <Stack.Screen
-      name="PrivacySettings"
-      component={PrivacySettings}
-      options={{
-        headerShown: false,
-      }}
-    />
-  );
+  return <Stack.Screen name="PrivacySettings" component={PrivacySettings} />;
 };
 
 const profileSettingsScreen = () => {
-  return (
-    <Stack.Screen
-      name="ProfileSettings"
-      component={ProfileSettings}
-      options={{
-        headerShown: false,
-      }}
-    />
-  );
+  return <Stack.Screen name="ProfileSettings" component={ProfileSettings} />;
 };
 
 const createScreen = () => {
@@ -452,7 +321,6 @@ const createScreen = () => {
       name="Create"
       component={Create}
       options={{
-        headerShown: false,
         cardStyleInterpolator: verticalAnimation,
       }}
     />
@@ -460,39 +328,15 @@ const createScreen = () => {
 };
 
 const eventScreen = () => {
-  return (
-    <Stack.Screen
-      name="Event"
-      component={EventPage}
-      options={{
-        headerShown: false,
-      }}
-    />
-  );
+  return <Stack.Screen name="Event" component={EventPage} />;
 };
 
 const eventSettingsScreen = () => {
-  return (
-    <Stack.Screen
-      name="EventSettings"
-      component={EventSettings}
-      options={{
-        headerShown: false,
-      }}
-    />
-  );
+  return <Stack.Screen name="EventSettings" component={EventSettings} />;
 };
 
 const rouletteScreen = () => {
-  return (
-    <Stack.Screen
-      name="Roulette"
-      component={Roulette}
-      options={{
-        headerShown: false,
-      }}
-    />
-  );
+  return <Stack.Screen name="Roulette" component={Roulette} />;
 };
 
 const spinHistoryScreen = () => {
@@ -501,7 +345,6 @@ const spinHistoryScreen = () => {
       name="SpinHistory"
       component={SpinHistory}
       options={{
-        headerShown: false,
         presentation: 'modal',
       }}
     />
@@ -514,7 +357,6 @@ const modeSearchScreen = () => {
       name="ModeSearch"
       component={Search}
       options={{
-        headerShown: false,
         cardStyleInterpolator: verticalAnimation,
       }}
     />
@@ -522,15 +364,11 @@ const modeSearchScreen = () => {
 };
 
 const notificationsScreen = () => {
-  return (
-    <Stack.Screen
-      name="Notifications"
-      component={Notifications}
-      options={{
-        headerShown: false,
-      }}
-    />
-  );
+  return <Stack.Screen name="Notifications" component={Notifications} />;
+};
+
+const blockedUsersScreen = () => {
+  return <Stack.Screen name="BlockedUsers" component={BlockedUsers} />;
 };
 
 const verticalAnimation = ({

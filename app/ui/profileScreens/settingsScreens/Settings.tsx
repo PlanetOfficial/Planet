@@ -33,11 +33,11 @@ const Settings = ({navigation}: {navigation: any}) => {
       icon: icons.profile,
       onPress: () => navigation.navigate('ProfileSettings'),
     },
-    // {
-    //   name: 'Privacy',
-    //   icon: icons.privacy,
-    //   onPress: () => Alert.alert('Nothing to see here'),
-    // },
+    {
+      name: 'Privacy',
+      icon: icons.privacy,
+      onPress: () => navigation.navigate('PrivacySettings'),
+    },
     {
       name: 'Locations',
       icon: icons.pin,
@@ -74,7 +74,7 @@ const Settings = ({navigation}: {navigation: any}) => {
           </View>
         </View>
       </SafeAreaView>
-      <ScrollView>
+      <ScrollView scrollIndicatorInsets={{right: 1}}>
         {settingsItems.map((settingsItem, index) => (
           <View key={index}>
             <TouchableOpacity style={styles.row} onPress={settingsItem.onPress}>

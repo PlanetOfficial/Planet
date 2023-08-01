@@ -70,7 +70,7 @@ const OptionMenu: React.FC<Props> = ({icon, iconColor, options}) => {
               weight="r"
               color={
                 option.disabled
-                  ? colors[theme].neutral
+                  ? colors[theme].secondary
                   : pressed[index]
                   ? colors[theme].secondary
                   : option.color

@@ -126,7 +126,7 @@ const Home = ({navigation}: {navigation: any}) => {
       <ScrollView
         style={STYLES.container}
         contentContainerStyle={STYLES.scrollView}
-        showsVerticalScrollIndicator={false}>
+        scrollIndicatorInsets={{right: 1}}>
         <UpcomingEvent navigation={navigation} upcomingEvent={upcomingEvent} />
         <Separator />
         {location ? (
