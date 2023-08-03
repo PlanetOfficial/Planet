@@ -1,10 +1,14 @@
-import React, {useState, useEffect, useMemo} from 'react';
+import React, {useState, useEffect, useMemo, createContext, useContext} from 'react';
 import {Alert} from 'react-native';
 import strings from '../constants/strings';
 import {Coordinate} from '../utils/types';
-import {LocationContext} from './LocationContext';
 import {fetchUserLocation} from '../utils/Misc';
 import numbers from '../constants/numbers';
+import { LocationContextType } from './ContextTypes';
+
+const LocationContext = createContext<LocationContextType | undefined>(
+  undefined,
+);
 
 const LocationStateProvider = ({
   children,
@@ -47,4 +51,12 @@ const LocationStateProvider = ({
   );
 };
 
-export default LocationStateProvider;
+const useLocationContext = () => {
+  const context = useContext(LocationContext);
+  if (!context) {
+    throw new Error('LocationContext is not set!');
+  }
+  return context;
+};
+
+export {useLocationContext, LocationStateProvider};

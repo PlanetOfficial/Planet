@@ -1,9 +1,13 @@
-import React, {useState, useEffect, useMemo} from 'react';
+import React, {useState, useEffect, useMemo, useContext, createContext} from 'react';
 import {Alert} from 'react-native';
 import strings from '../constants/strings';
 import {getBookmarks} from '../utils/api/bookmarkAPI';
 import {Poi} from '../utils/types';
-import {BookmarkContext} from './BookmarkContext';
+import { BookmarkContextType } from './ContextTypes';
+
+const BookmarkContext = createContext<BookmarkContextType | undefined>(
+  undefined,
+);
 
 const BookmarkStateProvider = ({
   children,
@@ -40,4 +44,12 @@ const BookmarkStateProvider = ({
   );
 };
 
-export default BookmarkStateProvider;
+const useBookmarkContext = () => {
+  const context = useContext(BookmarkContext);
+  if (!context) {
+    throw new Error('BookmarkContext is not set!');
+  }
+  return context;
+};
+
+export {useBookmarkContext, BookmarkStateProvider};

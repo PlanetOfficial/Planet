@@ -10,7 +10,7 @@ import PoiRow from '../../components/PoiRow';
 
 import {Poi, Coordinate} from '../../../utils/types';
 import {handleBookmark} from '../../../utils/Misc';
-import { useBookmarkContext } from '../../../context/BookmarkContext';
+import { useBookmarkContext } from '../../../context/BookmarkState';
 
 interface Props {
   navigation: any;

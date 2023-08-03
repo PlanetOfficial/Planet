@@ -1,7 +1,11 @@
-import {createContext, useContext} from 'react';
-import {FriendGroup, UserInfo} from '../utils/types';
+import { Coordinate, FriendGroup, Poi, UserInfo } from "../utils/types";
 
-type FriendsContextType = {
+export type BookmarkContextType = {
+  bookmarks: Poi[];
+  setBookmarks: React.Dispatch<React.SetStateAction<Poi[]>>;
+};
+
+export type FriendsContextType = {
   suggestions: UserInfo[];
   setSuggestions: React.Dispatch<React.SetStateAction<UserInfo[]>>;
   friends: UserInfo[];
@@ -18,14 +22,9 @@ type FriendsContextType = {
   setUsersBlockingMe: React.Dispatch<React.SetStateAction<UserInfo[]>>;
 };
 
-const FriendsContext = createContext<FriendsContextType | undefined>(undefined);
-
-const useFriendsContext = () => {
-  const context = useContext(FriendsContext);
-  if (!context) {
-    throw new Error('FriendsContext is not set!');
-  }
-  return context;
+export type LocationContextType = {
+  location: Coordinate;
+  setLocation: React.Dispatch<React.SetStateAction<Coordinate>>;
+  radius: number;
+  setRadius: React.Dispatch<React.SetStateAction<number>>;
 };
-
-export {useFriendsContext, FriendsContext};

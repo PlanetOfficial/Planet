@@ -21,7 +21,7 @@ import UserRow from '../../../components/UserRow';
 import {UserInfo} from '../../../../utils/types';
 
 import ActionButtons from '../../../friendsScreens/user/ActionButtons';
-import { useFriendsContext } from '../../../../context/FriendsContext';
+import { useFriendsContext } from '../../../../context/FriendsState';
 
 const BlockedUsers = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';

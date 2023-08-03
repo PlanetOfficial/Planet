@@ -1,9 +1,11 @@
-import React, {useState, useEffect, useMemo} from 'react';
+import React, {useState, useEffect, useMemo, createContext, useContext} from 'react';
 import {Alert} from 'react-native';
 import strings from '../constants/strings';
-import {FriendsContext} from './FriendsContext';
 import {getFriendsInfo} from '../utils/api/friendsAPI';
 import {FriendGroup, UserInfo} from '../utils/types';
+import { FriendsContextType } from './ContextTypes';
+
+const FriendsContext = createContext<FriendsContextType | undefined>(undefined);
 
 const FriendsStateProvider = ({
   children,
@@ -76,4 +78,12 @@ const FriendsStateProvider = ({
   );
 };
 
-export default FriendsStateProvider;
+const useFriendsContext = () => {
+  const context = useContext(FriendsContext);
+  if (!context) {
+    throw new Error('FriendsContext is not set!');
+  }
+  return context;
+};
+
+export {useFriendsContext, FriendsStateProvider};

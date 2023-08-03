@@ -43,9 +43,9 @@ import BlockedUsers from '../profileScreens/settingsScreens/BlockedUsers/Blocked
 import Search from '../searchScreens/search/Search';
 import CreateFG from '../friendsScreens/createFG/CreateFG';
 
-import BookmarkStateProvider from '../../context/BookmarkState';
-import FriendsStateProvider from '../../context/FriendsState';
-import LocationStateProvider from '../../context/LocationState';
+import {BookmarkStateProvider} from '../../context/BookmarkState';
+import {FriendsStateProvider} from '../../context/FriendsState';
+import {LocationStateProvider} from '../../context/LocationState';
 
 import RootStackParamList from './RootStackParamList';
 import colors from '../../constants/colors';

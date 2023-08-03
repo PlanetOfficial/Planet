@@ -27,7 +27,7 @@ import {
   handleCancelRequest,
   handleDeclineRequest,
 } from './functions';
-import { useFriendsContext } from '../../../context/FriendsContext';
+import { useFriendsContext } from '../../../context/FriendsState';
 
 const Requests = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';

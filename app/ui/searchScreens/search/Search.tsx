@@ -27,7 +27,7 @@ import {Category, Coordinate, Genre, Poi} from '../../../utils/types';
 
 import Header from './Header';
 import categories from '../../../constants/categories';
-import { useBookmarkContext } from '../../../context/BookmarkContext';
+import { useBookmarkContext } from '../../../context/BookmarkState';
 
 const Search = ({
   navigation,

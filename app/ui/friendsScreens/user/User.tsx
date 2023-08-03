@@ -29,7 +29,7 @@ import ProfileBody from '../../profileScreens/profile/ProfileBody';
 import Profile from './Profile';
 import OptionMenu from '../../components/OptionMenu';
 import {handleBlock, handleReport} from './functions';
-import { useFriendsContext } from '../../../context/FriendsContext';
+import { useFriendsContext } from '../../../context/FriendsState';
 
 const User = ({
   navigation,

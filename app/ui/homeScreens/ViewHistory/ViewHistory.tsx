@@ -20,7 +20,7 @@ import PoiRow from '../../components/PoiRow';
 
 import {Coordinate, Poi} from '../../../utils/types';
 import {handleBookmark} from '../../../utils/Misc';
-import { useBookmarkContext } from '../../../context/BookmarkContext';
+import { useBookmarkContext } from '../../../context/BookmarkState';
 
 const ViewHistory = ({
   navigation,

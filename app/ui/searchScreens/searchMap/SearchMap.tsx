@@ -24,7 +24,7 @@ import {
 import {Category, Coordinate, Region} from '../../../utils/types';
 
 import Blur from './Blur';
-import { useLocationContext } from '../../../context/LocationContext';
+import { useLocationContext } from '../../../context/LocationState';
 
 const SearchMap = ({
   navigation,

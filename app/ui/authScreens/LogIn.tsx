@@ -26,9 +26,9 @@ import {getFriendsInfo} from '../../utils/api/friendsAPI';
 import {getBookmarks} from '../../utils/api/bookmarkAPI';
 import {fetchUserLocation} from '../../utils/Misc';
 
-import { useFriendsContext } from '../../context/FriendsContext';
-import { useBookmarkContext } from '../../context/BookmarkContext';
-import { useLocationContext } from '../../context/LocationContext';
+import { useFriendsContext } from '../../context/FriendsState';
+import { useBookmarkContext } from '../../context/BookmarkState';
+import { useLocationContext } from '../../context/LocationState';
 
 const LoginScreen = ({navigation}: {navigation: any}) => {
   const theme = 'light';
