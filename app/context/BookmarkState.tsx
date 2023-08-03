@@ -3,7 +3,7 @@ import {Alert} from 'react-native';
 import strings from '../constants/strings';
 import {getBookmarks} from '../utils/api/bookmarkAPI';
 import {Poi} from '../utils/types';
-import BookmarkContext from './BookmarkContext';
+import {BookmarkContext} from './BookmarkContext';
 
 const BookmarkStateProvider = ({
   children,

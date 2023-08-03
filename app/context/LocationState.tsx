@@ -2,7 +2,7 @@ import React, {useState, useEffect, useMemo} from 'react';
 import {Alert} from 'react-native';
 import strings from '../constants/strings';
 import {Coordinate} from '../utils/types';
-import LocationContext from './LocationContext';
+import {LocationContext} from './LocationContext';
 import {fetchUserLocation} from '../utils/Misc';
 import numbers from '../constants/numbers';
 

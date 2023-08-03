@@ -19,10 +19,9 @@ import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 import UserIcon from '../../components/UserIcon';
 
-import FriendsContext from '../../../context/FriendsContext';
-
 import {UserInfo} from '../../../utils/types';
 import {beginFGEditing, handleRemoveFG, saveFGEditing} from './functions';
+import { useFriendsContext } from '../../../context/FriendsContext';
 
 interface Props {
   navigation: any;
@@ -51,10 +50,6 @@ const FriendGroupEdit: React.FC<Props> = ({
   const styles = styling(theme);
   const STYLES = STYLING(theme);
 
-  const friendsContext = useContext(FriendsContext);
-  if (!friendsContext) {
-    throw new Error('FriendsContext is not set!');
-  }
   const {
     setFriends,
     friendGroups,
@@ -63,7 +58,7 @@ const FriendGroupEdit: React.FC<Props> = ({
     setUsersBlockingMe,
     setRequests,
     setRequestsSent,
-  } = friendsContext;
+  } = useFriendsContext();
 
   return (
     <>

@@ -19,12 +19,11 @@ import UserIcon from '../../components/UserIcon';
 import Text from '../../components/Text';
 import UserRow from '../../components/UserRow';
 
-import FriendsContext from '../../../context/FriendsContext';
-
 import {FriendGroup, UserInfo} from '../../../utils/types';
 
 import FGIcon from '../friendsList/FGIcon';
 import {handleFGPress, handleFGSelect, handleUserSelect} from './functions';
+import { useFriendsContext } from '../../../context/FriendsContext';
 
 interface Props {
   isEvent: boolean;
@@ -47,11 +46,7 @@ const Friends: React.FC<Props> = ({
   const styles = styling(theme);
   const STYLES = STYLING(theme);
 
-  const friendsContext = useContext(FriendsContext);
-  if (!friendsContext) {
-    throw new Error('FriendsContext is not set!');
-  }
-  const {friends, friendGroups} = friendsContext;
+  const {friends, friendGroups} = useFriendsContext();
 
   return (
     <ScrollView style={STYLES.container} scrollIndicatorInsets={{right: 1}}>

@@ -20,8 +20,6 @@ import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 import UserRow from '../../components/UserRow';
 
-import FriendsContext from '../../../context/FriendsContext';
-
 import {UserInfo} from '../../../utils/types';
 import {getFriends} from '../../../utils/api/friendsAPI';
 import {
@@ -29,16 +27,13 @@ import {
   handleCancelRequest,
   handleDeclineRequest,
 } from './functions';
+import { useFriendsContext } from '../../../context/FriendsContext';
 
 const Requests = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';
   const STYLES = STYLING(theme);
   StatusBar.setBarStyle(colors[theme].statusBar, true);
 
-  const friendsContext = useContext(FriendsContext);
-  if (!friendsContext) {
-    throw new Error('FriendsContext is not set!');
-  }
   const {
     requests,
     setRequests,
@@ -48,7 +43,7 @@ const Requests = ({navigation}: {navigation: any}) => {
     setFriends,
     setUsersIBlock,
     setUsersBlockingMe,
-  } = friendsContext;
+  } = useFriendsContext();
 
   const [loading, setLoading] = useState(false);
   const loadRequests = async () => {

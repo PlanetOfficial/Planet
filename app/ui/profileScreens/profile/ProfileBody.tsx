@@ -18,11 +18,10 @@ import Text from '../../components/Text';
 import PoiRow from '../../components/PoiRow';
 import UserIconXL from '../../components/UserIconXL';
 
-import BookmarkContext from '../../../context/BookmarkContext';
-import FriendsContext from '../../../context/FriendsContext';
-
 import {handleBookmark} from '../../../utils/Misc';
 import {Coordinate, Poi} from '../../../utils/types';
+import { useBookmarkContext } from '../../../context/BookmarkContext';
+import { useFriendsContext } from '../../../context/FriendsContext';
 
 interface Props {
   navigation: any;
@@ -48,17 +47,9 @@ const ProfileBody: React.FC<Props> = ({
 
   const [selectedIndex, setIndex] = useState<number>(0);
 
-  const bookmarkContext = useContext(BookmarkContext);
-  if (!bookmarkContext) {
-    throw new Error('BookmarkContext is not set!');
-  }
-  const {bookmarks, setBookmarks} = bookmarkContext;
+  const {bookmarks, setBookmarks} = useBookmarkContext();
 
-  const friendsContext = useContext(FriendsContext);
-  if (!friendsContext) {
-    throw new Error('FriendsContext is not set!');
-  }
-  const {friends} = friendsContext;
+  const {friends} = useFriendsContext();
 
   return (
     <>

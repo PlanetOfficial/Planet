@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useMemo} from 'react';
 import {Alert} from 'react-native';
 import strings from '../constants/strings';
-import FriendsContext from './FriendsContext';
+import {FriendsContext} from './FriendsContext';
 import {getFriendsInfo} from '../utils/api/friendsAPI';
 import {FriendGroup, UserInfo} from '../utils/types';
 

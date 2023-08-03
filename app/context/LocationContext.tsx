@@ -1,4 +1,4 @@
-import {createContext} from 'react';
+import {createContext, useContext} from 'react';
 import {Coordinate} from '../utils/types';
 
 type LocationContextType = {
@@ -12,4 +12,12 @@ const LocationContext = createContext<LocationContextType | undefined>(
   undefined,
 );
 
-export default LocationContext;
+const useLocationContext = () => {
+  const context = useContext(LocationContext);
+  if (!context) {
+    throw new Error('LocationContext is not set!');
+  }
+  return context;
+};
+
+export {useLocationContext, LocationContext};

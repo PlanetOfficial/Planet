@@ -1,4 +1,4 @@
-import {createContext} from 'react';
+import {createContext, useContext} from 'react';
 import {Poi} from '../utils/types';
 
 type BookmarkContextType = {
@@ -10,4 +10,12 @@ const BookmarkContext = createContext<BookmarkContextType | undefined>(
   undefined,
 );
 
-export default BookmarkContext;
+const useBookmarkContext = () => {
+  const context = useContext(BookmarkContext);
+  if (!context) {
+    throw new Error('BookmarkContext is not set!');
+  }
+  return context;
+};
+
+export {useBookmarkContext, BookmarkContext};

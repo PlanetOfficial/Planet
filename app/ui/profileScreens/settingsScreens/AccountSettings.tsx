@@ -22,31 +22,23 @@ import Separator from '../../components/Separator';
 import {clearCaches} from '../../../utils/CacheHelpers';
 import {removeAccount} from '../../../utils/api/authAPI';
 
-import FriendsContext from '../../../context/FriendsContext';
-import BookmarkContext from '../../../context/BookmarkContext';
+import { useBookmarkContext } from '../../../context/BookmarkContext';
+import { useFriendsContext } from '../../../context/FriendsContext';
 
 const AccountSettings = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';
   const STYLES = STYLING(theme);
   StatusBar.setBarStyle(colors[theme].statusBar, true);
 
-  const bookmarkContext = useContext(BookmarkContext);
-  if (!bookmarkContext) {
-    throw new Error('BookmarkContext is not set!');
-  }
-  const {setBookmarks} = bookmarkContext;
+  const {setBookmarks} = useBookmarkContext();
 
-  const friendsContext = useContext(FriendsContext);
-  if (!friendsContext) {
-    throw new Error('FriendsContext is not set!');
-  }
   const {
     setRequests,
     setRequestsSent,
     setFriends,
     setSuggestions,
     setFriendGroups,
-  } = friendsContext;
+  } = useFriendsContext();
 
   const resetContexts = () => {
     setBookmarks([]);

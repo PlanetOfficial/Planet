@@ -20,8 +20,7 @@ import Text from '../components/Text';
 
 import {verifyCode} from '../../utils/api/authAPI';
 import {fetchUserLocation} from '../../utils/Misc';
-
-import LocationContext from '../../context/LocationContext';
+import { useLocationContext } from '../../context/LocationContext';
 
 const SignUpVerify = ({
   navigation,
@@ -45,11 +44,7 @@ const SignUpVerify = ({
 
   const [error, setError] = useState<string>('');
 
-  const locationContext = useContext(LocationContext);
-  if (!locationContext) {
-    throw new Error('LocationContext is not set!');
-  }
-  const {setLocation, setRadius} = locationContext;
+  const {setLocation, setRadius} = useLocationContext();
 
   const handleVerifyCode = async () => {
     setError('');

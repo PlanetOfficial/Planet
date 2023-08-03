@@ -1,4 +1,4 @@
-import {createContext} from 'react';
+import {createContext, useContext} from 'react';
 import {FriendGroup, UserInfo} from '../utils/types';
 
 type FriendsContextType = {
@@ -20,4 +20,12 @@ type FriendsContextType = {
 
 const FriendsContext = createContext<FriendsContextType | undefined>(undefined);
 
-export default FriendsContext;
+const useFriendsContext = () => {
+  const context = useContext(FriendsContext);
+  if (!context) {
+    throw new Error('FriendsContext is not set!');
+  }
+  return context;
+};
+
+export {useFriendsContext, FriendsContext};

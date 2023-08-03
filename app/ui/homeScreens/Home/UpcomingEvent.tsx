@@ -18,7 +18,7 @@ import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 import PoiCard from '../../components/PoiCard';
 
-import BookmarkContext from '../../../context/BookmarkContext';
+import { useBookmarkContext } from '../../../context/BookmarkContext';
 
 import {Destination, EventDetail, Poi, Suggestion} from '../../../utils/types';
 import {handleBookmark} from '../../../utils/Misc';
@@ -33,11 +33,7 @@ const UpcomingEvent: React.FC<Props> = ({navigation, upcomingEvent}) => {
   const styles = styling(theme);
   const STYLES = STYLING(theme);
 
-  const bookmarkContext = useContext(BookmarkContext);
-  if (!bookmarkContext) {
-    throw new Error('BookmarkContext is not set!');
-  }
-  const {bookmarks, setBookmarks} = bookmarkContext;
+  const {bookmarks, setBookmarks} = useBookmarkContext();
 
   return (
     <>

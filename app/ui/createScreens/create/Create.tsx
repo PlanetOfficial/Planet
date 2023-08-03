@@ -16,13 +16,12 @@ import STYLING from '../../../constants/styles';
 
 import Text from '../../components/Text';
 
-import BookmarkContext from '../../../context/BookmarkContext';
-
 import {Poi, UserInfo} from '../../../utils/types';
 
 import Header from './Header';
 import SaveButton from './SaveButton';
 import DestinationsList from './DestinationsList';
+import { useBookmarkContext } from '../../../context/BookmarkContext';
 
 const Create = ({
   navigation,
@@ -53,11 +52,7 @@ const Create = ({
     new Map(),
   );
 
-  const bookmarkContext = useContext(BookmarkContext);
-  if (!bookmarkContext) {
-    throw new Error('BookmarkContext is not set!');
-  }
-  const {bookmarks, setBookmarks} = bookmarkContext;
+  const {bookmarks, setBookmarks} = useBookmarkContext();
 
   const addMembers = useCallback(() => {
     const _members = route.params?.members;

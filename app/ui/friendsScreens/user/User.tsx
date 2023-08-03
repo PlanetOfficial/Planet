@@ -20,8 +20,6 @@ import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 import EventRow from '../../components/EventRow';
 
-import FriendsContext from '../../../context/FriendsContext';
-
 import {Coordinate, Event, UserInfo} from '../../../utils/types';
 import {getFriend} from '../../../utils/api/friendsAPI';
 import {fetchUserLocation} from '../../../utils/Misc';
@@ -31,6 +29,7 @@ import ProfileBody from '../../profileScreens/profile/ProfileBody';
 import Profile from './Profile';
 import OptionMenu from '../../components/OptionMenu';
 import {handleBlock, handleReport} from './functions';
+import { useFriendsContext } from '../../../context/FriendsContext';
 
 const User = ({
   navigation,
@@ -55,10 +54,6 @@ const User = ({
 
   const [location, setLocation] = useState<Coordinate>();
 
-  const friendsContext = useContext(FriendsContext);
-  if (!friendsContext) {
-    throw new Error('FriendsContext is not set!');
-  }
   const {
     friends,
     setFriends,
@@ -68,7 +63,7 @@ const User = ({
     setRequestsSent,
     usersIBlock,
     setUsersIBlock,
-  } = friendsContext;
+  } = useFriendsContext();
 
   const initializeData = useCallback(async () => {
     setLocation(await fetchUserLocation());

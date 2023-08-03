@@ -26,9 +26,9 @@ import {getFriendsInfo} from '../../utils/api/friendsAPI';
 import {getBookmarks} from '../../utils/api/bookmarkAPI';
 import {fetchUserLocation} from '../../utils/Misc';
 
-import BookmarkContext from '../../context/BookmarkContext';
-import FriendsContext from '../../context/FriendsContext';
-import LocationContext from '../../context/LocationContext';
+import { useFriendsContext } from '../../context/FriendsContext';
+import { useBookmarkContext } from '../../context/BookmarkContext';
+import { useLocationContext } from '../../context/LocationContext';
 
 const LoginScreen = ({navigation}: {navigation: any}) => {
   const theme = 'light';
@@ -41,16 +41,8 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
 
-  const bookmarkContext = useContext(BookmarkContext);
-  if (!bookmarkContext) {
-    throw new Error('BookmarkContext is not set!');
-  }
-  const {setBookmarks} = bookmarkContext;
+  const {setBookmarks} = useBookmarkContext();
 
-  const friendsContext = useContext(FriendsContext);
-  if (!friendsContext) {
-    throw new Error('FriendsContext is not set!');
-  }
   const {
     setRequests,
     setRequestsSent,
@@ -59,13 +51,9 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
     setFriendGroups,
     setUsersIBlock,
     setUsersBlockingMe,
-  } = friendsContext;
+  } = useFriendsContext();
 
-  const locationContext = useContext(LocationContext);
-  if (!locationContext) {
-    throw new Error('LocationContext is not set!');
-  }
-  const {setLocation, setRadius} = locationContext;
+  const {setLocation, setRadius} = useLocationContext();
 
   const initializeContext = async () => {
     const _bookmarks = await getBookmarks();

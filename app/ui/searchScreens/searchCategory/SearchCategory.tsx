@@ -17,13 +17,12 @@ import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 import Filter from '../../components/Filter';
 
-import BookmarkContext from '../../../context/BookmarkContext';
-import LocationContext from '../../../context/LocationContext';
-
 import {getPois} from '../../../utils/api/poiAPI';
 import {Poi, Coordinate, Category} from '../../../utils/types';
 
 import Results from './Results';
+import { useBookmarkContext } from '../../../context/BookmarkContext';
+import { useLocationContext } from '../../../context/LocationContext';
 
 const SearchCategory = ({
   navigation,
@@ -60,17 +59,9 @@ const SearchCategory = ({
     }),
   );
 
-  const bookmarkContext = useContext(BookmarkContext);
-  if (!bookmarkContext) {
-    throw new Error('BookmarkContext is not set!');
-  }
-  const {bookmarks, setBookmarks} = bookmarkContext;
+  const {bookmarks, setBookmarks} = useBookmarkContext();
 
-  const locationContext = useContext(LocationContext);
-  if (!locationContext) {
-    throw new Error('LocationContext is not set!');
-  }
-  const {location, radius} = locationContext;
+  const {location, radius} = useLocationContext();
 
   const filterRef = useRef<any>(null); // due to forwardRef
 
