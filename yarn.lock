@@ -7244,6 +7244,11 @@ react-native-swipeable-item@^2.0.9:
   dependencies:
     "@babel/preset-typescript" "^7.17.12"
 
+react-native-system-navigation-bar@^2.6.1:
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/react-native-system-navigation-bar/-/react-native-system-navigation-bar-2.6.1.tgz#cead40f7311fe92be4921808901b7b56e9c763d8"
+  integrity sha512-IN5n55sEbA4oAvwUqK8oCfKKc4fXJmBzcqC/Eq8bv26gTwzk6oUiPrHtzJCSJvWyCOCt6jKuc9vDWEFTLDOLog==
+
 react-native-tab-view@^3.5.1:
   version "3.5.2"
   resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-3.5.2.tgz#2789b8af6148b16835869566bf13dc3b0e6c1b46"
