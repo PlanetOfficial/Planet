@@ -21,7 +21,7 @@ import {UserInfo} from '../../../utils/types';
 
 import Header from './Header';
 import Button from './Button';
-import { useFriendsContext } from '../../../context/FriendsState';
+import { useFriendsContext } from '../../../context/FriendsContext';
 
 const CreateFG = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';

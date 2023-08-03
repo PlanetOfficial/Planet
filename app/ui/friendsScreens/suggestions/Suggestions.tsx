@@ -17,7 +17,7 @@ import Icon from '../../components/Icon';
 import UserRow from '../../components/UserRow';
 
 import {UserInfo} from '../../../utils/types';
-import { useFriendsContext } from '../../../context/FriendsState';
+import { useFriendsContext } from '../../../context/FriendsContext';
 
 const Friends = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';

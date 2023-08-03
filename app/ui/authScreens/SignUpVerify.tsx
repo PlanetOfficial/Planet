@@ -20,7 +20,7 @@ import Text from '../components/Text';
 
 import {verifyCode} from '../../utils/api/authAPI';
 import {fetchUserLocation} from '../../utils/Misc';
-import { useLocationContext } from '../../context/LocationState';
+import { useLocationContext } from '../../context/LocationContext';
 
 const SignUpVerify = ({
   navigation,

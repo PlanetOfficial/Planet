@@ -23,7 +23,7 @@ import {FriendGroup, UserInfo} from '../../../utils/types';
 
 import FGIcon from '../friendsList/FGIcon';
 import {handleFGPress, handleFGSelect, handleUserSelect} from './functions';
-import { useFriendsContext } from '../../../context/FriendsState';
+import { useFriendsContext } from '../../../context/FriendsContext';
 
 interface Props {
   isEvent: boolean;

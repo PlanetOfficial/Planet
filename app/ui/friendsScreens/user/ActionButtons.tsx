@@ -17,7 +17,7 @@ import {
   handleUnblock,
   handleUnfriend,
 } from './functions';
-import { useFriendsContext } from '../../../context/FriendsState';
+import { useFriendsContext } from '../../../context/FriendsContext';
 
 interface Props {
   user: UserInfo;

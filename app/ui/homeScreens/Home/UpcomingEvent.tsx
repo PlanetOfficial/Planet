@@ -18,7 +18,7 @@ import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 import PoiCard from '../../components/PoiCard';
 
-import { useBookmarkContext } from '../../../context/BookmarkState';
+import { useBookmarkContext } from '../../../context/BookmarkContext';
 
 import {Destination, EventDetail, Poi, Suggestion} from '../../../utils/types';
 import {handleBookmark} from '../../../utils/Misc';

@@ -21,7 +21,7 @@ import UserIcon from '../../components/UserIcon';
 
 import {UserInfo} from '../../../utils/types';
 import {beginFGEditing, handleRemoveFG, saveFGEditing} from './functions';
-import { useFriendsContext } from '../../../context/FriendsState';
+import { useFriendsContext } from '../../../context/FriendsContext';
 
 interface Props {
   navigation: any;

@@ -21,7 +21,7 @@ import Text from '../../components/Text';
 
 import {UserInfo} from '../../../utils/types';
 import {search} from '../friends/functions';
-import { useFriendsContext } from '../../../context/FriendsState';
+import { useFriendsContext } from '../../../context/FriendsContext';
 
 interface Props {
   navigation: any;

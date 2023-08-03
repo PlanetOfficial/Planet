@@ -20,8 +20,8 @@ import UserIconXL from '../../components/UserIconXL';
 
 import {handleBookmark} from '../../../utils/Misc';
 import {Coordinate, Poi} from '../../../utils/types';
-import { useBookmarkContext } from '../../../context/BookmarkState';
-import { useFriendsContext } from '../../../context/FriendsState';
+import { useBookmarkContext } from '../../../context/BookmarkContext';
+import { useFriendsContext } from '../../../context/FriendsContext';
 
 interface Props {
   navigation: any;

@@ -21,7 +21,7 @@ import {FriendGroup, UserInfo} from '../../../utils/types';
 
 import FGIcon from './FGIcon';
 import {handleFGReorder, resetFGEditing} from './functions';
-import { useFriendsContext } from '../../../context/FriendsState';
+import { useFriendsContext } from '../../../context/FriendsContext';
 
 interface Props {
   navigation: any;

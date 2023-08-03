@@ -34,7 +34,7 @@ import Info from './Info';
 import Reviews from './Reviews';
 import Button from './Button';
 import {fetchUserLocation} from '../../../utils/Misc';
-import { useBookmarkContext } from '../../../context/BookmarkState';
+import { useBookmarkContext } from '../../../context/BookmarkContext';
 
 const PoiPage = ({
   navigation,
