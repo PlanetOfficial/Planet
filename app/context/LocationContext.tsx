@@ -18,10 +18,10 @@ const LocationContext = createContext<LocationContextType | undefined>(
 
 const LocationStateProvider = ({
   children,
-  isLoggedIn,
+  isLoggedInStack,
 }: {
   children: React.ReactNode;
-  isLoggedIn: boolean;
+  isLoggedInStack: boolean;
 }) => {
   const [location, setLocation] = useState<Coordinate>({
     latitude: numbers.defaultLatitude,
@@ -45,10 +45,10 @@ const LocationStateProvider = ({
   );
 
   useEffect(() => {
-    if (isLoggedIn) {
+    if (isLoggedInStack) {
       initializeLocation();
     }
-  }, [isLoggedIn]);
+  }, [isLoggedInStack]);
 
   return (
     <LocationContext.Provider value={locationContext}>

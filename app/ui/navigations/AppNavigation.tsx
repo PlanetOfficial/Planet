@@ -51,7 +51,7 @@ import RootStackParamList from './RootStackParamList';
 import colors from '../../constants/colors';
 
 interface AppNavigationProps {
-  isLoggedIn: boolean;
+  isLoggedInStack: boolean;
 }
 
 function TabStack() {
@@ -59,12 +59,12 @@ function TabStack() {
 }
 
 const Stack = createStackNavigator<RootStackParamList>();
-const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
+const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedInStack}) => {
   const theme = useColorScheme() || 'light';
   return (
-    <FriendsStateProvider isLoggedIn={isLoggedIn}>
-      <BookmarkStateProvider isLoggedIn={isLoggedIn}>
-        <LocationStateProvider isLoggedIn={isLoggedIn}>
+    <FriendsStateProvider isLoggedInStack={isLoggedInStack}>
+      <BookmarkStateProvider isLoggedInStack={isLoggedInStack}>
+        <LocationStateProvider isLoggedInStack={isLoggedInStack}>
           <NavigationContainer
             theme={{
               ...DefaultTheme,
@@ -74,7 +74,7 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedIn}) => {
               },
             }}>
             <BottomSheetModalProvider>
-              {isLoggedIn ? (
+              {isLoggedInStack ? (
                 <Stack.Navigator
                   initialRouteName="TabStack"
                   screenOptions={{

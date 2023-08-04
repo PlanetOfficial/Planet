@@ -12,7 +12,7 @@ import Notification from './app/ui/components/Notification';
 
 export default function App() {
   const [isLoading, setLoading] = useState<boolean>(true);
-  const [isLoggedIn, setLoggedIn] = useState<boolean>(false);
+  const [isLoggedInStack, setLoggedInStack] = useState<boolean>(false);
 
   const [notificationText, setNotificationText] = useState<string>('');
 
@@ -32,16 +32,16 @@ export default function App() {
 
       try {
         if (token) {
-          setLoggedIn(true);
+          setLoggedInStack(true);
           await updateCaches(token);
         } else {
-          setLoggedIn(false);
+          setLoggedInStack(false);
         }
 
         await cacheCategories();
       } catch (err) {
         console.warn(err);
-        setLoggedIn(false);
+        setLoggedInStack(false);
       }
 
       setLoading(false);
@@ -83,7 +83,7 @@ export default function App() {
   const getCorrectStack = () => {
     return (
       <>
-        <AppNavigation isLoggedIn={isLoggedIn} />
+        <AppNavigation isLoggedInStack={isLoggedInStack} />
         {notificationText !== '' ? (
           <Notification
             message={notificationText}

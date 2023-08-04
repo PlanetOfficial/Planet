@@ -15,10 +15,10 @@ const FriendsContext = createContext<FriendsContextType | undefined>(undefined);
 
 const FriendsStateProvider = ({
   children,
-  isLoggedIn,
+  isLoggedInStack,
 }: {
   children: React.ReactNode;
-  isLoggedIn: boolean;
+  isLoggedInStack: boolean;
 }) => {
   const [suggestions, setSuggestions] = useState<UserInfo[]>([]);
   const [friends, setFriends] = useState<UserInfo[]>([]);
@@ -88,10 +88,10 @@ const FriendsStateProvider = ({
   );
 
   useEffect(() => {
-    if (isLoggedIn) {
+    if (isLoggedInStack) {
       initializeFriendsInfo();
     }
-  }, [isLoggedIn]);
+  }, [isLoggedInStack]);
 
   return (
     <FriendsContext.Provider value={friendsContext}>

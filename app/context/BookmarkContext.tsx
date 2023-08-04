@@ -17,10 +17,10 @@ const BookmarkContext = createContext<BookmarkContextType | undefined>(
 
 const BookmarkStateProvider = ({
   children,
-  isLoggedIn,
+  isLoggedInStack,
 }: {
   children: React.ReactNode;
-  isLoggedIn: boolean;
+  isLoggedInStack: boolean;
 }) => {
   const [bookmarks, setBookmarks] = useState<Poi[]>([]);
 
@@ -39,10 +39,10 @@ const BookmarkStateProvider = ({
   );
 
   useEffect(() => {
-    if (isLoggedIn) {
+    if (isLoggedInStack) {
       initializeBookmarks();
     }
-  }, [isLoggedIn]);
+  }, [isLoggedInStack]);
 
   return (
     <BookmarkContext.Provider value={bookmarkContext}>
