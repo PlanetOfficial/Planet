@@ -94,12 +94,6 @@ const FriendGroupEdit: React.FC<Props> = ({
                   tempName,
                   tempMembers,
                   setFgEditing,
-                  setFriends,
-                  setFriendGroups,
-                  setUsersIBlock,
-                  setUsersBlockingMe,
-                  setRequests,
-                  setRequestsSent,
                 );
               } else {
                 beginFGEditing(
@@ -133,12 +127,6 @@ const FriendGroupEdit: React.FC<Props> = ({
                           setFgEditing,
                           setTempName,
                           setTempMembers,
-                          setFriends,
-                          setFriendGroups,
-                          setUsersIBlock,
-                          setUsersBlockingMe,
-                          setRequests,
-                          setRequestsSent,
                         ),
                       style: 'destructive',
                     },
