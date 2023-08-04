@@ -1,9 +1,7 @@
 import React from 'react';
-import {Animated, useColorScheme} from 'react-native';
+import {useColorScheme} from 'react-native';
 import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
 import {
-  StackCardInterpolatedStyle,
-  StackCardInterpolationProps,
   createStackNavigator,
 } from '@react-navigation/stack';
 import {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
@@ -49,6 +47,7 @@ import {LocationStateProvider} from '../../context/LocationContext';
 
 import RootStackParamList from './RootStackParamList';
 import colors from '../../constants/colors';
+import { verticalAnimation } from '../../utils/Misc';
 
 interface AppNavigationProps {
   isLoggedInStack: boolean;
@@ -80,40 +79,8 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedInStack}) => {
                   screenOptions={{
                     headerShown: false,
                   }}>
-                  {tabStack()}
-                  {searchCategoryScreen()}
-                  {searchMapScreen()}
-                  {poiScreen()}
-                  {friendsScreen()}
-                  {createFGScreen()}
-                  {addFriendScreen()}
-                  {mutualsScreen()}
-                  {userScreen()}
-                  {viewHistoryScreen()}
-                  {settingsScreen()}
-                  {accountSettingsScreen()}
-                  {contactUsScreen()}
-                  {locationsSettingsScreen()}
-                  {notificationSettingsScreen()}
-                  {privacySettingsScreen()}
-                  {profileSettingsScreen()}
-                  {createScreen()}
-                  {modeSearchScreen()}
-                  {eventScreen()}
-                  {eventSettingsScreen()}
-                  {rouletteScreen()}
-                  {spinHistoryScreen()}
-                  {notificationsScreen()}
-                  {loginStackScreen()}
-                  {signUpNameStackScreen()}
-                  {signUpCredsStackScreen()}
-                  {signUpPhoneStackScreen()}
-                  {signUpVerifyStackScreen()}
-                  {signUpInfoStackScreen()}
-                  {forgotPassStackScreen()}
-                  {forgotPassVerifyStackScreen()}
-                  {resetPasswordStackScreen()}
-                  {blockedUsersScreen()}
+                  {mainStackScreens()}
+                  {authStackScreens()}
                 </Stack.Navigator>
               ) : (
                 <Stack.Navigator
@@ -121,40 +88,8 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedInStack}) => {
                   screenOptions={{
                     headerShown: false,
                   }}>
-                  {loginStackScreen()}
-                  {signUpNameStackScreen()}
-                  {signUpCredsStackScreen()}
-                  {signUpPhoneStackScreen()}
-                  {signUpVerifyStackScreen()}
-                  {signUpInfoStackScreen()}
-                  {forgotPassStackScreen()}
-                  {forgotPassVerifyStackScreen()}
-                  {resetPasswordStackScreen()}
-                  {tabStack()}
-                  {searchCategoryScreen()}
-                  {searchMapScreen()}
-                  {poiScreen()}
-                  {friendsScreen()}
-                  {createFGScreen()}
-                  {addFriendScreen()}
-                  {mutualsScreen()}
-                  {userScreen()}
-                  {viewHistoryScreen()}
-                  {settingsScreen()}
-                  {accountSettingsScreen()}
-                  {contactUsScreen()}
-                  {locationsSettingsScreen()}
-                  {notificationSettingsScreen()}
-                  {privacySettingsScreen()}
-                  {profileSettingsScreen()}
-                  {createScreen()}
-                  {modeSearchScreen()}
-                  {eventScreen()}
-                  {eventSettingsScreen()}
-                  {rouletteScreen()}
-                  {spinHistoryScreen()}
-                  {notificationsScreen()}
-                  {blockedUsersScreen()}
+                  {authStackScreens()}
+                  {mainStackScreens()}
                 </Stack.Navigator>
               )}
             </BottomSheetModalProvider>
@@ -165,58 +100,24 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedInStack}) => {
   );
 };
 
-/* Below are stack screens so they don't have to be
-   defined multiple times
-*/
-
-const loginStackScreen = () => {
-  return <Stack.Screen name="Login" component={LoginScreen} />;
-};
-
-const signUpNameStackScreen = () => {
-  return <Stack.Screen name="SignUpName" component={SignUpName} />;
-};
-
-const signUpCredsStackScreen = () => {
-  return <Stack.Screen name="SignUpCreds" component={SignUpCreds} />;
-};
-
-const signUpPhoneStackScreen = () => {
-  return <Stack.Screen name="SignUpPhone" component={SignUpPhone} />;
-};
-
-const signUpVerifyStackScreen = () => {
-  return <Stack.Screen name="SignUpVerify" component={SignUpVerify} />;
-};
-
-const signUpInfoStackScreen = () => {
-  return <Stack.Screen name="SignUpInfo" component={SignUpInfo} />;
-};
-
-const forgotPassStackScreen = () => {
-  return <Stack.Screen name="ForgotPassword" component={ForgotPassword} />;
-};
-
-const forgotPassVerifyStackScreen = () => {
-  return (
+const authStackScreens = () => (
+  <>
+    <Stack.Screen name="Login" component={LoginScreen} />
+    <Stack.Screen name="SignUpName" component={SignUpName} />
+    <Stack.Screen name="SignUpCreds" component={SignUpCreds} />
+    <Stack.Screen name="SignUpPhone" component={SignUpPhone} />
+    <Stack.Screen name="SignUpVerify" component={SignUpVerify} />
+    <Stack.Screen name="SignUpInfo" component={SignUpInfo} />
+    <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
     <Stack.Screen name="ForgotPasswordVerify" component={ForgotPwdVerify} />
-  );
-};
+    <Stack.Screen name="ResetPassword" component={ResetPwd} />
+  </>
+);
 
-const resetPasswordStackScreen = () => {
-  return <Stack.Screen name="ResetPassword" component={ResetPwd} />;
-};
-
-const tabStack = () => {
-  return <Stack.Screen name="TabStack" component={TabStack} />;
-};
-
-const searchCategoryScreen = () => {
-  return <Stack.Screen name="SearchCategory" component={SearchCategory} />;
-};
-
-const searchMapScreen = () => {
-  return (
+const mainStackScreens = () => (
+  <>
+    <Stack.Screen name="TabStack" component={TabStack} />
+    <Stack.Screen name="SearchCategory" component={SearchCategory} />
     <Stack.Screen
       name="SearchMap"
       component={SearchMap}
@@ -225,19 +126,8 @@ const searchMapScreen = () => {
         gestureEnabled: false,
       }}
     />
-  );
-};
-
-const poiScreen = () => {
-  return <Stack.Screen name="Poi" component={Poi} />;
-};
-
-const friendsScreen = () => {
-  return <Stack.Screen name="Friends" component={Friends} />;
-};
-
-const createFGScreen = () => {
-  return (
+    <Stack.Screen name="Poi" component={Poi} />
+    <Stack.Screen name="Friends" component={Friends} />
     <Stack.Screen
       name="CreateFG"
       component={CreateFG}
@@ -245,11 +135,6 @@ const createFGScreen = () => {
         presentation: 'modal',
       }}
     />
-  );
-};
-
-const addFriendScreen = () => {
-  return (
     <Stack.Screen
       name="AddFriend"
       component={AddFriend}
@@ -257,11 +142,6 @@ const addFriendScreen = () => {
         presentation: 'modal',
       }}
     />
-  );
-};
-
-const mutualsScreen = () => {
-  return (
     <Stack.Screen
       name="Mutuals"
       component={Mutuals}
@@ -269,54 +149,18 @@ const mutualsScreen = () => {
         presentation: 'modal',
       }}
     />
-  );
-};
-
-const userScreen = () => {
-  return <Stack.Screen name="User" component={User} />;
-};
-
-const viewHistoryScreen = () => {
-  return <Stack.Screen name="ViewHistory" component={ViewHistory} />;
-};
-
-const settingsScreen = () => {
-  return <Stack.Screen name="Settings" component={Settings} />;
-};
-
-const accountSettingsScreen = () => {
-  return <Stack.Screen name="AccountSettings" component={AccountSettings} />;
-};
-
-const contactUsScreen = () => {
-  return <Stack.Screen name="ContactUs" component={ContactUs} />;
-};
-
-const locationsSettingsScreen = () => {
-  return (
+    <Stack.Screen name="User" component={User} />
+    <Stack.Screen name="ViewHistory" component={ViewHistory} />
+    <Stack.Screen name="Settings" component={Settings} />
+    <Stack.Screen name="AccountSettings" component={AccountSettings} />
+    <Stack.Screen name="ContactUs" component={ContactUs} />
     <Stack.Screen name="LocationsSettings" component={LocationsSettings} />
-  );
-};
-
-const notificationSettingsScreen = () => {
-  return (
     <Stack.Screen
       name="NotificationSettings"
       component={NotificationSettings}
     />
-  );
-};
-
-const privacySettingsScreen = () => {
-  return <Stack.Screen name="PrivacySettings" component={PrivacySettings} />;
-};
-
-const profileSettingsScreen = () => {
-  return <Stack.Screen name="ProfileSettings" component={ProfileSettings} />;
-};
-
-const createScreen = () => {
-  return (
+    <Stack.Screen name="PrivacySettings" component={PrivacySettings} />
+    <Stack.Screen name="ProfileSettings" component={ProfileSettings} />
     <Stack.Screen
       name="Create"
       component={Create}
@@ -324,35 +168,6 @@ const createScreen = () => {
         cardStyleInterpolator: verticalAnimation,
       }}
     />
-  );
-};
-
-const eventScreen = () => {
-  return <Stack.Screen name="Event" component={EventPage} />;
-};
-
-const eventSettingsScreen = () => {
-  return <Stack.Screen name="EventSettings" component={EventSettings} />;
-};
-
-const rouletteScreen = () => {
-  return <Stack.Screen name="Roulette" component={Roulette} />;
-};
-
-const spinHistoryScreen = () => {
-  return (
-    <Stack.Screen
-      name="SpinHistory"
-      component={SpinHistory}
-      options={{
-        presentation: 'modal',
-      }}
-    />
-  );
-};
-
-const modeSearchScreen = () => {
-  return (
     <Stack.Screen
       name="ModeSearch"
       component={Search}
@@ -360,55 +175,19 @@ const modeSearchScreen = () => {
         cardStyleInterpolator: verticalAnimation,
       }}
     />
-  );
-};
-
-const notificationsScreen = () => {
-  return <Stack.Screen name="Notifications" component={Notifications} />;
-};
-
-const blockedUsersScreen = () => {
-  return <Stack.Screen name="BlockedUsers" component={BlockedUsers} />;
-};
-
-const verticalAnimation = ({
-  current,
-  inverted,
-  layouts: {screen},
-}: StackCardInterpolationProps): StackCardInterpolatedStyle => {
-  const translateFocused = Animated.multiply(
-    current.progress.interpolate({
-      inputRange: [0, 1],
-      outputRange: [screen.height, 0],
-      extrapolate: 'clamp',
-    }),
-    inverted,
-  );
-
-  const overlayOpacity = current.progress.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0, 0.07],
-    extrapolate: 'clamp',
-  });
-
-  const shadowOpacity = current.progress.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0, 0.3],
-    extrapolate: 'clamp',
-  });
-
-  return {
-    cardStyle: {
-      transform: [
-        // Translation for the animation of the current card
-        {translateY: translateFocused},
-        // Translation for the animation of the card in back
-        {translateY: 0},
-      ],
-    },
-    overlayStyle: {opacity: overlayOpacity},
-    shadowStyle: {shadowOpacity},
-  };
-};
+    <Stack.Screen name="Event" component={EventPage} />
+    <Stack.Screen name="EventSettings" component={EventSettings} />
+    <Stack.Screen name="Roulette" component={Roulette} />
+    <Stack.Screen
+      name="SpinHistory"
+      component={SpinHistory}
+      options={{
+        presentation: 'modal',
+      }}
+    />
+    <Stack.Screen name="Notifications" component={Notifications} />
+    <Stack.Screen name="BlockedUsers" component={BlockedUsers} />
+  </>
+);
 
 export default AppNavigation;
