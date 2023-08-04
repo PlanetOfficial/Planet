@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, useColorScheme, StatusBar} from 'react-native';
 import EncryptedStorage from 'react-native-encrypted-storage';
 

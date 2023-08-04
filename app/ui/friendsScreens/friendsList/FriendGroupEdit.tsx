@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {
   StyleSheet,
   View,
@@ -21,7 +21,7 @@ import UserIcon from '../../components/UserIcon';
 
 import {UserInfo} from '../../../utils/types';
 import {beginFGEditing, handleRemoveFG, saveFGEditing} from './functions';
-import { useFriendsContext } from '../../../context/FriendsContext';
+import {useFriendsContext} from '../../../context/FriendsContext';
 
 interface Props {
   navigation: any;
@@ -50,15 +50,7 @@ const FriendGroupEdit: React.FC<Props> = ({
   const styles = styling(theme);
   const STYLES = STYLING(theme);
 
-  const {
-    setFriends,
-    friendGroups,
-    setFriendGroups,
-    setUsersIBlock,
-    setUsersBlockingMe,
-    setRequests,
-    setRequestsSent,
-  } = useFriendsContext();
+  const {friendGroups} = useFriendsContext();
 
   return (
     <>
@@ -89,12 +81,7 @@ const FriendGroupEdit: React.FC<Props> = ({
           <TouchableOpacity
             onPress={() => {
               if (fgEditing) {
-                saveFGEditing(
-                  fgSelected,
-                  tempName,
-                  tempMembers,
-                  setFgEditing,
-                );
+                saveFGEditing(fgSelected, tempName, tempMembers, setFgEditing);
               } else {
                 beginFGEditing(
                   friendGroups,

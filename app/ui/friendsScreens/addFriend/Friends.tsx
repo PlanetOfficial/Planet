@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {
   View,
   StyleSheet,
@@ -23,7 +23,7 @@ import {FriendGroup, UserInfo} from '../../../utils/types';
 
 import FGIcon from '../friendsList/FGIcon';
 import {handleFGPress, handleFGSelect, handleUserSelect} from './functions';
-import { useFriendsContext } from '../../../context/FriendsContext';
+import {useFriendsContext} from '../../../context/FriendsContext';
 
 interface Props {
   isEvent: boolean;

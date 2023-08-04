@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useState} from 'react';
 import {View, SafeAreaView, useColorScheme, StatusBar} from 'react-native';
 import {useSharedValue} from 'react-native-reanimated';
 
@@ -14,7 +14,7 @@ import {Destination, Suggestion} from '../../../utils/types';
 import {getCurrentSuggestion} from './functions';
 import Spinner from './Spinner';
 import Info from './Info';
-import { useBookmarkContext } from '../../../context/BookmarkContext';
+import {useBookmarkContext} from '../../../context/BookmarkContext';
 
 const Roulette = ({
   navigation,

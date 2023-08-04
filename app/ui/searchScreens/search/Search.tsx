@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -27,7 +27,7 @@ import {Category, Coordinate, Genre, Poi} from '../../../utils/types';
 
 import Header from './Header';
 import categories from '../../../constants/categories';
-import { useBookmarkContext } from '../../../context/BookmarkContext';
+import {useBookmarkContext} from '../../../context/BookmarkContext';
 
 const Search = ({
   navigation,

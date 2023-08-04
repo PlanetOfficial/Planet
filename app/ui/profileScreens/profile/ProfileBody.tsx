@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -20,8 +20,8 @@ import UserIconXL from '../../components/UserIconXL';
 
 import {handleBookmark} from '../../../utils/Misc';
 import {Coordinate, Poi} from '../../../utils/types';
-import { useBookmarkContext } from '../../../context/BookmarkContext';
-import { useFriendsContext } from '../../../context/FriendsContext';
+import {useBookmarkContext} from '../../../context/BookmarkContext';
+import {useFriendsContext} from '../../../context/FriendsContext';
 
 interface Props {
   navigation: any;

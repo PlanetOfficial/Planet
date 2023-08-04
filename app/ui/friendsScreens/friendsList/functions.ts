@@ -4,7 +4,7 @@ import strings from '../../../constants/strings';
 
 import {FriendGroup, UserInfo} from '../../../utils/types';
 import {deleteFG, editFG, reorderFG} from '../../../utils/api/fgAPI';
-import { useFriendsContext } from '../../../context/FriendsContext';
+import {useFriendsContext} from '../../../context/FriendsContext';
 
 export const handleFGReorder = async (data: FriendGroup[]) => {
   const response = await reorderFG(data.map(fg => fg.id));

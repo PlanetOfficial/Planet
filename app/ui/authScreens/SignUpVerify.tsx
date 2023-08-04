@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useState} from 'react';
 import {
   View,
   SafeAreaView,
@@ -20,7 +20,7 @@ import Text from '../components/Text';
 
 import {verifyCode} from '../../utils/api/authAPI';
 import {fetchUserLocation} from '../../utils/Misc';
-import { useLocationContext } from '../../context/LocationContext';
+import {useLocationContext} from '../../context/LocationContext';
 
 const SignUpVerify = ({
   navigation,

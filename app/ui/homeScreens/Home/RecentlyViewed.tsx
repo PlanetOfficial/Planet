@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {View, StyleSheet, TouchableOpacity, useColorScheme} from 'react-native';
 import {s} from 'react-native-size-matters';
 
@@ -10,7 +10,7 @@ import PoiRow from '../../components/PoiRow';
 
 import {Poi, Coordinate} from '../../../utils/types';
 import {handleBookmark} from '../../../utils/Misc';
-import { useBookmarkContext } from '../../../context/BookmarkContext';
+import {useBookmarkContext} from '../../../context/BookmarkContext';
 
 interface Props {
   navigation: any;

@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useContext} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Alert,
   StyleSheet,
@@ -24,7 +24,7 @@ import {
 import {Category, Coordinate, Region} from '../../../utils/types';
 
 import Blur from './Blur';
-import { useLocationContext } from '../../../context/LocationContext';
+import {useLocationContext} from '../../../context/LocationContext';
 
 const SearchMap = ({
   navigation,

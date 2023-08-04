@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {
   View,
   SafeAreaView,
@@ -22,8 +22,8 @@ import Separator from '../../components/Separator';
 import {clearCaches} from '../../../utils/CacheHelpers';
 import {removeAccount} from '../../../utils/api/authAPI';
 
-import { useBookmarkContext } from '../../../context/BookmarkContext';
-import { useFriendsContext } from '../../../context/FriendsContext';
+import {useBookmarkContext} from '../../../context/BookmarkContext';
+import {useFriendsContext} from '../../../context/FriendsContext';
 
 const AccountSettings = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';

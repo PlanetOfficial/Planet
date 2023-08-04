@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useState} from 'react';
 import {
   View,
   FlatList,
@@ -21,7 +21,7 @@ import {UserInfo} from '../../../utils/types';
 
 import Header from './Header';
 import Button from './Button';
-import { useFriendsContext } from '../../../context/FriendsContext';
+import {useFriendsContext} from '../../../context/FriendsContext';
 
 const CreateFG = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';
@@ -134,10 +134,7 @@ const CreateFG = ({navigation}: {navigation: any}) => {
         />
       )}
 
-      <Button
-        navigation={navigation}
-        selectedId={selectedId}
-      />
+      <Button navigation={navigation} selectedId={selectedId} />
     </View>
   );
 };

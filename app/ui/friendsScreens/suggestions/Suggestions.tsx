@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {
   View,
   FlatList,
@@ -17,7 +17,7 @@ import Icon from '../../components/Icon';
 import UserRow from '../../components/UserRow';
 
 import {UserInfo} from '../../../utils/types';
-import { useFriendsContext } from '../../../context/FriendsContext';
+import {useFriendsContext} from '../../../context/FriendsContext';
 
 const Friends = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';

@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef, useContext} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {
   View,
   SafeAreaView,
@@ -21,8 +21,8 @@ import {getPois} from '../../../utils/api/poiAPI';
 import {Poi, Coordinate, Category} from '../../../utils/types';
 
 import Results from './Results';
-import { useBookmarkContext } from '../../../context/BookmarkContext';
-import { useLocationContext } from '../../../context/LocationContext';
+import {useBookmarkContext} from '../../../context/BookmarkContext';
+import {useLocationContext} from '../../../context/LocationContext';
 
 const SearchCategory = ({
   navigation,

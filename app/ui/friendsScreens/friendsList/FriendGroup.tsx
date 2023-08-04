@@ -1,4 +1,4 @@
-import React, {useContext, useMemo} from 'react';
+import React, {useMemo} from 'react';
 import {
   StyleSheet,
   View,
@@ -21,7 +21,7 @@ import {FriendGroup, UserInfo} from '../../../utils/types';
 
 import FGIcon from './FGIcon';
 import {handleFGReorder, resetFGEditing} from './functions';
-import { useFriendsContext } from '../../../context/FriendsContext';
+import {useFriendsContext} from '../../../context/FriendsContext';
 
 interface Props {
   navigation: any;

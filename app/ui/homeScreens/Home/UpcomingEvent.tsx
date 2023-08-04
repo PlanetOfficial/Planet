@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {
   View,
   StyleSheet,
@@ -18,7 +18,7 @@ import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 import PoiCard from '../../components/PoiCard';
 
-import { useBookmarkContext } from '../../../context/BookmarkContext';
+import {useBookmarkContext} from '../../../context/BookmarkContext';
 
 import {Destination, EventDetail, Poi, Suggestion} from '../../../utils/types';
 import {handleBookmark} from '../../../utils/Misc';

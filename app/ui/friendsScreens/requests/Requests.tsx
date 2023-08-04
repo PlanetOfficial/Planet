@@ -1,8 +1,7 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   StyleSheet,
-  Alert,
   TouchableOpacity,
   ScrollView,
   RefreshControl,
@@ -26,7 +25,7 @@ import {
   handleCancelRequest,
   handleDeclineRequest,
 } from './functions';
-import { useFriendsContext } from '../../../context/FriendsContext';
+import {useFriendsContext} from '../../../context/FriendsContext';
 
 const Requests = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';
@@ -40,8 +39,6 @@ const Requests = ({navigation}: {navigation: any}) => {
     setRequestsSent,
     friends,
     setFriends,
-    setUsersIBlock,
-    setUsersBlockingMe,
     refreshFriends,
   } = useFriendsContext();
 

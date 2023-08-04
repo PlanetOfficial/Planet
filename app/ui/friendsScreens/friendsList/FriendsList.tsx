@@ -23,17 +23,14 @@ import {UserInfo} from '../../../utils/types';
 
 import FriendGroupComponent from './FriendGroup';
 import FriendGroupEdit from './FriendGroupEdit';
-import { useFriendsContext } from '../../../context/FriendsContext';
+import {useFriendsContext} from '../../../context/FriendsContext';
 
 const FriendsList = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';
   const STYLES = STYLING(theme);
   StatusBar.setBarStyle(colors[theme].statusBar, true);
 
-  const {
-    friends,
-    refreshFriends,
-  } = useFriendsContext();
+  const {friends, refreshFriends} = useFriendsContext();
 
   const [loading, setLoading] = useState(false);
   const [fgSelected, setFgSelected] = useState<number>(0);

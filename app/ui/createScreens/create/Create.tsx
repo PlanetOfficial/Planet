@@ -1,4 +1,4 @@
-import React, {useCallback, useContext, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -21,7 +21,7 @@ import {Poi, UserInfo} from '../../../utils/types';
 import Header from './Header';
 import SaveButton from './SaveButton';
 import DestinationsList from './DestinationsList';
-import { useBookmarkContext } from '../../../context/BookmarkContext';
+import {useBookmarkContext} from '../../../context/BookmarkContext';
 
 const Create = ({
   navigation,

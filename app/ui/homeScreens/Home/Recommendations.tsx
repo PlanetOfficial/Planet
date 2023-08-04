@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {
   View,
   StyleSheet,
@@ -20,7 +20,7 @@ import PoiCard from '../../components/PoiCard';
 
 import {Coordinate, Poi, Recommendation} from '../../../utils/types';
 import {handleBookmark} from '../../../utils/Misc';
-import { useBookmarkContext } from '../../../context/BookmarkContext';
+import {useBookmarkContext} from '../../../context/BookmarkContext';
 
 interface Props {
   navigation: any;

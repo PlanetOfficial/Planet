@@ -1,10 +1,4 @@
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -34,7 +28,7 @@ import Info from './Info';
 import Reviews from './Reviews';
 import Button from './Button';
 import {fetchUserLocation} from '../../../utils/Misc';
-import { useBookmarkContext } from '../../../context/BookmarkContext';
+import {useBookmarkContext} from '../../../context/BookmarkContext';
 
 const PoiPage = ({
   navigation,

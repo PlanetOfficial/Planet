@@ -8,7 +8,6 @@ import STYLING from '../../../constants/styles';
 
 import Text from '../../components/Text';
 
-import {FriendGroup} from '../../../utils/types';
 import {createFG} from './functions';
 
 interface Props {

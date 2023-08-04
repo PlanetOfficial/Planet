@@ -5,7 +5,7 @@ import strings from '../../../constants/strings';
 import {UserInfo} from '../../../utils/types';
 import {searchUsers} from '../../../utils/api/friendsAPI';
 import {postFG} from '../../../utils/api/fgAPI';
-import { useFriendsContext } from '../../../context/FriendsContext';
+import {useFriendsContext} from '../../../context/FriendsContext';
 
 export const search = async (
   text: string,

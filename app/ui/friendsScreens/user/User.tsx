@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useCallback, useContext} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import {
   View,
   SafeAreaView,
@@ -29,7 +29,7 @@ import ProfileBody from '../../profileScreens/profile/ProfileBody';
 import Profile from './Profile';
 import OptionMenu from '../../components/OptionMenu';
 import {handleBlock, handleReport} from './functions';
-import { useFriendsContext } from '../../../context/FriendsContext';
+import {useFriendsContext} from '../../../context/FriendsContext';
 
 const User = ({
   navigation,

@@ -1,4 +1,4 @@
-import React, {createRef, useContext} from 'react';
+import React, {createRef} from 'react';
 import {
   View,
   SafeAreaView,
@@ -21,7 +21,7 @@ import Text from '../../components/Text';
 
 import {UserInfo} from '../../../utils/types';
 import {search} from '../friends/functions';
-import { useFriendsContext } from '../../../context/FriendsContext';
+import {useFriendsContext} from '../../../context/FriendsContext';
 
 interface Props {
   navigation: any;

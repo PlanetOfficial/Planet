@@ -1,4 +1,4 @@
-import { Coordinate, FriendGroup, Poi, UserInfo } from "../utils/types";
+import {Coordinate, FriendGroup, Poi, UserInfo} from '../utils/types';
 
 export type BookmarkContextType = {
   bookmarks: Poi[];

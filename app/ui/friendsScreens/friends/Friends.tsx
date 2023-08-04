@@ -1,4 +1,4 @@
-import React, {useState, createRef, useEffect, useContext} from 'react';
+import React, {useState, createRef, useEffect} from 'react';
 import {
   View,
   SafeAreaView,
@@ -29,7 +29,7 @@ import {UserInfo} from '../../../utils/types';
 
 import ActionButtons from '../user/ActionButtons';
 import {search} from './functions';
-import { useFriendsContext } from '../../../context/FriendsContext';
+import {useFriendsContext} from '../../../context/FriendsContext';
 
 const Friends = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';

@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useState} from 'react';
 import {
   ActivityIndicator,
   View,
@@ -16,16 +16,15 @@ import messaging from '@react-native-firebase/messaging';
 
 import strings from '../../constants/strings';
 import colors from '../../constants/colors';
-import numbers from '../../constants/numbers';
 
 import Text from '../components/Text';
 
 import {isVerified, login, saveTokenToDatabase} from '../../utils/api/authAPI';
 import {cacheCategories, cacheUserInfo} from '../../utils/CacheHelpers';
 
-import { useFriendsContext } from '../../context/FriendsContext';
-import { useBookmarkContext } from '../../context/BookmarkContext';
-import { useLocationContext } from '../../context/LocationContext';
+import {useFriendsContext} from '../../context/FriendsContext';
+import {useBookmarkContext} from '../../context/BookmarkContext';
+import {useLocationContext} from '../../context/LocationContext';
 
 const LoginScreen = ({navigation}: {navigation: any}) => {
   const theme = 'light';
