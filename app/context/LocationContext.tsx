@@ -23,11 +23,6 @@ const LocationStateProvider = ({
   });
   const [radius, setRadius] = useState<number>(numbers.defaultRadius);
 
-  const locationContext = useMemo(
-    () => ({location, setLocation, radius, setRadius}),
-    [location, radius],
-  );
-
   const initializeLocation = async () => {
     const result = await fetchUserLocation();
     if (result) {
@@ -37,6 +32,11 @@ const LocationStateProvider = ({
       Alert.alert(strings.error.error, strings.error.locationPermission);
     }
   };
+
+  const locationContext = useMemo(
+    () => ({location, setLocation, radius, setRadius, initializeLocation}),
+    [location, radius],
+  );
 
   useEffect(() => {
     if (isLoggedIn) {

@@ -14,10 +14,9 @@ import {createFG} from './functions';
 interface Props {
   navigation: any;
   selectedId: number[];
-  setFriendGroups: (friendGroups: FriendGroup[]) => void;
 }
 
-const Button: React.FC<Props> = ({navigation, selectedId, setFriendGroups}) => {
+const Button: React.FC<Props> = ({navigation, selectedId}) => {
   const theme = useColorScheme() || 'light';
   const STYLES = STYLING(theme);
 
@@ -42,7 +41,7 @@ const Button: React.FC<Props> = ({navigation, selectedId, setFriendGroups}) => {
             {
               text: 'Save',
               onPress: name => {
-                createFG(name, selectedId, setFriendGroups, navigation);
+                createFG(name, selectedId, navigation);
               },
             },
           ],

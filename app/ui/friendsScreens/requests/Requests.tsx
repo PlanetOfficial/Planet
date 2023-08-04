@@ -21,7 +21,6 @@ import Icon from '../../components/Icon';
 import UserRow from '../../components/UserRow';
 
 import {UserInfo} from '../../../utils/types';
-import {getFriends} from '../../../utils/api/friendsAPI';
 import {
   handleAcceptRequest,
   handleCancelRequest,
@@ -43,22 +42,10 @@ const Requests = ({navigation}: {navigation: any}) => {
     setFriends,
     setUsersIBlock,
     setUsersBlockingMe,
+    refreshFriends,
   } = useFriendsContext();
 
   const [loading, setLoading] = useState(false);
-  const loadRequests = async () => {
-    const response = await getFriends();
-
-    if (response) {
-      setFriends(response.friends);
-      setUsersIBlock(response.usersIBlock);
-      setUsersBlockingMe(response.usersBlockingMe);
-      setRequests(response.requests);
-      setRequestsSent(response.requests_sent);
-    } else {
-      Alert.alert(strings.error.error, strings.error.loadFriendRequests);
-    }
-  };
 
   useEffect(() => {
     navigation.setOptions({
@@ -76,7 +63,7 @@ const Requests = ({navigation}: {navigation: any}) => {
           refreshing={loading}
           onRefresh={async () => {
             setLoading(true);
-            await loadRequests();
+            await refreshFriends();
             setLoading(false);
           }}
           tintColor={colors[theme].accent}

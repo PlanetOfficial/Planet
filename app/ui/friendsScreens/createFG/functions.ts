@@ -2,9 +2,10 @@ import {Alert} from 'react-native';
 
 import strings from '../../../constants/strings';
 
-import {FriendGroup, UserInfo} from '../../../utils/types';
-import {getFriends, searchUsers} from '../../../utils/api/friendsAPI';
+import {UserInfo} from '../../../utils/types';
+import {searchUsers} from '../../../utils/api/friendsAPI';
 import {postFG} from '../../../utils/api/fgAPI';
+import { useFriendsContext } from '../../../context/FriendsContext';
 
 export const search = async (
   text: string,
@@ -30,22 +31,9 @@ export const search = async (
   setLoading(false);
 };
 
-const loadFriends = async (
-  setFriendGroups: (friendGroups: FriendGroup[]) => void,
-) => {
-  const response = await getFriends();
-
-  if (response) {
-    setFriendGroups(response.friend_groups);
-  } else {
-    Alert.alert(strings.error.error, strings.error.loadFriendsList);
-  }
-};
-
 export const createFG = async (
   name: string,
   selectedId: number[],
-  setFriendGroups: (friendGroups: FriendGroup[]) => void,
   navigation: any,
 ) => {
   if (name.length === 0) {
@@ -55,7 +43,8 @@ export const createFG = async (
   const response = await postFG(selectedId, name);
 
   if (response) {
-    loadFriends(setFriendGroups);
+    const {refreshFriends} = useFriendsContext();
+    await refreshFriends();
     navigation.goBack();
   } else {
     Alert.alert(strings.error.error, strings.error.createFG);

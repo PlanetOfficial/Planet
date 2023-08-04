@@ -3,6 +3,7 @@ import { Coordinate, FriendGroup, Poi, UserInfo } from "../utils/types";
 export type BookmarkContextType = {
   bookmarks: Poi[];
   setBookmarks: React.Dispatch<React.SetStateAction<Poi[]>>;
+  initializeBookmarks: () => Promise<void>;
 };
 
 export type FriendsContextType = {
@@ -20,6 +21,8 @@ export type FriendsContextType = {
   setUsersIBlock: React.Dispatch<React.SetStateAction<UserInfo[]>>;
   usersBlockingMe: UserInfo[];
   setUsersBlockingMe: React.Dispatch<React.SetStateAction<UserInfo[]>>;
+  initializeFriendsInfo: () => Promise<void>;
+  refreshFriends: () => Promise<void>;
 };
 
 export type LocationContextType = {
@@ -27,4 +30,5 @@ export type LocationContextType = {
   setLocation: React.Dispatch<React.SetStateAction<Coordinate>>;
   radius: number;
   setRadius: React.Dispatch<React.SetStateAction<number>>;
+  initializeLocation: () => Promise<void>;
 };

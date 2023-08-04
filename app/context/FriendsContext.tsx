@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useMemo, createContext, useContext} from 'react';
 import {Alert} from 'react-native';
 import strings from '../constants/strings';
-import {getFriendsInfo} from '../utils/api/friendsAPI';
+import {getFriends, getFriendsInfo} from '../utils/api/friendsAPI';
 import {FriendGroup, UserInfo} from '../utils/types';
 import { FriendsContextType } from './ContextTypes';
 
@@ -22,6 +22,35 @@ const FriendsStateProvider = ({
   const [usersIBlock, setUsersIBlock] = useState<UserInfo[]>([]);
   const [usersBlockingMe, setUsersBlockingMe] = useState<UserInfo[]>([]);
 
+  const initializeFriendsInfo = async () => {
+    const result = await getFriendsInfo();
+    if (result) {
+      setSuggestions(result.suggestions);
+      setFriends(result.friends);
+      setRequests(result.requests);
+      setRequestsSent(result.requests_sent);
+      setFriendGroups(result.friend_groups);
+      setUsersIBlock(result.usersIBlock);
+      setUsersBlockingMe(result.usersBlockingMe);
+    } else {
+      Alert.alert(strings.error.error, strings.error.loadFriendsList);
+    }
+  };
+
+  const refreshFriends = async () => {
+    const result = await getFriends();
+    if (result) {
+      setFriends(result.friends);
+      setFriendGroups(result.friend_groups);
+      setUsersIBlock(result.usersIBlock);
+      setUsersBlockingMe(result.usersBlockingMe);
+      setRequests(result.requests);
+      setRequestsSent(result.requests_sent);
+    } else {
+      Alert.alert(strings.error.error, strings.error.loadFriendsList);
+    }
+  };
+
   const friendsContext = useMemo(
     () => ({
       suggestions,
@@ -38,6 +67,8 @@ const FriendsStateProvider = ({
       setUsersIBlock,
       usersBlockingMe,
       setUsersBlockingMe,
+      initializeFriendsInfo,
+      refreshFriends,
     }),
     [
       suggestions,
@@ -49,21 +80,6 @@ const FriendsStateProvider = ({
       usersBlockingMe,
     ],
   );
-
-  const initializeFriendsInfo = async () => {
-    const result = await getFriendsInfo();
-    if (result) {
-      setSuggestions(result.suggestions);
-      setFriends(result.friends);
-      setRequests(result.requests);
-      setRequestsSent(result.requests_sent);
-      setFriendGroups(result.friend_groups);
-      setUsersIBlock(result.usersIBlock);
-      setUsersBlockingMe(result.usersBlockingMe);
-    } else {
-      Alert.alert(strings.error.error, strings.error.loadFriendsList);
-    }
-  };
 
   useEffect(() => {
     if (isLoggedIn) {

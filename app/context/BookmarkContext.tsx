@@ -17,10 +17,6 @@ const BookmarkStateProvider = ({
   isLoggedIn: boolean;
 }) => {
   const [bookmarks, setBookmarks] = useState<Poi[]>([]);
-  const bookmarkContext = useMemo(
-    () => ({bookmarks, setBookmarks}),
-    [bookmarks],
-  );
 
   const initializeBookmarks = async () => {
     const result = await getBookmarks();
@@ -30,6 +26,11 @@ const BookmarkStateProvider = ({
       Alert.alert(strings.error.error, strings.error.loadBookmarks);
     }
   };
+
+  const bookmarkContext = useMemo(
+    () => ({bookmarks, setBookmarks, initializeBookmarks}),
+    [bookmarks],
+  );
 
   useEffect(() => {
     if (isLoggedIn) {

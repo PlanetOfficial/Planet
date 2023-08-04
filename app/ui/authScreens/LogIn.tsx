@@ -22,9 +22,6 @@ import Text from '../components/Text';
 
 import {isVerified, login, saveTokenToDatabase} from '../../utils/api/authAPI';
 import {cacheCategories, cacheUserInfo} from '../../utils/CacheHelpers';
-import {getFriendsInfo} from '../../utils/api/friendsAPI';
-import {getBookmarks} from '../../utils/api/bookmarkAPI';
-import {fetchUserLocation} from '../../utils/Misc';
 
 import { useFriendsContext } from '../../context/FriendsContext';
 import { useBookmarkContext } from '../../context/BookmarkContext';
@@ -41,46 +38,14 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
 
-  const {setBookmarks} = useBookmarkContext();
-
-  const {
-    setRequests,
-    setRequestsSent,
-    setFriends,
-    setSuggestions,
-    setFriendGroups,
-    setUsersIBlock,
-    setUsersBlockingMe,
-  } = useFriendsContext();
-
-  const {setLocation, setRadius} = useLocationContext();
+  const {initializeBookmarks} = useBookmarkContext();
+  const {initializeFriendsInfo} = useFriendsContext();
+  const {initializeLocation} = useLocationContext();
 
   const initializeContext = async () => {
-    const _bookmarks = await getBookmarks();
-    if (_bookmarks) {
-      setBookmarks(_bookmarks);
-    } else {
-      Alert.alert(strings.error.error, strings.error.loadBookmarks);
-    }
-
-    const result = await getFriendsInfo();
-    if (result) {
-      setSuggestions(result.suggestions);
-      setFriends(result.friends);
-      setRequests(result.requests);
-      setRequestsSent(result.requests_sent);
-      setFriendGroups(result.friend_groups);
-      setUsersIBlock(result.usersIBlock);
-      setUsersBlockingMe(result.usersBlockingMe);
-    } else {
-      Alert.alert(strings.error.error, strings.error.loadFriendsList);
-    }
-
-    const locationResult = await fetchUserLocation();
-    if (locationResult) {
-      setLocation(locationResult);
-      setRadius(numbers.defaultRadius);
-    }
+    await initializeBookmarks();
+    await initializeFriendsInfo();
+    await initializeLocation();
   };
 
   const handleLogin = async () => {
@@ -119,7 +84,7 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
 
       await cacheCategories();
 
-      initializeContext();
+      await initializeContext();
 
       // save to firebase
       const fcm_token = await messaging().getToken();
