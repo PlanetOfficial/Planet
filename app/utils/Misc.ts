@@ -7,7 +7,10 @@ import strings from '../constants/strings';
 
 import {Coordinate, Poi} from './types';
 import {bookmark} from './api/bookmarkAPI';
-import { StackCardInterpolatedStyle, StackCardInterpolationProps } from '@react-navigation/stack';
+import {
+  StackCardInterpolatedStyle,
+  StackCardInterpolationProps,
+} from '@react-navigation/stack';
 
 /*
   Given a point and the longitudeDelta, calculate the radius of the circle (the

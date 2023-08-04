@@ -1,9 +1,7 @@
 import React from 'react';
 import {useColorScheme} from 'react-native';
 import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
-import {
-  createStackNavigator,
-} from '@react-navigation/stack';
+import {createStackNavigator} from '@react-navigation/stack';
 import {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 
 import NavBar from './NavBar';
@@ -47,7 +45,7 @@ import {LocationStateProvider} from '../../context/LocationContext';
 
 import RootStackParamList from './RootStackParamList';
 import colors from '../../constants/colors';
-import { verticalAnimation } from '../../utils/Misc';
+import {verticalAnimation} from '../../utils/Misc';
 
 interface AppNavigationProps {
   isLoggedInStack: boolean;
