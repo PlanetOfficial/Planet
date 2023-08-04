@@ -4,7 +4,7 @@ import strings from '../../../constants/strings';
 
 import {FriendGroup, UserInfo} from '../../../utils/types';
 import {deleteFG, editFG, reorderFG} from '../../../utils/api/fgAPI';
-import {useFriendsContext} from '../../../context/FriendsContext';
+import {getFriends} from '../../../utils/api/friendsAPI';
 
 export const handleFGReorder = async (data: FriendGroup[]) => {
   const response = await reorderFG(data.map(fg => fg.id));
@@ -41,6 +41,12 @@ export const saveFGEditing = async (
   tempName: string | undefined,
   tempMembers: UserInfo[] | undefined,
   setFgEditing: (fgEditing: boolean) => void,
+  setFriends: (friends: UserInfo[]) => void,
+  setFriendGroups: (friendGroups: FriendGroup[]) => void,
+  setUsersIBlock: (usersIBlock: UserInfo[]) => void,
+  setUsersBlockingMe: (usersBlockingMe: UserInfo[]) => void,
+  setRequests: (requests: UserInfo[]) => void,
+  setRequestsSent: (requestsSent: UserInfo[]) => void,
 ) => {
   LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
 
@@ -56,8 +62,14 @@ export const saveFGEditing = async (
 
   if (response) {
     setFgEditing(false);
-    const {refreshFriends} = useFriendsContext();
-    await refreshFriends();
+    loadFriends(
+      setFriends,
+      setFriendGroups,
+      setUsersIBlock,
+      setUsersBlockingMe,
+      setRequests,
+      setRequestsSent,
+    );
   } else {
     Alert.alert(strings.error.error, strings.error.editFGName);
   }
@@ -69,6 +81,12 @@ export const handleRemoveFG = async (
   setFgEditing: (fgEditing: boolean) => void,
   setTempName: (tempName: string | undefined) => void,
   setTempMembers: (tempMembers: UserInfo[] | undefined) => void,
+  setFriends: (friends: UserInfo[]) => void,
+  setFriendGroups: (friendGroups: FriendGroup[]) => void,
+  setUsersIBlock: (usersIBlock: UserInfo[]) => void,
+  setUsersBlockingMe: (usersBlockingMe: UserInfo[]) => void,
+  setRequests: (requests: UserInfo[]) => void,
+  setRequestsSent: (requestsSent: UserInfo[]) => void,
 ) => {
   const response = await deleteFG(fgSelected);
 
@@ -76,9 +94,37 @@ export const handleRemoveFG = async (
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     setFgSelected(0);
     resetFGEditing(setFgEditing, setTempName, setTempMembers);
-    const {refreshFriends} = useFriendsContext();
-    await refreshFriends();
+    loadFriends(
+      setFriends,
+      setFriendGroups,
+      setUsersIBlock,
+      setUsersBlockingMe,
+      setRequests,
+      setRequestsSent,
+    );
   } else {
     Alert.alert(strings.error.error, strings.error.deleteFG);
+  }
+};
+
+const loadFriends = async (
+  setFriends: (friends: UserInfo[]) => void,
+  setFriendGroups: (friendGroups: FriendGroup[]) => void,
+  setUsersIBlock: (usersIBlock: UserInfo[]) => void,
+  setUsersBlockingMe: (usersBlockingMe: UserInfo[]) => void,
+  setRequests: (requests: UserInfo[]) => void,
+  setRequestsSent: (requestsSent: UserInfo[]) => void,
+) => {
+  const response = await getFriends();
+
+  if (response) {
+    setFriends(response.friends);
+    setFriendGroups(response.friend_groups);
+    setUsersIBlock(response.usersIBlock);
+    setUsersBlockingMe(response.usersBlockingMe);
+    setRequests(response.requests);
+    setRequestsSent(response.requests_sent);
+  } else {
+    Alert.alert(strings.error.error, strings.error.loadFriendsList);
   }
 };

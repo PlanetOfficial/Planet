@@ -50,7 +50,15 @@ const FriendGroupEdit: React.FC<Props> = ({
   const styles = styling(theme);
   const STYLES = STYLING(theme);
 
-  const {friendGroups} = useFriendsContext();
+  const {
+    friendGroups,
+    setFriends,
+    setFriendGroups,
+    setUsersIBlock,
+    setUsersBlockingMe,
+    setRequests,
+    setRequestsSent,
+  } = useFriendsContext();
 
   return (
     <>
@@ -81,7 +89,18 @@ const FriendGroupEdit: React.FC<Props> = ({
           <TouchableOpacity
             onPress={() => {
               if (fgEditing) {
-                saveFGEditing(fgSelected, tempName, tempMembers, setFgEditing);
+                saveFGEditing(
+                  fgSelected,
+                  tempName,
+                  tempMembers,
+                  setFgEditing,
+                  setFriends,
+                  setFriendGroups,
+                  setUsersIBlock,
+                  setUsersBlockingMe,
+                  setRequests,
+                  setRequestsSent,
+                );
               } else {
                 beginFGEditing(
                   friendGroups,
@@ -114,6 +133,12 @@ const FriendGroupEdit: React.FC<Props> = ({
                           setFgEditing,
                           setTempName,
                           setTempMembers,
+                          setFriends,
+                          setFriendGroups,
+                          setUsersIBlock,
+                          setUsersBlockingMe,
+                          setRequests,
+                          setRequestsSent,
                         ),
                       style: 'destructive',
                     },

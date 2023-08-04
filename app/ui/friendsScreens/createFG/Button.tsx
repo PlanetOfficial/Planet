@@ -9,13 +9,15 @@ import STYLING from '../../../constants/styles';
 import Text from '../../components/Text';
 
 import {createFG} from './functions';
+import {FriendGroup} from '../../../utils/types';
 
 interface Props {
   navigation: any;
   selectedId: number[];
+  setFriendGroups: (friendGroups: FriendGroup[]) => void;
 }
 
-const Button: React.FC<Props> = ({navigation, selectedId}) => {
+const Button: React.FC<Props> = ({navigation, selectedId, setFriendGroups}) => {
   const theme = useColorScheme() || 'light';
   const STYLES = STYLING(theme);
 
@@ -40,7 +42,7 @@ const Button: React.FC<Props> = ({navigation, selectedId}) => {
             {
               text: 'Save',
               onPress: name => {
-                createFG(name, selectedId, navigation);
+                createFG(name, selectedId, setFriendGroups, navigation);
               },
             },
           ],

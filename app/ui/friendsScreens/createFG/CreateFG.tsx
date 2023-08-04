@@ -28,7 +28,7 @@ const CreateFG = ({navigation}: {navigation: any}) => {
   const STYLES = STYLING(theme);
   StatusBar.setBarStyle(colors[theme].statusBar, true);
 
-  const {friends} = useFriendsContext();
+  const {friends, setFriendGroups} = useFriendsContext();
 
   const [selectedId, setSelectedId] = useState<number[]>([]);
 
@@ -134,7 +134,11 @@ const CreateFG = ({navigation}: {navigation: any}) => {
         />
       )}
 
-      <Button navigation={navigation} selectedId={selectedId} />
+      <Button
+        navigation={navigation}
+        selectedId={selectedId}
+        setFriendGroups={setFriendGroups}
+      />
     </View>
   );
 };
