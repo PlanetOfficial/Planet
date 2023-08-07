@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useState} from 'react';
 import {
   ActivityIndicator,
   View,
@@ -16,19 +16,15 @@ import messaging from '@react-native-firebase/messaging';
 
 import strings from '../../constants/strings';
 import colors from '../../constants/colors';
-import numbers from '../../constants/numbers';
 
 import Text from '../components/Text';
 
 import {isVerified, login, saveTokenToDatabase} from '../../utils/api/authAPI';
 import {cacheCategories, cacheUserInfo} from '../../utils/CacheHelpers';
-import {getFriendsInfo} from '../../utils/api/friendsAPI';
-import {getBookmarks} from '../../utils/api/bookmarkAPI';
-import {fetchUserLocation} from '../../utils/Misc';
 
-import BookmarkContext from '../../context/BookmarkContext';
-import FriendsContext from '../../context/FriendsContext';
-import LocationContext from '../../context/LocationContext';
+import {useFriendsContext} from '../../context/FriendsContext';
+import {useBookmarkContext} from '../../context/BookmarkContext';
+import {useLocationContext} from '../../context/LocationContext';
 
 const LoginScreen = ({navigation}: {navigation: any}) => {
   const theme = 'light';
@@ -41,58 +37,14 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
 
-  const bookmarkContext = useContext(BookmarkContext);
-  if (!bookmarkContext) {
-    throw new Error('BookmarkContext is not set!');
-  }
-  const {setBookmarks} = bookmarkContext;
-
-  const friendsContext = useContext(FriendsContext);
-  if (!friendsContext) {
-    throw new Error('FriendsContext is not set!');
-  }
-  const {
-    setRequests,
-    setRequestsSent,
-    setFriends,
-    setSuggestions,
-    setFriendGroups,
-    setUsersIBlock,
-    setUsersBlockingMe,
-  } = friendsContext;
-
-  const locationContext = useContext(LocationContext);
-  if (!locationContext) {
-    throw new Error('LocationContext is not set!');
-  }
-  const {setLocation, setRadius} = locationContext;
+  const {initializeBookmarks} = useBookmarkContext();
+  const {initializeFriendsInfo} = useFriendsContext();
+  const {initializeLocation} = useLocationContext();
 
   const initializeContext = async () => {
-    const _bookmarks = await getBookmarks();
-    if (_bookmarks) {
-      setBookmarks(_bookmarks);
-    } else {
-      Alert.alert(strings.error.error, strings.error.loadBookmarks);
-    }
-
-    const result = await getFriendsInfo();
-    if (result) {
-      setSuggestions(result.suggestions);
-      setFriends(result.friends);
-      setRequests(result.requests);
-      setRequestsSent(result.requests_sent);
-      setFriendGroups(result.friend_groups);
-      setUsersIBlock(result.usersIBlock);
-      setUsersBlockingMe(result.usersBlockingMe);
-    } else {
-      Alert.alert(strings.error.error, strings.error.loadFriendsList);
-    }
-
-    const locationResult = await fetchUserLocation();
-    if (locationResult) {
-      setLocation(locationResult);
-      setRadius(numbers.defaultRadius);
-    }
+    await initializeBookmarks();
+    await initializeFriendsInfo();
+    await initializeLocation();
   };
 
   const handleLogin = async () => {
@@ -132,7 +84,7 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
 
       await cacheCategories();
 
-      initializeContext();
+      await initializeContext();
 
       // save to firebase
       const fcm_token = await messaging().getToken();

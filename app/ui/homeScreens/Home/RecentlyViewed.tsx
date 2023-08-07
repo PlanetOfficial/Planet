@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {View, StyleSheet, TouchableOpacity, useColorScheme} from 'react-native';
 import {s} from 'react-native-size-matters';
 
@@ -8,10 +8,9 @@ import strings from '../../../constants/strings';
 import Text from '../../components/Text';
 import PoiRow from '../../components/PoiRow';
 
-import BookmarkContext from '../../../context/BookmarkContext';
-
 import {Poi, Coordinate} from '../../../utils/types';
 import {handleBookmark} from '../../../utils/Misc';
+import {useBookmarkContext} from '../../../context/BookmarkContext';
 
 interface Props {
   navigation: any;
@@ -27,11 +26,7 @@ const RecentlyViewed: React.FC<Props> = ({
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
 
-  const bookmarkContext = useContext(BookmarkContext);
-  if (!bookmarkContext) {
-    throw new Error('BookmarkContext is not set!');
-  }
-  const {bookmarks, setBookmarks} = bookmarkContext;
+  const {bookmarks, setBookmarks} = useBookmarkContext();
 
   return (
     <>

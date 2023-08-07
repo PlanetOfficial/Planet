@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useContext} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Alert,
   StyleSheet,
@@ -17,8 +17,6 @@ import numbers from '../../../constants/numbers';
 
 import Text from '../../components/Text';
 
-import LocationContext from '../../../context/LocationContext';
-
 import {
   calculateRadius,
   getRegionFromPointAndDistance,
@@ -26,6 +24,7 @@ import {
 import {Category, Coordinate, Region} from '../../../utils/types';
 
 import Blur from './Blur';
+import {useLocationContext} from '../../../context/LocationContext';
 
 const SearchMap = ({
   navigation,
@@ -45,11 +44,7 @@ const SearchMap = ({
 
   const {mode, myLocation, category} = route.params;
 
-  const locationContext = useContext(LocationContext);
-  if (!locationContext) {
-    throw new Error('LocationContext is not set!');
-  }
-  const {location, setLocation, radius, setRadius} = locationContext;
+  const {location, setLocation, radius, setRadius} = useLocationContext();
 
   const [region, setRegion] = useState<Region>(
     getRegionFromPointAndDistance(location, radius),

@@ -1,11 +1,9 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, useColorScheme, StatusBar} from 'react-native';
 import EncryptedStorage from 'react-native-encrypted-storage';
 
 import colors from '../../../constants/colors';
 import STYLING from '../../../constants/styles';
-
-import FriendsContext from '../../../context/FriendsContext';
 
 import {UserInfo} from '../../../utils/types';
 
@@ -40,11 +38,6 @@ const AddFriend = ({
   const [searchResults, setSearchResults] = useState<UserInfo[]>([]);
   const [searching, setSearching] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-
-  const friendsContext = useContext(FriendsContext);
-  if (!friendsContext) {
-    throw new Error('FriendsContext is not set!');
-  }
 
   const [fgSelected, setFgSelected] = useState<number>(0);
 
