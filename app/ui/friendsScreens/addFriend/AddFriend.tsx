@@ -40,7 +40,6 @@ const AddFriend = ({
   const [searching, setSearching] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
 
-
   const {friends} = useFriendsContext();
 
   const [fgSelected, setFgSelected] = useState<number>(0);
