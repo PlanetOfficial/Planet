@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {StyleSheet, useColorScheme} from 'react-native';
 import {s} from 'react-native-size-matters';
 import {TouchableOpacity} from 'react-native-gesture-handler';
@@ -9,7 +9,6 @@ import strings from '../../../constants/strings';
 import Text from '../../components/Text';
 
 import {UserInfo} from '../../../utils/types';
-import FriendsContext from '../../../context/FriendsContext';
 import {
   handleAcceptRequest,
   handleCancelRequest,
@@ -18,6 +17,7 @@ import {
   handleUnblock,
   handleUnfriend,
 } from './functions';
+import {useFriendsContext} from '../../../context/FriendsContext';
 
 interface Props {
   user: UserInfo;
@@ -26,10 +26,6 @@ interface Props {
 const ActionButtons: React.FC<Props> = ({user}) => {
   const theme = useColorScheme() || 'light';
 
-  const friendsContext = useContext(FriendsContext);
-  if (!friendsContext) {
-    throw new Error('FriendsContext is not set!');
-  }
   const {
     friends,
     setFriends,
@@ -40,7 +36,7 @@ const ActionButtons: React.FC<Props> = ({user}) => {
     usersIBlock,
     setUsersIBlock,
     usersBlockingMe,
-  } = friendsContext;
+  } = useFriendsContext();
 
   return friends.some(friend => friend.id === user.id) ? (
     <TouchableOpacity

@@ -1,10 +1,4 @@
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -24,8 +18,6 @@ import STYLING from '../../../constants/styles';
 import Icon from '../../components/Icon';
 import Text from '../../components/Text';
 
-import BookmarkContext from '../../../context/BookmarkContext';
-
 import {Coordinate, Poi, PoiDetail} from '../../../utils/types';
 import {getPoi, postPoi} from '../../../utils/api/poiAPI';
 
@@ -36,6 +28,7 @@ import Info from './Info';
 import Reviews from './Reviews';
 import Button from './Button';
 import {fetchUserLocation} from '../../../utils/Misc';
+import {useBookmarkContext} from '../../../context/BookmarkContext';
 
 const PoiPage = ({
   navigation,
@@ -61,11 +54,7 @@ const PoiPage = ({
     route.params.mode,
   );
 
-  const bookmarkContext = useContext(BookmarkContext);
-  if (!bookmarkContext) {
-    throw new Error('BookmarkContext is not set!');
-  }
-  const {bookmarks, setBookmarks} = bookmarkContext;
+  const {bookmarks, setBookmarks} = useBookmarkContext();
 
   const [location, setLocation] = useState<Coordinate>();
 

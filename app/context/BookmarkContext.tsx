@@ -1,13 +1,62 @@
-import {createContext} from 'react';
+import React, {
+  useState,
+  useEffect,
+  useMemo,
+  useContext,
+  createContext,
+} from 'react';
+import {Alert} from 'react-native';
+import strings from '../constants/strings';
+import {getBookmarks} from '../utils/api/bookmarkAPI';
 import {Poi} from '../utils/types';
-
-type BookmarkContextType = {
-  bookmarks: Poi[];
-  setBookmarks: React.Dispatch<React.SetStateAction<Poi[]>>;
-};
+import {BookmarkContextType} from './ContextTypes';
 
 const BookmarkContext = createContext<BookmarkContextType | undefined>(
   undefined,
 );
 
-export default BookmarkContext;
+const BookmarkStateProvider = ({
+  children,
+  isLoggedIn,
+}: {
+  children: React.ReactNode;
+  isLoggedIn: boolean;
+}) => {
+  const [bookmarks, setBookmarks] = useState<Poi[]>([]);
+
+  const initializeBookmarks = async () => {
+    const result = await getBookmarks();
+    if (result) {
+      setBookmarks(result);
+    } else {
+      Alert.alert(strings.error.error, strings.error.loadBookmarks);
+    }
+  };
+
+  const bookmarkContext = useMemo(
+    () => ({bookmarks, setBookmarks, initializeBookmarks}),
+    [bookmarks],
+  );
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      initializeBookmarks();
+    }
+  }, [isLoggedIn]);
+
+  return (
+    <BookmarkContext.Provider value={bookmarkContext}>
+      {children}
+    </BookmarkContext.Provider>
+  );
+};
+
+const useBookmarkContext = () => {
+  const context = useContext(BookmarkContext);
+  if (!context) {
+    throw new Error('BookmarkContext is not set!');
+  }
+  return context;
+};
+
+export {useBookmarkContext, BookmarkStateProvider};

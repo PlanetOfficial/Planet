@@ -1,4 +1,4 @@
-import React, {useState, createRef, useEffect, useContext} from 'react';
+import React, {useState, createRef, useEffect} from 'react';
 import {
   View,
   SafeAreaView,
@@ -25,12 +25,11 @@ import Icon from '../../components/Icon';
 import Text from '../../components/Text';
 import UserRow from '../../components/UserRow';
 
-import FriendsContext from '../../../context/FriendsContext';
-
 import {UserInfo} from '../../../utils/types';
 
 import ActionButtons from '../user/ActionButtons';
 import {search} from './functions';
+import {useFriendsContext} from '../../../context/FriendsContext';
 
 const Friends = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';
@@ -46,11 +45,7 @@ const Friends = ({navigation}: {navigation: any}) => {
   const [searching, setSearching] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const friendsContext = useContext(FriendsContext);
-  if (!friendsContext) {
-    throw new Error('FriendsContext is not set!');
-  }
-  const {friends, usersBlockingMe} = friendsContext;
+  const {friends, usersBlockingMe} = useFriendsContext();
 
   const loadSelf = async () => {
     const myUserId = await EncryptedStorage.getItem('user_id');
