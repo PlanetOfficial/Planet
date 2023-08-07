@@ -8,11 +8,11 @@ import {
   LayoutAnimation,
   useColorScheme,
   StatusBar,
-  SectionList,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import EncryptedStorage from 'react-native-encrypted-storage';
+import {KeyboardAwareSectionList} from 'react-native-keyboard-aware-scroll-view';
 
 import FriendsNavBar from '../../navigations/FriendsNavBar';
 
@@ -129,7 +129,7 @@ const Friends = ({navigation}: {navigation: any}) => {
             <ActivityIndicator size="small" color={colors[theme].accent} />
           </View>
         ) : (
-          <SectionList
+          <KeyboardAwareSectionList
             sections={
               searchResults.length > 0
                 ? [

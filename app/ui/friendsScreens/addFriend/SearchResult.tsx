@@ -1,6 +1,7 @@
 import React from 'react';
-import {View, FlatList, ActivityIndicator, useColorScheme} from 'react-native';
+import {View, ActivityIndicator, useColorScheme} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import {KeyboardAwareSectionList} from 'react-native-keyboard-aware-scroll-view';
 
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
@@ -16,6 +17,7 @@ import {UserInfo} from '../../../utils/types';
 interface Props {
   searchText: string;
   searchResults: UserInfo[];
+  friends: UserInfo[];
   members: UserInfo[];
   invitees: UserInfo[];
   setInvitees: (invitees: UserInfo[]) => void;
@@ -25,6 +27,7 @@ interface Props {
 const SearchResult: React.FC<Props> = ({
   searchText,
   searchResults,
+  friends,
   members,
   invitees,
   setInvitees,
@@ -38,12 +41,31 @@ const SearchResult: React.FC<Props> = ({
       <ActivityIndicator size="small" color={colors[theme].accent} />
     </View>
   ) : (
-    <FlatList
+    <KeyboardAwareSectionList
+      sections={
+        searchResults.length > 0
+          ? [
+              {
+                title: strings.friends.friends,
+                data: searchResults.filter(user =>
+                  friends.some(friend => friend.id === user.id),
+                ),
+              },
+              {
+                title: strings.friends.users,
+                data: searchResults.filter(
+                  user => !friends.some(friend => friend.id === user.id),
+                ),
+              },
+            ]
+          : []
+      }
       style={STYLES.container}
       contentContainerStyle={STYLES.flatList}
+      initialNumToRender={10}
+      keyboardShouldPersistTaps={'always'}
       scrollIndicatorInsets={{right: 1}}
       data={searchResults}
-      keyExtractor={item => item.id.toString()}
       renderItem={({item}: {item: UserInfo}) => (
         <TouchableOpacity
           disabled={members.some(user => user.id === item.id)}
@@ -71,6 +93,13 @@ const SearchResult: React.FC<Props> = ({
           </UserRow>
         </TouchableOpacity>
       )}
+      renderSectionHeader={({section}) =>
+        section.data.length > 0 ? (
+          <View style={STYLES.sectionHeader}>
+            <Text size="s">{section.title}</Text>
+          </View>
+        ) : null
+      }
       ListEmptyComponent={
         searchText.length > 0 ? (
           <View style={STYLES.center}>
@@ -78,6 +107,7 @@ const SearchResult: React.FC<Props> = ({
           </View>
         ) : null
       }
+      keyExtractor={user => user.id.toString()}
     />
   );
 };

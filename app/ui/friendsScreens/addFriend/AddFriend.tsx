@@ -45,6 +45,7 @@ const AddFriend = ({
   if (!friendsContext) {
     throw new Error('FriendsContext is not set!');
   }
+  const {friends} = friendsContext;
 
   const [fgSelected, setFgSelected] = useState<number>(0);
 
@@ -88,6 +89,7 @@ const AddFriend = ({
         <SearchResult
           searchText={searchText}
           searchResults={searchResults}
+          friends={friends}
           members={members}
           invitees={invitees}
           setInvitees={setInvitees}
