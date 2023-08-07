@@ -5,6 +5,7 @@ import {
   useColorScheme,
   StatusBar,
   ActivityIndicator,
+  Keyboard,
 } from 'react-native';
 import {TouchableOpacity as TouchableOpacityGestureHandler} from 'react-native-gesture-handler';
 
@@ -63,6 +64,7 @@ const CreateFG = ({navigation}: {navigation: any}) => {
             contentContainerStyle={STYLES.flatList}
             scrollIndicatorInsets={{right: 1}}
             data={searchResults}
+            onScrollBeginDrag={() => Keyboard.dismiss()}
             keyExtractor={item => item.id.toString()}
             renderItem={({item}: {item: UserInfo}) => (
               <TouchableOpacityGestureHandler

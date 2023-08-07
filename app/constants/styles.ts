@@ -10,6 +10,7 @@ const styling = (theme: 'light' | 'dark') =>
     },
     flatList: {
       paddingTop: s(10),
+      paddingBottom: s(30),
     },
     scrollView: {
       paddingBottom: s(30),

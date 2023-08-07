@@ -1,7 +1,12 @@
 import React from 'react';
-import {View, ActivityIndicator, useColorScheme} from 'react-native';
+import {
+  View,
+  ActivityIndicator,
+  useColorScheme,
+  SectionList,
+  Keyboard,
+} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {KeyboardAwareSectionList} from 'react-native-keyboard-aware-scroll-view';
 
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
@@ -41,7 +46,7 @@ const SearchResult: React.FC<Props> = ({
       <ActivityIndicator size="small" color={colors[theme].accent} />
     </View>
   ) : (
-    <KeyboardAwareSectionList
+    <SectionList
       sections={
         searchResults.length > 0
           ? [
@@ -63,6 +68,7 @@ const SearchResult: React.FC<Props> = ({
       style={STYLES.container}
       contentContainerStyle={STYLES.flatList}
       initialNumToRender={10}
+      onScrollBeginDrag={() => Keyboard.dismiss()}
       keyboardShouldPersistTaps={'always'}
       scrollIndicatorInsets={{right: 1}}
       data={searchResults}

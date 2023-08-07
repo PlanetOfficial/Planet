@@ -8,11 +8,12 @@ import {
   LayoutAnimation,
   useColorScheme,
   StatusBar,
+  SectionList,
+  Keyboard,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import EncryptedStorage from 'react-native-encrypted-storage';
-import {KeyboardAwareSectionList} from 'react-native-keyboard-aware-scroll-view';
 
 import FriendsNavBar from '../../navigations/FriendsNavBar';
 
@@ -89,7 +90,6 @@ const Friends = ({navigation}: {navigation: any}) => {
                 );
                 setSearching(true);
               }}
-              onBlur={() => setSearching(false)}
               onChangeText={text =>
                 search(
                   text,
@@ -124,7 +124,7 @@ const Friends = ({navigation}: {navigation: any}) => {
             <ActivityIndicator size="small" color={colors[theme].accent} />
           </View>
         ) : (
-          <KeyboardAwareSectionList
+          <SectionList
             sections={
               searchResults.length > 0
                 ? [
@@ -143,6 +143,7 @@ const Friends = ({navigation}: {navigation: any}) => {
                   ]
                 : []
             }
+            onScrollBeginDrag={() => Keyboard.dismiss()}
             style={STYLES.container}
             contentContainerStyle={STYLES.flatList}
             initialNumToRender={10}

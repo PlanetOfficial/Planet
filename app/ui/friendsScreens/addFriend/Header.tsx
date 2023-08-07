@@ -103,7 +103,6 @@ const Header: React.FC<Props> = ({
               );
               setSearching(true);
             }}
-            onBlur={() => setSearching(false)}
             onChangeText={text =>
               search(
                 text,
