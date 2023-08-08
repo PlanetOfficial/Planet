@@ -6,6 +6,7 @@ import {
   TextInput,
   StyleSheet,
   StatusBar,
+  ActivityIndicator,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 
@@ -46,11 +47,15 @@ const SignUpVerify = ({
 
   const {setLocation, setRadius} = useLocationContext();
 
+  const [loading, setLoading] = useState<boolean>(false);
+
   const handleVerifyCode = async () => {
+    setLoading(true);
     setError('');
 
     if (code.length === 0) {
       setError(strings.signUp.missingFields);
+      setLoading(false);
       return;
     }
 
@@ -69,6 +74,7 @@ const SignUpVerify = ({
       });
     } else {
       setError(strings.signUp.codeVerifyFailed);
+      setLoading(false);
     }
   };
 
@@ -117,11 +123,15 @@ const SignUpVerify = ({
                 : colors[theme].accent,
           },
         ]}
-        disabled={code.length !== 6}
+        disabled={code.length !== 6 || loading}
         onPress={() => handleVerifyCode()}>
-        <Text weight="b" color={colors[theme].primary}>
-          {strings.signUp.verifyCode}
-        </Text>
+        {loading ? (
+          <ActivityIndicator size="small" color={colors[theme].primary} />
+        ) : (
+          <Text weight="b" color={colors[theme].primary}>
+            {strings.signUp.verifyCode}
+          </Text>
+        )}
       </TouchableOpacity>
     </View>
   );

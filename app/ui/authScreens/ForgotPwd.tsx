@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   StatusBar,
+  ActivityIndicator,
 } from 'react-native';
 
 import colors from '../../constants/colors';
@@ -27,11 +28,16 @@ const ForgotPwd = ({navigation}: {navigation: any}) => {
 
   const [error, setError] = useState<string>('');
 
+  const [loading, setLoading] = useState<boolean>(false);
+
   const handleNext = async () => {
+    setLoading(true);
+
     setError('');
 
     if (username.length === 0) {
       setError(strings.signUp.missingFields);
+      setLoading(false);
       return;
     }
 
@@ -42,6 +48,7 @@ const ForgotPwd = ({navigation}: {navigation: any}) => {
     } else {
       // made the error ambiguous so the user can't guess if the username exists or not
       Alert.alert(strings.error.error, strings.error.ambiguousError);
+      setLoading(false);
     }
   };
 
@@ -84,11 +91,15 @@ const ForgotPwd = ({navigation}: {navigation: any}) => {
                 : colors[theme].accent,
           },
         ]}
-        disabled={username.length === 0}
+        disabled={username.length === 0 || loading}
         onPress={handleNext}>
-        <Text weight="b" color={colors[theme].primary}>
-          {strings.main.next}
-        </Text>
+        {loading ? (
+          <ActivityIndicator size="small" color={colors[theme].primary} />
+        ) : (
+          <Text weight="b" color={colors[theme].primary}>
+            {strings.main.next}
+          </Text>
+        )}
       </TouchableOpacity>
     </View>
   );

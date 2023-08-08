@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   StatusBar,
   StyleSheet,
+  ActivityIndicator,
 } from 'react-native';
 import PhoneInput from 'react-native-phone-number-input';
 import {s} from 'react-native-size-matters';
@@ -38,11 +39,15 @@ const SignUpPhone = ({
 
   const [error, setError] = useState<string>('');
 
+  const [loading, setLoading] = useState<boolean>(false);
+
   const handleSendCode = async () => {
+    setLoading(true);
     setError('');
 
     if (phoneNumber === '' || phoneNumber.length === 0) {
       setError(strings.signUp.missingFields);
+      setLoading(false);
       return;
     }
 
@@ -52,6 +57,7 @@ const SignUpPhone = ({
       navigation.navigate('SignUpVerify', {authToken});
     } else {
       setError(strings.signUp.codeSendFailed);
+      setLoading(false);
     }
   };
 
@@ -94,11 +100,15 @@ const SignUpPhone = ({
               : colors[theme].secondary,
           },
         ]}
-        disabled={!phoneNumber}
+        disabled={!phoneNumber || loading}
         onPress={() => handleSendCode()}>
-        <Text weight="b" color={colors[theme].primary}>
-          {strings.signUp.sendCode}
-        </Text>
+        {loading ? (
+          <ActivityIndicator size="small" color={colors[theme].primary} />
+        ) : (
+          <Text weight="b" color={colors[theme].primary}>
+            {strings.signUp.sendCode}
+          </Text>
+        )}
       </TouchableOpacity>
     </View>
   );

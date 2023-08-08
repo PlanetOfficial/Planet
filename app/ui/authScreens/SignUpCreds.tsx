@@ -7,6 +7,7 @@ import {
   StatusBar,
   Linking,
   StyleSheet,
+  ActivityIndicator,
 } from 'react-native';
 
 import {s} from 'react-native-size-matters';
@@ -50,8 +51,11 @@ const SignUpCreds = ({
 
   const [userAgreed, setUserAgreed] = useState<boolean>(false);
 
+  const [loading, setLoading] = useState<boolean>(false);
+
   const handleNext = async () => {
     setError('');
+    setLoading(true);
 
     if (
       username.length === 0 ||
@@ -59,26 +63,31 @@ const SignUpCreds = ({
       passwordConfirm.length === 0
     ) {
       setError(strings.signUp.missingFields);
+      setLoading(false);
       return;
     }
 
     if (username.length > 100) {
       setError(strings.signUp.inputLong);
+      setLoading(false);
       return;
     }
 
     if (password.length < 8) {
       setError(strings.signUp.passwordShort);
+      setLoading(false);
       return;
     }
 
     if (password.length > 100) {
       setError(strings.signUp.inputLong);
+      setLoading(false);
       return;
     }
 
     if (password !== passwordConfirm) {
       setError(strings.signUp.passwordsMatch);
+      setLoading(false);
       return;
     }
 
@@ -93,6 +102,7 @@ const SignUpCreds = ({
       });
     } else {
       setError(response?.message);
+      setLoading(false);
     }
   };
 
@@ -206,11 +216,15 @@ const SignUpCreds = ({
               : colors[theme].accent,
           },
         ]}
-        disabled={validState}
+        disabled={validState || loading}
         onPress={() => handleNext()}>
-        <Text weight="b" color={colors[theme].primary}>
-          {strings.signUp.signUp}
-        </Text>
+        {loading ? (
+          <ActivityIndicator size="small" color={colors[theme].primary} />
+        ) : (
+          <Text weight="b" color={colors[theme].primary}>
+            {strings.signUp.signUp}
+          </Text>
+        )}
       </TouchableOpacity>
     </View>
   );

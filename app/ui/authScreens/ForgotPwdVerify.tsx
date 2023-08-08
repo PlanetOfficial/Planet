@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   TextInput,
   StatusBar,
+  ActivityIndicator,
 } from 'react-native';
 
 import colors from '../../constants/colors';
@@ -38,11 +39,16 @@ const ForgotPwdVerify = ({
 
   const [error, setError] = useState<string>('');
 
+  const [loading, setLoading] = useState<boolean>(false);
+
   const handleVerifyCode = async () => {
+    setLoading(true);
+
     setError('');
 
     if (code.length === 0) {
       setError(strings.signUp.missingFields);
+      setLoading(false);
       return;
     }
 
@@ -57,6 +63,7 @@ const ForgotPwdVerify = ({
       });
     } else {
       setError(strings.signUp.codeVerifyFailed);
+      setLoading(false);
     }
   };
 
@@ -105,11 +112,15 @@ const ForgotPwdVerify = ({
                 : colors[theme].accent,
           },
         ]}
-        disabled={code.length !== 6}
+        disabled={code.length !== 6 || loading}
         onPress={() => handleVerifyCode()}>
-        <Text weight="b" color={colors[theme].primary}>
-          {strings.signUp.verifyCode}
-        </Text>
+        {loading ? (
+          <ActivityIndicator size="small" color={colors[theme].primary} />
+        ) : (
+          <Text weight="b" color={colors[theme].primary}>
+            {strings.signUp.verifyCode}
+          </Text>
+        )}
       </TouchableOpacity>
     </View>
   );

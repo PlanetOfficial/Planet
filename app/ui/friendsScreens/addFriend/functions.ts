@@ -64,7 +64,9 @@ export const onAdd = async (
   isEvent: boolean,
   eventId: number | undefined,
   invitees: UserInfo[],
+  setLoading: (loading: boolean) => void,
 ) => {
+  setLoading(true);
   if (isEvent && eventId) {
     const response = await inviteToEvent(
       eventId,
@@ -75,8 +77,10 @@ export const onAdd = async (
       navigation.goBack();
     } else {
       Alert.alert(strings.error.error, strings.error.inviteUsers);
+      setLoading(false);
     }
   } else {
     navigation.navigate('Create', {members: invitees});
+    setLoading(false);
   }
 };

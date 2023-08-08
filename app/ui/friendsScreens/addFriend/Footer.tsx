@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   useColorScheme,
@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   FlatList,
+  ActivityIndicator,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 
@@ -37,6 +38,8 @@ const Footer: React.FC<Props> = ({
 }) => {
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
+
+  const [loading, setLoading] = useState<boolean>(false);
 
   return (
     <SafeAreaView style={styles.footer}>
@@ -82,17 +85,23 @@ const Footer: React.FC<Props> = ({
                 : colors[theme].accent,
           },
         ]}
-        onPress={() => onAdd(navigation, isEvent, eventId, invitees)}
-        disabled={isEvent && invitees.length === 0}>
-        <Text size="l" color={colors[theme].primary}>
-          {invitees.length > 0
-            ? `${isEvent ? strings.friends.invite : strings.main.save} (${
-                invitees.length
-              })`
-            : isEvent
-            ? strings.friends.invite
-            : strings.main.save}
-        </Text>
+        onPress={() =>
+          onAdd(navigation, isEvent, eventId, invitees, setLoading)
+        }
+        disabled={(isEvent && invitees.length === 0) || loading}>
+        {loading ? (
+          <ActivityIndicator size="small" color={colors[theme].primary} />
+        ) : (
+          <Text size="l" color={colors[theme].primary}>
+            {invitees.length > 0
+              ? `${isEvent ? strings.friends.invite : strings.main.save} (${
+                  invitees.length
+                })`
+              : isEvent
+              ? strings.friends.invite
+              : strings.main.save}
+          </Text>
+        )}
       </TouchableOpacity>
     </SafeAreaView>
   );
@@ -116,6 +125,7 @@ const styling = (theme: 'light' | 'dark') =>
       height: s(45),
       justifyContent: 'center',
       borderRadius: s(10),
+      minWidth: s(100),
     },
     invitees: {
       marginTop: s(10),

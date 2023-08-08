@@ -7,6 +7,7 @@ import {
   Alert,
   useColorScheme,
   StatusBar,
+  ActivityIndicator,
 } from 'react-native';
 
 import colors from '../../constants/colors';
@@ -42,26 +43,33 @@ const ResetPwd = ({
 
   const [error, setError] = useState<string>('');
 
+  const [loading, setLoading] = useState<boolean>(false);
+
   const handleNext = async () => {
+    setLoading(true);
     setError('');
 
     if (password.length === 0 || passwordConfirm.length === 0) {
       setError(strings.signUp.missingFields);
+      setLoading(false);
       return;
     }
 
     if (password.length < 8) {
       setError(strings.signUp.passwordShort);
+      setLoading(false);
       return;
     }
 
     if (password.length > 100) {
       setError(strings.signUp.inputLong);
+      setLoading(false);
       return;
     }
 
     if (password !== passwordConfirm) {
       setError(strings.signUp.passwordsMatch);
+      setLoading(false);
       return;
     }
 
@@ -78,6 +86,7 @@ const ResetPwd = ({
       });
     } else {
       setError(strings.error.resetPassword);
+      setLoading(false);
     }
   };
 
@@ -133,9 +142,17 @@ const ResetPwd = ({
                 : colors[theme].accent,
           },
         ]}
-        disabled={password.length === 0 || password !== passwordConfirm}
+        disabled={
+          password.length === 0 || password !== passwordConfirm || loading
+        }
         onPress={() => handleNext()}>
-        <Text color={colors[theme].primary}>{strings.login.resetPassword}</Text>
+        {loading ? (
+          <ActivityIndicator size="small" color={colors[theme].primary} />
+        ) : (
+          <Text color={colors[theme].primary}>
+            {strings.login.resetPassword}
+          </Text>
+        )}
       </TouchableOpacity>
     </View>
   );
