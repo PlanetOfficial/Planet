@@ -32,7 +32,7 @@ const FriendsList = ({navigation}: {navigation: any}) => {
 
   const {friends, refreshFriends} = useFriendsContext();
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [fgSelected, setFgSelected] = useState<number>(0);
   const [fgEditing, setFgEditing] = useState<boolean>(false);
   const [tempName, setTempName] = useState<string>();

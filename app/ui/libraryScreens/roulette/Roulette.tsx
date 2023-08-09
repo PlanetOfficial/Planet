@@ -32,7 +32,7 @@ const Roulette = ({
   const STYLES = STYLING(theme);
   StatusBar.setBarStyle(colors[theme].statusBar, true);
 
-  const [eventId] = useState(route.params.eventId);
+  const [eventId] = useState<number>(route.params.eventId);
   const [destination, setDestination] = useState<Destination>(
     route.params.destination,
   );
@@ -40,8 +40,8 @@ const Roulette = ({
   const {bookmarks, setBookmarks} = useBookmarkContext();
 
   const rotation = useSharedValue(0);
-  const [currentAngle, setCurrentAngle] = useState(rotation.value);
-  const [isSpinning, setIsSpinning] = useState(false);
+  const [currentAngle, setCurrentAngle] = useState<number>(rotation.value);
+  const [isSpinning, setIsSpinning] = useState<boolean>(false);
 
   const totalVotes = destination.suggestions
     .map((suggestion: Suggestion) =>

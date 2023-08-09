@@ -11,7 +11,7 @@ interface Props {
 }
 
 const Map: React.FC<Props> = ({latitude, longitude}) => {
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState<boolean>(false);
 
   return (
     <MapView

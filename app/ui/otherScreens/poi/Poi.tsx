@@ -94,7 +94,7 @@ const PoiPage = ({
   }, [navigation, initializeDestinationData]);
 
   const scrollPosition = useRef(new Animated.Value(0)).current;
-  const [galleryVisible, setGalleryVisible] = useState(false);
+  const [galleryVisible, setGalleryVisible] = useState<boolean>(false);
   const HeaderComponent = useCallback(
     () => (
       <View style={styles.imageTitle}>
