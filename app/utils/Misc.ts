@@ -1,4 +1,3 @@
-import {useState} from 'react';
 import {Platform, PermissionsAndroid, Alert} from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 
@@ -150,18 +149,3 @@ export const getInfoString = (poi: Poi): string => {
 
   return poiString;
 };
-
-export function useLoadingState() {
-  const [loading, setLoading] = useState<boolean>(false);
-
-  const withLoading = async (callback: () => void) => {
-    try {
-      setLoading(true);
-      await callback();
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return [loading, withLoading];
-}
