@@ -20,7 +20,7 @@ import Icon from '../components/Icon';
 import Text from '../components/Text';
 
 import {verifyCode} from '../../utils/api/authAPI';
-import {fetchUserLocation} from '../../utils/Misc';
+import {fetchUserLocation, useLoadingState} from '../../utils/Misc';
 import {useLocationContext} from '../../context/LocationContext';
 
 const SignUpVerify = ({
@@ -47,15 +47,13 @@ const SignUpVerify = ({
 
   const {setLocation, setRadius} = useLocationContext();
 
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, withLoading] = useLoadingState();
 
   const handleVerifyCode = async () => {
-    setLoading(true);
     setError('');
 
     if (code.length === 0) {
       setError(strings.signUp.missingFields);
-      setLoading(false);
       return;
     }
 
@@ -74,7 +72,6 @@ const SignUpVerify = ({
       });
     } else {
       setError(strings.signUp.codeVerifyFailed);
-      setLoading(false);
     }
   };
 
@@ -124,7 +121,7 @@ const SignUpVerify = ({
           },
         ]}
         disabled={code.length !== 6 || loading}
-        onPress={() => handleVerifyCode()}>
+        onPress={() => withLoading(handleVerifyCode)}>
         {loading ? (
           <ActivityIndicator size="small" color={colors[theme].primary} />
         ) : (

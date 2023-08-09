@@ -17,9 +17,7 @@ export const handleFriendRequest = async (
   requestsSent: UserInfo[],
   setRequestsSent: (requestsSent: UserInfo[]) => void,
   user: UserInfo,
-  setLoading: (loading: boolean) => void,
 ) => {
-  setLoading(true);
   const response = await postFriendRequest(userId);
 
   if (response) {
@@ -28,16 +26,13 @@ export const handleFriendRequest = async (
   } else {
     Alert.alert(strings.error.error, strings.error.friendRequest);
   }
-  setLoading(false);
 };
 
 export const handleUnfriend = async (
   userId: number,
   friends: UserInfo[],
   setFriends: (friends: UserInfo[]) => void,
-  setLoading: (loading: boolean) => void,
 ) => {
-  setLoading(true);
   const response = await deleteFriend(userId);
 
   if (response) {
@@ -48,7 +43,6 @@ export const handleUnfriend = async (
   } else {
     Alert.alert(strings.error.error, strings.error.unfriend);
   }
-  setLoading(false);
 };
 
 export const handleAcceptRequest = async (
@@ -58,9 +52,7 @@ export const handleAcceptRequest = async (
   requests: UserInfo[],
   setRequests: (requests: UserInfo[]) => void,
   user: UserInfo,
-  setLoading: (loading: boolean) => void,
 ) => {
-  setLoading(true);
   const response = await acceptFriendRequest(userId);
 
   if (response) {
@@ -74,16 +66,13 @@ export const handleAcceptRequest = async (
   } else {
     Alert.alert(strings.error.error, strings.error.acceptFriendRequest);
   }
-  setLoading(false);
 };
 
 export const handleDeclineRequest = async (
   userId: number,
   requests: UserInfo[],
   setRequests: (requests: UserInfo[]) => void,
-  setLoading: (loading: boolean) => void,
 ) => {
-  setLoading(true);
   const response = await rejectFriendRequest(userId);
 
   if (response) {
@@ -94,16 +83,13 @@ export const handleDeclineRequest = async (
   } else {
     Alert.alert(strings.error.error, strings.error.declineFriendRequest);
   }
-  setLoading(false);
 };
 
 export const handleCancelRequest = async (
   userId: number,
   requestsSent: UserInfo[],
   setRequestsSent: (requestsSent: UserInfo[]) => void,
-  setLoading: (loading: boolean) => void,
 ) => {
-  setLoading(true);
   const response = await deleteFriendRequest(userId);
 
   if (response) {
@@ -114,7 +100,6 @@ export const handleCancelRequest = async (
   } else {
     Alert.alert(strings.error.error, strings.error.cancelFriendRequest);
   }
-  setLoading(false);
 };
 
 export const handleBlock = async (
@@ -160,9 +145,7 @@ export const handleUnblock = async (
   userId: number,
   usersIBlock: UserInfo[],
   setUsersIBlock: (usersBlockingMe: UserInfo[]) => void,
-  setLoading: (loading: boolean) => void,
 ) => {
-  setLoading(true);
   const response = await unBlockFriend(userId);
 
   if (response) {
@@ -173,7 +156,6 @@ export const handleUnblock = async (
   } else {
     Alert.alert(strings.error.error, strings.error.unblock);
   }
-  setLoading(false);
 };
 
 export const handleReport = async (userId: number) => {

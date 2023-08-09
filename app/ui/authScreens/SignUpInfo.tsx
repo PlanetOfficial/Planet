@@ -20,6 +20,7 @@ import Text from '../components/Text';
 
 import {saveTokenToDatabase, sendMoreInfo} from '../../utils/api/authAPI';
 import {cacheUserInfo} from '../../utils/CacheHelpers';
+import {useLoadingState} from '../../utils/Misc';
 
 const SignUpInfo = ({
   navigation,
@@ -50,13 +51,10 @@ const SignUpInfo = ({
     {label: string; value: string}[]
   >(strings.genderEnum);
 
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, withLoading] = useLoadingState();
 
   const handleNext = async () => {
-    setLoading(true);
-
     if (!age || !gender) {
-      setLoading(false);
       return;
     }
 
@@ -68,7 +66,6 @@ const SignUpInfo = ({
 
       if (!cacheSuccess) {
         Alert.alert('Something went wrong. Please try again.');
-        setLoading(false);
         return;
       }
 
@@ -82,7 +79,6 @@ const SignUpInfo = ({
       });
     } else {
       Alert.alert('Something went wrong. Please try again.');
-      setLoading(false);
     }
   };
 
@@ -139,7 +135,7 @@ const SignUpInfo = ({
           },
         ]}
         disabled={!age || !gender || loading}
-        onPress={handleNext}>
+        onPress={() => withLoading(handleNext)}>
         {loading ? (
           <ActivityIndicator size="small" color={colors[theme].primary} />
         ) : (

@@ -17,6 +17,7 @@ import STYLING from '../../constants/styles';
 import Text from '../components/Text';
 
 import {sendCode} from '../../utils/api/authAPI';
+import {useLoadingState} from '../../utils/Misc';
 
 const SignUpPhone = ({
   navigation,
@@ -39,15 +40,13 @@ const SignUpPhone = ({
 
   const [error, setError] = useState<string>('');
 
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, withLoading] = useLoadingState();
 
   const handleSendCode = async () => {
-    setLoading(true);
     setError('');
 
     if (phoneNumber === '' || phoneNumber.length === 0) {
       setError(strings.signUp.missingFields);
-      setLoading(false);
       return;
     }
 
@@ -57,7 +56,6 @@ const SignUpPhone = ({
       navigation.navigate('SignUpVerify', {authToken});
     } else {
       setError(strings.signUp.codeSendFailed);
-      setLoading(false);
     }
   };
 
@@ -101,7 +99,7 @@ const SignUpPhone = ({
           },
         ]}
         disabled={!phoneNumber || loading}
-        onPress={() => handleSendCode()}>
+        onPress={() => withLoading(handleSendCode)}>
         {loading ? (
           <ActivityIndicator size="small" color={colors[theme].primary} />
         ) : (

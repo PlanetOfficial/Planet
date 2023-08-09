@@ -14,12 +14,13 @@ import STYLING from '../../../constants/styles';
 
 import Icon from '../../components/Icon';
 import UserRow from '../../components/UserRow';
+import SearchResult from '../components/SearchResult';
 
 import {UserInfo} from '../../../utils/types';
+import {useLoadingState} from '../../../utils/Misc';
 import {useFriendsContext} from '../../../context/FriendsContext';
 
 import Header from './Header';
-import SearchResult from '../components/SearchResult';
 import Friends from './Friends';
 import Footer from './Footer';
 
@@ -48,7 +49,7 @@ const AddFriend = ({
   const [searchText, setSearchText] = useState<string>('');
   const [searchResults, setSearchResults] = useState<UserInfo[]>([]);
   const [searching, setSearching] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, withLoading] = useLoadingState();
 
   const {friends} = useFriendsContext();
 
@@ -83,11 +84,11 @@ const AddFriend = ({
         invitees={invitees}
         searching={searching}
         setSearching={setSearching}
-        setLoading={setLoading}
         searchText={searchText}
         setSearchText={setSearchText}
         setSearchResults={setSearchResults}
         selfUserId={selfUserId}
+        withLoading={withLoading}
       />
 
       {searching ? (

@@ -25,6 +25,7 @@ import Text from '../../components/Text';
 import UserRow from '../../components/UserRow';
 
 import {UserInfo} from '../../../utils/types';
+import {useLoadingState} from '../../../utils/Misc';
 
 import ActionButtons from '../components/ActionButtons';
 import {search} from './functions';
@@ -43,7 +44,7 @@ const Friends = ({navigation}: {navigation: any}) => {
   const [searchText, setSearchText] = useState<string>('');
   const [searchResults, setSearchResults] = useState<UserInfo[]>([]);
   const [searching, setSearching] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, withLoading] = useLoadingState();
 
   const {friends, usersBlockingMe} = useFriendsContext();
 
@@ -90,13 +91,14 @@ const Friends = ({navigation}: {navigation: any}) => {
                 setSearching(true);
               }}
               onChangeText={text =>
-                search(
-                  text,
-                  setLoading,
-                  setSearchText,
-                  setSearchResults,
-                  selfUserId,
-                  usersBlockingMe,
+                withLoading(() =>
+                  search(
+                    text,
+                    setSearchText,
+                    setSearchResults,
+                    selfUserId,
+                    usersBlockingMe,
+                  ),
                 )
               }
               clearButtonMode="while-editing"

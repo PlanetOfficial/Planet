@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
   View,
   useColorScheme,
@@ -19,6 +19,7 @@ import UserIcon from '../../components/UserIcon';
 import Icon from '../../components/Icon';
 
 import {UserInfo} from '../../../utils/types';
+import {useLoadingState} from '../../../utils/Misc';
 import {onAdd} from './functions';
 
 interface Props {
@@ -39,7 +40,7 @@ const Footer: React.FC<Props> = ({
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
 
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, withLoading] = useLoadingState();
 
   return (
     <SafeAreaView style={styles.footer}>
@@ -86,7 +87,7 @@ const Footer: React.FC<Props> = ({
           },
         ]}
         onPress={() =>
-          onAdd(navigation, isEvent, eventId, invitees, setLoading)
+          withLoading(() => onAdd(navigation, isEvent, eventId, invitees))
         }
         disabled={(isEvent && invitees.length === 0) || loading}>
         {loading ? (

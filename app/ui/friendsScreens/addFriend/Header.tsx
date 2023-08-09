@@ -29,11 +29,11 @@ interface Props {
   invitees: UserInfo[];
   searching: boolean;
   setSearching: (searching: boolean) => void;
-  setLoading: (loading: boolean) => void;
   searchText: string;
   setSearchText: (searchText: string) => void;
   setSearchResults: (searchResults: UserInfo[]) => void;
   selfUserId: number;
+  withLoading: (func: () => Promise<void>) => Promise<void>;
 }
 
 const Header: React.FC<Props> = ({
@@ -42,11 +42,11 @@ const Header: React.FC<Props> = ({
   invitees,
   searching,
   setSearching,
-  setLoading,
   searchText,
   setSearchText,
   setSearchResults,
   selfUserId,
+  withLoading,
 }) => {
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
@@ -104,13 +104,14 @@ const Header: React.FC<Props> = ({
               setSearching(true);
             }}
             onChangeText={text =>
-              search(
-                text,
-                setLoading,
-                setSearchText,
-                setSearchResults,
-                selfUserId,
-                usersBlockingMe,
+              withLoading(() =>
+                search(
+                  text,
+                  setSearchText,
+                  setSearchResults,
+                  selfUserId,
+                  usersBlockingMe,
+                ),
               )
             }
             clearButtonMode="while-editing"

@@ -20,6 +20,7 @@ import Text from '../components/Text';
 
 import {resetPassword} from '../../utils/api/authAPI';
 import {clearCaches} from '../../utils/CacheHelpers';
+import {useLoadingState} from '../../utils/Misc';
 
 const ResetPwd = ({
   navigation,
@@ -43,33 +44,28 @@ const ResetPwd = ({
 
   const [error, setError] = useState<string>('');
 
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, withLoading] = useLoadingState();
 
   const handleNext = async () => {
-    setLoading(true);
     setError('');
 
     if (password.length === 0 || passwordConfirm.length === 0) {
       setError(strings.signUp.missingFields);
-      setLoading(false);
       return;
     }
 
     if (password.length < 8) {
       setError(strings.signUp.passwordShort);
-      setLoading(false);
       return;
     }
 
     if (password.length > 100) {
       setError(strings.signUp.inputLong);
-      setLoading(false);
       return;
     }
 
     if (password !== passwordConfirm) {
       setError(strings.signUp.passwordsMatch);
-      setLoading(false);
       return;
     }
 
@@ -85,8 +81,6 @@ const ResetPwd = ({
         routes: [{name: 'Login'}],
       });
     } else {
-      setError(strings.error.resetPassword);
-      setLoading(false);
     }
   };
 
@@ -145,7 +139,7 @@ const ResetPwd = ({
         disabled={
           password.length === 0 || password !== passwordConfirm || loading
         }
-        onPress={() => handleNext()}>
+        onPress={() => withLoading(handleNext)}>
         {loading ? (
           <ActivityIndicator size="small" color={colors[theme].primary} />
         ) : (

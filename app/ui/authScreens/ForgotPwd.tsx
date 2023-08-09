@@ -18,6 +18,7 @@ import Icon from '../components/Icon';
 import Text from '../components/Text';
 
 import {sendCodeForgotPwd} from '../../utils/api/authAPI';
+import {useLoadingState} from '../../utils/Misc';
 
 const ForgotPwd = ({navigation}: {navigation: any}) => {
   const theme = 'light';
@@ -28,16 +29,13 @@ const ForgotPwd = ({navigation}: {navigation: any}) => {
 
   const [error, setError] = useState<string>('');
 
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, withLoading] = useLoadingState();
 
   const handleNext = async () => {
-    setLoading(true);
-
     setError('');
 
     if (username.length === 0) {
       setError(strings.signUp.missingFields);
-      setLoading(false);
       return;
     }
 
@@ -48,7 +46,6 @@ const ForgotPwd = ({navigation}: {navigation: any}) => {
     } else {
       // made the error ambiguous so the user can't guess if the username exists or not
       Alert.alert(strings.error.error, strings.error.ambiguousError);
-      setLoading(false);
     }
   };
 
@@ -92,7 +89,7 @@ const ForgotPwd = ({navigation}: {navigation: any}) => {
           },
         ]}
         disabled={username.length === 0 || loading}
-        onPress={handleNext}>
+        onPress={() => withLoading(handleNext)}>
         {loading ? (
           <ActivityIndicator size="small" color={colors[theme].primary} />
         ) : (

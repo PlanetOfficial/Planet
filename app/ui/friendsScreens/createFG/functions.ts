@@ -8,12 +8,10 @@ import {postFG} from '../../../utils/api/fgAPI';
 
 export const search = async (
   text: string,
-  setLoading: (loading: boolean) => void,
   setSearchText: (text: string) => void,
   setSearchResults: (results: UserInfo[]) => void,
   friends: UserInfo[],
 ) => {
-  setLoading(true);
   setSearchText(text);
   if (text.length > 0) {
     let result = await searchUsers(text);
@@ -27,7 +25,6 @@ export const search = async (
       Alert.alert(strings.error.error, strings.error.searchError);
     }
   }
-  setLoading(false);
 };
 
 const loadFriends = async (

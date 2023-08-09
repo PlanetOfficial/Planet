@@ -17,6 +17,7 @@ import Text from '../components/Text';
 import Icon from '../components/Icon';
 
 import {verifyCodeUsername} from '../../utils/api/authAPI';
+import {useLoadingState} from '../../utils/Misc';
 
 const ForgotPwdVerify = ({
   navigation,
@@ -39,16 +40,13 @@ const ForgotPwdVerify = ({
 
   const [error, setError] = useState<string>('');
 
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, withLoading] = useLoadingState();
 
   const handleVerifyCode = async () => {
-    setLoading(true);
-
     setError('');
 
     if (code.length === 0) {
       setError(strings.signUp.missingFields);
-      setLoading(false);
       return;
     }
 
@@ -63,7 +61,6 @@ const ForgotPwdVerify = ({
       });
     } else {
       setError(strings.signUp.codeVerifyFailed);
-      setLoading(false);
     }
   };
 
@@ -113,7 +110,7 @@ const ForgotPwdVerify = ({
           },
         ]}
         disabled={code.length !== 6 || loading}
-        onPress={() => handleVerifyCode()}>
+        onPress={() => withLoading(handleVerifyCode)}>
         {loading ? (
           <ActivityIndicator size="small" color={colors[theme].primary} />
         ) : (

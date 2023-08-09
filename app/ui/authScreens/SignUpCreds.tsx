@@ -21,6 +21,7 @@ import Icon from '../components/Icon';
 import Text from '../components/Text';
 
 import {signup} from '../../utils/api/authAPI';
+import {useLoadingState} from '../../utils/Misc';
 
 const SignUpCreds = ({
   navigation,
@@ -51,11 +52,10 @@ const SignUpCreds = ({
 
   const [userAgreed, setUserAgreed] = useState<boolean>(false);
 
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, withLoading] = useLoadingState();
 
   const handleNext = async () => {
     setError('');
-    setLoading(true);
 
     if (
       username.length === 0 ||
@@ -63,31 +63,26 @@ const SignUpCreds = ({
       passwordConfirm.length === 0
     ) {
       setError(strings.signUp.missingFields);
-      setLoading(false);
       return;
     }
 
     if (username.length > 100) {
       setError(strings.signUp.inputLong);
-      setLoading(false);
       return;
     }
 
     if (password.length < 8) {
       setError(strings.signUp.passwordShort);
-      setLoading(false);
       return;
     }
 
     if (password.length > 100) {
       setError(strings.signUp.inputLong);
-      setLoading(false);
       return;
     }
 
     if (password !== passwordConfirm) {
       setError(strings.signUp.passwordsMatch);
-      setLoading(false);
       return;
     }
 
@@ -102,7 +97,6 @@ const SignUpCreds = ({
       });
     } else {
       setError(response?.message);
-      setLoading(false);
     }
   };
 
@@ -217,7 +211,7 @@ const SignUpCreds = ({
           },
         ]}
         disabled={validState || loading}
-        onPress={() => handleNext()}>
+        onPress={() => withLoading(handleNext)}>
         {loading ? (
           <ActivityIndicator size="small" color={colors[theme].primary} />
         ) : (
