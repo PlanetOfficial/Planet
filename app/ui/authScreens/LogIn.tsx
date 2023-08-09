@@ -21,6 +21,7 @@ import Text from '../components/Text';
 
 import {isVerified, login, saveTokenToDatabase} from '../../utils/api/authAPI';
 import {cacheCategories, cacheUserInfo} from '../../utils/CacheHelpers';
+import {useLoadingState} from '../../utils/Misc';
 
 import {useFriendsContext} from '../../context/FriendsContext';
 import {useBookmarkContext} from '../../context/BookmarkContext';
@@ -35,7 +36,7 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
   const [password, setPassword] = useState<string>('');
 
   const [error, setError] = useState<string>('');
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, withLoading] = useLoadingState();
 
   const {initializeBookmarks} = useBookmarkContext();
   const {initializeFriendsInfo} = useFriendsContext();
@@ -58,14 +59,12 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
       return;
     }
 
-    setLoading(true);
     const response = await login(username, password);
 
     if (response?.authToken) {
       // check if verified
       const verifiedResponse = await isVerified(response.authToken);
       if (!verifiedResponse) {
-        setLoading(false);
         navigation.reset({
           index: 0,
           routes: [
@@ -77,7 +76,6 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
       }
       const cacheSuccess = await cacheUserInfo(response?.authToken);
       if (!cacheSuccess) {
-        setLoading(false);
         Alert.alert('Something went wrong. Please try again.');
         return;
       }
@@ -97,8 +95,6 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
     } else {
       setError(response?.message);
     }
-
-    setLoading(false);
   };
 
   return (
@@ -135,7 +131,10 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
             </Text>
           ) : null}
         </View>
-        <TouchableOpacity style={styles.button} onPress={handleLogin}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => withLoading(handleLogin)}
+          disabled={loading}>
           {loading ? (
             <ActivityIndicator size="small" color={colors[theme].primary} />
           ) : (
