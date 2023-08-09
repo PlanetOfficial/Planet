@@ -19,7 +19,7 @@ import {UserInfo} from '../../../utils/types';
 import {useFriendsContext} from '../../../context/FriendsContext';
 
 import Header from './Header';
-import SearchResult from '../friends/SearchResult';
+import SearchResult from '../components/SearchResult';
 import Friends from './Friends';
 import Footer from './Footer';
 

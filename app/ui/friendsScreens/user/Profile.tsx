@@ -9,7 +9,7 @@ import Text from '../../components/Text';
 import UserIconXL from '../../components/UserIconXL';
 
 import {UserInfo} from '../../../utils/types';
-import ActionButtons from './ActionButtons';
+import ActionButtons from '../components/ActionButtons';
 
 interface Props {
   navigation: any;

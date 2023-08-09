@@ -26,9 +26,9 @@ import UserRow from '../../components/UserRow';
 
 import {UserInfo} from '../../../utils/types';
 
-import ActionButtons from '../user/ActionButtons';
+import ActionButtons from '../components/ActionButtons';
 import {search} from './functions';
-import SearchResult from './SearchResult';
+import SearchResult from '../components/SearchResult';
 import {useFriendsContext} from '../../../context/FriendsContext';
 
 const Friends = ({navigation}: {navigation: any}) => {
