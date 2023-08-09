@@ -20,7 +20,7 @@ import UserRow from '../../../components/UserRow';
 
 import {UserInfo} from '../../../../utils/types';
 
-import ActionButtons from '../../../friendsScreens/user/ActionButtons';
+import ActionButtons from '../../../friendsScreens/components/ActionButtons';
 import {useFriendsContext} from '../../../../context/FriendsContext';
 
 const BlockedUsers = ({navigation}: {navigation: any}) => {
