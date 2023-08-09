@@ -17,6 +17,7 @@ const light = {
   blur: 'rgba(255,255,255,.8)',
   primaryShades: ['#f9a67a', '#f6ae2d', '#ff6c32', '#fc2f00'],
   statusBar: 'dark-content' as StatusBarStyle,
+  androidNavigationBarStyle: 'dark' as 'dark' | 'light',
 };
 
 const dark = {
@@ -30,6 +31,7 @@ const dark = {
   blur: 'rgba(0,0,0,.6)',
   primaryShades: ['#FAB794', '#F7BE56', '#FF895A', '#E75432'],
   statusBar: 'light-content' as StatusBarStyle,
+  androidNavigationBarStyle: 'light' as 'dark' | 'light',
 };
 
 export default {light, dark};
