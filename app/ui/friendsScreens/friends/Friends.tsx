@@ -8,7 +8,6 @@ import {
   LayoutAnimation,
   useColorScheme,
   StatusBar,
-  SectionList,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 import {TouchableOpacity} from 'react-native-gesture-handler';
@@ -27,8 +26,9 @@ import UserRow from '../../components/UserRow';
 
 import {UserInfo} from '../../../utils/types';
 
-import ActionButtons from '../user/ActionButtons';
+import ActionButtons from '../components/ActionButtons';
 import {search} from './functions';
+import SearchResult from '../components/SearchResult';
 import {useFriendsContext} from '../../../context/FriendsContext';
 
 const Friends = ({navigation}: {navigation: any}) => {
@@ -89,7 +89,6 @@ const Friends = ({navigation}: {navigation: any}) => {
                 );
                 setSearching(true);
               }}
-              onBlur={() => setSearching(false)}
               onChangeText={text =>
                 search(
                   text,
@@ -124,31 +123,10 @@ const Friends = ({navigation}: {navigation: any}) => {
             <ActivityIndicator size="small" color={colors[theme].accent} />
           </View>
         ) : (
-          <SectionList
-            sections={
-              searchResults.length > 0
-                ? [
-                    {
-                      title: strings.friends.friends,
-                      data: searchResults.filter(user =>
-                        friends.some(friend => friend.id === user.id),
-                      ),
-                    },
-                    {
-                      title: strings.friends.users,
-                      data: searchResults.filter(
-                        user => !friends.some(friend => friend.id === user.id),
-                      ),
-                    },
-                  ]
-                : []
-            }
-            style={STYLES.container}
-            contentContainerStyle={STYLES.flatList}
-            initialNumToRender={10}
-            keyboardShouldPersistTaps={'always'}
-            scrollIndicatorInsets={{right: 1}}
-            data={searchResults}
+          <SearchResult
+            searchResults={searchResults}
+            friends={friends}
+            searchText={searchText}
             renderItem={({item}: {item: UserInfo}) => (
               <TouchableOpacity
                 onPress={() => navigation.push('User', {user: item})}>
@@ -159,21 +137,6 @@ const Friends = ({navigation}: {navigation: any}) => {
                 </UserRow>
               </TouchableOpacity>
             )}
-            renderSectionHeader={({section}) =>
-              section.data.length > 0 ? (
-                <View style={STYLES.sectionHeader}>
-                  <Text size="s">{section.title}</Text>
-                </View>
-              ) : null
-            }
-            ListEmptyComponent={
-              searchText.length > 0 ? (
-                <View style={STYLES.center}>
-                  <Text>{strings.search.noResultsFound}</Text>
-                </View>
-              ) : null
-            }
-            keyExtractor={user => user.id.toString()}
           />
         )
       ) : (

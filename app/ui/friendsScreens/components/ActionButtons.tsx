@@ -16,7 +16,7 @@ import {
   handleFriendRequest,
   handleUnblock,
   handleUnfriend,
-} from './functions';
+} from '../user/functions';
 import {useFriendsContext} from '../../../context/FriendsContext';
 
 interface Props {

@@ -42,7 +42,7 @@ const Requests = ({navigation}: {navigation: any}) => {
     refreshFriends,
   } = useFriendsContext();
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     navigation.setOptions({

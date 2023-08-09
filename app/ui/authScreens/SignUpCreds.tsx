@@ -233,11 +233,10 @@ const SignUpCreds = ({
 const styles = StyleSheet.create({
   footer: {
     flexDirection: 'row',
-    marginTop: s(20),
     alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'space-between',
-    height: s(40),
+    height: s(30),
   },
   check: {
     marginRight: s(5),

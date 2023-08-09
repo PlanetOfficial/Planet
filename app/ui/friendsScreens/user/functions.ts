@@ -24,7 +24,6 @@ export const handleFriendRequest = async (
 
   if (response) {
     const requestsSentUpdated = [user, ...requestsSent];
-    requestsSentUpdated;
     setRequestsSent(requestsSentUpdated);
   } else {
     Alert.alert(strings.error.error, strings.error.friendRequest);

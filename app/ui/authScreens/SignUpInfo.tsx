@@ -38,13 +38,17 @@ const SignUpInfo = ({
 
   const [authToken] = useState<string>(route.params.authToken);
 
-  const [ageDPOpen, setAgeDPOpen] = useState(false);
+  const [ageDPOpen, setAgeDPOpen] = useState<boolean>(false);
   const [age, setAge] = useState<string | null>(null);
-  const [ageEnum, setAgeEnum] = useState(strings.ageEnum);
+  const [ageEnum, setAgeEnum] = useState<{label: string; value: string}[]>(
+    strings.ageEnum,
+  );
 
-  const [genderDPOpen, setGenderDPOpen] = useState(false);
+  const [genderDPOpen, setGenderDPOpen] = useState<boolean>(false);
   const [gender, setGender] = useState<string | null>(null);
-  const [genderEnum, setGenderEnum] = useState(strings.genderEnum);
+  const [genderEnum, setGenderEnum] = useState<
+    {label: string; value: string}[]
+  >(strings.genderEnum);
 
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -167,7 +171,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: vs(300),
+    marginTop: vs(250),
     width: s(150),
     height: s(50),
     borderRadius: s(25),

@@ -44,9 +44,9 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
   const [pfpURL, setPfpURL] = useState<string>('');
   const [phoneNumber, setPhoneNumber] = useState<string>('');
   const [age, setAge] = useState<string>('');
-  const [ageDPOpen, setAgeDPOpen] = useState(false);
+  const [ageDPOpen, setAgeDPOpen] = useState<boolean>(false);
   const [gender, setGender] = useState<string>('');
-  const [genderDPOpen, setGenderDPOpen] = useState(false);
+  const [genderDPOpen, setGenderDPOpen] = useState<boolean>(false);
 
   const initializeData = async () => {
     const _firstName = await AsyncStorage.getItem('first_name');

@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import {Platform, PermissionsAndroid, Alert} from 'react-native';
+import {Platform, PermissionsAndroid, Alert, Animated} from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 
 import haversine from 'haversine-distance';
@@ -8,6 +8,10 @@ import strings from '../constants/strings';
 
 import {Coordinate, Poi} from './types';
 import {bookmark} from './api/bookmarkAPI';
+import {
+  StackCardInterpolatedStyle,
+  StackCardInterpolationProps,
+} from '@react-navigation/stack';
 
 /*
   Given a point and the longitudeDelta, calculate the radius of the circle (the
@@ -165,3 +169,43 @@ export function useLoadingState() {
 
   return [loading, withLoading] as const;
 }
+
+export const verticalAnimation = ({
+  current,
+  inverted,
+  layouts: {screen},
+}: StackCardInterpolationProps): StackCardInterpolatedStyle => {
+  const translateFocused = Animated.multiply(
+    current.progress.interpolate({
+      inputRange: [0, 1],
+      outputRange: [screen.height, 0],
+      extrapolate: 'clamp',
+    }),
+    inverted,
+  );
+
+  const overlayOpacity = current.progress.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, 0.07],
+    extrapolate: 'clamp',
+  });
+
+  const shadowOpacity = current.progress.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, 0.3],
+    extrapolate: 'clamp',
+  });
+
+  return {
+    cardStyle: {
+      transform: [
+        // Translation for the animation of the current card
+        {translateY: translateFocused},
+        // Translation for the animation of the card in back
+        {translateY: 0},
+      ],
+    },
+    overlayStyle: {opacity: overlayOpacity},
+    shadowStyle: {shadowOpacity},
+  };
+};
