@@ -40,7 +40,10 @@ export default function App() {
       // android specific ui configurations
       if (Platform.OS === 'android') {
         StatusBar.setBackgroundColor(colors[theme].background);
-        SystemNavigationBar.setNavigationColor(colors[theme].background, colors[theme].androidNavigationBarStyle);
+        SystemNavigationBar.setNavigationColor(
+          colors[theme].background,
+          colors[theme].androidNavigationBarStyle,
+        );
       }
 
       const token = await EncryptedStorage.getItem('auth_token');
