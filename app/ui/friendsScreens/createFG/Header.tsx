@@ -25,7 +25,7 @@ import {search} from './functions';
 interface Props {
   navigation: any;
   selectedId: number[];
-  setLoading: (loading: boolean) => void;
+  withLoading: (func: () => Promise<void>) => Promise<void>;
   searchText: string;
   setSearchText: (text: string) => void;
   searchResults: UserInfo[];
@@ -38,7 +38,7 @@ interface Props {
 const Header: React.FC<Props> = ({
   navigation,
   selectedId,
-  setLoading,
+  withLoading,
   searchText,
   setSearchText,
   setSearchResults,
@@ -95,9 +95,10 @@ const Header: React.FC<Props> = ({
               );
               setSearching(true);
             }}
-            onBlur={() => setSearching(false)}
             onChangeText={text =>
-              search(text, setLoading, setSearchText, setSearchResults, friends)
+              withLoading(() =>
+                search(text, setSearchText, setSearchResults, friends),
+              )
             }
             clearButtonMode="while-editing"
           />

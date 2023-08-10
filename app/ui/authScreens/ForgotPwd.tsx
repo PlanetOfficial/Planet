@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   StatusBar,
+  ActivityIndicator,
 } from 'react-native';
 
 import colors from '../../constants/colors';
@@ -17,6 +18,7 @@ import Icon from '../components/Icon';
 import Text from '../components/Text';
 
 import {sendCodeForgotPwd} from '../../utils/api/authAPI';
+import {useLoadingState} from '../../utils/Misc';
 
 const ForgotPwd = ({navigation}: {navigation: any}) => {
   const theme = 'light';
@@ -26,6 +28,8 @@ const ForgotPwd = ({navigation}: {navigation: any}) => {
   const [username, setUsername] = useState<string>('');
 
   const [error, setError] = useState<string>('');
+
+  const [loading, withLoading] = useLoadingState();
 
   const handleNext = async () => {
     setError('');
@@ -84,11 +88,15 @@ const ForgotPwd = ({navigation}: {navigation: any}) => {
                 : colors[theme].accent,
           },
         ]}
-        disabled={username.length === 0}
-        onPress={handleNext}>
-        <Text weight="b" color={colors[theme].primary}>
-          {strings.main.next}
-        </Text>
+        disabled={username.length === 0 || loading}
+        onPress={() => withLoading(handleNext)}>
+        {loading ? (
+          <ActivityIndicator size="small" color={colors[theme].primary} />
+        ) : (
+          <Text weight="b" color={colors[theme].primary}>
+            {strings.main.next}
+          </Text>
+        )}
       </TouchableOpacity>
     </View>
   );

@@ -1,8 +1,7 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useEffect} from 'react';
 import {
   View,
   StyleSheet,
-  Alert,
   TouchableOpacity,
   ScrollView,
   RefreshControl,
@@ -20,25 +19,21 @@ import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 import UserRow from '../../components/UserRow';
 
-import FriendsContext from '../../../context/FriendsContext';
-
 import {UserInfo} from '../../../utils/types';
-import {getFriends} from '../../../utils/api/friendsAPI';
+import {useLoadingState} from '../../../utils/Misc';
+
 import {
   handleAcceptRequest,
   handleCancelRequest,
   handleDeclineRequest,
 } from './functions';
+import {useFriendsContext} from '../../../context/FriendsContext';
 
 const Requests = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';
   const STYLES = STYLING(theme);
   StatusBar.setBarStyle(colors[theme].statusBar, true);
 
-  const friendsContext = useContext(FriendsContext);
-  if (!friendsContext) {
-    throw new Error('FriendsContext is not set!');
-  }
   const {
     requests,
     setRequests,
@@ -46,24 +41,10 @@ const Requests = ({navigation}: {navigation: any}) => {
     setRequestsSent,
     friends,
     setFriends,
-    setUsersIBlock,
-    setUsersBlockingMe,
-  } = friendsContext;
+    refreshFriends,
+  } = useFriendsContext();
 
-  const [loading, setLoading] = useState(false);
-  const loadRequests = async () => {
-    const response = await getFriends();
-
-    if (response) {
-      setFriends(response.friends);
-      setUsersIBlock(response.usersIBlock);
-      setUsersBlockingMe(response.usersBlockingMe);
-      setRequests(response.requests);
-      setRequestsSent(response.requests_sent);
-    } else {
-      Alert.alert(strings.error.error, strings.error.loadFriendRequests);
-    }
-  };
+  const [loading, withLoading] = useLoadingState();
 
   useEffect(() => {
     navigation.setOptions({
@@ -79,11 +60,11 @@ const Requests = ({navigation}: {navigation: any}) => {
       refreshControl={
         <RefreshControl
           refreshing={loading}
-          onRefresh={async () => {
-            setLoading(true);
-            await loadRequests();
-            setLoading(false);
-          }}
+          onRefresh={() =>
+            withLoading(async () => {
+              await refreshFriends();
+            })
+          }
           tintColor={colors[theme].accent}
         />
       }>

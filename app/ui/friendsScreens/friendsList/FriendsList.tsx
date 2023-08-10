@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -19,34 +19,21 @@ import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 import UserRow from '../../components/UserRow';
 
-import FriendsContext from '../../../context/FriendsContext';
-
 import {UserInfo} from '../../../utils/types';
+import {useLoadingState} from '../../../utils/Misc';
 
 import FriendGroupComponent from './FriendGroup';
 import FriendGroupEdit from './FriendGroupEdit';
-import {loadFriends} from './functions';
+import {useFriendsContext} from '../../../context/FriendsContext';
 
 const FriendsList = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';
   const STYLES = STYLING(theme);
   StatusBar.setBarStyle(colors[theme].statusBar, true);
 
-  const friendsContext = useContext(FriendsContext);
-  if (!friendsContext) {
-    throw new Error('FriendsContext is not set!');
-  }
-  const {
-    friends,
-    setFriends,
-    setFriendGroups,
-    setUsersIBlock,
-    setUsersBlockingMe,
-    setRequests,
-    setRequestsSent,
-  } = friendsContext;
+  const {friends, refreshFriends} = useFriendsContext();
 
-  const [loading, setLoading] = useState(false);
+  const [loading, withLoading] = useLoadingState();
   const [fgSelected, setFgSelected] = useState<number>(0);
   const [fgEditing, setFgEditing] = useState<boolean>(false);
   const [tempName, setTempName] = useState<string>();
@@ -60,18 +47,11 @@ const FriendsList = ({navigation}: {navigation: any}) => {
       refreshControl={
         <RefreshControl
           refreshing={loading}
-          onRefresh={async () => {
-            setLoading(true);
-            await loadFriends(
-              setFriends,
-              setFriendGroups,
-              setUsersIBlock,
-              setUsersBlockingMe,
-              setRequests,
-              setRequestsSent,
-            );
-            setLoading(false);
-          }}
+          onRefresh={() =>
+            withLoading(async () => {
+              await refreshFriends();
+            })
+          }
           tintColor={colors[theme].accent}
         />
       }>

@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useState} from 'react';
 import {View, SafeAreaView, useColorScheme, StatusBar} from 'react-native';
 import {useSharedValue} from 'react-native-reanimated';
 
@@ -9,13 +9,12 @@ import STYLING from '../../../constants/styles';
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 
-import BookmarkContext from '../../../context/BookmarkContext';
-
 import {Destination, Suggestion} from '../../../utils/types';
 
 import {getCurrentSuggestion} from './functions';
 import Spinner from './Spinner';
 import Info from './Info';
+import {useBookmarkContext} from '../../../context/BookmarkContext';
 
 const Roulette = ({
   navigation,
@@ -33,20 +32,16 @@ const Roulette = ({
   const STYLES = STYLING(theme);
   StatusBar.setBarStyle(colors[theme].statusBar, true);
 
-  const [eventId] = useState(route.params.eventId);
+  const [eventId] = useState<number>(route.params.eventId);
   const [destination, setDestination] = useState<Destination>(
     route.params.destination,
   );
 
-  const bookmarkContext = useContext(BookmarkContext);
-  if (!bookmarkContext) {
-    throw new Error('BookmarkContext is not set!');
-  }
-  const {bookmarks, setBookmarks} = bookmarkContext;
+  const {bookmarks, setBookmarks} = useBookmarkContext();
 
   const rotation = useSharedValue(0);
-  const [currentAngle, setCurrentAngle] = useState(rotation.value);
-  const [isSpinning, setIsSpinning] = useState(false);
+  const [currentAngle, setCurrentAngle] = useState<number>(rotation.value);
+  const [isSpinning, setIsSpinning] = useState<boolean>(false);
 
   const totalVotes = destination.suggestions
     .map((suggestion: Suggestion) =>

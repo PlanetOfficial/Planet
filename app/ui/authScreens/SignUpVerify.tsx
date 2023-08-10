@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useState} from 'react';
 import {
   View,
   SafeAreaView,
@@ -6,6 +6,7 @@ import {
   TextInput,
   StyleSheet,
   StatusBar,
+  ActivityIndicator,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 
@@ -19,9 +20,8 @@ import Icon from '../components/Icon';
 import Text from '../components/Text';
 
 import {verifyCode} from '../../utils/api/authAPI';
-import {fetchUserLocation} from '../../utils/Misc';
-
-import LocationContext from '../../context/LocationContext';
+import {fetchUserLocation, useLoadingState} from '../../utils/Misc';
+import {useLocationContext} from '../../context/LocationContext';
 
 const SignUpVerify = ({
   navigation,
@@ -45,11 +45,9 @@ const SignUpVerify = ({
 
   const [error, setError] = useState<string>('');
 
-  const locationContext = useContext(LocationContext);
-  if (!locationContext) {
-    throw new Error('LocationContext is not set!');
-  }
-  const {setLocation, setRadius} = locationContext;
+  const {setLocation, setRadius} = useLocationContext();
+
+  const [loading, withLoading] = useLoadingState();
 
   const handleVerifyCode = async () => {
     setError('');
@@ -122,11 +120,15 @@ const SignUpVerify = ({
                 : colors[theme].accent,
           },
         ]}
-        disabled={code.length !== 6}
-        onPress={() => handleVerifyCode()}>
-        <Text weight="b" color={colors[theme].primary}>
-          {strings.signUp.verifyCode}
-        </Text>
+        disabled={code.length !== 6 || loading}
+        onPress={() => withLoading(handleVerifyCode)}>
+        {loading ? (
+          <ActivityIndicator size="small" color={colors[theme].primary} />
+        ) : (
+          <Text weight="b" color={colors[theme].primary}>
+            {strings.signUp.verifyCode}
+          </Text>
+        )}
       </TouchableOpacity>
     </View>
   );

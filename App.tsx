@@ -2,19 +2,28 @@ import 'react-native-gesture-handler';
 import React, {useEffect, useState} from 'react';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import messaging from '@react-native-firebase/messaging';
-import {PermissionsAndroid, Platform} from 'react-native';
+import {
+  PermissionsAndroid,
+  Platform,
+  StatusBar,
+  useColorScheme,
+} from 'react-native';
+import SystemNavigationBar from 'react-native-system-navigation-bar';
 
 import SplashScreen from './app/ui/otherScreens/splashScreen/SplashScreen';
 import AppNavigation from './app/ui/navigations/AppNavigation';
 import {cacheCategories, updateCaches} from './app/utils/CacheHelpers';
 import {saveTokenToDatabase} from './app/utils/api/authAPI';
 import Notification from './app/ui/components/Notification';
+import colors from './app/constants/colors';
 
 export default function App() {
   const [isLoading, setLoading] = useState<boolean>(true);
-  const [isLoggedIn, setLoggedIn] = useState<boolean>(false);
+  const [isLoggedInStack, setLoggedInStack] = useState<boolean>(false);
 
   const [notificationText, setNotificationText] = useState<string>('');
+
+  const theme = useColorScheme() || 'light';
 
   const requestNotificationPerms = async () => {
     if (Platform.OS === 'android') {
@@ -28,20 +37,29 @@ export default function App() {
 
   useEffect(() => {
     const initialize = async () => {
+      // android specific ui configurations
+      if (Platform.OS === 'android') {
+        StatusBar.setBackgroundColor(colors[theme].background);
+        SystemNavigationBar.setNavigationColor(
+          colors[theme].background,
+          colors[theme].androidNavigationBarStyle,
+        );
+      }
+
       const token = await EncryptedStorage.getItem('auth_token');
 
       try {
         if (token) {
-          setLoggedIn(true);
+          setLoggedInStack(true);
           await updateCaches(token);
         } else {
-          setLoggedIn(false);
+          setLoggedInStack(false);
         }
 
         await cacheCategories();
       } catch (err) {
         console.warn(err);
-        setLoggedIn(false);
+        setLoggedInStack(false);
       }
 
       setLoading(false);
@@ -61,7 +79,7 @@ export default function App() {
     });
 
     return unsubscribe;
-  }, []);
+  }, [theme]);
 
   useEffect(() => {
     // Get the device token
@@ -83,7 +101,7 @@ export default function App() {
   const getCorrectStack = () => {
     return (
       <>
-        <AppNavigation isLoggedIn={isLoggedIn} />
+        <AppNavigation isLoggedInStack={isLoggedInStack} />
         {notificationText !== '' ? (
           <Notification
             message={notificationText}

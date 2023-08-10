@@ -3,30 +3,8 @@ import {Alert, LayoutAnimation} from 'react-native';
 import strings from '../../../constants/strings';
 
 import {FriendGroup, UserInfo} from '../../../utils/types';
-import {getFriends} from '../../../utils/api/friendsAPI';
 import {deleteFG, editFG, reorderFG} from '../../../utils/api/fgAPI';
-
-export const loadFriends = async (
-  setFriends: (friends: UserInfo[]) => void,
-  setFriendGroups: (friendGroups: FriendGroup[]) => void,
-  setUsersIBlock: (usersIBlock: UserInfo[]) => void,
-  setUsersBlockingMe: (usersBlockingMe: UserInfo[]) => void,
-  setRequests: (requests: UserInfo[]) => void,
-  setRequestsSent: (requestsSent: UserInfo[]) => void,
-) => {
-  const response = await getFriends();
-
-  if (response) {
-    setFriends(response.friends);
-    setFriendGroups(response.friend_groups);
-    setUsersIBlock(response.usersIBlock);
-    setUsersBlockingMe(response.usersBlockingMe);
-    setRequests(response.requests);
-    setRequestsSent(response.requests_sent);
-  } else {
-    Alert.alert(strings.error.error, strings.error.loadFriendsList);
-  }
-};
+import {getFriends} from '../../../utils/api/friendsAPI';
 
 export const handleFGReorder = async (data: FriendGroup[]) => {
   const response = await reorderFG(data.map(fg => fg.id));
@@ -126,5 +104,27 @@ export const handleRemoveFG = async (
     );
   } else {
     Alert.alert(strings.error.error, strings.error.deleteFG);
+  }
+};
+
+const loadFriends = async (
+  setFriends: (friends: UserInfo[]) => void,
+  setFriendGroups: (friendGroups: FriendGroup[]) => void,
+  setUsersIBlock: (usersIBlock: UserInfo[]) => void,
+  setUsersBlockingMe: (usersBlockingMe: UserInfo[]) => void,
+  setRequests: (requests: UserInfo[]) => void,
+  setRequestsSent: (requestsSent: UserInfo[]) => void,
+) => {
+  const response = await getFriends();
+
+  if (response) {
+    setFriends(response.friends);
+    setFriendGroups(response.friend_groups);
+    setUsersIBlock(response.usersIBlock);
+    setUsersBlockingMe(response.usersBlockingMe);
+    setRequests(response.requests);
+    setRequestsSent(response.requests_sent);
+  } else {
+    Alert.alert(strings.error.error, strings.error.loadFriendsList);
   }
 };

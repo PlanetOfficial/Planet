@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginHorizontal: s(25),
+    marginHorizontal: s(20),
     paddingVertical: s(7),
   },
   profilePic: {

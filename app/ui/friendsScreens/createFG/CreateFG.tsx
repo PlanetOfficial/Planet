@@ -1,10 +1,11 @@
-import React, {useContext, useState} from 'react';
+import React, {useState} from 'react';
 import {
   View,
   FlatList,
   useColorScheme,
   StatusBar,
   ActivityIndicator,
+  Keyboard,
 } from 'react-native';
 import {TouchableOpacity as TouchableOpacityGestureHandler} from 'react-native-gesture-handler';
 
@@ -17,37 +18,33 @@ import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 import UserRow from '../../components/UserRow';
 
-import FriendsContext from '../../../context/FriendsContext';
-
 import {UserInfo} from '../../../utils/types';
+import {useLoadingState} from '../../../utils/Misc';
 
 import Header from './Header';
 import Button from './Button';
+import {useFriendsContext} from '../../../context/FriendsContext';
 
 const CreateFG = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';
   const STYLES = STYLING(theme);
   StatusBar.setBarStyle(colors[theme].statusBar, true);
 
-  const friendsContext = useContext(FriendsContext);
-  if (!friendsContext) {
-    throw new Error('FriendsContext is not set!');
-  }
-  const {friends, setFriendGroups} = friendsContext;
+  const {friends, setFriendGroups} = useFriendsContext();
 
   const [selectedId, setSelectedId] = useState<number[]>([]);
 
   const [searchText, setSearchText] = useState<string>('');
   const [searchResults, setSearchResults] = useState<UserInfo[]>([]);
   const [searching, setSearching] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, withLoading] = useLoadingState();
 
   return (
     <View style={STYLES.container}>
       <Header
         navigation={navigation}
         selectedId={selectedId}
-        setLoading={setLoading}
+        withLoading={withLoading}
         searchText={searchText}
         setSearchText={setSearchText}
         searchResults={searchResults}
@@ -68,6 +65,7 @@ const CreateFG = ({navigation}: {navigation: any}) => {
             contentContainerStyle={STYLES.flatList}
             scrollIndicatorInsets={{right: 1}}
             data={searchResults}
+            onScrollBeginDrag={() => Keyboard.dismiss()}
             keyExtractor={item => item.id.toString()}
             renderItem={({item}: {item: UserInfo}) => (
               <TouchableOpacityGestureHandler

@@ -1,4 +1,4 @@
-import React, {useState, createRef, useEffect, useContext} from 'react';
+import React, {useState, createRef, useEffect} from 'react';
 import {
   View,
   SafeAreaView,
@@ -8,7 +8,6 @@ import {
   LayoutAnimation,
   useColorScheme,
   StatusBar,
-  SectionList,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 import {TouchableOpacity} from 'react-native-gesture-handler';
@@ -25,12 +24,13 @@ import Icon from '../../components/Icon';
 import Text from '../../components/Text';
 import UserRow from '../../components/UserRow';
 
-import FriendsContext from '../../../context/FriendsContext';
-
 import {UserInfo} from '../../../utils/types';
+import {useLoadingState} from '../../../utils/Misc';
 
-import ActionButtons from '../user/ActionButtons';
+import ActionButtons from '../components/ActionButtons';
 import {search} from './functions';
+import SearchResult from '../components/SearchResult';
+import {useFriendsContext} from '../../../context/FriendsContext';
 
 const Friends = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';
@@ -44,13 +44,9 @@ const Friends = ({navigation}: {navigation: any}) => {
   const [searchText, setSearchText] = useState<string>('');
   const [searchResults, setSearchResults] = useState<UserInfo[]>([]);
   const [searching, setSearching] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, withLoading] = useLoadingState();
 
-  const friendsContext = useContext(FriendsContext);
-  if (!friendsContext) {
-    throw new Error('FriendsContext is not set!');
-  }
-  const {friends, usersBlockingMe} = friendsContext;
+  const {friends, usersBlockingMe} = useFriendsContext();
 
   const loadSelf = async () => {
     const myUserId = await EncryptedStorage.getItem('user_id');
@@ -94,15 +90,15 @@ const Friends = ({navigation}: {navigation: any}) => {
                 );
                 setSearching(true);
               }}
-              onBlur={() => setSearching(false)}
               onChangeText={text =>
-                search(
-                  text,
-                  setLoading,
-                  setSearchText,
-                  setSearchResults,
-                  selfUserId,
-                  usersBlockingMe,
+                withLoading(() =>
+                  search(
+                    text,
+                    setSearchText,
+                    setSearchResults,
+                    selfUserId,
+                    usersBlockingMe,
+                  ),
                 )
               }
               clearButtonMode="while-editing"
@@ -129,31 +125,10 @@ const Friends = ({navigation}: {navigation: any}) => {
             <ActivityIndicator size="small" color={colors[theme].accent} />
           </View>
         ) : (
-          <SectionList
-            sections={
-              searchResults.length > 0
-                ? [
-                    {
-                      title: strings.friends.friends,
-                      data: searchResults.filter(user =>
-                        friends.some(friend => friend.id === user.id),
-                      ),
-                    },
-                    {
-                      title: strings.friends.users,
-                      data: searchResults.filter(
-                        user => !friends.some(friend => friend.id === user.id),
-                      ),
-                    },
-                  ]
-                : []
-            }
-            style={STYLES.container}
-            contentContainerStyle={STYLES.flatList}
-            initialNumToRender={10}
-            keyboardShouldPersistTaps={'always'}
-            scrollIndicatorInsets={{right: 1}}
-            data={searchResults}
+          <SearchResult
+            searchResults={searchResults}
+            friends={friends}
+            searchText={searchText}
             renderItem={({item}: {item: UserInfo}) => (
               <TouchableOpacity
                 onPress={() => navigation.push('User', {user: item})}>
@@ -164,21 +139,6 @@ const Friends = ({navigation}: {navigation: any}) => {
                 </UserRow>
               </TouchableOpacity>
             )}
-            renderSectionHeader={({section}) =>
-              section.data.length > 0 ? (
-                <View style={STYLES.sectionHeader}>
-                  <Text size="s">{section.title}</Text>
-                </View>
-              ) : null
-            }
-            ListEmptyComponent={
-              searchText.length > 0 ? (
-                <View style={STYLES.center}>
-                  <Text>{strings.search.noResultsFound}</Text>
-                </View>
-              ) : null
-            }
-            keyExtractor={user => user.id.toString()}
           />
         )
       ) : (
@@ -217,7 +177,6 @@ const styling = (theme: 'light' | 'dark') =>
       alignItems: 'flex-end',
       justifyContent: 'flex-end',
       marginBottom: s(10),
-      marginRight: -s(10),
     },
   });
 

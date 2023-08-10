@@ -1,10 +1,4 @@
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
   View,
   Alert,
@@ -19,14 +13,13 @@ import colors from '../../../constants/colors';
 import strings from '../../../constants/strings';
 import STYLING from '../../../constants/styles';
 
-import BookmarkContext from '../../../context/BookmarkContext';
-
 import {Destination, Event, EventDetail, Poi} from '../../../utils/types';
 import {getEvent} from '../../../utils/api/eventAPI';
 import {postSuggestion} from '../../../utils/api/suggestionAPI';
 
 import Header from './Header';
 import Destinations from './Destinations';
+import {useBookmarkContext} from '../../../context/BookmarkContext';
 
 const EventPage = ({
   navigation,
@@ -58,11 +51,7 @@ const EventPage = ({
   const [insertionDestination, setInsertionDestination] =
     useState<Destination>();
 
-  const bookmarkContext = useContext(BookmarkContext);
-  if (!bookmarkContext) {
-    throw new Error('BookmarkContext is not set!');
-  }
-  const {bookmarks, setBookmarks} = bookmarkContext;
+  const {bookmarks, setBookmarks} = useBookmarkContext();
 
   const loadData = useCallback(async () => {
     const myUserId = await EncryptedStorage.getItem('user_id');

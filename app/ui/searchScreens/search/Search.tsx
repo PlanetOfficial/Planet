@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -22,13 +22,12 @@ import Text from '../../components/Text';
 import SeparatorR from '../../components/SeparatorR';
 import PoiRow from '../../components/PoiRow';
 
-import BookmarkContext from '../../../context/BookmarkContext';
-
 import {fetchUserLocation, handleBookmark} from '../../../utils/Misc';
 import {Category, Coordinate, Genre, Poi} from '../../../utils/types';
 
 import Header from './Header';
 import categories from '../../../constants/categories';
+import {useBookmarkContext} from '../../../context/BookmarkContext';
 
 const Search = ({
   navigation,
@@ -55,11 +54,7 @@ const Search = ({
   const [searching, setSearching] = useState<boolean>(false);
   const [searchText, setSearchText] = useState<string>('');
 
-  const bookmarkContext = useContext(BookmarkContext);
-  if (!bookmarkContext) {
-    throw new Error('BookmarkContext is not set!');
-  }
-  const {bookmarks, setBookmarks} = bookmarkContext;
+  const {bookmarks, setBookmarks} = useBookmarkContext();
 
   const initializeData = async () => {
     const data = await AsyncStorage.getItem('genres');

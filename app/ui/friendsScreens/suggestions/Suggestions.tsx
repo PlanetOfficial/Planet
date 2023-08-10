@@ -1,35 +1,24 @@
-import React, {useContext} from 'react';
-import {
-  View,
-  FlatList,
-  TouchableOpacity,
-  useColorScheme,
-  StatusBar,
-} from 'react-native';
+import React from 'react';
+import {View, FlatList, useColorScheme, StatusBar} from 'react-native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 import colors from '../../../constants/colors';
-import icons from '../../../constants/icons';
 import strings from '../../../constants/strings';
 import STYLING from '../../../constants/styles';
 
 import Text from '../../components/Text';
-import Icon from '../../components/Icon';
 import UserRow from '../../components/UserRow';
 
-import FriendsContext from '../../../context/FriendsContext';
-
 import {UserInfo} from '../../../utils/types';
+import {useFriendsContext} from '../../../context/FriendsContext';
+import ActionButtons from '../components/ActionButtons';
 
 const Friends = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';
   const STYLES = STYLING(theme);
   StatusBar.setBarStyle(colors[theme].statusBar, true);
 
-  const friendsContext = useContext(FriendsContext);
-  if (!friendsContext) {
-    throw new Error('FriendsContext is not set!');
-  }
-  const {suggestions, usersIBlock, usersBlockingMe} = friendsContext;
+  const {suggestions, usersIBlock, usersBlockingMe} = useFriendsContext();
 
   return (
     <FlatList
@@ -52,7 +41,7 @@ const Friends = ({navigation}: {navigation: any}) => {
             })
           }>
           <UserRow user={item}>
-            <Icon size="s" icon={icons.next} />
+            <ActionButtons user={item} />
           </UserRow>
         </TouchableOpacity>
       )}

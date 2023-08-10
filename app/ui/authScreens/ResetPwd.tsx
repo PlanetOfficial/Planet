@@ -7,6 +7,7 @@ import {
   Alert,
   useColorScheme,
   StatusBar,
+  ActivityIndicator,
 } from 'react-native';
 
 import colors from '../../constants/colors';
@@ -19,6 +20,7 @@ import Text from '../components/Text';
 
 import {resetPassword} from '../../utils/api/authAPI';
 import {clearCaches} from '../../utils/CacheHelpers';
+import {useLoadingState} from '../../utils/Misc';
 
 const ResetPwd = ({
   navigation,
@@ -41,6 +43,8 @@ const ResetPwd = ({
   const [passwordConfirm, setPasswordConfirm] = useState<string>('');
 
   const [error, setError] = useState<string>('');
+
+  const [loading, withLoading] = useLoadingState();
 
   const handleNext = async () => {
     setError('');
@@ -77,7 +81,6 @@ const ResetPwd = ({
         routes: [{name: 'Login'}],
       });
     } else {
-      setError(strings.error.resetPassword);
     }
   };
 
@@ -133,9 +136,17 @@ const ResetPwd = ({
                 : colors[theme].accent,
           },
         ]}
-        disabled={password.length === 0 || password !== passwordConfirm}
-        onPress={() => handleNext()}>
-        <Text color={colors[theme].primary}>{strings.login.resetPassword}</Text>
+        disabled={
+          password.length === 0 || password !== passwordConfirm || loading
+        }
+        onPress={() => withLoading(handleNext)}>
+        {loading ? (
+          <ActivityIndicator size="small" color={colors[theme].primary} />
+        ) : (
+          <Text color={colors[theme].primary}>
+            {strings.login.resetPassword}
+          </Text>
+        )}
       </TouchableOpacity>
     </View>
   );

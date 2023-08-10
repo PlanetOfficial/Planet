@@ -7,13 +7,11 @@ import {UserInfo} from '../../../utils/types';
 
 export const search = async (
   text: string,
-  setLoading: (loading: boolean) => void,
   setSearchText: (text: string) => void,
   setSearchResults: (results: UserInfo[]) => void,
   selfUserId: number,
   usersBlockingMe: UserInfo[],
 ) => {
-  setLoading(true);
   setSearchText(text);
   if (text.length > 0) {
     const result = await searchUsers(text);
@@ -30,5 +28,4 @@ export const search = async (
       Alert.alert(strings.error.error, strings.error.searchError);
     }
   }
-  setLoading(false);
 };

@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {
   View,
   SafeAreaView,
@@ -18,10 +18,9 @@ import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 import PoiRow from '../../components/PoiRow';
 
-import BookmarkContext from '../../../context/BookmarkContext';
-
 import {Coordinate, Poi} from '../../../utils/types';
 import {handleBookmark} from '../../../utils/Misc';
+import {useBookmarkContext} from '../../../context/BookmarkContext';
 
 const ViewHistory = ({
   navigation,
@@ -48,11 +47,7 @@ const ViewHistory = ({
 
   const {viewHistory, location} = route.params;
 
-  const bookmarkContext = useContext(BookmarkContext);
-  if (!bookmarkContext) {
-    throw new Error('BookmarkContext is not set!');
-  }
-  const {bookmarks, setBookmarks} = bookmarkContext;
+  const {bookmarks, setBookmarks} = useBookmarkContext();
 
   return (
     <View style={STYLES.container}>

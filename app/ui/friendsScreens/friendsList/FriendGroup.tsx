@@ -1,4 +1,4 @@
-import React, {useContext, useMemo} from 'react';
+import React, {useMemo} from 'react';
 import {
   StyleSheet,
   View,
@@ -17,12 +17,11 @@ import STYLING from '../../../constants/styles';
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 
-import FriendsContext from '../../../context/FriendsContext';
-
 import {FriendGroup, UserInfo} from '../../../utils/types';
 
 import FGIcon from './FGIcon';
 import {handleFGReorder, resetFGEditing} from './functions';
+import {useFriendsContext} from '../../../context/FriendsContext';
 
 interface Props {
   navigation: any;
@@ -45,11 +44,7 @@ const FriendGroupComponent: React.FC<Props> = ({
   const styles = styling(theme);
   const STYLES = STYLING(theme);
 
-  const friendsContext = useContext(FriendsContext);
-  if (!friendsContext) {
-    throw new Error('FriendsContext is not set!');
-  }
-  const {friendGroups, setFriendGroups} = friendsContext;
+  const {friendGroups, setFriendGroups} = useFriendsContext();
 
   const AddButton = useMemo(
     () => (

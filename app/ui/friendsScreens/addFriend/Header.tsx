@@ -1,4 +1,4 @@
-import React, {createRef, useContext} from 'react';
+import React, {createRef} from 'react';
 import {
   View,
   SafeAreaView,
@@ -19,10 +19,9 @@ import STYLING from '../../../constants/styles';
 import Icon from '../../components/Icon';
 import Text from '../../components/Text';
 
-import FriendsContext from '../../../context/FriendsContext';
-
 import {UserInfo} from '../../../utils/types';
 import {search} from '../friends/functions';
+import {useFriendsContext} from '../../../context/FriendsContext';
 
 interface Props {
   navigation: any;
@@ -30,11 +29,11 @@ interface Props {
   invitees: UserInfo[];
   searching: boolean;
   setSearching: (searching: boolean) => void;
-  setLoading: (loading: boolean) => void;
   searchText: string;
   setSearchText: (searchText: string) => void;
   setSearchResults: (searchResults: UserInfo[]) => void;
   selfUserId: number;
+  withLoading: (func: () => Promise<void>) => Promise<void>;
 }
 
 const Header: React.FC<Props> = ({
@@ -43,11 +42,11 @@ const Header: React.FC<Props> = ({
   invitees,
   searching,
   setSearching,
-  setLoading,
   searchText,
   setSearchText,
   setSearchResults,
   selfUserId,
+  withLoading,
 }) => {
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
@@ -55,11 +54,7 @@ const Header: React.FC<Props> = ({
 
   const searchRef = createRef<TextInput>();
 
-  const friendsContext = useContext(FriendsContext);
-  if (!friendsContext) {
-    throw new Error('FriendsContext is not set!');
-  }
-  const {usersBlockingMe} = friendsContext;
+  const {usersBlockingMe} = useFriendsContext();
 
   return (
     <SafeAreaView>
@@ -108,15 +103,15 @@ const Header: React.FC<Props> = ({
               );
               setSearching(true);
             }}
-            onBlur={() => setSearching(false)}
             onChangeText={text =>
-              search(
-                text,
-                setLoading,
-                setSearchText,
-                setSearchResults,
-                selfUserId,
-                usersBlockingMe,
+              withLoading(() =>
+                search(
+                  text,
+                  setSearchText,
+                  setSearchResults,
+                  selfUserId,
+                  usersBlockingMe,
+                ),
               )
             }
             clearButtonMode="while-editing"

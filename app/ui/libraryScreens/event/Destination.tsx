@@ -83,7 +83,7 @@ const DestinationView: React.FC<Props> = ({
       scrollIndicatorInsets={{right: 1}}
       showsVerticalScrollIndicator={false}
       data={eventDetail.destinations}
-      onTouchStart={onSuggestionClose}
+      onTouchStart={() => (displayingSuggestion ? onSuggestionClose() : null)}
       renderItem={({item}: {item: Destination}) =>
         item.suggestions.length > 0 ? (
           <View style={styles.destination}>

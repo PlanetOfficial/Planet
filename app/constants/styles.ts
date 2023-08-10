@@ -10,6 +10,7 @@ const styling = (theme: 'light' | 'dark') =>
     },
     flatList: {
       paddingTop: s(10),
+      paddingBottom: s(30),
     },
     scrollView: {
       paddingBottom: s(30),
@@ -84,7 +85,7 @@ const styling = (theme: 'light' | 'dark') =>
       transform: [{rotate: '180deg'}],
     },
     promptContainer: {
-      margin: s(40),
+      margin: s(20),
       paddingHorizontal: s(20),
     },
     prompt: {

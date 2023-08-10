@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
   TouchableOpacity,
   ActivityIndicator,
@@ -16,6 +16,7 @@ import Text from '../../components/Text';
 import {Poi, UserInfo} from '../../../utils/types';
 
 import {handleSave} from './functions';
+import {useLoadingState} from '../../../utils/Misc';
 
 interface Props {
   navigation: any;
@@ -37,7 +38,7 @@ const SaveButton: React.FC<Props> = ({
   const theme = useColorScheme() || 'light';
   const STYLES = STYLING(theme);
 
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, withLoading] = useLoadingState();
 
   return (
     <TouchableOpacity
@@ -53,14 +54,15 @@ const SaveButton: React.FC<Props> = ({
       ]}
       disabled={loading || !destinations || destinations.length === 0}
       onPress={() =>
-        handleSave(
-          navigation,
-          eventTitle,
-          date,
-          members,
-          setLoading,
-          destinations,
-          destinationNames,
+        withLoading(() =>
+          handleSave(
+            navigation,
+            eventTitle,
+            date,
+            members,
+            destinations,
+            destinationNames,
+          ),
         )
       }>
       {loading ? (
