@@ -26,32 +26,16 @@ Upgrade RN library with npx react-native upgrade
 
 **If you add to the .env file, remember to update the '@env' module in declarations.d.ts
 
-<h1>Commits</h1>
-
-Before making a commit, go to the version control tab of git in vscode and double check changed files.
-
-<h1>Testing/Cleaning (**required before merging pull requests to main**)</h1>
-
-```
-npm run lint
-npm run lint -- --fix
-```
-
-Test on android and iOS for functionality.
-
-Test release build on android (optional):
-
-```
-npx react-native run-android --mode=release
-```
-
 Naming Scheme:
 -TSX files are PascalCase
 -Everything else camelCase
 
 <h1>Deployment</h1>
 
-1. Testing procedure for a release version: Go to AppNavigation.tsx, do an exhaustive test with all screens and all possible buttons.
+1. Testing procedure before deployment
+- Test release versions on both android and iOS on different screen sizes
+- android: npx react-native run-android --mode=release
+- iOS: npx react-native run-ios --mode Release
 
 2. Update package.json to have correct version
 
@@ -72,32 +56,3 @@ to the google play store.
 <h3>iOS: </h3>
 
 [WRITE IOS CHECKLIST HERE]
-
-------------
-
-<h1>Detox setup (NOT SUPPORTED CURRENTLY):</h1>
-https://wix.github.io/Detox/docs/introduction/getting-started/
-
-Run this in your terminal (for macs)
-```
-brew tap wix/brew
-brew install applesimutils
-```
---> make sure to run the commands above every so often to update to latest version
---> you might have to restart your computer
-
-Run necessary build commands:
-
-For ios debug mode, run:
-
-```
-npx detox build --configuration ios.sim.debug
-```
-
-For other OS and releases, see link for build commands to test .detocrc.js file (step 5 in Project Setup tab)
-
-```
-npm start
-npx detox test --configuration ios.sim.debug
-```
-*see link for other OS and release versions
