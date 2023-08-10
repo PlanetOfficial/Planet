@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Alert,
   StatusBar,
+  ActivityIndicator,
 } from 'react-native';
 import {s, vs} from 'react-native-size-matters';
 import messaging from '@react-native-firebase/messaging';
@@ -19,6 +20,7 @@ import Text from '../components/Text';
 
 import {saveTokenToDatabase, sendMoreInfo} from '../../utils/api/authAPI';
 import {cacheUserInfo} from '../../utils/CacheHelpers';
+import {useLoadingState} from '../../utils/Misc';
 
 const SignUpInfo = ({
   navigation,
@@ -48,6 +50,8 @@ const SignUpInfo = ({
   const [genderEnum, setGenderEnum] = useState<
     {label: string; value: string}[]
   >(strings.genderEnum);
+
+  const [loading, withLoading] = useLoadingState();
 
   const handleNext = async () => {
     if (!age || !gender) {
@@ -130,11 +134,15 @@ const SignUpInfo = ({
               age && gender ? colors[theme].accent : colors[theme].secondary,
           },
         ]}
-        disabled={!age || !gender}
-        onPress={handleNext}>
-        <Text weight="b" color={colors[theme].primary}>
-          {strings.signUp.enjoy}
-        </Text>
+        disabled={!age || !gender || loading}
+        onPress={() => withLoading(handleNext)}>
+        {loading ? (
+          <ActivityIndicator size="small" color={colors[theme].primary} />
+        ) : (
+          <Text weight="b" color={colors[theme].primary}>
+            {strings.signUp.enjoy}
+          </Text>
+        )}
       </TouchableOpacity>
     </View>
   );

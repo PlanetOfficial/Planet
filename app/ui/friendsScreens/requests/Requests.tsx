@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {
   View,
   StyleSheet,
@@ -20,6 +20,8 @@ import Icon from '../../components/Icon';
 import UserRow from '../../components/UserRow';
 
 import {UserInfo} from '../../../utils/types';
+import {useLoadingState} from '../../../utils/Misc';
+
 import {
   handleAcceptRequest,
   handleCancelRequest,
@@ -42,7 +44,7 @@ const Requests = ({navigation}: {navigation: any}) => {
     refreshFriends,
   } = useFriendsContext();
 
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, withLoading] = useLoadingState();
 
   useEffect(() => {
     navigation.setOptions({
@@ -58,11 +60,11 @@ const Requests = ({navigation}: {navigation: any}) => {
       refreshControl={
         <RefreshControl
           refreshing={loading}
-          onRefresh={async () => {
-            setLoading(true);
-            await refreshFriends();
-            setLoading(false);
-          }}
+          onRefresh={() =>
+            withLoading(async () => {
+              await refreshFriends();
+            })
+          }
           tintColor={colors[theme].accent}
         />
       }>

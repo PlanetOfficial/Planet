@@ -7,6 +7,7 @@ import {
   StatusBar,
   Linking,
   StyleSheet,
+  ActivityIndicator,
 } from 'react-native';
 
 import {s} from 'react-native-size-matters';
@@ -20,6 +21,7 @@ import Icon from '../components/Icon';
 import Text from '../components/Text';
 
 import {signup} from '../../utils/api/authAPI';
+import {useLoadingState} from '../../utils/Misc';
 
 const SignUpCreds = ({
   navigation,
@@ -49,6 +51,8 @@ const SignUpCreds = ({
   const [error, setError] = useState<string>('');
 
   const [userAgreed, setUserAgreed] = useState<boolean>(false);
+
+  const [loading, withLoading] = useLoadingState();
 
   const handleNext = async () => {
     setError('');
@@ -206,11 +210,15 @@ const SignUpCreds = ({
               : colors[theme].accent,
           },
         ]}
-        disabled={validState}
-        onPress={() => handleNext()}>
-        <Text weight="b" color={colors[theme].primary}>
-          {strings.signUp.signUp}
-        </Text>
+        disabled={validState || loading}
+        onPress={() => withLoading(handleNext)}>
+        {loading ? (
+          <ActivityIndicator size="small" color={colors[theme].primary} />
+        ) : (
+          <Text weight="b" color={colors[theme].primary}>
+            {strings.signUp.signUp}
+          </Text>
+        )}
       </TouchableOpacity>
     </View>
   );

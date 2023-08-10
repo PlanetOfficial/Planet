@@ -53,15 +53,13 @@ const AccountSettings = ({navigation}: {navigation: any}) => {
     try {
       resetContexts();
       clearCaches();
-    } catch (error) {
-      Alert.alert('Error', 'Unable to logout. Please try again.');
-    } finally {
       await messaging().deleteToken();
-
       navigation.reset({
         index: 0,
         routes: [{name: 'Login'}],
       });
+    } catch (error) {
+      Alert.alert('Error', 'Unable to logout. Please try again.');
     }
   };
 

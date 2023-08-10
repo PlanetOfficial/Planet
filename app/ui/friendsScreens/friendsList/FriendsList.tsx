@@ -20,6 +20,7 @@ import Icon from '../../components/Icon';
 import UserRow from '../../components/UserRow';
 
 import {UserInfo} from '../../../utils/types';
+import {useLoadingState} from '../../../utils/Misc';
 
 import FriendGroupComponent from './FriendGroup';
 import FriendGroupEdit from './FriendGroupEdit';
@@ -32,7 +33,7 @@ const FriendsList = ({navigation}: {navigation: any}) => {
 
   const {friends, refreshFriends} = useFriendsContext();
 
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, withLoading] = useLoadingState();
   const [fgSelected, setFgSelected] = useState<number>(0);
   const [fgEditing, setFgEditing] = useState<boolean>(false);
   const [tempName, setTempName] = useState<string>();
@@ -46,11 +47,11 @@ const FriendsList = ({navigation}: {navigation: any}) => {
       refreshControl={
         <RefreshControl
           refreshing={loading}
-          onRefresh={async () => {
-            setLoading(true);
-            await refreshFriends();
-            setLoading(false);
-          }}
+          onRefresh={() =>
+            withLoading(async () => {
+              await refreshFriends();
+            })
+          }
           tintColor={colors[theme].accent}
         />
       }>

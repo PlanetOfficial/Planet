@@ -19,6 +19,7 @@ import Icon from '../../components/Icon';
 import UserRow from '../../components/UserRow';
 
 import {UserInfo} from '../../../utils/types';
+import {useLoadingState} from '../../../utils/Misc';
 
 import Header from './Header';
 import Button from './Button';
@@ -36,14 +37,14 @@ const CreateFG = ({navigation}: {navigation: any}) => {
   const [searchText, setSearchText] = useState<string>('');
   const [searchResults, setSearchResults] = useState<UserInfo[]>([]);
   const [searching, setSearching] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, withLoading] = useLoadingState();
 
   return (
     <View style={STYLES.container}>
       <Header
         navigation={navigation}
         selectedId={selectedId}
-        setLoading={setLoading}
+        withLoading={withLoading}
         searchText={searchText}
         setSearchText={setSearchText}
         searchResults={searchResults}

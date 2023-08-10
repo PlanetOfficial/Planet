@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   StatusBar,
   StyleSheet,
+  ActivityIndicator,
 } from 'react-native';
 import PhoneInput from 'react-native-phone-number-input';
 import {s} from 'react-native-size-matters';
@@ -16,6 +17,7 @@ import STYLING from '../../constants/styles';
 import Text from '../components/Text';
 
 import {sendCode} from '../../utils/api/authAPI';
+import {useLoadingState} from '../../utils/Misc';
 
 const SignUpPhone = ({
   navigation,
@@ -37,6 +39,8 @@ const SignUpPhone = ({
   const [phoneNumber, setPhoneNumber] = useState<string>('');
 
   const [error, setError] = useState<string>('');
+
+  const [loading, withLoading] = useLoadingState();
 
   const handleSendCode = async () => {
     setError('');
@@ -94,11 +98,15 @@ const SignUpPhone = ({
               : colors[theme].secondary,
           },
         ]}
-        disabled={!phoneNumber}
-        onPress={() => handleSendCode()}>
-        <Text weight="b" color={colors[theme].primary}>
-          {strings.signUp.sendCode}
-        </Text>
+        disabled={!phoneNumber || loading}
+        onPress={() => withLoading(handleSendCode)}>
+        {loading ? (
+          <ActivityIndicator size="small" color={colors[theme].primary} />
+        ) : (
+          <Text weight="b" color={colors[theme].primary}>
+            {strings.signUp.sendCode}
+          </Text>
+        )}
       </TouchableOpacity>
     </View>
   );

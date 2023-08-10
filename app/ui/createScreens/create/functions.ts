@@ -30,15 +30,12 @@ export const handleSave = async (
   eventTitle: string,
   date: string | undefined,
   members: UserInfo[],
-  setLoading: (loading: boolean) => void,
   destinations: Poi[] | undefined,
   destinationNames: Map<number, string>,
 ) => {
   if (!destinations) {
     return;
   }
-
-  setLoading(true);
 
   const poi_ids = destinations.map(destination => destination.id);
   const names = destinations.map(
@@ -57,7 +54,4 @@ export const handleSave = async (
   } else {
     Alert.alert(strings.error.error, strings.error.saveEvent);
   }
-  setTimeout(() => {
-    setLoading(false);
-  }, 1000);
 };
