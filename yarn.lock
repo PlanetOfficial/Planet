@@ -1839,10 +1839,10 @@
     opencollective-postinstall "^2.0.1"
     superstruct "^0.6.2"
 
-"@react-native-firebase/messaging@^18.0.0":
-  version "18.1.0"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/messaging/-/messaging-18.1.0.tgz#812df55cf2c42cbfbf16b9c5150ec26e8762d4f1"
-  integrity sha512-eNWmXGo+HT45b81dzdQa5g5wz4d4EGv78ywwoh0ONM5wcVZ0bl5a+Ak2HPOruCkGa2adkiKstHkGEZRdWPdJkg==
+"@react-native-firebase/messaging@^18.2.0":
+  version "18.3.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/messaging/-/messaging-18.3.0.tgz#062e4844d1a5e409e035efc13ecd68f403165568"
+  integrity sha512-MolNWboyN+ZwfHgFTQ4NspIzpFxbtlROxrsiGjwpfzBcKL6cjpfS6uxwupidycuzVL+gaIq1xbCLQaNhv/bToA==
 
 "@react-native-picker/picker@^2.4.10":
   version "2.4.10"
