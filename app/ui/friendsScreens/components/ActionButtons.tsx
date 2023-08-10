@@ -121,7 +121,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: s(10),
     paddingVertical: s(5),
     borderRadius: s(5),
-    marginRight: s(10),
     minWidth: s(65),
     alignItems: 'center',
   },

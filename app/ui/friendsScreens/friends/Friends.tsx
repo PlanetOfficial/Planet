@@ -175,7 +175,6 @@ const styling = (theme: 'light' | 'dark') =>
       alignItems: 'flex-end',
       justifyContent: 'flex-end',
       marginBottom: s(10),
-      marginRight: -s(10),
     },
   });
 
