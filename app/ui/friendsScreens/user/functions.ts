@@ -112,9 +112,7 @@ export const handleBlock = async (
   usersIBlock: UserInfo[],
   setUsersIBlock: (usersIBlock: UserInfo[]) => void,
   user: UserInfo,
-  setLoading?: (loading: boolean) => void,
 ) => {
-  setLoading ? setLoading(true) : null;
   const response = await blockFriend(user.id);
 
   if (response) {
@@ -138,7 +136,6 @@ export const handleBlock = async (
   } else {
     Alert.alert(strings.error.error, strings.error.block);
   }
-  setLoading ? setLoading(false) : null;
 };
 
 export const handleUnblock = async (
