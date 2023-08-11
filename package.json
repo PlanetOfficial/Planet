@@ -28,7 +28,7 @@
     "haversine-distance": "^1.2.1",
     "moment": "^2.29.4",
     "react": "18.2.0",
-    "react-native": "0.72.2",
+    "react-native": "0.72.3",
     "react-native-curved-bottom-bar": "^3.2.6",
     "react-native-date-picker": "^4.2.13",
     "react-native-draggable-flatlist": "^4.0.1",
