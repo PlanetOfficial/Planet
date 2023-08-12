@@ -85,13 +85,18 @@ const styling = (theme: 'light' | 'dark') =>
       transform: [{rotate: '180deg'}],
     },
     promptContainer: {
-      margin: s(20),
+      margin: s(40),
       paddingHorizontal: s(20),
     },
     prompt: {
       width: s(100),
     },
+    error: {
+      position: 'absolute',
+      alignSelf: 'center',
+    },
     inputContainer: {
+      justifyContent: 'center',
       flexDirection: 'row',
       alignItems: 'center',
       marginVertical: s(30),

@@ -6,13 +6,11 @@ import {
   TouchableOpacity,
   StatusBar,
   ActivityIndicator,
-  StyleSheet,
   Keyboard,
   KeyboardAvoidingView,
   ScrollView,
   Platform,
 } from 'react-native';
-import {s} from 'react-native-size-matters';
 
 import colors from '../../constants/colors';
 import icons from '../../constants/icons';
@@ -23,7 +21,7 @@ import Icon from '../components/Icon';
 import Text from '../components/Text';
 
 import {useLoadingState} from '../../utils/Misc';
-import {handleResetPassword} from './functions';
+import {handleSendCodeOnPasswordReset} from './functions';
 
 const ForgotPwd = ({navigation}: {navigation: any}) => {
   const theme = 'light';
@@ -54,7 +52,7 @@ const ForgotPwd = ({navigation}: {navigation: any}) => {
         </View>
       </SafeAreaView>
       <ScrollView>
-        <View style={styles.description}>
+        <View style={STYLES.promptContainer}>
           <Text weight="l" center={true}>
             {strings.login.forgotPasswordDescription}
           </Text>
@@ -85,7 +83,9 @@ const ForgotPwd = ({navigation}: {navigation: any}) => {
           ]}
           disabled={disabled}
           onPress={() =>
-            withLoading(() => handleResetPassword(navigation, username))
+            withLoading(() =>
+              handleSendCodeOnPasswordReset(navigation, username),
+            )
           }>
           {loading ? (
             <ActivityIndicator size="small" color={colors[theme].primary} />
@@ -99,16 +99,5 @@ const ForgotPwd = ({navigation}: {navigation: any}) => {
     </KeyboardAvoidingView>
   );
 };
-
-const styles = StyleSheet.create({
-  description: {
-    marginVertical: s(40),
-    marginHorizontal: s(50),
-  },
-  error: {
-    position: 'absolute',
-    alignSelf: 'center',
-  },
-});
 
 export default ForgotPwd;

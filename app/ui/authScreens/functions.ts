@@ -6,10 +6,16 @@ import strings from '../../constants/strings';
 import {
   isVerified,
   login,
+  resetPassword,
   saveTokenToDatabase,
   sendCodeForgotPwd,
+  verifyCodeUsername,
 } from '../../utils/api/authAPI';
-import {cacheCategories, cacheUserInfo} from '../../utils/CacheHelpers';
+import {
+  cacheCategories,
+  cacheUserInfo,
+  clearCaches,
+} from '../../utils/CacheHelpers';
 
 export const handleLogin = async (
   navigation: any,
@@ -66,7 +72,7 @@ export const handleLogin = async (
   }
 };
 
-export const handleResetPassword = async (
+export const handleSendCodeOnPasswordReset = async (
   navigation: any,
   username: string,
 ) => {
@@ -77,5 +83,71 @@ export const handleResetPassword = async (
   } else {
     // made the error ambiguous so the user can't guess if the username exists or not
     Alert.alert(strings.error.error, strings.error.ambiguousError);
+  }
+};
+
+export const handleVerifyCode = async (
+  navigation: any,
+  username: string,
+  code: string,
+  setError: (error: string) => void,
+) => {
+  setError('');
+
+  const response = await verifyCodeUsername(username, code);
+
+  if (response) {
+    navigation.reset({
+      index: 0,
+      routes: [
+        {name: 'ResetPassword', params: {authToken: response.authToken}},
+      ],
+    });
+  } else {
+    setError(strings.signUp.codeVerifyFailed);
+  }
+};
+
+export const handleResetPassword = async (
+  navigation: any,
+  authToken: string,
+  password: string,
+  passwordConfirm: string,
+  setError: (error: string) => void,
+) => {
+  setError('');
+
+  if (password.length === 0 || passwordConfirm.length === 0) {
+    setError(strings.signUp.missingFields);
+    return;
+  }
+
+  if (password.length < 8) {
+    setError(strings.signUp.passwordShort);
+    return;
+  }
+
+  if (password.length > 100) {
+    setError(strings.signUp.inputLong);
+    return;
+  }
+
+  if (password !== passwordConfirm) {
+    setError(strings.signUp.passwordsMatch);
+    return;
+  }
+
+  const response = await resetPassword(authToken, password);
+
+  if (response) {
+    clearCaches();
+
+    Alert.alert(strings.login.passwordResetSuccess);
+
+    navigation.reset({
+      index: 0,
+      routes: [{name: 'Login'}],
+    });
+  } else {
   }
 };
