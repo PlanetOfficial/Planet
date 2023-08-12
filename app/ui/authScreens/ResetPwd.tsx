@@ -37,7 +37,7 @@ const ResetPwd = ({
   const STYLES = STYLING(theme);
   StatusBar.setBarStyle(colors[theme].statusBar, true);
 
-  const [authToken] = useState<string>(route.params?.authToken);
+  const [authToken] = useState<string>(route.params.authToken);
 
   const [password, setPassword] = useState<string>('');
   const [passwordConfirm, setPasswordConfirm] = useState<string>('');
@@ -85,7 +85,7 @@ const ResetPwd = ({
         <View>
           {error.length !== 0 ? (
             <View style={STYLES.error}>
-              <Text size='s' weight="l" center={true} color={colors[theme].red}>
+              <Text size="s" weight="l" center={true} color={colors[theme].red}>
                 {error}
               </Text>
             </View>

@@ -39,7 +39,7 @@ const ForgotPwdVerify = ({
   const STYLES = STYLING(theme);
   StatusBar.setBarStyle(colors[theme].statusBar, true);
 
-  const [username] = useState<string>(route.params?.username);
+  const [username] = useState<string>(route.params.username);
 
   const [code, setCode] = useState<string>('');
 
@@ -77,7 +77,7 @@ const ForgotPwdVerify = ({
         <View>
           {error.length !== 0 ? (
             <View style={STYLES.error}>
-              <Text size='s' weight="l" center={true} color={colors[theme].red}>
+              <Text size="s" weight="l" center={true} color={colors[theme].red}>
                 {error}
               </Text>
             </View>
