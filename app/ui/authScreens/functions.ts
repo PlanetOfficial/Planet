@@ -3,7 +3,12 @@ import messaging from '@react-native-firebase/messaging';
 
 import strings from '../../constants/strings';
 
-import {isVerified, login, saveTokenToDatabase} from '../../utils/api/authAPI';
+import {
+  isVerified,
+  login,
+  saveTokenToDatabase,
+  sendCodeForgotPwd,
+} from '../../utils/api/authAPI';
 import {cacheCategories, cacheUserInfo} from '../../utils/CacheHelpers';
 
 export const handleLogin = async (
@@ -58,5 +63,19 @@ export const handleLogin = async (
     });
   } else {
     setError(response?.message);
+  }
+};
+
+export const handleResetPassword = async (
+  navigation: any,
+  username: string,
+) => {
+  const response = await sendCodeForgotPwd(username);
+
+  if (response) {
+    navigation.navigate('ForgotPasswordVerify', {username});
+  } else {
+    // made the error ambiguous so the user can't guess if the username exists or not
+    Alert.alert(strings.error.error, strings.error.ambiguousError);
   }
 };

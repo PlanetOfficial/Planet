@@ -11,7 +11,6 @@ const strings = {
     login: 'Log In',
     greeting: 'Welcome Back!',
     description: 'Log in to your account',
-    forgotPassword: 'Forgot Password?',
     username: 'Username',
     password: 'Password',
     missingInfo: 'Missing username or password',
@@ -19,6 +18,8 @@ const strings = {
     resetPassword: 'Reset Password',
     passwordResetSuccess: 'Password was successfully reset!',
     noAccount: "Don't have an account?",
+    forgotPassword: 'Forgot Password',
+    forgotPasswordDescription: 'Enter your username:',
   },
   main: {
     appName: 'planet',
