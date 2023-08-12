@@ -9,6 +9,7 @@ import {
 
 type RootStackParamList = {
   TabStack: undefined;
+  Welcome: undefined;
   SearchCategory: {
     mode: 'create' | 'suggest' | 'add' | 'none';
     myLocation: Coordinate;

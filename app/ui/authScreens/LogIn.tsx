@@ -2,30 +2,29 @@ import React, {useState} from 'react';
 import {
   ActivityIndicator,
   View,
-  Text as RNText,
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  Alert,
   StatusBar,
   Keyboard,
+  Image,
 } from 'react-native';
 import {s, vs} from 'react-native-size-matters';
 import LinearGradient from 'react-native-linear-gradient';
-import messaging from '@react-native-firebase/messaging';
 
-import strings from '../../constants/strings';
+import icons from '../../constants/icons';
 import colors from '../../constants/colors';
+import strings from '../../constants/strings';
 
 import Text from '../components/Text';
 
-import {isVerified, login, saveTokenToDatabase} from '../../utils/api/authAPI';
-import {cacheCategories, cacheUserInfo} from '../../utils/CacheHelpers';
 import {useLoadingState} from '../../utils/Misc';
 
 import {useFriendsContext} from '../../context/FriendsContext';
 import {useBookmarkContext} from '../../context/BookmarkContext';
 import {useLocationContext} from '../../context/LocationContext';
+
+import {handleLogin} from './functions';
 
 const LoginScreen = ({navigation}: {navigation: any}) => {
   const theme = 'light';
@@ -37,6 +36,7 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
 
   const [error, setError] = useState<string>('');
   const [loading, withLoading] = useLoadingState();
+  const disabled = username === '' || password === '' || loading;
 
   const {initializeBookmarks} = useBookmarkContext();
   const {initializeFriendsInfo} = useFriendsContext();
@@ -48,93 +48,69 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
     await initializeLocation();
   };
 
-  const handleLogin = async () => {
-    // Perform login logic, e.g. send login request to API
-
-    setError('');
-
-    // display an error if one of the fields are missing
-    if (username.length === 0 || password.length === 0) {
-      setError(strings.login.missingInfo);
-      return;
-    }
-
-    const response = await login(username, password);
-
-    if (response?.authToken) {
-      // check if verified
-      const verifiedResponse = await isVerified(response.authToken);
-      if (!verifiedResponse) {
-        navigation.reset({
-          index: 0,
-          routes: [
-            {name: 'SignUpPhone', params: {authToken: response.authToken}},
-          ],
-        });
-
-        return;
-      }
-      const cacheSuccess = await cacheUserInfo(response?.authToken);
-      if (!cacheSuccess) {
-        Alert.alert('Something went wrong. Please try again.');
-        return;
-      }
-
-      await cacheCategories();
-
-      await initializeContext();
-
-      // save to firebase
-      const fcm_token = await messaging().getToken();
-      await saveTokenToDatabase(fcm_token);
-
-      navigation.reset({
-        index: 0,
-        routes: [{name: 'TabStack'}],
-      });
-    } else {
-      setError(response?.message);
-    }
-  };
-
   return (
     <View style={styles.container} onTouchStart={Keyboard.dismiss}>
       <LinearGradient
-        colors={['#ff8c63', '#e9dc96']}
+        colors={[colors[theme].accent, colors[theme].primary]}
         style={styles.container}
-        start={{x: 2, y: 0}}
-        end={{x: -0.5, y: 0.7}}
-        locations={[0.3, 1]}>
-        <RNText style={styles.title}>{strings.main.appName}</RNText>
+        start={{x: 0, y: 0}}
+        end={{x: 0, y: 1}}
+        locations={[0, 0.2]}>
+        <Image source={icons.logo} style={styles.logo} />
+        <View style={styles.greeting}>
+          <Text>{strings.login.greeting}</Text>
+        </View>
+        <View style={styles.description}>
+          <Text weight="l">{strings.login.description}</Text>
+        </View>
         <TextInput
           style={styles.input}
-          placeholder={strings.login.username}
           value={username}
           onChangeText={setUsername}
+          placeholder={strings.login.username}
+          placeholderTextColor={colors[theme].secondary}
           autoCapitalize="none"
           autoCorrect={false}
-          placeholderTextColor={colors[theme].neutral}
         />
         <TextInput
           style={styles.input}
-          placeholder={strings.login.password}
           value={password}
           onChangeText={setPassword}
-          secureTextEntry={true}
+          placeholder={strings.login.password}
+          placeholderTextColor={colors[theme].secondary}
           textContentType="password"
-          placeholderTextColor={colors[theme].neutral}
+          secureTextEntry={true}
         />
         <View>
           {error.length !== 0 ? (
-            <Text size="s" color={colors[theme].red}>
-              {error}
-            </Text>
+            <View style={styles.error}>
+              <Text size="s" weight="l" color={colors[theme].red}>
+                {error}
+              </Text>
+            </View>
           ) : null}
         </View>
         <TouchableOpacity
-          style={styles.button}
-          onPress={() => withLoading(handleLogin)}
-          disabled={loading}>
+          style={[
+            styles.button,
+            {
+              backgroundColor: disabled
+                ? colors[theme].secondary
+                : colors[theme].accent,
+            },
+          ]}
+          onPress={() =>
+            withLoading(() =>
+              handleLogin(
+                navigation,
+                username,
+                password,
+                setError,
+                initializeContext,
+              ),
+            )
+          }
+          disabled={disabled}>
           {loading ? (
             <ActivityIndicator size="small" color={colors[theme].primary} />
           ) : (
@@ -143,18 +119,21 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
             </Text>
           )}
         </TouchableOpacity>
-        <View style={styles.bottomContainer}>
-          <TouchableOpacity
-            style={styles.signUpButton}
-            onPress={() => navigation.navigate('SignUpName')}>
-            <Text weight="b" color={colors[theme].primary}>
-              {strings.login.signUp}
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
+        <TouchableOpacity
+          style={styles.forgotPassword}
+          onPress={() => navigation.navigate('ForgotPassword')}>
           <Text size="s" weight="l" color={colors[theme].neutral}>
             {strings.login.forgotPassword}
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.noAccount}
+          onPress={() => navigation.navigate('SignUpName')}>
+          <Text size="s" weight="l" color={colors[theme].neutral}>
+            {strings.login.noAccount + '  '}
+          </Text>
+          <Text size="s" weight="b" color={colors[theme].accent}>
+            {strings.signUp.signUp}
           </Text>
         </TouchableOpacity>
       </LinearGradient>
@@ -169,46 +148,48 @@ const styling = (theme: 'light' | 'dark') =>
       width: '100%',
       alignItems: 'center',
     },
-    title: {
-      marginTop: vs(110),
-      marginBottom: vs(70),
-      fontSize: s(70),
-      fontWeight: '900',
-      fontFamily: 'Prompt',
-      color: colors[theme].primary,
-      letterSpacing: 1,
+    logo: {
+      marginTop: vs(40),
+      width: s(60),
+      height: s(60),
+    },
+    greeting: {
+      marginTop: vs(50),
+      marginBottom: vs(10),
+    },
+    description: {
+      marginBottom: vs(50),
     },
     input: {
       paddingHorizontal: s(25),
-      marginBottom: vs(30),
+      marginBottom: vs(25),
       width: s(250),
       height: s(50),
+      borderWidth: 1,
       borderRadius: s(25),
-      backgroundColor: colors[theme].primary,
+      borderColor: colors[theme].secondary,
       color: colors[theme].neutral,
       fontFamily: 'Lato',
     },
+    error: {
+      position: 'absolute',
+      alignSelf: 'center',
+    },
     button: {
-      marginTop: vs(10),
-      width: s(150),
-      height: s(50),
-      borderRadius: s(25),
       alignItems: 'center',
       justifyContent: 'center',
+      marginTop: vs(40),
+      width: s(250),
+      height: s(50),
+      borderRadius: s(25),
       backgroundColor: colors[theme].accent,
     },
-    bottomContainer: {
-      alignItems: 'center',
+    forgotPassword: {
       marginTop: vs(20),
     },
-    signUpButton: {
-      marginBottom: vs(10),
-      width: s(150),
-      height: s(50),
-      borderRadius: s(25),
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: colors[theme].neutral,
+    noAccount: {
+      flexDirection: 'row',
+      marginTop: vs(40),
     },
   });
 
