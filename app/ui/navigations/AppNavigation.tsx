@@ -5,6 +5,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 
 import NavBar from './NavBar';
+
 import Welcome from '../authScreens/Welcome';
 import LoginScreen from '../authScreens/Login';
 import SignUpName from '../authScreens/SignUpName';
@@ -15,6 +16,7 @@ import SignUpInfo from '../authScreens/SignUpInfo';
 import ForgotPassword from '../authScreens/ForgotPwd';
 import ForgotPwdVerify from '../authScreens/ForgotPwdVerify';
 import ResetPwd from '../authScreens/ResetPwd';
+
 import Create from '../createScreens/create/Create';
 import SearchCategory from '../searchScreens/searchCategory/SearchCategory';
 import SearchMap from '../searchScreens/searchMap/SearchMap';
