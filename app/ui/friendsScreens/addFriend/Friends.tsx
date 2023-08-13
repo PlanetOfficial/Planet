@@ -52,7 +52,7 @@ const Friends: React.FC<Props> = ({
     <ScrollView style={STYLES.container} scrollIndicatorInsets={{right: 1}}>
       {friendGroups.length > 0 ? (
         <View style={styles.title}>
-          <Text size="s">
+          <Text size="s" weight='l'>
             {friendGroups.length === 1
               ? strings.friends.friendGroup
               : strings.friends.friendGroups}
@@ -158,7 +158,7 @@ const Friends: React.FC<Props> = ({
         </View>
       ) : (
         <View style={styles.title}>
-          <Text size="s">{strings.friends.friends}:</Text>
+          <Text size="s" weight='l'>{strings.friends.friends}:</Text>
         </View>
       )}
       {friends.map((item: UserInfo) => (

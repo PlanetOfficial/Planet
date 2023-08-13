@@ -96,6 +96,7 @@ const AddFriend = ({
               setSearchResults,
               selfUserId,
               usersBlockingMe,
+              friends,
             ),
           )
         }
