@@ -270,7 +270,9 @@ const strings = {
     openLocationSettings: 'Open Location Settings',
     resetPassword: 'Reset Password',
     logout: 'Logout',
+    logoutInfo: 'Are you sure you want to logout?',
     removeAccount: 'Remove Account',
+    removeAccountInfo: 'Are you sure you want to remove your account?',
     privacyPolicy: 'Privacy Policy',
     termsAndConditions: 'Terms and Conditions',
     version: 'Version:',
@@ -351,6 +353,8 @@ const strings = {
     reportEvent: 'Unable to report event. Please try again later.',
     reportUser: 'Unable to report user. Please try again later.',
     kickMember: 'Unable to kick member. Please try again later.',
+    logout: 'Unable to logout. Please try again later.',
+    removeAccount: 'Unable to remove account. Please try again later.',
   },
   ageEnum: [
     {label: '12-17', value: '-17'},

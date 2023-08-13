@@ -14,9 +14,11 @@ import {
 } from 'react-native';
 
 import colors from '../../constants/colors';
+import icons from '../../constants/icons';
 import strings from '../../constants/strings';
 import STYLING from '../../constants/styles';
 
+import Icon from '../components/Icon';
 import Text from '../components/Text';
 
 import {useLoadingState} from '../../utils/Misc';
@@ -30,6 +32,7 @@ const ResetPwd = ({
   route: {
     params: {
       authToken: string;
+      isLoggedIn: boolean;
     };
   };
 }) => {
@@ -53,7 +56,15 @@ const ResetPwd = ({
       style={STYLES.container}
       onTouchStart={Keyboard.dismiss}>
       <SafeAreaView>
-        <View style={STYLES.header} />
+        <View style={STYLES.header}>
+          {route.params.isLoggedIn ? (
+            <Icon size="m" icon={icons.back} onPress={navigation.goBack} />
+          ) : (
+            <Icon size="m" icon={icons.back} color="transparent" />
+          )}
+          <Text>{strings.login.resetPassword}</Text>
+          <Icon size="m" icon={icons.back} color="transparent" />
+        </View>
       </SafeAreaView>
       <ScrollView>
         <View style={STYLES.inputContainer}>

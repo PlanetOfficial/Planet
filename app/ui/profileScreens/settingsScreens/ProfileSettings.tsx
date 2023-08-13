@@ -188,9 +188,8 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
             icon={icons.back}
             onPress={() => navigation.goBack()}
           />
-          <View style={styles.title}>
-            <Text size="l">{strings.settings.profile}</Text>
-          </View>
+          <Text size="l">{strings.settings.profile}</Text>
+          <Icon size="m" icon={icons.back} color="transparent" />
         </View>
       </SafeAreaView>
       <ScrollView

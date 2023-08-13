@@ -23,25 +23,28 @@ import CreateFG from '../friendsScreens/createFG/CreateFG';
 import Requests from '../friendsScreens/requests/Requests';
 import User from '../friendsScreens/user/User';
 
+import ViewHistory from '../homeScreens/ViewHistory/ViewHistory';
+
 import Create from '../createScreens/create/Create';
+
 import SearchCategory from '../searchScreens/searchCategory/SearchCategory';
 import SearchMap from '../searchScreens/searchMap/SearchMap';
-import Poi from '../otherScreens/poi/Poi';
+import Search from '../searchScreens/search/Search';
+
 import EventPage from '../libraryScreens/event/Event';
-import ViewHistory from '../homeScreens/ViewHistory/ViewHistory';
 import EventSettings from '../libraryScreens/eventSettings/EventSettings';
 import Roulette from '../libraryScreens/roulette/Roulette';
 import SpinHistory from '../libraryScreens/spinHistory/SpinHistory';
 import Notifications from '../libraryScreens/notifications/Notifications';
+import Poi from '../otherScreens/poi/Poi';
+
 import Settings from '../profileScreens/settingsScreens/Settings';
 import AccountSettings from '../profileScreens/settingsScreens/AccountSettings';
-import ContactUs from '../profileScreens/settingsScreens/ContactUs';
 import LocationsSettings from '../profileScreens/settingsScreens/LocationsSettings';
 import NotificationSettings from '../profileScreens/settingsScreens/NotificationSettings';
 import PrivacySettings from '../profileScreens/settingsScreens/PrivacySettings';
 import ProfileSettings from '../profileScreens/settingsScreens/ProfileSettings';
 import BlockedUsers from '../profileScreens/settingsScreens/BlockedUsers/BlockedUsers';
-import Search from '../searchScreens/search/Search';
 
 import {BookmarkStateProvider} from '../../context/BookmarkContext';
 import {FriendsStateProvider} from '../../context/FriendsContext';
@@ -150,7 +153,6 @@ const mainStackScreens = () => (
     <Stack.Screen name="ViewHistory" component={ViewHistory} />
     <Stack.Screen name="Settings" component={Settings} />
     <Stack.Screen name="AccountSettings" component={AccountSettings} />
-    <Stack.Screen name="ContactUs" component={ContactUs} />
     <Stack.Screen name="LocationsSettings" component={LocationsSettings} />
     <Stack.Screen
       name="NotificationSettings"

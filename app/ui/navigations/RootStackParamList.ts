@@ -42,7 +42,6 @@ type RootStackParamList = {
   };
   Settings: undefined;
   AccountSettings: undefined;
-  ContactUs: undefined;
   LocationsSettings: undefined;
   NotificationSettings: undefined;
   PrivacySettings: undefined;
@@ -99,6 +98,7 @@ type RootStackParamList = {
   };
   ResetPassword: {
     authToken: string;
+    isLoggedIn: boolean;
   };
   ForgotPassword: undefined;
   BlockedUsers: undefined;

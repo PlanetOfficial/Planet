@@ -100,7 +100,10 @@ export const handleVerifyCode = async (
     navigation.reset({
       index: 0,
       routes: [
-        {name: 'ResetPassword', params: {authToken: response.authToken}},
+        {
+          name: 'ResetPassword',
+          params: {authToken: response.authToken, isLoggedIn: false},
+        },
       ],
     });
   } else {

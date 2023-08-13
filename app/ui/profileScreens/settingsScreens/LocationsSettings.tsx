@@ -31,9 +31,8 @@ const LocationsSettings = ({navigation}: {navigation: any}) => {
             icon={icons.back}
             onPress={() => navigation.goBack()}
           />
-          <View style={STYLES.texts}>
-            <Text size="l">{strings.settings.locations}</Text>
-          </View>
+          <Text size="l">{strings.settings.locations}</Text>
+          <Icon size="m" icon={icons.back} color="transparent" />
         </View>
       </SafeAreaView>
       <TouchableOpacity
