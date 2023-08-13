@@ -46,6 +46,11 @@ const Requests = ({navigation}: {navigation: any}) => {
           <Icon size="m" icon={icons.back} color="transparent" />
         </View>
       </SafeAreaView>
+      {requests.length === 0 ? (
+        <View style={STYLES.center}>
+          <Text weight='l'>{strings.friends.noRequestsFound}</Text>
+        </View>
+      ) : (
       <ScrollView
         style={STYLES.container}
         contentContainerStyle={STYLES.flatList}
@@ -75,6 +80,7 @@ const Requests = ({navigation}: {navigation: any}) => {
           </TouchableOpacity>
         ))}
       </ScrollView>
+      )}
     </View>
   );
 };

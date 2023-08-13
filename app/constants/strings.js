@@ -136,6 +136,7 @@ const strings = {
     users: 'Users',
     blocked: 'Blocked',
     noFriendsFound: 'No Friends Found',
+    noRequestsFound: 'No Requests Found',
     friendRequest: 'Friend Request',
     friendRequests: 'Friend Requests',
     pendingRequest: 'Pending Request',
