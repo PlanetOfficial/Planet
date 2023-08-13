@@ -76,7 +76,7 @@ const FriendGroupComponent: React.FC<Props> = ({
         style={styles.friendGroup}
         onPress={() => navigation.navigate('CreateFG')}>
         <View style={styles.add}>
-          <Icon icon={icons.add} color={colors[theme].accent} size="xxl" />
+          <Icon icon={icons.add} color={colors[theme].accent} size="xl" />
         </View>
         <Text size="s" weight="l">
           {strings.friends.newFriendGroup}

@@ -9,7 +9,6 @@ import {
 import {s} from 'react-native-size-matters';
 
 import colors from '../../../constants/colors';
-import strings from '../../../constants/strings';
 import STYLING from '../../../constants/styles';
 
 import Text from '../../components/Text';
@@ -18,15 +17,14 @@ import UserIcon from '../../components/UserIcon';
 import {UserInfo} from '../../../utils/types';
 
 import {useFriendsContext} from '../../../context/FriendsContext';
-import {handleFriendRequest} from '../user/functions';
+import ActionButtons from '../components/ActionButtons';
 
 const Suggestions = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
   const STYLES = STYLING(theme);
 
-  const {suggestions, requestsSent, setRequestsSent, requests} =
-    useFriendsContext();
+  const {suggestions, requests, usersIBlock} = useFriendsContext();
 
   return (
     <ScrollView
@@ -36,7 +34,10 @@ const Suggestions = ({navigation}: {navigation: any}) => {
       {suggestions
         .filter(
           (suggestion: UserInfo) =>
-            !requests.some((request: UserInfo) => request.id === suggestion.id),
+            !requests.some(
+              (request: UserInfo) => request.id === suggestion.id,
+            ) &&
+            !usersIBlock.some((user: UserInfo) => user.id === suggestion.id),
         )
         .map((suggestion: UserInfo) => (
           <TouchableOpacity
@@ -46,36 +47,15 @@ const Suggestions = ({navigation}: {navigation: any}) => {
             <View style={styles.pfp}>
               <UserIcon user={suggestion} size={s(20)} />
             </View>
-            <Text size="s" numberOfLines={1}>
-              {suggestion.first_name + ' ' + suggestion.last_name}
-            </Text>
-            <Text size="xs" weight="l" numberOfLines={1}>
-              {'@' + suggestion.username}
-            </Text>
-            {requestsSent.some(
-              (request: UserInfo) => request.id === suggestion.id,
-            ) ? (
-              <View style={[styles.add, styles.added]}>
-                <Text size="s" color={colors[theme].primary}>
-                  {strings.friends.added}
-                </Text>
-              </View>
-            ) : (
-              <TouchableOpacity
-                style={styles.add}
-                onPress={() =>
-                  handleFriendRequest(
-                    suggestion.id,
-                    requestsSent,
-                    setRequestsSent,
-                    suggestion,
-                  )
-                }>
-                <Text size="s" color={colors[theme].primary}>
-                  {strings.main.add}
-                </Text>
-              </TouchableOpacity>
-            )}
+            <View style={styles.texts}>
+              <Text size="s" numberOfLines={1}>
+                {suggestion.first_name + ' ' + suggestion.last_name}
+              </Text>
+              <Text size="xs" weight="l" numberOfLines={1}>
+                {'@' + suggestion.username}
+              </Text>
+            </View>
+            <ActionButtons user={suggestion} />
           </TouchableOpacity>
         ))}
     </ScrollView>
@@ -95,7 +75,7 @@ const styling = (theme: 'light' | 'dark') =>
       paddingHorizontal: s(5),
       paddingVertical: s(10),
       width: s(110),
-      height: s(140),
+      height: s(145),
       borderRadius: s(10),
       backgroundColor: colors[theme].primary,
     },
@@ -105,17 +85,9 @@ const styling = (theme: 'light' | 'dark') =>
       borderRadius: s(25),
       backgroundColor: colors[theme].primary,
     },
-    add: {
+    texts: {
       alignItems: 'center',
-      justifyContent: 'center',
-      marginTop: s(5),
-      width: s(80),
-      height: s(25),
-      borderRadius: s(10),
-      backgroundColor: colors[theme].accent,
-    },
-    added: {
-      backgroundColor: colors[theme].secondary,
+      marginVertical: s(2),
     },
   });
 

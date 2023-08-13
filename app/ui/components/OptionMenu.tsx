@@ -67,7 +67,7 @@ const OptionMenu: React.FC<Props> = ({icon, iconColor, options}) => {
             pressColor="transparent">
             <Text
               size="xs"
-              weight="r"
+              weight="l"
               color={
                 option.disabled
                   ? colors[theme].secondary
