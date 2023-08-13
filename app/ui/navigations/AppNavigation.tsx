@@ -25,7 +25,6 @@ import Friends from '../friendsScreens/friends/Friends';
 import AddFriend from '../friendsScreens/addFriend/AddFriend';
 import User from '../friendsScreens/user/User';
 import EventPage from '../libraryScreens/event/Event';
-import Mutuals from '../friendsScreens/mutuals/Mutuals';
 import ViewHistory from '../homeScreens/ViewHistory/ViewHistory';
 import EventSettings from '../libraryScreens/eventSettings/EventSettings';
 import Roulette from '../libraryScreens/roulette/Roulette';
@@ -140,13 +139,6 @@ const mainStackScreens = () => (
     <Stack.Screen
       name="AddFriend"
       component={AddFriend}
-      options={{
-        presentation: 'modal',
-      }}
-    />
-    <Stack.Screen
-      name="Mutuals"
-      component={Mutuals}
       options={{
         presentation: 'modal',
       }}

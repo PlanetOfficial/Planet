@@ -21,7 +21,7 @@ import UserRow from '../../components/UserRow';
 
 import {FriendGroup, UserInfo} from '../../../utils/types';
 
-import FGIcon from '../friendsList/FGIcon';
+import FGIcon from '../friends/FGIcon';
 import {handleFGPress, handleFGSelect, handleUserSelect} from './functions';
 import {useFriendsContext} from '../../../context/FriendsContext';
 

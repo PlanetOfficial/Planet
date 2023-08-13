@@ -32,9 +32,6 @@ type RootStackParamList = {
     members: UserInfo[];
     event_id: number | undefined;
   };
-  Mutuals: {
-    mutuals: UserInfo[];
-  };
   User: {
     user: UserInfo;
   };

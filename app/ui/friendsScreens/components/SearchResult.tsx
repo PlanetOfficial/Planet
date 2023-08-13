@@ -44,25 +44,26 @@ const SearchResult: React.FC<Props> = ({
             ]
           : []
       }
-      onScrollBeginDrag={() => Keyboard.dismiss()}
       style={STYLES.container}
       contentContainerStyle={STYLES.flatList}
       initialNumToRender={10}
+      onScrollBeginDrag={() => Keyboard.dismiss()}
       keyboardShouldPersistTaps={'always'}
       scrollIndicatorInsets={{right: 1}}
-      data={searchResults}
       renderItem={renderItem}
       renderSectionHeader={({section}) =>
         section.data.length > 0 ? (
           <View style={STYLES.sectionHeader}>
-            <Text size="s">{section.title}</Text>
+            <Text size="s" weight="l">
+              {section.title}
+            </Text>
           </View>
         ) : null
       }
       ListEmptyComponent={
         searchText.length > 0 ? (
           <View style={STYLES.center}>
-            <Text>{strings.search.noResultsFound}</Text>
+            <Text weight="l">{strings.search.noResultsFound}</Text>
           </View>
         ) : null
       }
