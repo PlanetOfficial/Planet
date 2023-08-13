@@ -75,9 +75,11 @@ const Friends = ({navigation}: {navigation: any}) => {
           <Text>{strings.friends.friends}</Text>
           {requests.length > 0 ? (
             <View style={styles.requests}>
-              <Text size="s" weight="l">
-                {strings.friends.requests + ' (' + requests.length + ')'}
-              </Text>
+              <TouchableOpacity onPress={() => navigation.navigate('Requests')}>
+                <Text size="s" weight="l">
+                  {strings.friends.requests + ' (' + requests.length + ')'}
+                </Text>
+              </TouchableOpacity>
             </View>
           ) : null}
           <Icon size="m" icon={icons.back} color="transparent" />

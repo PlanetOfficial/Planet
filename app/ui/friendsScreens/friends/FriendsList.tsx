@@ -40,7 +40,8 @@ const FriendsList = ({navigation}: {navigation: any}) => {
   const [tempName, setTempName] = useState<string>();
   const [tempMembers, setTempMembers] = useState<UserInfo[]>();
 
-  const [fgHidden, setFgHidden] = useState<boolean>(false);
+  const [fgShown, setFgShown] = useState<boolean>(true);
+  const [friendsShown, setFriendsShown] = useState<boolean>(true);
 
   return (
     <ScrollView
@@ -67,7 +68,7 @@ const FriendsList = ({navigation}: {navigation: any}) => {
         </Text>
         <View
           style={{
-            transform: [{rotate: fgHidden ? '180deg' : '0deg'}],
+            transform: [{rotate: fgShown ? '180deg' : '0deg'}],
           }}>
           <Icon
             size="xs"
@@ -76,12 +77,12 @@ const FriendsList = ({navigation}: {navigation: any}) => {
               LayoutAnimation.configureNext(
                 LayoutAnimation.Presets.easeInEaseOut,
               );
-              setFgHidden(!fgHidden);
+              setFgShown(!fgShown);
             }}
           />
         </View>
       </View>
-      {!fgHidden ? (
+      {fgShown ? (
         <FriendGroupComponent
           navigation={navigation}
           setFgEditing={setFgEditing}
@@ -92,7 +93,7 @@ const FriendsList = ({navigation}: {navigation: any}) => {
         />
       ) : null}
 
-      {!fgHidden && fgSelected !== 0 ? (
+      {fgShown && fgSelected !== 0 ? (
         <FriendGroupEdit
           navigation={navigation}
           fgEditing={fgEditing}
@@ -110,40 +111,59 @@ const FriendsList = ({navigation}: {navigation: any}) => {
         <Text size="s" weight="l">
           {strings.friends.friends + ' (' + friends.length + ')'}:
         </Text>
+        <View
+          style={{
+            transform: [{rotate: friendsShown ? '180deg' : '0deg'}],
+          }}>
+          <Icon
+            size="xs"
+            icon={icons.drop}
+            onPress={() => {
+              LayoutAnimation.configureNext(
+                LayoutAnimation.Presets.easeInEaseOut,
+              );
+              setFriendsShown(!friendsShown);
+            }}
+          />
+        </View>
       </View>
 
-      {friends.map((item: UserInfo) => (
-        <TouchableOpacity
-          key={item.id}
-          onPress={() => {
-            if (fgEditing) {
-              if (tempMembers?.find(user => user.id === item.id)) {
-                setTempMembers(tempMembers.filter(user => user.id !== item.id));
-              } else {
-                setTempMembers([...(tempMembers || []), item]);
-              }
-            } else {
-              navigation.push('User', {
-                user: item,
-              });
-            }
-          }}>
-          <UserRow user={item}>
-            {fgEditing ? (
-              <Icon
-                size="m"
-                color={colors[theme].accent}
-                icon={
-                  tempMembers?.find(user => user.id === item.id)
-                    ? icons.selected
-                    : icons.unselected
+      {friendsShown
+        ? friends.map((item: UserInfo) => (
+            <TouchableOpacity
+              key={item.id}
+              onPress={() => {
+                if (fgEditing) {
+                  if (tempMembers?.find(user => user.id === item.id)) {
+                    setTempMembers(
+                      tempMembers.filter(user => user.id !== item.id),
+                    );
+                  } else {
+                    setTempMembers([...(tempMembers || []), item]);
+                  }
+                } else {
+                  navigation.push('User', {
+                    user: item,
+                  });
                 }
-              />
-            ) : null}
-          </UserRow>
-        </TouchableOpacity>
-      ))}
-      {friends.length === 0 ? (
+              }}>
+              <UserRow user={item}>
+                {fgEditing ? (
+                  <Icon
+                    size="m"
+                    color={colors[theme].accent}
+                    icon={
+                      tempMembers?.find(user => user.id === item.id)
+                        ? icons.selected
+                        : icons.unselected
+                    }
+                  />
+                ) : null}
+              </UserRow>
+            </TouchableOpacity>
+          ))
+        : null}
+      {friendsShown && friends.length === 0 ? (
         <View style={STYLES.center}>
           <Text>{strings.friends.noFriendsFound}</Text>
         </View>

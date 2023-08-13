@@ -18,7 +18,6 @@ import Icon from '../../components/Icon';
 import Text from '../../components/Text';
 
 import {UserInfo} from '../../../utils/types';
-import { Layout } from 'react-native-reanimated';
 
 interface Props {
   searchRef: any;
@@ -56,7 +55,9 @@ const SearchBar: React.FC<Props> = ({
           autoCapitalize="none"
           autoCorrect={false}
           onFocus={() => {
-            LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+            LayoutAnimation.configureNext(
+              LayoutAnimation.Presets.easeInEaseOut,
+            );
             setSearching(true);
           }}
           onChangeText={search}
@@ -67,7 +68,9 @@ const SearchBar: React.FC<Props> = ({
         <TouchableOpacity
           style={styles.cancel}
           onPress={() => {
-            LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+            LayoutAnimation.configureNext(
+              LayoutAnimation.Presets.easeInEaseOut,
+            );
             searchRef.current?.blur();
             searchRef.current?.clear();
             setSearching(false);

@@ -72,10 +72,10 @@ const FGIcon: React.FC<Props> = ({users, selected = false}) => {
 const styling = (theme: 'light' | 'dark') =>
   StyleSheet.create({
     container: {
-      width: s(75),
-      height: s(75),
-      borderRadius: s(37.5),
-      backgroundColor: colors[theme].secondary,
+      width: s(78),
+      height: s(78),
+      borderRadius: s(39),
+      borderWidth: s(1.5),
       borderColor: colors[theme].accent,
     },
     icon: {
