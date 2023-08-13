@@ -120,17 +120,17 @@ const ActionButtons: React.FC<Props> = ({user}) => {
   //     }}
   //     disabled={loading}
   //     onPress={() =>
-  //       withLoading(() =>
-  //         handleCancelRequest(user.id, requestsSent, setRequestsSent),
-  //       )
+  // withLoading(() =>
+  //   handleCancelRequest(user.id, requestsSent, setRequestsSent),
+  // )
   //     }>
-  //     {loading ? (
-  //       <ActivityIndicator
-  //         size="small"
-  //         style={styles.load}
-  //         color={colors[theme].primary}
-  //       />
-  //     ) : (
+  // {loading ? (
+  //   <ActivityIndicator
+  //     size="small"
+  //     style={styles.load}
+  //     color={colors[theme].primary}
+  //   />
+  // ) : (
   //       <Text size="xs">{strings.friends.cancelRequest}</Text>
   //     )}
   //   </TouchableOpacity>
@@ -142,18 +142,18 @@ const ActionButtons: React.FC<Props> = ({user}) => {
   //         backgroundColor: colors[theme].accent,
   //       }}
   //       disabled={loading}
-  //       onPress={() =>
-  //         withLoading(() =>
-  //           handleAcceptRequest(
-  //             user.id,
-  //             friends,
-  //             setFriends,
-  //             requests,
-  //             setRequests,
-  //             user,
-  //           ),
-  //         )
-  //       }>
+  // onPress={() =>
+  //   withLoading(() =>
+  //     handleAcceptRequest(
+  //       user.id,
+  //       friends,
+  //       setFriends,
+  //       requests,
+  //       setRequests,
+  //       user,
+  //     ),
+  //   )
+  // }>
   //       {loading ? (
   //         <ActivityIndicator
   //           size="small"
@@ -172,11 +172,11 @@ const ActionButtons: React.FC<Props> = ({user}) => {
   //         backgroundColor: colors[theme].secondary,
   //       }}
   //       disabled={loading}
-  //       onPress={() =>
-  //         withLoading(() =>
-  //           handleDeclineRequest(user.id, requests, setRequests),
-  //         )
-  //       }>
+  // onPress={() =>
+  //   withLoading(() =>
+  //     handleDeclineRequest(user.id, requests, setRequests),
+  //   )
+  // }>
   //       {loading ? (
   //         <ActivityIndicator
   //           size="small"
@@ -195,9 +195,9 @@ const ActionButtons: React.FC<Props> = ({user}) => {
   //       backgroundColor: colors[theme].secondary,
   //     }}
   //     disabled={loading}
-  //     onPress={() =>
-  //       withLoading(() => handleUnblock(user.id, usersIBlock, setUsersIBlock))
-  //     }>
+  // onPress={() =>
+  // withLoading(() => handleUnblock(user.id, usersIBlock, setUsersIBlock))
+  // }>
   //     {loading ? (
   //       <ActivityIndicator
   //         size="small"
@@ -218,11 +218,11 @@ const ActionButtons: React.FC<Props> = ({user}) => {
   //       usersBlockingMe.some(userBlockingMe => userBlockingMe.id === user.id) ||
   //       loading
   //     }
-  //     onPress={() =>
-  //       withLoading(() =>
-  //         handleFriendRequest(user.id, requestsSent, setRequestsSent, user),
-  //       )
-  //     }>
+  // onPress={() =>
+  //   withLoading(() =>
+  //     handleFriendRequest(user.id, requestsSent, setRequestsSent, user),
+  //   )
+  // }>
   //     {loading ? (
   //       <ActivityIndicator
   //         size="small"

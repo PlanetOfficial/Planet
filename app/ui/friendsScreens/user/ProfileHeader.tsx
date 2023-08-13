@@ -22,7 +22,7 @@ import UserIconXL from '../../components/UserIconXL';
 
 import {UserInfo} from '../../../utils/types';
 
-import {handleBlock, handleReport} from './functions';
+import {handleBlock, handleReport, handleUnfriend} from './functions';
 import {useFriendsContext} from '../../../context/FriendsContext';
 
 interface Props {
@@ -49,6 +49,54 @@ const ProfileHeader: React.FC<Props> = ({navigation, user, isSelf, isPage}) => {
     usersIBlock,
     setUsersIBlock,
   } = useFriendsContext();
+
+  const options = [
+    {
+      name: strings.friends.block + ' @' + user.username,
+      onPress: () =>
+        handleBlock(
+          friends,
+          setFriends,
+          requests,
+          setRequests,
+          requestsSent,
+          setRequestsSent,
+          usersIBlock,
+          setUsersIBlock,
+          user,
+        ),
+      color: colors[theme].red,
+      disabled: usersIBlock.some(b => b.id === user.id),
+    },
+    {
+      name: strings.friends.report + ' @' + user.username,
+      onPress: () =>
+        Alert.alert(strings.friends.report, strings.friends.reportInfo, [
+          {text: strings.main.cancel},
+          {
+            text: strings.friends.report,
+            style: 'destructive',
+            onPress: () => handleReport(user.id),
+          },
+        ]),
+      color: colors[theme].red,
+    },
+  ];
+  if (friends.some(friend => friend.id === user.id)) {
+    options.unshift({
+      name: strings.friends.unfriend,
+      onPress: () =>
+        Alert.alert(strings.friends.unfriend, strings.friends.unfriendInfo, [
+          {text: strings.main.cancel},
+          {
+            text: strings.friends.unfriend,
+            style: 'destructive',
+            onPress: () => handleUnfriend(user.id, friends, setFriends),
+          },
+        ]),
+      color: colors[theme].red,
+    });
+  }
 
   return (
     <>
@@ -80,7 +128,7 @@ const ProfileHeader: React.FC<Props> = ({navigation, user, isSelf, isPage}) => {
             <Icon
               size="m"
               icon={icons.back}
-              color={colors.light.primary}
+              color={colors[theme].primary}
               onPress={() => navigation.goBack()}
             />
           ) : (
@@ -90,52 +138,11 @@ const ProfileHeader: React.FC<Props> = ({navigation, user, isSelf, isPage}) => {
             <Icon
               size="m"
               icon={icons.settings}
-              color={colors.light.primary}
+              color={colors[theme].primary}
               onPress={() => navigation.navigate('Settings')}
             />
           ) : (
-            // TODO: change wording
-            <OptionMenu
-              iconColor={colors.light.primary}
-              options={[
-                {
-                  name: strings.friends.block,
-                  onPress: () =>
-                    handleBlock(
-                      friends,
-                      setFriends,
-                      requests,
-                      setRequests,
-                      requestsSent,
-                      setRequestsSent,
-                      usersIBlock,
-                      setUsersIBlock,
-                      user,
-                    ),
-                  color: colors[theme].red,
-                  disabled: usersIBlock.some(b => b.id === user.id),
-                },
-                {
-                  name: strings.friends.report,
-                  onPress: () =>
-                    Alert.alert(
-                      strings.friends.report,
-                      strings.friends.reportInfo,
-                      [
-                        {text: strings.main.cancel},
-                        {
-                          text: strings.friends.report,
-                          style: 'destructive',
-                          onPress: () => {
-                            handleReport(user.id);
-                          },
-                        },
-                      ],
-                    ),
-                  color: colors[theme].neutral,
-                },
-              ]}
-            />
+            <OptionMenu iconColor={colors[theme].primary} options={options} />
           )}
         </View>
       </SafeAreaView>

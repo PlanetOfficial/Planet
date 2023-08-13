@@ -25,6 +25,8 @@ import {fetchUserLocation, useLoadingState} from '../../../utils/Misc';
 import ProfileBody from '../../profileScreens/profile/ProfileBody';
 
 import Profile from './ProfileHeader';
+import ProfileButtons from './ProfileButtons';
+import {useFriendsContext} from '../../../context/FriendsContext';
 
 const User = ({
   navigation,
@@ -48,6 +50,8 @@ const User = ({
 
   const [location, setLocation] = useState<Coordinate>();
   const [loading, withLoading] = useLoadingState();
+
+  const {friends} = useFriendsContext();
 
   const initializeData = useCallback(async () => {
     setLocation(await fetchUserLocation());
@@ -84,7 +88,7 @@ const User = ({
       />
       {route.params.user.id === selfUserId ? (
         <ProfileBody navigation={navigation} location={location} />
-      ) : (
+      ) : friends.some(friend => friend.id === route.params.user.id) ? (
         <>
           <SegmentedControlTab
             tabsContainerStyle={segControlTabStyles.container}
@@ -134,6 +138,8 @@ const User = ({
             />
           )}
         </>
+      ) : (
+        <ProfileButtons user={route.params.user} />
       )}
     </View>
   );
