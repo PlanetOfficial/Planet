@@ -7,7 +7,7 @@ import {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 import NavBar from './NavBar';
 
 import Welcome from '../authScreens/Welcome';
-import LoginScreen from '../authScreens/LoginLowerCase';
+import LoginScreen from '../authScreens/Login';
 import SignUpName from '../authScreens/SignUpName';
 import SignUpCreds from '../authScreens/SignUpCreds';
 import SignUpPhone from '../authScreens/SignUpPhone';

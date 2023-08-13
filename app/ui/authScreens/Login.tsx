@@ -23,7 +23,7 @@ import {useLoadingState} from '../../utils/Misc';
 import {useFriendsContext} from '../../context/FriendsContext';
 import {useBookmarkContext} from '../../context/BookmarkContext';
 import {useLocationContext} from '../../context/LocationContext';
-//login
+
 import {handleLogin} from './functions';
 
 const LoginScreen = ({navigation}: {navigation: any}) => {
