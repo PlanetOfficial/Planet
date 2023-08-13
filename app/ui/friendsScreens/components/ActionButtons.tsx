@@ -49,7 +49,7 @@ const ActionButtons: React.FC<Props> = ({user}) => {
   ) : usersIBlock.some(request => request.id === user.id) ? (
     <View style={[styles.button, styles.buttonGrey]}>
       <Text size="s" color={colors[theme].primary}>
-        {strings.friends.added}
+        {strings.friends.blocked}
       </Text>
     </View>
   ) : (
@@ -239,7 +239,7 @@ const styling = (theme: 'light' | 'dark') =>
     button: {
       alignItems: 'center',
       justifyContent: 'center',
-      width: s(80),
+      width: s(70),
       height: s(25),
       borderRadius: s(10),
       backgroundColor: colors[theme].accent,

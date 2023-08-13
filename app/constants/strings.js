@@ -134,6 +134,7 @@ const strings = {
     inviteFriends: 'Invite Friends',
     added: 'Added',
     users: 'Users',
+    blocked: 'Blocked',
     noFriendsFound: 'No Friends Found',
     friendRequest: 'Friend Request',
     friendRequests: 'Friend Requests',
