@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   useColorScheme,
   ScrollView,
+  LayoutAnimation,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 
@@ -44,50 +45,44 @@ const FriendGroupComponent: React.FC<Props> = ({
   const {friendGroups} = useFriendsContext();
 
   return (
-    <>
-      <View style={styles.title}>
-        <Text size="s" weight="l">
-          {friendGroups.length === 1
-            ? strings.friends.friendGroup
-            : strings.friends.friendGroups}
-          :
-        </Text>
-      </View>
-      <ScrollView
-        horizontal={true}
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.friendGroups}>
-        {friendGroups.map((item: FriendGroup) => (
-          <TouchableOpacity
-            key={item.id}
-            style={styles.friendGroup}
-            onPress={() => {
-              if (fgSelected === item.id) {
-                setFgSelected(0);
-                resetFGEditing(setFgEditing, setTempName, setTempMembers);
-              } else {
-                setFgSelected(item.id);
-                resetFGEditing(setFgEditing, setTempName, setTempMembers);
-              }
-            }}>
-            <FGIcon users={item.members} selected={fgSelected === item.id} />
-            <Text size="s" weight={fgSelected === item.id ? 'r' : 'l'}>
-              {item.name}
-            </Text>
-          </TouchableOpacity>
-        ))}
+    <ScrollView
+      horizontal={true}
+      showsHorizontalScrollIndicator={false}
+      contentContainerStyle={styles.friendGroups}>
+      {friendGroups.map((item: FriendGroup) => (
         <TouchableOpacity
+          key={item.id}
           style={styles.friendGroup}
-          onPress={() => navigation.navigate('CreateFG')}>
-          <View style={styles.add}>
-            <Icon icon={icons.add} color={colors[theme].accent} size="xxl" />
-          </View>
-          <Text size="s" weight="l">
-            {strings.friends.newFriendGroup}
+          onPress={() => {
+            LayoutAnimation.configureNext(
+              LayoutAnimation.Presets.easeInEaseOut,
+            );
+
+            if (fgSelected === item.id) {
+              setFgSelected(0);
+              resetFGEditing(setFgEditing, setTempName, setTempMembers);
+            } else {
+              setFgSelected(item.id);
+              resetFGEditing(setFgEditing, setTempName, setTempMembers);
+            }
+          }}>
+          <FGIcon users={item.members} selected={fgSelected === item.id} />
+          <Text size="s" weight={fgSelected === item.id ? 'r' : 'l'}>
+            {item.name}
           </Text>
         </TouchableOpacity>
-      </ScrollView>
-    </>
+      ))}
+      <TouchableOpacity
+        style={styles.friendGroup}
+        onPress={() => navigation.navigate('CreateFG')}>
+        <View style={styles.add}>
+          <Icon icon={icons.add} color={colors[theme].accent} size="xxl" />
+        </View>
+        <Text size="s" weight="l">
+          {strings.friends.newFriendGroup}
+        </Text>
+      </TouchableOpacity>
+    </ScrollView>
   );
 };
 

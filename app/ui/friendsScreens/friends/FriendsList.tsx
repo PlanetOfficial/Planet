@@ -7,6 +7,7 @@ import {
   useColorScheme,
   StatusBar,
   ScrollView,
+  LayoutAnimation,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 
@@ -31,13 +32,15 @@ const FriendsList = ({navigation}: {navigation: any}) => {
   const STYLES = STYLING(theme);
   StatusBar.setBarStyle(colors[theme].statusBar, true);
 
-  const {friends, refreshFriends} = useFriendsContext();
+  const {friends, refreshFriends, friendGroups} = useFriendsContext();
 
   const [loading, withLoading] = useLoadingState();
   const [fgSelected, setFgSelected] = useState<number>(0);
   const [fgEditing, setFgEditing] = useState<boolean>(false);
   const [tempName, setTempName] = useState<string>();
   const [tempMembers, setTempMembers] = useState<UserInfo[]>();
+
+  const [fgHidden, setFgHidden] = useState<boolean>(false);
 
   return (
     <ScrollView
@@ -55,16 +58,41 @@ const FriendsList = ({navigation}: {navigation: any}) => {
           tintColor={colors[theme].accent}
         />
       }>
-      <FriendGroupComponent
-        navigation={navigation}
-        setFgEditing={setFgEditing}
-        fgSelected={fgSelected}
-        setFgSelected={setFgSelected}
-        setTempName={setTempName}
-        setTempMembers={setTempMembers}
-      />
+      <View style={styles.title}>
+        <Text size="s" weight="l">
+          {friendGroups.length === 1
+            ? strings.friends.friendGroup
+            : strings.friends.friendGroups}
+          :
+        </Text>
+        <View
+          style={{
+            transform: [{rotate: fgHidden ? '180deg' : '0deg'}],
+          }}>
+          <Icon
+            size="xs"
+            icon={icons.drop}
+            onPress={() => {
+              LayoutAnimation.configureNext(
+                LayoutAnimation.Presets.easeInEaseOut,
+              );
+              setFgHidden(!fgHidden);
+            }}
+          />
+        </View>
+      </View>
+      {!fgHidden ? (
+        <FriendGroupComponent
+          navigation={navigation}
+          setFgEditing={setFgEditing}
+          fgSelected={fgSelected}
+          setFgSelected={setFgSelected}
+          setTempName={setTempName}
+          setTempMembers={setTempMembers}
+        />
+      ) : null}
 
-      {fgSelected !== 0 ? (
+      {!fgHidden && fgSelected !== 0 ? (
         <FriendGroupEdit
           navigation={navigation}
           fgEditing={fgEditing}
@@ -80,7 +108,7 @@ const FriendsList = ({navigation}: {navigation: any}) => {
 
       <View style={styles.title}>
         <Text size="s" weight="l">
-          {strings.friends.friends}:
+          {strings.friends.friends + ' (' + friends.length + ')'}:
         </Text>
       </View>
 
