@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {createRef} from 'react';
 import {
   View,
   StyleSheet,
@@ -20,7 +20,6 @@ import Text from '../../components/Text';
 import {UserInfo} from '../../../utils/types';
 
 interface Props {
-  searchRef: any;
   searchText: string;
   setSearchText: (text: string) => void;
   searching: boolean;
@@ -30,7 +29,6 @@ interface Props {
 }
 
 const SearchBar: React.FC<Props> = ({
-  searchRef,
   searchText,
   setSearchText,
   searching,
@@ -41,6 +39,8 @@ const SearchBar: React.FC<Props> = ({
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
   const STYLES = STYLING(theme);
+
+  const searchRef = createRef<any>();
 
   return (
     <View style={styles.container}>
