@@ -129,6 +129,8 @@ const strings = {
     requests: 'Requests',
     searchFriends: 'Search Friends',
     newFriendGroup: 'Create',
+    suggestions: 'Suggestions',
+    added: 'Added',
     users: 'Users',
     noFriendsFound: 'No Friends Found',
     friendRequest: 'Friend Request',

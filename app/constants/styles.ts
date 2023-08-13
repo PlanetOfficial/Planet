@@ -73,10 +73,10 @@ const styling = (theme: 'light' | 'dark') =>
         width: 0,
         height: 1,
       },
-      shadowOpacity: 0.22,
-      shadowRadius: 2.22,
+      shadowOpacity: 0.2,
+      shadowRadius: 1.41,
 
-      elevation: 3,
+      elevation: 2,
     },
     absolute: {
       position: 'absolute',

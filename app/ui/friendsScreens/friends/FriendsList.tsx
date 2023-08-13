@@ -25,6 +25,7 @@ import {useLoadingState} from '../../../utils/Misc';
 
 import FriendGroupComponent from './FriendGroup';
 import FriendGroupEdit from './FriendGroupEdit';
+import Suggestions from './Suggestions';
 import {useFriendsContext} from '../../../context/FriendsContext';
 
 const FriendsList = ({navigation}: {navigation: any}) => {
@@ -40,6 +41,7 @@ const FriendsList = ({navigation}: {navigation: any}) => {
   const [tempName, setTempName] = useState<string>();
   const [tempMembers, setTempMembers] = useState<UserInfo[]>();
 
+  const [suggestionsShown, setSuggestionsShown] = useState<boolean>(true);
   const [fgShown, setFgShown] = useState<boolean>(true);
   const [friendsShown, setFriendsShown] = useState<boolean>(true);
 
@@ -59,6 +61,28 @@ const FriendsList = ({navigation}: {navigation: any}) => {
           tintColor={colors[theme].accent}
         />
       }>
+      <View style={styles.title}>
+        <Text size="s" weight="l">
+          {strings.friends.suggestions}:
+        </Text>
+        <View
+          style={{
+            transform: [{rotate: suggestionsShown ? '180deg' : '0deg'}],
+          }}>
+          <Icon
+            size="xs"
+            icon={icons.drop}
+            onPress={() => {
+              LayoutAnimation.configureNext(
+                LayoutAnimation.Presets.easeInEaseOut,
+              );
+              setSuggestionsShown(!suggestionsShown);
+            }}
+          />
+        </View>
+      </View>
+      {suggestionsShown ? <Suggestions navigation={navigation} /> : null}
+
       <View style={styles.title}>
         <Text size="s" weight="l">
           {friendGroups.length === 1
