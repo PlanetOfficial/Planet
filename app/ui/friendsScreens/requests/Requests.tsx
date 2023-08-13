@@ -48,38 +48,38 @@ const Requests = ({navigation}: {navigation: any}) => {
       </SafeAreaView>
       {requests.length === 0 ? (
         <View style={STYLES.center}>
-          <Text weight='l'>{strings.friends.noRequestsFound}</Text>
+          <Text weight="l">{strings.friends.noRequestsFound}</Text>
         </View>
       ) : (
-      <ScrollView
-        style={STYLES.container}
-        contentContainerStyle={STYLES.flatList}
-        scrollIndicatorInsets={{right: 1}}
-        refreshControl={
-          <RefreshControl
-            refreshing={loading}
-            onRefresh={() =>
-              withLoading(async () => {
-                await refreshFriends();
-              })
-            }
-            tintColor={colors[theme].accent}
-          />
-        }>
-        {requests.map((item: UserInfo) => (
-          <TouchableOpacity
-            onPress={() =>
-              navigation.push('User', {
-                user: item,
-              })
-            }
-            key={item.id}>
-            <UserRow user={item}>
-              <ActionButtons user={item} />
-            </UserRow>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
+        <ScrollView
+          style={STYLES.container}
+          contentContainerStyle={STYLES.flatList}
+          scrollIndicatorInsets={{right: 1}}
+          refreshControl={
+            <RefreshControl
+              refreshing={loading}
+              onRefresh={() =>
+                withLoading(async () => {
+                  await refreshFriends();
+                })
+              }
+              tintColor={colors[theme].accent}
+            />
+          }>
+          {requests.map((item: UserInfo) => (
+            <TouchableOpacity
+              onPress={() =>
+                navigation.push('User', {
+                  user: item,
+                })
+              }
+              key={item.id}>
+              <UserRow user={item}>
+                <ActionButtons user={item} />
+              </UserRow>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
       )}
     </View>
   );

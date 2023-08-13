@@ -156,7 +156,6 @@ const strings = {
     mutualFriends: 'Mutual Friends',
     mutualFriendsDescriptions: 'You have these friends in common',
     noSuggestionsFound: 'No Suggestions Found',
-    noRequestsFound: 'No Requests Found',
     createFriendGroup: 'Create a Friend Group',
     fgCreateBackConfirmation: 'Are you sure you want to go back?',
     friendGroup: 'Friend Group',
