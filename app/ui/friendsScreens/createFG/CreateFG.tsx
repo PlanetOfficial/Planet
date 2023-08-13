@@ -96,7 +96,7 @@ const CreateFG = ({navigation}: {navigation: any}) => {
             ListEmptyComponent={
               searchText.length > 0 ? (
                 <View style={STYLES.center}>
-                  <Text>{strings.search.noResultsFound}</Text>
+                  <Text weight="l">{strings.search.noResultsFound}</Text>
                 </View>
               ) : null
             }
@@ -133,7 +133,7 @@ const CreateFG = ({navigation}: {navigation: any}) => {
           )}
           ListEmptyComponent={
             <View style={STYLES.center}>
-              <Text>{strings.friends.noFriendsFound}</Text>
+              <Text weight="l">{strings.friends.noFriendsFound}</Text>
             </View>
           }
         />

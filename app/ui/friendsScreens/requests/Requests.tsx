@@ -1,13 +1,13 @@
 import React from 'react';
 import {
   View,
-  TouchableOpacity,
   ScrollView,
   RefreshControl,
   useColorScheme,
   StatusBar,
   SafeAreaView,
 } from 'react-native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';

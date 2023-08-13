@@ -199,7 +199,7 @@ const User = ({
             }}
             ListEmptyComponent={
               <View style={STYLES.center}>
-                <Text>{strings.friends.noMutualEventsFound}</Text>
+                <Text weight="l">{strings.friends.noMutualEventsFound}</Text>
               </View>
             }
             keyExtractor={(item: Event) => item.id.toString()}

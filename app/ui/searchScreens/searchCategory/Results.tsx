@@ -64,9 +64,11 @@ const Results: React.FC<Props> = ({
       }}
       ListEmptyComponent={
         <View style={STYLES.center}>
-          <Text>{strings.search.noResultsFound}</Text>
+          <Text weight="l">{strings.search.noResultsFound}</Text>
           <Text> </Text>
-          <Text size="s">{strings.search.noResultsFoundDescription}</Text>
+          <Text size="s" weight="l">
+            {strings.search.noResultsFoundDescription}
+          </Text>
         </View>
       }
       keyExtractor={(item: Poi) => item.id.toString()}

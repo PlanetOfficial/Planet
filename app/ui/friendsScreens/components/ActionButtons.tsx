@@ -33,6 +33,8 @@ const ActionButtons: React.FC<Props> = ({user}) => {
     setRequests,
     requestsSent,
     setRequestsSent,
+    suggestions,
+    setSuggestions,
     usersIBlock,
   } = useFriendsContext();
 
@@ -65,6 +67,8 @@ const ActionButtons: React.FC<Props> = ({user}) => {
               setFriends,
               requests,
               setRequests,
+              suggestions,
+              setSuggestions,
               user,
             ),
           );

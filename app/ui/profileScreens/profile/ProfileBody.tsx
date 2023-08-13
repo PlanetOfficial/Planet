@@ -133,9 +133,11 @@ const ProfileBody: React.FC<Props> = ({
         }}
         ListEmptyComponent={
           <View style={STYLES.center}>
-            <Text>{strings.profile.noBookmarksFound}</Text>
+            <Text weight="l">{strings.profile.noBookmarksFound}</Text>
             <Text> </Text>
-            <Text size="s">{strings.profile.noBookmarksFoundDescription}</Text>
+            <Text size="s" weight="l">
+              {strings.profile.noBookmarksFoundDescription}
+            </Text>
           </View>
         }
         keyExtractor={(item: Poi) => item.id.toString()}

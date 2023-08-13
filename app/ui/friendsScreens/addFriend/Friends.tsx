@@ -154,7 +154,7 @@ const Friends: React.FC<Props> = ({
 
       {friends.length === 0 ? (
         <View style={STYLES.center}>
-          <Text>{strings.friends.noFriendsFound}</Text>
+          <Text weight="l">{strings.friends.noFriendsFound}</Text>
         </View>
       ) : (
         <View style={styles.title}>
