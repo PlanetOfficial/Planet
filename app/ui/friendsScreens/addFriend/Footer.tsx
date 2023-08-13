@@ -124,6 +124,7 @@ const styling = (theme: 'light' | 'dark') =>
       marginTop: s(10),
       paddingHorizontal: s(20),
       height: s(45),
+      alignItems: 'center',
       justifyContent: 'center',
       borderRadius: s(10),
       minWidth: s(100),

@@ -130,6 +130,8 @@ const strings = {
     searchFriends: 'Search Friends',
     newFriendGroup: 'Create',
     suggestions: 'Suggestions',
+    addFriends: 'Add Friends',
+    inviteFriends: 'Invite Friends',
     added: 'Added',
     users: 'Users',
     noFriendsFound: 'No Friends Found',
