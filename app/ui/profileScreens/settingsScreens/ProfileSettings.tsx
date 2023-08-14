@@ -11,15 +11,15 @@ import {
 import {s} from 'react-native-size-matters';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import colors from '../../../../constants/colors';
-import icons from '../../../../constants/icons';
-import strings from '../../../../constants/strings';
-import STYLING from '../../../../constants/styles';
+import colors from '../../../constants/colors';
+import icons from '../../../constants/icons';
+import strings from '../../../constants/strings';
+import STYLING from '../../../constants/styles';
 
-import Text from '../../../components/Text';
-import Icon from '../../../components/Icon';
+import Text from '../../components/Text';
+import Icon from '../../components/Icon';
 import {ScrollView} from 'react-native';
-import UserIconXL from '../../../components/UserIconXL';
+import UserIconXL from '../../components/UserIconXL';
 import {
   handleEditDisplayName,
   handleEditPfp,
@@ -28,7 +28,7 @@ import {
 } from './functions';
 import DatePicker from 'react-native-date-picker';
 import moment from 'moment';
-import {editBirthday} from '../../../../utils/api/authAPI';
+import {editBirthday} from '../../../utils/api/authAPI';
 
 const ProfileSettings = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';

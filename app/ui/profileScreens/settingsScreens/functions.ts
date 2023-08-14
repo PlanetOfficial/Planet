@@ -5,15 +5,15 @@ import {
 } from 'react-native-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import numbers from '../../../../constants/numbers';
-import strings from '../../../../constants/strings';
+import numbers from '../../../constants/numbers';
+import strings from '../../../constants/strings';
 
 import {
   editDisplayName,
   editUsername,
   removeImage,
   saveImage,
-} from '../../../../utils/api/authAPI';
+} from '../../../utils/api/authAPI';
 import prompt from 'react-native-prompt-android';
 
 export const handleEditPfp = async (setPfpURL: (url: string) => void) => {
