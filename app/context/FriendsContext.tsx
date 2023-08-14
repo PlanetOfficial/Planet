@@ -6,9 +6,12 @@ import React, {
   useContext,
 } from 'react';
 import {Alert} from 'react-native';
+
 import strings from '../constants/strings';
+
 import {getFriendsInfo} from '../utils/api/friendsAPI';
 import {FriendGroup, UserInfo} from '../utils/types';
+
 import {FriendsContextType} from './ContextTypes';
 
 const FriendsContext = createContext<FriendsContextType | undefined>(undefined);

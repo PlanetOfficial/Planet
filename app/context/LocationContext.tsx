@@ -6,10 +6,13 @@ import React, {
   useContext,
 } from 'react';
 import {Alert} from 'react-native';
+
+import numbers from '../constants/numbers';
 import strings from '../constants/strings';
+
 import {Coordinate} from '../utils/types';
 import {fetchUserLocation} from '../utils/Misc';
-import numbers from '../constants/numbers';
+
 import {LocationContextType} from './ContextTypes';
 
 const LocationContext = createContext<LocationContextType | undefined>(
