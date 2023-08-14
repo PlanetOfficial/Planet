@@ -21,7 +21,6 @@ import STYLING from '../../constants/styles';
 import Text from '../components/Text';
 
 import {useLoadingState} from '../../utils/Misc';
-
 import {handleVerifyCode} from './functions';
 
 const ForgotPwdVerify = ({
