@@ -1,8 +1,10 @@
-import EncryptedStorage from 'react-native-encrypted-storage';
-import {UserAPIURL, XanoAPIKey} from './APIConstants';
-import {MyInfo} from '../types';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Alert} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import EncryptedStorage from 'react-native-encrypted-storage';
+
+import {UserAPIURL, XanoAPIKey} from './APIConstants';
+
+import {MyInfo} from '../types';
 
 export const login = async (username: string, password: string) => {
   const response = await fetch(UserAPIURL + '/auth/login', {
@@ -114,24 +116,6 @@ export const resetPassword = async (authToken: string, password: string) => {
   const response = await fetch(UserAPIURL + '/auth/resetPassword', {
     method: 'POST',
     body: JSON.stringify({password}),
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Xano-Authorization': `Bearer ${authToken}`,
-      'X-Xano-Authorization-Only': 'true',
-    },
-  });
-
-  return response.ok;
-};
-
-export const sendMoreInfo = async (
-  authToken: string,
-  age: string,
-  gender: string,
-) => {
-  const response = await fetch(UserAPIURL + '/auth/moreInfo', {
-    method: 'POST',
-    body: JSON.stringify({age, gender}),
     headers: {
       'Content-Type': 'application/json',
       'X-Xano-Authorization': `Bearer ${authToken}`,

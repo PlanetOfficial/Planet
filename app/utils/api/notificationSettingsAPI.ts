@@ -1,6 +1,9 @@
 import EncryptedStorage from 'react-native-encrypted-storage';
+
 import {UserAPIURL} from './APIConstants';
+
 import {NotificationSettings} from '../types';
+
 import {requestAndValidate} from './authAPI';
 
 /**

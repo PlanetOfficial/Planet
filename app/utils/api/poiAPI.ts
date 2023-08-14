@@ -1,6 +1,9 @@
 import {PoiAPIURL, XanoAPIKey} from './APIConstants';
+
 import {Category, Poi, PoiDetail} from '../types';
+
 import EncryptedStorage from 'react-native-encrypted-storage';
+
 import {requestAndValidate} from './authAPI';
 
 export const getPois = async (
