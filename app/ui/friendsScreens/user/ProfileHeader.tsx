@@ -151,7 +151,7 @@ const ProfileHeader: React.FC<Props> = ({navigation, user, isSelf, isPage}) => {
           <UserIconXL user={user} />
         </View>
         <Text size="l" numberOfLines={1}>
-          {user.first_name} {user.last_name}
+          {user.display_name}
         </Text>
         <Text size="s" weight="l" numberOfLines={1}>
           @{user.username}

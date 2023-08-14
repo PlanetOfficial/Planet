@@ -43,7 +43,7 @@ import AccountSettings from '../profileScreens/settingsScreens/AccountSettings';
 import LocationsSettings from '../profileScreens/settingsScreens/LocationsSettings';
 import NotificationSettings from '../profileScreens/settingsScreens/NotificationSettings';
 import PrivacySettings from '../profileScreens/settingsScreens/PrivacySettings';
-import ProfileSettings from '../profileScreens/settingsScreens/ProfileSettings';
+import ProfileSettings from '../profileScreens/settingsScreens/ProfileSettings/ProfileSettings';
 import BlockedUsers from '../profileScreens/settingsScreens/BlockedUsers/BlockedUsers';
 
 import {BookmarkStateProvider} from '../../context/BookmarkContext';

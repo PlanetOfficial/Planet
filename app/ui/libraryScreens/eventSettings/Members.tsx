@@ -52,11 +52,7 @@ const Members: React.FC<Props> = ({
             <UserIcon user={member} />
           </View>
           <View style={STYLES.texts}>
-            <Text
-              size="s"
-              numberOfLines={
-                1
-              }>{`${member.first_name} ${member.last_name}`}</Text>
+            <Text size="s" numberOfLines={1}>{`${member.display_name}`}</Text>
             <Text size="xs" weight="l" numberOfLines={1}>
               {'@' + member.username}
             </Text>

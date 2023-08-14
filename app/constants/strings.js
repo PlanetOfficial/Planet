@@ -280,6 +280,15 @@ const strings = {
     blockedUsersInfo:
       'Users you have blocked cannot search your profile or invite you to events.',
     noBlockedUsersFound: 'No Blocked Users Found',
+    displayName: 'Display Name',
+    username: 'Username',
+    birthday: 'Birthday',
+    phoneNumber: 'Phone Number',
+    notSet: 'Not Set',
+    editDisplayName: 'Edit Display Name',
+    editDisplayNamePrompt: 'Enter a new display name:',
+    editUsername: 'Edit Username',
+    editUsernamePrompt: 'Enter a new username:',
   },
   error: {
     error: 'Error',
@@ -355,6 +364,10 @@ const strings = {
     kickMember: 'Unable to kick member. Please try again later.',
     logout: 'Unable to logout. Please try again later.',
     removeAccount: 'Unable to remove account. Please try again later.',
+    displayNameLength: 'Display name must be between 3 and 15 characters.',
+    editDisplayName: 'Unable to edit display name. Please try again later.',
+    editUsername: 'Unable to edit username. Please try again later.',
+    editBirthday: 'Unable to edit birthday. Please try again later.',
   },
   ageEnum: [
     {label: '12-17', value: '-17'},

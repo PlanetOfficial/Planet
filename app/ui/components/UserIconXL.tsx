@@ -14,6 +14,13 @@ const UserIconXL: React.FC<Props> = ({user}) => {
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
 
+  let letters = user.display_name ? user.display_name[0].toUpperCase() : '';
+  if (user.display_name.split(' ').length > 1) {
+    letters += user.display_name.split(' ')[1][0]?.toUpperCase();
+  } else if (user.display_name.length > 1) {
+    letters += user.display_name[1].toUpperCase();
+  }
+
   return user.icon?.url ? (
     <Image style={styles.image} source={{uri: user.icon.url}} />
   ) : (
@@ -25,10 +32,7 @@ const UserIconXL: React.FC<Props> = ({user}) => {
             user.username.length % colors[theme].profileShades.length
           ],
       }}>
-      <Text style={styles.name}>
-        {user.first_name.charAt(0).toUpperCase() +
-          user.last_name.charAt(0).toUpperCase()}
-      </Text>
+      <Text style={styles.name}>{letters}</Text>
     </View>
   );
 };
