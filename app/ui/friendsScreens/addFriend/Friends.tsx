@@ -21,9 +21,11 @@ import UserRow from '../../components/UserRow';
 
 import {FriendGroup, UserInfo} from '../../../utils/types';
 
-import FGIcon from '../friends/FGIcon';
-import {handleFGPress, handleFGSelect, handleUserSelect} from './functions';
+import FGIcon from '../components/FGIcon';
+
 import {useFriendsContext} from '../../../context/FriendsContext';
+
+import {handleFGPress, handleFGSelect, handleUserSelect} from './functions';
 
 interface Props {
   isEvent: boolean;

@@ -20,8 +20,10 @@ import Icon from '../../components/Icon';
 import UserIcon from '../../components/UserIcon';
 
 import {UserInfo} from '../../../utils/types';
-import {beginFGEditing, handleRemoveFG, saveFGEditing} from './functions';
+
 import {useFriendsContext} from '../../../context/FriendsContext';
+
+import {beginFGEditing, handleRemoveFG, saveFGEditing} from './functions';
 
 interface Props {
   navigation: any;

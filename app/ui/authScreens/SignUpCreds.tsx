@@ -12,8 +12,8 @@ import {
   ScrollView,
   Image,
 } from 'react-native';
-
 import {s, vs} from 'react-native-size-matters';
+import LinearGradient from 'react-native-linear-gradient';
 
 import colors from '../../constants/colors';
 import icons from '../../constants/icons';
@@ -25,7 +25,6 @@ import Text from '../components/Text';
 
 import {signup} from '../../utils/api/authAPI';
 import {useLoadingState} from '../../utils/Misc';
-import LinearGradient from 'react-native-linear-gradient';
 
 const SignUpCreds = ({
   navigation,

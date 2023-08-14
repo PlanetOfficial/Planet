@@ -23,10 +23,11 @@ import UserRow from '../../components/UserRow';
 import {UserInfo} from '../../../utils/types';
 import {useLoadingState} from '../../../utils/Misc';
 
+import {useFriendsContext} from '../../../context/FriendsContext';
+
 import FriendGroupComponent from './FriendGroup';
 import FriendGroupEdit from './FriendGroupEdit';
 import Suggestions from './Suggestions';
-import {useFriendsContext} from '../../../context/FriendsContext';
 
 const FriendsList = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';

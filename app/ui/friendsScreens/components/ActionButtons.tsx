@@ -15,7 +15,9 @@ import Text from '../../components/Text';
 
 import {UserInfo} from '../../../utils/types';
 import {useLoadingState} from '../../../utils/Misc';
+
 import {handleAcceptRequest, handleFriendRequest} from '../user/functions';
+
 import {useFriendsContext} from '../../../context/FriendsContext';
 
 interface Props {

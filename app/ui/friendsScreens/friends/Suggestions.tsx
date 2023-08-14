@@ -8,11 +8,11 @@ import STYLING from '../../../constants/styles';
 
 import Text from '../../components/Text';
 import UserIcon from '../../components/UserIcon';
+import ActionButtons from '../components/ActionButtons';
 
 import {UserInfo} from '../../../utils/types';
 
 import {useFriendsContext} from '../../../context/FriendsContext';
-import ActionButtons from '../components/ActionButtons';
 
 const Suggestions = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';

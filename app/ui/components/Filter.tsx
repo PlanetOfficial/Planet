@@ -7,7 +7,6 @@ import {
   LayoutAnimation,
   useColorScheme,
 } from 'react-native';
-
 import {s} from 'react-native-size-matters';
 
 import icons from '../../constants/icons';

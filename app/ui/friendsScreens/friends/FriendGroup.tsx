@@ -15,12 +15,13 @@ import strings from '../../../constants/strings';
 
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
+import FGIcon from '../components/FGIcon';
 
 import {FriendGroup, UserInfo} from '../../../utils/types';
 
-import FGIcon from './FGIcon';
-import {resetFGEditing} from './functions';
 import {useFriendsContext} from '../../../context/FriendsContext';
+
+import {resetFGEditing} from './functions';
 
 interface Props {
   navigation: any;

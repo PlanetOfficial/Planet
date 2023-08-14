@@ -14,17 +14,19 @@ import STYLING from '../../../constants/styles';
 
 import Icon from '../../components/Icon';
 import UserRow from '../../components/UserRow';
+import SearchBar from '../components/SearchBar';
 import SearchResult from '../components/SearchResult';
 
 import {UserInfo} from '../../../utils/types';
 import {useLoadingState} from '../../../utils/Misc';
+
 import {useFriendsContext} from '../../../context/FriendsContext';
+
+import {search} from '../friends/functions';
 
 import Header from './Header';
 import Friends from './Friends';
 import Footer from './Footer';
-import SearchBar from '../components/SearchBar';
-import {search} from '../friends/functions';
 
 const AddFriend = ({
   navigation,

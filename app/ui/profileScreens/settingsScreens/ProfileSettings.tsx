@@ -24,13 +24,14 @@ import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 import UserIconXL from '../../components/UserIconXL';
 
+import {editBirthday} from '../../../utils/api/authAPI';
+
 import {
   handleEditDisplayName,
   handleEditPfp,
   handleEditUsername,
   handleRemovePfp,
 } from './functions';
-import {editBirthday} from '../../../utils/api/authAPI';
 
 const ProfileSettings = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';

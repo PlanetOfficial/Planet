@@ -1,6 +1,7 @@
 import React from 'react';
 import {StyleSheet, View, Image} from 'react-native';
 import {s} from 'react-native-size-matters';
+
 import moment from 'moment';
 
 import icons from '../../constants/icons';

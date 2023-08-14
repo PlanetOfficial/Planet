@@ -7,10 +7,11 @@ import colors from '../../../constants/colors';
 import STYLING from '../../../constants/styles';
 
 import ProfileHeader from '../../friendsScreens/user/ProfileHeader';
-import ProfileBody from './ProfileBody';
 
 import {fetchUserLocation} from '../../../utils/Misc';
 import {Coordinate} from '../../../utils/types';
+
+import ProfileBody from './ProfileBody';
 
 const Profile = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';

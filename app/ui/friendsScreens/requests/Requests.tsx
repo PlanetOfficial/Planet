@@ -17,12 +17,12 @@ import STYLING from '../../../constants/styles';
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 import UserRow from '../../components/UserRow';
+import ActionButtons from '../components/ActionButtons';
 
 import {UserInfo} from '../../../utils/types';
 import {useLoadingState} from '../../../utils/Misc';
 
 import {useFriendsContext} from '../../../context/FriendsContext';
-import ActionButtons from '../components/ActionButtons';
 
 const Requests = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';

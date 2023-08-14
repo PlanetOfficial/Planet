@@ -1,5 +1,7 @@
 import {Alert} from 'react-native';
+
 import strings from '../../../constants/strings';
+
 import {UserInfo} from '../../../utils/types';
 import {
   acceptFriendRequest,
