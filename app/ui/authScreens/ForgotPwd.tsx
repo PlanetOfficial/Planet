@@ -91,7 +91,7 @@ const ForgotPwd = ({navigation}: {navigation: any}) => {
             <ActivityIndicator size="small" color={colors[theme].primary} />
           ) : (
             <Text weight="b" color={colors[theme].primary}>
-              {strings.main.next}
+              {strings.main.confirm}
             </Text>
           )}
         </TouchableOpacity>

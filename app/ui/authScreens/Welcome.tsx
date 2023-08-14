@@ -53,11 +53,11 @@ const Welcome = ({navigation}: {navigation: any}) => {
               <Image source={icons.logo} style={styles.logo} />
               <View style={styles.welcomeText}>
                 <Text size="xxl" weight="b" color={colors[theme].primary}>
-                  {strings.welcome.welcome}
+                  {strings.login.welcome}
                 </Text>
               </View>
               <Text weight="l" color={colors[theme].primary} center={true}>
-                {strings.welcome.description}
+                {strings.main.description}
               </Text>
             </View>
           </View>
@@ -75,7 +75,7 @@ const Welcome = ({navigation}: {navigation: any}) => {
               <Image source={icons.logo} style={styles.logo} />
               <View style={styles.welcomeText}>
                 <Text size="xxl" weight="b" color={colors[theme].primary}>
-                  {strings.welcome.appName}
+                  {strings.main.appName}
                 </Text>
               </View>
               <Text
@@ -83,7 +83,7 @@ const Welcome = ({navigation}: {navigation: any}) => {
                 weight="l"
                 color={colors[theme].primary}
                 center={true}>
-                {strings.welcome.tagLine}
+                {strings.main.tagLine}
               </Text>
             </View>
             <View style={styles.buttons}>
