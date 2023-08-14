@@ -69,7 +69,7 @@ const strings = {
     promptPhoneNumber:
       "Enter your phone number so we\n know that you're a real human.",
     verificationCodeSent: 'Verification code sent!',
-    promptVerificationCode: 'Enter the 6 digit code we sent you.',
+    verifyPrompt: 'Enter the 6 digit code we sent you.',
   },
   home: {
     upcomingEvent: 'Upcoming Event',

@@ -21,6 +21,7 @@ import Icon from '../components/Icon';
 import Text from '../components/Text';
 
 import {useLoadingState} from '../../utils/Misc';
+
 import {handleSendCodeOnPasswordReset} from './functions';
 
 const ForgotPwd = ({navigation}: {navigation: any}) => {
