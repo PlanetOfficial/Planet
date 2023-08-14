@@ -24,8 +24,8 @@ const LocationStateProvider = ({
   isLoggedInStack: boolean;
 }) => {
   const [location, setLocation] = useState<Coordinate>({
-    latitude: numbers.defaultLatitude,
-    longitude: numbers.defaultLongitude,
+    latitude: 0,
+    longitude: 0,
   });
   const [radius, setRadius] = useState<number>(numbers.defaultRadius);
 
