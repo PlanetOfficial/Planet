@@ -1,6 +1,6 @@
 import {StyleSheet} from 'react-native';
 import colors from './colors';
-import {s} from 'react-native-size-matters';
+import {s, vs} from 'react-native-size-matters';
 
 const styling = (theme: 'light' | 'dark') =>
   StyleSheet.create({
@@ -84,9 +84,9 @@ const styling = (theme: 'light' | 'dark') =>
     flip: {
       transform: [{rotate: '180deg'}],
     },
-    promptContainer: {
-      margin: s(40),
-      paddingHorizontal: s(20),
+    titleContainer: {
+      marginTop: s(40),
+      marginBottom: s(20),
     },
     prompt: {
       width: s(100),
@@ -99,8 +99,8 @@ const styling = (theme: 'light' | 'dark') =>
       justifyContent: 'center',
       flexDirection: 'row',
       alignItems: 'center',
-      marginVertical: s(30),
-      marginHorizontal: s(50),
+      width: s(250),
+      margin: s(50),
     },
     input: {
       flex: 1,
@@ -112,6 +112,16 @@ const styling = (theme: 'light' | 'dark') =>
       fontFamily: 'Lato',
       color: colors[theme].neutral,
       fontSize: s(15),
+    },
+    signUpContainer: {
+      flex: 1,
+      width: '100%',
+      alignItems: 'center',
+    },
+    logo: {
+      marginTop: vs(10),
+      width: s(60),
+      height: s(60),
     },
     buttonBig: {
       alignSelf: 'center',

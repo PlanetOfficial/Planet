@@ -8,9 +8,12 @@ import {
   Linking,
   StyleSheet,
   ActivityIndicator,
+  Keyboard,
+  ScrollView,
+  Image,
 } from 'react-native';
 
-import {s} from 'react-native-size-matters';
+import {s, vs} from 'react-native-size-matters';
 
 import colors from '../../constants/colors';
 import icons from '../../constants/icons';
@@ -22,6 +25,7 @@ import Text from '../components/Text';
 
 import {signup} from '../../utils/api/authAPI';
 import {useLoadingState} from '../../utils/Misc';
+import LinearGradient from 'react-native-linear-gradient';
 
 const SignUpCreds = ({
   navigation,
@@ -30,8 +34,8 @@ const SignUpCreds = ({
   navigation: any;
   route: {
     params: {
-      firstName: string;
-      lastName: string;
+      displayName: string;
+      birthday: string;
     };
   };
 }) => {
@@ -39,14 +43,8 @@ const SignUpCreds = ({
   const STYLES = STYLING(theme);
   StatusBar.setBarStyle(colors[theme].statusBar, true);
 
-  const [firstName] = useState<string>(route.params.firstName);
-  const [lastName] = useState<string>(route.params.lastName);
-
-  const [username, setUsername] = useState<string>(
-    firstName.toLowerCase() + lastName.toLowerCase(),
-  );
+  const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const [passwordConfirm, setPasswordConfirm] = useState<string>('');
 
   const [error, setError] = useState<string>('');
 
@@ -57,11 +55,7 @@ const SignUpCreds = ({
   const handleNext = async () => {
     setError('');
 
-    if (
-      username.length === 0 ||
-      password.length === 0 ||
-      passwordConfirm.length === 0
-    ) {
+    if (username.length === 0 || password.length === 0) {
       setError(strings.signUp.missingFields);
       return;
     }
@@ -81,12 +75,12 @@ const SignUpCreds = ({
       return;
     }
 
-    if (password !== passwordConfirm) {
-      setError(strings.signUp.passwordsMatch);
-      return;
-    }
-
-    const response = await signup(firstName, lastName, username, password);
+    const response = await signup(
+      route.params.displayName,
+      route.params.birthday,
+      username,
+      password,
+    );
 
     if (response?.authToken) {
       navigation.reset({
@@ -100,136 +94,119 @@ const SignUpCreds = ({
     }
   };
 
-  const validState =
-    !userAgreed ||
-    username.length === 0 ||
-    password.length === 0 ||
-    password !== passwordConfirm;
+  const disabled =
+    !userAgreed || username.length === 0 || password.length === 0;
 
   return (
-    <View style={STYLES.container}>
-      <SafeAreaView>
-        <View style={STYLES.header}>
-          <Icon
-            size="m"
-            icon={icons.back}
-            onPress={() => navigation.goBack()}
-            color={colors[theme].neutral}
-          />
-        </View>
-      </SafeAreaView>
-
-      <View style={STYLES.promptContainer}>
-        <Text size="l" weight="l" center={true} color={colors[theme].neutral}>
-          {strings.signUp.credPrompt}
-        </Text>
-      </View>
-
-      <View style={STYLES.inputContainer}>
-        <View style={STYLES.prompt}>
-          <Text weight="l" color={colors[theme].neutral}>
-            {strings.signUp.username}:{' '}
+    <View style={STYLES.container} onTouchStart={Keyboard.dismiss}>
+      <LinearGradient
+        colors={[colors[theme].accent, colors[theme].primary]}
+        style={STYLES.signUpContainer}
+        start={{x: 0, y: 0}}
+        end={{x: 0, y: 1}}
+        locations={[0, 0.2]}>
+        <SafeAreaView>
+          <Image source={icons.logo} style={STYLES.logo} />
+        </SafeAreaView>
+        <ScrollView>
+          <View style={STYLES.titleContainer}>
+            <Text center={true}>{strings.signUp.setUpPrompt}</Text>
+          </View>
+          <Text weight="l" size="s" center={true}>
+            {strings.signUp.setUpDescription}
           </Text>
-        </View>
-        <TextInput
-          style={STYLES.input}
-          placeholder={strings.signUp.username}
-          value={username}
-          onChangeText={text => setUsername(text.toLowerCase())}
-          placeholderTextColor={colors[theme].neutral}
-          autoCapitalize="none"
-          autoCorrect={false}
-        />
-      </View>
-      <View style={STYLES.inputContainer}>
-        <View style={STYLES.prompt}>
-          <Text weight="l" color={colors[theme].neutral}>
-            {strings.login.password}:{' '}
-          </Text>
-        </View>
-        <TextInput
-          style={STYLES.input}
-          placeholder={strings.login.password}
-          value={password}
-          onChangeText={text => setPassword(text)}
-          placeholderTextColor={colors[theme].neutral}
-          secureTextEntry={true}
-        />
-      </View>
-      <View style={STYLES.inputContainer}>
-        <View style={STYLES.prompt}>
-          <Text weight="l" color={colors[theme].neutral}>
-            {strings.signUp.confirmPassword}:{' '}
-          </Text>
-        </View>
-        <TextInput
-          style={STYLES.input}
-          placeholder={strings.signUp.confirmPassword}
-          value={passwordConfirm}
-          onChangeText={text => setPasswordConfirm(text)}
-          placeholderTextColor={colors[theme].neutral}
-          secureTextEntry={true}
-        />
-      </View>
-      {error.length !== 0 ? (
-        <Text weight="l" center={true} color={colors[theme].red}>
-          {error}
-        </Text>
-      ) : null}
-      <View style={styles.footer}>
-        <TouchableOpacity style={styles.check}>
-          <Icon
-            size="m"
-            icon={userAgreed ? icons.checked : icons.unchecked}
-            onPress={() => setUserAgreed(!userAgreed)}
-            color={colors[theme].accent}
-          />
-        </TouchableOpacity>
-        <Text size="s" weight="l" color={colors[theme].neutral}>
-          {strings.signUp.iAgreeTo + '  '}
-        </Text>
-        <TouchableOpacity
-          onPress={() =>
-            Linking.openURL(strings.main.url + '/terms-and-conditions')
-          }>
-          <Text
-            size="s"
-            weight="l"
-            underline={true}
-            color={colors[theme].accent}>
-            {strings.settings.termsAndConditions}
-          </Text>
-        </TouchableOpacity>
-      </View>
-      <TouchableOpacity
-        style={[
-          STYLES.buttonBig,
-          {
-            backgroundColor: validState
-              ? colors[theme].secondary
-              : colors[theme].accent,
-          },
-        ]}
-        disabled={validState || loading}
-        onPress={() => withLoading(handleNext)}>
-        {loading ? (
-          <ActivityIndicator size="small" color={colors[theme].primary} />
-        ) : (
-          <Text weight="b" color={colors[theme].primary}>
-            {strings.signUp.signUp}
-          </Text>
-        )}
-      </TouchableOpacity>
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={STYLES.input}
+              value={username}
+              autoCorrect={false}
+              autoFocus={true}
+              onChangeText={text => setUsername(text)}
+              placeholder={strings.signUp.username}
+              placeholderTextColor={colors[theme].secondary}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={STYLES.input}
+              value={password}
+              onChangeText={text => setPassword(text)}
+              placeholder={strings.login.password}
+              placeholderTextColor={colors[theme].secondary}
+              secureTextEntry={true}
+            />
+          </View>
+          {error.length > 0 && (
+            <View>
+              <View style={STYLES.error}>
+                <Text weight="l" size="s" color={colors[theme].red}>
+                  {error}
+                </Text>
+              </View>
+            </View>
+          )}
+          <View style={styles.footer}>
+            <TouchableOpacity style={styles.check}>
+              <Icon
+                size="m"
+                icon={userAgreed ? icons.checked : icons.unchecked}
+                onPress={() => setUserAgreed(!userAgreed)}
+                color={colors[theme].accent}
+              />
+            </TouchableOpacity>
+            <Text size="s" weight="l" color={colors[theme].neutral}>
+              {strings.signUp.iAgreeTo + '  '}
+            </Text>
+            <TouchableOpacity
+              onPress={() =>
+                Linking.openURL(strings.main.url + '/terms-and-conditions')
+              }>
+              <Text
+                size="s"
+                weight="l"
+                underline={true}
+                color={colors[theme].accent}>
+                {strings.settings.termsAndConditions}
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <TouchableOpacity
+            style={[
+              STYLES.buttonBig,
+              {
+                backgroundColor: disabled
+                  ? colors[theme].secondary
+                  : colors[theme].accent,
+              },
+            ]}
+            disabled={disabled || loading}
+            onPress={() => withLoading(handleNext)}>
+            {loading ? (
+              <ActivityIndicator size="small" color={colors[theme].primary} />
+            ) : (
+              <Text weight="b" color={colors[theme].primary}>
+                {strings.signUp.signUp}
+              </Text>
+            )}
+          </TouchableOpacity>
+        </ScrollView>
+      </LinearGradient>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  inputContainer: {
+    marginTop: s(30),
+    marginBottom: s(20),
+    width: s(270),
+  },
   footer: {
     flexDirection: 'row',
     alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'space-between',
+    marginTop: vs(50),
     height: s(30),
   },
   check: {

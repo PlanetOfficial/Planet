@@ -8,6 +8,7 @@ import {
   StatusBar,
   Keyboard,
   Image,
+  SafeAreaView,
 } from 'react-native';
 import {s, vs} from 'react-native-size-matters';
 import LinearGradient from 'react-native-linear-gradient';
@@ -15,6 +16,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import icons from '../../constants/icons';
 import colors from '../../constants/colors';
 import strings from '../../constants/strings';
+import STYLING from '../../constants/styles';
 
 import Text from '../components/Text';
 
@@ -29,6 +31,7 @@ import {handleLogin} from './functions';
 const LoginScreen = ({navigation}: {navigation: any}) => {
   const theme = 'light';
   const styles = styling(theme);
+  const STYLES = STYLING(theme);
   StatusBar.setBarStyle(colors[theme].statusBar, true);
 
   const [username, setUsername] = useState<string>('');
@@ -56,7 +59,9 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
         start={{x: 0, y: 0}}
         end={{x: 0, y: 1}}
         locations={[0, 0.2]}>
-        <Image source={icons.logo} style={styles.logo} />
+        <SafeAreaView>
+          <Image source={icons.logo} style={styles.logo} />
+        </SafeAreaView>
         <View style={styles.greeting}>
           <Text>{strings.login.greeting}</Text>
         </View>
@@ -83,7 +88,7 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
         />
         <View>
           {error.length !== 0 ? (
-            <View style={styles.error}>
+            <View style={STYLES.error}>
               <Text size="s" weight="l" color={colors[theme].red}>
                 {error}
               </Text>
@@ -149,7 +154,7 @@ const styling = (theme: 'light' | 'dark') =>
       alignItems: 'center',
     },
     logo: {
-      marginTop: vs(40),
+      marginTop: vs(10),
       width: s(60),
       height: s(60),
     },
@@ -170,10 +175,6 @@ const styling = (theme: 'light' | 'dark') =>
       borderColor: colors[theme].secondary,
       color: colors[theme].neutral,
       fontFamily: 'Lato',
-    },
-    error: {
-      position: 'absolute',
-      alignSelf: 'center',
     },
     button: {
       alignItems: 'center',

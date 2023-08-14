@@ -20,14 +20,14 @@ export const login = async (username: string, password: string) => {
 };
 
 export const signup = async (
-  first_name: string,
-  last_name: string,
+  display_name: string,
+  birthday: string,
   username: string,
   password: string,
 ) => {
-  const response = await fetch(UserAPIURL + '/auth/signup', {
+  const response = await fetch(UserAPIURL + '/auth/signup/v2', {
     method: 'POST',
-    body: JSON.stringify({first_name, last_name, username, password}),
+    body: JSON.stringify({display_name, birthday, username, password}),
     headers: {
       'Content-Type': 'application/json',
       Authorization: XanoAPIKey,

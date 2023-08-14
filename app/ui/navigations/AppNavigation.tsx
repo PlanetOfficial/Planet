@@ -9,6 +9,7 @@ import NavBar from './NavBar';
 import Welcome from '../authScreens/Welcome';
 import LoginScreen from '../authScreens/Login';
 import SignUpName from '../authScreens/SignUpName';
+import SignUpBirthday from '../authScreens/SignUpBirthday';
 import SignUpCreds from '../authScreens/SignUpCreds';
 import SignUpPhone from '../authScreens/SignUpPhone';
 import SignUpVerify from '../authScreens/SignUpVerify';
@@ -110,6 +111,7 @@ const authStackScreens = () => (
     <Stack.Screen name="Welcome" component={Welcome} />
     <Stack.Screen name="Login" component={LoginScreen} />
     <Stack.Screen name="SignUpName" component={SignUpName} />
+    <Stack.Screen name="SignUpBirthday" component={SignUpBirthday} />
     <Stack.Screen name="SignUpCreds" component={SignUpCreds} />
     <Stack.Screen name="SignUpPhone" component={SignUpPhone} />
     <Stack.Screen name="SignUpVerify" component={SignUpVerify} />
