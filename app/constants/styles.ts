@@ -112,6 +112,7 @@ const styling = (theme: 'light' | 'dark') =>
       fontFamily: 'Lato',
       color: colors[theme].neutral,
       fontSize: s(15),
+      backgroundColor: colors[theme].background,
     },
     signUpContainer: {
       flex: 1,

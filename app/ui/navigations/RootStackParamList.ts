@@ -90,9 +90,6 @@ type RootStackParamList = {
   VerifyPhone: {
     authToken: string;
   };
-  SignUpInfo: {
-    authToken: string;
-  };
   SignUpVerify: {
     authToken: string;
   };

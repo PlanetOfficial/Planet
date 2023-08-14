@@ -89,6 +89,11 @@ const strings = {
     promptBirthday: 'When is your birthday?',
     setUpPrompt: "Great, let's set up your account!",
     setUpDescription: 'Enter a unique username\n and a secure password.',
+    accountHasBeenCreated: 'Your account has been created!',
+    promptPhoneNumber:
+      "Enter your phone number so we\n know that you're a real human.",
+    verificationCodeSent: 'Verification code sent!',
+    promptVerificationCode: 'Enter the 6 digit code we sent you.',
   },
   home: {
     upcomingEvent: 'Upcoming Event',

@@ -52,7 +52,7 @@ const ForgotPwd = ({navigation}: {navigation: any}) => {
         </View>
       </SafeAreaView>
       <ScrollView>
-        <View style={STYLES.promptContainer}>
+        <View style={STYLES.titleContainer}>
           <Text weight="l" center={true}>
             {strings.login.forgotPasswordDescription}
           </Text>

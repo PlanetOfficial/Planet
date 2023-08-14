@@ -119,9 +119,10 @@ const SignUpCreds = ({
             <TextInput
               style={STYLES.input}
               value={username}
+              autoCapitalize={'none'}
               autoCorrect={false}
               autoFocus={true}
-              onChangeText={text => setUsername(text)}
+              onChangeText={text => setUsername(text.toLowerCase())}
               placeholder={strings.signUp.username}
               placeholderTextColor={colors[theme].secondary}
             />

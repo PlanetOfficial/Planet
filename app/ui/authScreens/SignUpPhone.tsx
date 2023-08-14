@@ -4,11 +4,15 @@ import {
   SafeAreaView,
   TouchableOpacity,
   StatusBar,
-  StyleSheet,
   ActivityIndicator,
+  KeyboardAvoidingView,
+  Keyboard,
+  Image,
+  ScrollView,
+  Platform,
 } from 'react-native';
 import PhoneInput from 'react-native-phone-number-input';
-import {s} from 'react-native-size-matters';
+import LinearGradient from 'react-native-linear-gradient';
 
 import colors from '../../constants/colors';
 import strings from '../../constants/strings';
@@ -18,6 +22,7 @@ import Text from '../components/Text';
 
 import {sendCode} from '../../utils/api/authAPI';
 import {useLoadingState} from '../../utils/Misc';
+import icons from '../../constants/icons';
 
 const SignUpPhone = ({
   navigation,
@@ -60,65 +65,73 @@ const SignUpPhone = ({
   };
 
   return (
-    <View style={STYLES.container}>
-      <SafeAreaView>
-        <View style={STYLES.promptContainer}>
-          <Text size="l" center={true} color={colors[theme].neutral}>
-            {strings.signUp.signUpSuccess}
-          </Text>
-        </View>
-      </SafeAreaView>
-
-      <View style={STYLES.promptContainer}>
-        <Text size="l" weight="l" center={true} color={colors[theme].neutral}>
-          {strings.signUp.phonePrompt}
-        </Text>
-      </View>
-
-      <View style={styles.inputContainer}>
-        <PhoneInput
-          autoFocus={true}
-          textContainerStyle={STYLES.input}
-          value={phoneNumber}
-          onChangeFormattedText={setPhoneNumber}
-          defaultCode="US"
-        />
-      </View>
-      {error.length !== 0 ? (
-        <Text weight="l" center={true} color={colors[theme].red}>
-          {error}
-        </Text>
-      ) : null}
-      <TouchableOpacity
-        style={[
-          STYLES.buttonBig,
-          {
-            backgroundColor: phoneNumber
-              ? colors[theme].accent
-              : colors[theme].secondary,
-          },
-        ]}
-        disabled={!phoneNumber || loading}
-        onPress={() => withLoading(handleSendCode)}>
-        {loading ? (
-          <ActivityIndicator size="small" color={colors[theme].primary} />
-        ) : (
-          <Text weight="b" color={colors[theme].primary}>
-            {strings.signUp.sendCode}
-          </Text>
-        )}
-      </TouchableOpacity>
+    <View style={STYLES.container} onTouchStart={Keyboard.dismiss}>
+      <LinearGradient
+        colors={[colors[theme].accent, colors[theme].primary]}
+        style={STYLES.signUpContainer}
+        start={{x: 0, y: 0}}
+        end={{x: 0, y: 1}}
+        locations={[0, 0.2]}>
+        <KeyboardAvoidingView
+          {...(Platform.OS === 'ios' ? {behavior: 'padding'} : {})}
+          style={STYLES.signUpContainer}
+          onTouchStart={Keyboard.dismiss}>
+          <SafeAreaView>
+            <Image source={icons.logo} style={STYLES.logo} />
+          </SafeAreaView>
+          <ScrollView>
+            <View style={STYLES.titleContainer}>
+              <Text size="l" center={true}>
+                {strings.signUp.accountHasBeenCreated}
+              </Text>
+            </View>
+            <Text weight="l" center={true}>
+              {strings.signUp.promptPhoneNumber}
+            </Text>
+            <View style={STYLES.inputContainer}>
+              <PhoneInput
+                autoFocus={true}
+                textContainerStyle={STYLES.input}
+                value={phoneNumber}
+                onChangeFormattedText={setPhoneNumber}
+                defaultCode="US"
+              />
+            </View>
+            {error.length > 0 && (
+              <View>
+                <View style={STYLES.error}>
+                  <Text weight="l" size="s" color={colors[theme].red}>
+                    {error}
+                  </Text>
+                </View>
+              </View>
+            )}
+          </ScrollView>
+          <SafeAreaView>
+            <TouchableOpacity
+              style={[
+                STYLES.buttonBig,
+                {
+                  backgroundColor: phoneNumber
+                    ? colors[theme].accent
+                    : colors[theme].secondary,
+                },
+              ]}
+              disabled={!phoneNumber || loading}
+              onPress={() => withLoading(handleSendCode)}>
+              {loading ? (
+                <ActivityIndicator size="small" color={colors[theme].primary} />
+              ) : (
+                <Text weight="b" color={colors[theme].primary}>
+                  {strings.signUp.sendCode}
+                </Text>
+              )}
+            </TouchableOpacity>
+          </SafeAreaView>
+        </KeyboardAvoidingView>
+      </LinearGradient>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  inputContainer: {
-    alignSelf: 'center',
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: s(30),
-  },
-});
 
 export default SignUpPhone;
