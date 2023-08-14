@@ -4,6 +4,7 @@ import {
   launchImageLibrary,
 } from 'react-native-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import prompt from 'react-native-prompt-android';
 
 import numbers from '../../../constants/numbers';
 import strings from '../../../constants/strings';
@@ -14,7 +15,6 @@ import {
   removeImage,
   saveImage,
 } from '../../../utils/api/authAPI';
-import prompt from 'react-native-prompt-android';
 
 export const handleEditPfp = async (setPfpURL: (url: string) => void) => {
   const options: ImageLibraryOptions = {

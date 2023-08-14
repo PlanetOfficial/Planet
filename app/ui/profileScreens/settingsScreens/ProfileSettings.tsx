@@ -7,9 +7,13 @@ import {
   useColorScheme,
   StatusBar,
   Alert,
+  ScrollView,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import DatePicker from 'react-native-date-picker';
+
+import moment from 'moment';
 
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
@@ -18,16 +22,14 @@ import STYLING from '../../../constants/styles';
 
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
-import {ScrollView} from 'react-native';
 import UserIconXL from '../../components/UserIconXL';
+
 import {
   handleEditDisplayName,
   handleEditPfp,
   handleEditUsername,
   handleRemovePfp,
 } from './functions';
-import DatePicker from 'react-native-date-picker';
-import moment from 'moment';
 import {editBirthday} from '../../../utils/api/authAPI';
 
 const ProfileSettings = ({navigation}: {navigation: any}) => {
