@@ -81,11 +81,11 @@ const SignUpPhone = ({
           </SafeAreaView>
           <ScrollView>
             <View style={STYLES.titleContainer}>
-              <Text size="l" center={true}>
+              <Text size="l" center={true} color={colors[theme].neutral}>
                 {strings.signUp.accountHasBeenCreated}
               </Text>
             </View>
-            <Text weight="l" center={true}>
+            <Text weight="l" center={true} color={colors[theme].neutral}>
               {strings.signUp.promptPhoneNumber}
             </Text>
             <View style={STYLES.inputContainer}>

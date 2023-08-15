@@ -63,10 +63,12 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
           <Image source={icons.logo} style={styles.logo} />
         </SafeAreaView>
         <View style={styles.greeting}>
-          <Text>{strings.login.greeting}</Text>
+          <Text color={colors[theme].neutral}>{strings.login.greeting}</Text>
         </View>
         <View style={styles.description}>
-          <Text weight="l">{strings.login.description}</Text>
+          <Text weight="l" color={colors[theme].neutral}>
+            {strings.login.description}
+          </Text>
         </View>
         <TextInput
           style={styles.input}

@@ -138,6 +138,7 @@ const styling = (theme: 'light' | 'dark') =>
       flex: 1,
       width: '100%',
       alignItems: 'center',
+      backgroundColor: colors[theme].background,
     },
     page: {
       alignItems: 'center',
