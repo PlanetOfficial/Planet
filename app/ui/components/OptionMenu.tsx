@@ -62,7 +62,9 @@ const OptionMenu: React.FC<Props> = ({icon, iconColor, options}) => {
             }}
             onPress={() => {
               setVisible(false);
-              option.onPress();
+              setTimeout(() => {
+                option.onPress();
+              }, 150);
             }}
             pressColor="transparent">
             <Text

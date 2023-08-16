@@ -75,31 +75,29 @@ const DestinationsList: React.FC<Props> = ({
                   {
                     name: strings.main.rename,
                     onPress: () => {
-                      setTimeout(() => {
-                        prompt(
-                          strings.main.rename,
-                          strings.event.renamePrompt,
-                          [
-                            {text: 'Cancel', style: 'cancel'},
-                            {
-                              text: 'Save',
-                              onPress: name => {
-                                const _destinations = [...destinations];
-                                destinationNames.set(
-                                  destination.id,
-                                  name as string,
-                                );
-                                setDestinations(_destinations);
-                              },
-                            },
-                          ],
+                      prompt(
+                        strings.main.rename,
+                        strings.event.renamePrompt,
+                        [
+                          {text: 'Cancel', style: 'cancel'},
                           {
-                            type: 'plain-text',
-                            cancelable: false,
-                            defaultValue: destinationNames.get(destination.id),
+                            text: 'Save',
+                            onPress: name => {
+                              const _destinations = [...destinations];
+                              destinationNames.set(
+                                destination.id,
+                                name as string,
+                              );
+                              setDestinations(_destinations);
+                            },
                           },
-                        );
-                      }, 200);
+                        ],
+                        {
+                          type: 'plain-text',
+                          cancelable: false,
+                          defaultValue: destinationNames.get(destination.id),
+                        },
+                      );
                     },
                     color: colors[theme].neutral,
                   },
