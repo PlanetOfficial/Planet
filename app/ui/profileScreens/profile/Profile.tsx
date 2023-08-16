@@ -58,6 +58,7 @@ const Profile = ({navigation}: {navigation: any}) => {
         }}
         isSelf={true}
         isPage={false}
+        setPfpURL={setPfpURL}
       />
       <ProfileBody navigation={navigation} location={location} />
     </View>
