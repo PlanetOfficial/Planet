@@ -1,8 +1,6 @@
 import {Alert} from 'react-native';
-import {
-  ImageLibraryOptions,
-  launchImageLibrary,
-} from 'react-native-image-picker';
+import ImagePicker from 'react-native-image-crop-picker';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import prompt from 'react-native-prompt-android';
 
@@ -17,37 +15,30 @@ import {
 } from '../../../utils/api/authAPI';
 
 export const handleEditPfp = async (setPfpURL: (url: string) => void) => {
-  const options: ImageLibraryOptions = {
+  ImagePicker.openPicker({
+    width: 300,
+    height: 300,
+    cropping: true,
+    cropperCircleOverlay: true,
     mediaType: 'photo',
     includeBase64: true,
-  };
+  }).then(async image => {
+    if (image.data) {
+      if (image.size && image.size < numbers.maxPfpSize) {
+        const image_url = await saveImage(image.data);
 
-  const image = await launchImageLibrary(options);
-  if (
-    image.assets &&
-    image.assets.length > 0 &&
-    image.assets[0].base64 &&
-    image.assets[0].type
-  ) {
-    if (
-      image.assets[0].fileSize &&
-      image.assets[0].fileSize < numbers.maxPfpSize
-    ) {
-      const image_url = await saveImage(image.assets[0].base64);
-
-      if (image_url) {
-        setPfpURL(image_url);
+        if (image_url) {
+          setPfpURL(image_url);
+        } else {
+          Alert.alert(strings.error.error, strings.profile.pfpUploadError);
+        }
       } else {
-        Alert.alert('Error', strings.profile.pfpUploadError);
+        Alert.alert(strings.error.error, strings.profile.pfpSizeError);
       }
     } else {
-      Alert.alert('Error', strings.profile.pfpSizeError);
+      Alert.alert(strings.error.error, strings.profile.pfpSelectError);
     }
-  } else {
-    if (!image.didCancel) {
-      Alert.alert('Error', strings.profile.pfpSelectError);
-    }
-  }
+  });
 };
 
 export const handleRemovePfp = async (setPfpURL: (url: string) => void) => {
