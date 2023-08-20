@@ -58,13 +58,8 @@ const FriendGroupComponent: React.FC<Props> = ({
               LayoutAnimation.Presets.easeInEaseOut,
             );
 
-            if (fgSelected === item.id) {
-              setFgSelected(0);
-              resetFGEditing(setFgEditing, setTempName, setTempMembers);
-            } else {
-              setFgSelected(item.id);
-              resetFGEditing(setFgEditing, setTempName, setTempMembers);
-            }
+            setFgSelected(fgSelected === item.id ? 0 : item.id);
+            resetFGEditing(setFgEditing, setTempName, setTempMembers);
           }}>
           <FGIcon users={item.members} selected={fgSelected === item.id} />
           <Text size="s" weight={fgSelected === item.id ? 'r' : 'l'}>
