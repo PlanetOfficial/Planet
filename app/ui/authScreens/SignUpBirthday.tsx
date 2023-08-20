@@ -55,7 +55,7 @@ const SignUpBirthday = ({
               {strings.signUp.hi + ', ' + route.params.displayName + '!'}
             </Text>
           </View>
-          <Text weight="l" center={true}>
+          <Text size="s" weight="l" center={true}>
             {strings.signUp.promptBirthday}
           </Text>
           <TouchableOpacity
