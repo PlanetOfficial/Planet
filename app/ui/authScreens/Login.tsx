@@ -123,7 +123,7 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
           style={styles.forgotPassword}
           onPress={() => navigation.navigate('ForgotPassword')}>
           <Text size="s" weight="l" color={colors[theme].neutral}>
-            {strings.login.forgotPassword + '?'}
+            {strings.login.forgotPasswordQuestion}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity

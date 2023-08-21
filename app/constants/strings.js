@@ -19,6 +19,7 @@ const strings = {
     passwordResetSuccess: 'Password was successfully reset!',
     noAccount: "Don't have an account?",
     forgotPassword: 'Forgot Password',
+    forgotPasswordQuestion: 'Forgot your password?',
     forgotPasswordDescription: 'Enter your username:',
   },
   main: {
