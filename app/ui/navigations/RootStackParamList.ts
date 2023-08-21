@@ -28,12 +28,10 @@ type RootStackParamList = {
   };
   Friends: undefined;
   CreateFG: undefined;
+  Requests: undefined;
   AddFriend: {
     members: UserInfo[];
     event_id: number | undefined;
-  };
-  Mutuals: {
-    mutuals: UserInfo[];
   };
   User: {
     user: UserInfo;

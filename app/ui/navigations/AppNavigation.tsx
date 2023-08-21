@@ -17,15 +17,17 @@ import ForgotPassword from '../authScreens/ForgotPwd';
 import ForgotPwdVerify from '../authScreens/ForgotPwdVerify';
 import ResetPwd from '../authScreens/ResetPwd';
 
+import Friends from '../friendsScreens/friends/Friends';
+import AddFriend from '../friendsScreens/addFriend/AddFriend';
+import CreateFG from '../friendsScreens/createFG/CreateFG';
+import Requests from '../friendsScreens/requests/Requests';
+import User from '../friendsScreens/user/User';
+
 import Create from '../createScreens/create/Create';
 import SearchCategory from '../searchScreens/searchCategory/SearchCategory';
 import SearchMap from '../searchScreens/searchMap/SearchMap';
 import Poi from '../otherScreens/poi/Poi';
-import Friends from '../friendsScreens/friends/Friends';
-import AddFriend from '../friendsScreens/addFriend/AddFriend';
-import User from '../friendsScreens/user/User';
 import EventPage from '../libraryScreens/event/Event';
-import Mutuals from '../friendsScreens/mutuals/Mutuals';
 import ViewHistory from '../homeScreens/ViewHistory/ViewHistory';
 import EventSettings from '../libraryScreens/eventSettings/EventSettings';
 import Roulette from '../libraryScreens/roulette/Roulette';
@@ -40,7 +42,6 @@ import PrivacySettings from '../profileScreens/settingsScreens/PrivacySettings';
 import ProfileSettings from '../profileScreens/settingsScreens/ProfileSettings';
 import BlockedUsers from '../profileScreens/settingsScreens/BlockedUsers/BlockedUsers';
 import Search from '../searchScreens/search/Search';
-import CreateFG from '../friendsScreens/createFG/CreateFG';
 
 import {BookmarkStateProvider} from '../../context/BookmarkContext';
 import {FriendsStateProvider} from '../../context/FriendsContext';
@@ -144,13 +145,7 @@ const mainStackScreens = () => (
         presentation: 'modal',
       }}
     />
-    <Stack.Screen
-      name="Mutuals"
-      component={Mutuals}
-      options={{
-        presentation: 'modal',
-      }}
-    />
+    <Stack.Screen name="Requests" component={Requests} />
     <Stack.Screen name="User" component={User} />
     <Stack.Screen name="ViewHistory" component={ViewHistory} />
     <Stack.Screen name="Settings" component={Settings} />
