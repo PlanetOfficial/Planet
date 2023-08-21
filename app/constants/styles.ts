@@ -85,13 +85,18 @@ const styling = (theme: 'light' | 'dark') =>
       transform: [{rotate: '180deg'}],
     },
     promptContainer: {
-      margin: s(20),
+      margin: s(40),
       paddingHorizontal: s(20),
     },
     prompt: {
       width: s(100),
     },
+    error: {
+      position: 'absolute',
+      alignSelf: 'center',
+    },
     inputContainer: {
+      justifyContent: 'center',
       flexDirection: 'row',
       alignItems: 'center',
       marginVertical: s(30),
@@ -106,13 +111,15 @@ const styling = (theme: 'light' | 'dark') =>
       paddingVertical: s(5),
       fontFamily: 'Lato',
       color: colors[theme].neutral,
+      fontSize: s(15),
     },
     buttonBig: {
       alignSelf: 'center',
       alignItems: 'center',
       justifyContent: 'center',
       marginTop: s(30),
-      width: s(150),
+      marginBottom: s(20),
+      width: s(250),
       height: s(50),
       borderRadius: s(25),
     },
