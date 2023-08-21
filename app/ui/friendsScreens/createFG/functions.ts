@@ -41,7 +41,7 @@ const loadFriends = async (
 
 export const createFG = async (
   name: string,
-  selectedId: number[],
+  selectedIds: number[],
   setFriendGroups: (friendGroups: FriendGroup[]) => void,
   navigation: any,
 ) => {
@@ -49,7 +49,7 @@ export const createFG = async (
     Alert.alert(strings.error.error, strings.error.fgNameEmpty);
     return;
   }
-  const response = await postFG(selectedId, name);
+  const response = await postFG(selectedIds, name);
 
   if (response) {
     loadFriends(setFriendGroups);
