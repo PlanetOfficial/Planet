@@ -22,6 +22,7 @@ const icons = {
   hearted: require('../assets/icons/hearted.png'),
   history: require('../assets/icons/history.png'),
   like: require('../assets/icons/like.png'),
+  logo: require('../assets/icons/logo.png'), // v1.1
   map: require('../assets/icons/map.png'),
   minus: require('../assets/icons/minus.png'),
   more: require('../assets/icons/more.png'),

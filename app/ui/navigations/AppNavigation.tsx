@@ -5,6 +5,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 
 import NavBar from './NavBar';
+import Welcome from '../authScreens/Welcome';
 import LoginScreen from '../authScreens/LogIn';
 import SignUpName from '../authScreens/SignUpName';
 import SignUpCreds from '../authScreens/SignUpCreds';
@@ -82,7 +83,7 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedInStack}) => {
                 </Stack.Navigator>
               ) : (
                 <Stack.Navigator
-                  initialRouteName="Login"
+                  initialRouteName="Welcome"
                   screenOptions={{
                     headerShown: false,
                   }}>
@@ -100,6 +101,7 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedInStack}) => {
 
 const authStackScreens = () => (
   <>
+    <Stack.Screen name="Welcome" component={Welcome} />
     <Stack.Screen name="Login" component={LoginScreen} />
     <Stack.Screen name="SignUpName" component={SignUpName} />
     <Stack.Screen name="SignUpCreds" component={SignUpCreds} />

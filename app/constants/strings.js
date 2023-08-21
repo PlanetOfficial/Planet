@@ -1,6 +1,25 @@
 import numbers from './numbers';
 
 const strings = {
+  welcome: {
+    welcome: 'Welcome',
+    description: 'Make & decide your plans with anyone you choose.',
+    appName: 'Planet',
+    tagLine: 'Plan it, Together!',
+  },
+  login: {
+    login: 'Log In',
+    greeting: 'Welcome Back!',
+    description: 'Log in to your account',
+    forgotPassword: 'Forgot Password?',
+    username: 'Username',
+    password: 'Password',
+    missingInfo: 'Missing username or password',
+    newPassword: 'New Password',
+    resetPassword: 'Reset Password',
+    passwordResetSuccess: 'Password was successfully reset!',
+    noAccount: "Don't have an account?",
+  },
   main: {
     appName: 'planet',
     url: 'https://planetapp.us',
@@ -30,17 +49,6 @@ const strings = {
     suggestions: 'Suggestions',
     friends: 'Friends',
     requests: 'Requests',
-  },
-  login: {
-    login: 'Login',
-    forgotPassword: 'Forgot Password?',
-    signUp: 'Sign up',
-    username: 'Username',
-    password: 'Password',
-    missingInfo: 'Missing username or password',
-    newPassword: 'New Password',
-    resetPassword: 'Reset Password',
-    passwordResetSuccess: 'Password was successfully reset!',
   },
   signUp: {
     namePrompt: 'First, please tell us your name:',
