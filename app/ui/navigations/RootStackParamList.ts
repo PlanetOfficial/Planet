@@ -98,7 +98,6 @@ type RootStackParamList = {
   };
   ResetPassword: {
     authToken: string;
-    isLoggedIn: boolean;
   };
   ForgotPassword: undefined;
   BlockedUsers: undefined;

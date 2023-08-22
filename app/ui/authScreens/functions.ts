@@ -102,7 +102,7 @@ export const handleVerifyCode = async (
       routes: [
         {
           name: 'ResetPassword',
-          params: {authToken: response.authToken, isLoggedIn: false},
+          params: {authToken: response.authToken},
         },
       ],
     });

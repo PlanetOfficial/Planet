@@ -78,7 +78,7 @@ const AccountSettings = ({navigation}: {navigation: any}) => {
   const handleResetPassword = async () => {
     const authToken = await EncryptedStorage.getItem('auth_token');
 
-    navigation.navigate('ResetPassword', {authToken, isLoggedIn: true});
+    navigation.navigate('ResetPassword', {authToken});
   };
 
   const handleRemoveAccount = async () => {
