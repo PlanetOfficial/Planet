@@ -162,9 +162,9 @@ const Search = ({
           }}
           ListEmptyComponent={
             <View style={STYLES.center}>
-              <Text>{strings.profile.noBookmarksFound}</Text>
+              <Text weight="l">{strings.profile.noBookmarksFound}</Text>
               <Text> </Text>
-              <Text size="s">
+              <Text size="s" weight="l">
                 {strings.profile.noBookmarksFoundDescription}
               </Text>
             </View>

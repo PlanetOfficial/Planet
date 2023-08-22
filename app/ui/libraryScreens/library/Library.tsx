@@ -159,9 +159,11 @@ const Library = ({navigation}: {navigation: any}) => {
           }
           ListEmptyComponent={
             <View style={STYLES.center}>
-              <Text>{strings.event.noEventsFound}</Text>
+              <Text weight="l">{strings.event.noEventsFound}</Text>
               <Text> </Text>
-              <Text size="s">{strings.event.noEventsFoundDescription}</Text>
+              <Text size="s" weight="l">
+                {strings.event.noEventsFoundDescription}
+              </Text>
             </View>
           }
           keyExtractor={(item: Event) => item.id.toString()}

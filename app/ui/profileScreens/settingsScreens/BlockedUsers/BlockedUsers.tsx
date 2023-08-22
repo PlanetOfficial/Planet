@@ -70,7 +70,7 @@ const BlockedUsers = ({navigation}: {navigation: any}) => {
         )}
         ListEmptyComponent={
           <View style={STYLES.center}>
-            <Text>{strings.settings.noBlockedUsersFound}</Text>
+            <Text weight="l">{strings.settings.noBlockedUsersFound}</Text>
           </View>
         }
       />

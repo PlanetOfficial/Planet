@@ -11,6 +11,7 @@ export const handleFGSelect = (
   setInvitees: (invitees: UserInfo[]) => void,
   setFgSelected: (fgSelected: number) => void,
 ) => {
+  LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
   if (
     !item.members.every(
       member => invitees?.find(user => user.id === member.id) !== undefined,

@@ -51,6 +51,8 @@ export const handleAcceptRequest = async (
   setFriends: (friends: UserInfo[]) => void,
   requests: UserInfo[],
   setRequests: (requests: UserInfo[]) => void,
+  suggestions: UserInfo[],
+  setSuggestions: (suggestions: UserInfo[]) => void,
   user: UserInfo,
 ) => {
   const response = await acceptFriendRequest(userId);
@@ -63,6 +65,11 @@ export const handleAcceptRequest = async (
       (request: UserInfo) => request.id !== userId,
     );
     setRequests(requestsUpdated);
+
+    const suggestionsUpdated = suggestions.filter(
+      (suggestion: UserInfo) => suggestion.id !== userId,
+    );
+    setSuggestions(suggestionsUpdated);
   } else {
     Alert.alert(strings.error.error, strings.error.acceptFriendRequest);
   }

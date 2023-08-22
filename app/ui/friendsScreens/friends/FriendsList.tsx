@@ -189,7 +189,7 @@ const FriendsList = ({navigation}: {navigation: any}) => {
         : null}
       {friendsShown && friends.length === 0 ? (
         <View style={STYLES.center}>
-          <Text>{strings.friends.noFriendsFound}</Text>
+          <Text weight="l">{strings.friends.noFriendsFound}</Text>
         </View>
       ) : null}
     </ScrollView>

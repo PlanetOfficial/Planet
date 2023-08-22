@@ -8,7 +8,6 @@ export interface UserInfo {
 }
 
 export interface UserDetail {
-  mutuals: UserInfo[];
   shared_events: Event[];
 }
 

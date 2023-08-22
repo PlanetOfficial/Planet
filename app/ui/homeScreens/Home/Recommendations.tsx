@@ -116,7 +116,7 @@ const Recommendations: React.FC<Props> = ({
         ))
       ) : (
         <View style={STYLES.center}>
-          <Text>{strings.home.noRecommendations}</Text>
+          <Text weight="l">{strings.home.noRecommendations}</Text>
         </View>
       )}
     </>

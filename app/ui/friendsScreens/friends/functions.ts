@@ -12,18 +12,20 @@ export const search = async (
   setSearchResults: (results: UserInfo[]) => void,
   selfUserId: number,
   usersBlockingMe: UserInfo[],
+  friends?: UserInfo[],
 ) => {
   setSearchText(text);
   if (text.length > 0) {
     const result = await searchUsers(text);
 
     if (result) {
-      // exclude current user (and users you are blocked by) from search results
-      const filtered = result.filter(
-        user =>
-          user.id !== selfUserId &&
-          !usersBlockingMe.some(b => b.id === user.id),
-      ) as UserInfo[];
+      const filtered = friends
+        ? result.filter(user => friends.some(friend => friend.id === user.id))
+        : (result.filter(
+            user =>
+              user.id !== selfUserId &&
+              !usersBlockingMe?.some(b => b.id === user.id),
+          ) as UserInfo[]);
       setSearchResults(filtered);
     } else {
       Alert.alert(strings.error.error, strings.error.searchError);

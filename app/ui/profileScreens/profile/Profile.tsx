@@ -1,15 +1,11 @@
 import React, {useEffect, useState, useCallback} from 'react';
-import {View, SafeAreaView, useColorScheme, StatusBar} from 'react-native';
+import {View, useColorScheme, StatusBar} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import colors from '../../../constants/colors';
-import icons from '../../../constants/icons';
-import strings from '../../../constants/strings';
 import STYLING from '../../../constants/styles';
 
-import Text from '../../components/Text';
-import Icon from '../../components/Icon';
-
+import ProfileHeader from '../../friendsScreens/user/ProfileHeader';
 import ProfileBody from './ProfileBody';
 
 import {fetchUserLocation} from '../../../utils/Misc';
@@ -48,25 +44,21 @@ const Profile = ({navigation}: {navigation: any}) => {
 
   return (
     <View style={STYLES.container}>
-      <SafeAreaView>
-        <View style={STYLES.header}>
-          <Text size="l">{strings.profile.yourProfile}</Text>
-          <Icon
-            icon={icons.settings}
-            button={true}
-            padding={-2}
-            onPress={() => navigation.navigate('Settings')}
-          />
-        </View>
-      </SafeAreaView>
-      <ProfileBody
+      <ProfileHeader
         navigation={navigation}
-        firstName={firstName}
-        lastName={lastName}
-        username={username}
-        pfpURL={pfpURL}
-        location={location}
+        user={{
+          id: 0,
+          first_name: firstName,
+          last_name: lastName,
+          username: username,
+          icon: {
+            url: pfpURL,
+          },
+        }}
+        isSelf={true}
+        isOnTabScreen={true}
       />
+      <ProfileBody navigation={navigation} location={location} />
     </View>
   );
 };
