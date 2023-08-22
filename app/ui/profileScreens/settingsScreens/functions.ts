@@ -40,8 +40,9 @@ export const handleEditPfp = async (setPfpURL: (url: string) => void) => {
         Alert.alert(strings.error.error, strings.profile.pfpSelectError);
       }
     })
-    .catch(e => {
-      console.warn(e);
+    .catch(() => {
+      // is triggered when user cancels image selection
+      // console.warn(e);
     });
 };
 
