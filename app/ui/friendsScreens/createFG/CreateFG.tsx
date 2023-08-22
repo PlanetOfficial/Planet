@@ -75,7 +75,9 @@ const CreateFG = ({navigation}: {navigation: any}) => {
                   setSearchText('');
 
                   if (selectedUserIds.includes(item.id)) {
-                    setSelectedUserIds(selectedUserIds.filter(id => id !== item.id));
+                    setSelectedUserIds(
+                      selectedUserIds.filter(id => id !== item.id),
+                    );
                   } else {
                     setSelectedUserIds([...selectedUserIds, item.id]);
                   }
@@ -113,7 +115,9 @@ const CreateFG = ({navigation}: {navigation: any}) => {
             <TouchableOpacityGestureHandler
               onPress={() => {
                 if (selectedUserIds.includes(item.id)) {
-                  setSelectedUserIds(selectedUserIds.filter(id => id !== item.id));
+                  setSelectedUserIds(
+                    selectedUserIds.filter(id => id !== item.id),
+                  );
                 } else {
                   setSelectedUserIds([...selectedUserIds, item.id]);
                 }

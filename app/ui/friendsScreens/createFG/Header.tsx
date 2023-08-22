@@ -18,7 +18,10 @@ interface Props {
   selectedUserIds: number[];
 }
 
-const Header: React.FC<Props> = ({navigation, selectedUserIds: selectedUserIds}) => {
+const Header: React.FC<Props> = ({
+  navigation,
+  selectedUserIds: selectedUserIds,
+}) => {
   const theme = useColorScheme() || 'light';
   const STYLES = STYLING(theme);
 
@@ -70,7 +73,12 @@ const Header: React.FC<Props> = ({navigation, selectedUserIds: selectedUserIds})
                 {
                   text: 'Save',
                   onPress: name => {
-                    createFG(name, selectedUserIds, setFriendGroups, navigation);
+                    createFG(
+                      name,
+                      selectedUserIds,
+                      setFriendGroups,
+                      navigation,
+                    );
                   },
                 },
               ],
