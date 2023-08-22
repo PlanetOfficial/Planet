@@ -45,7 +45,7 @@ import PrivacySettings from '../profileScreens/settingsScreens/PrivacySettings';
 import ProfileSettings from '../profileScreens/settingsScreens/ProfileSettings';
 import Settings from '../profileScreens/settingsScreens/Settings';
 
-import Search from '../searchScreens/search/Search';
+import Explore from '../searchScreens/explore/Explore';
 import SearchCategory from '../searchScreens/searchCategory/SearchCategory';
 import SearchMap from '../searchScreens/searchMap/SearchMap';
 
@@ -134,8 +134,8 @@ const mainStackScreens = () => (
       }}
     />
     <Stack.Screen
-      name="ModeSearch"
-      component={Search}
+      name="ModeExplore"
+      component={Explore}
       options={{
         cardStyleInterpolator: verticalAnimation,
       }}

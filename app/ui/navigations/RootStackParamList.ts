@@ -25,7 +25,7 @@ type RootStackParamList = {
     myLocation: Coordinate;
     category: Category;
   };
-  ModeSearch: {
+  ModeExplore: {
     mode: 'create' | 'suggest' | 'add' | 'none';
   };
 

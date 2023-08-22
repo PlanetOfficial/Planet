@@ -20,7 +20,7 @@ import colors from '../../constants/colors';
 import strings from '../../constants/strings';
 
 import Home from '../homeScreens/Home/Home';
-import Search from '../searchScreens/search/Search';
+import Search from '../searchScreens/explore/Explore';
 import Library from '../libraryScreens/library/Library';
 import Profile from '../profileScreens/profile/Profile';
 

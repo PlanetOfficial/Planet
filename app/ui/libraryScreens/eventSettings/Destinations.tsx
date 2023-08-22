@@ -150,7 +150,7 @@ const Destinations: React.FC<Props> = ({
       <TouchableOpacity
         style={styles.addContainer}
         onPress={() =>
-          navigation.navigate('ModeSearch', {
+          navigation.navigate('ModeExplore', {
             mode: 'add',
           })
         }>

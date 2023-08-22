@@ -65,7 +65,7 @@ const Suggestions: React.FC<Props> = ({
           disabled={displayingSuggestion}
           onPress={() => {
             setInsertionDestination(destination);
-            navigation.navigate('ModeSearch', {
+            navigation.navigate('ModeExplore', {
               mode: 'suggest',
             });
           }}>
@@ -79,7 +79,7 @@ const Suggestions: React.FC<Props> = ({
       disabled={displayingSuggestion}
       onPress={() => {
         setInsertionDestination(destination);
-        navigation.navigate('ModeSearch', {
+        navigation.navigate('ModeExplore', {
           mode: 'suggest',
         });
       }}>
