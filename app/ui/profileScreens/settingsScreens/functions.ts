@@ -92,7 +92,10 @@ export const handleEditDisplayName = async (
       {
         text: strings.main.save,
         onPress: async displayName => {
-          if (displayName.length < 3 || displayName.length > 15) {
+          if (
+            displayName.length < numbers.minDisplayNameLength ||
+            displayName.length > numbers.maxDisplayNameLength
+          ) {
             Alert.alert(strings.error.error, strings.error.displayNameLength);
             return;
           }

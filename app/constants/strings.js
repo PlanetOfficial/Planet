@@ -42,6 +42,7 @@ const strings = {
     milesAbbrev: 'mi',
     edit: 'Edit',
     success: 'Success',
+    continue: 'Continue',
   },
   title: {
     home: 'Home',
@@ -82,6 +83,19 @@ const strings = {
       'Lastly, help us improve your experience by filling out the following:',
     enjoy: 'Enjoy!',
     iAgreeTo: 'I Agree to the',
+    letsGetStarted: "Let's Get Started!",
+    promptName: "What's your name?",
+    displayName: 'Display Name',
+    hi: 'Hi',
+    promptBirthday:
+      'When is your birthday? This help us\n recommend just the right places for you.',
+    setUpPrompt: "Great, let's set up your account!",
+    setUpDescription: 'Enter a unique username\n and a secure password.',
+    accountHasBeenCreated: 'Your account has been created!',
+    promptPhoneNumber:
+      "Enter your phone number so we\n know that you're a real human.",
+    verificationCodeSent: 'Verification code sent!',
+    promptVerificationCode: 'Enter the 6 digit code we sent you.',
   },
   home: {
     upcomingEvent: 'Upcoming Event',

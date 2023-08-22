@@ -9,10 +9,10 @@ import NavBar from './NavBar';
 import Welcome from '../authScreens/Welcome';
 import LoginScreen from '../authScreens/Login';
 import SignUpName from '../authScreens/SignUpName';
+import SignUpBirthday from '../authScreens/SignUpBirthday';
 import SignUpCreds from '../authScreens/SignUpCreds';
 import SignUpPhone from '../authScreens/SignUpPhone';
 import SignUpVerify from '../authScreens/SignUpVerify';
-import SignUpInfo from '../authScreens/SignUpInfo';
 import ForgotPassword from '../authScreens/ForgotPwd';
 import ForgotPwdVerify from '../authScreens/ForgotPwdVerify';
 import ResetPwd from '../authScreens/ResetPwd';
@@ -110,10 +110,10 @@ const authStackScreens = () => (
     <Stack.Screen name="Welcome" component={Welcome} />
     <Stack.Screen name="Login" component={LoginScreen} />
     <Stack.Screen name="SignUpName" component={SignUpName} />
+    <Stack.Screen name="SignUpBirthday" component={SignUpBirthday} />
     <Stack.Screen name="SignUpCreds" component={SignUpCreds} />
     <Stack.Screen name="SignUpPhone" component={SignUpPhone} />
     <Stack.Screen name="SignUpVerify" component={SignUpVerify} />
-    <Stack.Screen name="SignUpInfo" component={SignUpInfo} />
     <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
     <Stack.Screen name="ForgotPasswordVerify" component={ForgotPwdVerify} />
     <Stack.Screen name="ResetPassword" component={ResetPwd} />

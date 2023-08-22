@@ -77,17 +77,17 @@ type RootStackParamList = {
   Notifications: undefined;
   Login: undefined;
   SignUpName: undefined;
+  SignUpBirthday: {
+    displayName: string;
+  };
   SignUpCreds: {
-    firstName: string;
-    lastName: string;
+    displayName: string;
+    birthday: string;
   };
   SignUpPhone: {
     authToken: string;
   };
   VerifyPhone: {
-    authToken: string;
-  };
-  SignUpInfo: {
     authToken: string;
   };
   SignUpVerify: {
