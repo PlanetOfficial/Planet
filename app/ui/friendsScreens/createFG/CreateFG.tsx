@@ -34,7 +34,7 @@ const CreateFG = ({navigation}: {navigation: any}) => {
 
   const {friends} = useFriendsContext();
 
-  const [selectedId, setSelectedId] = useState<number[]>([]);
+  const [selectedUserIds, setSelectedUserIds] = useState<number[]>([]);
 
   const [searchText, setSearchText] = useState<string>('');
   const [searchResults, setSearchResults] = useState<UserInfo[]>([]);
@@ -43,7 +43,7 @@ const CreateFG = ({navigation}: {navigation: any}) => {
 
   return (
     <View style={STYLES.container}>
-      <Header navigation={navigation} selectedId={selectedId} />
+      <Header navigation={navigation} selectedUserIds={selectedUserIds} />
       <SearchBar
         searchText={searchText}
         setSearchText={setSearchText}
@@ -75,17 +75,19 @@ const CreateFG = ({navigation}: {navigation: any}) => {
                 onPress={() => {
                   setSearchText('');
 
-                  if (selectedId.includes(item.id)) {
-                    setSelectedId(selectedId.filter(id => id !== item.id));
+                  if (selectedUserIds.includes(item.id)) {
+                    setSelectedUserIds(
+                      selectedUserIds.filter(id => id !== item.id),
+                    );
                   } else {
-                    setSelectedId([...selectedId, item.id]);
+                    setSelectedUserIds([...selectedUserIds, item.id]);
                   }
                 }}>
                 <UserRow user={item}>
                   <Icon
                     size="m"
                     icon={
-                      selectedId.includes(item.id)
+                      selectedUserIds.includes(item.id)
                         ? icons.selected
                         : icons.unselected
                     }
@@ -113,17 +115,19 @@ const CreateFG = ({navigation}: {navigation: any}) => {
           renderItem={({item}: {item: UserInfo}) => (
             <TouchableOpacityGestureHandler
               onPress={() => {
-                if (selectedId.includes(item.id)) {
-                  setSelectedId(selectedId.filter(id => id !== item.id));
+                if (selectedUserIds.includes(item.id)) {
+                  setSelectedUserIds(
+                    selectedUserIds.filter(id => id !== item.id),
+                  );
                 } else {
-                  setSelectedId([...selectedId, item.id]);
+                  setSelectedUserIds([...selectedUserIds, item.id]);
                 }
               }}>
               <UserRow user={item}>
                 <Icon
                   size="m"
                   icon={
-                    selectedId.includes(item.id)
+                    selectedUserIds.includes(item.id)
                       ? icons.selected
                       : icons.unselected
                   }

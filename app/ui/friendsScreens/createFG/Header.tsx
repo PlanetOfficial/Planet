@@ -16,10 +16,13 @@ import {createFG} from './functions';
 
 interface Props {
   navigation: any;
-  selectedId: number[];
+  selectedUserIds: number[];
 }
 
-const Header: React.FC<Props> = ({navigation, selectedId}) => {
+const Header: React.FC<Props> = ({
+  navigation,
+  selectedUserIds: selectedUserIds,
+}) => {
   const theme = useColorScheme() || 'light';
   const STYLES = STYLING(theme);
 
@@ -31,7 +34,7 @@ const Header: React.FC<Props> = ({navigation, selectedId}) => {
         <Icon
           icon={icons.close}
           onPress={() => {
-            if (selectedId.length > 0) {
+            if (selectedUserIds.length > 0) {
               Alert.alert(
                 strings.main.warning,
                 strings.friends.fgCreateBackConfirmation,
@@ -57,11 +60,11 @@ const Header: React.FC<Props> = ({navigation, selectedId}) => {
           icon={icons.check}
           size="m"
           color={
-            selectedId.length > 0
+            selectedUserIds.length > 0
               ? colors[theme].accent
               : colors[theme].secondary
           }
-          disabled={selectedId.length === 0}
+          disabled={selectedUserIds.length === 0}
           onPress={() => {
             prompt(
               strings.friends.friendGroupName,
@@ -71,7 +74,12 @@ const Header: React.FC<Props> = ({navigation, selectedId}) => {
                 {
                   text: 'Save',
                   onPress: name => {
-                    createFG(name, selectedId, setFriendGroups, navigation);
+                    createFG(
+                      name,
+                      selectedUserIds,
+                      setFriendGroups,
+                      navigation,
+                    );
                   },
                 },
               ],

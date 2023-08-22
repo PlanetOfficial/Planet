@@ -15,6 +15,7 @@ import LinearGradient from 'react-native-linear-gradient';
 
 import colors from '../../constants/colors';
 import icons from '../../constants/icons';
+import numbers from '../../constants/numbers';
 import strings from '../../constants/strings';
 import STYLING from '../../constants/styles';
 
@@ -27,7 +28,9 @@ const SignUpName = ({navigation}: {navigation: any}) => {
 
   const [displayName, setDisplayName] = useState<string>('');
 
-  const disabled = displayName.length < 3 || displayName.length > 15;
+  const disabled =
+    displayName.length < numbers.minDisplayNameLength ||
+    displayName.length > numbers.maxDisplayNameLength;
 
   return (
     <View style={STYLES.container} onTouchStart={Keyboard.dismiss}>

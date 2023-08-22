@@ -31,7 +31,7 @@ interface Props {
   navigation: any;
   user: UserInfo;
   isSelf: boolean;
-  isPage: boolean;
+  isOnTabScreen: boolean;
   setPfpURL?: (url: string) => void;
 }
 
@@ -39,7 +39,7 @@ const ProfileHeader: React.FC<Props> = ({
   navigation,
   user,
   isSelf,
-  isPage,
+  isOnTabScreen = false,
   setPfpURL,
 }) => {
   const theme = useColorScheme() || 'light';
@@ -133,7 +133,7 @@ const ProfileHeader: React.FC<Props> = ({
       </View>
       <SafeAreaView>
         <View style={STYLES.header}>
-          {isPage ? (
+          {!isOnTabScreen ? (
             <Icon
               size="m"
               icon={icons.back}

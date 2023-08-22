@@ -26,7 +26,7 @@ import ProfileBody from '../../profileScreens/profile/ProfileBody';
 
 import {useFriendsContext} from '../../../context/FriendsContext';
 
-import Profile from './ProfileHeader';
+import ProfileHeader from './ProfileHeader';
 import ProfileButtons from './ProfileButtons';
 
 const User = ({
@@ -79,17 +79,20 @@ const User = ({
     return unsubscribe;
   }, [navigation, withLoading, initializeData]);
 
+  const isSelf = route.params.user.id === selfUserId;
+  const isFriend = friends.some(friend => friend.id === route.params.user.id);
+
   return (
     <View style={STYLES.container}>
-      <Profile
+      <ProfileHeader
         navigation={navigation}
         user={route.params.user}
         isSelf={route.params.user.id === selfUserId}
-        isPage={true}
+        isOnTabScreen={false}
       />
-      {route.params.user.id === selfUserId ? (
+      {isSelf ? (
         <ProfileBody navigation={navigation} location={location} />
-      ) : friends.some(friend => friend.id === route.params.user.id) ? (
+      ) : isFriend ? (
         <>
           <SegmentedControlTab
             tabsContainerStyle={segControlTabStyles.container}
