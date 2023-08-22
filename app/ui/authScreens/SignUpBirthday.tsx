@@ -11,6 +11,7 @@ import LinearGradient from 'react-native-linear-gradient';
 
 import colors from '../../constants/colors';
 import icons from '../../constants/icons';
+import numbers from '../../constants/numbers';
 import strings from '../../constants/strings';
 import STYLING from '../../constants/styles';
 
@@ -97,7 +98,11 @@ const SignUpBirthday = ({
           open={datePickerOpen}
           mode="date"
           maximumDate={
-            new Date(new Date().setFullYear(new Date().getFullYear() - 13))
+            new Date(
+              new Date().setFullYear(
+                new Date().getFullYear() - numbers.minimumAge,
+              ),
+            )
           }
           date={birthday ? moment(birthday, '').toDate() : new Date()}
           onConfirm={async newDate => {
