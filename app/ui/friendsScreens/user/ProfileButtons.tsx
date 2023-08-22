@@ -47,139 +47,145 @@ const ProfileButtons: React.FC<Props> = ({user}) => {
     setSuggestions,
   } = useFriendsContext();
 
-  const [loading, withLoading] = useLoadingState();
+  const [mainLoading, withMainLoading] = useLoadingState();
   const [rejectLoading, withRejectLoading] = useLoadingState();
 
-  return (
-    <View style={styles.container}>
-      {usersIBlock.some(userIBlock => userIBlock.id === user.id) ? (
-        <>
-          <View
+  if (usersIBlock.some(userIBlock => userIBlock.id === user.id)) {
+    return (
+      <View style={styles.container}>
+        <View
+          style={[
+            styles.button,
+            {
+              backgroundColor: colors[theme].secondary,
+            },
+          ]}>
+          <View style={styles.icon}>
+            <Icon size="l" icon={icons.blocked} />
+          </View>
+          <Text>{strings.friends.blocked}</Text>
+        </View>
+        <TouchableOpacity
+          style={styles.text}
+          disabled={mainLoading}
+          onPress={() =>
+            withMainLoading(() =>
+              handleUnblock(user.id, usersIBlock, setUsersIBlock),
+            )
+          }>
+          <Text size="s" weight="l">
+            {strings.friends.unblock}
+          </Text>
+        </TouchableOpacity>
+      </View>
+    );
+  } else if (requests.some(request => request.id === user.id)) {
+    return (
+      <View style={styles.container}>
+        <View style={styles.text}>
+          <Text size="s" weight="l">
+            {strings.friends.pendingRequest}
+          </Text>
+        </View>
+        <View style={styles.buttons}>
+          <TouchableOpacity
             style={[
-              styles.button,
+              styles.buttonSmall,
+              {
+                backgroundColor: colors[theme].accent,
+              },
+            ]}
+            disabled={mainLoading || rejectLoading}
+            onPress={() =>
+              withMainLoading(() =>
+                handleAcceptRequest(
+                  user.id,
+                  friends,
+                  setFriends,
+                  requests,
+                  setRequests,
+                  suggestions,
+                  setSuggestions,
+                  user,
+                ),
+              )
+            }>
+            {mainLoading ? (
+              <ActivityIndicator size="small" color={colors[theme].primary} />
+            ) : (
+              <>
+                <View style={styles.icon}>
+                  <Icon
+                    size="l"
+                    icon={icons.acceptFriend}
+                    color={colors[theme].primary}
+                  />
+                </View>
+                <Text color={colors[theme].primary}>
+                  {strings.friends.accept}
+                </Text>
+              </>
+            )}
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              styles.buttonSmall,
               {
                 backgroundColor: colors[theme].secondary,
               },
-            ]}>
-            <View style={styles.icon}>
-              <Icon size="l" icon={icons.blocked} />
-            </View>
-            <Text>{strings.friends.blocked}</Text>
-          </View>
-          <TouchableOpacity
-            style={styles.text}
-            disabled={loading}
+            ]}
+            disabled={mainLoading || rejectLoading}
             onPress={() =>
-              withLoading(() =>
-                handleUnblock(user.id, usersIBlock, setUsersIBlock),
+              withRejectLoading(() =>
+                handleDeclineRequest(user.id, requests, setRequests),
               )
             }>
-            <Text size="s" weight="l">
-              {strings.friends.unblock}
-            </Text>
+            {rejectLoading ? (
+              <ActivityIndicator size="small" color={colors[theme].primary} />
+            ) : (
+              <>
+                <View style={styles.icon}>
+                  <Icon size="l" icon={icons.deleteFriend} />
+                </View>
+                <Text>{strings.friends.ignore}</Text>
+              </>
+            )}
           </TouchableOpacity>
-        </>
-      ) : requests.some(request => request.id === user.id) ? (
-        <>
-          <View style={styles.text}>
-            <Text size="s" weight="l">
-              {strings.friends.pendingRequest}
-            </Text>
+        </View>
+      </View>
+    );
+  } else if (requestsSent.some(requestSent => requestSent.id === user.id)) {
+    return (
+      <View style={styles.container}>
+        <View
+          style={[
+            styles.button,
+            {
+              backgroundColor: colors[theme].secondary,
+            },
+          ]}>
+          <View style={styles.icon}>
+            <Icon size="l" icon={icons.addFriend} />
           </View>
-          <View style={styles.buttons}>
-            <TouchableOpacity
-              style={[
-                styles.buttonSmall,
-                {
-                  backgroundColor: colors[theme].accent,
-                },
-              ]}
-              disabled={loading || rejectLoading}
-              onPress={() =>
-                withLoading(() =>
-                  handleAcceptRequest(
-                    user.id,
-                    friends,
-                    setFriends,
-                    requests,
-                    setRequests,
-                    suggestions,
-                    setSuggestions,
-                    user,
-                  ),
-                )
-              }>
-              {loading ? (
-                <ActivityIndicator size="small" color={colors[theme].primary} />
-              ) : (
-                <>
-                  <View style={styles.icon}>
-                    <Icon
-                      size="l"
-                      icon={icons.acceptFriend}
-                      color={colors[theme].primary}
-                    />
-                  </View>
-                  <Text color={colors[theme].primary}>
-                    {strings.friends.accept}
-                  </Text>
-                </>
-              )}
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[
-                styles.buttonSmall,
-                {
-                  backgroundColor: colors[theme].secondary,
-                },
-              ]}
-              disabled={loading || rejectLoading}
-              onPress={() =>
-                withRejectLoading(() =>
-                  handleDeclineRequest(user.id, requests, setRequests),
-                )
-              }>
-              {rejectLoading ? (
-                <ActivityIndicator size="small" color={colors[theme].primary} />
-              ) : (
-                <>
-                  <View style={styles.icon}>
-                    <Icon size="l" icon={icons.deleteFriend} />
-                  </View>
-                  <Text>{strings.friends.ignore}</Text>
-                </>
-              )}
-            </TouchableOpacity>
-          </View>
-        </>
-      ) : requestsSent.some(requestSent => requestSent.id === user.id) ? (
-        <>
-          <View
-            style={[
-              styles.button,
-              {
-                backgroundColor: colors[theme].secondary,
-              },
-            ]}>
-            <View style={styles.icon}>
-              <Icon size="l" icon={icons.addFriend} />
-            </View>
-            <Text>{strings.friends.pending}</Text>
-          </View>
-          <TouchableOpacity
-            style={styles.text}
-            disabled={loading}
-            onPress={() =>
-              withLoading(() =>
-                handleCancelRequest(user.id, requestsSent, setRequestsSent),
-              )
-            }>
-            <Text size="s" weight="l">
-              {strings.friends.cancelRequest}
-            </Text>
-          </TouchableOpacity>
-        </>
-      ) : (
+          <Text>{strings.friends.pending}</Text>
+        </View>
+        <TouchableOpacity
+          style={styles.text}
+          disabled={mainLoading}
+          onPress={() =>
+            withMainLoading(() =>
+              handleCancelRequest(user.id, requestsSent, setRequestsSent),
+            )
+          }>
+          <Text size="s" weight="l">
+            {strings.friends.cancelRequest}
+          </Text>
+        </TouchableOpacity>
+      </View>
+    );
+  } else {
+    return (
+      <View style={styles.container}>
         <TouchableOpacity
           style={[
             styles.button,
@@ -187,13 +193,13 @@ const ProfileButtons: React.FC<Props> = ({user}) => {
               backgroundColor: colors[theme].accent,
             },
           ]}
-          disabled={loading}
+          disabled={mainLoading}
           onPress={() =>
-            withLoading(() =>
+            withMainLoading(() =>
               handleFriendRequest(user.id, requestsSent, setRequestsSent, user),
             )
           }>
-          {loading ? (
+          {mainLoading ? (
             <ActivityIndicator size="small" color={colors[theme].primary} />
           ) : (
             <>
@@ -210,9 +216,9 @@ const ProfileButtons: React.FC<Props> = ({user}) => {
             </>
           )}
         </TouchableOpacity>
-      )}
-    </View>
-  );
+      </View>
+    );
+  }
 };
 
 const styles = StyleSheet.create({

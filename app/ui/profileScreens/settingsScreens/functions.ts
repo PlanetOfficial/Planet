@@ -22,23 +22,28 @@ export const handleEditPfp = async (setPfpURL: (url: string) => void) => {
     cropperCircleOverlay: true,
     mediaType: 'photo',
     includeBase64: true,
-  }).then(async image => {
-    if (image.data) {
-      if (image.size && image.size < numbers.maxPfpSize) {
-        const image_url = await saveImage(image.data);
+  })
+    .then(async image => {
+      if (image.data) {
+        if (image.size && image.size < numbers.maxPfpSize) {
+          const image_url = await saveImage(image.data);
 
-        if (image_url) {
-          setPfpURL(image_url);
+          if (image_url) {
+            setPfpURL(image_url);
+          } else {
+            Alert.alert(strings.error.error, strings.profile.pfpUploadError);
+          }
         } else {
-          Alert.alert(strings.error.error, strings.profile.pfpUploadError);
+          Alert.alert(strings.error.error, strings.profile.pfpSizeError);
         }
       } else {
-        Alert.alert(strings.error.error, strings.profile.pfpSizeError);
+        Alert.alert(strings.error.error, strings.profile.pfpSelectError);
       }
-    } else {
-      Alert.alert(strings.error.error, strings.profile.pfpSelectError);
-    }
-  });
+    })
+    .catch(() => {
+      // is triggered when user cancels image selection
+      // console.warn(e);
+    });
 };
 
 export const handleRemovePfp = async (setPfpURL: (url: string) => void) => {
@@ -83,7 +88,10 @@ export const handleEditDisplayName = async (
       {
         text: strings.main.save,
         onPress: async displayName => {
-          if (displayName.length < 3 || displayName.length > 15) {
+          if (
+            displayName.length < numbers.minDisplayNameLength ||
+            displayName.length > numbers.maxDisplayNameLength
+          ) {
             Alert.alert(strings.error.error, strings.error.displayNameLength);
             return;
           }

@@ -101,7 +101,6 @@ type RootStackParamList = {
   };
   ResetPwd: {
     authToken: string;
-    isLoggedIn: boolean;
   };
   ForgotPwd: undefined;
   ForgotPwdVerify: {
