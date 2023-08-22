@@ -1,6 +1,9 @@
 import {RecommenderAPIURL} from './APIConstants';
+
 import {Recommendation} from '../types';
+
 import EncryptedStorage from 'react-native-encrypted-storage';
+
 import {requestAndValidate} from './authAPI';
 
 /**

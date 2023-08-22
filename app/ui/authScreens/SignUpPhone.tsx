@@ -15,6 +15,7 @@ import PhoneInput from 'react-native-phone-number-input';
 import LinearGradient from 'react-native-linear-gradient';
 
 import colors from '../../constants/colors';
+import icons from '../../constants/icons';
 import strings from '../../constants/strings';
 import STYLING from '../../constants/styles';
 
@@ -22,7 +23,6 @@ import Text from '../components/Text';
 
 import {sendCode} from '../../utils/api/authAPI';
 import {useLoadingState} from '../../utils/Misc';
-import icons from '../../constants/icons';
 
 const SignUpPhone = ({
   navigation,
@@ -81,11 +81,11 @@ const SignUpPhone = ({
           </SafeAreaView>
           <ScrollView>
             <View style={STYLES.titleContainer}>
-              <Text size="l" center={true}>
+              <Text size="l" center={true} color={colors[theme].neutral}>
                 {strings.signUp.accountHasBeenCreated}
               </Text>
             </View>
-            <Text weight="l" center={true}>
+            <Text weight="l" center={true} color={colors[theme].neutral}>
               {strings.signUp.promptPhoneNumber}
             </Text>
             <View style={STYLES.inputContainer}>

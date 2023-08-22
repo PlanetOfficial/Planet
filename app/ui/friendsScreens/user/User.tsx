@@ -24,9 +24,10 @@ import {fetchUserLocation, useLoadingState} from '../../../utils/Misc';
 
 import ProfileBody from '../../profileScreens/profile/ProfileBody';
 
+import {useFriendsContext} from '../../../context/FriendsContext';
+
 import ProfileHeader from './ProfileHeader';
 import ProfileButtons from './ProfileButtons';
-import {useFriendsContext} from '../../../context/FriendsContext';
 
 const User = ({
   navigation,

@@ -79,7 +79,7 @@ export const handleSendCodeOnPasswordReset = async (
   const response = await sendCodeForgotPwd(username);
 
   if (response) {
-    navigation.navigate('ForgotPasswordVerify', {username});
+    navigation.navigate('ForgotPwdVerify', {username});
   } else {
     // made the error ambiguous so the user can't guess if the username exists or not
     Alert.alert(strings.error.error, strings.error.ambiguousError);
@@ -101,7 +101,7 @@ export const handleVerifyCode = async (
       index: 0,
       routes: [
         {
-          name: 'ResetPassword',
+          name: 'ResetPwd',
           params: {authToken: response.authToken},
         },
       ],

@@ -1,5 +1,7 @@
 import EncryptedStorage from 'react-native-encrypted-storage';
+
 import {FriendAPIURL} from './APIConstants';
+
 import {requestAndValidate} from './authAPI';
 
 /**

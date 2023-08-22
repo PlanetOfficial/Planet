@@ -9,9 +9,13 @@ import {s, vs} from 'react-native-size-matters';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
 import colors from '../../../constants/colors';
+import icons from '../../../constants/icons';
 import strings from '../../../constants/strings';
 
 import Text from '../../components/Text';
+import Icon from '../../components/Icon';
+
+import {useFriendsContext} from '../../../context/FriendsContext';
 
 import {UserInfo} from '../../../utils/types';
 import {useLoadingState} from '../../../utils/Misc';
@@ -22,9 +26,6 @@ import {
   handleFriendRequest,
   handleUnblock,
 } from '../user/functions';
-import {useFriendsContext} from '../../../context/FriendsContext';
-import Icon from '../../components/Icon';
-import icons from '../../../constants/icons';
 
 interface Props {
   user: UserInfo;

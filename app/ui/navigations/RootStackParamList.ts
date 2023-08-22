@@ -9,7 +9,12 @@ import {
 
 type RootStackParamList = {
   TabStack: undefined;
-  Welcome: undefined;
+
+  ViewHistory: {
+    viewHistory: PoiType[];
+    location: Coordinate;
+  };
+
   SearchCategory: {
     mode: 'create' | 'suggest' | 'add' | 'none';
     myLocation: Coordinate;
@@ -20,32 +25,36 @@ type RootStackParamList = {
     myLocation: Coordinate;
     category: Category;
   };
+  ModeSearch: {
+    mode: 'create' | 'suggest' | 'add' | 'none';
+  };
+
   Poi: {
     mode: 'create' | 'suggest' | 'add' | 'inCreate' | 'none';
     place_id: string | undefined;
     poi: PoiType | undefined;
     category: string | undefined;
   };
+
   Friends: undefined;
   CreateFG: undefined;
-  Requests: undefined;
   AddFriend: {
     members: UserInfo[];
     event_id: number | undefined;
   };
+  Requests: undefined;
   User: {
     user: UserInfo;
   };
-  ViewHistory: {
-    viewHistory: PoiType[];
-    location: Coordinate;
-  };
-  Settings: undefined;
+
+  BlockedUsers: undefined;
   AccountSettings: undefined;
   LocationsSettings: undefined;
   NotificationSettings: undefined;
   PrivacySettings: undefined;
   ProfileSettings: undefined;
+  Settings: undefined;
+
   Create:
     | {
         members: UserInfo[] | undefined;
@@ -55,9 +64,7 @@ type RootStackParamList = {
         names: string[] | undefined;
       }
     | undefined;
-  ModeSearch: {
-    mode: 'create' | 'suggest' | 'add' | 'none';
-  };
+
   Event: {
     event: Event;
     destination: PoiType;
@@ -75,6 +82,8 @@ type RootStackParamList = {
     destination: Destination;
   };
   Notifications: undefined;
+
+  Welcome: undefined;
   Login: undefined;
   SignUpName: undefined;
   SignUpBirthday: {
@@ -87,20 +96,16 @@ type RootStackParamList = {
   SignUpPhone: {
     authToken: string;
   };
-  VerifyPhone: {
-    authToken: string;
-  };
   SignUpVerify: {
     authToken: string;
   };
-  ForgotPasswordVerify: {
-    username: string;
-  };
-  ResetPassword: {
+  ResetPwd: {
     authToken: string;
   };
-  ForgotPassword: undefined;
-  BlockedUsers: undefined;
+  ForgotPwd: undefined;
+  ForgotPwdVerify: {
+    username: string;
+  };
 };
 
 export default RootStackParamList;

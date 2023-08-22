@@ -19,15 +19,16 @@ import STYLING from '../../../constants/styles';
 import Icon from '../../components/Icon';
 import Text from '../../components/Text';
 import UserRow from '../../components/UserRow';
+import ActionButtons from '../components/ActionButtons';
+import SearchResult from '../components/SearchResult';
+import SearchBar from '../components/SearchBar';
 
 import {UserInfo} from '../../../utils/types';
 import {useLoadingState} from '../../../utils/Misc';
 
-import ActionButtons from '../components/ActionButtons';
-import {search} from './functions';
-import SearchResult from '../components/SearchResult';
 import {useFriendsContext} from '../../../context/FriendsContext';
-import SearchBar from '../components/SearchBar';
+
+import {search} from './functions';
 import FriendsList from './FriendsList';
 
 const Friends = ({navigation}: {navigation: any}) => {

@@ -8,6 +8,9 @@ import {
   ScrollView,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import DatePicker from 'react-native-date-picker';
+
+import moment from 'moment';
 
 import colors from '../../constants/colors';
 import icons from '../../constants/icons';
@@ -16,8 +19,6 @@ import strings from '../../constants/strings';
 import STYLING from '../../constants/styles';
 
 import Text from '../components/Text';
-import DatePicker from 'react-native-date-picker';
-import moment from 'moment';
 
 const SignUpBirthday = ({
   navigation,
@@ -52,11 +53,11 @@ const SignUpBirthday = ({
         </SafeAreaView>
         <ScrollView>
           <View style={STYLES.titleContainer}>
-            <Text size="l" center={true}>
+            <Text size="l" center={true} color={colors[theme].neutral}>
               {strings.signUp.hi + ', ' + route.params.displayName + '!'}
             </Text>
           </View>
-          <Text size="s" weight="l" center={true}>
+          <Text size="s" weight="l" center={true} color={colors[theme].neutral}>
             {strings.signUp.promptBirthday}
           </Text>
           <TouchableOpacity

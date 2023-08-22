@@ -1,6 +1,9 @@
 import EncryptedStorage from 'react-native-encrypted-storage';
+
 import {PoiAPIURL} from './APIConstants';
+
 import {Poi} from '../types';
+
 import {requestAndValidate} from './authAPI';
 
 /**

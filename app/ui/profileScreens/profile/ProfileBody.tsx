@@ -14,9 +14,10 @@ import STYLING, {segControlTabStyling} from '../../../constants/styles';
 import Text from '../../components/Text';
 import PoiRow from '../../components/PoiRow';
 
+import {useBookmarkContext} from '../../../context/BookmarkContext';
+
 import {handleBookmark} from '../../../utils/Misc';
 import {Coordinate, Poi} from '../../../utils/types';
-import {useBookmarkContext} from '../../../context/BookmarkContext';
 
 interface Props {
   navigation: any;

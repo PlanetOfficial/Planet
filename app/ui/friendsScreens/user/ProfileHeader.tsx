@@ -22,8 +22,9 @@ import UserIconXL from '../../components/UserIconXL';
 
 import {UserInfo} from '../../../utils/types';
 
-import {handleBlock, handleReport, handleUnfriend} from './functions';
 import {useFriendsContext} from '../../../context/FriendsContext';
+
+import {handleBlock, handleReport, handleUnfriend} from './functions';
 
 interface Props {
   navigation: any;

@@ -21,6 +21,7 @@ import Icon from '../components/Icon';
 import Text from '../components/Text';
 
 import {useLoadingState} from '../../utils/Misc';
+
 import {handleSendCodeOnPasswordReset} from './functions';
 
 const ForgotPwd = ({navigation}: {navigation: any}) => {
@@ -53,7 +54,7 @@ const ForgotPwd = ({navigation}: {navigation: any}) => {
       </SafeAreaView>
       <ScrollView>
         <View style={STYLES.titleContainer}>
-          <Text weight="l" center={true}>
+          <Text weight="l" center={true} color={colors[theme].neutral}>
             {strings.login.forgotPasswordDescription}
           </Text>
         </View>
@@ -91,7 +92,7 @@ const ForgotPwd = ({navigation}: {navigation: any}) => {
             <ActivityIndicator size="small" color={colors[theme].primary} />
           ) : (
             <Text weight="b" color={colors[theme].primary}>
-              {strings.main.next}
+              {strings.main.confirm}
             </Text>
           )}
         </TouchableOpacity>
