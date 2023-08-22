@@ -58,6 +58,7 @@ const Profile = ({navigation}: {navigation: any}) => {
         }}
         isSelf={true}
         isOnTabScreen={true}
+        setPfpURL={setPfpURL}
       />
       <ProfileBody navigation={navigation} location={location} />
     </View>

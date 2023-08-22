@@ -31,6 +31,7 @@ const icons = {
   option: require('../assets/icons/option.png'),
   pin: require('../assets/icons/pin.png'),
   placeholder: require('../assets/icons/placeholder.png'),
+  plus: require('../assets/icons/plus.png'),
   privacy: require('../assets/icons/privacy.png'),
   profile: require('../assets/tabIcons/profile.png'),
   question: require('../assets/icons/question.png'),

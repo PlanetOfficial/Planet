@@ -25,12 +25,14 @@ import {UserInfo} from '../../../utils/types';
 import {useFriendsContext} from '../../../context/FriendsContext';
 
 import {handleBlock, handleReport, handleUnfriend} from './functions';
+import {handleEditPfp} from '../../profileScreens/settingsScreens/functions';
 
 interface Props {
   navigation: any;
   user: UserInfo;
   isSelf: boolean;
   isOnTabScreen: boolean;
+  setPfpURL?: (url: string) => void;
 }
 
 const ProfileHeader: React.FC<Props> = ({
@@ -38,6 +40,7 @@ const ProfileHeader: React.FC<Props> = ({
   user,
   isSelf,
   isOnTabScreen = false,
+  setPfpURL,
 }) => {
   const theme = useColorScheme() || 'light';
   const STYLES = STYLING(theme);
@@ -156,6 +159,18 @@ const ProfileHeader: React.FC<Props> = ({
         <View style={styles.profilePic}>
           <UserIconXL user={user} />
         </View>
+        {isSelf && setPfpURL !== undefined ? (
+          <View style={styles.edit}>
+            <Icon
+              padding={user.icon?.url ? 0 : 1}
+              icon={user.icon?.url ? icons.edit : icons.plus}
+              color={
+                user.icon?.url ? colors[theme].neutral : colors[theme].accent
+              }
+              onPress={() => handleEditPfp(setPfpURL)}
+            />
+          </View>
+        ) : null}
         <Text size="l" numberOfLines={1}>
           {user.display_name}
         </Text>
@@ -198,6 +213,17 @@ const styling = (theme: 'light' | 'dark') =>
     status: {
       marginTop: s(10),
       marginBottom: s(15),
+    },
+    edit: {
+      position: 'absolute',
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: s(25),
+      height: s(25),
+      top: -s(47.5),
+      left: s(177.5),
+      borderRadius: s(12.5),
+      backgroundColor: colors[theme].primary,
     },
   });
 
