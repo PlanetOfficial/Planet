@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   SafeAreaView,
@@ -12,6 +12,7 @@ import {
   ScrollView,
   Platform,
 } from 'react-native';
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 import colors from '../../constants/colors';
 import icons from '../../constants/icons';
@@ -32,7 +33,6 @@ const ResetPwd = ({
   route: {
     params: {
       authToken: string;
-      isLoggedIn: boolean;
     };
   };
 }) => {
@@ -50,6 +50,16 @@ const ResetPwd = ({
   const disabled =
     password.length === 0 || password !== passwordConfirm || loading;
 
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+
+  useEffect(() => {
+    const getIsLoggedIn = async () => {
+      const _authToken = await EncryptedStorage.getItem('auth_token');
+      setIsLoggedIn(_authToken !== undefined);
+    };
+    getIsLoggedIn();
+  }, []);
+
   return (
     <KeyboardAvoidingView
       {...(Platform.OS === 'ios' ? {behavior: 'padding'} : {})}
@@ -57,7 +67,7 @@ const ResetPwd = ({
       onTouchStart={Keyboard.dismiss}>
       <SafeAreaView>
         <View style={STYLES.header}>
-          {route.params.isLoggedIn ? (
+          {isLoggedIn ? (
             <Icon size="m" icon={icons.back} onPress={navigation.goBack} />
           ) : (
             <Icon size="m" icon={icons.back} color="transparent" />

@@ -170,6 +170,16 @@ export function useLoadingState() {
   return [loading, withLoading] as const;
 }
 
+export const formatDisplayInitials = (name: string) => {
+  let letters = name ? name[0].toUpperCase() : '';
+  if (name.split(' ').length > 1) {
+    letters += name.split(' ')[1][0].toUpperCase();
+  } else if (name.length > 1) {
+    letters += name[1].toUpperCase();
+  }
+  return letters;
+};
+
 export const verticalAnimation = ({
   current,
   inverted,

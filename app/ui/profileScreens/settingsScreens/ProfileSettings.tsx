@@ -31,6 +31,7 @@ import {
   handleRemovePfp,
 } from './functions';
 import {editBirthday} from '../../../utils/api/authAPI';
+import numbers from '../../../constants/numbers';
 
 const ProfileSettings = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';
@@ -164,7 +165,11 @@ const ProfileSettings = ({navigation}: {navigation: any}) => {
         open={datePickerOpen}
         mode="date"
         maximumDate={
-          new Date(new Date().setFullYear(new Date().getFullYear() - 13))
+          new Date(
+            new Date().setFullYear(
+              new Date().getFullYear() - numbers.minimumAge,
+            ),
+          )
         }
         date={birthday ? moment(birthday, '').toDate() : new Date()}
         onConfirm={async newDate => {
