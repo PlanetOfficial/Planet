@@ -56,7 +56,7 @@ const ForgotPwdVerify = ({
       <SafeAreaView>
         <View style={STYLES.header} />
       </SafeAreaView>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View style={STYLES.titleContainer}>
           <Text weight="l" center={true} color={colors[theme].neutral}>
             {strings.signUp.verifyPrompt}

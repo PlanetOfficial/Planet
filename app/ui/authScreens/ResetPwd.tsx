@@ -77,7 +77,7 @@ const ResetPwd = ({
           <Icon size="m" icon={icons.back} color="transparent" />
         </View>
       </SafeAreaView>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View style={STYLES.inputContainer}>
           <View style={STYLES.prompt}>
             <Text size="s" weight="l">

@@ -56,7 +56,11 @@ const SearchBar: React.FC<Props> = ({
           autoCorrect={false}
           onFocus={() => {
             LayoutAnimation.configureNext(
-              LayoutAnimation.Presets.easeInEaseOut,
+              LayoutAnimation.create(
+                200,
+                LayoutAnimation.Types.easeInEaseOut,
+                LayoutAnimation.Properties.opacity,
+              ),
             );
             setSearching(true);
           }}
@@ -69,7 +73,11 @@ const SearchBar: React.FC<Props> = ({
           style={styles.cancel}
           onPress={() => {
             LayoutAnimation.configureNext(
-              LayoutAnimation.Presets.easeInEaseOut,
+              LayoutAnimation.create(
+                100,
+                LayoutAnimation.Types.easeInEaseOut,
+                LayoutAnimation.Properties.opacity,
+              ),
             );
             searchRef.current?.blur();
             searchRef.current?.clear();
@@ -101,7 +109,7 @@ const styling = (theme: 'light' | 'dark') =>
       paddingHorizontal: s(10),
       paddingVertical: s(5),
       height: s(35),
-      borderRadius: s(10),
+      borderRadius: s(5),
       backgroundColor: colors[theme].primary,
     },
     searchText: {

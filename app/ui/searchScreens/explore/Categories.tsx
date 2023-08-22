@@ -17,12 +17,12 @@ import strings from '../../../constants/strings';
 
 import Text from '../../components/Text';
 
-import {Coordinate, Genre} from '../../../utils/types';
+import {Coordinate, Genre, CreateModes} from '../../../utils/types';
 
 interface Props {
   navigation: any;
   location?: Coordinate;
-  mode: 'create' | 'suggest' | 'add' | 'none';
+  mode: CreateModes;
 }
 
 const Categories: React.FC<Props> = ({navigation, location, mode}) => {
@@ -48,7 +48,14 @@ const Categories: React.FC<Props> = ({navigation, location, mode}) => {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text size="s">{strings.explore.categories}</Text>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('AllCategories', {
+              location,
+              mode,
+              genres,
+            })
+          }>
           <Text size="xs" weight="l" underline={true}>
             {strings.explore.viewAll}
           </Text>
@@ -56,7 +63,12 @@ const Categories: React.FC<Props> = ({navigation, location, mode}) => {
       </View>
       <View style={styles.grid}>
         {genres.map((genre: Genre) => (
-          <TouchableOpacity key={genre.id} style={styles.chip}>
+          <TouchableOpacity
+            key={genre.id}
+            style={styles.chip}
+            onPress={() => {
+              console.log('TODO: Genre Search');
+            }}>
             <Image source={{uri: genre.image.url}} style={styles.image} />
             {Platform.OS === 'ios' ? (
               <BlurView

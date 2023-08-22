@@ -21,7 +21,7 @@ import {
   calculateRadius,
   getRegionFromPointAndDistance,
 } from '../../../utils/Misc';
-import {Category, Coordinate, Region} from '../../../utils/types';
+import {Category, Coordinate, Region, CreateModes} from '../../../utils/types';
 
 import Blur from './Blur';
 import {useLocationContext} from '../../../context/LocationContext';
@@ -33,7 +33,7 @@ const SearchMap = ({
   navigation: any;
   route: {
     params: {
-      mode: 'create' | 'suggest' | 'add' | 'none';
+      mode: CreateModes;
       myLocation: Coordinate;
       category: Category;
     };

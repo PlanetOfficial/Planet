@@ -46,6 +46,7 @@ import ProfileSettings from '../profileScreens/settingsScreens/ProfileSettings';
 import Settings from '../profileScreens/settingsScreens/Settings';
 
 import Explore from '../searchScreens/explore/Explore';
+import AllCategories from '../searchScreens/allCategories/AllCategories';
 import SearchCategory from '../searchScreens/searchCategory/SearchCategory';
 import SearchMap from '../searchScreens/searchMap/SearchMap';
 
@@ -140,6 +141,7 @@ const mainStackScreens = () => (
         cardStyleInterpolator: verticalAnimation,
       }}
     />
+    <Stack.Screen name="AllCategories" component={AllCategories} />
 
     <Stack.Screen name="Poi" component={Poi} />
 

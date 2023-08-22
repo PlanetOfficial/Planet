@@ -52,7 +52,7 @@ const ForgotPwd = ({navigation}: {navigation: any}) => {
           <Icon size="m" icon={icons.back} color="transparent" />
         </View>
       </SafeAreaView>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View style={STYLES.titleContainer}>
           <Text weight="l" center={true} color={colors[theme].neutral}>
             {strings.login.forgotPasswordDescription}

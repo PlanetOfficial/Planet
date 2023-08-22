@@ -20,7 +20,7 @@ import colors from '../../constants/colors';
 import strings from '../../constants/strings';
 
 import Home from '../homeScreens/Home/Home';
-import Search from '../searchScreens/explore/Explore';
+import Explore from '../searchScreens/explore/Explore';
 import Library from '../libraryScreens/library/Library';
 import Profile from '../profileScreens/profile/Profile';
 
@@ -130,7 +130,7 @@ export const NavBar = () => {
           },
         })}>
         <Tab.Screen name={strings.title.home} component={Home} />
-        <Tab.Screen name={strings.title.search} component={Search} />
+        <Tab.Screen name={strings.title.search} component={Explore} />
         <Tab.Screen
           name="Plus"
           component={ButtonScreen}

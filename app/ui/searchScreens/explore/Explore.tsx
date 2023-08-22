@@ -19,13 +19,13 @@ import Text from '../../components/Text';
 import PoiRow from '../../components/PoiRow';
 
 import {fetchUserLocation, handleBookmark} from '../../../utils/Misc';
-import {Coordinate, Poi} from '../../../utils/types';
+import {Coordinate, Poi, CreateModes} from '../../../utils/types';
 
 import {useBookmarkContext} from '../../../context/BookmarkContext';
 import SearchBar from '../../friendsScreens/components/SearchBar';
 import Categories from './Categories';
 
-const Search = ({
+const Explore = ({
   navigation,
   route,
 }: {
@@ -33,7 +33,7 @@ const Search = ({
   route:
     | {
         params: {
-          mode: 'create' | 'suggest' | 'add' | 'none';
+          mode: CreateModes;
         };
       }
     | any;
@@ -165,4 +165,4 @@ const styling = (theme: 'light' | 'dark') =>
     },
   });
 
-export default Search;
+export default Explore;

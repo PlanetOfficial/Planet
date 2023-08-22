@@ -190,3 +190,11 @@ export interface Recommendation {
   places: Poi[];
   categories: string[];
 }
+
+export type CreateModes = 'create' | 'suggest' | 'add' | 'none';
+export type CreateModesWithInCreate =
+  | 'create'
+  | 'suggest'
+  | 'add'
+  | 'inCreate'
+  | 'none';

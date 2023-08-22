@@ -18,7 +18,7 @@ import Icon from '../../components/Icon';
 import Filter from '../../components/Filter';
 
 import {getPois} from '../../../utils/api/poiAPI';
-import {Poi, Coordinate, Category} from '../../../utils/types';
+import {Poi, Coordinate, Category, CreateModes} from '../../../utils/types';
 
 import Results from './Results';
 import {useBookmarkContext} from '../../../context/BookmarkContext';
@@ -31,7 +31,7 @@ const SearchCategory = ({
   navigation: any;
   route: {
     params: {
-      mode: 'create' | 'suggest' | 'add' | 'none';
+      mode: CreateModes;
       myLocation: Coordinate;
       category: Category;
     };
