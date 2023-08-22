@@ -44,7 +44,7 @@ const FGIcon: React.FC<Props> = ({users, selected = false}) => {
   ];
 
   return (
-    <View style={[styles.container, selected ? styles.border : undefined]}>
+    <View style={[styles.container, selected ? styles.selected : undefined]}>
       {usersSorted.reverse().map((user, index) => (
         <View
           key={index}
@@ -54,8 +54,8 @@ const FGIcon: React.FC<Props> = ({users, selected = false}) => {
               width: sizes[usersSorted.length - 1],
               height: sizes[usersSorted.length - 1],
               borderRadius: sizes[usersSorted.length - 1] / 2,
-              left: left[usersSorted.length - 1][index] - (selected ? 2 : 0),
-              top: top[usersSorted.length - 1][index] - (selected ? 2 : 0),
+              left: left[usersSorted.length - 1][index],
+              top: top[usersSorted.length - 1][index],
             },
           ]}>
           <UserIcon
@@ -83,6 +83,9 @@ const styling = (theme: 'light' | 'dark') =>
     },
     border: {
       borderWidth: 2,
+    },
+    selected: {
+      backgroundColor: colors[theme].accent,
     },
   });
 

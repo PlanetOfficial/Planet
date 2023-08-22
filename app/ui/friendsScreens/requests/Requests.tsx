@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   View,
-  StyleSheet,
   TouchableOpacity,
   ScrollView,
   RefreshControl,
@@ -9,7 +8,6 @@ import {
   StatusBar,
   SafeAreaView,
 } from 'react-native';
-import {s} from 'react-native-size-matters';
 
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
@@ -23,16 +21,15 @@ import UserRow from '../../components/UserRow';
 import {UserInfo} from '../../../utils/types';
 import {useLoadingState} from '../../../utils/Misc';
 
-import {handleAcceptRequest, handleDeclineRequest} from './functions';
 import {useFriendsContext} from '../../../context/FriendsContext';
+import ActionButtons from '../components/ActionButtons';
 
 const Requests = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';
   const STYLES = STYLING(theme);
   StatusBar.setBarStyle(colors[theme].statusBar, true);
 
-  const {requests, setRequests, friends, setFriends, refreshFriends} =
-    useFriendsContext();
+  const {requests, refreshFriends} = useFriendsContext();
 
   const [loading, withLoading] = useLoadingState();
 
@@ -73,29 +70,7 @@ const Requests = ({navigation}: {navigation: any}) => {
             }
             key={item.id}>
             <UserRow user={item}>
-              <View style={styles.icons}>
-                <Icon
-                  size="s"
-                  icon={icons.check}
-                  color={colors[theme].accent}
-                  onPress={() =>
-                    handleAcceptRequest(
-                      item,
-                      requests,
-                      setRequests,
-                      friends,
-                      setFriends,
-                    )
-                  }
-                />
-                <Icon
-                  size="xs"
-                  icon={icons.x}
-                  onPress={() =>
-                    handleDeclineRequest(item.id, requests, setRequests)
-                  }
-                />
-              </View>
+              <ActionButtons user={item} />
             </UserRow>
           </TouchableOpacity>
         ))}
@@ -103,14 +78,5 @@ const Requests = ({navigation}: {navigation: any}) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  icons: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    width: s(50),
-  },
-});
 
 export default Requests;

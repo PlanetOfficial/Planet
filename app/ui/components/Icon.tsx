@@ -14,7 +14,7 @@ import colors from '../../constants/colors';
 import STYLING from '../../constants/styles';
 
 interface Props {
-  size?: 'xs' | 's' | 'm' | 'l' | 'xl' | 'xxl';
+  size?: 'xs' | 's' | 'm' | 'l' | 'xl';
   color?: string;
   button?: boolean;
   padding?: number;
@@ -55,9 +55,6 @@ const Icon: React.FC<Props> = ({
       break;
     case 'xl':
       z = s(32);
-      break;
-    case 'xxl':
-      z = s(48);
       break;
     default:
       break;

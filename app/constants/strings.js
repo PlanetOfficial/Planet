@@ -130,7 +130,12 @@ const strings = {
     requests: 'Requests',
     searchFriends: 'Search Friends',
     newFriendGroup: 'Create',
+    suggestions: 'Suggestions',
+    addFriends: 'Add Friends',
+    inviteFriends: 'Invite Friends',
+    added: 'Added',
     users: 'Users',
+    blocked: 'Blocked',
     noFriendsFound: 'No Friends Found',
     friendRequest: 'Friend Request',
     friendRequests: 'Friend Requests',
@@ -162,8 +167,7 @@ const strings = {
     deleteFriendGroup: 'Delete Friend Group',
     deleteFriendGroupInfo: 'Are you sure you want to delete this friend group?',
     friendGroupName: 'Friend Group Name',
-    friendGroupNameInfo:
-      'Enter a name for this friend group:\nNote: friend groups are for your own and will not be shared with others.',
+    friendGroupNameInfo: 'Enter a name for this friend group:',
     inviteFriendsBackConfirmation:
       'Are you sure you want to go back? Your changes will not be saved.',
     invite: 'Invite',

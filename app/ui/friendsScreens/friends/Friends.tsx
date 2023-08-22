@@ -1,9 +1,8 @@
-import React, {useState, createRef, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   SafeAreaView,
   StyleSheet,
-  TextInput,
   ActivityIndicator,
   useColorScheme,
   StatusBar,
@@ -38,7 +37,6 @@ const Friends = ({navigation}: {navigation: any}) => {
 
   const [selfUserId, setSelfUserId] = useState<number>(0);
 
-  const searchRef = createRef<TextInput>();
   const [searchText, setSearchText] = useState<string>('');
   const [searchResults, setSearchResults] = useState<UserInfo[]>([]);
   const [searching, setSearching] = useState<boolean>(false);
@@ -55,13 +53,11 @@ const Friends = ({navigation}: {navigation: any}) => {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      setSearchText('');
-      searchRef.current?.clear();
       loadSelf();
     });
 
     return unsubscribe;
-  }, [navigation, searchRef]);
+  }, [navigation]);
 
   return (
     <View style={STYLES.container}>
@@ -87,7 +83,6 @@ const Friends = ({navigation}: {navigation: any}) => {
       </SafeAreaView>
 
       <SearchBar
-        searchRef={searchRef}
         searchText={searchText}
         setSearchText={setSearchText}
         searching={searching}

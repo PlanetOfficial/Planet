@@ -23,6 +23,8 @@ import {useFriendsContext} from '../../../context/FriendsContext';
 import Header from './Header';
 import Friends from './Friends';
 import Footer from './Footer';
+import SearchBar from '../components/SearchBar';
+import {search} from '../friends/functions';
 
 const AddFriend = ({
   navigation,
@@ -51,7 +53,7 @@ const AddFriend = ({
   const [searching, setSearching] = useState<boolean>(false);
   const [loading, withLoading] = useLoadingState();
 
-  const {friends} = useFriendsContext();
+  const {friends, usersBlockingMe} = useFriendsContext();
 
   const [fgSelected, setFgSelected] = useState<number>(0);
 
@@ -78,17 +80,25 @@ const AddFriend = ({
 
   return (
     <View style={STYLES.container}>
-      <Header
-        navigation={navigation}
-        isEvent={!!eventId}
-        invitees={invitees}
-        searching={searching}
-        setSearching={setSearching}
+      <Header navigation={navigation} isEvent={!!eventId} />
+
+      <SearchBar
         searchText={searchText}
         setSearchText={setSearchText}
+        searching={searching}
+        setSearching={setSearching}
         setSearchResults={setSearchResults}
-        selfUserId={selfUserId}
-        withLoading={withLoading}
+        search={text =>
+          withLoading(() =>
+            search(
+              text,
+              setSearchText,
+              setSearchResults,
+              selfUserId,
+              usersBlockingMe,
+            ),
+          )
+        }
       />
 
       {searching ? (

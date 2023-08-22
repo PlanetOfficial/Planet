@@ -4,7 +4,7 @@ import strings from '../../../constants/strings';
 
 import {FriendGroup, UserInfo} from '../../../utils/types';
 import {deleteFG, editFG} from '../../../utils/api/fgAPI';
-import {getFriends, searchUsers} from '../../../utils/api/friendsAPI';
+import {getFriendsInfo, searchUsers} from '../../../utils/api/friendsAPI';
 
 export const search = async (
   text: string,
@@ -65,6 +65,7 @@ export const saveFGEditing = async (
   setUsersBlockingMe: (usersBlockingMe: UserInfo[]) => void,
   setRequests: (requests: UserInfo[]) => void,
   setRequestsSent: (requestsSent: UserInfo[]) => void,
+  setSuggestions: (suggestions: UserInfo[]) => void,
 ) => {
   LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
 
@@ -87,6 +88,7 @@ export const saveFGEditing = async (
       setUsersBlockingMe,
       setRequests,
       setRequestsSent,
+      setSuggestions,
     );
   } else {
     Alert.alert(strings.error.error, strings.error.editFGName);
@@ -105,6 +107,7 @@ export const handleRemoveFG = async (
   setUsersBlockingMe: (usersBlockingMe: UserInfo[]) => void,
   setRequests: (requests: UserInfo[]) => void,
   setRequestsSent: (requestsSent: UserInfo[]) => void,
+  setSuggestions: (suggestions: UserInfo[]) => void,
 ) => {
   const response = await deleteFG(fgSelected);
 
@@ -119,6 +122,7 @@ export const handleRemoveFG = async (
       setUsersBlockingMe,
       setRequests,
       setRequestsSent,
+      setSuggestions,
     );
   } else {
     Alert.alert(strings.error.error, strings.error.deleteFG);
@@ -132,8 +136,9 @@ const loadFriends = async (
   setUsersBlockingMe: (usersBlockingMe: UserInfo[]) => void,
   setRequests: (requests: UserInfo[]) => void,
   setRequestsSent: (requestsSent: UserInfo[]) => void,
+  setSuggestions: (suggestions: UserInfo[]) => void,
 ) => {
-  const response = await getFriends();
+  const response = await getFriendsInfo();
 
   if (response) {
     setFriends(response.friends);
@@ -142,6 +147,7 @@ const loadFriends = async (
     setUsersBlockingMe(response.usersBlockingMe);
     setRequests(response.requests);
     setRequestsSent(response.requests_sent);
+    setSuggestions(response.suggestions);
   } else {
     Alert.alert(strings.error.error, strings.error.loadFriendsList);
   }

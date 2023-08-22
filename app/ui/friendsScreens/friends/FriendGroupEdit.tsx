@@ -58,6 +58,7 @@ const FriendGroupEdit: React.FC<Props> = ({
     setUsersBlockingMe,
     setRequests,
     setRequestsSent,
+    setSuggestions,
   } = useFriendsContext();
 
   return (
@@ -100,6 +101,7 @@ const FriendGroupEdit: React.FC<Props> = ({
                   setUsersBlockingMe,
                   setRequests,
                   setRequestsSent,
+                  setSuggestions,
                 );
               } else {
                 beginFGEditing(
@@ -139,6 +141,7 @@ const FriendGroupEdit: React.FC<Props> = ({
                           setUsersBlockingMe,
                           setRequests,
                           setRequestsSent,
+                          setSuggestions,
                         ),
                       style: 'destructive',
                     },
