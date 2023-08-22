@@ -10,8 +10,8 @@ export const search = async (
   text: string,
   setSearchText: (text: string) => void,
   setSearchResults: (results: UserInfo[]) => void,
-  selfUserId?: number,
-  usersBlockingMe?: UserInfo[],
+  selfUserId: number,
+  usersBlockingMe: UserInfo[],
   friends?: UserInfo[],
 ) => {
   setSearchText(text);

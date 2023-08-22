@@ -24,7 +24,7 @@ import {fetchUserLocation, useLoadingState} from '../../../utils/Misc';
 
 import ProfileBody from '../../profileScreens/profile/ProfileBody';
 
-import Profile from './ProfileHeader';
+import ProfileHeader from './ProfileHeader';
 import ProfileButtons from './ProfileButtons';
 import {useFriendsContext} from '../../../context/FriendsContext';
 
@@ -80,7 +80,7 @@ const User = ({
 
   return (
     <View style={STYLES.container}>
-      <Profile
+      <ProfileHeader
         navigation={navigation}
         user={route.params.user}
         isSelf={route.params.user.id === selfUserId}
