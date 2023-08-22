@@ -22,23 +22,27 @@ export const handleEditPfp = async (setPfpURL: (url: string) => void) => {
     cropperCircleOverlay: true,
     mediaType: 'photo',
     includeBase64: true,
-  }).then(async image => {
-    if (image.data) {
-      if (image.size && image.size < numbers.maxPfpSize) {
-        const image_url = await saveImage(image.data);
+  })
+    .then(async image => {
+      if (image.data) {
+        if (image.size && image.size < numbers.maxPfpSize) {
+          const image_url = await saveImage(image.data);
 
-        if (image_url) {
-          setPfpURL(image_url);
+          if (image_url) {
+            setPfpURL(image_url);
+          } else {
+            Alert.alert(strings.error.error, strings.profile.pfpUploadError);
+          }
         } else {
-          Alert.alert(strings.error.error, strings.profile.pfpUploadError);
+          Alert.alert(strings.error.error, strings.profile.pfpSizeError);
         }
       } else {
-        Alert.alert(strings.error.error, strings.profile.pfpSizeError);
+        Alert.alert(strings.error.error, strings.profile.pfpSelectError);
       }
-    } else {
-      Alert.alert(strings.error.error, strings.profile.pfpSelectError);
-    }
-  });
+    })
+    .catch(e => {
+      console.warn(e);
+    });
 };
 
 export const handleRemovePfp = async (setPfpURL: (url: string) => void) => {
