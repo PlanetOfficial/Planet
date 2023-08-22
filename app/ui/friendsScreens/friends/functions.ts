@@ -19,7 +19,6 @@ export const search = async (
     const result = await searchUsers(text);
 
     if (result) {
-      // exclude current user (and users you are blocked by) from search results
       const filtered = friends
         ? result.filter(user => friends.some(friend => friend.id === user.id))
         : (result.filter(
