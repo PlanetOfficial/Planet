@@ -1,7 +1,6 @@
 export interface UserInfo {
   id: number;
-  first_name: string;
-  last_name: string;
+  display_name: string;
   username: string;
   icon?: Image;
   count?: number;
@@ -13,13 +12,11 @@ export interface UserDetail {
 
 export interface MyInfo {
   id: number;
-  first_name: string;
-  last_name: string;
+  display_name: string;
   username: string;
   icon?: Image;
   phone_number: string;
-  age: string;
-  gender: string;
+  birthday: string;
 }
 
 export interface FriendGroup {

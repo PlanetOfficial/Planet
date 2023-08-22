@@ -194,7 +194,7 @@ const FriendGroupEdit: React.FC<Props> = ({
               ) : null}
               <View style={styles.text}>
                 <Text size="xs" weight="l" numberOfLines={1}>
-                  {item.first_name}
+                  {item.display_name}
                 </Text>
               </View>
             </View>

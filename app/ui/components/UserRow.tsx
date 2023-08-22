@@ -19,9 +19,7 @@ const UserRow: React.FC<Props> = ({children, user}) => {
         <UserIcon user={user} />
       </View>
       <View style={styles.texts}>
-        <Text
-          size="s"
-          numberOfLines={1}>{`${user.first_name} ${user.last_name}`}</Text>
+        <Text size="s" numberOfLines={1}>{`${user.display_name}`}</Text>
         <Text size="xs" weight="l" numberOfLines={1}>
           {'@' + user.username}
         </Text>

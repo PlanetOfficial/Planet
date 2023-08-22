@@ -50,17 +50,29 @@ const AccountSettings = ({navigation}: {navigation: any}) => {
   };
 
   const handleLogout = async () => {
-    try {
-      resetContexts();
-      clearCaches();
-      await messaging().deleteToken();
-      navigation.reset({
-        index: 0,
-        routes: [{name: 'Login'}],
-      });
-    } catch (error) {
-      Alert.alert('Error', 'Unable to logout. Please try again.');
-    }
+    Alert.alert(strings.settings.logout, strings.settings.logoutInfo, [
+      {
+        text: strings.main.cancel,
+        style: 'cancel',
+      },
+      {
+        text: strings.settings.logout,
+        onPress: async () => {
+          try {
+            resetContexts();
+            clearCaches();
+            await messaging().deleteToken();
+            navigation.reset({
+              index: 0,
+              routes: [{name: 'Login'}],
+            });
+          } catch (error) {
+            Alert.alert(strings.error.error, strings.error.logout);
+          }
+        },
+        style: 'destructive',
+      },
+    ]);
   };
 
   const handleResetPassword = async () => {
@@ -71,23 +83,23 @@ const AccountSettings = ({navigation}: {navigation: any}) => {
 
   const handleRemoveAccount = async () => {
     Alert.alert(
-      'Remove Account',
-      'Are you sure you want to remove your account?',
+      strings.settings.removeAccount,
+      strings.settings.removeAccountInfo,
       [
         {
-          text: 'Cancel',
+          text: strings.main.cancel,
           style: 'cancel',
         },
         {
-          text: 'Remove',
+          text: strings.main.remove,
           onPress: async () => {
             Alert.alert('Are you sure?', 'This action cannot be undone.', [
               {
-                text: 'Cancel',
+                text: strings.main.cancel,
                 style: 'cancel',
               },
               {
-                text: 'Remove',
+                text: strings.main.remove,
                 onPress: async () => {
                   const response = await removeAccount();
 
@@ -101,8 +113,8 @@ const AccountSettings = ({navigation}: {navigation: any}) => {
                     });
                   } else {
                     Alert.alert(
-                      'Error',
-                      'Unable to remove account. Please try again.',
+                      strings.error.error,
+                      strings.error.removeAccount,
                     );
                   }
                 },
@@ -125,9 +137,8 @@ const AccountSettings = ({navigation}: {navigation: any}) => {
             icon={icons.back}
             onPress={() => navigation.goBack()}
           />
-          <View style={STYLES.texts}>
-            <Text size="l">{strings.settings.account}</Text>
-          </View>
+          <Text size="l">{strings.settings.account}</Text>
+          <Icon size="m" icon={icons.back} color="transparent" />
         </View>
       </SafeAreaView>
       <TouchableOpacity
@@ -141,6 +152,7 @@ const AccountSettings = ({navigation}: {navigation: any}) => {
         <Text weight="l" color={colors[theme].red}>
           {strings.settings.logout}
         </Text>
+        <Icon size="m" icon={icons.logout} color={colors[theme].red} />
       </TouchableOpacity>
       <Separator />
       <TouchableOpacity
@@ -149,6 +161,7 @@ const AccountSettings = ({navigation}: {navigation: any}) => {
         <Text weight="l" color={colors[theme].red}>
           {strings.settings.removeAccount}
         </Text>
+        <Icon size="m" icon={icons.removeAccount} color={colors[theme].red} />
       </TouchableOpacity>
     </View>
   );

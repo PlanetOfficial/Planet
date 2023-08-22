@@ -57,7 +57,7 @@ const Footer: React.FC<Props> = ({
             </View>
             <View style={styles.name}>
               <Text size="xs" numberOfLines={1}>
-                {item.first_name}
+                {item.display_name}
               </Text>
             </View>
             <View style={styles.checkmark}>

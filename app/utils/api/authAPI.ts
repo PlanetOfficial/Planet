@@ -278,13 +278,7 @@ export const removeImage = async (): Promise<Boolean> => {
 /**
  * @requires auth_token should be set in EncryptedStorage before calling this function
  */
-export const editInfo = async (
-  first_name: string,
-  last_name: string,
-  username: string,
-  age: string,
-  gender: string,
-) => {
+export const editDisplayName = async (display_name: string) => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
   if (!authToken) {
@@ -292,9 +286,66 @@ export const editInfo = async (
   }
 
   const request = async (authtoken: string) => {
-    const response = await fetch(UserAPIURL + '/auth/editInfo', {
+    const response = await fetch(UserAPIURL + '/auth/edit/display_name', {
       method: 'POST',
-      body: JSON.stringify({first_name, last_name, username, age, gender}),
+      body: JSON.stringify({display_name}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authtoken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
+    });
+
+    return response;
+  };
+
+  const response = await requestAndValidate(authToken, request);
+
+  return response;
+};
+
+/**
+ * @requires auth_token should be set in EncryptedStorage before calling this function
+ */
+export const editUsername = async (username: string) => {
+  const authToken = await EncryptedStorage.getItem('auth_token');
+
+  if (!authToken) {
+    return null;
+  }
+
+  const request = async (authtoken: string) => {
+    const response = await fetch(UserAPIURL + '/auth/edit/username', {
+      method: 'POST',
+      body: JSON.stringify({username}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Xano-Authorization': `Bearer ${authtoken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
+    });
+
+    return response;
+  };
+
+  const response = await requestAndValidate(authToken, request);
+
+  return response;
+};
+/**
+ * @requires auth_token should be set in EncryptedStorage before calling this function
+ */
+export const editBirthday = async (birthday: string) => {
+  const authToken = await EncryptedStorage.getItem('auth_token');
+
+  if (!authToken) {
+    return null;
+  }
+
+  const request = async (authtoken: string) => {
+    const response = await fetch(UserAPIURL + '/auth/edit/birthday', {
+      method: 'POST',
+      body: JSON.stringify({birthday}),
       headers: {
         'Content-Type': 'application/json',
         'X-Xano-Authorization': `Bearer ${authtoken}`,

@@ -8,6 +8,7 @@ const numbers = {
   milesToMeters: 1609,
   maxPfpSize: 5000000, // in bytes
   fiveMinutes: 1000 * 60 * 5,
+  minimumAge: 13,
 };
 
 export default numbers;

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   SafeAreaView,
@@ -12,11 +12,14 @@ import {
   ScrollView,
   Platform,
 } from 'react-native';
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 import colors from '../../constants/colors';
+import icons from '../../constants/icons';
 import strings from '../../constants/strings';
 import STYLING from '../../constants/styles';
 
+import Icon from '../components/Icon';
 import Text from '../components/Text';
 
 import {useLoadingState} from '../../utils/Misc';
@@ -47,13 +50,31 @@ const ResetPwd = ({
   const disabled =
     password.length === 0 || password !== passwordConfirm || loading;
 
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+
+  useEffect(() => {
+    const getIsLoggedIn = async () => {
+      const _authToken = await EncryptedStorage.getItem('auth_token');
+      setIsLoggedIn(_authToken !== undefined);
+    };
+    getIsLoggedIn();
+  }, []);
+
   return (
     <KeyboardAvoidingView
       {...(Platform.OS === 'ios' ? {behavior: 'padding'} : {})}
       style={STYLES.container}
       onTouchStart={Keyboard.dismiss}>
       <SafeAreaView>
-        <View style={STYLES.header} />
+        <View style={STYLES.header}>
+          {isLoggedIn ? (
+            <Icon size="m" icon={icons.back} onPress={navigation.goBack} />
+          ) : (
+            <Icon size="m" icon={icons.back} color="transparent" />
+          )}
+          <Text>{strings.login.resetPassword}</Text>
+          <Icon size="m" icon={icons.back} color="transparent" />
+        </View>
       </SafeAreaView>
       <ScrollView>
         <View style={STYLES.inputContainer}>

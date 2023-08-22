@@ -44,7 +44,7 @@ const Suggestions = ({navigation}: {navigation: any}) => {
             </View>
             <View style={styles.texts}>
               <Text size="s" numberOfLines={1}>
-                {suggestion.first_name + ' ' + suggestion.last_name}
+                {suggestion.display_name}
               </Text>
               <Text size="xs" weight="l" numberOfLines={1}>
                 {'@' + suggestion.username}

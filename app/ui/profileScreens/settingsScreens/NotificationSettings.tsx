@@ -121,9 +121,8 @@ const NotificationSettings = ({navigation}: {navigation: any}) => {
             icon={icons.back}
             onPress={() => navigation.goBack()}
           />
-          <View style={STYLES.texts}>
-            <Text size="l">{strings.settings.notifications}</Text>
-          </View>
+          <Text size="l">{strings.settings.notifications}</Text>
+          <Icon size="m" icon={icons.back} color="transparent" />
         </View>
       </SafeAreaView>
       {notificationsSettings ? (
@@ -133,7 +132,7 @@ const NotificationSettings = ({navigation}: {navigation: any}) => {
               <View style={STYLES.texts}>
                 <Text weight="l">{setting.name}</Text>
                 <View style={styles.description}>
-                  <Text size="s" weight="l">
+                  <Text size="xs" weight="l">
                     {setting.description}
                   </Text>
                 </View>

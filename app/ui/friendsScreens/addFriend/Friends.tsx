@@ -143,7 +143,7 @@ const Friends: React.FC<Props> = ({
                   </View>
                   <View style={styles.text}>
                     <Text size="xs" weight="l" numberOfLines={1}>
-                      {item.first_name}
+                      {item.display_name}
                     </Text>
                   </View>
                 </TouchableOpacity>

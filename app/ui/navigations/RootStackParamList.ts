@@ -42,7 +42,6 @@ type RootStackParamList = {
   };
   Settings: undefined;
   AccountSettings: undefined;
-  ContactUs: undefined;
   LocationsSettings: undefined;
   NotificationSettings: undefined;
   PrivacySettings: undefined;
