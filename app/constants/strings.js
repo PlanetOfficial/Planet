@@ -14,6 +14,7 @@ const strings = {
     passwordResetSuccess: 'Password was successfully reset!',
     noAccount: "Don't have an account?",
     forgotPassword: 'Forgot Password',
+    forgotPasswordQuestion: 'Forgot your password?',
     forgotPasswordDescription: 'Enter your username:',
   },
   main: {
@@ -62,7 +63,8 @@ const strings = {
     promptName: "What's your name?",
     displayName: 'Display Name',
     hi: 'Hi',
-    promptBirthday: 'When is your birthday?',
+    promptBirthday:
+      'When is your birthday? This help us\n recommend just the right places for you.',
     setUpPrompt: "Great, let's set up your account!",
     setUpDescription: 'Enter a unique username\n and a secure password.',
     accountHasBeenCreated: 'Your account has been created!',
