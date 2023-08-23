@@ -62,9 +62,8 @@ const Notifications = ({navigation}: {navigation: any}) => {
           />
           <Text>{strings.notifications.notifications}</Text>
           <Icon
+            size="m"
             icon={icons.settings}
-            button={true}
-            padding={-2}
             onPress={() => navigation.navigate('NotificationSettings')}
           />
         </View>

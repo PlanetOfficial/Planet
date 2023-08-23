@@ -114,7 +114,7 @@ const styling = (theme: 'light' | 'dark') =>
       paddingHorizontal: s(20),
       paddingVertical: s(5),
       borderWidth: 1,
-      borderRadius: s(20),
+      borderRadius: s(10),
       borderColor: colors[theme].secondary,
     },
     user: {

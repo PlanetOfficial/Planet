@@ -58,6 +58,7 @@ const GenreRow: React.FC<Props> = ({navigation, location, mode, genre}) => {
       {expanded
         ? genre.categories.map((category: Category) => (
             <TouchableOpacity
+              key={category.id}
               style={styles.row}
               onPress={() =>
                 navigation.navigate('SearchCategory', {
@@ -98,7 +99,7 @@ const styling = (theme: 'light' | 'dark') =>
       marginRight: s(20),
       paddingHorizontal: s(10),
       paddingVertical: s(8),
-      borderBottomWidth: 0.5,
+      borderBottomWidth: 1,
       borderColor: colors[theme].secondary,
     },
   });

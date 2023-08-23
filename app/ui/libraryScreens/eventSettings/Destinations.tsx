@@ -170,7 +170,7 @@ const styling = (theme: 'light' | 'dark') =>
       marginVertical: s(20),
       paddingBottom: s(10),
       borderWidth: 1,
-      borderRadius: s(20),
+      borderRadius: s(10),
       borderColor: colors[theme].secondary,
     },
     header: {
@@ -192,7 +192,7 @@ const styling = (theme: 'light' | 'dark') =>
       paddingVertical: s(10),
       paddingHorizontal: s(20),
       backgroundColor: colors[theme].background,
-      borderRadius: s(20),
+      borderRadius: s(10),
     },
     addContainer: {
       flexDirection: 'row',

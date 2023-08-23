@@ -71,7 +71,7 @@ const styling = (theme: 'light' | 'dark') =>
       paddingVertical: s(10),
       width: s(110),
       height: s(145),
-      borderRadius: s(10),
+      borderRadius: s(5),
       backgroundColor: colors[theme].primary,
     },
     pfp: {

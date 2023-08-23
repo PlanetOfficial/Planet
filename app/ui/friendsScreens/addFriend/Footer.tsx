@@ -61,7 +61,7 @@ const Footer: React.FC<Props> = ({
                 {item.display_name}
               </Text>
             </View>
-            <View style={styles.checkmark}>
+            <View style={styles.x}>
               <Icon
                 size="m"
                 icon={icons.add}
@@ -127,7 +127,7 @@ const styling = (theme: 'light' | 'dark') =>
       height: s(45),
       alignItems: 'center',
       justifyContent: 'center',
-      borderRadius: s(10),
+      borderRadius: s(5),
       minWidth: s(100),
     },
     invitees: {
@@ -148,7 +148,7 @@ const styling = (theme: 'light' | 'dark') =>
     name: {
       height: s(15),
     },
-    checkmark: {
+    x: {
       position: 'absolute',
       alignItems: 'center',
       justifyContent: 'center',
@@ -158,7 +158,6 @@ const styling = (theme: 'light' | 'dark') =>
       width: s(20),
       borderRadius: s(10),
       backgroundColor: colors[theme].primary,
-      // rotate by 45 degrees
       transform: [{rotate: '45deg'}],
     },
   });

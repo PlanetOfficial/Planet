@@ -72,9 +72,8 @@ const Library = ({navigation}: {navigation: any}) => {
         <View style={STYLES.header}>
           <Text size="l">{strings.event.yourEvents}</Text>
           <Icon
+            size="m"
             icon={icons.bell}
-            button={true}
-            padding={-2}
             onPress={() => navigation.navigate('Notifications')}
           />
         </View>

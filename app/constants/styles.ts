@@ -55,7 +55,7 @@ const styling = (theme: 'light' | 'dark') =>
       paddingHorizontal: s(20),
       paddingVertical: s(10),
       bottom: s(40),
-      borderRadius: s(10),
+      borderRadius: s(5),
       backgroundColor: colors[theme].accent,
       shadowColor: '#000',
       shadowOffset: {
@@ -129,10 +129,10 @@ const styling = (theme: 'light' | 'dark') =>
       alignItems: 'center',
       justifyContent: 'center',
       marginTop: s(30),
-      marginBottom: s(20),
-      width: s(250),
-      height: s(50),
-      borderRadius: s(25),
+      marginBottom: s(10),
+      width: s(200),
+      height: s(45),
+      borderRadius: s(10),
     },
     sectionHeader: {
       marginHorizontal: s(20),

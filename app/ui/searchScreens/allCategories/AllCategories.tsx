@@ -54,6 +54,7 @@ const AllCategories = ({
       <ScrollView scrollIndicatorInsets={{right: 1}}>
         {genres.map(genre => (
           <GenreRow
+            key={genre.id}
             navigation={navigation}
             location={location}
             mode={mode}
