@@ -8,6 +8,7 @@ import {
 
 import haversine from 'haversine-distance';
 
+import numbers from '../constants/numbers';
 import strings from '../constants/strings';
 
 import {Coordinate, Poi} from './types';
@@ -154,6 +155,13 @@ export const getInfoString = (poi: Poi): string => {
   }
 
   return poiString;
+};
+
+export const determineOffset = (a: Coordinate, b: Coordinate) => {
+  return (
+    Math.abs(a.latitude - b.latitude) > numbers.locationOffThreshold ||
+    Math.abs(a.longitude - b.longitude) > numbers.locationOffThreshold
+  );
 };
 
 export function useLoadingState() {

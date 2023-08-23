@@ -1,7 +1,6 @@
 import React, {useEffect, useState, useRef, useMemo, useCallback} from 'react';
 import {
   View,
-  SafeAreaView,
   Alert,
   ActivityIndicator,
   useColorScheme,
@@ -15,28 +14,29 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import BottomSheet from '@gorhom/bottom-sheet';
 import {s, vs} from 'react-native-size-matters';
 import {BlurView} from '@react-native-community/blur';
-import MapView, {Marker} from 'react-native-maps';
+import MapView from 'react-native-maps';
 
 import colors from '../../../constants/colors';
-import icons from '../../../constants/icons';
 import numbers from '../../../constants/numbers';
 import strings from '../../../constants/strings';
 import STYLING from '../../../constants/styles';
 
 import Text from '../../components/Text';
-import Icon from '../../components/Icon';
 import Filter from '../../components/Filter';
 
 import {getPois} from '../../../utils/api/poiAPI';
 import {Poi, Coordinate, Category, CreateModes} from '../../../utils/types';
 import {
+  determineOffset,
   getRegionFromPointAndDistance,
-  useLoadingState,
 } from '../../../utils/Misc';
 
-import Results from './Results';
 import {useBookmarkContext} from '../../../context/BookmarkContext';
 import {useLocationContext} from '../../../context/LocationContext';
+
+import Map from './Map';
+import Header from './Header';
+import Results from './Results';
 
 const SearchCategory = ({
   navigation,
@@ -66,25 +66,20 @@ const SearchCategory = ({
   const {mode, myLocation, category} = route.params;
 
   const mapRef = useRef<MapView>(null);
+
   const [places, setPlaces] = useState<Poi[]>([]);
-  const [loading, withLoading] = useLoadingState();
+  const [loading, setLoading] = useState<boolean>(false);
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const {bookmarks, setBookmarks} = useBookmarkContext();
+
   const {location, setLocation, radius} = useLocationContext();
   const [tempLocation, setTempLocation] = useState<Coordinate>(location);
-  const tempLocationOff =
-    Math.abs(location.latitude - tempLocation.latitude) >
-      numbers.locationOffThreshold ||
-    Math.abs(location.longitude - tempLocation.longitude) >
-      numbers.locationOffThreshold;
-  const myLocationOff =
-    Math.abs(location.latitude - myLocation.latitude) >
-      numbers.locationOffThreshold ||
-    Math.abs(location.longitude - myLocation.longitude) >
-      numbers.locationOffThreshold;
+  const tempLocationOff = determineOffset(tempLocation, location);
+  const myLocationOff = determineOffset(myLocation, location);
 
   const insets = useSafeAreaInsets();
   const [bottomSheetIndex, setBottomSheetIndex] = useState<number>(2);
+  const bottomSheetRef = useRef<BottomSheet>(null);
   const snapPoints = useMemo(
     () => [
       insets.bottom + vs(60),
@@ -95,29 +90,32 @@ const SearchCategory = ({
   );
 
   const handleSheetChange = useCallback(
-    (_: number, toIndex: number) => {
+    async (fromIndex: number, toIndex: number) => {
       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
       setBottomSheetIndex(toIndex);
+      filterRef.current?.closeDropdown();
       if (toIndex === 0) {
         mapRef.current?.animateToRegion(
           getRegionFromPointAndDistance(location, radius),
-          500,
+          300,
         );
-      } else if (toIndex === 1 && places[selectedIndex]) {
-        mapRef.current?.animateToRegion(
-          {
-            latitude:
-              places[selectedIndex].latitude -
-              numbers.displayLongitudeDelta / 5,
-            longitude: places[selectedIndex].longitude,
-            latitudeDelta: numbers.displayLatitudeDelta,
-            longitudeDelta: numbers.displayLongitudeDelta,
-          },
-          500,
-        );
+      } else if (toIndex === 1) {
+        if (places?.length > 0) {
+          mapRef.current?.animateToRegion(
+            {
+              latitude: places[0].latitude - numbers.displayLongitudeDelta / 5,
+              longitude: places[0].longitude,
+              latitudeDelta: numbers.displayLatitudeDelta,
+              longitudeDelta: numbers.displayLongitudeDelta,
+            },
+            300,
+          );
+        } else {
+          bottomSheetRef.current?.snapToIndex(2 - fromIndex);
+        }
       }
     },
-    [], // TODO: Dependency array here is weird
+    [places, location, radius],
   );
 
   const filterRef = useRef<any>(null); // due to forwardRef
@@ -138,9 +136,11 @@ const SearchCategory = ({
       );
       if (data) {
         setPlaces(data);
+        bottomSheetRef.current?.snapToIndex(2);
       } else {
         Alert.alert(strings.error.error, strings.error.loadPlaces);
       }
+      setLoading(false);
     };
 
     const _filters: {[key: string]: string | string[]} = {};
@@ -159,36 +159,21 @@ const SearchCategory = ({
       }
     }
 
-    withLoading(() => loadData(_filters));
+    setLoading(true);
+    loadData(_filters);
   }, [category, filters, location, radius]);
 
   return (
     <View style={STYLES.container}>
-      <MapView
-        ref={mapRef}
-        style={styles.map}
-        showsUserLocation={true}
-        showsMyLocationButton={false}
-        rotateEnabled={false}
-        initialRegion={getRegionFromPointAndDistance(location, radius)}
-        onRegionChangeComplete={region => {
-          setTempLocation({
-            latitude: region.latitude,
-            longitude: region.longitude,
-          });
-        }}>
-        {places.length > 0
-          ? places.map((place: Poi, index: number) => (
-              <Marker
-                key={index}
-                coordinate={{
-                  latitude: place.latitude,
-                  longitude: place.longitude,
-                }}
-              />
-            ))
-          : null}
-      </MapView>
+      <Map
+        mapRef={mapRef}
+        location={location}
+        radius={radius}
+        bottomSheetRef={bottomSheetRef}
+        bottomSheetIndex={bottomSheetIndex}
+        setTempLocation={setTempLocation}
+        places={places}
+      />
 
       {Platform.OS === 'ios' ? (
         <BlurView
@@ -200,32 +185,16 @@ const SearchCategory = ({
         <View style={[styles.blur, styles.dim, {height: insets.top + s(50)}]} />
       )}
 
-      <SafeAreaView>
-        <View style={STYLES.header}>
-          <Icon
-            size="m"
-            icon={icons.back}
-            onPress={() => navigation.goBack()}
-          />
-          <Text>{category.name}</Text>
-          <Icon
-            size="m"
-            icon={myLocationOff ? icons.locationFilled : icons.location}
-            color={
-              myLocationOff ? colors[theme].accent : colors[theme].secondary
-            }
-            disabled={!myLocationOff}
-            onPress={() => {
-              setLocation(myLocation);
-              setTempLocation(myLocation);
-              mapRef.current?.animateToRegion(
-                getRegionFromPointAndDistance(myLocation, radius),
-                500,
-              );
-            }}
-          />
-        </View>
-      </SafeAreaView>
+      <Header
+        navigation={navigation}
+        category={category}
+        myLocationOff={myLocationOff}
+        myLocation={myLocation}
+        setLocation={setLocation}
+        setTempLocation={setTempLocation}
+        radius={radius}
+        mapRef={mapRef}
+      />
 
       {bottomSheetIndex === 0 && (tempLocationOff || loading) ? (
         <TouchableOpacity
@@ -247,12 +216,12 @@ const SearchCategory = ({
       ) : null}
 
       <BottomSheet
+        ref={bottomSheetRef}
         backgroundStyle={STYLES.container}
         index={2}
         snapPoints={snapPoints}
-        onAnimate={handleSheetChange}
-        animateOnMount={Platform.OS === 'ios'}
-        enableContentPanningGesture={false}>
+        waitFor={bottomSheetIndex === 0 ? bottomSheetRef : undefined}
+        onAnimate={handleSheetChange}>
         <Filter
           ref={filterRef}
           filters={category.filter}
@@ -286,11 +255,6 @@ const SearchCategory = ({
 
 const styling = (theme: 'light' | 'dark') =>
   StyleSheet.create({
-    map: {
-      position: 'absolute',
-      width: '100%',
-      height: '100%',
-    },
     blur: {
       position: 'absolute',
       width: '100%',
