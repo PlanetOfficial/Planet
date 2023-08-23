@@ -96,7 +96,6 @@ const SearchCategory = ({
 
   const handleSheetChange = useCallback(
     (_: number, toIndex: number) => {
-      console.log('what the fuck', toIndex);
       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
       setBottomSheetIndex(toIndex);
       if (toIndex === 0) {
