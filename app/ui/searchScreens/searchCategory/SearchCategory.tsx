@@ -29,14 +29,14 @@ import Filter from '../../components/Filter';
 
 import {getPois} from '../../../utils/api/poiAPI';
 import {Poi, Coordinate, Category, CreateModes} from '../../../utils/types';
-
-import Results from './Results';
-import {useBookmarkContext} from '../../../context/BookmarkContext';
-import {useLocationContext} from '../../../context/LocationContext';
 import {
   getRegionFromPointAndDistance,
   useLoadingState,
 } from '../../../utils/Misc';
+
+import Results from './Results';
+import {useBookmarkContext} from '../../../context/BookmarkContext';
+import {useLocationContext} from '../../../context/LocationContext';
 
 const SearchCategory = ({
   navigation,
@@ -85,7 +85,6 @@ const SearchCategory = ({
 
   const insets = useSafeAreaInsets();
   const [bottomSheetIndex, setBottomSheetIndex] = useState<number>(2);
-  const bottomSheetRef = useRef<BottomSheet>(null);
   const snapPoints = useMemo(
     () => [
       insets.bottom + vs(60),
@@ -94,8 +93,10 @@ const SearchCategory = ({
     ],
     [insets],
   );
+
   const handleSheetChange = useCallback(
     (_: number, toIndex: number) => {
+      console.log('what the fuck', toIndex);
       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
       setBottomSheetIndex(toIndex);
       if (toIndex === 0) {
@@ -117,7 +118,7 @@ const SearchCategory = ({
         );
       }
     },
-    [places, radius],
+    [], // TODO: Dependency array here is weird
   );
 
   const filterRef = useRef<any>(null); // due to forwardRef
@@ -169,6 +170,7 @@ const SearchCategory = ({
         style={styles.map}
         showsUserLocation={true}
         showsMyLocationButton={false}
+        rotateEnabled={false}
         initialRegion={getRegionFromPointAndDistance(location, radius)}
         onRegionChangeComplete={region => {
           setTempLocation({
@@ -210,7 +212,9 @@ const SearchCategory = ({
           <Icon
             size="m"
             icon={myLocationOff ? icons.locationFilled : icons.location}
-            color={myLocationOff ? colors[theme].accent : colors[theme].neutral}
+            color={
+              myLocationOff ? colors[theme].accent : colors[theme].secondary
+            }
             disabled={!myLocationOff}
             onPress={() => {
               setLocation(myLocation);
@@ -224,7 +228,7 @@ const SearchCategory = ({
         </View>
       </SafeAreaView>
 
-      {bottomSheetIndex === 0 && tempLocationOff ? (
+      {bottomSheetIndex === 0 && (tempLocationOff || loading) ? (
         <TouchableOpacity
           style={[
             styles.searchHere,
@@ -245,7 +249,6 @@ const SearchCategory = ({
 
       <BottomSheet
         backgroundStyle={STYLES.container}
-        ref={bottomSheetRef}
         index={2}
         snapPoints={snapPoints}
         onAnimate={handleSheetChange}
