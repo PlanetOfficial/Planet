@@ -100,6 +100,7 @@ const Friends = ({navigation}: {navigation: any}) => {
             ),
           )
         }
+        searchPrompt={strings.friends.searchFriends}
       />
       {searching ? (
         loading ? (

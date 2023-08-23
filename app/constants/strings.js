@@ -105,6 +105,7 @@ const strings = {
     categories: 'Categories',
     viewAll: 'View All',
     allCategories: 'All Categories',
+    search: 'Search',
   },
   search: {
     search: 'Search',

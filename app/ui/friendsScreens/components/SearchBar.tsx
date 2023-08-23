@@ -26,6 +26,7 @@ interface Props {
   setSearching: (searching: boolean) => void;
   setSearchResults: (results: UserInfo[]) => void;
   search: (text: string) => void;
+  searchPrompt: string;
 }
 
 const SearchBar: React.FC<Props> = ({
@@ -35,6 +36,7 @@ const SearchBar: React.FC<Props> = ({
   setSearching,
   setSearchResults,
   search,
+  searchPrompt,
 }) => {
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
@@ -50,7 +52,7 @@ const SearchBar: React.FC<Props> = ({
           ref={searchRef}
           style={styles.searchText}
           value={searchText}
-          placeholder={strings.friends.searchFriends}
+          placeholder={searchPrompt}
           placeholderTextColor={colors[theme].secondary}
           autoCapitalize="none"
           autoCorrect={false}

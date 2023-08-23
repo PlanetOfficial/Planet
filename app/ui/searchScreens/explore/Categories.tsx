@@ -99,7 +99,7 @@ const styling = (theme: 'light' | 'dark') =>
       flexWrap: 'wrap',
       alignItems: 'center',
       justifyContent: 'space-between',
-      marginTop: s(10),
+      marginTop: s(5),
     },
     header: {
       flexDirection: 'row',

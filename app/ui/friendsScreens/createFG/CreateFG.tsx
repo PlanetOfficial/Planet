@@ -55,6 +55,7 @@ const CreateFG = ({navigation}: {navigation: any}) => {
             search(text, setSearchText, setSearchResults, friends),
           )
         }
+        searchPrompt={strings.friends.searchFriends}
       />
 
       {searching ? (

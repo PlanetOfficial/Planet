@@ -70,16 +70,9 @@ const Explore = ({
           setSearchText={setSearchText}
           setSearchResults={() => {}}
           search={() => {}}
+          searchPrompt={strings.explore.search}
         />
       </SafeAreaView>
-      {/* <Header
-        navigation={navigation}
-        searching={searching}
-        setSearching={setSearching}
-        searchText={searchText}
-        setSearchText={setSearchText}
-        mode={mode}
-      /> */}
       {!searching ? (
         <ScrollView scrollIndicatorInsets={{right: 1}}>
           <Categories navigation={navigation} location={location} mode={mode} />
