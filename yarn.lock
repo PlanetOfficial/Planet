@@ -5409,10 +5409,10 @@ levn@^0.4.1:
     prelude-ls "^1.2.1"
     type-check "~0.4.0"
 
-libphonenumber-js@^1.10.37:
-  version "1.10.37"
-  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.10.37.tgz#185264130c9375f17d0c487a288223294579929c"
-  integrity sha512-Z10PCaOCiAxbUxLyR31DNeeNugSVP6iv/m7UrSKS5JHziEMApJtgku4e9Q69pzzSC9LnQiM09sqsGf2ticZnMw==
+libphonenumber-js@^1.10.39:
+  version "1.10.41"
+  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.10.41.tgz#14b6be5894bed3385808a6a088031b5b8a27c105"
+  integrity sha512-4rmmF4u4vD3eGNuuCGjCPwRwO+fIuu1WWcS7VwbPTiMFkJd8F02v8o5pY5tlYuMR+xOvJ88mtOHpkm0Tnu2LcQ==
 
 lines-and-columns@^1.1.6:
   version "1.2.4"
@@ -7058,15 +7058,15 @@ react-native@0.72.2:
     ws "^6.2.2"
     yargs "^17.6.2"
 
-react-phone-number-input@^3.2.23:
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/react-phone-number-input/-/react-phone-number-input-3.3.0.tgz#ac5a259523d93a7539ae1cab704f3241ce830bb6"
-  integrity sha512-6d1lq9parRGnVz6laEN7ijU7MeUCkFEJsTnzB/97nVrm/WE48EDEV5/2bu08mzfZjvX6shpryqG0DUCNiP07Cg==
+react-phone-number-input@^3.3.1:
+  version "3.3.4"
+  resolved "https://registry.yarnpkg.com/react-phone-number-input/-/react-phone-number-input-3.3.4.tgz#a9efaa70185444306bef296c538ecfbbadc0b4b3"
+  integrity sha512-g3cnJroqkgPlfg2jWg1I7TRRASkTutYVdTbmi8XObhmAv3OCdJHZxaeW5nKelPlvqyWHXnTKZNE3lKMas3rS0Q==
   dependencies:
     classnames "^2.3.1"
     country-flag-icons "^1.5.4"
     input-format "^0.3.8"
-    libphonenumber-js "^1.10.37"
+    libphonenumber-js "^1.10.39"
     prop-types "^15.8.1"
 
 react-refresh@^0.4.0:
