@@ -10,7 +10,6 @@ import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 
 import {Coordinate, Category} from '../../../utils/types';
-import {getRegionFromPointAndDistance} from '../../../utils/Misc';
 
 interface Props {
   navigation: any;
@@ -19,7 +18,6 @@ interface Props {
   myLocation: Coordinate;
   setLocation: (location: Coordinate) => void;
   setTempLocation: (location: Coordinate) => void;
-  radius: number;
   mapRef: React.RefObject<MapView>;
 }
 
@@ -30,7 +28,6 @@ const Header: React.FC<Props> = ({
   myLocation,
   setLocation,
   setTempLocation,
-  radius,
   mapRef,
 }) => {
   const theme = useColorScheme() || 'light';
@@ -47,12 +44,12 @@ const Header: React.FC<Props> = ({
           color={myLocationOff ? colors[theme].accent : colors[theme].secondary}
           disabled={!myLocationOff}
           onPress={() => {
-            setLocation(myLocation);
-            setTempLocation(myLocation);
-            mapRef.current?.animateToRegion(
-              getRegionFromPointAndDistance(myLocation, radius),
-              500,
-            );
+            // setLocation(myLocation);
+            // setTempLocation(myLocation);
+            // mapRef.current?.animateToRegion(
+            //   getRegionFromPoints(places),
+            //   500,
+            // );
           }}
         />
       </View>

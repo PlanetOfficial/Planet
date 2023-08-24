@@ -15,42 +15,25 @@ import {Coordinate, Poi} from './types';
 
 import {bookmark} from './api/bookmarkAPI';
 
-/*
-  Given a point and the longitudeDelta, calculate the radius of the circle (the
-  point is the center of the circle)
-*/
-export const calculateRadius = (point1: Coordinate, longitudeDelta: number) => {
-  const point2 = {
-    latitude: point1.latitude,
-    longitude: point1.longitude + longitudeDelta / 2,
-  };
-  const distance = getDistanceFromCoordinates(point1, point2);
+export const getRegionFromPoints = (points: Coordinate[]) => {
+  const minLat = Math.min(...points.map(point => point.latitude));
+  const maxLat = Math.max(...points.map(point => point.latitude));
+  const minLong = Math.min(...points.map(point => point.longitude));
+  const maxLong = Math.max(...points.map(point => point.longitude));
 
-  return (6 / 7) * distance;
-};
+  const midLat = (minLat + maxLat) / 2;
+  const midLong = (minLong + maxLong) / 2;
 
-/*
-  Given a point and a radius, calculate the bounding box of the view.
-*/
-export const getRegionFromPointAndDistance = (
-  point: Coordinate,
-  distance: number,
-) => {
-  const earthRadius = 6378137; // Radius of the Earth in meters
-  const angularDistance = ((7 / 6) * distance) / earthRadius;
-  const newLongitude =
-    point.longitude +
-    (angularDistance * 180) /
-      Math.PI /
-      Math.cos((point.latitude * Math.PI) / 180);
+  const deltaLat = maxLat - minLat;
+  const deltaLong = maxLong - minLong;
 
-  const newDelta = (newLongitude - point.longitude) * 2;
+  const delta = (Math.max(deltaLat, deltaLong) * 6) / 5;
 
   return {
-    latitude: point.latitude,
-    longitude: point.longitude,
-    latitudeDelta: newDelta,
-    longitudeDelta: newDelta,
+    latitude: midLat,
+    longitude: midLong,
+    latitudeDelta: delta,
+    longitudeDelta: delta,
   };
 };
 

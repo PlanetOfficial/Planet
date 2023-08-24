@@ -28,7 +28,5 @@ export type FriendsContextType = {
 export type LocationContextType = {
   location: Coordinate;
   setLocation: React.Dispatch<React.SetStateAction<Coordinate>>;
-  radius: number;
-  setRadius: React.Dispatch<React.SetStateAction<number>>;
   initializeLocation: () => Promise<void>;
 };

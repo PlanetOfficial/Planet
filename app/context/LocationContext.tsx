@@ -7,7 +7,6 @@ import React, {
 } from 'react';
 import {Alert} from 'react-native';
 
-import numbers from '../constants/numbers';
 import strings from '../constants/strings';
 
 import {Coordinate} from '../utils/types';
@@ -30,21 +29,19 @@ const LocationStateProvider = ({
     latitude: 0,
     longitude: 0,
   });
-  const [radius, setRadius] = useState<number>(numbers.defaultRadius);
 
   const initializeLocation = async () => {
     const result = await fetchUserLocation();
     if (result) {
       setLocation(result);
-      setRadius(numbers.defaultRadius);
     } else {
       Alert.alert(strings.error.error, strings.error.locationPermission);
     }
   };
 
   const locationContext = useMemo(
-    () => ({location, setLocation, radius, setRadius, initializeLocation}),
-    [location, radius],
+    () => ({location, setLocation, initializeLocation}),
+    [location],
   );
 
   useEffect(() => {

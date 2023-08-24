@@ -11,7 +11,6 @@ import {s} from 'react-native-size-matters';
 
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
-import numbers from '../../../constants/numbers';
 
 import Text from '../../components/Text';
 
@@ -64,7 +63,6 @@ const GenreRow: React.FC<Props> = ({navigation, location, mode, genre}) => {
                 navigation.navigate('SearchCategory', {
                   category: category,
                   myLocation: location,
-                  radius: numbers.defaultRadius,
                   mode: mode,
                 })
               }>

@@ -114,8 +114,6 @@ const strings = {
     noResultsFound: 'No Results Found',
     noResultsFoundDescription: 'Try searching for something else',
     setLocation: 'Set Location',
-    tooFar: 'Radius too large',
-    tooFarMessage: 'Please select a smaller radius',
   },
   greeting: {
     morning: 'Good Morning',

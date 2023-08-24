@@ -17,16 +17,13 @@ import numbers from '../../../constants/numbers';
 import Text from '../../components/Text';
 
 import {Poi, Coordinate} from '../../../utils/types';
-import {getRegionFromPointAndDistance} from '../../../utils/Misc';
-import Icon from '../../components/Icon';
 
 interface Props {
   mapRef: React.RefObject<MapView>;
   scrollViewRef: React.RefObject<ScrollView>;
-  location: Coordinate;
-  radius: number;
   bottomSheetRef: React.RefObject<BottomSheet>;
   bottomSheetIndex: number;
+  location: Coordinate;
   setTempLocation: (location: Coordinate) => void;
   places: Poi[];
   selectedIndex: number;
@@ -36,10 +33,9 @@ interface Props {
 const Map: React.FC<Props> = ({
   mapRef,
   scrollViewRef,
-  location,
-  radius,
   bottomSheetRef,
   bottomSheetIndex,
+  location,
   setTempLocation,
   places,
   selectedIndex,
@@ -54,7 +50,12 @@ const Map: React.FC<Props> = ({
       showsUserLocation={true}
       showsMyLocationButton={false}
       rotateEnabled={false}
-      initialRegion={getRegionFromPointAndDistance(location, radius)}
+      initialRegion={{
+        latitude: location.latitude,
+        longitude: location.longitude,
+        latitudeDelta: numbers.defaultLatitudeDelta,
+        longitudeDelta: numbers.defaultLongitudeDelta,
+      }}
       onPanDrag={() => {
         if (bottomSheetIndex === 1) {
           bottomSheetRef.current?.snapToIndex(0);

@@ -8,24 +8,18 @@ import {requestAndValidate} from './authAPI';
 
 export const getPois = async (
   category: Category,
-  radius: number,
   latitude: number,
   longitude: number,
   filters?: {[key: string]: string | string[]},
 ): Promise<Poi[] | null> => {
-  if (radius >= 5000) {
-    latitude = Math.round(latitude * 100) / 100;
-    longitude = Math.round(longitude * 100) / 100;
-  } else {
-    latitude = Math.round(latitude * 1000) / 1000;
-    longitude = Math.round(longitude * 1000) / 1000;
-  }
+  latitude = Math.round(latitude * 100) / 100;
+  longitude = Math.round(longitude * 100) / 100;
 
   const response = await fetch(
     PoiAPIURL +
       `/poi?category=${JSON.stringify(
         category,
-      )}&radius=${radius}&latitude=${latitude}&longitude=${longitude}&filters=${JSON.stringify(
+      )}&latitude=${latitude}&longitude=${longitude}&filters=${JSON.stringify(
         filters,
       )}`,
     {

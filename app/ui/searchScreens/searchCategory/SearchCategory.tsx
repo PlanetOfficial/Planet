@@ -26,10 +26,7 @@ import Text from '../../components/Text';
 
 import {getPois} from '../../../utils/api/poiAPI';
 import {Poi, Coordinate, Category, CreateModes} from '../../../utils/types';
-import {
-  determineOffset,
-  getRegionFromPointAndDistance,
-} from '../../../utils/Misc';
+import {determineOffset, getRegionFromPoints} from '../../../utils/Misc';
 
 import {useBookmarkContext} from '../../../context/BookmarkContext';
 import {useLocationContext} from '../../../context/LocationContext';
@@ -75,7 +72,7 @@ const SearchCategory = ({
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const {bookmarks, setBookmarks} = useBookmarkContext();
 
-  const {location, setLocation, radius} = useLocationContext();
+  const {location, setLocation} = useLocationContext();
   const [tempLocation, setTempLocation] = useState<Coordinate>(location);
   const tempLocationOff = determineOffset(tempLocation, location);
   const myLocationOff = determineOffset(myLocation, location);
@@ -97,11 +94,8 @@ const SearchCategory = ({
       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
       setBottomSheetIndex(toIndex);
       filterRef.current?.closeDropdown();
-      if (toIndex === 0) {
-        mapRef.current?.animateToRegion(
-          getRegionFromPointAndDistance(location, radius),
-          300,
-        );
+      if (toIndex === 0 && places?.length > 0) {
+        mapRef.current?.animateToRegion(getRegionFromPoints(places), 300);
       } else if (fromIndex === 2 && toIndex === 1) {
         if (places?.length > 0) {
           mapRef.current?.animateToRegion(
@@ -119,7 +113,7 @@ const SearchCategory = ({
         setSelectedIndex(0);
       }
     },
-    [places, location, radius],
+    [places],
   );
 
   const HandleComponent = useCallback(
@@ -154,7 +148,6 @@ const SearchCategory = ({
     const loadData = async (_filters: {[key: string]: string | string[]}) => {
       const data = await getPois(
         category,
-        radius,
         location.latitude,
         location.longitude,
         _filters ? _filters : undefined,
@@ -186,17 +179,16 @@ const SearchCategory = ({
 
     setLoading(true);
     loadData(_filters);
-  }, [category, filters, location, radius]);
+  }, [category, filters, location]);
 
   return (
     <View style={STYLES.container}>
       <Map
         mapRef={mapRef}
         scrollViewRef={scrollViewRef}
-        location={location}
-        radius={radius}
         bottomSheetRef={bottomSheetRef}
         bottomSheetIndex={bottomSheetIndex}
+        location={location}
         setTempLocation={setTempLocation}
         places={places}
         selectedIndex={selectedIndex}
@@ -220,7 +212,6 @@ const SearchCategory = ({
         myLocation={myLocation}
         setLocation={setLocation}
         setTempLocation={setTempLocation}
-        radius={radius}
         mapRef={mapRef}
       />
 
