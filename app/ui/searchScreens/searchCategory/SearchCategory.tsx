@@ -85,8 +85,8 @@ const SearchCategory = ({
   const bottomSheetRef = useRef<BottomSheet>(null);
   const snapPoints = useMemo(
     () => [
-      insets.bottom + vs(20),
-      insets.bottom + s(260),
+      insets.bottom + s(30),
+      insets.bottom + s(285),
       vs(680) - (insets.top + s(50)),
     ],
     [insets],
@@ -255,7 +255,7 @@ const SearchCategory = ({
         enableContentPanningGesture={false}
         enableHandlePanningGesture={!loading && bottomSheetIndex !== 0}>
         {bottomSheetIndex === 0 ? (
-          <View style={{height: s(45)}} />
+          <View style={{height: s(50)}} />
         ) : (
           <Filter
             ref={filterRef}

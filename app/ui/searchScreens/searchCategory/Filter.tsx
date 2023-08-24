@@ -224,6 +224,7 @@ const styling = (theme: 'light' | 'dark') =>
       borderBottomWidth: 1,
       borderColor: colors[theme].secondary,
       zIndex: 10,
+      marginBottom: s(5),
     },
     contentContainer: {
       paddingLeft: s(20),

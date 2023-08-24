@@ -1,5 +1,11 @@
 import React from 'react';
-import {View, StyleSheet, useColorScheme, ScrollView} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  useColorScheme,
+  ScrollView,
+  Image,
+} from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
 import {s} from 'react-native-size-matters';
 import BottomSheet from '@gorhom/bottom-sheet';
@@ -12,6 +18,7 @@ import Text from '../../components/Text';
 
 import {Poi, Coordinate} from '../../../utils/types';
 import {getRegionFromPointAndDistance} from '../../../utils/Misc';
+import Icon from '../../components/Icon';
 
 interface Props {
   mapRef: React.RefObject<MapView>;
@@ -67,7 +74,6 @@ const Map: React.FC<Props> = ({
                 latitude: place.latitude,
                 longitude: place.longitude,
               }}
-              image={icons.pin}
               opacity={
                 bottomSheetIndex === 1 && index !== selectedIndex ? 0.3 : 1
               }
@@ -90,6 +96,7 @@ const Map: React.FC<Props> = ({
                 );
               }}>
               <View style={styles.pin}>
+                <Image style={styles.icon} source={icons.pin} />
                 <Text size="xs" color={colors[theme].accent}>
                   {place.rating}
                 </Text>
@@ -107,12 +114,17 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-  pin: {
+  icon: {
     position: 'absolute',
+    width: s(40),
+    height: s(40),
+  },
+  pin: {
+    alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'center',
-    width: 43,
-    height: 33,
+    paddingBottom: s(10),
+    backgroundColor: colors.light.accent,
   },
 });
 
