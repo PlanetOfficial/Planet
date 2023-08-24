@@ -4,14 +4,14 @@ import MapView, {Marker} from 'react-native-maps';
 import {s} from 'react-native-size-matters';
 import BottomSheet from '@gorhom/bottom-sheet';
 
-import icons from '../../../constants/icons';
 import colors from '../../../constants/colors';
+import icons from '../../../constants/icons';
+import numbers from '../../../constants/numbers';
 
 import Text from '../../components/Text';
 
 import {Poi, Coordinate} from '../../../utils/types';
 import {getRegionFromPointAndDistance} from '../../../utils/Misc';
-import numbers from '../../../constants/numbers';
 
 interface Props {
   mapRef: React.RefObject<MapView>;

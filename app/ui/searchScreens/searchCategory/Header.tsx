@@ -8,6 +8,7 @@ import STYLING from '../../../constants/styles';
 
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
+
 import {Coordinate, Category} from '../../../utils/types';
 import {getRegionFromPointAndDistance} from '../../../utils/Misc';
 
