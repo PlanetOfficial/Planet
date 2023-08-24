@@ -9,13 +9,13 @@ import {
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 
-import icons from '../../constants/icons';
-import colors from '../../constants/colors';
+import icons from '../../../constants/icons';
+import colors from '../../../constants/colors';
 
-import Text from '../components/Text';
-import Icon from '../components/Icon';
+import Text from '../../components/Text';
+import Icon from '../../components/Icon';
 
-import {Filter as FilterT} from '../../utils/types';
+import {Filter as FilterT} from '../../../utils/types';
 
 interface ChildComponentProps {
   filters: FilterT[];

@@ -23,7 +23,6 @@ import strings from '../../../constants/strings';
 import STYLING from '../../../constants/styles';
 
 import Text from '../../components/Text';
-import Filter from '../../components/Filter';
 
 import {getPois} from '../../../utils/api/poiAPI';
 import {Poi, Coordinate, Category, CreateModes} from '../../../utils/types';
@@ -37,6 +36,7 @@ import {useLocationContext} from '../../../context/LocationContext';
 
 import Map from './Map';
 import Header from './Header';
+import Filter from './Filter';
 import Results from './Results';
 import Handle from './Handle';
 
@@ -127,6 +127,9 @@ const SearchCategory = ({
       <Handle
         {...props}
         onHandlePress={() => {
+          if (loading) {
+            return;
+          }
           if (bottomSheetIndex === 0) {
             setBottomSheetIndex(2);
             bottomSheetRef.current?.snapToIndex(2);
@@ -137,7 +140,7 @@ const SearchCategory = ({
         }}
       />
     ),
-    [bottomSheetIndex],
+    [loading, bottomSheetIndex],
   );
 
   const filterRef = useRef<any>(null); // due to forwardRef
@@ -250,7 +253,7 @@ const SearchCategory = ({
         snapPoints={snapPoints}
         onAnimate={handleSheetChange}
         enableContentPanningGesture={false}
-        enableHandlePanningGesture={bottomSheetIndex !== 0}>
+        enableHandlePanningGesture={!loading && bottomSheetIndex !== 0}>
         {bottomSheetIndex === 0 ? (
           <View style={{height: s(45)}} />
         ) : (
