@@ -67,7 +67,7 @@ const Map: React.FC<Props> = ({
           longitude: region.longitude,
         });
       }}>
-      {places.length > 0
+      {places?.length > 0
         ? places.map((place: Poi, index: number) => (
             <Marker
               key={index}

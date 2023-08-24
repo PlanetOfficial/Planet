@@ -23,7 +23,7 @@ import numbers from '../../../constants/numbers';
 
 interface Props {
   navigation: any;
-  results: Poi[];
+  places: Poi[];
   filterRef: any;
   mapRef: React.RefObject<MapView>;
   scrollViewRef: React.RefObject<ScrollView>;
@@ -39,7 +39,7 @@ interface Props {
 
 const Results: React.FC<Props> = ({
   navigation,
-  results: places,
+  places,
   filterRef,
   mapRef,
   scrollViewRef,
@@ -98,7 +98,7 @@ const Results: React.FC<Props> = ({
         keyExtractor={(item: Poi) => item.id.toString()}
       />
     );
-  } else {
+  } else if (places?.length > 0) {
     return (
       <ScrollView
         ref={scrollViewRef}
@@ -164,6 +164,8 @@ const Results: React.FC<Props> = ({
         ))}
       </ScrollView>
     );
+  } else {
+    return null;
   }
 };
 

@@ -155,7 +155,19 @@ const SearchCategory = ({
       if (data) {
         setPlaces(data);
         bottomSheetRef.current?.snapToIndex(2);
-        mapRef.current?.animateToRegion(getRegionFromPoints(data), 300);
+        if (data.length > 0) {
+          mapRef.current?.animateToRegion(getRegionFromPoints(data), 300);
+        } else {
+          mapRef.current?.animateToRegion(
+            {
+              latitude: location.latitude,
+              longitude: location.longitude,
+              latitudeDelta: numbers.defaultLatitudeDelta,
+              longitudeDelta: numbers.defaultLongitudeDelta,
+            },
+            300,
+          );
+        }
       } else {
         Alert.alert(strings.error.error, strings.error.loadPlaces);
       }
@@ -261,7 +273,7 @@ const SearchCategory = ({
         ) : (
           <Results
             navigation={navigation}
-            results={places}
+            places={places}
             filterRef={filterRef}
             mapRef={mapRef}
             scrollViewRef={scrollViewRef}
