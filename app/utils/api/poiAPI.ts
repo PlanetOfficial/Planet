@@ -1,6 +1,6 @@
 import {PoiAPIURL, XanoAPIKey} from './APIConstants';
 
-import {Category, Poi, PoiDetail} from '../types';
+import {Category, Locality, Poi, PoiDetail} from '../types';
 
 import EncryptedStorage from 'react-native-encrypted-storage';
 
@@ -133,6 +133,54 @@ export const getRecentlyViewed = async (): Promise<Poi[] | null> => {
 
   if (response?.ok) {
     const myJson: Poi[] = await response.json();
+    return myJson;
+  } else {
+    return null;
+  }
+};
+
+export const autocompleteLocality = async (
+  query: string,
+  latitude: number,
+  longitude: number,
+): Promise<Locality[] | null> => {
+  const response = await fetch(
+    PoiAPIURL +
+      `/autocomplete/locality?query=${query}&latitude=${latitude}&longitude=${longitude}`,
+    {
+      method: 'GET',
+      headers: {
+        Authorization: XanoAPIKey,
+      },
+    },
+  );
+
+  if (response?.ok) {
+    const myJson = await response.json();
+    return myJson;
+  } else {
+    return null;
+  }
+};
+
+export const autocompleteLocalityLatLng = async (
+  place_id: string,
+): Promise<{
+  lat: number;
+  lng: number;
+} | null> => {
+  const response = await fetch(
+    PoiAPIURL + `/autocomplete/localityLatLng?place_id=${place_id}`,
+    {
+      method: 'GET',
+      headers: {
+        Authorization: XanoAPIKey,
+      },
+    },
+  );
+
+  if (response?.ok) {
+    const myJson = await response.json();
     return myJson;
   } else {
     return null;

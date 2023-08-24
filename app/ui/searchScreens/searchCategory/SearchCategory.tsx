@@ -155,6 +155,7 @@ const SearchCategory = ({
       if (data) {
         setPlaces(data);
         bottomSheetRef.current?.snapToIndex(2);
+        mapRef.current?.animateToRegion(getRegionFromPoints(data), 300);
       } else {
         Alert.alert(strings.error.error, strings.error.loadPlaces);
       }
@@ -210,9 +211,7 @@ const SearchCategory = ({
         category={category}
         myLocationOff={myLocationOff}
         myLocation={myLocation}
-        setLocation={setLocation}
-        setTempLocation={setTempLocation}
-        mapRef={mapRef}
+        mode={mode}
       />
 
       {bottomSheetIndex === 0 && (tempLocationOff || loading) ? (

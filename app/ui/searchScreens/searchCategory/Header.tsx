@@ -1,6 +1,5 @@
 import React from 'react';
 import {View, SafeAreaView, useColorScheme} from 'react-native';
-import MapView from 'react-native-maps';
 
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
@@ -9,16 +8,14 @@ import STYLING from '../../../constants/styles';
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 
-import {Coordinate, Category} from '../../../utils/types';
+import {Coordinate, Category, CreateModes} from '../../../utils/types';
 
 interface Props {
   navigation: any;
   category: Category;
   myLocationOff: boolean;
   myLocation: Coordinate;
-  setLocation: (location: Coordinate) => void;
-  setTempLocation: (location: Coordinate) => void;
-  mapRef: React.RefObject<MapView>;
+  mode: CreateModes;
 }
 
 const Header: React.FC<Props> = ({
@@ -26,9 +23,7 @@ const Header: React.FC<Props> = ({
   category,
   myLocationOff,
   myLocation,
-  setLocation,
-  setTempLocation,
-  mapRef,
+  mode,
 }) => {
   const theme = useColorScheme() || 'light';
   const STYLES = STYLING(theme);
@@ -40,16 +35,14 @@ const Header: React.FC<Props> = ({
         <Text>{category.name}</Text>
         <Icon
           size="m"
-          icon={myLocationOff ? icons.locationFilled : icons.location}
-          color={myLocationOff ? colors[theme].accent : colors[theme].secondary}
-          disabled={!myLocationOff}
+          icon={icons.locationFilled}
+          color={myLocationOff ? colors[theme].accent : colors[theme].blue}
           onPress={() => {
-            // setLocation(myLocation);
-            // setTempLocation(myLocation);
-            // mapRef.current?.animateToRegion(
-            //   getRegionFromPoints(places),
-            //   500,
-            // );
+            navigation.navigate('SearchMap', {
+              mode: mode,
+              myLocation: myLocation,
+              category: category,
+            });
           }}
         />
       </View>
