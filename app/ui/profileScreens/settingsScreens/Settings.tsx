@@ -40,7 +40,7 @@ const Settings = ({navigation}: {navigation: any}) => {
     },
     {
       name: 'Locations',
-      icon: icons.pin,
+      icon: icons.location,
       onPress: () => navigation.navigate('LocationsSettings'),
     },
     {

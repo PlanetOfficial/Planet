@@ -26,6 +26,7 @@ interface Props {
   results: Poi[];
   filterRef: any;
   mapRef: React.RefObject<MapView>;
+  scrollViewRef: React.RefObject<ScrollView>;
   bookmarks: Poi[];
   setBookmarks: (bookmarks: Poi[]) => void;
   location: Coordinate;
@@ -41,6 +42,7 @@ const Results: React.FC<Props> = ({
   results: places,
   filterRef,
   mapRef,
+  scrollViewRef,
   bookmarks,
   setBookmarks,
   location,
@@ -96,9 +98,10 @@ const Results: React.FC<Props> = ({
         keyExtractor={(item: Poi) => item.id.toString()}
       />
     );
-  } else if (bottomSheetIndex === 1) {
+  } else {
     return (
       <ScrollView
+        ref={scrollViewRef}
         style={styles.scrollView}
         contentContainerStyle={{
           paddingHorizontal: (s(350) - s(280)) / 2,
@@ -161,8 +164,6 @@ const Results: React.FC<Props> = ({
         ))}
       </ScrollView>
     );
-  } else {
-    return <View />;
   }
 };
 

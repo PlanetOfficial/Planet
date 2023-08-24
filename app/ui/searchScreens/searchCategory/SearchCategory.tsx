@@ -9,9 +9,10 @@ import {
   Platform,
   LayoutAnimation,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import BottomSheet from '@gorhom/bottom-sheet';
+import BottomSheet, {BottomSheetHandleProps} from '@gorhom/bottom-sheet';
 import {s, vs} from 'react-native-size-matters';
 import {BlurView} from '@react-native-community/blur';
 import MapView from 'react-native-maps';
@@ -37,6 +38,7 @@ import {useLocationContext} from '../../../context/LocationContext';
 import Map from './Map';
 import Header from './Header';
 import Results from './Results';
+import Handle from './Handle';
 
 const SearchCategory = ({
   navigation,
@@ -66,6 +68,7 @@ const SearchCategory = ({
   const {mode, myLocation, category} = route.params;
 
   const mapRef = useRef<MapView>(null);
+  const scrollViewRef = useRef<ScrollView>(null);
 
   const [places, setPlaces] = useState<Poi[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -82,7 +85,7 @@ const SearchCategory = ({
   const bottomSheetRef = useRef<BottomSheet>(null);
   const snapPoints = useMemo(
     () => [
-      insets.bottom + vs(60),
+      insets.bottom + vs(20),
       insets.bottom + s(260),
       vs(680) - (insets.top + s(50)),
     ],
@@ -99,7 +102,7 @@ const SearchCategory = ({
           getRegionFromPointAndDistance(location, radius),
           300,
         );
-      } else if (toIndex === 1) {
+      } else if (fromIndex === 2 && toIndex === 1) {
         if (places?.length > 0) {
           mapRef.current?.animateToRegion(
             {
@@ -113,9 +116,28 @@ const SearchCategory = ({
         } else {
           bottomSheetRef.current?.snapToIndex(2 - fromIndex);
         }
+        setSelectedIndex(0);
       }
     },
     [places, location, radius],
+  );
+
+  const HandleComponent = useCallback(
+    (props: BottomSheetHandleProps) => (
+      <Handle
+        {...props}
+        onHandlePress={() => {
+          if (bottomSheetIndex === 0) {
+            setBottomSheetIndex(2);
+            bottomSheetRef.current?.snapToIndex(2);
+          } else if (bottomSheetIndex === 2) {
+            setBottomSheetIndex(1);
+            bottomSheetRef.current?.snapToIndex(1);
+          }
+        }}
+      />
+    ),
+    [bottomSheetIndex],
   );
 
   const filterRef = useRef<any>(null); // due to forwardRef
@@ -167,12 +189,15 @@ const SearchCategory = ({
     <View style={STYLES.container}>
       <Map
         mapRef={mapRef}
+        scrollViewRef={scrollViewRef}
         location={location}
         radius={radius}
         bottomSheetRef={bottomSheetRef}
         bottomSheetIndex={bottomSheetIndex}
         setTempLocation={setTempLocation}
         places={places}
+        selectedIndex={selectedIndex}
+        setSelectedIndex={setSelectedIndex}
       />
 
       {Platform.OS === 'ios' ? (
@@ -201,9 +226,8 @@ const SearchCategory = ({
           style={[
             styles.searchHere,
             {
-              bottom: insets.bottom + vs(60) + vs(10),
+              bottom: insets.bottom + vs(30),
             },
-            STYLES.shadow,
           ]}
           disabled={loading}
           onPress={() => setLocation(tempLocation)}>
@@ -217,17 +241,26 @@ const SearchCategory = ({
 
       <BottomSheet
         ref={bottomSheetRef}
-        backgroundStyle={STYLES.container}
+        backgroundStyle={[
+          STYLES.container,
+          bottomSheetIndex === 0 ? styles.transparent : null,
+        ]}
+        handleComponent={HandleComponent}
         index={2}
         snapPoints={snapPoints}
-        waitFor={bottomSheetIndex === 0 ? bottomSheetRef : undefined}
-        onAnimate={handleSheetChange}>
-        <Filter
-          ref={filterRef}
-          filters={category.filter}
-          currFilters={filters}
-          setCurrFilters={setFilters}
-        />
+        onAnimate={handleSheetChange}
+        enableContentPanningGesture={false}
+        enableHandlePanningGesture={bottomSheetIndex !== 0}>
+        {bottomSheetIndex === 0 ? (
+          <View style={{height: s(45)}} />
+        ) : (
+          <Filter
+            ref={filterRef}
+            filters={category.filter}
+            currFilters={filters}
+            setCurrFilters={setFilters}
+          />
+        )}
         {loading ? (
           <View style={STYLES.center}>
             <ActivityIndicator size="small" color={colors[theme].accent} />
@@ -238,6 +271,7 @@ const SearchCategory = ({
             results={places}
             filterRef={filterRef}
             mapRef={mapRef}
+            scrollViewRef={scrollViewRef}
             bookmarks={bookmarks}
             setBookmarks={setBookmarks}
             location={location}
@@ -270,7 +304,10 @@ const styling = (theme: 'light' | 'dark') =>
       padding: s(10),
       borderRadius: s(10),
       minWidth: s(100),
-      backgroundColor: colors[theme].background,
+      backgroundColor: colors[theme].blur,
+    },
+    transparent: {
+      opacity: 0.8,
     },
   });
 
