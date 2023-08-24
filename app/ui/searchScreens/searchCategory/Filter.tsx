@@ -90,7 +90,7 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
         return ` (${_filter.length})`;
       }
     } else {
-      if (_filter === -1) {
+      if (_filter === -1 || filter.options.length === 1) {
         return '';
       }
       return ': ' + filter.options[_filter];
@@ -113,40 +113,56 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
         contentContainerStyle={styles.contentContainer}
         onScrollBeginDrag={() => closeDropdown()}
         showsHorizontalScrollIndicator={false}>
-        {filters.map((filter: FilterT, idx: number) => (
-          <TouchableOpacity
-            key={idx}
-            ref={r => refs.current.set(idx, r)}
-            style={[styles.chip, styles.chipContainer]}
-            onPress={() => {
-              if (dropdownStatus === filter.name) {
-                closeDropdown();
-              } else {
-                if (dropdownStatus !== '') {
+        {filters.map((filter: FilterT, idx: number) => {
+          const currFilter = currFilters[idx];
+          return (
+            <TouchableOpacity
+              key={idx}
+              ref={r => refs.current.set(idx, r)}
+              style={[
+                styles.chip,
+                styles.chipContainer,
+                currFilter === -1 ||
+                (Array.isArray(currFilter) && currFilter.length === 0)
+                  ? {backgroundColor: colors[theme].primary}
+                  : {backgroundColor: colors[theme].accent},
+              ]}
+              onPress={() => {
+                if (dropdownStatus === filter.name) {
                   closeDropdown();
+                } else {
+                  if (dropdownStatus !== '') {
+                    closeDropdown();
+                  }
+                  LayoutAnimation.configureNext(
+                    LayoutAnimation.Presets.easeInEaseOut,
+                  );
+                  if (filter.options.length === 1) {
+                    handleOptionPress(idx, 0, currFilters, setCurrFilters);
+                  } else {
+                    setDropdownStatus(filter.name);
+                  }
+                  handleMeasure(refs.current.get(idx));
                 }
-                LayoutAnimation.configureNext(
-                  LayoutAnimation.Presets.easeInEaseOut,
-                );
-                setDropdownStatus(filter.name);
-                handleMeasure(refs.current.get(idx));
-              }
-            }}>
-            <Text
-              size="xs"
-              weight="l"
-              color={
-                dropdownStatus === filter.name
-                  ? colors[theme].neutral
-                  : colors[theme].neutral
-              }>
-              {filter.name + displayFilter(filter, idx)}
-            </Text>
-            <View style={styles.chipIcon}>
-              <Icon icon={icons.drop} padding={s(3)} />
-            </View>
-          </TouchableOpacity>
-        ))}
+              }}>
+              <Text
+                size="xs"
+                weight="l"
+                color={
+                  dropdownStatus === filter.name
+                    ? colors[theme].neutral
+                    : colors[theme].neutral
+                }>
+                {filter.name + displayFilter(filter, idx)}
+              </Text>
+              {filter.options.length > 1 ? (
+                <View style={styles.chipIcon}>
+                  <Icon icon={icons.drop} padding={s(3)} />
+                </View>
+              ) : null}
+            </TouchableOpacity>
+          );
+        })}
       </ScrollView>
       {filters.map((filter: FilterT, index: number) =>
         dropdownStatus === filter.name && width !== 0 && pos !== 0 ? (
@@ -215,7 +231,7 @@ const styling = (theme: 'light' | 'dark') =>
       paddingVertical: s(10),
     },
     chipContainer: {
-      marginRight: s(5),
+      marginRight: s(8),
     },
     chip: {
       flexDirection: 'row',
@@ -224,15 +240,14 @@ const styling = (theme: 'light' | 'dark') =>
 
       height: s(25),
       paddingHorizontal: s(10),
-      paddingVertical: s(5),
 
       borderRadius: s(12.5),
-      borderWidth: 0.5,
+      borderWidth: 0.4,
       borderColor: colors[theme].neutral,
     },
     chipIcon: {
-      marginLeft: s(5),
-      marginRight: -s(1),
+      marginLeft: s(3),
+      marginRight: -s(3),
     },
     optionContainer: {
       position: 'absolute',
