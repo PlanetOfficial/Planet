@@ -17,20 +17,13 @@ import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 import Separator from '../../components/SeparatorR';
 
-import {
-  Coordinate,
-  EventDetail,
-  Poi,
-  Recommendation,
-} from '../../../utils/types';
+import {Coordinate, EventDetail, Recommendation} from '../../../utils/types';
 import {fetchUserLocation} from '../../../utils/Misc';
 import {getUpcomingEvent} from '../../../utils/api/eventAPI';
+import {getRecommendations} from '../../../utils/api/recommenderAPI';
 
 import UpcomingEvent from './UpcomingEvent';
-import RecentlyViewed from './RecentlyViewed';
-import {getRecentlyViewed} from '../../../utils/api/poiAPI';
 import Recommendations from './Recommendations';
-import {getRecommendations} from '../../../utils/api/recommenderAPI';
 
 const Home = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';
@@ -43,7 +36,6 @@ const Home = ({navigation}: {navigation: any}) => {
   const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
   const [recommendationsLoading, setRecommendationsLoading] =
     useState<boolean>(false);
-  const [recentlyViewed, setRecentlyViewed] = useState<Poi[]>([]);
 
   const initializeUpcomingEvent = useCallback(async () => {
     const _event = await getUpcomingEvent();
@@ -77,23 +69,13 @@ const Home = ({navigation}: {navigation: any}) => {
     initializeRecommendations();
   }, [loadRecommendations]);
 
-  const initializeRecentlyViewed = useCallback(async () => {
-    const _recentlyViewed = await getRecentlyViewed();
-    if (_recentlyViewed) {
-      setRecentlyViewed(_recentlyViewed);
-    } else {
-      Alert.alert(strings.error.error, strings.error.loadRecentlyViewed);
-    }
-  }, []);
-
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', async () => {
       initializeUpcomingEvent();
-      initializeRecentlyViewed();
     });
 
     return unsubscribe;
-  }, [navigation, initializeUpcomingEvent, initializeRecentlyViewed]);
+  }, [navigation, initializeUpcomingEvent]);
 
   const GetGreetings = () => {
     const myDate = new Date();
@@ -136,14 +118,6 @@ const Home = ({navigation}: {navigation: any}) => {
             recommendations={recommendations}
             loadRecommendations={loadRecommendations}
             recommendationsLoading={recommendationsLoading}
-          />
-        ) : null}
-        <Separator />
-        {recentlyViewed.length > 0 && location ? (
-          <RecentlyViewed
-            navigation={navigation}
-            recentlyViewed={recentlyViewed}
-            location={location}
           />
         ) : null}
       </ScrollView>

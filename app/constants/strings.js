@@ -79,9 +79,6 @@ const strings = {
     viewAllEvents: 'View All Events',
     noUpcomingEvents: 'Create an event',
     recommendations: 'Recommended Events for You',
-    recentlyViewed: 'Recently Viewed',
-    recentlyViewedInfo:
-      'Destinations you have viewed in the past week will show up here.',
     seeAll: 'See All',
     customize: 'Customize this event',
     noRecommendations: 'No Recommendations Found',
@@ -110,6 +107,7 @@ const strings = {
     setLocation: 'Set Location',
     searchLocation: 'Search Location',
     yourLocation: 'Your Location',
+    recentlyViewed: 'Recently Viewed',
   },
   greeting: {
     morning: 'Good Morning',

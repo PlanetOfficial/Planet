@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   View,
   ScrollView,
@@ -20,6 +20,8 @@ import STYLING from '../../../constants/styles';
 import Icon from '../../components/Icon';
 import PoiRow from '../../components/PoiRow';
 import Text from '../../components/Text';
+import SearchBar from '../../components/SearchBar';
+import Separator from '../../components/SeparatorR';
 
 import {
   fetchUserLocation,
@@ -33,12 +35,13 @@ import {
   Locality,
   Category,
 } from '../../../utils/types';
-import {autocompleteSearch} from '../../../utils/api/poiAPI';
+import {autocompleteSearch, getRecentlyViewed} from '../../../utils/api/poiAPI';
 
 import {useBookmarkContext} from '../../../context/BookmarkContext';
-import SearchBar from '../../friendsScreens/components/SearchBar';
+
 import Categories from './Categories';
 import SearchResult from './SearchResult';
+import RecentlyViewed from './RecentlyViewed';
 
 const Explore = ({
   navigation,
@@ -71,14 +74,25 @@ const Explore = ({
 
   const {bookmarks, setBookmarks} = useBookmarkContext();
 
+  const [recentlyViewed, setRecentlyViewed] = useState<Poi[]>([]);
+  const initializeRecentlyViewed = useCallback(async () => {
+    const _recentlyViewed = await getRecentlyViewed();
+    if (_recentlyViewed) {
+      setRecentlyViewed(_recentlyViewed);
+    } else {
+      Alert.alert(strings.error.error, strings.error.loadRecentlyViewed);
+    }
+  }, []);
+
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', async () => {
       setMyLocation(await fetchUserLocation());
       setSearchText('');
+      initializeRecentlyViewed();
     });
 
     return unsubscribe;
-  }, [navigation]);
+  }, [navigation, initializeRecentlyViewed]);
 
   return (
     <View style={STYLES.container}>
@@ -135,6 +149,14 @@ const Explore = ({
             myLocation={myLocation}
             mode={mode}
           />
+          <Separator />
+          {recentlyViewed.length > 0 && myLocation ? (
+            <RecentlyViewed
+              navigation={navigation}
+              recentlyViewed={recentlyViewed}
+              location={myLocation}
+            />
+          ) : null}
         </ScrollView>
       ) : searchText.length > 2 ? (
         <SearchResult

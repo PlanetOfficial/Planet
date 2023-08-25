@@ -29,7 +29,7 @@ import {
 } from '../../../utils/types';
 
 import {useLocationContext} from '../../../context/LocationContext';
-import SearchBar from '../../friendsScreens/components/SearchBar';
+import SearchBar from '../../components/SearchBar';
 
 import {useLoadingState} from '../../../utils/Misc';
 import {

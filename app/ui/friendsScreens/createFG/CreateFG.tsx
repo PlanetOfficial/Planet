@@ -17,7 +17,7 @@ import STYLING from '../../../constants/styles';
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 import UserRow from '../../components/UserRow';
-import SearchBar from '../components/SearchBar';
+import SearchBar from '../../components/SearchBar';
 
 import {UserInfo} from '../../../utils/types';
 import {useLoadingState} from '../../../utils/Misc';
