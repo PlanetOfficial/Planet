@@ -69,7 +69,11 @@ const SearchResult: React.FC<Props> = ({
                   mode: mode,
                 })
               }>
-              <Image source={{uri: item.icon.url}} style={styles.icon} />
+              <Image
+                source={{uri: item.icon.url}}
+                style={styles.icon}
+                tintColor={colors[theme].neutral}
+              />
               <View style={styles.text}>
                 <Text size="s">{item.name}</Text>
               </View>

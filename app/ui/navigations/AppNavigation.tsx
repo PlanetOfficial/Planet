@@ -45,10 +45,10 @@ import PrivacySettings from '../profileScreens/settingsScreens/PrivacySettings';
 import ProfileSettings from '../profileScreens/settingsScreens/ProfileSettings';
 import Settings from '../profileScreens/settingsScreens/Settings';
 
-import Explore from '../searchScreens/explore/Explore';
-import AllCategories from '../searchScreens/allCategories/AllCategories';
-import SearchCategory from '../searchScreens/searchCategory/SearchCategory';
-import SearchMap from '../searchScreens/searchMap/SearchMap';
+import Explore from '../exploreScreens/explore/Explore';
+import AllCategories from '../exploreScreens/allCategories/AllCategories';
+import SearchCategory from '../exploreScreens/searchCategory/SearchCategory';
+import SearchMap from '../exploreScreens/searchMap/SearchMap';
 
 import {BookmarkStateProvider} from '../../context/BookmarkContext';
 import {FriendsStateProvider} from '../../context/FriendsContext';

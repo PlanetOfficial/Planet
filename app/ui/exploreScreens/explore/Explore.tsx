@@ -8,14 +8,18 @@ import {
   StatusBar,
   SafeAreaView,
   Alert,
+  StyleSheet,
 } from 'react-native';
+import {s} from 'react-native-size-matters';
 
 import colors from '../../../constants/colors';
+import icons from '../../../constants/icons';
 import strings from '../../../constants/strings';
 import STYLING from '../../../constants/styles';
 
-import Text from '../../components/Text';
+import Icon from '../../components/Icon';
 import PoiRow from '../../components/PoiRow';
+import Text from '../../components/Text';
 
 import {
   fetchUserLocation,
@@ -79,34 +83,50 @@ const Explore = ({
   return (
     <View style={STYLES.container}>
       <SafeAreaView>
-        <SearchBar
-          searching={searching}
-          setSearching={setSearching}
-          searchText={searchText}
-          setSearchText={setSearchText}
-          setSearchResults={setSearchResults}
-          search={text =>
-            withLoading(async () => {
-              setSearchText(text);
-              if (text.length > 2 && myLocation) {
-                const results = await autocompleteSearch(
-                  text,
-                  myLocation.latitude,
-                  myLocation?.longitude,
-                );
-
-                if (results) {
-                  setSearchResults(results);
-                } else {
-                  Alert.alert(strings.error.error, strings.error.searchPlace);
-                }
-              } else {
-                setSearchResults([]);
+        <View style={styles.header}>
+          {mode !== 'none' && !searching ? (
+            <View style={styles.x}>
+              <Icon
+                icon={icons.drop}
+                onPress={() => {
+                  navigation.goBack();
+                }}
+              />
+            </View>
+          ) : null}
+          <View style={styles.searchBar}>
+            <SearchBar
+              searching={searching}
+              setSearching={setSearching}
+              searchText={searchText}
+              setSearchText={setSearchText}
+              setSearchResults={setSearchResults}
+              search={text =>
+                withLoading(async () => {
+                  setSearchText(text);
+                  if (text.length > 2 && myLocation) {
+                    const results = await autocompleteSearch(
+                      text,
+                      myLocation.latitude,
+                      myLocation?.longitude,
+                    );
+                    if (results) {
+                      setSearchResults(results);
+                    } else {
+                      Alert.alert(
+                        strings.error.error,
+                        strings.error.searchPlace,
+                      );
+                    }
+                  } else {
+                    setSearchResults([]);
+                  }
+                })
               }
-            })
-          }
-          searchPrompt={strings.explore.search}
-        />
+              searchPrompt={strings.explore.search}
+            />
+          </View>
+        </View>
       </SafeAreaView>
       {!searching ? (
         <ScrollView scrollIndicatorInsets={{right: 1}}>
@@ -166,5 +186,18 @@ const Explore = ({
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  x: {
+    marginLeft: s(25),
+  },
+  searchBar: {
+    flex: 1,
+  },
+});
 
 export default Explore;
