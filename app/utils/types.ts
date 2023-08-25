@@ -195,8 +195,11 @@ export interface Recommendation {
 }
 
 export interface Locality {
-  description: string;
   place_id: string;
+  structured_formatting: {
+    main_text: string;
+    secondary_text: string;
+  };
 }
 
 export type CreateModes = 'create' | 'suggest' | 'add' | 'none';

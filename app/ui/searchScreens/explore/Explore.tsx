@@ -1,15 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {
   View,
-  StyleSheet,
   ScrollView,
   FlatList,
   TouchableOpacity,
   useColorScheme,
   StatusBar,
   SafeAreaView,
+  Alert,
 } from 'react-native';
-import {s} from 'react-native-size-matters';
 
 import colors from '../../../constants/colors';
 import strings from '../../../constants/strings';
@@ -18,12 +17,24 @@ import STYLING from '../../../constants/styles';
 import Text from '../../components/Text';
 import PoiRow from '../../components/PoiRow';
 
-import {fetchUserLocation, handleBookmark} from '../../../utils/Misc';
-import {Coordinate, Poi, CreateModes} from '../../../utils/types';
+import {
+  fetchUserLocation,
+  handleBookmark,
+  useLoadingState,
+} from '../../../utils/Misc';
+import {
+  Coordinate,
+  Poi,
+  CreateModes,
+  Locality,
+  Category,
+} from '../../../utils/types';
+import {autocompleteSearch} from '../../../utils/api/poiAPI';
 
 import {useBookmarkContext} from '../../../context/BookmarkContext';
 import SearchBar from '../../friendsScreens/components/SearchBar';
 import Categories from './Categories';
+import SearchResult from './SearchResult';
 
 const Explore = ({
   navigation,
@@ -39,15 +50,20 @@ const Explore = ({
     | any;
 }) => {
   const theme = useColorScheme() || 'light';
-  const styles = styling(theme);
   const STYLES = STYLING(theme);
   StatusBar.setBarStyle(colors[theme].statusBar, true);
 
   const mode = route.params?.mode || 'none';
 
   const [myLocation, setMyLocation] = useState<Coordinate>();
-  const [searching, setSearching] = useState<boolean>(false);
+
   const [searchText, setSearchText] = useState<string>('');
+  const [searching, setSearching] = useState<boolean>(false);
+  const [searchResults, setSearchResults] = useState<(Category | Locality)[]>(
+    [],
+  );
+
+  const [loading, withLoading] = useLoadingState();
 
   const {bookmarks, setBookmarks} = useBookmarkContext();
 
@@ -68,8 +84,27 @@ const Explore = ({
           setSearching={setSearching}
           searchText={searchText}
           setSearchText={setSearchText}
-          setSearchResults={() => {}}
-          search={() => {}}
+          setSearchResults={setSearchResults}
+          search={text =>
+            withLoading(async () => {
+              setSearchText(text);
+              if (text.length > 2 && myLocation) {
+                const results = await autocompleteSearch(
+                  text,
+                  myLocation.latitude,
+                  myLocation?.longitude,
+                );
+
+                if (results) {
+                  setSearchResults(results);
+                } else {
+                  Alert.alert(strings.error.error, strings.error.searchPlace);
+                }
+              } else {
+                setSearchResults([]);
+              }
+            })
+          }
           searchPrompt={strings.explore.search}
         />
       </SafeAreaView>
@@ -81,9 +116,17 @@ const Explore = ({
             mode={mode}
           />
         </ScrollView>
-      ) : searchText.length === 0 ? (
+      ) : searchText.length > 2 ? (
+        <SearchResult
+          navigation={navigation}
+          loading={loading}
+          searchResults={searchResults}
+          myLocation={myLocation}
+          mode={mode}
+        />
+      ) : (
         <FlatList
-          contentContainerStyle={styles.flatList}
+          contentContainerStyle={STYLES.flatList}
           scrollIndicatorInsets={{right: 1}}
           keyboardShouldPersistTaps={'always'}
           data={bookmarks}
@@ -119,47 +162,9 @@ const Explore = ({
           }
           keyExtractor={(item: Poi) => item.id.toString()}
         />
-      ) : null}
+      )}
     </View>
   );
 };
-
-const styling = (theme: 'light' | 'dark') =>
-  StyleSheet.create({
-    header: {
-      marginTop: s(10),
-      paddingHorizontal: s(20),
-      paddingTop: s(5),
-      paddingBottom: s(10),
-    },
-    scrollView: {
-      paddingHorizontal: s(10),
-      paddingVertical: s(5),
-      marginBottom: s(5),
-    },
-    categoryContainer: {
-      alignItems: 'center',
-      width: s(75),
-      height: s(75),
-      overflow: 'visible',
-    },
-    iconContainer: {
-      alignItems: 'center',
-      justifyContent: 'center',
-      width: s(50),
-      height: s(50),
-      borderRadius: s(25),
-      marginBottom: s(5),
-      backgroundColor: colors[theme].primary,
-    },
-    icon: {
-      width: '55%',
-      height: '55%',
-      tintColor: colors[theme].neutral,
-    },
-    flatList: {
-      paddingBottom: s(250),
-    },
-  });
 
 export default Explore;

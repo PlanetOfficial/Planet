@@ -93,7 +93,7 @@ const SearchMap = ({
         search={text =>
           withLoading(async () => {
             setSearchText(text);
-            if (text.length > 0) {
+            if (text.length > 2) {
               const results = await autocompleteLocality(
                 text,
                 myLocation.latitude,
@@ -167,7 +167,14 @@ const SearchMap = ({
                     );
                   }
                 }}>
-                <Text weight="l">{item.description}</Text>
+                <View style={styles.texts}>
+                  <Text size="s">{item.structured_formatting.main_text}</Text>
+                  {item.structured_formatting.secondary_text ? (
+                    <Text size="xs" weight="l">
+                      {item.structured_formatting.secondary_text}
+                    </Text>
+                  ) : null}
+                </View>
               </TouchableOpacity>
             ))
           )
@@ -186,6 +193,7 @@ const styling = (theme: 'light' | 'dark') =>
       marginHorizontal: s(20),
       paddingHorizontal: s(10),
       paddingVertical: s(10),
+      minHeight: s(55),
       borderRadius: s(5),
       borderWidth: 1,
       borderColor: colors[theme].blue,
@@ -195,8 +203,13 @@ const styling = (theme: 'light' | 'dark') =>
       marginHorizontal: s(20),
       paddingHorizontal: s(10),
       paddingVertical: s(10),
+      minHeight: s(55),
       borderBottomWidth: 1,
       borderBottomColor: colors[theme].secondary,
+    },
+    texts: {
+      minHeight: s(35),
+      justifyContent: 'space-evenly',
     },
   });
 
