@@ -81,7 +81,7 @@ const SignUpName = ({navigation}: {navigation: any}) => {
               disabled={disabled}
               onPress={() =>
                 navigation.navigate('SignUpBirthday', {
-                  displayName: displayName,
+                  displayName,
                 })
               }>
               <Text weight="b" color={colors[theme].primary}>

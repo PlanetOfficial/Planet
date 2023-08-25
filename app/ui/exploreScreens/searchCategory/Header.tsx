@@ -39,9 +39,9 @@ const Header: React.FC<Props> = ({
           color={myLocationOff ? colors[theme].accent : colors[theme].blue}
           onPress={() => {
             navigation.navigate('SearchMap', {
-              mode: mode,
-              myLocation: myLocation,
-              category: category,
+              mode,
+              myLocation,
+              category,
             });
           }}
         />
