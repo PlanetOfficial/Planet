@@ -12,6 +12,7 @@ import {
 import {s} from 'react-native-size-matters';
 
 import colors from '../../../constants/colors';
+import icons from '../../../constants/icons';
 import strings from '../../../constants/strings';
 import STYLING from '../../../constants/styles';
 
@@ -23,7 +24,6 @@ import {
   Locality,
   Category,
 } from '../../../utils/types';
-import icons from '../../../constants/icons';
 
 interface Props {
   navigation: any;
