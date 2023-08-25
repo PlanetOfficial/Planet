@@ -36,7 +36,7 @@ const RecentlyViewed: React.FC<Props> = ({
             })
           }>
           <Text size="xs" weight="l" underline={true}>
-            {strings.explore.viewAll} ({recentlyViewed.length})
+            {strings.explore.viewAll}
           </Text>
         </TouchableOpacity>
       </View>

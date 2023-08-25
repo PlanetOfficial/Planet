@@ -112,6 +112,7 @@ export const NavBar = () => {
     <View style={styles.tabView}>
       <Tab.Navigator
         initialRouteName={strings.title.home}
+        detachInactiveScreens={false}
         screenOptions={({route}: {route: {name: string}}) => ({
           tabBarShowLabel: false,
           headerShown: false,

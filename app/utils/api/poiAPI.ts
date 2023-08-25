@@ -21,7 +21,7 @@ export const getPois = async (
         category,
       )}&latitude=${latitude}&longitude=${longitude}&filters=${JSON.stringify(
         filters,
-      )}`,
+      )}` + (filters && filters['Open Now'] ? `&time=${new Date()}` : ''),
     {
       method: 'GET',
       headers: {
