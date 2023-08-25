@@ -17,8 +17,6 @@ interface Props {
   disabled?: boolean;
   bookmarked: boolean;
   handleBookmark: (poi: Poi) => void;
-  position?: number;
-  isAccent?: boolean;
 }
 
 const PoiCard: React.FC<Props> = ({
@@ -26,8 +24,6 @@ const PoiCard: React.FC<Props> = ({
   disabled,
   bookmarked,
   handleBookmark,
-  position,
-  isAccent,
 }) => {
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
@@ -56,24 +52,6 @@ const PoiCard: React.FC<Props> = ({
           onPress={() => handleBookmark(place)}
         />
       </View>
-      {position ? (
-        <View
-          style={[
-            STYLES.absolute,
-            styles.indexContainer,
-            {
-              backgroundColor: isAccent
-                ? colors[theme].primary
-                : colors[theme].accent,
-            },
-          ]}>
-          <Text
-            size="s"
-            color={isAccent ? colors[theme].accent : colors[theme].primary}>
-            {position}
-          </Text>
-        </View>
-      ) : null}
     </View>
   );
 };
@@ -83,15 +61,15 @@ const styling = (theme: 'light' | 'dark') =>
     container: {
       width: s(130),
       height: s(160),
-      borderRadius: s(10),
+      borderRadius: s(5),
       backgroundColor: colors[theme].primary,
       overflow: 'visible',
     },
     image: {
       width: '100%',
       height: s(120),
-      borderTopLeftRadius: s(10),
-      borderTopRightRadius: s(10),
+      borderTopLeftRadius: s(5),
+      borderTopRightRadius: s(5),
     },
     footer: {
       flexDirection: 'row',
@@ -105,15 +83,6 @@ const styling = (theme: 'light' | 'dark') =>
       justifyContent: 'space-evenly',
       height: s(40),
       paddingVertical: s(4),
-    },
-    indexContainer: {
-      alignItems: 'center',
-      justifyContent: 'center',
-      top: s(-8),
-      left: s(-8),
-      width: s(20),
-      height: s(20),
-      borderRadius: s(10),
     },
   });
 

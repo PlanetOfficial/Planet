@@ -307,7 +307,7 @@ const styling = (theme: 'light' | 'dark') =>
       alignItems: 'center',
       justifyContent: 'center',
       padding: s(10),
-      borderRadius: s(10),
+      borderRadius: s(5),
       minWidth: s(100),
       backgroundColor: colors[theme].blur,
     },

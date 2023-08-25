@@ -49,10 +49,10 @@ const Overview: React.FC<Props> = ({destination, destinationDetails}) => {
         <View style={styles.price}>
           {destination.price ? (
             <>
-              <Text size="m" weight="b" color={colors[theme].accent}>
+              <Text weight="b" color={colors[theme].accent}>
                 {'$'.repeat(destination.price)}
               </Text>
-              <Text size="m" weight="b" color={colors[theme].secondary}>
+              <Text weight="b" color={colors[theme].secondary}>
                 {'$'.repeat(4 - destination.price)}
               </Text>
             </>
