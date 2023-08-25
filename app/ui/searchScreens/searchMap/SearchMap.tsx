@@ -79,7 +79,7 @@ const SearchMap = ({
               })
             }
           />
-          <Text>{strings.explore.searchLocation}</Text>
+          <Text>{strings.explore.setLocation}</Text>
           <Icon icon={icons.close} color="transparent" />
         </View>
       </SafeAreaView>

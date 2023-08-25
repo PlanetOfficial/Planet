@@ -32,7 +32,7 @@ type RootStackParamList = {
     mode: CreateModes;
   };
   AllCategories: {
-    location: Coordinate;
+    myLocation: Coordinate;
     mode: CreateModes;
     genres: Genre[];
   };

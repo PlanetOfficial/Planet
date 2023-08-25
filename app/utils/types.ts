@@ -28,6 +28,9 @@ export interface FriendGroup {
 export interface Genre {
   id: number;
   name: string;
+  alias: string;
+  supplier: string;
+  filter: Filter[];
   image: Image;
   categories: Category[];
 }

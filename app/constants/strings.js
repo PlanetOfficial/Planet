@@ -107,6 +107,7 @@ const strings = {
     allCategories: 'All Categories',
     search: 'Search',
     searchHere: 'Search Here',
+    setLocation: 'Set Location',
     searchLocation: 'Search Location',
     yourLocation: 'Your Location',
   },

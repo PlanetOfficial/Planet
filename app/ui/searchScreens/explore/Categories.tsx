@@ -21,11 +21,11 @@ import {Coordinate, Genre, CreateModes} from '../../../utils/types';
 
 interface Props {
   navigation: any;
-  location?: Coordinate;
+  myLocation?: Coordinate;
   mode: CreateModes;
 }
 
-const Categories: React.FC<Props> = ({navigation, location, mode}) => {
+const Categories: React.FC<Props> = ({navigation, myLocation, mode}) => {
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
 
@@ -51,7 +51,7 @@ const Categories: React.FC<Props> = ({navigation, location, mode}) => {
         <TouchableOpacity
           onPress={() =>
             navigation.navigate('AllCategories', {
-              location,
+              myLocation,
               mode,
               genres,
             })
@@ -66,9 +66,20 @@ const Categories: React.FC<Props> = ({navigation, location, mode}) => {
           <TouchableOpacity
             key={genre.id}
             style={styles.chip}
-            onPress={() => {
-              console.log('TODO: Genre Search');
-            }}>
+            onPress={() =>
+              navigation.navigate('SearchCategory', {
+                category: {
+                  id: genre.id,
+                  name: genre.name,
+                  alias: genre.alias,
+                  supplier: genre.supplier,
+                  filter: genre.filter,
+                  icon: genre.image,
+                },
+                myLocation,
+                mode,
+              })
+            }>
             <Image source={{uri: genre.image.url}} style={styles.image} />
             {Platform.OS === 'ios' ? (
               <BlurView

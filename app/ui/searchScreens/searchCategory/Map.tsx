@@ -124,8 +124,9 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'center',
+    width: s(35),
+    height: s(35),
     paddingBottom: s(10),
-    backgroundColor: colors.light.accent,
   },
 });
 

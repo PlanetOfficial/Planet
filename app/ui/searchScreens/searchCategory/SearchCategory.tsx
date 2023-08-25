@@ -77,16 +77,23 @@ const SearchCategory = ({
   const tempLocationOff = determineOffset(tempLocation, location);
   const myLocationOff = determineOffset(myLocation, location);
 
+  const filterRef = useRef<any>(null); // due to forwardRef
+  const [filters, setFilters] = useState<(number | number[])[]>(
+    category.filter.map(_filter => {
+      return _filter.multi ? [] : _filter.defaultIdx;
+    }),
+  );
+
   const insets = useSafeAreaInsets();
   const [bottomSheetIndex, setBottomSheetIndex] = useState<number>(2);
   const bottomSheetRef = useRef<BottomSheet>(null);
   const snapPoints = useMemo(
     () => [
       insets.bottom + s(30),
-      insets.bottom + s(285),
+      insets.bottom + (filters.length > 0 ? s(285) : s(235)),
       vs(680) - (insets.top + s(50)),
     ],
-    [insets],
+    [insets, filters],
   );
 
   const handleSheetChange = useCallback(
@@ -135,13 +142,6 @@ const SearchCategory = ({
       />
     ),
     [loading, bottomSheetIndex],
-  );
-
-  const filterRef = useRef<any>(null); // due to forwardRef
-  const [filters, setFilters] = useState<(number | number[])[]>(
-    category.filter.map(_filter => {
-      return _filter.multi ? [] : _filter.defaultIdx;
-    }),
   );
 
   useEffect(() => {
@@ -258,14 +258,14 @@ const SearchCategory = ({
         enableHandlePanningGesture={!loading && bottomSheetIndex !== 0}>
         {bottomSheetIndex === 0 ? (
           <View style={{height: s(50)}} />
-        ) : (
+        ) : filters.length > 0 ? (
           <Filter
             ref={filterRef}
             filters={category.filter}
             currFilters={filters}
             setCurrFilters={setFilters}
           />
-        )}
+        ) : null}
         {loading ? (
           <View style={STYLES.center}>
             <ActivityIndicator size="small" color={colors[theme].accent} />

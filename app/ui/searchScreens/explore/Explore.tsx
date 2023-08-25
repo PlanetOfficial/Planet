@@ -45,7 +45,7 @@ const Explore = ({
 
   const mode = route.params?.mode || 'none';
 
-  const [location, setLocation] = useState<Coordinate>();
+  const [myLocation, setMyLocation] = useState<Coordinate>();
   const [searching, setSearching] = useState<boolean>(false);
   const [searchText, setSearchText] = useState<string>('');
 
@@ -53,7 +53,7 @@ const Explore = ({
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', async () => {
-      setLocation(await fetchUserLocation());
+      setMyLocation(await fetchUserLocation());
       setSearchText('');
     });
 
@@ -75,7 +75,11 @@ const Explore = ({
       </SafeAreaView>
       {!searching ? (
         <ScrollView scrollIndicatorInsets={{right: 1}}>
-          <Categories navigation={navigation} location={location} mode={mode} />
+          <Categories
+            navigation={navigation}
+            myLocation={myLocation}
+            mode={mode}
+          />
         </ScrollView>
       ) : searchText.length === 0 ? (
         <FlatList
@@ -96,7 +100,7 @@ const Explore = ({
                 <PoiRow
                   place={item}
                   bookmarked={true}
-                  location={location}
+                  location={myLocation}
                   handleBookmark={(poi: Poi) =>
                     handleBookmark(poi, bookmarks, setBookmarks)
                   }
