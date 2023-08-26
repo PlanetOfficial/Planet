@@ -140,9 +140,14 @@ const ProfileHeader: React.FC<Props> = ({
               color={colors[theme].primary}
               onPress={() => navigation.goBack()}
             />
-          ) : (
-            <View />
-          )}
+          ) : isSelf ? (
+            <Icon
+              size="m"
+              icon={icons.friends}
+              color={colors[theme].primary}
+              onPress={() => navigation.navigate('Friends')}
+            />
+          ) : null}
           {isSelf ? (
             <Icon
               size="m"

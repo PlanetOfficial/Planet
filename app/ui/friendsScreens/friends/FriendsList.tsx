@@ -21,17 +21,19 @@ import Icon from '../../components/Icon';
 import UserRow from '../../components/UserRow';
 
 import {UserInfo} from '../../../utils/types';
-import {useLoadingState} from '../../../utils/Misc';
+import {shareApp, useLoadingState} from '../../../utils/Misc';
 
 import {useFriendsContext} from '../../../context/FriendsContext';
 
 import FriendGroupComponent from './FriendGroup';
 import FriendGroupEdit from './FriendGroupEdit';
 import Suggestions from './Suggestions';
+import Separator from '../../components/SeparatorR';
 
 const FriendsList = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';
   const STYLES = STYLING(theme);
+  const styles = styling(theme);
   StatusBar.setBarStyle(colors[theme].statusBar, true);
 
   const {friends, refreshFriends, friendGroups} = useFriendsContext();
@@ -62,10 +64,19 @@ const FriendsList = ({navigation}: {navigation: any}) => {
           tintColor={colors[theme].accent}
         />
       }>
-      <View style={styles.title}>
-        <Text size="s" weight="l">
-          {strings.friends.suggestions}:
+      <TouchableOpacity style={styles.shareButton} onPress={shareApp}>
+        <View style={styles.icon}>
+          <Icon size="m" icon={icons.link} color={colors[theme].primary} />
+        </View>
+        <Text color={colors[theme].primary}>
+          {strings.friends.inviteFriendsOnPlanet}
         </Text>
+      </TouchableOpacity>
+
+      <Separator />
+
+      <View style={styles.title}>
+        <Text size="s">{strings.friends.suggestions}:</Text>
         <View
           style={{
             transform: [{rotate: suggestionsShown ? '0deg' : '180deg'}],
@@ -84,8 +95,10 @@ const FriendsList = ({navigation}: {navigation: any}) => {
       </View>
       {suggestionsShown ? <Suggestions navigation={navigation} /> : null}
 
+      <Separator />
+
       <View style={styles.title}>
-        <Text size="s" weight="l">
+        <Text size="s">
           {friendGroups.length === 1
             ? strings.friends.friendGroup
             : strings.friends.friendGroups}
@@ -132,8 +145,10 @@ const FriendsList = ({navigation}: {navigation: any}) => {
         />
       ) : null}
 
+      <Separator />
+
       <View style={styles.title}>
-        <Text size="s" weight="l">
+        <Text size="s">
           {strings.friends.friends + ' (' + friends.length + ')'}:
         </Text>
         <View
@@ -197,15 +212,28 @@ const FriendsList = ({navigation}: {navigation: any}) => {
   );
 };
 
-const styles = StyleSheet.create({
-  title: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginHorizontal: s(20),
-    marginTop: s(10),
-    marginBottom: s(5),
-  },
-});
+const styling = (theme: 'light' | 'dark') =>
+  StyleSheet.create({
+    title: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      marginHorizontal: s(20),
+      marginVertical: s(10),
+    },
+    shareButton: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginHorizontal: s(20),
+      marginBottom: s(10),
+      paddingVertical: s(10),
+      borderRadius: s(5),
+      backgroundColor: colors[theme].accent,
+    },
+    icon: {
+      marginRight: s(10),
+    },
+  });
 
 export default FriendsList;

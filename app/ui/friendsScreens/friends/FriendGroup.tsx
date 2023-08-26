@@ -87,6 +87,7 @@ const styling = (theme: 'light' | 'dark') =>
     friendGroups: {
       paddingHorizontal: s(10),
       minWidth: s(350),
+      marginBottom: s(10),
     },
     friendGroup: {
       alignItems: 'center',

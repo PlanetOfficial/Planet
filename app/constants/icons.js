@@ -22,6 +22,7 @@ const icons = {
   gallery: require('../assets/icons/gallery.png'),
   history: require('../assets/icons/history.png'),
   like: require('../assets/icons/like.png'),
+  link: require('../assets/icons/link.png'),
   location: require('../assets/icons/location.png'),
   locationFilled: require('../assets/icons/location-filled.png'),
   logo: require('../assets/icons/logo.png'),

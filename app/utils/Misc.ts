@@ -1,5 +1,11 @@
 import {useState} from 'react';
-import {Platform, PermissionsAndroid, Alert, Animated} from 'react-native';
+import {
+  Platform,
+  PermissionsAndroid,
+  Alert,
+  Animated,
+  Share,
+} from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import {
   StackCardInterpolatedStyle,
@@ -170,6 +176,14 @@ export const formatDisplayInitials = (name: string) => {
     letters += name[1].toUpperCase();
   }
   return letters;
+};
+
+export const shareApp = async () => {
+  const result = await Share.share({
+    message: strings.main.shareMessage,
+    url: strings.main.downloadUrl,
+  });
+  console.log(result);
 };
 
 export const verticalAnimation = ({
