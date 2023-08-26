@@ -1,65 +1,35 @@
 import React from 'react';
-import {
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  ScrollView,
-  useColorScheme,
-} from 'react-native';
+import {View, StyleSheet, TouchableOpacity, ScrollView} from 'react-native';
 import {s} from 'react-native-size-matters';
 
-import colors from '../../../constants/colors';
-import icons from '../../../constants/icons';
-import strings from '../../../constants/strings';
-
-import Icon from '../../components/Icon';
 import Text from '../../components/Text';
 import PoiCard from '../../components/PoiCard';
+import Separator from '../../components/SeparatorR';
 
-import {Poi, Coordinate} from '../../../utils/types';
+import {Poi} from '../../../utils/types';
 import {handleBookmark} from '../../../utils/Misc';
+
 import {useBookmarkContext} from '../../../context/BookmarkContext';
 
 interface Props {
   navigation: any;
-  recentlyViewed: Poi[];
-  location: Coordinate;
+  title: string;
+  pois: Poi[];
 }
 
-const RecentlyViewed: React.FC<Props> = ({
-  navigation,
-  recentlyViewed,
-  location,
-}) => {
-  const theme = useColorScheme() || 'light';
-
+const PoiSection: React.FC<Props> = ({navigation, title, pois}) => {
   const {bookmarks, setBookmarks} = useBookmarkContext();
 
   return (
     <>
       <View style={styles.header}>
-        <Text size="s">{strings.explore.recentlyViewed}</Text>
-        <TouchableOpacity
-          style={styles.row}
-          onPress={() =>
-            navigation.navigate('ViewHistory', {
-              viewHistory: recentlyViewed,
-              location: location,
-            })
-          }>
-          <Text size="xs" weight="l">
-            {strings.explore.viewAll}
-          </Text>
-          <View style={styles.next}>
-            <Icon size="xs" icon={icons.next} color={colors[theme].accent} />
-          </View>
-        </TouchableOpacity>
+        <Text size="s">{title}</Text>
       </View>
       <ScrollView
         horizontal={true}
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.scrollView}>
-        {recentlyViewed.slice(0, 5).map((poi, index) => (
+        {pois.map((poi, index) => (
           <TouchableOpacity
             key={index}
             style={styles.card}
@@ -82,6 +52,7 @@ const RecentlyViewed: React.FC<Props> = ({
           </TouchableOpacity>
         ))}
       </ScrollView>
+      <Separator />
     </>
   );
 };
@@ -93,7 +64,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginTop: s(5),
     paddingHorizontal: s(20),
-    paddingVertical: s(10),
+    paddingVertical: s(5),
   },
   card: {
     marginRight: s(15),
@@ -101,6 +72,7 @@ const styles = StyleSheet.create({
   scrollView: {
     paddingHorizontal: s(20),
     paddingVertical: s(5),
+    marginBottom: s(15),
   },
   row: {
     flexDirection: 'row',
@@ -111,4 +83,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RecentlyViewed;
+export default PoiSection;

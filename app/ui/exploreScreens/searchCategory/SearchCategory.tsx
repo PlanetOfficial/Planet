@@ -223,7 +223,6 @@ const SearchCategory = ({
         category={category}
         myLocationOff={myLocationOff}
         myLocation={myLocation}
-        mode={mode}
       />
 
       {bottomSheetIndex === 0 && (tempLocationOff || loading) ? (

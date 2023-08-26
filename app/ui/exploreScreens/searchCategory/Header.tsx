@@ -8,14 +8,13 @@ import STYLING from '../../../constants/styles';
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 
-import {Coordinate, Category, CreateModes} from '../../../utils/types';
+import {Coordinate, Category} from '../../../utils/types';
 
 interface Props {
   navigation: any;
   category: Category;
   myLocationOff: boolean;
   myLocation: Coordinate;
-  mode: CreateModes;
 }
 
 const Header: React.FC<Props> = ({
@@ -23,7 +22,6 @@ const Header: React.FC<Props> = ({
   category,
   myLocationOff,
   myLocation,
-  mode,
 }) => {
   const theme = useColorScheme() || 'light';
   const STYLES = STYLING(theme);
@@ -39,9 +37,7 @@ const Header: React.FC<Props> = ({
           color={myLocationOff ? colors[theme].accent : colors[theme].blue}
           onPress={() => {
             navigation.navigate('SearchMap', {
-              mode,
               myLocation,
-              category,
             });
           }}
         />

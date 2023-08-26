@@ -24,6 +24,7 @@ import SearchBar from '../../components/SearchBar';
 import Separator from '../../components/SeparatorR';
 
 import {
+  determineOffset,
   fetchUserLocation,
   handleBookmark,
   useLoadingState,
@@ -35,13 +36,14 @@ import {
   Locality,
   Category,
 } from '../../../utils/types';
-import {autocompleteSearch, getRecentlyViewed} from '../../../utils/api/poiAPI';
+import {autocompleteSearch, getPoiSections} from '../../../utils/api/poiAPI';
 
 import {useBookmarkContext} from '../../../context/BookmarkContext';
+import {useLocationContext} from '../../../context/LocationContext';
 
 import Categories from './Categories';
 import SearchResult from './SearchResult';
-import RecentlyViewed from './RecentlyViewed';
+import PoiSection from './PoiSection';
 
 const Explore = ({
   navigation,
@@ -62,6 +64,7 @@ const Explore = ({
 
   const mode = route.params?.mode || 'none';
 
+  const {location} = useLocationContext();
   const [myLocation, setMyLocation] = useState<Coordinate>();
 
   const [searchText, setSearchText] = useState<string>('');
@@ -74,25 +77,28 @@ const Explore = ({
 
   const {bookmarks, setBookmarks} = useBookmarkContext();
 
-  const [recentlyViewed, setRecentlyViewed] = useState<Poi[]>([]);
-  const initializeRecentlyViewed = useCallback(async () => {
-    const _recentlyViewed = await getRecentlyViewed();
-    if (_recentlyViewed) {
-      setRecentlyViewed(_recentlyViewed);
+  const [poiSections, setPoiSections] = useState<{[key: string]: Poi[]}>({});
+  const loadPoiSections = useCallback(async () => {
+    const _poiSections = await getPoiSections(
+      location.latitude,
+      location.longitude,
+    );
+    if (_poiSections) {
+      setPoiSections(_poiSections);
     } else {
-      Alert.alert(strings.error.error, strings.error.loadRecentlyViewed);
+      Alert.alert(strings.error.error, strings.error.loadPoiSections);
     }
-  }, []);
+  }, [location]);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', async () => {
       setMyLocation(await fetchUserLocation());
+      loadPoiSections();
       setSearchText('');
-      initializeRecentlyViewed();
     });
 
     return unsubscribe;
-  }, [navigation, initializeRecentlyViewed]);
+  }, [navigation, loadPoiSections]);
 
   return (
     <View style={STYLES.container}>
@@ -140,6 +146,26 @@ const Explore = ({
               searchPrompt={strings.explore.search}
             />
           </View>
+          {!searching ? (
+            <View style={styles.icon}>
+              <Icon
+                size="m"
+                icon={icons.locationFilled}
+                color={
+                  myLocation
+                    ? determineOffset(myLocation, location)
+                      ? colors[theme].accent
+                      : colors[theme].blue
+                    : colors[theme].secondary
+                }
+                onPress={() => {
+                  navigation.navigate('SearchMap', {
+                    myLocation,
+                  });
+                }}
+              />
+            </View>
+          ) : null}
         </View>
       </SafeAreaView>
       {!searching ? (
@@ -150,13 +176,14 @@ const Explore = ({
             mode={mode}
           />
           <Separator />
-          {recentlyViewed.length > 0 && myLocation ? (
-            <RecentlyViewed
+          {Object.keys(poiSections).map((key, index) => (
+            <PoiSection
+              key={index}
               navigation={navigation}
-              recentlyViewed={recentlyViewed}
-              location={myLocation}
+              title={key}
+              pois={poiSections[key]}
             />
-          ) : null}
+          ))}
         </ScrollView>
       ) : searchText.length > 2 ? (
         <SearchResult
@@ -213,6 +240,9 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  icon: {
+    marginRight: s(20),
   },
   x: {
     marginLeft: s(25),
