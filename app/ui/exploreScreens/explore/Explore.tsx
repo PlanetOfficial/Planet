@@ -176,14 +176,16 @@ const Explore = ({
             mode={mode}
           />
           <Separator />
-          {Object.keys(poiSections).map((key, index) => (
-            <PoiSection
-              key={index}
-              navigation={navigation}
-              title={key}
-              pois={poiSections[key]}
-            />
-          ))}
+          {Object.keys(poiSections).map((key, index) =>
+            poiSections[key].length > 0 ? (
+              <PoiSection
+                key={index}
+                navigation={navigation}
+                title={key}
+                pois={poiSections[key]}
+              />
+            ) : null,
+          )}
         </ScrollView>
       ) : searchText.length > 2 ? (
         <SearchResult
