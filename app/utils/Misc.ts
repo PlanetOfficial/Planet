@@ -180,7 +180,9 @@ export const formatDisplayInitials = (name: string) => {
 
 export const shareApp = async (setShared?: (shared: boolean) => void) => {
   const result = await Share.share({
-    message: strings.main.shareMessage,
+    message:
+      strings.main.shareMessage +
+      (Platform.OS === 'android' ? '\n' + strings.main.downloadUrl : ''),
     url: strings.main.downloadUrl,
   });
   if (result.action === Share.sharedAction && setShared) {

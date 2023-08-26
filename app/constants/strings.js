@@ -22,7 +22,7 @@ const strings = {
     tagLine: 'Plan it, Together!',
     description: 'Make & decide your plans with anyone you choose.',
     shareMessage:
-      'Download Planet, my go-to app for finding and planning events effortlessly!',
+      'Download Planet, my go-to app for finding places and planning events effortlessly!',
     url: 'https://planetapp.us',
     downloadUrl: 'https://planetapp.us/download',
     save: 'Save',
