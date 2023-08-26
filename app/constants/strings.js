@@ -75,6 +75,12 @@ const strings = {
       "Enter your phone number so we\n know that you're a real human.",
     verificationCodeSent: 'Verification code sent!',
     verifyPrompt: 'Enter the 6 digit code we sent you.',
+    oneLastStep: 'One last step!',
+    invitePrompt:
+      'Planet is designed to be used with others!\nInvite at least one person you know.',
+    skip: 'Skip',
+    sendAnInviteLink: 'Send an Invite Link',
+    changeNumber: 'Change Phone Number',
   },
   home: {
     upcomingEvent: 'Upcoming Event',

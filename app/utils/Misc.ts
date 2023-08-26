@@ -178,12 +178,14 @@ export const formatDisplayInitials = (name: string) => {
   return letters;
 };
 
-export const shareApp = async () => {
+export const shareApp = async (setShared?: (shared: boolean) => void) => {
   const result = await Share.share({
     message: strings.main.shareMessage,
     url: strings.main.downloadUrl,
   });
-  console.log(result);
+  if (result.action === Share.sharedAction && setShared) {
+    setShared(true);
+  }
 };
 
 export const verticalAnimation = ({

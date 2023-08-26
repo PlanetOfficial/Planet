@@ -107,6 +107,9 @@ type RootStackParamList = {
   SignUpVerify: {
     authToken: string;
   };
+  SignUpInvite: {
+    authToken: string;
+  };
   ResetPwd: {
     authToken: string;
   };

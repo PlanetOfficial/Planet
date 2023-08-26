@@ -127,7 +127,9 @@ const Home = ({navigation}: {navigation: any}) => {
             </TouchableOpacity>
           </>
         ) : (
-          <TouchableOpacity style={styles.shareButton} onPress={shareApp}>
+          <TouchableOpacity
+            style={styles.shareButton}
+            onPress={() => shareApp()}>
             <View style={styles.icon}>
               <Icon size="m" icon={icons.link} color={colors[theme].primary} />
             </View>
