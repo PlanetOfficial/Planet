@@ -13,8 +13,10 @@ import {s} from 'react-native-size-matters';
 import {BlurView} from '@react-native-community/blur';
 
 import colors from '../../../constants/colors';
+import icons from '../../../constants/icons';
 import strings from '../../../constants/strings';
 
+import Icon from '../../components/Icon';
 import Text from '../../components/Text';
 
 import {Coordinate, Genre, CreateModes} from '../../../utils/types';
@@ -49,6 +51,7 @@ const Categories: React.FC<Props> = ({navigation, myLocation, mode}) => {
       <View style={styles.header}>
         <Text size="s">{strings.explore.categories}</Text>
         <TouchableOpacity
+          style={styles.row}
           onPress={() =>
             navigation.navigate('AllCategories', {
               myLocation,
@@ -56,9 +59,12 @@ const Categories: React.FC<Props> = ({navigation, myLocation, mode}) => {
               genres,
             })
           }>
-          <Text size="xs" weight="l" underline={true}>
-            {strings.explore.viewAll}
+          <Text size="xs" color={colors[theme].accent}>
+            {strings.explore.allCategories}
           </Text>
+          <View style={styles.next}>
+            <Icon size="xs" icon={icons.next} color={colors[theme].accent} />
+          </View>
         </TouchableOpacity>
       </View>
       <View style={styles.grid}>
@@ -74,7 +80,7 @@ const Categories: React.FC<Props> = ({navigation, myLocation, mode}) => {
                   alias: genre.alias,
                   supplier: genre.supplier,
                   filter: genre.filter,
-                  icon: genre.image,
+                  icon: genre.icon,
                 },
                 myLocation,
                 mode,
@@ -136,6 +142,13 @@ const styling = (theme: 'light' | 'dark') =>
     },
     overlay: {
       backgroundColor: 'rgba(0, 0, 0, 0.2)',
+    },
+    row: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    next: {
+      marginLeft: s(3),
     },
   });
 

@@ -1,9 +1,18 @@
 import React from 'react';
-import {View, StyleSheet, TouchableOpacity, ScrollView} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+  useColorScheme,
+} from 'react-native';
 import {s} from 'react-native-size-matters';
 
+import colors from '../../../constants/colors';
+import icons from '../../../constants/icons';
 import strings from '../../../constants/strings';
 
+import Icon from '../../components/Icon';
 import Text from '../../components/Text';
 import PoiCard from '../../components/PoiCard';
 
@@ -22,6 +31,8 @@ const RecentlyViewed: React.FC<Props> = ({
   recentlyViewed,
   location,
 }) => {
+  const theme = useColorScheme() || 'light';
+
   const {bookmarks, setBookmarks} = useBookmarkContext();
 
   return (
@@ -29,15 +40,19 @@ const RecentlyViewed: React.FC<Props> = ({
       <View style={styles.header}>
         <Text size="s">{strings.explore.recentlyViewed}</Text>
         <TouchableOpacity
+          style={styles.row}
           onPress={() =>
             navigation.navigate('ViewHistory', {
               viewHistory: recentlyViewed,
               location: location,
             })
           }>
-          <Text size="xs" weight="l" underline={true}>
+          <Text size="xs" weight="l">
             {strings.explore.viewAll}
           </Text>
+          <View style={styles.next}>
+            <Icon size="xs" icon={icons.next} color={colors[theme].accent} />
+          </View>
         </TouchableOpacity>
       </View>
       <ScrollView
@@ -86,6 +101,13 @@ const styles = StyleSheet.create({
   scrollView: {
     paddingHorizontal: s(20),
     paddingVertical: s(5),
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  next: {
+    marginLeft: s(3),
   },
 });
 

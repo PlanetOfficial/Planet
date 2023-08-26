@@ -31,6 +31,7 @@ export interface Genre {
   alias: string;
   supplier: string;
   filter: Filter[];
+  icon: Image;
   image: Image;
   categories: Category[];
 }
