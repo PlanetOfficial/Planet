@@ -31,7 +31,6 @@ import {
 
 import {useLocationContext} from '../../../context/LocationContext';
 
-
 const SearchMap = ({
   navigation,
   route,
