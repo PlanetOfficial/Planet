@@ -28,6 +28,7 @@ import {getRecommendations} from '../../../utils/api/recommenderAPI';
 import UpcomingEvent from './UpcomingEvent';
 import Recommendations from './Recommendations';
 import Suggestions from '../../friendsScreens/friends/Suggestions';
+
 import {useFriendsContext} from '../../../context/FriendsContext';
 
 const Home = ({navigation}: {navigation: any}) => {

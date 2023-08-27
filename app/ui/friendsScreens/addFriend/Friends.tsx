@@ -18,10 +18,9 @@ import Icon from '../../components/Icon';
 import UserIcon from '../../components/UserIcon';
 import Text from '../../components/Text';
 import UserRow from '../../components/UserRow';
+import FGIcon from '../components/FGIcon';
 
 import {FriendGroup, UserInfo} from '../../../utils/types';
-
-import FGIcon from '../components/FGIcon';
 
 import {useFriendsContext} from '../../../context/FriendsContext';
 

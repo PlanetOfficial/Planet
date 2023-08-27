@@ -1,5 +1,7 @@
 import {Alert} from 'react-native';
+
 import strings from '../../../constants/strings';
+
 import {vote} from '../../../utils/api/suggestionAPI';
 import {changeEventStatus, getEvent} from '../../../utils/api/eventAPI';
 import {

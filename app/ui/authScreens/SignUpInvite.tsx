@@ -21,6 +21,7 @@ import icons from '../../constants/icons';
 import strings from '../../constants/strings';
 import STYLING from '../../constants/styles';
 
+import Icon from '../components/Icon';
 import Text from '../components/Text';
 
 import {saveTokenToDatabase} from '../../utils/api/authAPI';
@@ -28,7 +29,6 @@ import {fetchUserLocation, shareApp, useLoadingState} from '../../utils/Misc';
 import {cacheUserInfo} from '../../utils/CacheHelpers';
 
 import {useLocationContext} from '../../context/LocationContext';
-import Icon from '../components/Icon';
 
 const SignUpInvite = ({
   navigation,

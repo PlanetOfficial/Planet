@@ -22,10 +22,9 @@ import {Coordinate, Event, UserInfo} from '../../../utils/types';
 import {getFriend} from '../../../utils/api/friendsAPI';
 import {fetchUserLocation, useLoadingState} from '../../../utils/Misc';
 
-import ProfileBody from '../../profileScreens/profile/ProfileBody';
-
 import {useFriendsContext} from '../../../context/FriendsContext';
 
+import ProfileBody from '../../profileScreens/profile/ProfileBody';
 import ProfileHeader from './ProfileHeader';
 import ProfileButtons from './ProfileButtons';
 

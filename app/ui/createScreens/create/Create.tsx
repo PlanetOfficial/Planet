@@ -21,6 +21,7 @@ import {Poi, UserInfo} from '../../../utils/types';
 import Header from './Header';
 import SaveButton from './SaveButton';
 import DestinationsList from './DestinationsList';
+
 import {useBookmarkContext} from '../../../context/BookmarkContext';
 
 const Create = ({

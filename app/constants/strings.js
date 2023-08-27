@@ -26,14 +26,12 @@ const strings = {
     url: 'https://planetapp.us',
     downloadUrl: 'https://planetapp.us/download',
     save: 'Save',
-    done: 'Done',
     cancel: 'Cancel',
     discard: 'Discard',
     remove: 'Remove',
     rename: 'Rename',
     confirm: 'Confirm',
     add: 'Add',
-    reset: 'Reset',
     warning: 'Warning',
     milesAbbrev: 'mi',
     edit: 'Edit',
@@ -45,9 +43,6 @@ const strings = {
     search: 'Explore',
     library: 'Events',
     profile: 'Profile',
-    suggestions: 'Suggestions',
-    friends: 'Friends',
-    requests: 'Requests',
   },
   signUp: {
     confirmPassword: 'Confirm Password',
@@ -73,7 +68,6 @@ const strings = {
     accountHasBeenCreated: 'Your account has been created!',
     promptPhoneNumber:
       "Enter your phone number so we\n know that you're a real human.",
-    verificationCodeSent: 'Verification code sent!',
     verifyPrompt: 'Enter the 6 digit code we sent you.',
     oneLastStep: 'One last step!',
     invitePrompt:
@@ -90,7 +84,6 @@ const strings = {
     noUpcomingEvents: 'Create an event',
     recommendations: 'Recommended Events for You',
     suggestedFriends: 'Suggested Friends',
-    seeAll: 'See All',
     customize: 'Customize this event',
     noRecommendations: 'No Recommendations Found',
   },
@@ -111,14 +104,12 @@ const strings = {
   },
   explore: {
     categories: 'Categories',
-    viewAll: 'View All',
     allCategories: 'All Categories',
     search: 'Search',
     searchHere: 'Search Here',
     setLocation: 'Set Location',
     searchLocation: 'Search Location',
     yourLocation: 'Your Location',
-    recentlyViewed: 'Recently Viewed',
   },
   greeting: {
     morning: 'Good Morning',
@@ -308,8 +299,6 @@ const strings = {
     locationPermissionInfo:
       'Please enable location services in the settings app to continue.',
     loadFriendsList: 'Unable to load friends info. Please try again later.',
-    loadFriendRequests:
-      'Unable to load friend requests. Please try again later.',
     acceptFriendRequest:
       'Unable to accept friend request. Please try again later.',
     declineFriendRequest:
@@ -320,16 +309,12 @@ const strings = {
       'Unable to load notification settings. Please try again later.',
     toggleNotifications:
       'Unable to toggle notification settings. Please try again later.',
-    editInfo: 'Unable to edit user info. Please try again later.',
-    resetPassword: 'Unable to reset password. Please try again later.',
     searchError: 'Unable to search for users. Please try again later.',
     loadUserData: 'Unable to load user data. Please try again later.',
     friendRequest: 'Unable to send friend request. Please try again later.',
     unfriend: 'Unable to unfriend. Please try again later.',
-    addFriend: 'Unable to invite friend. Please try again later.',
     createFG: 'Unable to create friend group. Please try again later.',
     fgNameEmpty: 'Friend group name cannot be empty.',
-    reorderFG: 'Unable to reorder friend groups. Please try again later.',
     editFGName: 'Unable to edit friend group name. Please try again later.',
     deleteFG: 'Unable to delete friend group. Please try again later.',
     inviteUsers: 'Unable to invite users. Please try again later.',
@@ -337,7 +322,6 @@ const strings = {
     unblock: 'Unable to unblock user. Please try again later.',
     changeCompletionStatus:
       'Unable to change completion status. Please try again later.',
-    loadUpcomingEvent: 'Unable to load upcoming event. Please try again later.',
     loadRecommendations:
       'Unable to load recommendations. Please try again later.',
     loadPoiSections: 'Unable to load places. Please try again later.',

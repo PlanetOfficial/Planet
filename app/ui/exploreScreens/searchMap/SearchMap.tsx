@@ -20,17 +20,17 @@ import STYLING from '../../../constants/styles';
 
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
-
-import {Coordinate, Locality} from '../../../utils/types';
-
-import {useLocationContext} from '../../../context/LocationContext';
 import SearchBar from '../../components/SearchBar';
 
+import {Coordinate, Locality} from '../../../utils/types';
 import {useLoadingState} from '../../../utils/Misc';
 import {
   autocompleteLocality,
   autocompleteLocalityLatLng,
 } from '../../../utils/api/poiAPI';
+
+import {useLocationContext} from '../../../context/LocationContext';
+
 
 const SearchMap = ({
   navigation,

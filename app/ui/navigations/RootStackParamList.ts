@@ -13,11 +13,6 @@ import {
 type RootStackParamList = {
   TabStack: undefined;
 
-  ViewHistory: {
-    viewHistory: PoiType[];
-    location: Coordinate;
-  };
-
   SearchCategory: {
     mode: CreateModes;
     myLocation: Coordinate;

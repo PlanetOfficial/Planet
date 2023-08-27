@@ -28,8 +28,6 @@ import Friends from '../friendsScreens/friends/Friends';
 import Requests from '../friendsScreens/requests/Requests';
 import User from '../friendsScreens/user/User';
 
-import ViewHistory from '../exploreScreens/ViewHistory/ViewHistory';
-
 import Event from '../libraryScreens/event/Event';
 import EventSettings from '../libraryScreens/eventSettings/EventSettings';
 import Notifications from '../libraryScreens/notifications/Notifications';
@@ -124,8 +122,6 @@ const authStackScreens = () => (
 const mainStackScreens = () => (
   <>
     <Stack.Screen name="TabStack" component={TabStack} />
-
-    <Stack.Screen name="ViewHistory" component={ViewHistory} />
 
     <Stack.Screen name="SearchCategory" component={SearchCategory} />
     <Stack.Screen
