@@ -17,12 +17,12 @@ import strings from '../../../constants/strings';
 
 import Text from '../../components/Text';
 
-import {Coordinate, Genre, CreateModes} from '../../../utils/types';
+import {Coordinate, Genre, ExploreModes} from '../../../utils/types';
 
 interface Props {
   navigation: any;
   location?: Coordinate;
-  mode: CreateModes;
+  mode: ExploreModes;
 }
 
 const Categories: React.FC<Props> = ({navigation, location, mode}) => {

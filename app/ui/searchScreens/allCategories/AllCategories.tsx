@@ -15,9 +15,9 @@ import STYLING from '../../../constants/styles';
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 
-import {Coordinate, Genre, CreateModes} from '../../../utils/types';
+import {Coordinate, Genre, ExploreModes} from '../../../utils/types';
 
-import GenreRow from './GenreRow';
+import GenreContainer from './GenreContainer';
 
 const AllCategories = ({
   navigation,
@@ -27,7 +27,7 @@ const AllCategories = ({
   route: {
     params: {
       location: Coordinate;
-      mode: CreateModes;
+      mode: ExploreModes;
       genres: Genre[];
     };
   };
@@ -53,7 +53,7 @@ const AllCategories = ({
       </SafeAreaView>
       <ScrollView scrollIndicatorInsets={{right: 1}}>
         {genres.map(genre => (
-          <GenreRow
+          <GenreContainer
             navigation={navigation}
             location={location}
             mode={mode}

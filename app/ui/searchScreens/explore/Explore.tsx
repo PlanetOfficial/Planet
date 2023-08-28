@@ -19,7 +19,7 @@ import Text from '../../components/Text';
 import PoiRow from '../../components/PoiRow';
 
 import {fetchUserLocation, handleBookmark} from '../../../utils/Misc';
-import {Coordinate, Poi, CreateModes} from '../../../utils/types';
+import {Coordinate, Poi, ExploreModes} from '../../../utils/types';
 
 import {useBookmarkContext} from '../../../context/BookmarkContext';
 import SearchBar from '../../friendsScreens/components/SearchBar';
@@ -33,7 +33,7 @@ const Explore = ({
   route:
     | {
         params: {
-          mode: CreateModes;
+          mode: ExploreModes;
         };
       }
     | any;

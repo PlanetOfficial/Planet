@@ -6,8 +6,8 @@ import {
   UserInfo,
   Destination,
   Genre,
-  CreateModes,
-  CreateModesWithInCreate,
+  ExploreModes,
+  ExploreModesWithInCreate,
 } from '../../utils/types';
 
 type RootStackParamList = {
@@ -19,26 +19,26 @@ type RootStackParamList = {
   };
 
   SearchCategory: {
-    mode: CreateModes;
+    mode: ExploreModes;
     myLocation: Coordinate;
     category: Category;
   };
   SearchMap: {
-    mode: CreateModes;
+    mode: ExploreModes;
     myLocation: Coordinate;
     category: Category;
   };
   ModeExplore: {
-    mode: CreateModes;
+    mode: ExploreModes;
   };
   AllCategories: {
     location: Coordinate;
-    mode: CreateModes;
+    mode: ExploreModes;
     genres: Genre[];
   };
 
   Poi: {
-    mode: CreateModesWithInCreate;
+    mode: ExploreModesWithInCreate;
     place_id: string | undefined;
     poi: PoiType | undefined;
     category: string | undefined;
