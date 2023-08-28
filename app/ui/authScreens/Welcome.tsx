@@ -62,13 +62,25 @@ const Welcome = ({navigation}: {navigation: any}) => {
             </View>
           </View>
           <View style={styles.page}>
-            <Text color={colors[theme].primary}>Tutorial 1</Text>
+          <Text color={colors[theme].primary}>Learn more about Planet</Text>
+          <Image 
+            source={require('../../assets/images/4.gif')}
+            style={styles.img} 
+          />
           </View>
           <View style={styles.page}>
-            <Text color={colors[theme].primary}>Tutorial 2</Text>
+            <Text color={colors[theme].primary}>Discover everything it can do!</Text>
+            <Image 
+              source={require('../../assets/images/5.gif')}
+              style={styles.img} 
+            />
           </View>
           <View style={styles.page}>
-            <Text color={colors[theme].primary}>Tutorial 3</Text>
+            <Text color={colors[theme].primary}>Bringing the joy back to planning!</Text>
+            <Image 
+              source={require('../../assets/images/6.gif')}
+              style={styles.img} 
+            />
           </View>
           <View style={styles.page}>
             <View style={styles.welcome}>
@@ -186,6 +198,10 @@ const styling = (theme: 'light' | 'dark') =>
       height: s(8),
       marginHorizontal: s(3),
       borderRadius: s(5),
+    },
+    img: {
+      width: 325,
+      height: 750,
     },
   });
 
