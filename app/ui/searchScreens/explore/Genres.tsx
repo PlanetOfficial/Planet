@@ -25,7 +25,7 @@ interface Props {
   mode: ExploreModes;
 }
 
-const Categories: React.FC<Props> = ({navigation, location, mode}) => {
+const Genres: React.FC<Props> = ({navigation, location, mode}) => {
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
 
@@ -128,4 +128,4 @@ const styling = (theme: 'light' | 'dark') =>
     },
   });
 
-export default Categories;
+export default Genres;

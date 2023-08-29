@@ -23,7 +23,7 @@ import {Coordinate, Poi, ExploreModes} from '../../../utils/types';
 
 import {useBookmarkContext} from '../../../context/BookmarkContext';
 import SearchBar from '../../friendsScreens/components/SearchBar';
-import Categories from './Categories';
+import Genres from './Genres';
 
 const Explore = ({
   navigation,
@@ -82,7 +82,7 @@ const Explore = ({
       /> */}
       {!searching ? (
         <ScrollView scrollIndicatorInsets={{right: 1}}>
-          <Categories navigation={navigation} location={location} mode={mode} />
+          <Genres navigation={navigation} location={location} mode={mode} />
         </ScrollView>
       ) : searchText.length === 0 ? (
         <FlatList
