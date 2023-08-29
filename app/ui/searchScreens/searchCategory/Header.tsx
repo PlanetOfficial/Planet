@@ -15,7 +15,7 @@ import {getRegionFromPointAndDistance} from '../../../utils/Misc';
 interface Props {
   navigation: any;
   category: Category;
-  myLocationOff: boolean;
+  locationNearMyLocation: boolean;
   myLocation: Coordinate;
   setLocation: (location: Coordinate) => void;
   setTempLocation: (location: Coordinate) => void;
@@ -26,7 +26,7 @@ interface Props {
 const Header: React.FC<Props> = ({
   navigation,
   category,
-  myLocationOff,
+  locationNearMyLocation,
   myLocation,
   setLocation,
   setTempLocation,
@@ -43,9 +43,9 @@ const Header: React.FC<Props> = ({
         <Text>{category.name}</Text>
         <Icon
           size="m"
-          icon={myLocationOff ? icons.locationFilled : icons.location}
-          color={myLocationOff ? colors[theme].accent : colors[theme].secondary}
-          disabled={!myLocationOff}
+          icon={locationNearMyLocation ? icons.locationFilled : icons.location}
+          color={locationNearMyLocation ? colors[theme].accent : colors[theme].secondary}
+          disabled={!locationNearMyLocation}
           onPress={() => {
             setLocation(myLocation);
             setTempLocation(myLocation);

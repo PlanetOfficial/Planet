@@ -157,7 +157,7 @@ export const getInfoString = (poi: Poi): string => {
   return poiString;
 };
 
-export const determineOffset = (a: Coordinate, b: Coordinate) => {
+export const isLocationOffset = (a: Coordinate, b: Coordinate) : boolean => {
   return (
     Math.abs(a.latitude - b.latitude) > numbers.locationOffThreshold ||
     Math.abs(a.longitude - b.longitude) > numbers.locationOffThreshold

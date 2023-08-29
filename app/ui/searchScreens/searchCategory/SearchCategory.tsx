@@ -27,7 +27,7 @@ import Text from '../../components/Text';
 import {getPois} from '../../../utils/api/poiAPI';
 import {Poi, Coordinate, Category, CreateModes} from '../../../utils/types';
 import {
-  determineOffset,
+  isLocationOffset,
   getRegionFromPointAndDistance,
 } from '../../../utils/Misc';
 
@@ -36,7 +36,7 @@ import {useLocationContext} from '../../../context/LocationContext';
 
 import Map from './Map';
 import Header from './Header';
-import Filter from './Filter';
+import Filters from './Filters';
 import Results from './Results';
 import Handle from './Handle';
 
@@ -77,8 +77,8 @@ const SearchCategory = ({
 
   const {location, setLocation, radius} = useLocationContext();
   const [tempLocation, setTempLocation] = useState<Coordinate>(location);
-  const tempLocationOff = determineOffset(tempLocation, location);
-  const myLocationOff = determineOffset(myLocation, location);
+  const locationNearTempLocation = isLocationOffset(tempLocation, location);
+  const locationNearMyLocation = isLocationOffset(myLocation, location);
 
   const insets = useSafeAreaInsets();
   const [bottomSheetIndex, setBottomSheetIndex] = useState<number>(2);
@@ -216,7 +216,7 @@ const SearchCategory = ({
       <Header
         navigation={navigation}
         category={category}
-        myLocationOff={myLocationOff}
+        locationNearMyLocation={locationNearMyLocation}
         myLocation={myLocation}
         setLocation={setLocation}
         setTempLocation={setTempLocation}
@@ -224,7 +224,7 @@ const SearchCategory = ({
         mapRef={mapRef}
       />
 
-      {bottomSheetIndex === 0 && (tempLocationOff || loading) ? (
+      {bottomSheetIndex === 0 && (locationNearTempLocation || loading) ? (
         <TouchableOpacity
           style={[
             styles.searchHere,
@@ -257,7 +257,7 @@ const SearchCategory = ({
         {bottomSheetIndex === 0 ? (
           <View style={{height: s(45)}} />
         ) : (
-          <Filter
+          <Filters
             ref={filterRef}
             filters={category.filter}
             currFilters={filters}

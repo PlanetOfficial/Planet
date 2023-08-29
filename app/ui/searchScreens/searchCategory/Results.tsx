@@ -110,7 +110,7 @@ const Results: React.FC<Props> = ({
         showsHorizontalScrollIndicator={false}
         pagingEnabled={true}
         scrollEventThrottle={16}
-        snapToInterval={s(280) + s(20)} // 280 + 20
+        snapToInterval={s(280) + s(20)}
         snapToAlignment={'start'}
         decelerationRate={'fast'}
         onScroll={event => {
