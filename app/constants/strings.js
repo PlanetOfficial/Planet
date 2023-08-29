@@ -341,7 +341,7 @@ const strings = {
     editDisplayName: 'Unable to edit display name. Please try again later.',
     editUsername: 'Unable to edit username. Please try again later.',
     editBirthday: 'Unable to edit birthday. Please try again later.',
-    searchLocailty: 'Unable to search for cities. Please try again later.',
+    searchLocality: 'Unable to search for cities. Please try again later.',
     noResultsFound: 'No Results Found',
     noResultsFoundDescription: 'Try searching for something else',
   },

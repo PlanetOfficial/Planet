@@ -103,7 +103,7 @@ const SearchMap = ({
               if (results) {
                 setSearchResults(results);
               } else {
-                Alert.alert(strings.error.error, strings.error.searchLocailty);
+                Alert.alert(strings.error.error, strings.error.searchLocality);
               }
             } else {
               setSearchResults([]);
@@ -163,7 +163,7 @@ const SearchMap = ({
                   } else {
                     Alert.alert(
                       strings.error.error,
-                      strings.error.searchLocailty,
+                      strings.error.searchLocality,
                     );
                   }
                 }}>
