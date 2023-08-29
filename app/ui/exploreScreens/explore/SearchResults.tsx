@@ -33,7 +33,7 @@ interface Props {
   mode: CreateModes;
 }
 
-const SearchResult: React.FC<Props> = ({
+const SearchResults: React.FC<Props> = ({
   navigation,
   loading,
   searchResults,
@@ -138,4 +138,4 @@ const styling = (theme: 'light' | 'dark') =>
     },
   });
 
-export default SearchResult;
+export default SearchResults;

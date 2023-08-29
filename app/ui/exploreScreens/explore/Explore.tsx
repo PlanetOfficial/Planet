@@ -38,7 +38,7 @@ import {autocompleteSearch} from '../../../utils/api/poiAPI';
 import {useBookmarkContext} from '../../../context/BookmarkContext';
 import SearchBar from '../../friendsScreens/components/SearchBar';
 import Categories from './Categories';
-import SearchResult from './SearchResult';
+import SearchResults from './SearchResults';
 
 const Explore = ({
   navigation,
@@ -137,7 +137,7 @@ const Explore = ({
           />
         </ScrollView>
       ) : searchText.length > 2 ? (
-        <SearchResult
+        <SearchResults
           navigation={navigation}
           loading={loading}
           searchResults={searchResults}
