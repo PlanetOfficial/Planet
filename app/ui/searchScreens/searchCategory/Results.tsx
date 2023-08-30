@@ -16,7 +16,7 @@ import Text from '../../components/Text';
 import PoiRow from '../../components/PoiRow';
 
 import {handleBookmark} from '../../../utils/Misc';
-import {Poi, Coordinate, Category, CreateModes} from '../../../utils/types';
+import {Poi, Coordinate, Category, ExploreModes} from '../../../utils/types';
 import PoiCardXL from '../../components/PoiCardXL';
 import MapView from 'react-native-maps';
 import numbers from '../../../constants/numbers';
@@ -31,7 +31,7 @@ interface Props {
   setBookmarks: (bookmarks: Poi[]) => void;
   location: Coordinate;
   category: Category;
-  mode: CreateModes;
+  mode: ExploreModes;
   bottomSheetIndex: number;
   selectedIndex: number;
   setSelectedIndex: (index: number) => void;

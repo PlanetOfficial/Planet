@@ -20,7 +20,7 @@ import Text from '../../components/Text';
 
 import {
   Coordinate,
-  CreateModesWithInCreate,
+  ExploreModesWithInCreate,
   Poi,
   PoiDetail,
 } from '../../../utils/types';
@@ -42,7 +42,7 @@ const PoiPage = ({
   navigation: any;
   route: {
     params: {
-      mode: CreateModesWithInCreate;
+      mode: ExploreModesWithInCreate;
       place_id?: string;
       poi?: Poi;
       category?: string;
@@ -55,7 +55,7 @@ const PoiPage = ({
 
   const [destination, setDestination] = useState<Poi>();
   const [destinationDetails, setDestinationDetails] = useState<PoiDetail>();
-  const [mode] = useState<CreateModesWithInCreate>(route.params.mode);
+  const [mode] = useState<ExploreModesWithInCreate>(route.params.mode);
 
   const {bookmarks, setBookmarks} = useBookmarkContext();
 

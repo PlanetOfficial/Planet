@@ -25,11 +25,11 @@ import STYLING from '../../../constants/styles';
 import Text from '../../components/Text';
 
 import {getPois} from '../../../utils/api/poiAPI';
-import {Poi, Coordinate, Category, CreateModes} from '../../../utils/types';
 import {
   isLocationOffset,
   getRegionFromPointAndDistance,
 } from '../../../utils/Misc';
+import {Poi, Coordinate, Category, ExploreModes} from '../../../utils/types';
 
 import {useBookmarkContext} from '../../../context/BookmarkContext';
 import {useLocationContext} from '../../../context/LocationContext';
@@ -47,7 +47,7 @@ const SearchCategory = ({
   navigation: any;
   route: {
     params: {
-      mode: CreateModes;
+      mode: ExploreModes;
       myLocation: Coordinate;
       category: Category;
     };
