@@ -26,7 +26,7 @@ const AllCategories = ({
   navigation: any;
   route: {
     params: {
-      location: Coordinate;
+      myLocation: Coordinate;
       mode: ExploreModes;
       genres: Genre[];
     };
@@ -36,7 +36,7 @@ const AllCategories = ({
   const STYLES = STYLING(theme);
   StatusBar.setBarStyle(colors[theme].statusBar, true);
 
-  const {location, mode, genres} = route.params;
+  const {myLocation, mode, genres} = route.params;
 
   return (
     <View style={STYLES.container}>
@@ -56,7 +56,7 @@ const AllCategories = ({
           <GenreContainer
             key={genre.id}
             navigation={navigation}
-            location={location}
+            myLocation={myLocation}
             mode={mode}
             genre={genre}
           />

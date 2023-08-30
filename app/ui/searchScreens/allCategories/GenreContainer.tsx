@@ -20,14 +20,14 @@ import Icon from '../../components/Icon';
 
 interface Props {
   navigation: any;
-  location: Coordinate;
+  myLocation: Coordinate;
   mode: ExploreModes;
   genre: Genre;
 }
 
 const GenreContainer: React.FC<Props> = ({
   navigation,
-  location,
+  myLocation,
   mode,
   genre,
 }) => {
@@ -40,7 +40,21 @@ const GenreContainer: React.FC<Props> = ({
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => console.log('TODO: Genre Search')}>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('SearchCategory', {
+              category: {
+                id: genre.id,
+                name: genre.name,
+                alias: genre.alias,
+                supplier: genre.supplier,
+                filter: genre.filter,
+                icon: genre.image,
+              },
+              myLocation,
+              mode,
+            })
+          }>
           <Text size="s">{genre.name}:</Text>
         </TouchableOpacity>
         <View
@@ -66,9 +80,9 @@ const GenreContainer: React.FC<Props> = ({
               style={styles.row}
               onPress={() =>
                 navigation.navigate('SearchCategory', {
-                  category: category,
-                  myLocation: location,
-                  mode: mode,
+                  category,
+                  myLocation,
+                  mode,
                 })
               }>
               <Text size="s" weight="l">
