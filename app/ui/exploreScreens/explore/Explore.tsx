@@ -29,15 +29,15 @@ import {
 import {
   Coordinate,
   Poi,
-  CreateModes,
-  Locality,
+  ExploreModes,
+  GoogleAutocompleteResult,
   Category,
 } from '../../../utils/types';
 import {autocompleteSearch} from '../../../utils/api/poiAPI';
 
 import {useBookmarkContext} from '../../../context/BookmarkContext';
 import SearchBar from '../../friendsScreens/components/SearchBar';
-import Categories from './Categories';
+import Genres from './Genres';
 import SearchResults from './SearchResults';
 
 const Explore = ({
@@ -48,7 +48,7 @@ const Explore = ({
   route:
     | {
         params: {
-          mode: CreateModes;
+          mode: ExploreModes;
         };
       }
     | any;
@@ -63,9 +63,9 @@ const Explore = ({
 
   const [searchText, setSearchText] = useState<string>('');
   const [searching, setSearching] = useState<boolean>(false);
-  const [searchResults, setSearchResults] = useState<(Category | Locality)[]>(
-    [],
-  );
+  const [searchResults, setSearchResults] = useState<
+    (Category | GoogleAutocompleteResult)[]
+  >([]);
 
   const [loading, withLoading] = useLoadingState();
 
@@ -130,11 +130,7 @@ const Explore = ({
       </SafeAreaView>
       {!searching ? (
         <ScrollView scrollIndicatorInsets={{right: 1}}>
-          <Categories
-            navigation={navigation}
-            myLocation={myLocation}
-            mode={mode}
-          />
+          <Genres navigation={navigation} myLocation={myLocation} mode={mode} />
         </ScrollView>
       ) : searchText.length > 2 ? (
         <SearchResults
