@@ -44,7 +44,9 @@ const Header: React.FC<Props> = ({
         <Icon
           size="m"
           icon={isMyLocationOffset ? icons.locationFilled : icons.location}
-          color={isMyLocationOffset ? colors[theme].accent : colors[theme].secondary}
+          color={
+            isMyLocationOffset ? colors[theme].accent : colors[theme].secondary
+          }
           disabled={!isMyLocationOffset}
           onPress={() => {
             setLocation(myLocation);
