@@ -8,7 +8,7 @@ import Text from '../../components/Text';
 import PoiRow from '../../components/PoiRow';
 
 import {handleBookmark} from '../../../utils/Misc';
-import {Poi, Coordinate, Category, CreateModes} from '../../../utils/types';
+import {Poi, Coordinate, Category, ExploreModes} from '../../../utils/types';
 
 interface Props {
   navigation: any;
@@ -18,7 +18,7 @@ interface Props {
   setBookmarks: (bookmarks: Poi[]) => void;
   location: Coordinate;
   category: Category;
-  mode: CreateModes;
+  mode: ExploreModes;
 }
 
 const Results: React.FC<Props> = ({

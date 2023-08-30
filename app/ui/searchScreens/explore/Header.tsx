@@ -25,7 +25,7 @@ import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 
 import {GoogleMapsAPIKey} from '../../../utils/api/APIConstants';
-import {CreateModes} from '../../../utils/types';
+import {ExploreModes} from '../../../utils/types';
 
 interface Props {
   navigation: any;
@@ -33,7 +33,7 @@ interface Props {
   setSearching: (searching: boolean) => void;
   searchText: string;
   setSearchText: (searchText: string) => void;
-  mode: CreateModes;
+  mode: ExploreModes;
 }
 
 const Header: React.FC<Props> = ({
