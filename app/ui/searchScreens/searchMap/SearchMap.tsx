@@ -60,7 +60,9 @@ const SearchMap = ({
   const {setLocation} = useLocationContext();
 
   const [searchText, setSearchText] = useState<string>('');
-  const [searchResults, setSearchResults] = useState<GoogleAutocompleteResult[]>([]);
+  const [searchResults, setSearchResults] = useState<
+    GoogleAutocompleteResult[]
+  >([]);
   const [searching, setSearching] = useState<boolean>(false);
 
   const [loading, withLoading] = useLoadingState();
