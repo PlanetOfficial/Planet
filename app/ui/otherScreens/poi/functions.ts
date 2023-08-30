@@ -6,11 +6,11 @@ import {
   PoiDetail,
   PlaceOpeningHoursPeriod,
   Coordinate,
-  CreateModes,
+  ExploreModes,
 } from '../../../utils/types';
 import strings from '../../../constants/strings';
 
-export const getButtonString = (mode: CreateModes) => {
+export const getButtonString = (mode: ExploreModes) => {
   if (mode === 'create' || mode === 'add') {
     return strings.main.add;
   } else if (mode === 'suggest') {

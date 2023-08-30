@@ -19,11 +19,11 @@ import Text from '../../components/Text';
 import PoiRow from '../../components/PoiRow';
 
 import {fetchUserLocation, handleBookmark} from '../../../utils/Misc';
-import {Coordinate, Poi, CreateModes} from '../../../utils/types';
+import {Coordinate, Poi, ExploreModes} from '../../../utils/types';
 
 import {useBookmarkContext} from '../../../context/BookmarkContext';
 import SearchBar from '../../friendsScreens/components/SearchBar';
-import Categories from './Categories';
+import Genres from './Genres';
 
 const Explore = ({
   navigation,
@@ -33,7 +33,7 @@ const Explore = ({
   route:
     | {
         params: {
-          mode: CreateModes;
+          mode: ExploreModes;
         };
       }
     | any;
@@ -75,7 +75,7 @@ const Explore = ({
       </SafeAreaView>
       {!searching ? (
         <ScrollView scrollIndicatorInsets={{right: 1}}>
-          <Categories
+          <Genres
             navigation={navigation}
             myLocation={myLocation}
             mode={mode}

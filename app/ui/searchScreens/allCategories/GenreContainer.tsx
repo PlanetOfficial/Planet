@@ -14,18 +14,18 @@ import icons from '../../../constants/icons';
 
 import Text from '../../components/Text';
 
-import {Category, Coordinate, Genre, CreateModes} from '../../../utils/types';
+import {Category, Coordinate, Genre, ExploreModes} from '../../../utils/types';
 
 import Icon from '../../components/Icon';
 
 interface Props {
   navigation: any;
   myLocation: Coordinate;
-  mode: CreateModes;
+  mode: ExploreModes;
   genre: Genre;
 }
 
-const GenreRow: React.FC<Props> = ({navigation, myLocation, mode, genre}) => {
+const GenreContainer: React.FC<Props> = ({navigation, myLocation, mode, genre}) => {
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
   StatusBar.setBarStyle(colors[theme].statusBar, true);
@@ -116,4 +116,4 @@ const styling = (theme: 'light' | 'dark') =>
     },
   });
 
-export default GenreRow;
+export default GenreContainer;
