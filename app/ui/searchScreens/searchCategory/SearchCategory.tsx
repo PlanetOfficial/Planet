@@ -77,8 +77,8 @@ const SearchCategory = ({
 
   const {location, setLocation, radius} = useLocationContext();
   const [tempLocation, setTempLocation] = useState<Coordinate>(location);
-  const locationNearTempLocation = isLocationOffset(tempLocation, location);
-  const locationNearMyLocation = isLocationOffset(myLocation, location);
+  const isTempLocationOffset = isLocationOffset(tempLocation, location);
+  const isMyLocationOffset = isLocationOffset(myLocation, location);
 
   const insets = useSafeAreaInsets();
   const [bottomSheetIndex, setBottomSheetIndex] = useState<number>(2);
@@ -216,7 +216,7 @@ const SearchCategory = ({
       <Header
         navigation={navigation}
         category={category}
-        locationNearMyLocation={locationNearMyLocation}
+        isMyLocationOffset={isMyLocationOffset}
         myLocation={myLocation}
         setLocation={setLocation}
         setTempLocation={setTempLocation}
@@ -224,7 +224,7 @@ const SearchCategory = ({
         mapRef={mapRef}
       />
 
-      {bottomSheetIndex === 0 && (locationNearTempLocation || loading) ? (
+      {bottomSheetIndex === 0 && (isTempLocationOffset || loading) ? (
         <TouchableOpacity
           style={[
             styles.searchHere,
