@@ -166,7 +166,7 @@ const styling = (theme: 'light' | 'dark') =>
       height: s(32),
       marginHorizontal: s(15),
       paddingLeft: s(10),
-      borderRadius: s(8),
+      borderRadius: s(5),
       backgroundColor: colors[theme].primary,
     },
     date: {

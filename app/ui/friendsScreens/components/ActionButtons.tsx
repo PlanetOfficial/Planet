@@ -102,7 +102,7 @@ const styling = (theme: 'light' | 'dark') =>
       justifyContent: 'center',
       width: s(70),
       height: s(25),
-      borderRadius: s(10),
+      borderRadius: s(5),
       backgroundColor: colors[theme].accent,
     },
     buttonGrey: {

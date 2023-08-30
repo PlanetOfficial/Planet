@@ -176,7 +176,7 @@ const styling = (theme: 'light' | 'dark') =>
       height: s(50),
       borderRadius: s(10),
       borderColor: colors[theme].accent,
-      borderWidth: s(2),
+      borderWidth: 2,
     },
     scrollIndicator: {
       flexDirection: 'row',

@@ -218,7 +218,7 @@ const styling = (theme: 'light' | 'dark') =>
       marginHorizontal: s(50),
       paddingHorizontal: s(20),
       paddingVertical: s(10),
-      borderRadius: s(10),
+      borderRadius: s(5),
       backgroundColor: colors[theme].primary,
     },
     addText: {
@@ -232,7 +232,7 @@ const styling = (theme: 'light' | 'dark') =>
       margin: s(10),
       padding: s(10),
       marginRight: s(30),
-      borderRadius: s(10),
+      borderRadius: s(5),
       backgroundColor: colors[theme].primary,
     },
     friendIconContainer: {

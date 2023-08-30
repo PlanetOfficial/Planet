@@ -242,7 +242,7 @@ const styling = (theme: 'light' | 'dark') =>
       alignSelf: 'center',
       paddingHorizontal: s(20),
       paddingVertical: s(10),
-      borderRadius: s(10),
+      borderRadius: s(5),
       backgroundColor: colors[theme].accent,
     },
   });

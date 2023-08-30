@@ -182,7 +182,7 @@ const styling = (theme: 'light' | 'dark') =>
       marginTop: s(30),
       marginHorizontal: s(40),
       paddingVertical: s(20),
-      borderRadius: s(10),
+      borderRadius: s(5),
       backgroundColor: colors[theme].primary,
     },
   });
