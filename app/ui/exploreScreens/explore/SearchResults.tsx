@@ -33,7 +33,7 @@ interface Props {
   mode: CreateModes;
 }
 
-const SearchResult: React.FC<Props> = ({
+const SearchResults: React.FC<Props> = ({
   navigation,
   loading,
   searchResults,
@@ -59,6 +59,7 @@ const SearchResult: React.FC<Props> = ({
       scrollIndicatorInsets={{right: 1}}
       renderItem={({item}: {item: Category | Locality}) => {
         if ('id' in item) {
+          // if item is a Category
           return (
             <TouchableOpacity
               style={styles.row}
@@ -138,4 +139,4 @@ const styling = (theme: 'light' | 'dark') =>
     },
   });
 
-export default SearchResult;
+export default SearchResults;

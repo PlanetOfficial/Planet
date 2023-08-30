@@ -13,14 +13,14 @@ import {Coordinate, Category} from '../../../utils/types';
 interface Props {
   navigation: any;
   category: Category;
-  myLocationOff: boolean;
+  isMyLocationOffset: boolean;
   myLocation: Coordinate;
 }
 
 const Header: React.FC<Props> = ({
   navigation,
   category,
-  myLocationOff,
+  isMyLocationOffset,
   myLocation,
 }) => {
   const theme = useColorScheme() || 'light';
@@ -34,7 +34,10 @@ const Header: React.FC<Props> = ({
         <Icon
           size="m"
           icon={icons.locationFilled}
-          color={myLocationOff ? colors[theme].accent : colors[theme].blue}
+          color={
+            isMyLocationOffset ? colors[theme].accent : colors[theme].secondary
+          }
+          disabled={!isMyLocationOffset}
           onPress={() => {
             navigation.navigate('SearchMap', {
               myLocation,

@@ -24,7 +24,7 @@ import SearchBar from '../../components/SearchBar';
 import Separator from '../../components/SeparatorR';
 
 import {
-  determineOffset,
+  isLocationOffset,
   fetchUserLocation,
   handleBookmark,
   useLoadingState,
@@ -32,18 +32,21 @@ import {
 import {
   Coordinate,
   Poi,
-  CreateModes,
-  Locality,
+  ExploreModes,
+  GoogleAutocompleteResult,
   Category,
 } from '../../../utils/types';
-import {autocompleteSearch, getSuggestedPoiSections} from '../../../utils/api/poiAPI';
+import {
+  autocompleteSearch,
+  getSuggestedPoiSections,
+} from '../../../utils/api/poiAPI';
 
 import {useBookmarkContext} from '../../../context/BookmarkContext';
 import {useLocationContext} from '../../../context/LocationContext';
 
-import Categories from './Categories';
-import SearchResult from './SearchResult';
 import PoiSection from './PoiSection';
+import Genres from './Genres';
+import SearchResults from './SearchResults';
 
 const Explore = ({
   navigation,
@@ -53,7 +56,7 @@ const Explore = ({
   route:
     | {
         params: {
-          mode: CreateModes;
+          mode: ExploreModes;
         };
       }
     | any;
@@ -69,15 +72,17 @@ const Explore = ({
 
   const [searchText, setSearchText] = useState<string>('');
   const [searching, setSearching] = useState<boolean>(false);
-  const [searchResults, setSearchResults] = useState<(Category | Locality)[]>(
-    [],
-  );
+  const [searchResults, setSearchResults] = useState<
+    (Category | GoogleAutocompleteResult)[]
+  >([]);
 
   const [loading, withLoading] = useLoadingState();
 
   const {bookmarks, setBookmarks} = useBookmarkContext();
 
-  const [suggestedPoiSections, setSuggestedPoiSections] = useState<{[key: string]: Poi[]}>({});
+  const [suggestedPoiSections, setSuggestedPoiSections] = useState<{
+    [key: string]: Poi[];
+  }>({});
   const loadSuggestedPoiSections = useCallback(async () => {
     const _suggestedPoiSections = await getSuggestedPoiSections(
       location.latitude,
@@ -153,7 +158,7 @@ const Explore = ({
                 icon={icons.locationFilled}
                 color={
                   myLocation
-                    ? determineOffset(myLocation, location)
+                    ? isLocationOffset(myLocation, location)
                       ? colors[theme].accent
                       : colors[theme].blue
                     : colors[theme].secondary
@@ -170,11 +175,7 @@ const Explore = ({
       </SafeAreaView>
       {!searching ? (
         <ScrollView scrollIndicatorInsets={{right: 1}}>
-          <Categories
-            navigation={navigation}
-            myLocation={myLocation}
-            mode={mode}
-          />
+          <Genres navigation={navigation} myLocation={myLocation} mode={mode} />
           <Separator />
           {Object.keys(suggestedPoiSections).map((key, index) =>
             suggestedPoiSections[key].length > 0 ? (
@@ -188,7 +189,7 @@ const Explore = ({
           )}
         </ScrollView>
       ) : searchText.length > 2 ? (
-        <SearchResult
+        <SearchResults
           navigation={navigation}
           loading={loading}
           searchResults={searchResults}

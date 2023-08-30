@@ -25,15 +25,15 @@ import STYLING from '../../../constants/styles';
 import Text from '../../components/Text';
 
 import {getPois} from '../../../utils/api/poiAPI';
-import {Poi, Coordinate, Category, CreateModes} from '../../../utils/types';
-import {determineOffset, getRegionFromPoints} from '../../../utils/Misc';
+import {isLocationOffset, getRegionFromPoints} from '../../../utils/Misc';
+import {Poi, Coordinate, Category, ExploreModes} from '../../../utils/types';
 
 import {useBookmarkContext} from '../../../context/BookmarkContext';
 import {useLocationContext} from '../../../context/LocationContext';
 
 import Map from './Map';
 import Header from './Header';
-import Filter from './Filter';
+import Filters from './Filters';
 import Results from './Results';
 import Handle from './Handle';
 
@@ -44,7 +44,7 @@ const SearchCategory = ({
   navigation: any;
   route: {
     params: {
-      mode: CreateModes;
+      mode: ExploreModes;
       myLocation: Coordinate;
       category: Category;
     };
@@ -74,8 +74,8 @@ const SearchCategory = ({
 
   const {location, setLocation} = useLocationContext();
   const [tempLocation, setTempLocation] = useState<Coordinate>(location);
-  const tempLocationOff = determineOffset(tempLocation, location);
-  const myLocationOff = determineOffset(myLocation, location);
+  const isTempLocationOffset = isLocationOffset(tempLocation, location);
+  const isMyLocationOffset = isLocationOffset(myLocation, location);
 
   const filterRef = useRef<any>(null); // due to forwardRef
   const [filters, setFilters] = useState<(number | number[])[]>(
@@ -221,11 +221,11 @@ const SearchCategory = ({
       <Header
         navigation={navigation}
         category={category}
-        myLocationOff={myLocationOff}
+        isMyLocationOffset={isMyLocationOffset}
         myLocation={myLocation}
       />
 
-      {bottomSheetIndex === 0 && (tempLocationOff || loading) ? (
+      {bottomSheetIndex === 0 && (isTempLocationOffset || loading) ? (
         <TouchableOpacity
           style={[
             styles.searchHere,
@@ -258,7 +258,7 @@ const SearchCategory = ({
         {bottomSheetIndex === 0 ? (
           <View style={{height: s(50)}} />
         ) : filters.length > 0 ? (
-          <Filter
+          <Filters
             ref={filterRef}
             filters={category.filter}
             currFilters={filters}
