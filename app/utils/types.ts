@@ -28,6 +28,7 @@ export interface FriendGroup {
 export interface Genre {
   id: number;
   name: string;
+  image: Image;
   categories: Category[];
 }
 
@@ -189,3 +190,11 @@ export interface Recommendation {
   places: Poi[];
   categories: string[];
 }
+
+export type ExploreModes = 'create' | 'suggest' | 'add' | 'none';
+export type ExploreModesWithInCreate =
+  | 'create'
+  | 'suggest'
+  | 'add'
+  | 'inCreate'
+  | 'none';

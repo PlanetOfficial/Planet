@@ -101,6 +101,11 @@ const strings = {
     closed: 'Closed',
     images: 'Images',
   },
+  explore: {
+    categories: 'Categories',
+    viewAll: 'View All',
+    allCategories: 'All Categories',
+  },
   search: {
     search: 'Search',
     searchFriends: 'Search Friends',

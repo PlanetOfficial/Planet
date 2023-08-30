@@ -2,34 +2,30 @@ import React, {useEffect, useState} from 'react';
 import {
   View,
   StyleSheet,
-  Alert,
   ScrollView,
   FlatList,
   TouchableOpacity,
   useColorScheme,
   StatusBar,
-  Image,
+  SafeAreaView,
 } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {s} from 'react-native-size-matters';
 
 import colors from '../../../constants/colors';
-import numbers from '../../../constants/numbers';
 import strings from '../../../constants/strings';
 import STYLING from '../../../constants/styles';
 
 import Text from '../../components/Text';
-import SeparatorR from '../../components/SeparatorR';
 import PoiRow from '../../components/PoiRow';
 
 import {fetchUserLocation, handleBookmark} from '../../../utils/Misc';
-import {Category, Coordinate, Genre, Poi} from '../../../utils/types';
+import {Coordinate, Poi, ExploreModes} from '../../../utils/types';
 
-import Header from './Header';
-import categories from '../../../constants/categories';
 import {useBookmarkContext} from '../../../context/BookmarkContext';
+import SearchBar from '../../friendsScreens/components/SearchBar';
+import Genres from './Genres';
 
-const Search = ({
+const Explore = ({
   navigation,
   route,
 }: {
@@ -37,7 +33,7 @@ const Search = ({
   route:
     | {
         params: {
-          mode: 'create' | 'suggest' | 'add' | 'none';
+          mode: ExploreModes;
         };
       }
     | any;
@@ -49,21 +45,11 @@ const Search = ({
 
   const mode = route.params?.mode || 'none';
 
-  const [genres, setGenres] = useState<Genre[]>([]);
   const [location, setLocation] = useState<Coordinate>();
   const [searching, setSearching] = useState<boolean>(false);
   const [searchText, setSearchText] = useState<string>('');
 
   const {bookmarks, setBookmarks} = useBookmarkContext();
-
-  const initializeData = async () => {
-    const data = await AsyncStorage.getItem('genres');
-    if (data) {
-      setGenres(JSON.parse(data));
-    } else {
-      Alert.alert(strings.error.error, strings.error.loadGenres);
-    }
-  };
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', async () => {
@@ -74,64 +60,29 @@ const Search = ({
     return unsubscribe;
   }, [navigation]);
 
-  useEffect(() => {
-    initializeData();
-  }, []);
-
   return (
     <View style={STYLES.container}>
-      <Header
+      <SafeAreaView>
+        <SearchBar
+          searching={searching}
+          setSearching={setSearching}
+          searchText={searchText}
+          setSearchText={setSearchText}
+          setSearchResults={() => {}}
+          search={() => {}}
+        />
+      </SafeAreaView>
+      {/* <Header
         navigation={navigation}
         searching={searching}
         setSearching={setSearching}
         searchText={searchText}
         setSearchText={setSearchText}
         mode={mode}
-      />
+      /> */}
       {!searching ? (
         <ScrollView scrollIndicatorInsets={{right: 1}}>
-          {genres.map((genre: Genre, index: number) => (
-            <View key={genre.id}>
-              <View style={styles.header}>
-                <Text size="s">{genre.name}</Text>
-              </View>
-              <FlatList
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={styles.scrollView}
-                data={genre.categories}
-                initialNumToRender={5}
-                renderItem={({item}: {item: Category}) => (
-                  <TouchableOpacity
-                    style={styles.categoryContainer}
-                    onPress={() => {
-                      navigation.navigate('SearchCategory', {
-                        category: item,
-                        myLocation: location,
-                        radius: numbers.defaultRadius,
-                        mode: mode,
-                      });
-                    }}>
-                    <View style={[styles.iconContainer, STYLES.shadow]}>
-                      <Image
-                        style={styles.icon}
-                        source={
-                          categories[item.id - 1] || {
-                            uri: item.icon.url,
-                          }
-                        }
-                      />
-                    </View>
-                    <Text size="xs" weight="l" center={true}>
-                      {item.name}
-                    </Text>
-                  </TouchableOpacity>
-                )}
-                keyExtractor={(item: Category) => item.id.toString()}
-              />
-              {index !== genres.length - 1 ? <SeparatorR /> : null}
-            </View>
-          ))}
+          <Genres navigation={navigation} location={location} mode={mode} />
         </ScrollView>
       ) : searchText.length === 0 ? (
         <FlatList
@@ -214,4 +165,4 @@ const styling = (theme: 'light' | 'dark') =>
     },
   });
 
-export default Search;
+export default Explore;

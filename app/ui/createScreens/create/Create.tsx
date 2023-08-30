@@ -151,7 +151,7 @@ const Create = ({
             style={[styles.addButton, STYLES.shadow]}
             onPress={() => {
               setInsertionIndex(0);
-              navigation.navigate('ModeSearch', {
+              navigation.navigate('ModeExplore', {
                 mode: 'create',
               });
             }}>

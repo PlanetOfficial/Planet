@@ -5,6 +5,9 @@ import {
   Poi as PoiType,
   UserInfo,
   Destination,
+  Genre,
+  ExploreModes,
+  ExploreModesWithInCreate,
 } from '../../utils/types';
 
 type RootStackParamList = {
@@ -16,21 +19,26 @@ type RootStackParamList = {
   };
 
   SearchCategory: {
-    mode: 'create' | 'suggest' | 'add' | 'none';
+    mode: ExploreModes;
     myLocation: Coordinate;
     category: Category;
   };
   SearchMap: {
-    mode: 'create' | 'suggest' | 'add' | 'none';
+    mode: ExploreModes;
     myLocation: Coordinate;
     category: Category;
   };
-  ModeSearch: {
-    mode: 'create' | 'suggest' | 'add' | 'none';
+  ModeExplore: {
+    mode: ExploreModes;
+  };
+  AllCategories: {
+    location: Coordinate;
+    mode: ExploreModes;
+    genres: Genre[];
   };
 
   Poi: {
-    mode: 'create' | 'suggest' | 'add' | 'inCreate' | 'none';
+    mode: ExploreModesWithInCreate;
     place_id: string | undefined;
     poi: PoiType | undefined;
     category: string | undefined;

@@ -79,7 +79,7 @@ const SignUpPhone = ({
           <SafeAreaView>
             <Image source={icons.logo} style={STYLES.logo} />
           </SafeAreaView>
-          <ScrollView>
+          <ScrollView showsVerticalScrollIndicator={false}>
             <View style={STYLES.titleContainer}>
               <Text size="l" center={true} color={colors[theme].neutral}>
                 {strings.signUp.accountHasBeenCreated}

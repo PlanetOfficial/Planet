@@ -7,14 +7,14 @@ import STYLING from '../../../constants/styles';
 
 import Text from '../../components/Text';
 
-import {Poi} from '../../../utils/types';
+import {ExploreModes, Poi} from '../../../utils/types';
 
 import {getButtonString} from './functions';
 
 interface Props {
   navigation: any;
   destination: Poi | undefined;
-  mode: 'create' | 'suggest' | 'add' | 'none';
+  mode: ExploreModes;
   category: string | undefined;
 }
 

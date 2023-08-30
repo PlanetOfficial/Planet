@@ -68,7 +68,7 @@ const FriendsList = ({navigation}: {navigation: any}) => {
         </Text>
         <View
           style={{
-            transform: [{rotate: suggestionsShown ? '180deg' : '0deg'}],
+            transform: [{rotate: suggestionsShown ? '0deg' : '180deg'}],
           }}>
           <Icon
             size="xs"
@@ -93,7 +93,7 @@ const FriendsList = ({navigation}: {navigation: any}) => {
         </Text>
         <View
           style={{
-            transform: [{rotate: fgShown ? '180deg' : '0deg'}],
+            transform: [{rotate: fgShown ? '0deg' : '180deg'}],
           }}>
           <Icon
             size="xs"
@@ -138,7 +138,7 @@ const FriendsList = ({navigation}: {navigation: any}) => {
         </Text>
         <View
           style={{
-            transform: [{rotate: friendsShown ? '180deg' : '0deg'}],
+            transform: [{rotate: friendsShown ? '0deg' : '180deg'}],
           }}>
           <Icon
             size="xs"
