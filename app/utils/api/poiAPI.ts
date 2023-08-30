@@ -139,6 +139,30 @@ export const getRecentlyViewed = async (): Promise<Poi[] | null> => {
   }
 };
 
+export const autocompleteSearch = async (
+  query: string,
+  latitude: number,
+  longitude: number,
+): Promise<(Category | Locality)[] | null> => {
+  const response = await fetch(
+    PoiAPIURL +
+      `/autocomplete/search?query=${query}&latitude=${latitude}&longitude=${longitude}`,
+    {
+      method: 'GET',
+      headers: {
+        Authorization: XanoAPIKey,
+      },
+    },
+  );
+
+  if (response?.ok) {
+    const myJson = await response.json();
+    return myJson;
+  } else {
+    return null;
+  }
+};
+
 export const autocompleteLocality = async (
   query: string,
   latitude: number,

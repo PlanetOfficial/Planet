@@ -76,7 +76,7 @@ const Header: React.FC<Props> = ({
         ) : null}
         <GooglePlacesAutocomplete
           ref={autocompleteRef}
-          placeholder={strings.search.search}
+          placeholder={strings.explore.search}
           disableScroll={true}
           isRowScrollable={false}
           enablePoweredByContainer={false}

@@ -195,8 +195,11 @@ export interface Recommendation {
 }
 
 export interface GoogleAutocompleteResult {
-  description: string;
   place_id: string;
+  structured_formatting: {
+    main_text: string;
+    secondary_text: string;
+  };
 }
 
 export type ExploreModes = 'create' | 'suggest' | 'add' | 'none';

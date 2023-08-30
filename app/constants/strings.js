@@ -343,6 +343,7 @@ const strings = {
     editUsername: 'Unable to edit username. Please try again later.',
     editBirthday: 'Unable to edit birthday. Please try again later.',
     searchLocality: 'Unable to search for cities. Please try again later.',
+    searchPlace: 'Unable to search for places. Please try again later.',
     noResultsFound: 'No Results Found',
     noResultsFoundDescription: 'Try searching for something else',
   },

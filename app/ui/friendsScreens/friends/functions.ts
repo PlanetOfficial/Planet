@@ -15,7 +15,7 @@ export const search = async (
   friends?: UserInfo[],
 ) => {
   setSearchText(text);
-  if (text.length > 0) {
+  if (text.length > 2) {
     const result = await searchUsers(text);
 
     if (result) {
