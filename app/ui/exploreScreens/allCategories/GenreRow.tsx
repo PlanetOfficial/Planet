@@ -38,7 +38,7 @@ const GenreRow: React.FC<Props> = ({navigation, myLocation, mode, genre}) => {
           onPress={() =>
             navigation.navigate('SearchCategory', {
               category: {
-                id: 0,
+                id: genre.id * -1,
                 name: genre.name,
                 alias: genre.alias,
                 supplier: genre.supplier,
