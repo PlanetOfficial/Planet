@@ -24,7 +24,7 @@ const Button: React.FC<Props> = ({navigation, destination, mode, category}) => {
 
   return (
     <TouchableOpacity
-      style={STYLES.button}
+      style={[STYLES.button, STYLES.shadow]}
       onPress={() => {
         if (mode === 'create') {
           navigation.navigate('Create', {
@@ -58,9 +58,7 @@ const Button: React.FC<Props> = ({navigation, destination, mode, category}) => {
           );
         }
       }}>
-      <Text size="m" weight="b" color={colors[theme].primary}>
-        {getButtonString(mode)}
-      </Text>
+      <Text color={colors[theme].primary}>{getButtonString(mode)}</Text>
     </TouchableOpacity>
   );
 };

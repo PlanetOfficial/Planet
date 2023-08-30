@@ -1,28 +1,44 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React, {useEffect, useState, useRef, useMemo, useCallback} from 'react';
 import {
   View,
-  SafeAreaView,
   Alert,
   ActivityIndicator,
   useColorScheme,
   StatusBar,
+  StyleSheet,
+  Platform,
+  LayoutAnimation,
+  TouchableOpacity,
+  ScrollView,
 } from 'react-native';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import BottomSheet, {BottomSheetHandleProps} from '@gorhom/bottom-sheet';
+import {s, vs} from 'react-native-size-matters';
+import {BlurView} from '@react-native-community/blur';
+import MapView from 'react-native-maps';
 
 import colors from '../../../constants/colors';
-import icons from '../../../constants/icons';
+import numbers from '../../../constants/numbers';
 import strings from '../../../constants/strings';
 import STYLING from '../../../constants/styles';
 
 import Text from '../../components/Text';
-import Icon from '../../components/Icon';
-import Filter from '../../components/Filter';
 
 import {getPois} from '../../../utils/api/poiAPI';
+import {
+  isLocationOffset,
+  getRegionFromPointAndDistance,
+} from '../../../utils/Misc';
 import {Poi, Coordinate, Category, ExploreModes} from '../../../utils/types';
 
-import Results from './Results';
 import {useBookmarkContext} from '../../../context/BookmarkContext';
 import {useLocationContext} from '../../../context/LocationContext';
+
+import Map from './Map';
+import Header from './Header';
+import Filters from './Filters';
+import Results from './Results';
+import Handle from './Handle';
 
 const SearchCategory = ({
   navigation,
@@ -38,6 +54,7 @@ const SearchCategory = ({
   };
 }) => {
   const theme = useColorScheme() || 'light';
+  const styles = styling(theme);
   const STYLES = STYLING(theme);
 
   useEffect(() => {
@@ -50,20 +67,88 @@ const SearchCategory = ({
 
   const {mode, myLocation, category} = route.params;
 
-  const [places, setPlaces] = useState<Poi[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const mapRef = useRef<MapView>(null);
+  const scrollViewRef = useRef<ScrollView>(null);
 
+  const [places, setPlaces] = useState<Poi[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [selectedIndex, setSelectedIndex] = useState<number>(0);
+  const {bookmarks, setBookmarks} = useBookmarkContext();
+
+  const {location, setLocation, radius} = useLocationContext();
+  const [tempLocation, setTempLocation] = useState<Coordinate>(location);
+  const isTempLocationOffset = isLocationOffset(tempLocation, location);
+  const isMyLocationOffset = isLocationOffset(myLocation, location);
+
+  const insets = useSafeAreaInsets();
+  const [bottomSheetIndex, setBottomSheetIndex] = useState<number>(2);
+  const bottomSheetRef = useRef<BottomSheet>(null);
+  const snapPoints = useMemo(
+    () => [
+      insets.bottom + vs(20),
+      insets.bottom + s(260),
+      vs(680) - (insets.top + s(50)),
+    ],
+    [insets],
+  );
+
+  const handleSheetChange = useCallback(
+    async (fromIndex: number, toIndex: number) => {
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+      setBottomSheetIndex(toIndex);
+      filterRef.current?.closeDropdown();
+      if (toIndex === 0) {
+        mapRef.current?.animateToRegion(
+          getRegionFromPointAndDistance(location, radius),
+          300,
+        );
+      } else if (fromIndex === 2 && toIndex === 1) {
+        if (places?.length > 0) {
+          mapRef.current?.animateToRegion(
+            {
+              latitude: places[0].latitude - numbers.displayLongitudeDelta / 5,
+              longitude: places[0].longitude,
+              latitudeDelta: numbers.displayLatitudeDelta,
+              longitudeDelta: numbers.displayLongitudeDelta,
+            },
+            300,
+          );
+        } else {
+          bottomSheetRef.current?.snapToIndex(2 - fromIndex);
+        }
+        setSelectedIndex(0);
+      }
+    },
+    [places, location, radius],
+  );
+
+  const HandleComponent = useCallback(
+    (props: BottomSheetHandleProps) => (
+      <Handle
+        {...props}
+        onHandlePress={() => {
+          if (loading) {
+            return;
+          }
+          if (bottomSheetIndex === 0) {
+            setBottomSheetIndex(2);
+            bottomSheetRef.current?.snapToIndex(2);
+          } else if (bottomSheetIndex === 2) {
+            setBottomSheetIndex(1);
+            bottomSheetRef.current?.snapToIndex(1);
+          }
+        }}
+      />
+    ),
+    [loading, bottomSheetIndex],
+  );
+
+  const filterRef = useRef<any>(null); // due to forwardRef
   const [filters, setFilters] = useState<(number | number[])[]>(
     category.filter.map(_filter => {
       return _filter.multi ? [] : _filter.defaultIdx;
     }),
   );
-
-  const {bookmarks, setBookmarks} = useBookmarkContext();
-
-  const {location, radius} = useLocationContext();
-
-  const filterRef = useRef<any>(null); // due to forwardRef
 
   useEffect(() => {
     const loadData = async (_filters: {[key: string]: string | string[]}) => {
@@ -76,6 +161,7 @@ const SearchCategory = ({
       );
       if (data) {
         setPlaces(data);
+        bottomSheetRef.current?.snapToIndex(2);
       } else {
         Alert.alert(strings.error.error, strings.error.loadPlaces);
       }
@@ -97,68 +183,135 @@ const SearchCategory = ({
           filters[i] === -1 ? '' : filter.options[filters[i] as number];
       }
     }
+
     setLoading(true);
     loadData(_filters);
   }, [category, filters, location, radius]);
 
   return (
     <View style={STYLES.container}>
-      <SafeAreaView>
-        <View style={STYLES.header}>
-          <Icon
-            size="m"
-            icon={icons.back}
-            onPress={() => navigation.goBack()}
-          />
-          <Text>{category.name}</Text>
-          <Icon
-            icon={icons.pin}
-            button={true}
-            padding={-2}
-            color={
-              location.latitude.toFixed(2) === myLocation.latitude.toFixed(2) &&
-              location.longitude.toFixed(2) === myLocation.longitude.toFixed(2)
-                ? colors[theme].neutral
-                : colors[theme].accent
-            }
-            onPress={() =>
-              navigation.navigate('SearchMap', {
-                category,
-                myLocation,
-                mode,
-              })
-            }
-          />
-        </View>
-      </SafeAreaView>
+      <Map
+        mapRef={mapRef}
+        scrollViewRef={scrollViewRef}
+        location={location}
+        radius={radius}
+        bottomSheetRef={bottomSheetRef}
+        bottomSheetIndex={bottomSheetIndex}
+        setTempLocation={setTempLocation}
+        places={places}
+        selectedIndex={selectedIndex}
+        setSelectedIndex={setSelectedIndex}
+      />
 
-      {category.filter && category.filter.length > 0 ? (
-        <Filter
-          ref={filterRef}
-          filters={category.filter}
-          currFilters={filters}
-          setCurrFilters={setFilters}
+      {Platform.OS === 'ios' ? (
+        <BlurView
+          blurAmount={3}
+          blurType={theme === 'light' ? 'xlight' : 'dark'}
+          style={[styles.blur, {height: insets.top + s(50)}]}
         />
+      ) : (
+        <View style={[styles.blur, styles.dim, {height: insets.top + s(50)}]} />
+      )}
+
+      <Header
+        navigation={navigation}
+        category={category}
+        isMyLocationOffset={isMyLocationOffset}
+        myLocation={myLocation}
+        setLocation={setLocation}
+        setTempLocation={setTempLocation}
+        radius={radius}
+        mapRef={mapRef}
+      />
+
+      {bottomSheetIndex === 0 && (isTempLocationOffset || loading) ? (
+        <TouchableOpacity
+          style={[
+            styles.searchHere,
+            {
+              bottom: insets.bottom + vs(30),
+            },
+          ]}
+          disabled={loading}
+          onPress={() => setLocation(tempLocation)}>
+          {loading ? (
+            <ActivityIndicator size="small" color={colors[theme].accent} />
+          ) : (
+            <Text size="s">{strings.explore.searchHere}</Text>
+          )}
+        </TouchableOpacity>
       ) : null}
 
-      {loading ? (
-        <View style={STYLES.center}>
-          <ActivityIndicator size="small" color={colors[theme].accent} />
-        </View>
-      ) : (
-        <Results
-          navigation={navigation}
-          results={places}
-          filterRef={filterRef}
-          bookmarks={bookmarks}
-          setBookmarks={setBookmarks}
-          location={location}
-          category={category}
-          mode={mode}
-        />
-      )}
+      <BottomSheet
+        ref={bottomSheetRef}
+        backgroundStyle={[
+          STYLES.container,
+          bottomSheetIndex === 0 ? styles.transparent : null,
+        ]}
+        handleComponent={HandleComponent}
+        index={2}
+        snapPoints={snapPoints}
+        onAnimate={handleSheetChange}
+        enableContentPanningGesture={false}
+        enableHandlePanningGesture={!loading && bottomSheetIndex !== 0}>
+        {bottomSheetIndex === 0 ? (
+          <View style={{height: s(45)}} />
+        ) : (
+          <Filters
+            ref={filterRef}
+            filters={category.filter}
+            currFilters={filters}
+            setCurrFilters={setFilters}
+          />
+        )}
+        {loading ? (
+          <View style={STYLES.center}>
+            <ActivityIndicator size="small" color={colors[theme].accent} />
+          </View>
+        ) : (
+          <Results
+            navigation={navigation}
+            results={places}
+            filterRef={filterRef}
+            mapRef={mapRef}
+            scrollViewRef={scrollViewRef}
+            bookmarks={bookmarks}
+            setBookmarks={setBookmarks}
+            location={location}
+            category={category}
+            mode={mode}
+            bottomSheetIndex={bottomSheetIndex}
+            selectedIndex={selectedIndex}
+            setSelectedIndex={setSelectedIndex}
+          />
+        )}
+      </BottomSheet>
     </View>
   );
 };
+
+const styling = (theme: 'light' | 'dark') =>
+  StyleSheet.create({
+    blur: {
+      position: 'absolute',
+      width: '100%',
+    },
+    dim: {
+      backgroundColor: colors[theme].blur,
+    },
+    searchHere: {
+      alignSelf: 'center',
+      position: 'absolute',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: s(10),
+      borderRadius: s(10),
+      minWidth: s(100),
+      backgroundColor: colors[theme].blur,
+    },
+    transparent: {
+      opacity: 0.8,
+    },
+  });
 
 export default SearchCategory;

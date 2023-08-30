@@ -52,20 +52,11 @@ const styling = (theme: 'light' | 'dark') =>
     button: {
       position: 'absolute',
       alignSelf: 'center',
-      paddingHorizontal: s(20),
-      paddingVertical: s(10),
+      paddingHorizontal: s(15),
+      paddingVertical: s(7.5),
       bottom: s(40),
       borderRadius: s(5),
       backgroundColor: colors[theme].accent,
-      shadowColor: '#000',
-      shadowOffset: {
-        width: 0,
-        height: 1,
-      },
-      shadowOpacity: 0.29,
-      shadowRadius: 4.65,
-
-      elevation: 7,
     },
     shadow: {
       shadowColor: '#000',

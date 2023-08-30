@@ -9,21 +9,21 @@ import {
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 
-import icons from '../../constants/icons';
-import colors from '../../constants/colors';
+import icons from '../../../constants/icons';
+import colors from '../../../constants/colors';
 
-import Text from '../components/Text';
-import Icon from '../components/Icon';
+import Text from '../../components/Text';
+import Icon from '../../components/Icon';
 
-import {Filter as FilterT} from '../../utils/types';
+import {Filter} from '../../../utils/types';
 
 interface ChildComponentProps {
-  filters: FilterT[];
+  filters: Filter[];
   currFilters: (number | number[])[];
   setCurrFilters: (filters: (number | number[])[]) => void;
 }
 
-const Filter = forwardRef((props: ChildComponentProps, ref) => {
+const Filters = forwardRef((props: ChildComponentProps, ref) => {
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
 
@@ -81,7 +81,7 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
     setWidth(0);
   };
 
-  const displayFilter = (filter: FilterT, index: number): string => {
+  const displayFilter = (filter: Filter, index: number): string => {
     const _filter: number | number[] = currFilters[index];
     if (Array.isArray(_filter)) {
       if (_filter.length === 0) {
@@ -113,7 +113,7 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
         contentContainerStyle={styles.contentContainer}
         onScrollBeginDrag={() => closeDropdown()}
         showsHorizontalScrollIndicator={false}>
-        {filters.map((filter: FilterT, idx: number) => (
+        {filters.map((filter: Filter, idx: number) => (
           <TouchableOpacity
             key={idx}
             ref={r => refs.current.set(idx, r)}
@@ -148,7 +148,7 @@ const Filter = forwardRef((props: ChildComponentProps, ref) => {
           </TouchableOpacity>
         ))}
       </ScrollView>
-      {filters.map((filter: FilterT, index: number) =>
+      {filters.map((filter: Filter, index: number) =>
         dropdownStatus === filter.name && width !== 0 && pos !== 0 ? (
           <View
             key={index}
@@ -266,4 +266,4 @@ const styling = (theme: 'light' | 'dark') =>
     },
   });
 
-export default Filter;
+export default Filters;

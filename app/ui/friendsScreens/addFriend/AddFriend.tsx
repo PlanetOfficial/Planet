@@ -10,6 +10,7 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
+import strings from '../../../constants/strings';
 import STYLING from '../../../constants/styles';
 
 import Icon from '../../components/Icon';
@@ -102,6 +103,7 @@ const AddFriend = ({
             ),
           )
         }
+        searchPrompt={strings.friends.searchFriends}
       />
 
       {searching ? (

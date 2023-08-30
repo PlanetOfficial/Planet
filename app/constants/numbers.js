@@ -1,6 +1,9 @@
 const numbers = {
   defaultLatitudeDelta: 0.0922,
   defaultLongitudeDelta: 0.0421,
+  displayLatitudeDelta: 0.02,
+  displayLongitudeDelta: 0.02,
+  locationOffThreshold: 0.05,
   defaultRadius: 5000,
   maxRadius: 50000,
   milesToMeters: 1609,
