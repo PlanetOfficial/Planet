@@ -58,7 +58,7 @@ const SearchResults: React.FC<Props> = ({
       keyboardShouldPersistTaps={'always'}
       scrollIndicatorInsets={{right: 1}}
       renderItem={({item}: {item: Category | Locality}) => {
-        if ('id' in item) {
+        if ('id' in item) { // if item is a Category
           return (
             <TouchableOpacity
               style={styles.row}
