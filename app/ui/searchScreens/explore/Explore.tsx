@@ -75,11 +75,7 @@ const Explore = ({
       </SafeAreaView>
       {!searching ? (
         <ScrollView scrollIndicatorInsets={{right: 1}}>
-          <Genres
-            navigation={navigation}
-            myLocation={myLocation}
-            mode={mode}
-          />
+          <Genres navigation={navigation} myLocation={myLocation} mode={mode} />
         </ScrollView>
       ) : searchText.length === 0 ? (
         <FlatList

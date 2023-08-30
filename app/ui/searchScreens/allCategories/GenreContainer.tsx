@@ -25,7 +25,12 @@ interface Props {
   genre: Genre;
 }
 
-const GenreContainer: React.FC<Props> = ({navigation, myLocation, mode, genre}) => {
+const GenreContainer: React.FC<Props> = ({
+  navigation,
+  myLocation,
+  mode,
+  genre,
+}) => {
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
   StatusBar.setBarStyle(colors[theme].statusBar, true);
