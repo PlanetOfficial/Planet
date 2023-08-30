@@ -111,7 +111,7 @@ export const getCategories = async (): Promise<Response> => {
 /**
  * @requires auth_token should be set in EncryptedStorage before calling this function
  */
-export const getPoiSections = async (
+export const getSuggestedPoiSections = async (
   latitude: number,
   longitude: number,
 ): Promise<{[key: string]: Poi[]} | null> => {

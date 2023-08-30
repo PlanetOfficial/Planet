@@ -328,7 +328,7 @@ const strings = {
     loadUpcomingEvent: 'Unable to load upcoming event. Please try again later.',
     loadRecommendations:
       'Unable to load recommendations. Please try again later.',
-    loadPoiSections: 'Unable to load places. Please try again later.',
+    loadSuggestedPoiSections: 'Unable to load places. Please try again later.',
     removePfp: 'Unable to remove profile picture. Please try again later.',
     reportEvent: 'Unable to report event. Please try again later.',
     reportUser: 'Unable to report user. Please try again later.',

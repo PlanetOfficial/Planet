@@ -36,7 +36,7 @@ import {
   Locality,
   Category,
 } from '../../../utils/types';
-import {autocompleteSearch, getPoiSections} from '../../../utils/api/poiAPI';
+import {autocompleteSearch, getSuggestedPoiSections} from '../../../utils/api/poiAPI';
 
 import {useBookmarkContext} from '../../../context/BookmarkContext';
 import {useLocationContext} from '../../../context/LocationContext';
@@ -77,28 +77,28 @@ const Explore = ({
 
   const {bookmarks, setBookmarks} = useBookmarkContext();
 
-  const [poiSections, setPoiSections] = useState<{[key: string]: Poi[]}>({});
-  const loadPoiSections = useCallback(async () => {
-    const _poiSections = await getPoiSections(
+  const [suggestedPoiSections, setSuggestedPoiSections] = useState<{[key: string]: Poi[]}>({});
+  const loadSuggestedPoiSections = useCallback(async () => {
+    const _suggestedPoiSections = await getSuggestedPoiSections(
       location.latitude,
       location.longitude,
     );
-    if (_poiSections) {
-      setPoiSections(_poiSections);
+    if (_suggestedPoiSections) {
+      setSuggestedPoiSections(_suggestedPoiSections);
     } else {
-      Alert.alert(strings.error.error, strings.error.loadPoiSections);
+      Alert.alert(strings.error.error, strings.error.loadSuggestedPoiSections);
     }
   }, [location]);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', async () => {
       setMyLocation(await fetchUserLocation());
-      loadPoiSections();
+      loadSuggestedPoiSections();
       setSearchText('');
     });
 
     return unsubscribe;
-  }, [navigation, loadPoiSections]);
+  }, [navigation, loadSuggestedPoiSections]);
 
   return (
     <View style={STYLES.container}>
@@ -176,13 +176,13 @@ const Explore = ({
             mode={mode}
           />
           <Separator />
-          {Object.keys(poiSections).map((key, index) =>
-            poiSections[key].length > 0 ? (
+          {Object.keys(suggestedPoiSections).map((key, index) =>
+            suggestedPoiSections[key].length > 0 ? (
               <PoiSection
                 key={index}
                 navigation={navigation}
                 title={key}
-                pois={poiSections[key]}
+                pois={suggestedPoiSections[key]}
               />
             ) : null,
           )}
