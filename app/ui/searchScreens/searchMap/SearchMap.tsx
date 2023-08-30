@@ -25,7 +25,7 @@ import {
   Category,
   Coordinate,
   CreateModes,
-  Locality,
+  GoogleAutocompleteResult,
 } from '../../../utils/types';
 
 import {useLocationContext} from '../../../context/LocationContext';
@@ -60,7 +60,7 @@ const SearchMap = ({
   const {setLocation} = useLocationContext();
 
   const [searchText, setSearchText] = useState<string>('');
-  const [searchResults, setSearchResults] = useState<Locality[]>([]);
+  const [searchResults, setSearchResults] = useState<GoogleAutocompleteResult[]>([]);
   const [searching, setSearching] = useState<boolean>(false);
 
   const [loading, withLoading] = useLoadingState();
@@ -142,7 +142,7 @@ const SearchMap = ({
               <ActivityIndicator size="small" color={colors[theme].accent} />
             </View>
           ) : (
-            searchResults.map((item: Locality) => (
+            searchResults.map((item: GoogleAutocompleteResult) => (
               <TouchableOpacity
                 key={item.place_id}
                 style={styles.row}

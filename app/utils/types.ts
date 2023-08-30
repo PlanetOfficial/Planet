@@ -191,7 +191,7 @@ export interface Recommendation {
   categories: string[];
 }
 
-export interface Locality {
+export interface GoogleAutocompleteResult {
   description: string;
   place_id: string;
 }
