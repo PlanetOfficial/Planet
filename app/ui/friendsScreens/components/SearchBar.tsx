@@ -47,7 +47,7 @@ const SearchBar: React.FC<Props> = ({
   return (
     <View style={styles.container}>
       <View style={[styles.searchBar, STYLES.shadow]}>
-        <Icon size="s" icon={icons.search} color={colors[theme].secondary} />
+        <Icon icon={icons.search} color={colors[theme].secondary} />
         <TextInput
           ref={searchRef}
           style={styles.searchText}

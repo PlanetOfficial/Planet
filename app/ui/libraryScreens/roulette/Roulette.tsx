@@ -72,7 +72,7 @@ const Roulette = ({
             icon={icons.history}
             onPress={() =>
               navigation.navigate('SpinHistory', {
-                destination: destination,
+                destination,
               })
             }
           />

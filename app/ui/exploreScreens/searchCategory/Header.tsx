@@ -42,9 +42,9 @@ const Header: React.FC<Props> = ({
           disabled={!isMyLocationOffset}
           onPress={() => {
             navigation.navigate('SearchMap', {
-              mode: mode,
-              myLocation: myLocation,
-              category: category,
+              mode,
+              myLocation,
+              category,
             });
           }}
         />

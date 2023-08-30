@@ -74,9 +74,9 @@ const SearchMap = ({
             icon={icons.close}
             onPress={() =>
               navigation.navigate('SearchCategory', {
-                category: category,
-                myLocation: myLocation,
-                mode: mode,
+                category,
+                myLocation,
+                mode,
               })
             }
           />
@@ -124,9 +124,9 @@ const SearchMap = ({
           onPress={() => {
             setLocation(myLocation);
             navigation.navigate('SearchCategory', {
-              category: category,
-              myLocation: myLocation,
-              mode: mode,
+              category,
+              myLocation,
+              mode,
             });
           }}>
           <Text color={colors[theme].blue}>{strings.explore.yourLocation}</Text>
@@ -157,9 +157,9 @@ const SearchMap = ({
                       longitude: response.lng,
                     });
                     navigation.navigate('SearchCategory', {
-                      category: category,
-                      myLocation: myLocation,
-                      mode: mode,
+                      category,
+                      myLocation,
+                      mode,
                     });
                   } else {
                     Alert.alert(

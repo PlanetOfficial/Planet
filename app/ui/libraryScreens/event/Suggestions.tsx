@@ -118,7 +118,7 @@ const styling = (theme: 'light' | 'dark') =>
       alignItems: 'center',
       marginVertical: s(10),
       paddingVertical: s(10),
-      borderRadius: s(10),
+      borderRadius: s(5),
       backgroundColor: colors[theme].primary,
     },
   });
