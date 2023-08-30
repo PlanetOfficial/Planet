@@ -21,17 +21,16 @@ import STYLING from '../../../constants/styles';
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 
-import {
-  Category,
-  Coordinate,
-  CreateModes,
-  GoogleAutocompleteResult,
-} from '../../../utils/types';
-
 import {useLocationContext} from '../../../context/LocationContext';
 import SearchBar from '../../friendsScreens/components/SearchBar';
 
 import {useLoadingState} from '../../../utils/Misc';
+import {
+  Category,
+  Coordinate,
+  ExploreModes,
+  GoogleAutocompleteResult,
+} from '../../../utils/types';
 import {
   autocompleteLocality,
   autocompleteLocalityLatLng,
@@ -44,7 +43,7 @@ const SearchMap = ({
   navigation: any;
   route: {
     params: {
-      mode: CreateModes;
+      mode: ExploreModes;
       myLocation: Coordinate;
       category: Category;
     };

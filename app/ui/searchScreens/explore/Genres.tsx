@@ -17,15 +17,15 @@ import strings from '../../../constants/strings';
 
 import Text from '../../components/Text';
 
-import {Coordinate, Genre, CreateModes} from '../../../utils/types';
+import {Coordinate, Genre, ExploreModes} from '../../../utils/types';
 
 interface Props {
   navigation: any;
   location?: Coordinate;
-  mode: CreateModes;
+  mode: ExploreModes;
 }
 
-const Categories: React.FC<Props> = ({navigation, location, mode}) => {
+const Genres: React.FC<Props> = ({navigation, location, mode}) => {
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
 
@@ -128,4 +128,4 @@ const styling = (theme: 'light' | 'dark') =>
     },
   });
 
-export default Categories;
+export default Genres;
