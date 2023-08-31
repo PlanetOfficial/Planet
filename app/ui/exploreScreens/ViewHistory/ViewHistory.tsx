@@ -2,7 +2,6 @@ import React, {useEffect} from 'react';
 import {
   View,
   SafeAreaView,
-  Alert,
   FlatList,
   TouchableOpacity,
   useColorScheme,
@@ -58,17 +57,8 @@ const ViewHistory = ({
             icon={icons.back}
             onPress={() => navigation.goBack()}
           />
-          <Text>{strings.home.recentlyViewed}</Text>
-          <Icon
-            size="m"
-            icon={icons.question}
-            onPress={() =>
-              Alert.alert(
-                strings.home.recentlyViewed,
-                strings.home.recentlyViewedInfo,
-              )
-            }
-          />
+          <Text>{strings.explore.recentlyViewed}</Text>
+          <Icon size="m" icon={icons.back} color="transparent" />
         </View>
       </SafeAreaView>
       <FlatList

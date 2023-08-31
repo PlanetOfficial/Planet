@@ -40,7 +40,7 @@ const PoiCard: React.FC<Props> = ({
           <Text size="xs" numberOfLines={1}>
             {place.name}
           </Text>
-          <Text size="xs" numberOfLines={1}>
+          <Text size="xs" weight="l" numberOfLines={1}>
             {getInfoString(place)}
           </Text>
         </View>

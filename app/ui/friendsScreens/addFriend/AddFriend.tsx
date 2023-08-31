@@ -15,7 +15,7 @@ import STYLING from '../../../constants/styles';
 
 import Icon from '../../components/Icon';
 import UserRow from '../../components/UserRow';
-import SearchBar from '../components/SearchBar';
+import SearchBar from '../../components/SearchBar';
 import SearchResult from '../components/SearchResult';
 
 import {UserInfo} from '../../../utils/types';

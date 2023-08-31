@@ -8,14 +8,13 @@ import STYLING from '../../../constants/styles';
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 
-import {Coordinate, Category, ExploreModes} from '../../../utils/types';
+import {Coordinate, Category} from '../../../utils/types';
 
 interface Props {
   navigation: any;
   category: Category;
   isMyLocationOffset: boolean;
   myLocation: Coordinate;
-  mode: ExploreModes;
 }
 
 const Header: React.FC<Props> = ({
@@ -23,7 +22,6 @@ const Header: React.FC<Props> = ({
   category,
   isMyLocationOffset,
   myLocation,
-  mode,
 }) => {
   const theme = useColorScheme() || 'light';
   const STYLES = STYLING(theme);
@@ -42,9 +40,7 @@ const Header: React.FC<Props> = ({
           disabled={!isMyLocationOffset}
           onPress={() => {
             navigation.navigate('SearchMap', {
-              mode,
               myLocation,
-              category,
             });
           }}
         />

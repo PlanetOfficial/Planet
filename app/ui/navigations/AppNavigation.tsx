@@ -27,7 +27,7 @@ import Friends from '../friendsScreens/friends/Friends';
 import Requests from '../friendsScreens/requests/Requests';
 import User from '../friendsScreens/user/User';
 
-import ViewHistory from '../homeScreens/ViewHistory/ViewHistory';
+import ViewHistory from '../exploreScreens/ViewHistory/ViewHistory';
 
 import Event from '../libraryScreens/event/Event';
 import EventSettings from '../libraryScreens/eventSettings/EventSettings';

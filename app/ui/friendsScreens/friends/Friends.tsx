@@ -21,7 +21,7 @@ import Text from '../../components/Text';
 import UserRow from '../../components/UserRow';
 import ActionButtons from '../components/ActionButtons';
 import SearchResult from '../components/SearchResult';
-import SearchBar from '../components/SearchBar';
+import SearchBar from '../../components/SearchBar';
 
 import {UserInfo} from '../../../utils/types';
 import {useLoadingState} from '../../../utils/Misc';

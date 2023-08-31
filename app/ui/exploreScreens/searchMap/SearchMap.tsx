@@ -22,11 +22,10 @@ import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 
 import {useLocationContext} from '../../../context/LocationContext';
-import SearchBar from '../../friendsScreens/components/SearchBar';
+import SearchBar from '../../components/SearchBar';
 
 import {useLoadingState} from '../../../utils/Misc';
 import {
-  Category,
   Coordinate,
   ExploreModes,
   GoogleAutocompleteResult,
@@ -45,7 +44,6 @@ const SearchMap = ({
     params: {
       mode: ExploreModes;
       myLocation: Coordinate;
-      category: Category;
     };
   };
 }) => {
@@ -55,7 +53,7 @@ const SearchMap = ({
 
   StatusBar.setBarStyle(colors[theme].statusBar, true);
 
-  const {mode, myLocation, category} = route.params;
+  const {myLocation} = route.params;
   const {setLocation} = useLocationContext();
 
   const [searchText, setSearchText] = useState<string>('');
@@ -70,16 +68,7 @@ const SearchMap = ({
     <View style={STYLES.container}>
       <SafeAreaView>
         <View style={STYLES.header}>
-          <Icon
-            icon={icons.close}
-            onPress={() =>
-              navigation.navigate('SearchCategory', {
-                category,
-                myLocation,
-                mode,
-              })
-            }
-          />
+          <Icon icon={icons.close} onPress={() => navigation.goBack()} />
           <Text>{strings.explore.setLocation}</Text>
           <Icon icon={icons.close} color="transparent" />
         </View>
@@ -123,11 +112,7 @@ const SearchMap = ({
           style={styles.yourLocation}
           onPress={() => {
             setLocation(myLocation);
-            navigation.navigate('SearchCategory', {
-              category,
-              myLocation,
-              mode,
-            });
+            navigation.goBack();
           }}>
           <Text color={colors[theme].blue}>{strings.explore.yourLocation}</Text>
           <Icon
@@ -156,11 +141,7 @@ const SearchMap = ({
                       latitude: response.lat,
                       longitude: response.lng,
                     });
-                    navigation.navigate('SearchCategory', {
-                      category,
-                      myLocation,
-                      mode,
-                    });
+                    navigation.goBack();
                   } else {
                     Alert.alert(
                       strings.error.error,
