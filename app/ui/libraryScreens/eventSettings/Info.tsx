@@ -102,7 +102,7 @@ const Info: React.FC<Props> = ({
         }>
         <Text size="l">{eventTitle}</Text>
         <View style={styles.pencil}>
-          <Icon size="s" icon={icons.edit} color={colors[theme].secondary} />
+          <Icon icon={icons.edit} color={colors[theme].secondary} />
         </View>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => setDatePickerOpen(true)}>

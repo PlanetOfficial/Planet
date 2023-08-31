@@ -107,15 +107,9 @@ const strings = {
     allCategories: 'All Categories',
     search: 'Search',
     searchHere: 'Search Here',
-  },
-  search: {
-    search: 'Search',
-    searchFriends: 'Search Friends',
-    noResultsFound: 'No Results Found',
-    noResultsFoundDescription: 'Try searching for something else',
     setLocation: 'Set Location',
-    tooFar: 'Radius too large',
-    tooFarMessage: 'Please select a smaller radius',
+    searchLocation: 'Search Location',
+    yourLocation: 'Your Location',
   },
   greeting: {
     morning: 'Good Morning',
@@ -348,6 +342,10 @@ const strings = {
     editDisplayName: 'Unable to edit display name. Please try again later.',
     editUsername: 'Unable to edit username. Please try again later.',
     editBirthday: 'Unable to edit birthday. Please try again later.',
+    searchLocality: 'Unable to search for cities. Please try again later.',
+    searchPlace: 'Unable to search for places. Please try again later.',
+    noResultsFound: 'No Results Found',
+    noResultsFoundDescription: 'Try searching for something else',
   },
 };
 

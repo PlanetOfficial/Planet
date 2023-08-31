@@ -61,9 +61,9 @@ const SearchResult: React.FC<Props> = ({
         ) : null
       }
       ListEmptyComponent={
-        searchText.length > 0 ? (
+        searchText.length > 2 ? (
           <View style={STYLES.center}>
-            <Text weight="l">{strings.search.noResultsFound}</Text>
+            <Text weight="l">{strings.error.noResultsFound}</Text>
           </View>
         ) : null
       }

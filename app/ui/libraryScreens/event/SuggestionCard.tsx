@@ -170,8 +170,8 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
                     onShrinkAnimation();
                   }, 1000);
                   navigation.navigate('Roulette', {
-                    eventId: eventId,
-                    destination: destination,
+                    eventId,
+                    destination,
                   });
                 },
                 color: colors[theme].neutral,

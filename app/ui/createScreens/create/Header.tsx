@@ -140,7 +140,7 @@ const Header: React.FC<Props> = ({
           color={colors[theme].neutral}
           onPress={() => {
             navigation.navigate('AddFriend', {
-              members: members,
+              members,
             });
           }}
         />

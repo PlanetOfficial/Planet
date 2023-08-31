@@ -20,7 +20,6 @@ import messaging from '@react-native-firebase/messaging';
 
 import colors from '../../constants/colors';
 import icons from '../../constants/icons';
-import numbers from '../../constants/numbers';
 import strings from '../../constants/strings';
 import STYLING from '../../constants/styles';
 
@@ -54,7 +53,7 @@ const SignUpVerify = ({
 
   const [error, setError] = useState<string>('');
 
-  const {setLocation, setRadius} = useLocationContext();
+  const {setLocation} = useLocationContext();
 
   const [loading, withLoading] = useLoadingState();
 
@@ -74,7 +73,6 @@ const SignUpVerify = ({
       const locationResult = await fetchUserLocation();
       if (locationResult) {
         setLocation(locationResult);
-        setRadius(numbers.defaultRadius);
       }
 
       const cacheSuccess = await cacheUserInfo(authToken);

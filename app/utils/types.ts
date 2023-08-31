@@ -28,6 +28,9 @@ export interface FriendGroup {
 export interface Genre {
   id: number;
   name: string;
+  alias: string;
+  supplier: string;
+  filter: Filter[];
   image: Image;
   categories: Category[];
 }
@@ -189,6 +192,14 @@ export interface EventNotification {
 export interface Recommendation {
   places: Poi[];
   categories: string[];
+}
+
+export interface GoogleAutocompleteResult {
+  place_id: string;
+  structured_formatting: {
+    main_text: string;
+    secondary_text: string;
+  };
 }
 
 export type ExploreModes = 'create' | 'suggest' | 'add' | 'none';

@@ -17,16 +17,15 @@ import STYLING from '../../../constants/styles';
 import Icon from '../../components/Icon';
 import Text from '../../components/Text';
 
-import {UserInfo} from '../../../utils/types';
-
 interface Props {
   searchText: string;
   setSearchText: (text: string) => void;
   searching: boolean;
   setSearching: (searching: boolean) => void;
-  setSearchResults: (results: UserInfo[]) => void;
+  setSearchResults: (results: any[]) => void;
   search: (text: string) => void;
   searchPrompt: string;
+  autoFocus?: boolean;
 }
 
 const SearchBar: React.FC<Props> = ({
@@ -37,6 +36,7 @@ const SearchBar: React.FC<Props> = ({
   setSearchResults,
   search,
   searchPrompt,
+  autoFocus = false,
 }) => {
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
@@ -47,11 +47,12 @@ const SearchBar: React.FC<Props> = ({
   return (
     <View style={styles.container}>
       <View style={[styles.searchBar, STYLES.shadow]}>
-        <Icon size="s" icon={icons.search} color={colors[theme].secondary} />
+        <Icon icon={icons.search} color={colors[theme].secondary} />
         <TextInput
           ref={searchRef}
           style={styles.searchText}
           value={searchText}
+          autoFocus={autoFocus}
           placeholder={searchPrompt}
           placeholderTextColor={colors[theme].secondary}
           autoCapitalize="none"

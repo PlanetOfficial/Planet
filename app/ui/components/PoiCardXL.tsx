@@ -82,22 +82,22 @@ const styling = (theme: 'light' | 'dark') =>
   StyleSheet.create({
     container: {
       aspectRatio: 1.6,
-      borderRadius: s(10),
+      borderRadius: s(5),
       backgroundColor: colors[theme].primary,
     },
     image: {
       position: 'absolute',
       width: '100%',
       height: '100%',
-      borderRadius: s(10),
+      borderRadius: s(5),
     },
     header: {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
       paddingHorizontal: s(15),
-      borderTopLeftRadius: s(10),
-      borderTopRightRadius: s(10),
+      borderTopLeftRadius: s(5),
+      borderTopRightRadius: s(5),
       width: '100%',
       height: s(45),
       backgroundColor: colors[theme].blur,
