@@ -1,6 +1,8 @@
 import {Linking} from 'react-native';
 import {showLocation} from 'react-native-map-link';
 
+import strings from '../../../constants/strings';
+
 import {
   Poi,
   PoiDetail,
@@ -8,7 +10,6 @@ import {
   Coordinate,
   ExploreModes,
 } from '../../../utils/types';
-import strings from '../../../constants/strings';
 
 export const getButtonString = (mode: ExploreModes) => {
   if (mode === 'create' || mode === 'add') {

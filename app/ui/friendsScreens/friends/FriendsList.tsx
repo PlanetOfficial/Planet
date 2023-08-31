@@ -19,6 +19,7 @@ import STYLING from '../../../constants/styles';
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 import UserRow from '../../components/UserRow';
+import Separator from '../../components/SeparatorR';
 
 import {UserInfo} from '../../../utils/types';
 import {shareApp, useLoadingState} from '../../../utils/Misc';
@@ -28,7 +29,6 @@ import {useFriendsContext} from '../../../context/FriendsContext';
 import FriendGroupComponent from './FriendGroup';
 import FriendGroupEdit from './FriendGroupEdit';
 import Suggestions from './Suggestions';
-import Separator from '../../components/SeparatorR';
 
 const FriendsList = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';

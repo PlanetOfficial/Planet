@@ -11,7 +11,9 @@ import {s} from 'react-native-size-matters';
 import prompt from 'react-native-prompt-android';
 import moment from 'moment';
 
+import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
+import numbers from '../../../constants/numbers';
 import strings from '../../../constants/strings';
 
 import Text from '../../components/Text';
@@ -19,8 +21,6 @@ import Icon from '../../components/Icon';
 
 import {editDatetime, editName} from '../../../utils/api/eventAPI';
 import {Event, EventDetail} from '../../../utils/types';
-import colors from '../../../constants/colors';
-import numbers from '../../../constants/numbers';
 
 interface Props {
   event: Event;

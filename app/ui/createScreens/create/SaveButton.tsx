@@ -14,9 +14,9 @@ import STYLING from '../../../constants/styles';
 import Text from '../../components/Text';
 
 import {Poi, UserInfo} from '../../../utils/types';
+import {useLoadingState} from '../../../utils/Misc';
 
 import {handleSave} from './functions';
-import {useLoadingState} from '../../../utils/Misc';
 
 interface Props {
   navigation: any;

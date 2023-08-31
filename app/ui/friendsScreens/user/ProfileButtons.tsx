@@ -19,6 +19,7 @@ import {useFriendsContext} from '../../../context/FriendsContext';
 
 import {UserInfo} from '../../../utils/types';
 import {useLoadingState} from '../../../utils/Misc';
+
 import {
   handleAcceptRequest,
   handleDeclineRequest,

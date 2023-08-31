@@ -23,9 +23,9 @@ import colors from '../../../constants/colors';
 import Text from '../../components/Text';
 
 import {Destination, Suggestion} from '../../../utils/types';
+import {makePrimary, spinRoulette} from '../../../utils/api/suggestionAPI';
 
 import {getCurrentSuggestion, onSpinPress} from './functions';
-import {makePrimary, spinRoulette} from '../../../utils/api/suggestionAPI';
 
 interface Props {
   eventId: number;

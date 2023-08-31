@@ -4,8 +4,9 @@ import {s} from 'react-native-size-matters';
 
 import colors from '../../../constants/colors';
 
-import {UserInfo} from '../../../utils/types';
 import UserIcon from '../../components/UserIcon';
+
+import {UserInfo} from '../../../utils/types';
 
 interface Props {
   users: UserInfo[];

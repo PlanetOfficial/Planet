@@ -4,6 +4,7 @@ import {
   runOnJS,
   SharedValue,
 } from 'react-native-reanimated';
+
 import {Destination, Suggestion} from '../../../utils/types';
 
 const SPIN_VELOCITY = 1400;

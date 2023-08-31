@@ -14,6 +14,7 @@ import {Destination, Suggestion} from '../../../utils/types';
 import {getCurrentSuggestion} from './functions';
 import Spinner from './Spinner';
 import Info from './Info';
+
 import {useBookmarkContext} from '../../../context/BookmarkContext';
 
 const Roulette = ({

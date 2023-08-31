@@ -1,9 +1,7 @@
 import {Alert} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import EncryptedStorage from 'react-native-encrypted-storage';
-
 import {UserAPIURL, XanoAPIKey} from './APIConstants';
-
 import {MyInfo} from '../types';
 
 export const login = async (username: string, password: string) => {

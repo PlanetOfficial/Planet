@@ -75,7 +75,7 @@ const Genres: React.FC<Props> = ({navigation, myLocation, mode}) => {
             onPress={() =>
               navigation.navigate('SearchCategory', {
                 category: {
-                  id: genre.id,
+                  id: genre.id * -1,
                   name: genre.name,
                   alias: genre.alias,
                   supplier: genre.supplier,

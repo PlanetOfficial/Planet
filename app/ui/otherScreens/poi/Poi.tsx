@@ -18,6 +18,8 @@ import STYLING from '../../../constants/styles';
 import Icon from '../../components/Icon';
 import Text from '../../components/Text';
 
+import {useBookmarkContext} from '../../../context/BookmarkContext';
+
 import {
   Coordinate,
   ExploreModesWithInCreate,
@@ -25,6 +27,7 @@ import {
   PoiDetail,
 } from '../../../utils/types';
 import {getPoi, postPoi} from '../../../utils/api/poiAPI';
+import {fetchUserLocation} from '../../../utils/Misc';
 
 import Header from './Header';
 import Overview from './Overview';
@@ -32,8 +35,6 @@ import Map from './Map';
 import Info from './Info';
 import Reviews from './Reviews';
 import Button from './Button';
-import {fetchUserLocation} from '../../../utils/Misc';
-import {useBookmarkContext} from '../../../context/BookmarkContext';
 
 const PoiPage = ({
   navigation,

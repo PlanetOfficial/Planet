@@ -1,9 +1,6 @@
 import EncryptedStorage from 'react-native-encrypted-storage';
-
 import {EventAPIURL} from './APIConstants';
-
 import {Event, EventDetail, EventNotification} from '../types';
-
 import {requestAndValidate} from './authAPI';
 
 /**
