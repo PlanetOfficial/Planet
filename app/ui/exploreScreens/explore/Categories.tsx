@@ -75,7 +75,7 @@ const Categories: React.FC<Props> = ({navigation, myLocation, mode}) => {
             onPress={() =>
               navigation.navigate('SearchCategory', {
                 category: {
-                  id: 0, // so we don't mix up category id and genre id
+                  id: genre.id * -1,
                   name: genre.name,
                   alias: genre.alias,
                   supplier: genre.supplier,
