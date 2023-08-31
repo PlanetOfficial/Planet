@@ -1,6 +1,6 @@
 import {PoiAPIURL, XanoAPIKey} from './APIConstants';
 
-import {Category, Locality, Poi, PoiDetail} from '../types';
+import {Category, GoogleAutocompleteResult, Poi, PoiDetail} from '../types';
 
 import EncryptedStorage from 'react-native-encrypted-storage';
 
@@ -111,7 +111,7 @@ export const getCategories = async (): Promise<Response> => {
 /**
  * @requires auth_token should be set in EncryptedStorage before calling this function
  */
-export const getPoiSections = async (
+export const getSuggestedPoiSections = async (
   latitude: number,
   longitude: number,
 ): Promise<{[key: string]: Poi[]} | null> => {
@@ -150,7 +150,7 @@ export const autocompleteSearch = async (
   query: string,
   latitude: number,
   longitude: number,
-): Promise<(Category | Locality)[] | null> => {
+): Promise<(Category | GoogleAutocompleteResult)[] | null> => {
   const response = await fetch(
     PoiAPIURL +
       `/autocomplete/search?query=${query}&latitude=${latitude}&longitude=${longitude}`,
@@ -174,7 +174,7 @@ export const autocompleteLocality = async (
   query: string,
   latitude: number,
   longitude: number,
-): Promise<Locality[] | null> => {
+): Promise<GoogleAutocompleteResult[] | null> => {
   const response = await fetch(
     PoiAPIURL +
       `/autocomplete/locality?query=${query}&latitude=${latitude}&longitude=${longitude}`,

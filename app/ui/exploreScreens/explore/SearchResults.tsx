@@ -20,20 +20,20 @@ import Text from '../../components/Text';
 
 import {
   Coordinate,
-  CreateModes,
-  Locality,
+  ExploreModes,
+  GoogleAutocompleteResult,
   Category,
 } from '../../../utils/types';
 
 interface Props {
   navigation: any;
   loading: boolean;
-  searchResults: (Category | Locality)[];
+  searchResults: (Category | GoogleAutocompleteResult)[];
   myLocation?: Coordinate;
-  mode: CreateModes;
+  mode: ExploreModes;
 }
 
-const SearchResult: React.FC<Props> = ({
+const SearchResults: React.FC<Props> = ({
   navigation,
   loading,
   searchResults,
@@ -57,7 +57,7 @@ const SearchResult: React.FC<Props> = ({
       onScrollBeginDrag={() => Keyboard.dismiss()}
       keyboardShouldPersistTaps={'always'}
       scrollIndicatorInsets={{right: 1}}
-      renderItem={({item}: {item: Category | Locality}) => {
+      renderItem={({item}: {item: Category | GoogleAutocompleteResult}) => {
         if ('id' in item) {
           return (
             <TouchableOpacity
@@ -138,4 +138,4 @@ const styling = (theme: 'light' | 'dark') =>
     },
   });
 
-export default SearchResult;
+export default SearchResults;

@@ -21,12 +21,15 @@ import STYLING from '../../../constants/styles';
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 
-import {Coordinate, Locality} from '../../../utils/types';
-
 import {useLocationContext} from '../../../context/LocationContext';
 import SearchBar from '../../components/SearchBar';
 
 import {useLoadingState} from '../../../utils/Misc';
+import {
+  Coordinate,
+  ExploreModes,
+  GoogleAutocompleteResult,
+} from '../../../utils/types';
 import {
   autocompleteLocality,
   autocompleteLocalityLatLng,
@@ -39,6 +42,7 @@ const SearchMap = ({
   navigation: any;
   route: {
     params: {
+      mode: ExploreModes;
       myLocation: Coordinate;
     };
   };
@@ -53,7 +57,9 @@ const SearchMap = ({
   const {setLocation} = useLocationContext();
 
   const [searchText, setSearchText] = useState<string>('');
-  const [searchResults, setSearchResults] = useState<Locality[]>([]);
+  const [searchResults, setSearchResults] = useState<
+    GoogleAutocompleteResult[]
+  >([]);
   const [searching, setSearching] = useState<boolean>(false);
 
   const [loading, withLoading] = useLoadingState();
@@ -87,7 +93,7 @@ const SearchMap = ({
               if (results) {
                 setSearchResults(results);
               } else {
-                Alert.alert(strings.error.error, strings.error.searchLocailty);
+                Alert.alert(strings.error.error, strings.error.searchLocality);
               }
             } else {
               setSearchResults([]);
@@ -122,7 +128,7 @@ const SearchMap = ({
               <ActivityIndicator size="small" color={colors[theme].accent} />
             </View>
           ) : (
-            searchResults.map((item: Locality) => (
+            searchResults.map((item: GoogleAutocompleteResult) => (
               <TouchableOpacity
                 key={item.place_id}
                 style={styles.row}
@@ -139,7 +145,7 @@ const SearchMap = ({
                   } else {
                     Alert.alert(
                       strings.error.error,
-                      strings.error.searchLocailty,
+                      strings.error.searchLocality,
                     );
                   }
                 }}>
