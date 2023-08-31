@@ -24,7 +24,7 @@ const strings = {
     shareMessage:
       'Download Planet, my go-to app for finding places and planning events effortlessly!',
     url: 'https://planetapp.us',
-    downloadUrl: strings.main.url + '/download',
+    downloadUrl: 'https://planetapp.us' + '/download',
     save: 'Save',
     cancel: 'Cancel',
     discard: 'Discard',
