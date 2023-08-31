@@ -11,12 +11,10 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
-  Alert,
   Image,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 import LinearGradient from 'react-native-linear-gradient';
-import messaging from '@react-native-firebase/messaging';
 
 import colors from '../../constants/colors';
 import icons from '../../constants/icons';
@@ -25,11 +23,8 @@ import STYLING from '../../constants/styles';
 
 import Text from '../components/Text';
 
-import {saveTokenToDatabase, verifyCode} from '../../utils/api/authAPI';
-import {fetchUserLocation, useLoadingState} from '../../utils/Misc';
-import {cacheUserInfo} from '../../utils/CacheHelpers';
-
-import {useLocationContext} from '../../context/LocationContext';
+import {verifyCode} from '../../utils/api/authAPI';
+import {useLoadingState} from '../../utils/Misc';
 
 const SignUpVerify = ({
   navigation,
@@ -53,8 +48,6 @@ const SignUpVerify = ({
 
   const [error, setError] = useState<string>('');
 
-  const {setLocation} = useLocationContext();
-
   const [loading, withLoading] = useLoadingState();
 
   const disabled = code.length !== 6;
@@ -70,26 +63,7 @@ const SignUpVerify = ({
     const response = await verifyCode(authToken, code);
 
     if (response) {
-      const locationResult = await fetchUserLocation();
-      if (locationResult) {
-        setLocation(locationResult);
-      }
-
-      const cacheSuccess = await cacheUserInfo(authToken);
-
-      if (!cacheSuccess) {
-        Alert.alert('Something went wrong. Please try again.');
-        return;
-      }
-
-      // save to firebase
-      const fcm_token = await messaging().getToken();
-      await saveTokenToDatabase(fcm_token);
-
-      navigation.reset({
-        index: 0,
-        routes: [{name: 'TabStack'}],
-      });
+      navigation.navigate('SignUpInvite', {authToken: authToken});
     } else {
       setError(strings.signUp.codeVerifyFailed);
     }
@@ -146,6 +120,13 @@ const SignUpVerify = ({
           </ScrollView>
           <SafeAreaView>
             <TouchableOpacity
+              style={styles.change}
+              onPress={() => navigation.goBack()}>
+              <Text size="s" weight="l">
+                {strings.signUp.changeNumber}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
               style={[
                 STYLES.buttonBig,
                 {
@@ -185,6 +166,9 @@ const styling = (theme: 'light' | 'dark') =>
       width: s(150),
       color: colors[theme].neutral,
       textAlign: 'center',
+    },
+    change: {
+      alignSelf: 'center',
     },
   });
 

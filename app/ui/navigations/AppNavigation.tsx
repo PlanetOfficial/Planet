@@ -15,6 +15,7 @@ import SignUpBirthday from '../authScreens/SignUpBirthday';
 import SignUpCreds from '../authScreens/SignUpCreds';
 import SignUpPhone from '../authScreens/SignUpPhone';
 import SignUpVerify from '../authScreens/SignUpVerify';
+import SignUpInvite from '../authScreens/SignUpInvite';
 import ResetPwd from '../authScreens/ResetPwd';
 import ForgotPwd from '../authScreens/ForgotPwd';
 import ForgotPwdVerify from '../authScreens/ForgotPwdVerify';
@@ -113,6 +114,7 @@ const authStackScreens = () => (
     <Stack.Screen name="SignUpCreds" component={SignUpCreds} />
     <Stack.Screen name="SignUpPhone" component={SignUpPhone} />
     <Stack.Screen name="SignUpVerify" component={SignUpVerify} />
+    <Stack.Screen name="SignUpInvite" component={SignUpInvite} />
     <Stack.Screen name="ResetPwd" component={ResetPwd} />
     <Stack.Screen name="ForgotPwd" component={ForgotPwd} />
     <Stack.Screen name="ForgotPwdVerify" component={ForgotPwdVerify} />

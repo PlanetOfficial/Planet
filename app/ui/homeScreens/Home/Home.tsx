@@ -6,7 +6,10 @@ import {
   useColorScheme,
   StatusBar,
   Alert,
+  StyleSheet,
+  TouchableOpacity,
 } from 'react-native';
+import {s} from 'react-native-size-matters';
 
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
@@ -18,19 +21,24 @@ import Icon from '../../components/Icon';
 import Separator from '../../components/SeparatorR';
 
 import {Coordinate, EventDetail, Recommendation} from '../../../utils/types';
-import {fetchUserLocation} from '../../../utils/Misc';
+import {fetchUserLocation, shareApp} from '../../../utils/Misc';
 import {getUpcomingEvent} from '../../../utils/api/eventAPI';
 import {getRecommendations} from '../../../utils/api/recommenderAPI';
 
 import UpcomingEvent from './UpcomingEvent';
 import Recommendations from './Recommendations';
+import Suggestions from '../../friendsScreens/friends/Suggestions';
+import {useFriendsContext} from '../../../context/FriendsContext';
 
 const Home = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';
   const STYLES = STYLING(theme);
+  const styles = styling(theme);
   StatusBar.setBarStyle(colors[theme].statusBar, true);
 
   const [location, setLocation] = useState<Coordinate>();
+
+  const {suggestions} = useFriendsContext();
 
   const [upcomingEvent, setUpcomingEvent] = useState<EventDetail | null>(null);
   const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
@@ -95,13 +103,6 @@ const Home = ({navigation}: {navigation: any}) => {
       <SafeAreaView>
         <View style={STYLES.header}>
           <Text size="l">{GetGreetings()}</Text>
-          <Icon
-            icon={icons.friends}
-            color={colors[theme].accent}
-            button={true}
-            padding={-2}
-            onPress={() => navigation.navigate('Friends')}
-          />
         </View>
       </SafeAreaView>
 
@@ -110,6 +111,33 @@ const Home = ({navigation}: {navigation: any}) => {
         contentContainerStyle={STYLES.scrollView}
         scrollIndicatorInsets={{right: 1}}>
         <UpcomingEvent navigation={navigation} upcomingEvent={upcomingEvent} />
+        <Separator />
+        <View style={styles.title}>
+          <Text size="s">{strings.home.suggestedFriends}</Text>
+        </View>
+        {suggestions.length > 0 ? (
+          <>
+            <Suggestions navigation={navigation} />
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => navigation.navigate('Friends')}>
+              <Text size="xs" weight="l">
+                {strings.home.viewAllFriends}
+              </Text>
+            </TouchableOpacity>
+          </>
+        ) : (
+          <TouchableOpacity
+            style={styles.shareButton}
+            onPress={() => shareApp()}>
+            <View style={styles.icon}>
+              <Icon size="m" icon={icons.link} color={colors[theme].primary} />
+            </View>
+            <Text color={colors[theme].primary}>
+              {strings.friends.inviteFriendsOnPlanet}
+            </Text>
+          </TouchableOpacity>
+        )}
         <Separator />
         {location ? (
           <Recommendations
@@ -124,5 +152,37 @@ const Home = ({navigation}: {navigation: any}) => {
     </View>
   );
 };
+
+const styling = (theme: 'light' | 'dark') =>
+  StyleSheet.create({
+    title: {
+      marginHorizontal: s(20),
+      marginVertical: s(10),
+    },
+    button: {
+      alignSelf: 'center',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: colors[theme].secondary,
+      marginBottom: s(20),
+      paddingVertical: s(7.5),
+      paddingHorizontal: s(15),
+      borderRadius: s(5),
+    },
+    shareButton: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginHorizontal: s(20),
+      marginTop: s(10),
+      marginBottom: s(20),
+      paddingVertical: s(10),
+      borderRadius: s(5),
+      backgroundColor: colors[theme].accent,
+    },
+    icon: {
+      marginRight: s(10),
+    },
+  });
 
 export default Home;

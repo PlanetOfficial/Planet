@@ -226,6 +226,7 @@ const styling = (theme: 'light' | 'dark') =>
     },
     flatList: {
       paddingLeft: s(10),
+      marginBottom: s(10),
     },
     friendIcons: {
       flexDirection: 'row',

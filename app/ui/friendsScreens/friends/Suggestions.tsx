@@ -61,7 +61,8 @@ const styling = (theme: 'light' | 'dark') =>
   StyleSheet.create({
     container: {
       paddingHorizontal: s(20),
-      paddingVertical: s(10),
+      paddingVertical: s(5),
+      marginBottom: s(10),
     },
     card: {
       alignItems: 'center',
