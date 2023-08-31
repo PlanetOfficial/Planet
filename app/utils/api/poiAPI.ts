@@ -143,7 +143,7 @@ export const autocompleteSearch = async (
   query: string,
   latitude: number,
   longitude: number,
-): Promise<(Category | Locality)[] | null> => {
+): Promise<(Category | GoogleAutocompleteResult)[] | null> => {
   const response = await fetch(
     PoiAPIURL +
       `/autocomplete/search?query=${query}&latitude=${latitude}&longitude=${longitude}`,
