@@ -12,10 +12,11 @@ import {s} from 'react-native-size-matters';
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
 
-import Icon from '../../components/Icon';
 import Text from '../../components/Text';
 
 import {Category, Coordinate, Genre, ExploreModes} from '../../../utils/types';
+
+import Icon from '../../components/Icon';
 
 interface Props {
   navigation: any;
@@ -43,7 +44,7 @@ const GenreContainer: React.FC<Props> = ({
           onPress={() =>
             navigation.navigate('SearchCategory', {
               category: {
-                id: genre.id * -1,
+                id: genre.id,
                 name: genre.name,
                 alias: genre.alias,
                 supplier: genre.supplier,

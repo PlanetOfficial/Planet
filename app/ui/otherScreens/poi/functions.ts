@@ -8,10 +8,10 @@ import {
   PoiDetail,
   PlaceOpeningHoursPeriod,
   Coordinate,
-  CreateModes,
+  ExploreModes,
 } from '../../../utils/types';
 
-export const getButtonString = (mode: CreateModes) => {
+export const getButtonString = (mode: ExploreModes) => {
   if (mode === 'create' || mode === 'add') {
     return strings.main.add;
   } else if (mode === 'suggest') {
