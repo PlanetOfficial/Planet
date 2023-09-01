@@ -4,6 +4,7 @@ import {s} from 'react-native-size-matters';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
 import colors from '../../../constants/colors';
+import strings from '../../../constants/strings';
 import STYLING from '../../../constants/styles';
 
 import Text from '../../components/Text';
@@ -21,7 +22,7 @@ const Suggestions = ({navigation}: {navigation: any}) => {
 
   const {suggestions, requests, usersIBlock} = useFriendsContext();
 
-  return (
+  return suggestions.length > 0 ? (
     <ScrollView
       horizontal={true}
       showsHorizontalScrollIndicator={false}
@@ -54,6 +55,12 @@ const Suggestions = ({navigation}: {navigation: any}) => {
           </TouchableOpacity>
         ))}
     </ScrollView>
+  ) : (
+    <View>
+      <View style={STYLES.center}>
+        <Text weight="l">{strings.friends.noFriendsFound}</Text>
+      </View>
+    </View>
   );
 };
 

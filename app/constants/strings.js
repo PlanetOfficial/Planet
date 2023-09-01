@@ -156,6 +156,7 @@ const strings = {
     reportInfo: 'Are you sure you want to report this user?',
     reportUser: 'Report User',
     reportSuccess: 'Thank you, your report has been submitted.',
+    noSuggestionsFound: 'No Suggestions Found',
   },
   profile: {
     bookmarks: 'Bookmarks',
