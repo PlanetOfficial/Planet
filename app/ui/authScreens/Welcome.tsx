@@ -51,7 +51,7 @@ const Welcome = ({navigation}: {navigation: any}) => {
           <View style={styles.page}>
             <View style={styles.welcome}>
               <Image source={icons.logo} style={styles.logo} />
-              <View style={styles.welcomeText}>
+              <View style={styles.title}>
                 <Text size="xxl" weight="b" color={colors[theme].primary}>
                   {strings.login.welcome}
                 </Text>
@@ -62,18 +62,57 @@ const Welcome = ({navigation}: {navigation: any}) => {
             </View>
           </View>
           <View style={styles.page}>
-            <Image source={require('../../assets/images/1.png')} style={styles.img} />
+            <View style={styles.title}>
+              <Text size="xxl" weight="b" color={colors[theme].primary}>
+                {strings.login.title1}
+              </Text>
+            </View>
+            <Text weight="l" color={colors[theme].primary} center={true}>
+              {strings.login.description1}
+            </Text>
+            <View style={styles.image}>
+              <Image
+                source={require('../../assets/images/1.png')}
+                style={styles.img}
+              />
+            </View>
           </View>
           <View style={styles.page}>
-            <Image source={require('../../assets/images/2.png')} style={styles.img} />
+            <View style={styles.title}>
+              <Text size="xxl" weight="b" color={colors[theme].primary}>
+                {strings.login.title2}
+              </Text>
+            </View>
+            <Text weight="l" color={colors[theme].primary} center={true}>
+              {strings.login.description2}
+            </Text>
+            <View style={styles.image}>
+              <Image
+                source={require('../../assets/images/2.png')}
+                style={styles.img}
+              />
+            </View>
           </View>
           <View style={styles.page}>
-            <Image source={require('../../assets/images/3.png')} style={styles.img} />
+            <View style={styles.title}>
+              <Text size="xxl" weight="b" color={colors[theme].primary}>
+                {strings.login.title3}
+              </Text>
+            </View>
+            <Text weight="l" color={colors[theme].primary} center={true}>
+              {strings.login.description3}
+            </Text>
+            <View style={styles.image}>
+              <Image
+                source={require('../../assets/images/3.png')}
+                style={styles.img}
+              />
+            </View>
           </View>
           <View style={styles.page}>
             <View style={styles.welcome}>
               <Image source={icons.logo} style={styles.logo} />
-              <View style={styles.welcomeText}>
+              <View style={styles.title}>
                 <Text size="xxl" weight="b" color={colors[theme].primary}>
                   {strings.main.appName}
                 </Text>
@@ -150,7 +189,7 @@ const styling = (theme: 'light' | 'dark') =>
       alignItems: 'center',
       marginTop: vs(50),
     },
-    welcomeText: {
+    title: {
       marginVertical: vs(10),
     },
     logo: {
@@ -187,10 +226,13 @@ const styling = (theme: 'light' | 'dark') =>
       marginHorizontal: s(3),
       borderRadius: s(5),
     },
+    image: {
+      width: vs(400) / 1.6,
+      marginBottom: vs(40),
+    },
     img: {
-      marginTop: vs(60),
-      width: s(300),
-      height: s(575),
+      width: '100%',
+      height: '100%',
     },
   });
 
