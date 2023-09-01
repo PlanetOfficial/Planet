@@ -1,5 +1,7 @@
 import numbers from './numbers';
 
+const websiteUrl = 'https://planetapp.us';
+
 const strings = {
   login: {
     login: 'Log In',
@@ -23,8 +25,8 @@ const strings = {
     description: 'Make & decide your plans with anyone you choose.',
     shareMessage:
       'Download Planet, my go-to app for finding places and planning events effortlessly!',
-    url: 'https://planetapp.us',
-    downloadUrl: strings.main.url + '/download',
+    url: websiteUrl,
+    downloadUrl: websiteUrl + '/download',
     save: 'Save',
     cancel: 'Cancel',
     discard: 'Discard',
