@@ -105,9 +105,9 @@ const strings = {
   explore: {
     categories: 'Categories',
     allCategories: 'All Categories',
-    search: 'Search',
+    search: 'Search for places and categories',
     searchHere: 'Search Here',
-    setLocation: 'Set Location',
+    setLocation: 'Set Search Location',
     searchLocation: 'Search Location',
     yourLocation: 'Your Location',
   },

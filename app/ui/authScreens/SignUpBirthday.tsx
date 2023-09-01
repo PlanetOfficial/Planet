@@ -105,7 +105,15 @@ const SignUpBirthday = ({
               ),
             )
           }
-          date={birthday ? moment(birthday, '').toDate() : new Date()}
+          date={
+            birthday
+              ? moment(birthday, '').toDate()
+              : new Date(
+                  new Date().setFullYear(
+                    new Date().getFullYear() - numbers.minimumAge,
+                  ),
+                )
+          }
           onConfirm={async newDate => {
             setDatePickerOpen(false);
             setBirthday(moment(newDate).format('YYYY-MM-DD'));

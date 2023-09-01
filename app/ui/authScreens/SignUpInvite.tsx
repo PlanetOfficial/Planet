@@ -85,7 +85,7 @@ const SignUpInvite = ({
     const unsubscribe = navigation.addListener('focus', async () => {
       setTimeout(() => {
         setSkippable(true);
-      }, 5000);
+      }, 7500);
     });
 
     return unsubscribe;

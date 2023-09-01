@@ -124,8 +124,8 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'center',
-    width: s(35),
-    height: s(35),
+    width: s(40),
+    height: s(40),
     paddingBottom: s(10),
   },
 });
