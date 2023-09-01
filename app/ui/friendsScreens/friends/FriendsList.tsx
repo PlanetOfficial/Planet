@@ -76,7 +76,7 @@ const FriendsList = ({navigation}: {navigation: any}) => {
       <Separator />
 
       <View style={styles.title}>
-        <Text size="s">{strings.friends.suggestions}:</Text>
+        <Text size="s">{strings.friends.suggestions}</Text>
         <View
           style={{
             transform: [{rotate: suggestionsShown ? '0deg' : '180deg'}],
@@ -102,7 +102,6 @@ const FriendsList = ({navigation}: {navigation: any}) => {
           {friendGroups.length === 1
             ? strings.friends.friendGroup
             : strings.friends.friendGroups}
-          :
         </Text>
         <View
           style={{
@@ -149,7 +148,7 @@ const FriendsList = ({navigation}: {navigation: any}) => {
 
       <View style={styles.title}>
         <Text size="s">
-          {strings.friends.friends + ' (' + friends.length + ')'}:
+          {strings.friends.friends + ' (' + friends.length + ')'}
         </Text>
         <View
           style={{
@@ -226,7 +225,8 @@ const styling = (theme: 'light' | 'dark') =>
       alignItems: 'center',
       justifyContent: 'center',
       marginHorizontal: s(20),
-      marginBottom: s(10),
+      marginTop: s(5),
+      marginBottom: s(20),
       paddingVertical: s(10),
       borderRadius: s(5),
       backgroundColor: colors[theme].accent,

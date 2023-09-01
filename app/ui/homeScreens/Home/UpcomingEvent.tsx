@@ -43,6 +43,18 @@ const UpcomingEvent: React.FC<Props> = ({navigation, upcomingEvent}) => {
             ? strings.home.upcomingEvent
             : strings.home.noUpcomingEvent}
         </Text>
+        <TouchableOpacity
+          style={styles.row}
+          onPress={() => {
+            navigation.navigate(strings.title.library);
+          }}>
+          <Text size="xs" color={colors[theme].accent}>
+            {strings.home.viewAllEvents}
+          </Text>
+          <View style={styles.next}>
+            <Icon size="xs" icon={icons.next} color={colors[theme].accent} />
+          </View>
+        </TouchableOpacity>
       </View>
       {upcomingEvent ? (
         <>
@@ -94,6 +106,7 @@ const UpcomingEvent: React.FC<Props> = ({navigation, upcomingEvent}) => {
               }}>
               <View style={STYLES.texts}>
                 <Text
+                  size="s"
                   color={
                     theme === 'light'
                       ? colors[theme].primary
@@ -123,15 +136,6 @@ const UpcomingEvent: React.FC<Props> = ({navigation, upcomingEvent}) => {
               />
             </TouchableOpacity>
           </View>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              navigation.navigate(strings.title.library);
-            }}>
-            <Text size="xs" weight="l">
-              {strings.home.viewAllEvents}
-            </Text>
-          </TouchableOpacity>
         </>
       ) : (
         <TouchableOpacity
@@ -157,7 +161,8 @@ const styling = (theme: 'light' | 'dark') =>
       paddingVertical: s(10),
       borderRadius: s(5),
       marginHorizontal: s(15),
-      marginVertical: s(5),
+      marginTop: s(5),
+      marginBottom: s(20),
     },
     header: {
       flexDirection: 'row',
@@ -182,17 +187,6 @@ const styling = (theme: 'light' | 'dark') =>
       marginHorizontal: s(10),
       paddingRight: s(5),
       paddingTop: s(5),
-    },
-    button: {
-      alignSelf: 'center',
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: colors[theme].secondary,
-      marginTop: s(10),
-      marginBottom: s(20),
-      paddingVertical: s(7.5),
-      paddingHorizontal: s(15),
-      borderRadius: s(5),
     },
     shadow: {
       shadowColor:
@@ -225,6 +219,13 @@ const styling = (theme: 'light' | 'dark') =>
     },
     plus: {
       marginRight: s(10),
+    },
+    row: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    next: {
+      marginLeft: s(3),
     },
   });
 

@@ -104,6 +104,12 @@ const Home = ({navigation}: {navigation: any}) => {
       <SafeAreaView>
         <View style={STYLES.header}>
           <Text size="l">{GetGreetings()}</Text>
+          <Icon
+            size="m"
+            icon={icons.friends}
+            color={colors[theme].accent}
+            onPress={() => navigation.navigate('Friends')}
+          />
         </View>
       </SafeAreaView>
 
@@ -113,20 +119,21 @@ const Home = ({navigation}: {navigation: any}) => {
         scrollIndicatorInsets={{right: 1}}>
         <UpcomingEvent navigation={navigation} upcomingEvent={upcomingEvent} />
         <Separator />
-        <View style={styles.title}>
+        <View style={styles.header}>
           <Text size="s">{strings.home.suggestedFriends}</Text>
+          <TouchableOpacity
+            style={styles.row}
+            onPress={() => navigation.navigate('Friends')}>
+            <Text size="xs" color={colors[theme].accent}>
+              {strings.home.viewAllFriends}
+            </Text>
+            <View style={styles.next}>
+              <Icon size="xs" icon={icons.next} color={colors[theme].accent} />
+            </View>
+          </TouchableOpacity>
         </View>
         {suggestions.length > 0 ? (
-          <>
-            <Suggestions navigation={navigation} />
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => navigation.navigate('Friends')}>
-              <Text size="xs" weight="l">
-                {strings.home.viewAllFriends}
-              </Text>
-            </TouchableOpacity>
-          </>
+          <Suggestions navigation={navigation} />
         ) : (
           <TouchableOpacity
             style={styles.shareButton}
@@ -156,19 +163,19 @@ const Home = ({navigation}: {navigation: any}) => {
 
 const styling = (theme: 'light' | 'dark') =>
   StyleSheet.create({
-    title: {
-      marginHorizontal: s(20),
-      marginVertical: s(10),
+    header: {
+      flexDirection: 'row',
+      alignItems: 'flex-end',
+      justifyContent: 'space-between',
+      paddingHorizontal: s(20),
+      paddingVertical: s(10),
     },
-    button: {
-      alignSelf: 'center',
+    row: {
+      flexDirection: 'row',
       alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: colors[theme].secondary,
-      marginBottom: s(20),
-      paddingVertical: s(7.5),
-      paddingHorizontal: s(15),
-      borderRadius: s(5),
+    },
+    next: {
+      marginLeft: s(3),
     },
     shareButton: {
       flexDirection: 'row',

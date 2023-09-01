@@ -34,10 +34,7 @@ const Header: React.FC<Props> = ({
         <Icon
           size="m"
           icon={icons.locationFilled}
-          color={
-            isMyLocationOffset ? colors[theme].accent : colors[theme].secondary
-          }
-          disabled={!isMyLocationOffset}
+          color={isMyLocationOffset ? colors[theme].accent : colors[theme].blue}
           onPress={() => {
             navigation.navigate('SearchMap', {
               myLocation,

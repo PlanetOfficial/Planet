@@ -24,7 +24,7 @@ const strings = {
     shareMessage:
       'Download Planet, my go-to app for finding places and planning events effortlessly!',
     url: 'https://planetapp.us',
-    downloadUrl: strings.main.url + '/download',
+    downloadUrl: 'https://planetapp.us' + '/download',
     save: 'Save',
     cancel: 'Cancel',
     discard: 'Discard',
@@ -105,9 +105,9 @@ const strings = {
   explore: {
     categories: 'Categories',
     allCategories: 'All Categories',
-    search: 'Search',
+    search: 'Search for places and categories',
     searchHere: 'Search Here',
-    setLocation: 'Set Location',
+    setLocation: 'Set Search Location',
     searchLocation: 'Search Location',
     yourLocation: 'Your Location',
   },
@@ -156,6 +156,7 @@ const strings = {
     reportInfo: 'Are you sure you want to report this user?',
     reportUser: 'Report User',
     reportSuccess: 'Thank you, your report has been submitted.',
+    noSuggestionsFound: 'No Suggestions Found',
   },
   profile: {
     bookmarks: 'Bookmarks',
