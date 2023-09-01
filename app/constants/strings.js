@@ -24,7 +24,7 @@ const strings = {
     shareMessage:
       'Download Planet, my go-to app for finding places and planning events effortlessly!',
     url: 'https://planetapp.us',
-    downloadUrl: 'https://planetapp.us/download',
+    downloadUrl: strings.main.url + '/download',
     save: 'Save',
     cancel: 'Cancel',
     discard: 'Discard',
@@ -324,7 +324,7 @@ const strings = {
       'Unable to change completion status. Please try again later.',
     loadRecommendations:
       'Unable to load recommendations. Please try again later.',
-    loadPoiSections: 'Unable to load places. Please try again later.',
+    loadSuggestedPoiSections: 'Unable to load places. Please try again later.',
     removePfp: 'Unable to remove profile picture. Please try again later.',
     reportEvent: 'Unable to report event. Please try again later.',
     reportUser: 'Unable to report user. Please try again later.',
@@ -335,7 +335,7 @@ const strings = {
     editDisplayName: 'Unable to edit display name. Please try again later.',
     editUsername: 'Unable to edit username. Please try again later.',
     editBirthday: 'Unable to edit birthday. Please try again later.',
-    searchLocailty: 'Unable to search for cities. Please try again later.',
+    searchLocality: 'Unable to search for cities. Please try again later.',
     searchPlace: 'Unable to search for places. Please try again later.',
     noResultsFound: 'No Results Found',
     noResultsFoundDescription: 'Try searching for something else',

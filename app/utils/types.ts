@@ -195,7 +195,7 @@ export interface Recommendation {
   categories: string[];
 }
 
-export interface Locality {
+export interface GoogleAutocompleteResult {
   place_id: string;
   structured_formatting: {
     main_text: string;
@@ -203,8 +203,8 @@ export interface Locality {
   };
 }
 
-export type CreateModes = 'create' | 'suggest' | 'add' | 'none';
-export type CreateModesWithInCreate =
+export type ExploreModes = 'create' | 'suggest' | 'add' | 'none';
+export type ExploreModesWithInCreate =
   | 'create'
   | 'suggest'
   | 'add'
