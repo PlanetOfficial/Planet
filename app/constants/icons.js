@@ -36,12 +36,10 @@ const icons = {
   placeholder: require('../assets/icons/placeholder.png'),
   plus: require('../assets/icons/plus.png'),
   privacy: require('../assets/icons/privacy.png'),
-  profile: require('../assets/tabIcons/profile.png'),
   question: require('../assets/icons/question.png'),
   reload: require('../assets/icons/reload.png'),
   removeAccount: require('../assets/icons/remove-account.png'),
   roulette: require('../assets/icons/roulette.png'),
-  search: require('../assets/tabIcons/search-2.png'),
   selected: require('../assets/icons/selected.png'),
   settings: require('../assets/icons/settings.png'),
   unchecked: require('../assets/icons/unchecked.png'),
@@ -52,8 +50,8 @@ const icons = {
   library: require('../assets/tabIcons/library.png'),
   profiletwo: require('../assets/tabIcons/profile-2.png'),
   profile: require('../assets/tabIcons/profile.png'),
-  searchtwo: require('../assets/tabIcons/search-2.png'), 
-  search: require('../assets/tabIcons/search.png')
+  searchtwo: require('../assets/tabIcons/search-2.png'),
+  search: require('../assets/tabIcons/search.png'),
 };
 
 export default icons;

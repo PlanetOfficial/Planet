@@ -73,9 +73,7 @@ const Welcome = ({navigation}: {navigation: any}) => {
               {strings.login.description1}
             </Text>
             <View style={styles.image}>
-              <Image
-                source={screen.one} style={styles.img}
-              />
+              <Image source={screen.one} style={styles.img} />
             </View>
           </View>
           <View style={styles.page}>
@@ -88,9 +86,7 @@ const Welcome = ({navigation}: {navigation: any}) => {
               {strings.login.description2}
             </Text>
             <View style={styles.image}>
-              <Image
-                source={screen.two} style={styles.img}
-              />
+              <Image source={screen.two} style={styles.img} />
             </View>
           </View>
           <View style={styles.page}>
@@ -103,9 +99,7 @@ const Welcome = ({navigation}: {navigation: any}) => {
               {strings.login.description3}
             </Text>
             <View style={styles.image}>
-              <Image
-                source={screen.three} style={styles.img}
-              />
+              <Image source={screen.three} style={styles.img} />
             </View>
           </View>
           <View style={styles.page}>

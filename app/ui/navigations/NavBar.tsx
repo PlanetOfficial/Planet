@@ -38,24 +38,16 @@ export const NavBar = () => {
     let source: number;
     switch (name) {
       case strings.title.home:
-        source = focused
-          ? icons.hometwo
-          : icons.home
+        source = focused ? icons.hometwo : icons.home;
         break;
       case strings.title.search:
-        source = focused
-          ? icons.searchtwo
-          : icons.search
+        source = focused ? icons.searchtwo : icons.search;
         break;
       case strings.title.library:
-        source = focused
-          ? icons.librarytwo
-          : icons.library
+        source = focused ? icons.librarytwo : icons.library;
         break;
       case strings.title.profile:
-        source = focused
-          ? icons.profiletwo
-          : icons.profile
+        source = focused ? icons.profiletwo : icons.profile;
         break;
       default:
         source = -1;
