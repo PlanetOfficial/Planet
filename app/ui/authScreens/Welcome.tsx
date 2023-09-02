@@ -18,6 +18,8 @@ import strings from '../../constants/strings';
 
 import Text from '../components/Text';
 
+import screen from '../../constants/images';
+
 const Welcome = ({navigation}: {navigation: any}) => {
   const theme = 'light';
   const styles = styling(theme);
@@ -72,8 +74,7 @@ const Welcome = ({navigation}: {navigation: any}) => {
             </Text>
             <View style={styles.image}>
               <Image
-                source={require('../../assets/images/1.png')}
-                style={styles.img}
+                source={screen.one} style={styles.img}
               />
             </View>
           </View>
@@ -88,8 +89,7 @@ const Welcome = ({navigation}: {navigation: any}) => {
             </Text>
             <View style={styles.image}>
               <Image
-                source={require('../../assets/images/2.png')}
-                style={styles.img}
+                source={screen.two} style={styles.img}
               />
             </View>
           </View>
@@ -104,8 +104,7 @@ const Welcome = ({navigation}: {navigation: any}) => {
             </Text>
             <View style={styles.image}>
               <Image
-                source={require('../../assets/images/3.png')}
-                style={styles.img}
+                source={screen.three} style={styles.img}
               />
             </View>
           </View>
