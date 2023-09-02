@@ -24,6 +24,8 @@ import Explore from '../exploreScreens/explore/Explore';
 import Library from '../libraryScreens/library/Library';
 import Profile from '../profileScreens/profile/Profile';
 
+import icons from '../../constants/icons';
+
 const Tab = createBottomTabNavigator();
 
 export const NavBar = () => {
@@ -37,23 +39,23 @@ export const NavBar = () => {
     switch (name) {
       case strings.title.home:
         source = focused
-          ? require('../../assets/tabIcons/home-2.png')
-          : require('../../assets/tabIcons/home.png');
+          ? icons.hometwo
+          : icons.home
         break;
       case strings.title.search:
         source = focused
-          ? require('../../assets/tabIcons/search-2.png')
-          : require('../../assets/tabIcons/search.png');
+          ? icons.searchtwo
+          : icons.search
         break;
       case strings.title.library:
         source = focused
-          ? require('../../assets/tabIcons/library-2.png')
-          : require('../../assets/tabIcons/library.png');
+          ? icons.librarytwo
+          : icons.library
         break;
       case strings.title.profile:
         source = focused
-          ? require('../../assets/tabIcons/profile-2.png')
-          : require('../../assets/tabIcons/profile.png');
+          ? icons.profiletwo
+          : icons.profile
         break;
       default:
         source = -1;

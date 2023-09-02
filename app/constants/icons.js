@@ -46,6 +46,14 @@ const icons = {
   settings: require('../assets/icons/settings.png'),
   unchecked: require('../assets/icons/unchecked.png'),
   unselected: require('../assets/icons/unselected.png'),
+  hometwo: require('../assets/tabIcons/home-2.png'),
+  home: require('../assets/tabIcons/home.png'),
+  librarytwo: require('../assets/tabIcons/library-2.png'),
+  library: require('../assets/tabIcons/library.png'),
+  profiletwo: require('../assets/tabIcons/profile-2.png'),
+  profile: require('../assets/tabIcons/profile.png'),
+  searchtwo: require('../assets/tabIcons/search-2.png'), 
+  search: require('../assets/tabIcons/search.png')
 };
 
 export default icons;
