@@ -1,5 +1,7 @@
 import {PoiAPIURL, XanoAPIKey} from './APIConstants';
 
+import numbers from '../../constants/numbers';
+
 import {Category, GoogleAutocompleteResult, Poi, PoiDetail} from '../types';
 
 import EncryptedStorage from 'react-native-encrypted-storage';
@@ -11,8 +13,12 @@ export const getPois = async (
   longitude: number,
   filters?: {[key: string]: string | string[]},
 ): Promise<Poi[] | null> => {
-  latitude = Math.round(latitude * 100) / 100;
-  longitude = Math.round(longitude * 100) / 100;
+  latitude =
+    Math.round(latitude / numbers.locationOffThreshold) *
+    numbers.locationOffThreshold;
+  longitude =
+    Math.round(longitude / numbers.locationOffThreshold) *
+    numbers.locationOffThreshold;
 
   const response = await fetch(
     PoiAPIURL +
