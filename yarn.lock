@@ -6822,10 +6822,10 @@ react-native-curved-bottom-bar@^3.2.6:
     d3-shape "^3.2.0"
     react-native-size-scaling "^0.5.1"
 
-react-native-date-picker@^4.2.13:
-  version "4.2.13"
-  resolved "https://registry.yarnpkg.com/react-native-date-picker/-/react-native-date-picker-4.2.13.tgz#b5b894ee6c5a154a752f9094342170515e169ea6"
-  integrity sha512-cQ3k+ExXggAnytomeNGNrtV/l2a7WzVUeWKo7Gs2pv/z3TCjjlmKn0ZBMPgcThrFAgFMxgYI0XzKVKT7TPsOmw==
+react-native-date-picker@^4.2.14:
+  version "4.2.14"
+  resolved "https://registry.yarnpkg.com/react-native-date-picker/-/react-native-date-picker-4.2.14.tgz#ebeb3bf8d682268a4e405decde1e72ab95ecffb7"
+  integrity sha512-rP0ycj3I+8x4pIUGjeh7pL+cMPntKccLGX/OXx790bsIM0Hcyg0ZL86kGnnZu9fEUhXlgdr3OK/jhQue5L6kSQ==
   dependencies:
     prop-types "^15.8.1"
 
