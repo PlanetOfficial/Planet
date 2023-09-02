@@ -59,7 +59,7 @@
     "react-native-system-navigation-bar": "^2.6.1",
     "react-native-tab-view": "^3.5.1",
     "react-phone-number-input": "^3.2.23",
-    "react-svg": "^16.1.17"
+    "react-svg": "^16.1.19"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
