@@ -18,6 +18,8 @@ import strings from '../../constants/strings';
 
 import Text from '../components/Text';
 
+import screen from '../../constants/images';
+
 const Welcome = ({navigation}: {navigation: any}) => {
   const theme = 'light';
   const styles = styling(theme);
@@ -51,7 +53,7 @@ const Welcome = ({navigation}: {navigation: any}) => {
           <View style={styles.page}>
             <View style={styles.welcome}>
               <Image source={icons.logo} style={styles.logo} />
-              <View style={styles.welcomeText}>
+              <View style={styles.title}>
                 <Text size="xxl" weight="b" color={colors[theme].primary}>
                   {strings.login.welcome}
                 </Text>
@@ -62,18 +64,48 @@ const Welcome = ({navigation}: {navigation: any}) => {
             </View>
           </View>
           <View style={styles.page}>
-            <Text color={colors[theme].primary}>Tutorial 1</Text>
+            <View style={styles.title}>
+              <Text size="xxl" weight="b" color={colors[theme].primary}>
+                {strings.login.title1}
+              </Text>
+            </View>
+            <Text weight="l" color={colors[theme].primary} center={true}>
+              {strings.login.description1}
+            </Text>
+            <View style={styles.image}>
+              <Image source={screen.one} style={styles.img} />
+            </View>
           </View>
           <View style={styles.page}>
-            <Text color={colors[theme].primary}>Tutorial 2</Text>
+            <View style={styles.title}>
+              <Text size="xxl" weight="b" color={colors[theme].primary}>
+                {strings.login.title2}
+              </Text>
+            </View>
+            <Text weight="l" color={colors[theme].primary} center={true}>
+              {strings.login.description2}
+            </Text>
+            <View style={styles.image}>
+              <Image source={screen.two} style={styles.img} />
+            </View>
           </View>
           <View style={styles.page}>
-            <Text color={colors[theme].primary}>Tutorial 3</Text>
+            <View style={styles.title}>
+              <Text size="xxl" weight="b" color={colors[theme].primary}>
+                {strings.login.title3}
+              </Text>
+            </View>
+            <Text weight="l" color={colors[theme].primary} center={true}>
+              {strings.login.description3}
+            </Text>
+            <View style={styles.image}>
+              <Image source={screen.three} style={styles.img} />
+            </View>
           </View>
           <View style={styles.page}>
             <View style={styles.welcome}>
               <Image source={icons.logo} style={styles.logo} />
-              <View style={styles.welcomeText}>
+              <View style={styles.title}>
                 <Text size="xxl" weight="b" color={colors[theme].primary}>
                   {strings.main.appName}
                 </Text>
@@ -150,7 +182,7 @@ const styling = (theme: 'light' | 'dark') =>
       alignItems: 'center',
       marginTop: vs(50),
     },
-    welcomeText: {
+    title: {
       marginVertical: vs(10),
     },
     logo: {
@@ -186,6 +218,14 @@ const styling = (theme: 'light' | 'dark') =>
       height: s(8),
       marginHorizontal: s(3),
       borderRadius: s(5),
+    },
+    image: {
+      width: vs(400) / 1.6,
+      marginBottom: vs(40),
+    },
+    img: {
+      width: '100%',
+      height: '100%',
     },
   });
 
