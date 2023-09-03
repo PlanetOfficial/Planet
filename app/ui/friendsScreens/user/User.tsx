@@ -48,13 +48,13 @@ const User = ({
   const [selfUserId, setSelfUserId] = useState<number>(0);
   const [mutualEvents, setMutualEvents] = useState<Event[]>([]);
 
-  const [location, setLocation] = useState<Coordinate>();
+  const [myLocation, setMyLocation] = useState<Coordinate>();
   const [loading, withLoading] = useLoadingState();
 
   const {friends} = useFriendsContext();
 
   const initializeData = useCallback(async () => {
-    setLocation(await fetchUserLocation());
+    setMyLocation(await fetchUserLocation());
 
     const myUserId = await EncryptedStorage.getItem('user_id');
     if (myUserId) {
@@ -90,7 +90,7 @@ const User = ({
         isOnTabScreen={false}
       />
       {isSelf ? (
-        <ProfileBody navigation={navigation} location={location} />
+        <ProfileBody navigation={navigation} myLocation={myLocation} />
       ) : isFriend ? (
         <>
           <SegmentedControlTab

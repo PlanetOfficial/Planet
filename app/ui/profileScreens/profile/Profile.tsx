@@ -21,10 +21,10 @@ const Profile = ({navigation}: {navigation: any}) => {
   const [displayName, setDisplayName] = useState<string>('');
   const [username, setUsername] = useState<string>('');
   const [pfpURL, setPfpURL] = useState<string>('');
-  const [location, setLocation] = useState<Coordinate>();
+  const [myLocation, setMyLocation] = useState<Coordinate>();
 
   const initializeData = useCallback(async () => {
-    setLocation(await fetchUserLocation());
+    setMyLocation(await fetchUserLocation());
     const _selfUserId = await EncryptedStorage.getItem('user_id');
     const _displayName = await AsyncStorage.getItem('display_name');
     const _username = await AsyncStorage.getItem('username');
@@ -60,7 +60,7 @@ const Profile = ({navigation}: {navigation: any}) => {
         isOnTabScreen={true}
         setPfpURL={setPfpURL}
       />
-      <ProfileBody navigation={navigation} location={location} />
+      <ProfileBody navigation={navigation} myLocation={myLocation} />
     </View>
   );
 };

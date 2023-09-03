@@ -37,7 +37,7 @@ const Home = ({navigation}: {navigation: any}) => {
   const styles = styling(theme);
   StatusBar.setBarStyle(colors[theme].statusBar, true);
 
-  const [location, setLocation] = useState<Coordinate>();
+  const [myLocation, setMyLocation] = useState<Coordinate>();
 
   const {suggestions} = useFriendsContext();
 
@@ -71,7 +71,7 @@ const Home = ({navigation}: {navigation: any}) => {
     const initializeRecommendations = async () => {
       const _location = await fetchUserLocation();
 
-      setLocation(_location);
+      setMyLocation(_location);
       loadRecommendations(_location);
     };
 
@@ -147,10 +147,10 @@ const Home = ({navigation}: {navigation: any}) => {
           </TouchableOpacity>
         )}
         <Separator />
-        {location ? (
+        {myLocation ? (
           <Recommendations
             navigation={navigation}
-            location={location}
+            location={myLocation}
             recommendations={recommendations}
             loadRecommendations={loadRecommendations}
             recommendationsLoading={recommendationsLoading}

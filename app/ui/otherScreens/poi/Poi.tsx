@@ -60,7 +60,7 @@ const PoiPage = ({
 
   const {bookmarks, setBookmarks} = useBookmarkContext();
 
-  const [location, setLocation] = useState<Coordinate>();
+  const [myLocation, setMyLocation] = useState<Coordinate>();
 
   const initializeDestinationData = useCallback(async () => {
     if (route.params.place_id) {
@@ -91,7 +91,7 @@ const PoiPage = ({
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', async () => {
       initializeDestinationData();
-      setLocation(await fetchUserLocation());
+      setMyLocation(await fetchUserLocation());
     });
 
     return unsubscribe;
@@ -161,11 +161,11 @@ const PoiPage = ({
             longitude={destination.longitude}
           />
         ) : null}
-        {destination && destinationDetails && location ? (
+        {destination && destinationDetails && myLocation ? (
           <Info
             destination={destination}
             destinationDetails={destinationDetails}
-            location={location}
+            location={myLocation}
           />
         ) : null}
         {destinationDetails?.reviews &&
