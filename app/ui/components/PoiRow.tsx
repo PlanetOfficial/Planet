@@ -17,7 +17,7 @@ interface Props {
   place: Poi;
   bookmarked: boolean;
   handleBookmark: (poi: Poi) => void;
-  location?: Coordinate;
+  myLocation?: Coordinate;
   category?: Category;
 }
 
@@ -25,7 +25,7 @@ const PoiRow: React.FC<Props> = ({
   place,
   bookmarked,
   handleBookmark,
-  location,
+  myLocation,
   category,
 }) => {
   const theme = useColorScheme() || 'light';
@@ -33,11 +33,11 @@ const PoiRow: React.FC<Props> = ({
   const getAddressString = (): string => {
     let poiString: string = '';
 
-    if (place.latitude && place.longitude && location) {
+    if (place.latitude && place.longitude && myLocation) {
       poiString += `${(
         getDistanceFromCoordinates(
           {latitude: place.latitude, longitude: place.longitude},
-          location,
+          myLocation,
         ) / numbers.milesToMeters
       ).toFixed(1)} ${strings.main.milesAbbrev}`;
     }

@@ -29,7 +29,7 @@ interface Props {
   scrollViewRef: React.RefObject<ScrollView>;
   bookmarks: Poi[];
   setBookmarks: (bookmarks: Poi[]) => void;
-  location: Coordinate;
+  myLocation: Coordinate;
   category: Category;
   mode: ExploreModes;
   bottomSheetIndex: number;
@@ -45,7 +45,7 @@ const Results: React.FC<Props> = ({
   scrollViewRef,
   bookmarks,
   setBookmarks,
-  location,
+  myLocation,
   category,
   mode,
   bottomSheetIndex,
@@ -80,7 +80,7 @@ const Results: React.FC<Props> = ({
                 handleBookmark={(poi: Poi) =>
                   handleBookmark(poi, bookmarks, setBookmarks)
                 }
-                location={location}
+                myLocation={myLocation}
                 category={category}
               />
             </TouchableOpacity>

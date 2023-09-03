@@ -21,10 +21,10 @@ import {Coordinate, Poi} from '../../../utils/types';
 
 interface Props {
   navigation: any;
-  location?: Coordinate;
+  myLocation?: Coordinate;
 }
 
-const ProfileBody: React.FC<Props> = ({navigation, location}) => {
+const ProfileBody: React.FC<Props> = ({navigation, myLocation}) => {
   const theme = useColorScheme() || 'light';
   const STYLES = STYLING(theme);
   const segControlTabStyles = segControlTabStyling(theme);
@@ -70,7 +70,7 @@ const ProfileBody: React.FC<Props> = ({navigation, location}) => {
               <PoiRow
                 place={item}
                 bookmarked={true}
-                location={location}
+                myLocation={myLocation}
                 handleBookmark={(poi: Poi) =>
                   handleBookmark(poi, bookmarks, setBookmarks)
                 }

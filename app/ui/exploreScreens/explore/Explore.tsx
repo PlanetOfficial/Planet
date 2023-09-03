@@ -215,7 +215,7 @@ const Explore = ({
                 <PoiRow
                   place={item}
                   bookmarked={true}
-                  location={myLocation}
+                  myLocation={myLocation}
                   handleBookmark={(poi: Poi) =>
                     handleBookmark(poi, bookmarks, setBookmarks)
                   }
