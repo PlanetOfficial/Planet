@@ -70,8 +70,8 @@ def enableProguardInReleaseBuilds = false
 def jscFlavor = 'org.webkit:android-jsc:+'
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion "27.0.3"
+    compileSdkVersion 33
+    buildToolsVersion "33.0.0"
     
     ndkVersion rootProject.ext.ndkVersion
 
@@ -83,8 +83,8 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         vectorDrawables.useSupportLibrary = true
-        targetSdkVersion 27
-        versionCode 9
+        targetSdkVersion 33
+        versionCode 11
         versionName "1.1.0"
     }
 
