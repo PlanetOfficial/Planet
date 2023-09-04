@@ -29,6 +29,7 @@ import {fetchUserLocation, shareApp, useLoadingState} from '../../utils/Misc';
 import {cacheUserInfo} from '../../utils/CacheHelpers';
 
 import {useLocationContext} from '../../context/LocationContext';
+import {handleReferral} from './functions';
 
 const SignUpInvite = ({
   navigation,
@@ -134,6 +135,13 @@ const SignUpInvite = ({
         </ScrollView>
         <SafeAreaView>
           <TouchableOpacity
+            style={styles.referral}
+            onPress={() => handleReferral(authToken)}>
+            <Text size="s" weight="l">
+              {strings.signUp.promptReferral}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
             style={[
               STYLES.buttonBig,
               {
@@ -189,6 +197,9 @@ const styling = (theme: 'light' | 'dark') =>
     },
     icon: {
       marginRight: s(10),
+    },
+    referral: {
+      alignSelf: 'center',
     },
   });
 

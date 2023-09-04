@@ -80,9 +80,9 @@ const DestinationsList: React.FC<Props> = ({
                           strings.main.rename,
                           strings.event.renamePrompt,
                           [
-                            {text: 'Cancel', style: 'cancel'},
+                            {text: strings.main.cancel, style: 'cancel'},
                             {
-                              text: 'Save',
+                              text: strings.main.save,
                               onPress: name => {
                                 const _destinations = [...destinations];
                                 destinationNames.set(
