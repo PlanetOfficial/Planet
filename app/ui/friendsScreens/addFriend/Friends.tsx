@@ -18,12 +18,13 @@ import Icon from '../../components/Icon';
 import UserIcon from '../../components/UserIcon';
 import Text from '../../components/Text';
 import UserRow from '../../components/UserRow';
+import FGIcon from '../components/FGIcon';
 
 import {FriendGroup, UserInfo} from '../../../utils/types';
 
-import FGIcon from '../friendsList/FGIcon';
-import {handleFGPress, handleFGSelect, handleUserSelect} from './functions';
 import {useFriendsContext} from '../../../context/FriendsContext';
+
+import {handleFGPress, handleFGSelect, handleUserSelect} from './functions';
 
 interface Props {
   isEvent: boolean;
@@ -52,7 +53,7 @@ const Friends: React.FC<Props> = ({
     <ScrollView style={STYLES.container} scrollIndicatorInsets={{right: 1}}>
       {friendGroups.length > 0 ? (
         <View style={styles.title}>
-          <Text size="s">
+          <Text size="s" weight="l">
             {friendGroups.length === 1
               ? strings.friends.friendGroup
               : strings.friends.friendGroups}
@@ -143,7 +144,7 @@ const Friends: React.FC<Props> = ({
                   </View>
                   <View style={styles.text}>
                     <Text size="xs" weight="l" numberOfLines={1}>
-                      {item.first_name}
+                      {item.display_name}
                     </Text>
                   </View>
                 </TouchableOpacity>
@@ -154,11 +155,13 @@ const Friends: React.FC<Props> = ({
 
       {friends.length === 0 ? (
         <View style={STYLES.center}>
-          <Text>{strings.friends.noFriendsFound}</Text>
+          <Text weight="l">{strings.friends.noFriendsFound}</Text>
         </View>
       ) : (
         <View style={styles.title}>
-          <Text size="s">{strings.friends.friends}:</Text>
+          <Text size="s" weight="l">
+            {strings.friends.friends}:
+          </Text>
         </View>
       )}
       {friends.map((item: UserInfo) => (

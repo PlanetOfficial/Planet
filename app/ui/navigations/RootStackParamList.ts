@@ -5,49 +5,59 @@ import {
   Poi as PoiType,
   UserInfo,
   Destination,
+  Genre,
+  ExploreModes,
+  ExploreModesWithInCreate,
 } from '../../utils/types';
 
 type RootStackParamList = {
   TabStack: undefined;
+
   SearchCategory: {
-    mode: 'create' | 'suggest' | 'add' | 'none';
+    mode: ExploreModes;
     myLocation: Coordinate;
     category: Category;
   };
   SearchMap: {
-    mode: 'create' | 'suggest' | 'add' | 'none';
+    mode: ExploreModes;
     myLocation: Coordinate;
     category: Category;
   };
+  ModeExplore: {
+    mode: ExploreModes;
+  };
+  AllCategories: {
+    myLocation: Coordinate;
+    mode: ExploreModes;
+    genres: Genre[];
+  };
+
   Poi: {
-    mode: 'create' | 'suggest' | 'add' | 'inCreate' | 'none';
+    mode: ExploreModesWithInCreate;
     place_id: string | undefined;
     poi: PoiType | undefined;
     category: string | undefined;
   };
+
   Friends: undefined;
   CreateFG: undefined;
   AddFriend: {
     members: UserInfo[];
     event_id: number | undefined;
   };
-  Mutuals: {
-    mutuals: UserInfo[];
-  };
+  Requests: undefined;
   User: {
     user: UserInfo;
   };
-  ViewHistory: {
-    viewHistory: PoiType[];
-    location: Coordinate;
-  };
-  Settings: undefined;
+
+  BlockedUsers: undefined;
   AccountSettings: undefined;
-  ContactUs: undefined;
   LocationsSettings: undefined;
   NotificationSettings: undefined;
   PrivacySettings: undefined;
   ProfileSettings: undefined;
+  Settings: undefined;
+
   Create:
     | {
         members: UserInfo[] | undefined;
@@ -57,9 +67,7 @@ type RootStackParamList = {
         names: string[] | undefined;
       }
     | undefined;
-  ModeSearch: {
-    mode: 'create' | 'suggest' | 'add' | 'none';
-  };
+
   Event: {
     event: Event;
     destination: PoiType;
@@ -77,32 +85,33 @@ type RootStackParamList = {
     destination: Destination;
   };
   Notifications: undefined;
+
+  Welcome: undefined;
   Login: undefined;
   SignUpName: undefined;
+  SignUpBirthday: {
+    displayName: string;
+  };
   SignUpCreds: {
-    firstName: string;
-    lastName: string;
+    displayName: string;
+    birthday: string;
   };
   SignUpPhone: {
-    authToken: string;
-  };
-  VerifyPhone: {
-    authToken: string;
-  };
-  SignUpInfo: {
     authToken: string;
   };
   SignUpVerify: {
     authToken: string;
   };
-  ForgotPasswordVerify: {
-    username: string;
-  };
-  ResetPassword: {
+  SignUpInvite: {
     authToken: string;
   };
-  ForgotPassword: undefined;
-  BlockedUsers: undefined;
+  ResetPwd: {
+    authToken: string;
+  };
+  ForgotPwd: undefined;
+  ForgotPwdVerify: {
+    username: string;
+  };
 };
 
 export default RootStackParamList;

@@ -6,7 +6,7 @@ import colors from '../../constants/colors';
 
 interface Props {
   children: React.ReactNode;
-  size?: 'xs' | 's' | 'm' | 'l' | 'xl';
+  size?: 'xs' | 's' | 'm' | 'l' | 'xl' | 'xxl' | 'xxxl';
   weight?: 'l' | 'r' | 'b';
   color?: string;
   underline?: boolean;
@@ -37,7 +37,7 @@ const Text: React.FC<Props> = ({
       fontSize = s(12);
       break;
     case 's':
-      fontSize = s(14);
+      fontSize = s(15);
       break;
     case 'm':
       fontSize = s(17);
@@ -47,6 +47,12 @@ const Text: React.FC<Props> = ({
       break;
     case 'xl':
       fontSize = s(22);
+      break;
+    case 'xxl':
+      fontSize = s(26);
+      break;
+    case 'xxxl':
+      fontSize = s(30);
       break;
     default:
       break;

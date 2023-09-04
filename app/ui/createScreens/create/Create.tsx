@@ -21,6 +21,7 @@ import {Poi, UserInfo} from '../../../utils/types';
 import Header from './Header';
 import SaveButton from './SaveButton';
 import DestinationsList from './DestinationsList';
+
 import {useBookmarkContext} from '../../../context/BookmarkContext';
 
 const Create = ({
@@ -151,7 +152,7 @@ const Create = ({
             style={[styles.addButton, STYLES.shadow]}
             onPress={() => {
               setInsertionIndex(0);
-              navigation.navigate('ModeSearch', {
+              navigation.navigate('ModeExplore', {
                 mode: 'create',
               });
             }}>
@@ -182,7 +183,7 @@ const styling = (theme: 'light' | 'dark') =>
       marginTop: s(30),
       marginHorizontal: s(40),
       paddingVertical: s(20),
-      borderRadius: s(10),
+      borderRadius: s(5),
       backgroundColor: colors[theme].primary,
     },
   });

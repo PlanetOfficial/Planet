@@ -72,9 +72,8 @@ const Library = ({navigation}: {navigation: any}) => {
         <View style={STYLES.header}>
           <Text size="l">{strings.event.yourEvents}</Text>
           <Icon
+            size="m"
             icon={icons.bell}
-            button={true}
-            padding={-2}
             onPress={() => navigation.navigate('Notifications')}
           />
         </View>
@@ -159,9 +158,11 @@ const Library = ({navigation}: {navigation: any}) => {
           }
           ListEmptyComponent={
             <View style={STYLES.center}>
-              <Text>{strings.event.noEventsFound}</Text>
+              <Text weight="l">{strings.event.noEventsFound}</Text>
               <Text> </Text>
-              <Text size="s">{strings.event.noEventsFoundDescription}</Text>
+              <Text size="s" weight="l">
+                {strings.event.noEventsFoundDescription}
+              </Text>
             </View>
           }
           keyExtractor={(item: Event) => item.id.toString()}

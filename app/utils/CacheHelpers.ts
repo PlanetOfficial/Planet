@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import EncryptedStorage from 'react-native-encrypted-storage';
+
 import {getUserInfo} from './api/authAPI';
 import {getCategories} from './api/poiAPI';
 
@@ -7,8 +8,7 @@ import {getCategories} from './api/poiAPI';
  * Data we cache:
  * - auth_token
  * - user_id
- * - first_name
- * - last_name
+ * - display_name
  * - username
  * - phone_number
  * - age
@@ -53,12 +53,8 @@ export const clearCaches = async () => {
     await EncryptedStorage.removeItem('user_id');
   }
 
-  if (await AsyncStorage.getItem('first_name')) {
-    AsyncStorage.removeItem('first_name');
-  }
-
-  if (await AsyncStorage.getItem('last_name')) {
-    AsyncStorage.removeItem('last_name');
+  if (await AsyncStorage.getItem('display_name')) {
+    AsyncStorage.removeItem('display_name');
   }
 
   if (await AsyncStorage.getItem('username')) {
@@ -69,12 +65,8 @@ export const clearCaches = async () => {
     AsyncStorage.removeItem('phone_number');
   }
 
-  if (await AsyncStorage.getItem('age')) {
-    AsyncStorage.removeItem('age');
-  }
-
-  if (await AsyncStorage.getItem('gender')) {
-    AsyncStorage.removeItem('gender');
+  if (await AsyncStorage.getItem('birthday')) {
+    AsyncStorage.removeItem('birthday');
   }
 
   if (await AsyncStorage.getItem('pfp_url')) {
@@ -92,12 +84,10 @@ const cacheStorage = async (authToken: string) => {
   await EncryptedStorage.setItem('user_id', response.id.toString());
 
   // set name and other info into async storage
-  await AsyncStorage.setItem('first_name', response.first_name);
-  await AsyncStorage.setItem('last_name', response.last_name);
+  await AsyncStorage.setItem('display_name', response.display_name);
   await AsyncStorage.setItem('username', response.username);
   await AsyncStorage.setItem('phone_number', response.phone_number);
-  await AsyncStorage.setItem('age', response.age);
-  await AsyncStorage.setItem('gender', response.gender);
+  await AsyncStorage.setItem('birthday', response.birthday);
 
   if (response?.icon?.url) {
     await AsyncStorage.setItem('pfp_url', response.icon.url);

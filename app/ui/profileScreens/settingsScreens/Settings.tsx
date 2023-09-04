@@ -40,7 +40,7 @@ const Settings = ({navigation}: {navigation: any}) => {
     },
     {
       name: 'Locations',
-      icon: icons.pin,
+      icon: icons.location,
       onPress: () => navigation.navigate('LocationsSettings'),
     },
     {
@@ -69,9 +69,8 @@ const Settings = ({navigation}: {navigation: any}) => {
             icon={icons.back}
             onPress={() => navigation.goBack()}
           />
-          <View style={STYLES.texts}>
-            <Text size="l">{strings.settings.settings}</Text>
-          </View>
+          <Text size="l">{strings.settings.settings}</Text>
+          <Icon size="m" icon={icons.back} color="transparent" />
         </View>
       </SafeAreaView>
       <ScrollView scrollIndicatorInsets={{right: 1}}>

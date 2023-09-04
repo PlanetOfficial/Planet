@@ -6,18 +6,23 @@ import {
   TextInput,
   StatusBar,
   ActivityIndicator,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
 } from 'react-native';
+import {s} from 'react-native-size-matters';
 
 import colors from '../../constants/colors';
-import icons from '../../constants/icons';
 import strings from '../../constants/strings';
 import STYLING from '../../constants/styles';
 
 import Text from '../components/Text';
-import Icon from '../components/Icon';
 
-import {verifyCodeUsername} from '../../utils/api/authAPI';
 import {useLoadingState} from '../../utils/Misc';
+
+import {handleVerifyCode} from './functions';
 
 const ForgotPwdVerify = ({
   navigation,
@@ -31,6 +36,7 @@ const ForgotPwdVerify = ({
   };
 }) => {
   const theme = 'light';
+  const styles = styling(theme);
   const STYLES = STYLING(theme);
   StatusBar.setBarStyle(colors[theme].statusBar, true);
 
@@ -38,89 +44,91 @@ const ForgotPwdVerify = ({
 
   const [code, setCode] = useState<string>('');
 
-  const [error, setError] = useState<string>('');
-
   const [loading, withLoading] = useLoadingState();
-
-  const handleVerifyCode = async () => {
-    setError('');
-
-    if (code.length === 0) {
-      setError(strings.signUp.missingFields);
-      return;
-    }
-
-    const response = await verifyCodeUsername(username, code);
-
-    if (response) {
-      navigation.reset({
-        index: 0,
-        routes: [
-          {name: 'ResetPassword', params: {authToken: response.authToken}},
-        ],
-      });
-    } else {
-      setError(strings.signUp.codeVerifyFailed);
-    }
-  };
+  const [error, setError] = useState<string>('');
+  const disabled = code.length !== 6 || loading;
 
   return (
-    <View style={STYLES.container}>
+    <KeyboardAvoidingView
+      {...(Platform.OS === 'ios' ? {behavior: 'padding'} : {})}
+      style={STYLES.container}
+      onTouchStart={Keyboard.dismiss}>
       <SafeAreaView>
-        <View style={STYLES.header}>
-          <Icon
-            size="m"
-            icon={icons.back}
-            onPress={() => navigation.goBack()}
-            color={colors[theme].neutral}
+        <View style={STYLES.header} />
+      </SafeAreaView>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={STYLES.titleContainer}>
+          <Text weight="l" center={true} color={colors[theme].neutral}>
+            {strings.signUp.verifyPrompt}
+          </Text>
+        </View>
+
+        <View style={STYLES.inputContainer}>
+          <TextInput
+            style={styles.input}
+            maxFontSizeMultiplier={1}
+            value={code}
+            onChangeText={text =>
+              setCode(text.replace(/[^0-9]/g, '').substring(0, 6))
+            }
+            placeholderTextColor={colors[theme].neutral}
+            keyboardType="number-pad"
           />
         </View>
-      </SafeAreaView>
-
-      <View style={STYLES.promptContainer}>
-        <Text size="l" weight="l" center={true} color={colors[theme].neutral}>
-          {strings.signUp.verifyPrompt}
-        </Text>
-      </View>
-
-      <View style={STYLES.inputContainer}>
-        <TextInput
-          style={STYLES.input}
-          value={code}
-          onChangeText={text =>
-            setCode(text.replace(/[^0-9]/g, '').substring(0, 6))
-          }
-          placeholderTextColor={colors[theme].neutral}
-          keyboardType="number-pad"
-        />
-      </View>
-      {error.length !== 0 ? (
-        <Text weight="l" center={true} color={colors[theme].red}>
-          {error}
-        </Text>
-      ) : null}
-      <TouchableOpacity
-        style={[
-          STYLES.buttonBig,
-          {
-            backgroundColor:
-              code.length !== 6
+        <View>
+          {error.length !== 0 ? (
+            <View style={STYLES.error}>
+              <Text size="s" weight="l" center={true} color={colors[theme].red}>
+                {error}
+              </Text>
+            </View>
+          ) : null}
+        </View>
+      </ScrollView>
+      <SafeAreaView>
+        <TouchableOpacity
+          style={[
+            STYLES.buttonBig,
+            {
+              backgroundColor: disabled
                 ? colors[theme].secondary
                 : colors[theme].accent,
-          },
-        ]}
-        disabled={code.length !== 6 || loading}
-        onPress={() => withLoading(handleVerifyCode)}>
-        {loading ? (
-          <ActivityIndicator size="small" color={colors[theme].primary} />
-        ) : (
-          <Text weight="b" color={colors[theme].primary}>
-            {strings.signUp.verifyCode}
-          </Text>
-        )}
-      </TouchableOpacity>
-    </View>
+            },
+          ]}
+          disabled={disabled}
+          onPress={() =>
+            withLoading(() =>
+              handleVerifyCode(navigation, username, code, setError),
+            )
+          }>
+          {loading ? (
+            <ActivityIndicator size="small" color={colors[theme].primary} />
+          ) : (
+            <Text weight="b" color={colors[theme].primary}>
+              {strings.signUp.verifyCode}
+            </Text>
+          )}
+        </TouchableOpacity>
+      </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 };
+
+const styling = (theme: 'light' | 'dark') =>
+  StyleSheet.create({
+    input: {
+      alignSelf: 'center',
+      borderBottomWidth: 1,
+      borderColor: colors[theme].neutral,
+      marginHorizontal: s(5),
+      paddingVertical: s(5),
+      fontFamily: 'Lato',
+      letterSpacing: s(10),
+      fontSize: s(20),
+      width: s(150),
+      color: colors[theme].neutral,
+      textAlign: 'center',
+    },
+  });
 
 export default ForgotPwdVerify;

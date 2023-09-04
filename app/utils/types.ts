@@ -1,26 +1,22 @@
 export interface UserInfo {
   id: number;
-  first_name: string;
-  last_name: string;
+  display_name: string;
   username: string;
   icon?: Image;
   count?: number;
 }
 
 export interface UserDetail {
-  mutuals: UserInfo[];
   shared_events: Event[];
 }
 
 export interface MyInfo {
   id: number;
-  first_name: string;
-  last_name: string;
+  display_name: string;
   username: string;
   icon?: Image;
   phone_number: string;
-  age: string;
-  gender: string;
+  birthday: string;
 }
 
 export interface FriendGroup {
@@ -32,6 +28,11 @@ export interface FriendGroup {
 export interface Genre {
   id: number;
   name: string;
+  alias: string;
+  supplier: string;
+  filter: Filter[];
+  icon: Image;
+  image: Image;
   categories: Category[];
 }
 
@@ -193,3 +194,19 @@ export interface Recommendation {
   places: Poi[];
   categories: string[];
 }
+
+export interface GoogleAutocompleteResult {
+  place_id: string;
+  structured_formatting: {
+    main_text: string;
+    secondary_text: string;
+  };
+}
+
+export type ExploreModes = 'create' | 'suggest' | 'add' | 'none';
+export type ExploreModesWithInCreate =
+  | 'create'
+  | 'suggest'
+  | 'add'
+  | 'inCreate'
+  | 'none';

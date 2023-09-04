@@ -65,7 +65,7 @@ const Suggestions: React.FC<Props> = ({
           disabled={displayingSuggestion}
           onPress={() => {
             setInsertionDestination(destination);
-            navigation.navigate('ModeSearch', {
+            navigation.navigate('ModeExplore', {
               mode: 'suggest',
             });
           }}>
@@ -79,7 +79,7 @@ const Suggestions: React.FC<Props> = ({
       disabled={displayingSuggestion}
       onPress={() => {
         setInsertionDestination(destination);
-        navigation.navigate('ModeSearch', {
+        navigation.navigate('ModeExplore', {
           mode: 'suggest',
         });
       }}>
@@ -118,7 +118,7 @@ const styling = (theme: 'light' | 'dark') =>
       alignItems: 'center',
       marginVertical: s(10),
       paddingVertical: s(10),
-      borderRadius: s(10),
+      borderRadius: s(5),
       backgroundColor: colors[theme].primary,
     },
   });

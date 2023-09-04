@@ -3,7 +3,7 @@ import {Alert} from 'react-native';
 import strings from '../../../constants/strings';
 
 import {FriendGroup, UserInfo} from '../../../utils/types';
-import {getFriends, searchUsers} from '../../../utils/api/friendsAPI';
+import {getFriendsInfo, searchUsers} from '../../../utils/api/friendsAPI';
 import {postFG} from '../../../utils/api/fgAPI';
 
 export const search = async (
@@ -30,7 +30,7 @@ export const search = async (
 const loadFriends = async (
   setFriendGroups: (friendGroups: FriendGroup[]) => void,
 ) => {
-  const response = await getFriends();
+  const response = await getFriendsInfo();
 
   if (response) {
     setFriendGroups(response.friend_groups);
@@ -41,7 +41,7 @@ const loadFriends = async (
 
 export const createFG = async (
   name: string,
-  selectedId: number[],
+  selectedUserIds: number[],
   setFriendGroups: (friendGroups: FriendGroup[]) => void,
   navigation: any,
 ) => {
@@ -49,7 +49,7 @@ export const createFG = async (
     Alert.alert(strings.error.error, strings.error.fgNameEmpty);
     return;
   }
-  const response = await postFG(selectedId, name);
+  const response = await postFG(selectedUserIds, name);
 
   if (response) {
     loadFriends(setFriendGroups);

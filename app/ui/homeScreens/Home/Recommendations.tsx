@@ -20,6 +20,7 @@ import PoiCard from '../../components/PoiCard';
 
 import {Coordinate, Poi, Recommendation} from '../../../utils/types';
 import {handleBookmark} from '../../../utils/Misc';
+
 import {useBookmarkContext} from '../../../context/BookmarkContext';
 
 interface Props {
@@ -46,7 +47,7 @@ const Recommendations: React.FC<Props> = ({
   return (
     <>
       <View style={styles.header}>
-        <Text>{strings.home.recommendations}</Text>
+        <Text size="s">{strings.home.recommendations}</Text>
         <Icon
           size="s"
           icon={icons.reload}
@@ -92,7 +93,6 @@ const Recommendations: React.FC<Props> = ({
                       handleBookmark={(poi: Poi) => {
                         handleBookmark(poi, bookmarks, setBookmarks);
                       }}
-                      position={idx + 1}
                     />
                   </TouchableOpacity>
                 </View>
@@ -108,15 +108,15 @@ const Recommendations: React.FC<Props> = ({
                 });
               }}>
               <View style={STYLES.texts}>
-                <Text>{strings.home.customize}</Text>
+                <Text size="s">{strings.home.customize}</Text>
               </View>
-              <Icon size="s" icon={icons.next} />
+              <Icon icon={icons.next} />
             </TouchableOpacity>
           </View>
         ))
       ) : (
         <View style={STYLES.center}>
-          <Text>{strings.home.noRecommendations}</Text>
+          <Text weight="l">{strings.home.noRecommendations}</Text>
         </View>
       )}
     </>
@@ -128,7 +128,7 @@ const styling = (theme: 'light' | 'dark') =>
     container: {
       backgroundColor: colors[theme].primary,
       paddingVertical: s(10),
-      borderRadius: s(20),
+      borderRadius: s(5),
       marginHorizontal: s(15),
       marginBottom: s(25),
     },
@@ -163,17 +163,7 @@ const styling = (theme: 'light' | 'dark') =>
       marginLeft: s(15),
       backgroundColor: colors[theme].secondary,
     },
-    index: {
-      alignItems: 'center',
-      justifyContent: 'center',
-      width: s(20),
-      height: s(20),
-      borderRadius: s(10),
-      backgroundColor: colors[theme].accent,
-      marginBottom: s(5),
-    },
     category: {
-      // flexDirection: 'row',
       alignItems: 'center',
       paddingRight: s(20),
     },

@@ -52,11 +52,7 @@ const Members: React.FC<Props> = ({
             <UserIcon user={member} />
           </View>
           <View style={STYLES.texts}>
-            <Text
-              size="s"
-              numberOfLines={
-                1
-              }>{`${member.first_name} ${member.last_name}`}</Text>
+            <Text size="s" numberOfLines={1}>{`${member.display_name}`}</Text>
             <Text size="xs" weight="l" numberOfLines={1}>
               {'@' + member.username}
             </Text>
@@ -118,7 +114,7 @@ const styling = (theme: 'light' | 'dark') =>
       paddingHorizontal: s(20),
       paddingVertical: s(5),
       borderWidth: 1,
-      borderRadius: s(20),
+      borderRadius: s(10),
       borderColor: colors[theme].secondary,
     },
     user: {

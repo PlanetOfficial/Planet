@@ -137,7 +137,7 @@ const DestinationsList: React.FC<Props> = ({
           <TouchableOpacity
             onPress={() => {
               setInsertionIndex(index + 1);
-              navigation.navigate('ModeSearch', {
+              navigation.navigate('ModeExplore', {
                 mode: 'create',
               });
             }}>

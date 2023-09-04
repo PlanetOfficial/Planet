@@ -1,6 +1,6 @@
 import {StyleSheet} from 'react-native';
 import colors from './colors';
-import {s} from 'react-native-size-matters';
+import {s, vs} from 'react-native-size-matters';
 
 const styling = (theme: 'light' | 'dark') =>
   StyleSheet.create({
@@ -52,20 +52,11 @@ const styling = (theme: 'light' | 'dark') =>
     button: {
       position: 'absolute',
       alignSelf: 'center',
-      paddingHorizontal: s(20),
-      paddingVertical: s(10),
+      paddingHorizontal: s(15),
+      paddingVertical: s(7.5),
       bottom: s(40),
-      borderRadius: s(10),
+      borderRadius: s(5),
       backgroundColor: colors[theme].accent,
-      shadowColor: '#000',
-      shadowOffset: {
-        width: 0,
-        height: 1,
-      },
-      shadowOpacity: 0.29,
-      shadowRadius: 4.65,
-
-      elevation: 7,
     },
     shadow: {
       shadowColor: '#000',
@@ -73,10 +64,10 @@ const styling = (theme: 'light' | 'dark') =>
         width: 0,
         height: 1,
       },
-      shadowOpacity: 0.22,
-      shadowRadius: 2.22,
+      shadowOpacity: 0.2,
+      shadowRadius: 1.41,
 
-      elevation: 3,
+      elevation: 2,
     },
     absolute: {
       position: 'absolute',
@@ -84,18 +75,23 @@ const styling = (theme: 'light' | 'dark') =>
     flip: {
       transform: [{rotate: '180deg'}],
     },
-    promptContainer: {
-      margin: s(20),
-      paddingHorizontal: s(20),
+    titleContainer: {
+      marginTop: s(40),
+      marginBottom: s(20),
     },
     prompt: {
       width: s(100),
     },
+    error: {
+      position: 'absolute',
+      alignSelf: 'center',
+    },
     inputContainer: {
+      justifyContent: 'center',
       flexDirection: 'row',
       alignItems: 'center',
-      marginVertical: s(30),
-      marginHorizontal: s(50),
+      width: s(250),
+      margin: s(50),
     },
     input: {
       flex: 1,
@@ -106,15 +102,28 @@ const styling = (theme: 'light' | 'dark') =>
       paddingVertical: s(5),
       fontFamily: 'Lato',
       color: colors[theme].neutral,
+      fontSize: s(15),
+      backgroundColor: colors[theme].background,
+    },
+    signUpContainer: {
+      flex: 1,
+      width: '100%',
+      alignItems: 'center',
+    },
+    logo: {
+      marginTop: vs(10),
+      width: s(60),
+      height: s(60),
     },
     buttonBig: {
       alignSelf: 'center',
       alignItems: 'center',
       justifyContent: 'center',
       marginTop: s(30),
-      width: s(150),
-      height: s(50),
-      borderRadius: s(25),
+      marginBottom: s(10),
+      width: s(200),
+      height: s(45),
+      borderRadius: s(10),
     },
     sectionHeader: {
       marginHorizontal: s(20),

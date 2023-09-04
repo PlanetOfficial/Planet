@@ -97,35 +97,6 @@ export const deleteFG = async (id: number): Promise<Boolean> => {
 /**
  * @requires auth_token should be set in EncryptedStorage before calling this function
  */
-export const reorderFG = async (fg_ids: number[]): Promise<Boolean> => {
-  const authToken = await EncryptedStorage.getItem('auth_token');
-
-  if (!authToken) {
-    return false;
-  }
-
-  const request = async (authtoken: string) => {
-    const response = await fetch(FriendAPIURL + '/groups/reorder', {
-      method: 'POST',
-      body: JSON.stringify({friend_group_ids: fg_ids}),
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Xano-Authorization': `Bearer ${authtoken}`,
-        'X-Xano-Authorization-Only': 'true',
-      },
-    });
-
-    return response;
-  };
-
-  const response = await requestAndValidate(authToken, request);
-
-  return response.ok;
-};
-
-/**
- * @requires auth_token should be set in EncryptedStorage before calling this function
- */
 export const blockFriend = async (user_id: number): Promise<Boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 

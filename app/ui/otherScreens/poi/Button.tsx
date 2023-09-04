@@ -7,14 +7,14 @@ import STYLING from '../../../constants/styles';
 
 import Text from '../../components/Text';
 
-import {Poi} from '../../../utils/types';
+import {ExploreModes, Poi} from '../../../utils/types';
 
 import {getButtonString} from './functions';
 
 interface Props {
   navigation: any;
   destination: Poi | undefined;
-  mode: 'create' | 'suggest' | 'add' | 'none';
+  mode: ExploreModes;
   category: string | undefined;
 }
 
@@ -24,21 +24,21 @@ const Button: React.FC<Props> = ({navigation, destination, mode, category}) => {
 
   return (
     <TouchableOpacity
-      style={STYLES.button}
+      style={[STYLES.button, STYLES.shadow]}
       onPress={() => {
         if (mode === 'create') {
           navigation.navigate('Create', {
-            destination: destination,
-            category: category,
+            destination,
+            category,
           });
         } else if (mode === 'suggest') {
           navigation.navigate('Event', {
-            destination: destination,
+            destination,
           });
         } else if (mode === 'add') {
           navigation.navigate('EventSettings', {
-            destination: destination,
-            category: category,
+            destination,
+            category,
           });
         } else {
           // mode is none, create a fresh event with this destination
@@ -58,9 +58,7 @@ const Button: React.FC<Props> = ({navigation, destination, mode, category}) => {
           );
         }
       }}>
-      <Text size="m" weight="b" color={colors[theme].primary}>
-        {getButtonString(mode)}
-      </Text>
+      <Text color={colors[theme].primary}>{getButtonString(mode)}</Text>
     </TouchableOpacity>
   );
 };

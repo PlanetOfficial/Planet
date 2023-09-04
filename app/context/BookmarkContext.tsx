@@ -6,9 +6,12 @@ import React, {
   createContext,
 } from 'react';
 import {Alert} from 'react-native';
+
 import strings from '../constants/strings';
+
 import {getBookmarks} from '../utils/api/bookmarkAPI';
 import {Poi} from '../utils/types';
+
 import {BookmarkContextType} from './ContextTypes';
 
 const BookmarkContext = createContext<BookmarkContextType | undefined>(

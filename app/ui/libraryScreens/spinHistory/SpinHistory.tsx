@@ -104,7 +104,7 @@ const SpinHistory = ({
                   <UserIcon user={item.spinner} />
                 </View>
                 <Text size="s" weight="l" numberOfLines={1}>
-                  {item.spinner.first_name}
+                  {item.spinner.display_name}
                 </Text>
               </TouchableOpacity>
 

@@ -17,22 +17,24 @@ import STYLING from '../../../constants/styles';
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 import UserRow from '../../components/UserRow';
+import SearchBar from '../../components/SearchBar';
 
 import {UserInfo} from '../../../utils/types';
 import {useLoadingState} from '../../../utils/Misc';
 
-import Header from './Header';
-import Button from './Button';
 import {useFriendsContext} from '../../../context/FriendsContext';
+
+import Header from './Header';
+import {search} from './functions';
 
 const CreateFG = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';
   const STYLES = STYLING(theme);
   StatusBar.setBarStyle(colors[theme].statusBar, true);
 
-  const {friends, setFriendGroups} = useFriendsContext();
+  const {friends} = useFriendsContext();
 
-  const [selectedId, setSelectedId] = useState<number[]>([]);
+  const [selectedUserIds, setSelectedUserIds] = useState<number[]>([]);
 
   const [searchText, setSearchText] = useState<string>('');
   const [searchResults, setSearchResults] = useState<UserInfo[]>([]);
@@ -41,17 +43,19 @@ const CreateFG = ({navigation}: {navigation: any}) => {
 
   return (
     <View style={STYLES.container}>
-      <Header
-        navigation={navigation}
-        selectedId={selectedId}
-        withLoading={withLoading}
+      <Header navigation={navigation} selectedUserIds={selectedUserIds} />
+      <SearchBar
         searchText={searchText}
         setSearchText={setSearchText}
-        searchResults={searchResults}
-        setSearchResults={setSearchResults}
         searching={searching}
         setSearching={setSearching}
-        friends={friends}
+        setSearchResults={setSearchResults}
+        search={text =>
+          withLoading(() =>
+            search(text, setSearchText, setSearchResults, friends),
+          )
+        }
+        searchPrompt={strings.friends.searchFriends}
       />
 
       {searching ? (
@@ -72,17 +76,19 @@ const CreateFG = ({navigation}: {navigation: any}) => {
                 onPress={() => {
                   setSearchText('');
 
-                  if (selectedId.includes(item.id)) {
-                    setSelectedId(selectedId.filter(id => id !== item.id));
+                  if (selectedUserIds.includes(item.id)) {
+                    setSelectedUserIds(
+                      selectedUserIds.filter(id => id !== item.id),
+                    );
                   } else {
-                    setSelectedId([...selectedId, item.id]);
+                    setSelectedUserIds([...selectedUserIds, item.id]);
                   }
                 }}>
                 <UserRow user={item}>
                   <Icon
                     size="m"
                     icon={
-                      selectedId.includes(item.id)
+                      selectedUserIds.includes(item.id)
                         ? icons.selected
                         : icons.unselected
                     }
@@ -94,7 +100,7 @@ const CreateFG = ({navigation}: {navigation: any}) => {
             ListEmptyComponent={
               searchText.length > 0 ? (
                 <View style={STYLES.center}>
-                  <Text>{strings.search.noResultsFound}</Text>
+                  <Text weight="l">{strings.error.noResultsFound}</Text>
                 </View>
               ) : null
             }
@@ -110,17 +116,19 @@ const CreateFG = ({navigation}: {navigation: any}) => {
           renderItem={({item}: {item: UserInfo}) => (
             <TouchableOpacityGestureHandler
               onPress={() => {
-                if (selectedId.includes(item.id)) {
-                  setSelectedId(selectedId.filter(id => id !== item.id));
+                if (selectedUserIds.includes(item.id)) {
+                  setSelectedUserIds(
+                    selectedUserIds.filter(id => id !== item.id),
+                  );
                 } else {
-                  setSelectedId([...selectedId, item.id]);
+                  setSelectedUserIds([...selectedUserIds, item.id]);
                 }
               }}>
               <UserRow user={item}>
                 <Icon
                   size="m"
                   icon={
-                    selectedId.includes(item.id)
+                    selectedUserIds.includes(item.id)
                       ? icons.selected
                       : icons.unselected
                   }
@@ -131,17 +139,11 @@ const CreateFG = ({navigation}: {navigation: any}) => {
           )}
           ListEmptyComponent={
             <View style={STYLES.center}>
-              <Text>{strings.friends.noFriendsFound}</Text>
+              <Text weight="l">{strings.friends.noFriendsFound}</Text>
             </View>
           }
         />
       )}
-
-      <Button
-        navigation={navigation}
-        selectedId={selectedId}
-        setFriendGroups={setFriendGroups}
-      />
     </View>
   );
 };

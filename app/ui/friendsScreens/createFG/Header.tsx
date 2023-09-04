@@ -1,15 +1,6 @@
-import React, {createRef} from 'react';
-import {
-  View,
-  Alert,
-  useColorScheme,
-  LayoutAnimation,
-  SafeAreaView,
-  TextInput,
-  StyleSheet,
-} from 'react-native';
-import {s} from 'react-native-size-matters';
-import {TouchableOpacity as TouchableOpacityGestureHandler} from 'react-native-gesture-handler';
+import React from 'react';
+import {View, Alert, useColorScheme, SafeAreaView} from 'react-native';
+import prompt from 'react-native-prompt-android';
 
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
@@ -19,38 +10,23 @@ import STYLING from '../../../constants/styles';
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 
-import {UserInfo} from '../../../utils/types';
-import {search} from './functions';
+import {useFriendsContext} from '../../../context/FriendsContext';
+
+import {createFG} from './functions';
 
 interface Props {
   navigation: any;
-  selectedId: number[];
-  withLoading: (func: () => Promise<void>) => Promise<void>;
-  searchText: string;
-  setSearchText: (text: string) => void;
-  searchResults: UserInfo[];
-  setSearchResults: (results: UserInfo[]) => void;
-  searching: boolean;
-  setSearching: (searching: boolean) => void;
-  friends: UserInfo[];
+  selectedUserIds: number[];
 }
 
 const Header: React.FC<Props> = ({
   navigation,
-  selectedId,
-  withLoading,
-  searchText,
-  setSearchText,
-  setSearchResults,
-  searching,
-  setSearching,
-  friends,
+  selectedUserIds: selectedUserIds,
 }) => {
   const theme = useColorScheme() || 'light';
-  const styles = styling(theme);
   const STYLES = STYLING(theme);
 
-  const searchRef = createRef<TextInput>();
+  const {setFriendGroups} = useFriendsContext();
 
   return (
     <SafeAreaView>
@@ -58,7 +34,7 @@ const Header: React.FC<Props> = ({
         <Icon
           icon={icons.close}
           onPress={() => {
-            if (selectedId.length > 0) {
+            if (selectedUserIds.length > 0) {
               Alert.alert(
                 strings.main.warning,
                 strings.friends.fgCreateBackConfirmation,
@@ -79,70 +55,41 @@ const Header: React.FC<Props> = ({
             }
           }}
         />
-        <View style={[styles.searchBar, STYLES.shadow]}>
-          <Icon size="s" icon={icons.search} />
-          <TextInput
-            ref={searchRef}
-            style={styles.searchText}
-            value={searchText}
-            placeholder={strings.search.searchFriends}
-            placeholderTextColor={colors[theme].neutral}
-            autoCapitalize="none"
-            autoCorrect={false}
-            onFocus={() => {
-              LayoutAnimation.configureNext(
-                LayoutAnimation.Presets.easeInEaseOut,
-              );
-              setSearching(true);
-            }}
-            onChangeText={text =>
-              withLoading(() =>
-                search(text, setSearchText, setSearchResults, friends),
-              )
-            }
-            clearButtonMode="while-editing"
-          />
-        </View>
-        {searching ? (
-          <TouchableOpacityGestureHandler
-            style={styles.cancel}
-            onPress={() => {
-              searchRef.current?.blur();
-              searchRef.current?.clear();
-              setSearching(false);
-              setSearchText('');
-              setSearchResults([]);
-            }}>
-            <Text>{strings.main.cancel}</Text>
-          </TouchableOpacityGestureHandler>
-        ) : null}
+        <Text>{'  ' + strings.friends.createFriendGroup}</Text>
+        <Icon
+          icon={icons.check}
+          size="m"
+          color={
+            selectedUserIds.length > 0
+              ? colors[theme].accent
+              : colors[theme].secondary
+          }
+          disabled={selectedUserIds.length === 0}
+          onPress={() => {
+            prompt(
+              strings.friends.friendGroupName,
+              strings.friends.friendGroupNameInfo,
+              [
+                {text: 'Cancel', style: 'cancel'},
+                {
+                  text: 'Save',
+                  onPress: name => {
+                    createFG(
+                      name,
+                      selectedUserIds,
+                      setFriendGroups,
+                      navigation,
+                    );
+                  },
+                },
+              ],
+              {},
+            );
+          }}
+        />
       </View>
     </SafeAreaView>
   );
 };
 
-const styling = (theme: 'light' | 'dark') =>
-  StyleSheet.create({
-    searchBar: {
-      flex: 1,
-      flexDirection: 'row',
-      alignItems: 'center',
-      backgroundColor: colors[theme].primary,
-      borderRadius: s(10),
-      marginLeft: s(10),
-      paddingHorizontal: s(10),
-      paddingVertical: s(5),
-    },
-    searchText: {
-      flex: 1,
-      marginLeft: s(10),
-      fontSize: s(13),
-      fontFamily: 'Lato',
-      padding: 0,
-      color: colors[theme].neutral,
-    },
-    cancel: {
-      marginLeft: s(10),
-    },
-  });
 export default Header;

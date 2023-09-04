@@ -5,6 +5,7 @@ import {s} from 'react-native-size-matters';
 import colors from '../../constants/colors';
 
 import {UserInfo} from '../../utils/types';
+import {formatDisplayInitials} from '../../utils/Misc';
 
 interface Props {
   user: UserInfo;
@@ -26,8 +27,7 @@ const UserIconXL: React.FC<Props> = ({user}) => {
           ],
       }}>
       <Text style={styles.name}>
-        {user.first_name.charAt(0).toUpperCase() +
-          user.last_name.charAt(0).toUpperCase()}
+        {formatDisplayInitials(user.display_name)}
       </Text>
     </View>
   );

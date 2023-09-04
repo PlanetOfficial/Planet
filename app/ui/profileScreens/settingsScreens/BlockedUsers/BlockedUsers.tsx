@@ -20,7 +20,6 @@ import UserRow from '../../../components/UserRow';
 
 import {UserInfo} from '../../../../utils/types';
 
-import ActionButtons from '../../../friendsScreens/components/ActionButtons';
 import {useFriendsContext} from '../../../../context/FriendsContext';
 
 const BlockedUsers = ({navigation}: {navigation: any}) => {
@@ -65,13 +64,13 @@ const BlockedUsers = ({navigation}: {navigation: any}) => {
               })
             }>
             <UserRow user={item}>
-              <ActionButtons user={item} />
+              <View />
             </UserRow>
           </TouchableOpacity>
         )}
         ListEmptyComponent={
           <View style={STYLES.center}>
-            <Text>{strings.settings.noBlockedUsersFound}</Text>
+            <Text weight="l">{strings.settings.noBlockedUsersFound}</Text>
           </View>
         }
       />

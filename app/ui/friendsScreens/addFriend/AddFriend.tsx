@@ -10,15 +10,20 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
+import strings from '../../../constants/strings';
 import STYLING from '../../../constants/styles';
 
 import Icon from '../../components/Icon';
 import UserRow from '../../components/UserRow';
+import SearchBar from '../../components/SearchBar';
 import SearchResult from '../components/SearchResult';
 
 import {UserInfo} from '../../../utils/types';
 import {useLoadingState} from '../../../utils/Misc';
+
 import {useFriendsContext} from '../../../context/FriendsContext';
+
+import {search} from '../friends/functions';
 
 import Header from './Header';
 import Friends from './Friends';
@@ -51,7 +56,7 @@ const AddFriend = ({
   const [searching, setSearching] = useState<boolean>(false);
   const [loading, withLoading] = useLoadingState();
 
-  const {friends} = useFriendsContext();
+  const {friends, usersBlockingMe} = useFriendsContext();
 
   const [fgSelected, setFgSelected] = useState<number>(0);
 
@@ -78,17 +83,27 @@ const AddFriend = ({
 
   return (
     <View style={STYLES.container}>
-      <Header
-        navigation={navigation}
-        isEvent={!!eventId}
-        invitees={invitees}
-        searching={searching}
-        setSearching={setSearching}
+      <Header navigation={navigation} isEvent={!!eventId} />
+
+      <SearchBar
         searchText={searchText}
         setSearchText={setSearchText}
+        searching={searching}
+        setSearching={setSearching}
         setSearchResults={setSearchResults}
-        selfUserId={selfUserId}
-        withLoading={withLoading}
+        search={text =>
+          withLoading(() =>
+            search(
+              text,
+              setSearchText,
+              setSearchResults,
+              selfUserId,
+              usersBlockingMe,
+              friends,
+            ),
+          )
+        }
+        searchPrompt={strings.friends.searchFriends}
       />
 
       {searching ? (

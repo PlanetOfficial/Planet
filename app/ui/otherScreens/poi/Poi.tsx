@@ -18,8 +18,16 @@ import STYLING from '../../../constants/styles';
 import Icon from '../../components/Icon';
 import Text from '../../components/Text';
 
-import {Coordinate, Poi, PoiDetail} from '../../../utils/types';
+import {useBookmarkContext} from '../../../context/BookmarkContext';
+
+import {
+  Coordinate,
+  ExploreModesWithInCreate,
+  Poi,
+  PoiDetail,
+} from '../../../utils/types';
 import {getPoi, postPoi} from '../../../utils/api/poiAPI';
+import {fetchUserLocation} from '../../../utils/Misc';
 
 import Header from './Header';
 import Overview from './Overview';
@@ -27,8 +35,6 @@ import Map from './Map';
 import Info from './Info';
 import Reviews from './Reviews';
 import Button from './Button';
-import {fetchUserLocation} from '../../../utils/Misc';
-import {useBookmarkContext} from '../../../context/BookmarkContext';
 
 const PoiPage = ({
   navigation,
@@ -37,7 +43,7 @@ const PoiPage = ({
   navigation: any;
   route: {
     params: {
-      mode: 'create' | 'suggest' | 'add' | 'inCreate' | 'none';
+      mode: ExploreModesWithInCreate;
       place_id?: string;
       poi?: Poi;
       category?: string;
@@ -50,13 +56,11 @@ const PoiPage = ({
 
   const [destination, setDestination] = useState<Poi>();
   const [destinationDetails, setDestinationDetails] = useState<PoiDetail>();
-  const [mode] = useState<'create' | 'suggest' | 'add' | 'inCreate' | 'none'>(
-    route.params.mode,
-  );
+  const [mode] = useState<ExploreModesWithInCreate>(route.params.mode);
 
   const {bookmarks, setBookmarks} = useBookmarkContext();
 
-  const [location, setLocation] = useState<Coordinate>();
+  const [myLocation, setMyLocation] = useState<Coordinate>();
 
   const initializeDestinationData = useCallback(async () => {
     if (route.params.place_id) {
@@ -87,7 +91,7 @@ const PoiPage = ({
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', async () => {
       initializeDestinationData();
-      setLocation(await fetchUserLocation());
+      setMyLocation(await fetchUserLocation());
     });
 
     return unsubscribe;
@@ -157,11 +161,11 @@ const PoiPage = ({
             longitude={destination.longitude}
           />
         ) : null}
-        {destination && destinationDetails && location ? (
+        {destination && destinationDetails && myLocation ? (
           <Info
             destination={destination}
             destinationDetails={destinationDetails}
-            location={location}
+            location={myLocation}
           />
         ) : null}
         {destinationDetails?.reviews &&

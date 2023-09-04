@@ -6,9 +6,12 @@ import React, {
   useContext,
 } from 'react';
 import {Alert} from 'react-native';
+
 import strings from '../constants/strings';
-import {getFriends, getFriendsInfo} from '../utils/api/friendsAPI';
+
+import {getFriendsInfo} from '../utils/api/friendsAPI';
 import {FriendGroup, UserInfo} from '../utils/types';
+
 import {FriendsContextType} from './ContextTypes';
 
 const FriendsContext = createContext<FriendsContextType | undefined>(undefined);
@@ -44,7 +47,7 @@ const FriendsStateProvider = ({
   };
 
   const refreshFriends = async () => {
-    const result = await getFriends();
+    const result = await getFriendsInfo();
     if (result) {
       setFriends(result.friends);
       setFriendGroups(result.friend_groups);

@@ -14,6 +14,7 @@ import moment from 'moment';
 
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
+import numbers from '../../../constants/numbers';
 import strings from '../../../constants/strings';
 import STYLING from '../../../constants/styles';
 
@@ -21,7 +22,6 @@ import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 
 import {Poi, UserInfo} from '../../../utils/types';
-import numbers from '../../../constants/numbers';
 
 interface Props {
   navigation: any;
@@ -140,7 +140,7 @@ const Header: React.FC<Props> = ({
           color={colors[theme].neutral}
           onPress={() => {
             navigation.navigate('AddFriend', {
-              members: members,
+              members,
             });
           }}
         />
@@ -166,7 +166,7 @@ const styling = (theme: 'light' | 'dark') =>
       height: s(32),
       marginHorizontal: s(15),
       paddingLeft: s(10),
-      borderRadius: s(8),
+      borderRadius: s(5),
       backgroundColor: colors[theme].primary,
     },
     date: {

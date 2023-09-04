@@ -1,17 +1,17 @@
 import {Linking} from 'react-native';
 import {showLocation} from 'react-native-map-link';
 
+import strings from '../../../constants/strings';
+
 import {
   Poi,
   PoiDetail,
   PlaceOpeningHoursPeriod,
   Coordinate,
+  ExploreModes,
 } from '../../../utils/types';
-import strings from '../../../constants/strings';
 
-export const getButtonString = (
-  mode: 'create' | 'suggest' | 'add' | 'none',
-) => {
+export const getButtonString = (mode: ExploreModes) => {
   if (mode === 'create' || mode === 'add') {
     return strings.main.add;
   } else if (mode === 'suggest') {

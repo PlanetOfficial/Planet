@@ -20,6 +20,7 @@ import Icon from '../../components/Icon';
 
 import {UserInfo} from '../../../utils/types';
 import {useLoadingState} from '../../../utils/Misc';
+
 import {onAdd} from './functions';
 
 interface Props {
@@ -57,10 +58,10 @@ const Footer: React.FC<Props> = ({
             </View>
             <View style={styles.name}>
               <Text size="xs" numberOfLines={1}>
-                {item.first_name}
+                {item.display_name}
               </Text>
             </View>
-            <View style={styles.checkmark}>
+            <View style={styles.x}>
               <Icon
                 size="m"
                 icon={icons.add}
@@ -124,8 +125,9 @@ const styling = (theme: 'light' | 'dark') =>
       marginTop: s(10),
       paddingHorizontal: s(20),
       height: s(45),
+      alignItems: 'center',
       justifyContent: 'center',
-      borderRadius: s(10),
+      borderRadius: s(5),
       minWidth: s(100),
     },
     invitees: {
@@ -146,7 +148,7 @@ const styling = (theme: 'light' | 'dark') =>
     name: {
       height: s(15),
     },
-    checkmark: {
+    x: {
       position: 'absolute',
       alignItems: 'center',
       justifyContent: 'center',
@@ -156,7 +158,6 @@ const styling = (theme: 'light' | 'dark') =>
       width: s(20),
       borderRadius: s(10),
       backgroundColor: colors[theme].primary,
-      // rotate by 45 degrees
       transform: [{rotate: '45deg'}],
     },
   });

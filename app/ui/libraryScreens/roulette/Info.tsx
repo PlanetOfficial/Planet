@@ -80,11 +80,7 @@ const Info: React.FC<Props> = ({
                 <UserIcon user={item} />
               </View>
               <View style={styles.texts}>
-                <Text
-                  size="s"
-                  numberOfLines={
-                    1
-                  }>{`${item.first_name} ${item.last_name}`}</Text>
+                <Text size="s" numberOfLines={1}>{`${item.display_name}`}</Text>
                 <Text size="xs" weight="l" numberOfLines={1}>
                   {'@' + item.username}
                 </Text>

@@ -1,38 +1,36 @@
 import React, {useEffect, useState, useCallback} from 'react';
-import {View, SafeAreaView, useColorScheme, StatusBar} from 'react-native';
+import {View, useColorScheme, StatusBar} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 import colors from '../../../constants/colors';
-import icons from '../../../constants/icons';
-import strings from '../../../constants/strings';
 import STYLING from '../../../constants/styles';
 
-import Text from '../../components/Text';
-import Icon from '../../components/Icon';
-
-import ProfileBody from './ProfileBody';
+import ProfileHeader from '../../friendsScreens/user/ProfileHeader';
 
 import {fetchUserLocation} from '../../../utils/Misc';
 import {Coordinate} from '../../../utils/types';
+
+import ProfileBody from './ProfileBody';
 
 const Profile = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';
   const STYLES = STYLING(theme);
 
-  const [firstName, setFirstName] = useState<string>('');
-  const [lastName, setLastName] = useState<string>('');
+  const [selfUserId, setSelfUserId] = useState<number>(0);
+  const [displayName, setDisplayName] = useState<string>('');
   const [username, setUsername] = useState<string>('');
   const [pfpURL, setPfpURL] = useState<string>('');
-  const [location, setLocation] = useState<Coordinate>();
+  const [myLocation, setMyLocation] = useState<Coordinate>();
 
   const initializeData = useCallback(async () => {
-    setLocation(await fetchUserLocation());
-    const _firstName = await AsyncStorage.getItem('first_name');
-    const _lastName = await AsyncStorage.getItem('last_name');
+    setMyLocation(await fetchUserLocation());
+    const _selfUserId = await EncryptedStorage.getItem('user_id');
+    const _displayName = await AsyncStorage.getItem('display_name');
     const _username = await AsyncStorage.getItem('username');
     const _pfpURL = await AsyncStorage.getItem('pfp_url');
-    setFirstName(_firstName || '');
-    setLastName(_lastName || '');
+    setSelfUserId(Number(_selfUserId) || 0);
+    setDisplayName(_displayName || '');
     setUsername(_username || '');
     setPfpURL(_pfpURL || '');
   }, []);
@@ -48,25 +46,21 @@ const Profile = ({navigation}: {navigation: any}) => {
 
   return (
     <View style={STYLES.container}>
-      <SafeAreaView>
-        <View style={STYLES.header}>
-          <Text size="l">{strings.profile.yourProfile}</Text>
-          <Icon
-            icon={icons.settings}
-            button={true}
-            padding={-2}
-            onPress={() => navigation.navigate('Settings')}
-          />
-        </View>
-      </SafeAreaView>
-      <ProfileBody
+      <ProfileHeader
         navigation={navigation}
-        firstName={firstName}
-        lastName={lastName}
-        username={username}
-        pfpURL={pfpURL}
-        location={location}
+        user={{
+          id: selfUserId,
+          display_name: displayName,
+          username: username,
+          icon: {
+            url: pfpURL,
+          },
+        }}
+        isSelf={true}
+        isOnTabScreen={true}
+        setPfpURL={setPfpURL}
       />
+      <ProfileBody navigation={navigation} myLocation={myLocation} />
     </View>
   );
 };

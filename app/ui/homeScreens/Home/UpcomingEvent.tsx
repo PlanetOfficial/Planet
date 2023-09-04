@@ -38,11 +38,23 @@ const UpcomingEvent: React.FC<Props> = ({navigation, upcomingEvent}) => {
   return (
     <>
       <View style={styles.header}>
-        <Text>
+        <Text size="s">
           {upcomingEvent
             ? strings.home.upcomingEvent
             : strings.home.noUpcomingEvent}
         </Text>
+        <TouchableOpacity
+          style={styles.row}
+          onPress={() => {
+            navigation.navigate(strings.title.library);
+          }}>
+          <Text size="xs" color={colors[theme].accent}>
+            {strings.home.viewAllEvents}
+          </Text>
+          <View style={styles.next}>
+            <Icon size="xs" icon={icons.next} color={colors[theme].accent} />
+          </View>
+        </TouchableOpacity>
       </View>
       {upcomingEvent ? (
         <>
@@ -79,8 +91,6 @@ const UpcomingEvent: React.FC<Props> = ({navigation, upcomingEvent}) => {
                       handleBookmark={(p: Poi) => {
                         handleBookmark(p, bookmarks, setBookmarks);
                       }}
-                      position={destination.idx + 1}
-                      isAccent={theme === 'light'}
                     />
                   </TouchableOpacity>
                 );
@@ -96,6 +106,7 @@ const UpcomingEvent: React.FC<Props> = ({navigation, upcomingEvent}) => {
               }}>
               <View style={STYLES.texts}>
                 <Text
+                  size="s"
                   color={
                     theme === 'light'
                       ? colors[theme].primary
@@ -125,21 +136,15 @@ const UpcomingEvent: React.FC<Props> = ({navigation, upcomingEvent}) => {
               />
             </TouchableOpacity>
           </View>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              navigation.navigate(strings.title.library);
-            }}>
-            <Text size="xs" weight="l">
-              {strings.home.viewAllEvents}
-            </Text>
-          </TouchableOpacity>
         </>
       ) : (
         <TouchableOpacity
-          style={[styles.create, styles.shadow]}
+          style={styles.create}
           onPress={() => navigation.navigate('Create')}>
-          <Text size="l" color={colors[theme].primary} center={true}>
+          <View style={styles.plus}>
+            <Icon icon={icons.plus} color={colors[theme].primary} />
+          </View>
+          <Text color={colors[theme].primary} center={true}>
             {strings.home.noUpcomingEvents}
           </Text>
         </TouchableOpacity>
@@ -154,9 +159,10 @@ const styling = (theme: 'light' | 'dark') =>
       backgroundColor:
         theme === 'light' ? colors[theme].accent : colors[theme].primary,
       paddingVertical: s(10),
-      borderRadius: s(20),
+      borderRadius: s(5),
       marginHorizontal: s(15),
-      marginVertical: s(5),
+      marginTop: s(5),
+      marginBottom: s(20),
     },
     header: {
       flexDirection: 'row',
@@ -171,7 +177,7 @@ const styling = (theme: 'light' | 'dark') =>
     },
     cardContainer: {
       marginRight: s(15),
-      paddingTop: s(15),
+      paddingTop: s(5),
       paddingBottom: s(10),
     },
     footer: {
@@ -181,17 +187,6 @@ const styling = (theme: 'light' | 'dark') =>
       marginHorizontal: s(10),
       paddingRight: s(5),
       paddingTop: s(5),
-    },
-    button: {
-      alignSelf: 'center',
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: colors[theme].secondary,
-      marginTop: s(10),
-      marginBottom: s(20),
-      paddingVertical: s(7.5),
-      paddingHorizontal: s(15),
-      borderRadius: s(5),
     },
     shadow: {
       shadowColor:
@@ -212,14 +207,25 @@ const styling = (theme: 'light' | 'dark') =>
         theme === 'light' ? colors[theme].primary : colors[theme].neutral,
     },
     create: {
-      alignSelf: 'center',
-      backgroundColor: colors[theme].accent,
-      paddingHorizontal: s(20),
-      paddingVertical: s(10),
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginHorizontal: s(20),
       marginTop: s(10),
       marginBottom: s(20),
-      borderRadius: s(10),
-      maxWidth: '60%',
+      paddingVertical: s(10),
+      borderRadius: s(5),
+      backgroundColor: colors[theme].accent,
+    },
+    plus: {
+      marginRight: s(10),
+    },
+    row: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    next: {
+      marginLeft: s(3),
     },
   });
 

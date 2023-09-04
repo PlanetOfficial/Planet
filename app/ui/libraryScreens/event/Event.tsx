@@ -19,6 +19,7 @@ import {postSuggestion} from '../../../utils/api/suggestionAPI';
 
 import Header from './Header';
 import Destinations from './Destinations';
+
 import {useBookmarkContext} from '../../../context/BookmarkContext';
 
 const EventPage = ({

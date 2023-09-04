@@ -1,54 +1,45 @@
 import {useState} from 'react';
-import {Platform, PermissionsAndroid, Alert, Animated} from 'react-native';
+import {
+  Platform,
+  PermissionsAndroid,
+  Alert,
+  Animated,
+  Share,
+} from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
-
-import haversine from 'haversine-distance';
-
-import strings from '../constants/strings';
-
-import {Coordinate, Poi} from './types';
-import {bookmark} from './api/bookmarkAPI';
 import {
   StackCardInterpolatedStyle,
   StackCardInterpolationProps,
 } from '@react-navigation/stack';
 
-/*
-  Given a point and the longitudeDelta, calculate the radius of the circle (the
-  point is the center of the circle)
-*/
-export const calculateRadius = (point1: Coordinate, longitudeDelta: number) => {
-  const point2 = {
-    latitude: point1.latitude,
-    longitude: point1.longitude + longitudeDelta / 2,
-  };
-  const distance = getDistanceFromCoordinates(point1, point2);
+import haversine from 'haversine-distance';
 
-  return (6 / 7) * distance;
-};
+import numbers from '../constants/numbers';
+import strings from '../constants/strings';
 
-/*
-  Given a point and a radius, calculate the bounding box of the view.
-*/
-export const getRegionFromPointAndDistance = (
-  point: Coordinate,
-  distance: number,
-) => {
-  const earthRadius = 6378137; // Radius of the Earth in meters
-  const angularDistance = ((7 / 6) * distance) / earthRadius;
-  const newLongitude =
-    point.longitude +
-    (angularDistance * 180) /
-      Math.PI /
-      Math.cos((point.latitude * Math.PI) / 180);
+import {Coordinate, Poi} from './types';
 
-  const newDelta = (newLongitude - point.longitude) * 2;
+import {bookmark} from './api/bookmarkAPI';
+
+export const getRegionFromPoints = (points: Coordinate[]) => {
+  const minLat = Math.min(...points.map(point => point.latitude));
+  const maxLat = Math.max(...points.map(point => point.latitude));
+  const minLong = Math.min(...points.map(point => point.longitude));
+  const maxLong = Math.max(...points.map(point => point.longitude));
+
+  const midLat = (minLat + maxLat) / 2;
+  const midLong = (minLong + maxLong) / 2;
+
+  const deltaLat = maxLat - minLat;
+  const deltaLong = maxLong - minLong;
+
+  const delta = (Math.max(deltaLat, deltaLong) * 6) / 5;
 
   return {
-    latitude: point.latitude,
-    longitude: point.longitude,
-    latitudeDelta: newDelta,
-    longitudeDelta: newDelta,
+    latitude: midLat,
+    longitude: midLong,
+    latitudeDelta: delta,
+    longitudeDelta: delta,
   };
 };
 
@@ -155,6 +146,13 @@ export const getInfoString = (poi: Poi): string => {
   return poiString;
 };
 
+export const isLocationOffset = (a: Coordinate, b: Coordinate): boolean => {
+  return (
+    Math.abs(a.latitude - b.latitude) > numbers.locationOffThreshold ||
+    Math.abs(a.longitude - b.longitude) > numbers.locationOffThreshold
+  );
+};
+
 export function useLoadingState() {
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -169,6 +167,28 @@ export function useLoadingState() {
 
   return [loading, withLoading] as const;
 }
+
+export const formatDisplayInitials = (name: string) => {
+  let letters = name ? name[0].toUpperCase() : '';
+  if (name.split(' ').length > 1) {
+    letters += name.split(' ')[1][0].toUpperCase();
+  } else if (name.length > 1) {
+    letters += name[1].toUpperCase();
+  }
+  return letters;
+};
+
+export const shareApp = async (setShared?: (shared: boolean) => void) => {
+  const result = await Share.share({
+    message:
+      strings.main.shareMessage +
+      (Platform.OS === 'android' ? '\n' + strings.main.downloadUrl : ''),
+    url: strings.main.downloadUrl,
+  });
+  if (result.action === Share.sharedAction && setShared) {
+    setShared(true);
+  }
+};
 
 export const verticalAnimation = ({
   current,

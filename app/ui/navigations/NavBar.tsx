@@ -20,9 +20,11 @@ import colors from '../../constants/colors';
 import strings from '../../constants/strings';
 
 import Home from '../homeScreens/Home/Home';
-import Search from '../searchScreens/search/Search';
+import Explore from '../exploreScreens/explore/Explore';
 import Library from '../libraryScreens/library/Library';
 import Profile from '../profileScreens/profile/Profile';
+
+import icons from '../../constants/icons';
 
 const Tab = createBottomTabNavigator();
 
@@ -36,24 +38,16 @@ export const NavBar = () => {
     let source: number;
     switch (name) {
       case strings.title.home:
-        source = focused
-          ? require('../../assets/tabIcons/home-2.png')
-          : require('../../assets/tabIcons/home.png');
+        source = focused ? icons.hometwo : icons.home;
         break;
       case strings.title.search:
-        source = focused
-          ? require('../../assets/tabIcons/search-2.png')
-          : require('../../assets/tabIcons/search.png');
+        source = focused ? icons.searchtwo : icons.search;
         break;
       case strings.title.library:
-        source = focused
-          ? require('../../assets/tabIcons/library-2.png')
-          : require('../../assets/tabIcons/library.png');
+        source = focused ? icons.librarytwo : icons.library;
         break;
       case strings.title.profile:
-        source = focused
-          ? require('../../assets/tabIcons/profile-2.png')
-          : require('../../assets/tabIcons/profile.png');
+        source = focused ? icons.profiletwo : icons.profile;
         break;
       default:
         source = -1;
@@ -130,7 +124,7 @@ export const NavBar = () => {
           },
         })}>
         <Tab.Screen name={strings.title.home} component={Home} />
-        <Tab.Screen name={strings.title.search} component={Search} />
+        <Tab.Screen name={strings.title.search} component={Explore} />
         <Tab.Screen
           name="Plus"
           component={ButtonScreen}
