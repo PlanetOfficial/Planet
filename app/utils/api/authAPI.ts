@@ -448,3 +448,20 @@ export const reportUser = async (user_id: number): Promise<Boolean> => {
 
   return response.ok;
 };
+
+export const submitReferralCode = async (
+  authToken: string,
+  code: string,
+): Promise<Boolean> => {
+  const response = await fetch(UserAPIURL + '/referral', {
+    method: 'POST',
+    body: JSON.stringify({code}),
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Xano-Authorization': `Bearer ${authToken}`,
+      'X-Xano-Authorization-Only': 'true',
+    },
+  });
+
+  return response.ok;
+};

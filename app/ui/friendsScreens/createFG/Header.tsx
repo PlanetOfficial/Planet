@@ -70,9 +70,9 @@ const Header: React.FC<Props> = ({
               strings.friends.friendGroupName,
               strings.friends.friendGroupNameInfo,
               [
-                {text: 'Cancel', style: 'cancel'},
+                {text: strings.main.cancel, style: 'cancel'},
                 {
-                  text: 'Save',
+                  text: strings.main.save,
                   onPress: name => {
                     createFG(
                       name,

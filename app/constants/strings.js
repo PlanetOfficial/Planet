@@ -83,6 +83,10 @@ const strings = {
     skip: 'Skip',
     sendAnInviteLink: 'Send an Invite Link',
     changeNumber: 'Change Phone Number',
+    promptReferral: 'Have a referral code?',
+    referralDescription: 'Enter it here!',
+    referralSuccess: 'Referral code successfully applied!',
+    referralError: 'Referral code is invalid.',
   },
   home: {
     upcomingEvent: 'Upcoming Event',
