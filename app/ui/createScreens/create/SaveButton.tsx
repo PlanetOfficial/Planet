@@ -68,7 +68,7 @@ const SaveButton: React.FC<Props> = ({
       {loading ? (
         <ActivityIndicator color={colors[theme].primary} />
       ) : (
-        <Text size="l" weight="b" color={colors[theme].primary}>
+        <Text color={colors[theme].primary}>
           {strings.main.save}
         </Text>
       )}
@@ -78,8 +78,7 @@ const SaveButton: React.FC<Props> = ({
 
 const styles = StyleSheet.create({
   button: {
-    minWidth: s(100),
-    minHeight: s(45),
+    minWidth: s(80),
     justifyContent: 'center',
     alignItems: 'center',
   },
