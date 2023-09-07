@@ -92,7 +92,7 @@ const Recommendations: React.FC<Props> = ({
         {recommendations.map((recommendation, idx) => (
           <View key={idx}>
             <View style={styles.header}>
-              <Text weight="l">
+              <Text size="s" weight="l">
                 {strings.event.suggestions} #{idx + 1}
               </Text>
             </View>
@@ -104,7 +104,7 @@ const Recommendations: React.FC<Props> = ({
                 <View key={i}>
                   <View style={styles.container}>
                     <View style={styles.cardHeader}>
-                      <Text>{recommendation.categories[i]}</Text>
+                      <Text size="s">{recommendation.categories[i]}</Text>
                     </View>
                     <TouchableOpacity
                       style={styles.card}
@@ -203,7 +203,7 @@ const styling = (theme: 'light' | 'dark') =>
       flexDirection: 'row',
       justifyContent: 'center',
       marginLeft: s(15),
-      marginTop: s(10),
+      marginTop: s(5),
       paddingBottom: s(5),
       borderBottomWidth: 1,
       borderColor: colors[theme].secondary,

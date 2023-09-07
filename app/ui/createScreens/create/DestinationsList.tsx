@@ -53,7 +53,7 @@ const DestinationsList: React.FC<Props> = ({
         <View key={index}>
           <View style={styles.container}>
             <View style={styles.header}>
-              <Text>{destinationNames.get(destination.id)}</Text>
+              <Text size="s">{destinationNames.get(destination.id)}</Text>
               <OptionMenu
                 options={[
                   {
