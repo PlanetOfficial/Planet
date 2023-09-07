@@ -128,7 +128,7 @@ const Destinations: React.FC<Props> = ({
       />
 
       <Animated.View
-        pointerEvents={'none'}
+        pointerEvents="none"
         style={[
           styles.dim,
           {

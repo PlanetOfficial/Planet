@@ -120,7 +120,7 @@ const SignUpCreds = ({
             <TextInput
               style={STYLES.input}
               value={username}
-              autoCapitalize={'none'}
+              autoCapitalize="none"
               autoCorrect={false}
               autoFocus={true}
               onChangeText={text => setUsername(text.toLowerCase())}

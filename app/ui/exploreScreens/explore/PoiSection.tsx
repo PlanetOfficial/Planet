@@ -15,7 +15,7 @@ interface Props {
   navigation: any;
   title: string;
   pois: Poi[];
-  mode: ExploreModes
+  mode: ExploreModes;
 }
 
 const PoiSection: React.FC<Props> = ({navigation, title, pois, mode}) => {
