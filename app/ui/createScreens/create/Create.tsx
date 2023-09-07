@@ -11,9 +11,11 @@ import {
 import {s} from 'react-native-size-matters';
 
 import colors from '../../../constants/colors';
+import icons from '../../../constants/icons';
 import strings from '../../../constants/strings';
 import STYLING from '../../../constants/styles';
 
+import Icon from '../../components/Icon';
 import Text from '../../components/Text';
 
 import {Poi, UserInfo} from '../../../utils/types';
@@ -156,7 +158,10 @@ const Create = ({
                 mode: 'create',
               });
             }}>
-            <Text size="l" weight="b" color={colors[theme].primary}>
+            <View style={STYLES.icon}>
+              <Icon icon={icons.plus} color={colors[theme].primary} />
+            </View>
+            <Text color={colors[theme].primary}>
               {strings.event.addDestination}
             </Text>
           </TouchableOpacity>

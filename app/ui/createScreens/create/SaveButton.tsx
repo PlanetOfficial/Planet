@@ -68,9 +68,7 @@ const SaveButton: React.FC<Props> = ({
       {loading ? (
         <ActivityIndicator color={colors[theme].primary} />
       ) : (
-        <Text color={colors[theme].primary}>
-          {strings.main.save}
-        </Text>
+        <Text color={colors[theme].primary}>{strings.main.save}</Text>
       )}
     </TouchableOpacity>
   );

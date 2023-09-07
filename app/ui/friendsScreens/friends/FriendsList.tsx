@@ -65,7 +65,7 @@ const FriendsList = ({navigation}: {navigation: any}) => {
         />
       }>
       <TouchableOpacity style={styles.shareButton} onPress={() => shareApp()}>
-        <View style={styles.icon}>
+        <View style={STYLES.icon}>
           <Icon size="m" icon={icons.link} color={colors[theme].primary} />
         </View>
         <Text color={colors[theme].primary}>
@@ -230,9 +230,6 @@ const styling = (theme: 'light' | 'dark') =>
       paddingVertical: s(10),
       borderRadius: s(5),
       backgroundColor: colors[theme].accent,
-    },
-    icon: {
-      marginRight: s(10),
     },
   });
 

@@ -141,7 +141,7 @@ const UpcomingEvent: React.FC<Props> = ({navigation, upcomingEvent}) => {
         <TouchableOpacity
           style={styles.create}
           onPress={() => navigation.navigate('Create')}>
-          <View style={styles.plus}>
+          <View style={STYLES.icon}>
             <Icon icon={icons.plus} color={colors[theme].primary} />
           </View>
           <Text color={colors[theme].primary} center={true}>
@@ -216,9 +216,6 @@ const styling = (theme: 'light' | 'dark') =>
       paddingVertical: s(10),
       borderRadius: s(5),
       backgroundColor: colors[theme].accent,
-    },
-    plus: {
-      marginRight: s(10),
     },
     row: {
       flexDirection: 'row',

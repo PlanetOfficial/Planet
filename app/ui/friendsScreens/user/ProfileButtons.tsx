@@ -11,6 +11,7 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
 import strings from '../../../constants/strings';
+import STYLING from '../../../constants/styles';
 
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
@@ -34,6 +35,7 @@ interface Props {
 
 const ProfileButtons: React.FC<Props> = ({user}) => {
   const theme = useColorScheme() || 'light';
+  const STYLES = STYLING(theme);
 
   const {
     friends,
@@ -61,7 +63,7 @@ const ProfileButtons: React.FC<Props> = ({user}) => {
               backgroundColor: colors[theme].secondary,
             },
           ]}>
-          <View style={styles.icon}>
+          <View style={STYLES.icon}>
             <Icon size="l" icon={icons.blocked} />
           </View>
           <Text>{strings.friends.blocked}</Text>
@@ -115,7 +117,7 @@ const ProfileButtons: React.FC<Props> = ({user}) => {
               <ActivityIndicator size="small" color={colors[theme].primary} />
             ) : (
               <>
-                <View style={styles.icon}>
+                <View style={STYLES.icon}>
                   <Icon
                     size="l"
                     icon={icons.acceptFriend}
@@ -145,7 +147,7 @@ const ProfileButtons: React.FC<Props> = ({user}) => {
               <ActivityIndicator size="small" color={colors[theme].primary} />
             ) : (
               <>
-                <View style={styles.icon}>
+                <View style={STYLES.icon}>
                   <Icon size="l" icon={icons.deleteFriend} />
                 </View>
                 <Text>{strings.friends.ignore}</Text>
@@ -165,7 +167,7 @@ const ProfileButtons: React.FC<Props> = ({user}) => {
               backgroundColor: colors[theme].secondary,
             },
           ]}>
-          <View style={styles.icon}>
+          <View style={STYLES.icon}>
             <Icon size="l" icon={icons.addFriend} />
           </View>
           <Text>{strings.friends.pending}</Text>
@@ -204,7 +206,7 @@ const ProfileButtons: React.FC<Props> = ({user}) => {
             <ActivityIndicator size="small" color={colors[theme].primary} />
           ) : (
             <>
-              <View style={styles.icon}>
+              <View style={STYLES.icon}>
                 <Icon
                   size="l"
                   icon={icons.addFriend}
@@ -250,9 +252,6 @@ const styles = StyleSheet.create({
     width: s(140),
     height: s(50),
     borderRadius: s(10),
-  },
-  icon: {
-    marginRight: s(10),
   },
   text: {
     alignSelf: 'center',

@@ -140,6 +140,9 @@ const styling = (theme: 'light' | 'dark') =>
       paddingHorizontal: s(35),
       paddingVertical: s(20),
     },
+    icon: {
+      marginRight: s(10),
+    },
   });
 
 export const segControlTabStyling = (theme: 'light' | 'dark') =>
