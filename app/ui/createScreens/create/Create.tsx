@@ -1,6 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {
-  StyleSheet,
   View,
   TouchableOpacity,
   useColorScheme,
@@ -8,12 +7,13 @@ import {
   Keyboard,
   ScrollView,
 } from 'react-native';
-import {s} from 'react-native-size-matters';
 
 import colors from '../../../constants/colors';
+import icons from '../../../constants/icons';
 import strings from '../../../constants/strings';
 import STYLING from '../../../constants/styles';
 
+import Icon from '../../components/Icon';
 import Text from '../../components/Text';
 
 import {Poi, UserInfo} from '../../../utils/types';
@@ -40,7 +40,6 @@ const Create = ({
   };
 }) => {
   const theme = useColorScheme() || 'light';
-  const styles = styling(theme);
   const STYLES = STYLING(theme);
   StatusBar.setBarStyle(colors[theme].statusBar, true);
 
@@ -149,14 +148,17 @@ const Create = ({
           scrollIndicatorInsets={{right: 1}}
           onTouchStart={() => Keyboard.dismiss()}>
           <TouchableOpacity
-            style={[styles.addButton, STYLES.shadow]}
+            style={[STYLES.actionButton, STYLES.shadow]}
             onPress={() => {
               setInsertionIndex(0);
               navigation.navigate('ModeExplore', {
                 mode: 'create',
               });
             }}>
-            <Text size="l" weight="b" color={colors[theme].accent}>
+            <View style={STYLES.icon}>
+              <Icon icon={icons.plus} color={colors[theme].primary} />
+            </View>
+            <Text color={colors[theme].primary}>
               {strings.event.addDestination}
             </Text>
           </TouchableOpacity>
@@ -175,17 +177,5 @@ const Create = ({
     </View>
   );
 };
-
-const styling = (theme: 'light' | 'dark') =>
-  StyleSheet.create({
-    addButton: {
-      alignItems: 'center',
-      marginTop: s(30),
-      marginHorizontal: s(40),
-      paddingVertical: s(20),
-      borderRadius: s(5),
-      backgroundColor: colors[theme].primary,
-    },
-  });
 
 export default Create;

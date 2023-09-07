@@ -16,6 +16,7 @@ import STYLING from '../../constants/styles';
 interface Props {
   size?: 'xs' | 's' | 'm' | 'l' | 'xl';
   color?: string;
+  backgroundColor?: string;
   button?: boolean;
   padding?: number;
   disabled?: boolean;
@@ -26,6 +27,7 @@ interface Props {
 const Icon: React.FC<Props> = ({
   size = 's',
   color,
+  backgroundColor,
   button = false,
   padding = 0,
   disabled = false,
@@ -37,6 +39,10 @@ const Icon: React.FC<Props> = ({
 
   if (!color) {
     color = colors[theme].neutral;
+  }
+
+  if (!backgroundColor) {
+    backgroundColor = colors[theme].primary;
   }
 
   let z: number = s(18);
@@ -66,7 +72,7 @@ const Icon: React.FC<Props> = ({
     width: button ? 2 * z : z,
     height: button ? 2 * z : z,
     padding: padding + (button ? z / 2 : 0),
-    backgroundColor: button ? colors[theme].primary : undefined,
+    backgroundColor: button ? backgroundColor : undefined,
     borderRadius: button ? z / 2 : undefined,
   };
 

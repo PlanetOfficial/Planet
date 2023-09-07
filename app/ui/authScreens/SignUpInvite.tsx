@@ -125,7 +125,7 @@ const SignUpInvite = ({
           <TouchableOpacity
             style={styles.button}
             onPress={() => shareApp(setShared)}>
-            <View style={styles.icon}>
+            <View style={STYLES.icon}>
               <Icon icon={icons.link} size="m" color={colors[theme].primary} />
             </View>
             <Text size="l" color={colors[theme].primary}>
@@ -194,9 +194,6 @@ const styling = (theme: 'light' | 'dark') =>
       padding: s(20),
       borderRadius: s(10),
       backgroundColor: colors[theme].accent,
-    },
-    icon: {
-      marginRight: s(10),
     },
     referral: {
       alignSelf: 'center',

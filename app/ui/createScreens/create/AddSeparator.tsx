@@ -16,14 +16,14 @@ const AddSeparator = () => {
         x2={s(162.5)}
         y2={s(20)}
         stroke={colors[theme].accent}
-        strokeWidth={s(1)}
+        strokeWidth={s(2)}
       />
       <Circle
         cx={s(175)}
         cy={s(20)}
         r={s(12.5)}
         stroke={colors[theme].accent}
-        strokeWidth={s(1)}
+        strokeWidth={s(2)}
         fill="none"
       />
       <Line
@@ -50,7 +50,7 @@ const AddSeparator = () => {
         x2={s(330)}
         y2={s(20)}
         stroke={colors[theme].accent}
-        strokeWidth={s(1)}
+        strokeWidth={s(2)}
       />
     </Svg>
   );

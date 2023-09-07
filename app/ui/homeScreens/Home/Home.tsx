@@ -105,7 +105,7 @@ const Home = ({navigation}: {navigation: any}) => {
         <View style={STYLES.header}>
           <Text size="l">{GetGreetings()}</Text>
           <Icon
-            size="m"
+            size="l"
             icon={icons.friends}
             color={colors[theme].accent}
             onPress={() => navigation.navigate('Friends')}
@@ -138,7 +138,7 @@ const Home = ({navigation}: {navigation: any}) => {
           <TouchableOpacity
             style={styles.shareButton}
             onPress={() => shareApp()}>
-            <View style={styles.icon}>
+            <View style={STYLES.icon}>
               <Icon size="m" icon={icons.link} color={colors[theme].primary} />
             </View>
             <Text color={colors[theme].primary}>
@@ -187,9 +187,6 @@ const styling = (theme: 'light' | 'dark') =>
       paddingVertical: s(10),
       borderRadius: s(5),
       backgroundColor: colors[theme].accent,
-    },
-    icon: {
-      marginRight: s(10),
     },
   });
 
