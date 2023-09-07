@@ -1,8 +1,9 @@
 const icons = {
   acceptFriend: require('../assets/icons/accept-friend.png'),
   accountSettings: require('../assets/icons/account-settings.png'),
-  addFriend: require('../assets/icons/add-friend.png'),
   add: require('../assets/icons/add.png'),
+  addFriend: require('../assets/icons/add-friend.png'),
+  addFriends: require('../assets/icons/add-friends.png'),
   back: require('../assets/icons/back.png'),
   bell: require('../assets/icons/bell.png'),
   blocked: require('../assets/icons/blocked.png'),

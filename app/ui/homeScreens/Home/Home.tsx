@@ -105,7 +105,7 @@ const Home = ({navigation}: {navigation: any}) => {
         <View style={STYLES.header}>
           <Text size="l">{GetGreetings()}</Text>
           <Icon
-            size="m"
+            size="l"
             icon={icons.friends}
             color={colors[theme].accent}
             onPress={() => navigation.navigate('Friends')}

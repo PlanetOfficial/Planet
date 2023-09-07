@@ -156,7 +156,7 @@ const Create = ({
                 mode: 'create',
               });
             }}>
-            <Text size="l" weight="b" color={colors[theme].accent}>
+            <Text size="l" weight="b" color={colors[theme].primary}>
               {strings.event.addDestination}
             </Text>
           </TouchableOpacity>
@@ -179,12 +179,15 @@ const Create = ({
 const styling = (theme: 'light' | 'dark') =>
   StyleSheet.create({
     addButton: {
+      flexDirection: 'row',
       alignItems: 'center',
-      marginTop: s(30),
-      marginHorizontal: s(40),
-      paddingVertical: s(20),
+      justifyContent: 'center',
+      marginHorizontal: s(20),
+      marginTop: s(20),
+      marginBottom: s(20),
+      paddingVertical: s(15),
       borderRadius: s(5),
-      backgroundColor: colors[theme].primary,
+      backgroundColor: colors[theme].accent,
     },
   });
 

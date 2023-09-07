@@ -134,10 +134,11 @@ const Header: React.FC<Props> = ({
           />
         </View>
         <Icon
-          icon={icons.friends}
+          icon={icons.addFriends}
           button={true}
           padding={-2}
-          color={colors[theme].neutral}
+          color={colors[theme].primary}
+          backgroundColor={colors[theme].accent}
           onPress={() => {
             navigation.navigate('AddFriend', {
               members,
