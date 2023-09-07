@@ -33,7 +33,6 @@ import Suggestions from './Suggestions';
 const FriendsList = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';
   const STYLES = STYLING(theme);
-  const styles = styling(theme);
   StatusBar.setBarStyle(colors[theme].statusBar, true);
 
   const {friends, refreshFriends, friendGroups} = useFriendsContext();
@@ -64,7 +63,7 @@ const FriendsList = ({navigation}: {navigation: any}) => {
           tintColor={colors[theme].accent}
         />
       }>
-      <TouchableOpacity style={styles.shareButton} onPress={() => shareApp()}>
+      <TouchableOpacity style={STYLES.actionButton} onPress={() => shareApp()}>
         <View style={STYLES.icon}>
           <Icon size="m" icon={icons.link} color={colors[theme].primary} />
         </View>
@@ -211,26 +210,14 @@ const FriendsList = ({navigation}: {navigation: any}) => {
   );
 };
 
-const styling = (theme: 'light' | 'dark') =>
-  StyleSheet.create({
-    title: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      marginHorizontal: s(20),
-      marginVertical: s(10),
-    },
-    shareButton: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'center',
-      marginHorizontal: s(20),
-      marginTop: s(5),
-      marginBottom: s(20),
-      paddingVertical: s(10),
-      borderRadius: s(5),
-      backgroundColor: colors[theme].accent,
-    },
-  });
+const styles = StyleSheet.create({
+  title: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginHorizontal: s(20),
+    marginVertical: s(10),
+  },
+});
 
 export default FriendsList;

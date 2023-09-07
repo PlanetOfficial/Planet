@@ -1,6 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {
-  StyleSheet,
   View,
   TouchableOpacity,
   useColorScheme,
@@ -8,7 +7,6 @@ import {
   Keyboard,
   ScrollView,
 } from 'react-native';
-import {s} from 'react-native-size-matters';
 
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
@@ -42,7 +40,6 @@ const Create = ({
   };
 }) => {
   const theme = useColorScheme() || 'light';
-  const styles = styling(theme);
   const STYLES = STYLING(theme);
   StatusBar.setBarStyle(colors[theme].statusBar, true);
 
@@ -151,7 +148,7 @@ const Create = ({
           scrollIndicatorInsets={{right: 1}}
           onTouchStart={() => Keyboard.dismiss()}>
           <TouchableOpacity
-            style={[styles.addButton, STYLES.shadow]}
+            style={[STYLES.actionButton, STYLES.shadow]}
             onPress={() => {
               setInsertionIndex(0);
               navigation.navigate('ModeExplore', {
@@ -180,20 +177,5 @@ const Create = ({
     </View>
   );
 };
-
-const styling = (theme: 'light' | 'dark') =>
-  StyleSheet.create({
-    addButton: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'center',
-      marginHorizontal: s(20),
-      marginTop: s(20),
-      marginBottom: s(20),
-      paddingVertical: s(15),
-      borderRadius: s(5),
-      backgroundColor: colors[theme].accent,
-    },
-  });
 
 export default Create;

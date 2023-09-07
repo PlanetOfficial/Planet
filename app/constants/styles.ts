@@ -143,6 +143,17 @@ const styling = (theme: 'light' | 'dark') =>
     icon: {
       marginRight: s(10),
     },
+    actionButton: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginHorizontal: s(20),
+      marginTop: s(10),
+      marginBottom: s(20),
+      paddingVertical: s(10),
+      borderRadius: s(5),
+      backgroundColor: colors[theme].accent,
+    },
   });
 
 export const segControlTabStyling = (theme: 'light' | 'dark') =>
