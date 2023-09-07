@@ -10,6 +10,7 @@ const colors = {
 const light = {
   ...colors,
   background: '#ffffff',
+  transparent: 'rgba(255, 255, 255, 0)',
   primary: '#ffffff',
   secondary: '#c9c9c9',
   neutral: '#3c3c3c',
@@ -24,6 +25,7 @@ const light = {
 const dark = {
   ...colors,
   background: '#1c1c1c',
+  transparent: 'rgba(28, 28, 28, 0)',
   primary: '#2d2d2d',
   secondary: '#666666',
   neutral: '#f0f0f0',

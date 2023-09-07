@@ -51,8 +51,8 @@ const DestinationsList: React.FC<Props> = ({
       onTouchStart={() => Keyboard.dismiss()}>
       {destinations.map((destination: Poi, index: number) => (
         <View key={index}>
-          <View style={styles.destination}>
-            <View style={styles.destinationHeader}>
+          <View style={styles.container}>
+            <View style={styles.header}>
               <Text>{destinationNames.get(destination.id)}</Text>
               <OptionMenu
                 options={[
@@ -153,15 +153,16 @@ const styles = StyleSheet.create({
   scrollView: {
     paddingBottom: s(100),
   },
-  destination: {
+  container: {
     marginHorizontal: s(20),
     marginBottom: s(10),
   },
-  destinationHeader: {
+  header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingVertical: s(10),
     paddingHorizontal: s(5),
   },
 });
+
 export default DestinationsList;

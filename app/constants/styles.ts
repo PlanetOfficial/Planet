@@ -49,15 +49,6 @@ const styling = (theme: 'light' | 'dark') =>
       marginHorizontal: s(10),
       justifyContent: 'center',
     },
-    button: {
-      position: 'absolute',
-      alignSelf: 'center',
-      paddingHorizontal: s(15),
-      paddingVertical: s(7.5),
-      bottom: s(40),
-      borderRadius: s(5),
-      backgroundColor: colors[theme].accent,
-    },
     shadow: {
       shadowColor: '#000',
       shadowOffset: {

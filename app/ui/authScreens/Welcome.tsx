@@ -14,11 +14,10 @@ import LinearGradient from 'react-native-linear-gradient';
 
 import icons from '../../constants/icons';
 import colors from '../../constants/colors';
+import screen from '../../constants/images';
 import strings from '../../constants/strings';
 
 import Text from '../components/Text';
-
-import screen from '../../constants/images';
 
 const Welcome = ({navigation}: {navigation: any}) => {
   const theme = 'light';
