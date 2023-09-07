@@ -6,7 +6,7 @@ import Text from '../../components/Text';
 import PoiCard from '../../components/PoiCard';
 import Separator from '../../components/SeparatorR';
 
-import {Poi} from '../../../utils/types';
+import {ExploreModes, Poi} from '../../../utils/types';
 import {handleBookmark} from '../../../utils/Misc';
 
 import {useBookmarkContext} from '../../../context/BookmarkContext';
@@ -15,9 +15,10 @@ interface Props {
   navigation: any;
   title: string;
   pois: Poi[];
+  mode: ExploreModes
 }
 
-const PoiSection: React.FC<Props> = ({navigation, title, pois}) => {
+const PoiSection: React.FC<Props> = ({navigation, title, pois, mode}) => {
   const {bookmarks, setBookmarks} = useBookmarkContext();
 
   return (
@@ -39,7 +40,7 @@ const PoiSection: React.FC<Props> = ({navigation, title, pois}) => {
                 bookmarked: bookmarks.some(
                   (bookmark: Poi) => bookmark.id === poi.id,
                 ),
-                mode: 'none',
+                mode: mode,
               })
             }>
             <PoiCard

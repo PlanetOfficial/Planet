@@ -184,6 +184,7 @@ const Explore = ({
                 navigation={navigation}
                 title={key}
                 pois={suggestedPoiSections[key]}
+                mode={mode}
               />
             ) : null,
           )}
