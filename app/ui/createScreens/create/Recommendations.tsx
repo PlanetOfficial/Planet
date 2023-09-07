@@ -93,7 +93,7 @@ const Recommendations: React.FC<Props> = ({
           <View key={idx}>
             <View style={styles.header}>
               <Text size="s" weight="l">
-                {strings.event.suggestions} #{idx + 1}
+                {strings.event.suggestion} #{idx + 1}
               </Text>
             </View>
             <ScrollView

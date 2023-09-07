@@ -229,7 +229,7 @@ const strings = {
     removeMember: 'Remove Member',
     removeMemberInfo: 'Are you sure you want to remove this member?',
     duplicate: 'Clone',
-    suggestions: 'Suggestions',
+    suggestion: 'Suggestion',
     accept: 'Accept',
     hide: 'Hide',
   },
