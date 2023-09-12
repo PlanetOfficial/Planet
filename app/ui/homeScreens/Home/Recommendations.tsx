@@ -19,7 +19,6 @@ import Icon from '../../components/Icon';
 import PoiCard from '../../components/PoiCard';
 
 import {Coordinate, Poi, Recommendation} from '../../../utils/types';
-import {handleBookmark} from '../../../utils/Misc';
 
 import {useBookmarkContext} from '../../../context/BookmarkContext';
 
@@ -42,7 +41,7 @@ const Recommendations: React.FC<Props> = ({
   const styles = styling(theme);
   const STYLES = STYLING(theme);
 
-  const {bookmarks, setBookmarks} = useBookmarkContext();
+  const {bookmarks} = useBookmarkContext();
 
   return (
     <>
@@ -90,9 +89,6 @@ const Recommendations: React.FC<Props> = ({
                       bookmarked={bookmarks.some(
                         (bookmark: Poi) => bookmark.id === place.id,
                       )}
-                      handleBookmark={(poi: Poi) => {
-                        handleBookmark(poi, bookmarks, setBookmarks);
-                      }}
                     />
                   </TouchableOpacity>
                 </View>

@@ -18,7 +18,6 @@ import Text from '../../components/Text';
 import PoiRow from '../../components/PoiRow';
 import PoiCardXL from '../../components/PoiCardXL';
 
-import {handleBookmark} from '../../../utils/Misc';
 import {Poi, Coordinate, Category, ExploreModes} from '../../../utils/types';
 
 interface Props {
@@ -28,7 +27,6 @@ interface Props {
   mapRef: React.RefObject<MapView>;
   scrollViewRef: React.RefObject<ScrollView>;
   bookmarks: Poi[];
-  setBookmarks: (bookmarks: Poi[]) => void;
   myLocation: Coordinate;
   category: Category;
   mode: ExploreModes;
@@ -44,7 +42,6 @@ const Results: React.FC<Props> = ({
   mapRef,
   scrollViewRef,
   bookmarks,
-  setBookmarks,
   myLocation,
   category,
   mode,
@@ -77,9 +74,6 @@ const Results: React.FC<Props> = ({
               <PoiRow
                 place={item}
                 bookmarked={bookmarks.some(bookmark => bookmark.id === item.id)}
-                handleBookmark={(poi: Poi) =>
-                  handleBookmark(poi, bookmarks, setBookmarks)
-                }
                 myLocation={myLocation}
                 category={category}
               />
@@ -156,9 +150,6 @@ const Results: React.FC<Props> = ({
             <PoiCardXL
               place={place}
               bookmarked={bookmarks.some(bookmark => bookmark.id === place.id)}
-              handleBookmark={(poi: Poi) =>
-                handleBookmark(poi, bookmarks, setBookmarks)
-              }
             />
           </TouchableOpacity>
         ))}

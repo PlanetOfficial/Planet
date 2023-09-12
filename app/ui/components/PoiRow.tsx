@@ -11,24 +11,26 @@ import Icon from './Icon';
 import Text from './Text';
 
 import {Category, Coordinate, Poi} from '../../utils/types';
-import {getDistanceFromCoordinates} from '../../utils/Misc';
+import {
+  getDistanceFromCoordinates,
+  handleBookmark,
+  useLoadingState,
+} from '../../utils/Misc';
+
+import {useBookmarkContext} from '../../context/BookmarkContext';
 
 interface Props {
   place: Poi;
   bookmarked: boolean;
-  handleBookmark: (poi: Poi) => void;
   myLocation?: Coordinate;
   category?: Category;
 }
 
-const PoiRow: React.FC<Props> = ({
-  place,
-  bookmarked,
-  handleBookmark,
-  myLocation,
-  category,
-}) => {
+const PoiRow: React.FC<Props> = ({place, bookmarked, myLocation, category}) => {
   const theme = useColorScheme() || 'light';
+
+  const {bookmarks, setBookmarks} = useBookmarkContext();
+  const [loading, withLoading] = useLoadingState();
 
   const getAddressString = (): string => {
     let poiString: string = '';
@@ -89,9 +91,12 @@ const PoiRow: React.FC<Props> = ({
       </View>
       <Icon
         size="l"
+        disabled={loading}
         icon={bookmarked ? icons.bookmarked : icons.bookmark}
         color={bookmarked ? colors[theme].accent : colors[theme].neutral}
-        onPress={() => handleBookmark(place)}
+        onPress={() =>
+          withLoading(() => handleBookmark(place, bookmarks, setBookmarks))
+        }
       />
     </View>
   );

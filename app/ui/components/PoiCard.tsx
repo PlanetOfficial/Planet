@@ -10,24 +10,23 @@ import Icon from './Icon';
 import Text from './Text';
 
 import {Poi} from '../../utils/types';
-import {getInfoString} from '../../utils/Misc';
+import {getInfoString, handleBookmark, useLoadingState} from '../../utils/Misc';
+
+import {useBookmarkContext} from '../../context/BookmarkContext';
 
 interface Props {
   place: Poi;
   disabled?: boolean;
   bookmarked: boolean;
-  handleBookmark: (poi: Poi) => void;
 }
 
-const PoiCard: React.FC<Props> = ({
-  place,
-  disabled,
-  bookmarked,
-  handleBookmark,
-}) => {
+const PoiCard: React.FC<Props> = ({place, disabled, bookmarked}) => {
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
   const STYLES = STYLING(theme);
+
+  const {bookmarks, setBookmarks} = useBookmarkContext();
+  const [loading, withLoading] = useLoadingState();
 
   return (
     <View style={[styles.container, STYLES.shadow]}>
@@ -46,10 +45,12 @@ const PoiCard: React.FC<Props> = ({
         </View>
         <Icon
           size="m"
-          disabled={disabled}
+          disabled={disabled || loading}
           icon={bookmarked ? icons.bookmarked : icons.bookmark}
           color={bookmarked ? colors[theme].accent : colors[theme].neutral}
-          onPress={() => handleBookmark(place)}
+          onPress={() =>
+            withLoading(() => handleBookmark(place, bookmarks, setBookmarks))
+          }
         />
       </View>
     </View>

@@ -38,7 +38,7 @@ const Roulette = ({
     route.params.destination,
   );
 
-  const {bookmarks, setBookmarks} = useBookmarkContext();
+  const {bookmarks} = useBookmarkContext();
 
   const rotation = useSharedValue(0);
   const [currentAngle, setCurrentAngle] = useState<number>(rotation.value);
@@ -85,7 +85,6 @@ const Roulette = ({
         isSpinning={isSpinning}
         currentSuggestion={currentSuggestion}
         bookmarks={bookmarks}
-        setBookmarks={setBookmarks}
         totalVotes={totalVotes}
       />
 

@@ -52,7 +52,7 @@ const EventPage = ({
   const [insertionDestination, setInsertionDestination] =
     useState<Destination>();
 
-  const {bookmarks, setBookmarks} = useBookmarkContext();
+  const {bookmarks} = useBookmarkContext();
 
   const loadData = useCallback(async () => {
     const myUserId = await EncryptedStorage.getItem('user_id');
@@ -160,7 +160,6 @@ const EventPage = ({
           myVotes={myVotes}
           setMyVotes={setMyVotes}
           bookmarks={bookmarks}
-          setBookmarks={setBookmarks}
           refreshing={refreshing}
           setRefreshing={setRefreshing}
           resetFlag={resetFlag}

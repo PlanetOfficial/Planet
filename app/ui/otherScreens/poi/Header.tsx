@@ -17,7 +17,7 @@ import Icon from '../../components/Icon';
 import Text from '../../components/Text';
 
 import {Poi} from '../../../utils/types';
-import {handleBookmark} from '../../../utils/Misc';
+import {handleBookmark, useLoadingState} from '../../../utils/Misc';
 
 interface Props {
   navigation: any;
@@ -41,6 +41,8 @@ const Header: React.FC<Props> = ({
   const STYLES = STYLING(theme);
 
   const insets = useSafeAreaInsets();
+
+  const [loading, withLoading] = useLoadingState();
 
   const headerHeight = scrollPosition.interpolate({
     inputRange: [s(35), s(170)],
@@ -85,6 +87,7 @@ const Header: React.FC<Props> = ({
             </Animated.Text>
             <Icon
               size="m"
+              disabled={loading}
               icon={
                 bookmarks.some(bookmark => bookmark.id === destination?.id)
                   ? icons.bookmarked
@@ -92,7 +95,9 @@ const Header: React.FC<Props> = ({
               }
               onPress={() =>
                 destination
-                  ? handleBookmark(destination, bookmarks, setBookmarks)
+                  ? withLoading(() =>
+                      handleBookmark(destination, bookmarks, setBookmarks),
+                    )
                   : null
               }
               color={colors[theme].primary}

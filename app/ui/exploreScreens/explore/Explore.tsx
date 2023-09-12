@@ -26,7 +26,6 @@ import Separator from '../../components/SeparatorR';
 import {
   isLocationOffset,
   fetchUserLocation,
-  handleBookmark,
   useLoadingState,
 } from '../../../utils/Misc';
 import {
@@ -78,7 +77,7 @@ const Explore = ({
 
   const [loading, withLoading] = useLoadingState();
 
-  const {bookmarks, setBookmarks} = useBookmarkContext();
+  const {bookmarks} = useBookmarkContext();
 
   const [suggestedPoiSections, setSuggestedPoiSections] = useState<{
     [key: string]: Poi[];
@@ -217,9 +216,6 @@ const Explore = ({
                   place={item}
                   bookmarked={true}
                   myLocation={myLocation}
-                  handleBookmark={(poi: Poi) =>
-                    handleBookmark(poi, bookmarks, setBookmarks)
-                  }
                 />
               </TouchableOpacity>
             );

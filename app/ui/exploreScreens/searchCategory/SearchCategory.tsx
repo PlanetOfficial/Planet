@@ -70,7 +70,7 @@ const SearchCategory = ({
   const [places, setPlaces] = useState<Poi[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
-  const {bookmarks, setBookmarks} = useBookmarkContext();
+  const {bookmarks} = useBookmarkContext();
 
   const {location, setLocation} = useLocationContext();
   const [tempLocation, setTempLocation] = useState<Coordinate>(location);
@@ -277,7 +277,6 @@ const SearchCategory = ({
             mapRef={mapRef}
             scrollViewRef={scrollViewRef}
             bookmarks={bookmarks}
-            setBookmarks={setBookmarks}
             myLocation={myLocation}
             category={category}
             mode={mode}

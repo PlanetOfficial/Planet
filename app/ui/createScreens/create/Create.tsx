@@ -52,7 +52,7 @@ const Create = ({
     new Map(),
   );
 
-  const {bookmarks, setBookmarks} = useBookmarkContext();
+  const {bookmarks} = useBookmarkContext();
 
   const addMembers = useCallback(() => {
     const _members = route.params?.members;
@@ -139,7 +139,6 @@ const Create = ({
           destinations={destinations}
           setDestinations={setDestinations}
           bookmarks={bookmarks}
-          setBookmarks={setBookmarks}
           setInsertionIndex={setInsertionIndex}
           destinationNames={destinationNames}
         />

@@ -26,7 +26,6 @@ import {
   Poi,
   Suggestion,
 } from '../../../utils/types';
-import {handleBookmark} from '../../../utils/Misc';
 
 import {onVote} from './functions';
 import Suggestions from './Suggestions';
@@ -41,7 +40,6 @@ interface Props {
   myVotes: Map<number, number>;
   setMyVotes: (myVotes: Map<number, number>) => void;
   bookmarks: Poi[];
-  setBookmarks: (bookmarks: Poi[]) => void;
   refreshing: boolean;
   setRefreshing: (refreshing: boolean) => void;
   setInsertionDestination: (insertionDestination: Destination) => void;
@@ -63,7 +61,6 @@ const DestinationView: React.FC<Props> = ({
   myVotes,
   setMyVotes,
   bookmarks,
-  setBookmarks,
   refreshing,
   setRefreshing,
   setInsertionDestination,
@@ -134,9 +131,6 @@ const DestinationView: React.FC<Props> = ({
                     bookmark.id === findPrimary(item.suggestions).poi.id,
                 )}
                 width={item.id === selectedDestination?.id ? cardWidth : s(310)}
-                handleBookmark={(poi: Poi) =>
-                  handleBookmark(poi, bookmarks, setBookmarks)
-                }
                 voted={
                   findPrimary(item.suggestions)
                     ? myVotes.get(item.id) === findPrimary(item.suggestions).id

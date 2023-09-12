@@ -28,7 +28,6 @@ interface Props {
   myVotes: Map<number, number>;
   setMyVotes: (myVotes: Map<number, number>) => void;
   bookmarks: Poi[];
-  setBookmarks: (bookmarks: Poi[]) => void;
   refreshing: boolean;
   setRefreshing: (refreshing: boolean) => void;
   resetFlag: boolean;
@@ -48,7 +47,6 @@ const Destinations: React.FC<Props> = ({
   myVotes,
   setMyVotes,
   bookmarks,
-  setBookmarks,
   refreshing,
   setRefreshing,
   resetFlag,
@@ -115,7 +113,6 @@ const Destinations: React.FC<Props> = ({
         myVotes={myVotes}
         setMyVotes={setMyVotes}
         bookmarks={bookmarks}
-        setBookmarks={setBookmarks}
         refreshing={refreshing}
         setRefreshing={setRefreshing}
         setInsertionDestination={setInsertionDestination}

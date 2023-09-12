@@ -15,7 +15,6 @@ import Text from '../../components/Text';
 import PoiCard from '../../components/PoiCard';
 import UserIcon from '../../components/UserIcon';
 
-import {handleBookmark} from '../../../utils/Misc';
 import {Poi, Suggestion, UserInfo} from '../../../utils/types';
 
 interface Props {
@@ -23,7 +22,6 @@ interface Props {
   isSpinning: boolean;
   currentSuggestion: Suggestion;
   bookmarks: Poi[];
-  setBookmarks: (bookmarks: Poi[]) => void;
   totalVotes: number;
 }
 
@@ -32,7 +30,6 @@ const Info: React.FC<Props> = ({
   isSpinning,
   currentSuggestion,
   bookmarks,
-  setBookmarks,
   totalVotes,
 }) => {
   const theme = useColorScheme() || 'light';
@@ -57,9 +54,6 @@ const Info: React.FC<Props> = ({
           bookmarked={bookmarks.some(
             bookmark => bookmark.id === currentSuggestion.poi.id,
           )}
-          handleBookmark={(poi: Poi) =>
-            handleBookmark(poi, bookmarks, setBookmarks)
-          }
         />
       </TouchableOpacity>
       <View style={styles.votes}>
