@@ -1,8 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { useEffect, useState } from 'react';
-import { View, TouchableOpacity, Text, Alert, SafeAreaView } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Alert, SafeAreaView} from 'react-native';
 import EncryptedStorage from 'react-native-encrypted-storage';
-import { Channel as ChannelType, StreamChat } from 'stream-chat';
+import {Channel as ChannelType, StreamChat} from 'stream-chat';
 import {
   Channel,
   Chat,
@@ -10,10 +10,11 @@ import {
   MessageList,
   OverlayProvider,
 } from 'stream-chat-react-native';
-import { getEventChatInfo } from '../../../utils/api/eventAPI';
-import { Event } from '../../../utils/types';
+import {getEventChatInfo} from '../../../utils/api/eventAPI';
+import {Event} from '../../../utils/types';
 import Icon from '../../components/Icon';
 import icons from '../../../constants/icons';
+import strings from '../../../constants/strings';
 
 const EventChat = ({
   navigation,
@@ -38,32 +39,36 @@ const EventChat = ({
         const pfp_url = await AsyncStorage.getItem('pfp_url');
 
         if (!user_id || !name) {
-          Alert.alert('Error', 'Failed to connect to load user data.');
+          Alert.alert(strings.error.error, strings.error.loadUserData);
           return;
         }
 
         const chatInfo = await getEventChatInfo(route.params.event.id);
         if (!chatInfo) {
-          Alert.alert('Error', 'Internal error retrieving chat, please try again later.');
+          Alert.alert(strings.error.error, strings.error.internalError);
           return;
         }
 
         setStreamChatApiKey(chatInfo.getstream_api_key);
         const client = StreamChat.getInstance(chatInfo.getstream_api_key); // singleton
-        const channel = client.getChannelById(chatInfo.channel_type, chatInfo.channel_id, {});
-        if (!channel) {
-          Alert.alert('Error', 'Error retrieving chat, chats may not be available for this event. Try creating a new event.');
+        const _channel = client.getChannelById(
+          chatInfo.channel_type,
+          chatInfo.channel_id,
+          {},
+        );
+        if (!_channel) {
+          Alert.alert(strings.error.error, strings.error.chatNotExist);
           return;
         }
 
-        setChannel(channel);
+        setChannel(_channel);
 
         if (client.user === undefined) {
           await client.connectUser(
             {
               id: user_id,
               name,
-              ...(pfp_url && { image: pfp_url }),
+              ...(pfp_url && {image: pfp_url}),
             },
             chatInfo.getstream_user_token,
           );
@@ -71,12 +76,12 @@ const EventChat = ({
 
         setStreamClient(client);
       } catch (e) {
-        Alert.alert('Error', 'Error retrieving chat, chats may not be available for this event. Try creating a new event.');
+        Alert.alert(strings.error.error, strings.error.generalChatError);
       }
     };
 
     setupClient();
-  }, []);
+  }, [route.params.event.id]);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('blur', async () => {
@@ -88,11 +93,11 @@ const EventChat = ({
     });
 
     return unsubscribe;
-  }, [navigation]);
+  }, [navigation, streamChatApiKey]);
 
   return (
     <OverlayProvider topInset={60}>
-      <SafeAreaView style={{flex: 1}}>
+      <SafeAreaView style={styles.container}>
         <Icon onPress={() => navigation.goBack()} icon={icons.back} />
         {streamClient && channel ? (
           <Chat client={streamClient}>
@@ -104,7 +109,13 @@ const EventChat = ({
         ) : null}
       </SafeAreaView>
     </OverlayProvider>
-  )
+  );
+};
+
+const styles = {
+  container: {
+    flex: 1,
+  },
 };
 
 export default EventChat;

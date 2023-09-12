@@ -390,9 +390,9 @@ export const reportEvent = async (event_id: number): Promise<Boolean> => {
 /**
  * @requires auth_token should be set in EncryptedStorage before calling this function
  */
-export const getEventChatInfo = async (event_id: number): Promise<
-  ChatInfo | null
-> => {
+export const getEventChatInfo = async (
+  event_id: number,
+): Promise<ChatInfo | null> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
   if (!authToken) {

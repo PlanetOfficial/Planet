@@ -74,7 +74,7 @@ type RootStackParamList = {
   };
   EventChat: {
     event: Event;
-  },
+  };
   EventSettings: {
     event: Event;
     destination: Destination;
