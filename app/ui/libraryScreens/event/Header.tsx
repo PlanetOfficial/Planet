@@ -87,6 +87,14 @@ const Header: React.FC<Props> = ({
           )}
         </View>
         <Icon
+          color={colors[theme].accent}
+          icon={icons.chat}
+          disabled={displayingSuggestion}
+          button={true}
+          padding={-2}
+          onPress={() => navigation.navigate('EventChat', {event})}
+        />
+        <Icon
           icon={icons.more}
           disabled={displayingSuggestion}
           button={true}

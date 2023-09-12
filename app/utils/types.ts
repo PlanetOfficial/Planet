@@ -120,6 +120,13 @@ export interface EventDetail {
   destinations: Destination[];
 }
 
+export interface ChatInfo {
+  getstream_user_token: string;
+  channel_id: string;
+  getstream_api_key: string;
+  channel_type: string;
+}
+
 export interface Destination {
   id: number;
   name: string;

@@ -72,6 +72,9 @@ type RootStackParamList = {
     event: Event;
     destination: PoiType;
   };
+  EventChat: {
+    event: Event;
+  },
   EventSettings: {
     event: Event;
     destination: Destination;

@@ -29,6 +29,7 @@ import Requests from '../friendsScreens/requests/Requests';
 import User from '../friendsScreens/user/User';
 
 import Event from '../libraryScreens/event/Event';
+import EventChat from '../libraryScreens/event/EventChat';
 import EventSettings from '../libraryScreens/eventSettings/EventSettings';
 import Notifications from '../libraryScreens/notifications/Notifications';
 import Roulette from '../libraryScreens/roulette/Roulette';
@@ -185,6 +186,7 @@ const mainStackScreens = () => (
     />
 
     <Stack.Screen name="Event" component={Event} />
+    <Stack.Screen name="EventChat" component={EventChat} />
     <Stack.Screen name="EventSettings" component={EventSettings} />
     <Stack.Screen name="Roulette" component={Roulette} />
     <Stack.Screen

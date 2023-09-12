@@ -52,6 +52,7 @@ const icons = {
   profile: require('../assets/tabIcons/profile.png'),
   searchtwo: require('../assets/tabIcons/search-2.png'),
   search: require('../assets/tabIcons/search.png'),
+  chat: require('../assets/icons/messenger.png'),
 };
 
 export default icons;
