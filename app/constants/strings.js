@@ -122,6 +122,7 @@ const strings = {
     setLocation: 'Set Search Location',
     searchLocation: 'Search Location',
     yourLocation: 'Your Location',
+    selected: 'Selected',
   },
   greeting: {
     morning: 'Good Morning',

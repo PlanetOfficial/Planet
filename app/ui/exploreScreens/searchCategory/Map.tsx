@@ -56,11 +56,6 @@ const Map: React.FC<Props> = ({
         latitudeDelta: numbers.defaultLatitudeDelta,
         longitudeDelta: numbers.defaultLongitudeDelta,
       }}
-      onPanDrag={() => {
-        if (bottomSheetIndex === 1) {
-          bottomSheetRef.current?.snapToIndex(0);
-        }
-      }}
       onRegionChangeComplete={region => {
         setTempLocation({
           latitude: region.latitude,

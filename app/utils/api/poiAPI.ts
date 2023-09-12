@@ -17,9 +17,9 @@ export const getPois = async (
   // note that by adding half of the offset, we round the values instead of truncating
   const offset = numbers.locationOffThreshold * 2;
   latitude =
-    Math.round(latitude / offset) * offset + numbers.locationOffThreshold;
+    Math.floor(latitude / offset) * offset + numbers.locationOffThreshold;
   longitude =
-    Math.round(longitude / offset) * offset + numbers.locationOffThreshold;
+    Math.floor(longitude / offset) * offset + numbers.locationOffThreshold;
 
   const response = await fetch(
     PoiAPIURL +

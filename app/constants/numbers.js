@@ -3,7 +3,7 @@ const numbers = {
   defaultLongitudeDelta: 0.0421,
   displayLatitudeDelta: 0.02,
   displayLongitudeDelta: 0.02,
-  locationOffThreshold: 0.02,
+  locationOffThreshold: 0.01,
   milesToMeters: 1609,
   maxPfpSize: 5000000, // in bytes
   fiveMinutes: 1000 * 60 * 5,
