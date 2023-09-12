@@ -49,7 +49,7 @@ const EventChat = ({
         }
 
         setStreamChatApiKey(chatInfo.getstream_api_key);
-        const client = StreamChat.getInstance(chatInfo.getstream_api_key);
+        const client = StreamChat.getInstance(chatInfo.getstream_api_key); // singleton
         const channel = client.getChannelById(chatInfo.channel_type, chatInfo.channel_id, {});
         if (!channel) {
           Alert.alert('Error', 'Error retrieving chat, chats may not be available for this event. Try creating a new event.');
