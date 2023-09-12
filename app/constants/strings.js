@@ -113,6 +113,7 @@ const strings = {
     open: 'Open',
     closed: 'Closed',
     images: 'Images',
+    viewMoreReviews: 'View More Reviews',
   },
   explore: {
     categories: 'Categories',

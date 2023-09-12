@@ -170,7 +170,10 @@ const PoiPage = ({
         ) : null}
         {destinationDetails?.reviews &&
         destinationDetails?.reviews?.length > 0 ? (
-          <Reviews reviews={destinationDetails?.reviews} />
+          <Reviews
+            reviews={destinationDetails?.reviews}
+            url={destinationDetails?.url}
+          />
         ) : null}
       </Animated.ScrollView>
 
