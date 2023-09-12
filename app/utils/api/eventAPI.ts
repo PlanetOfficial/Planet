@@ -413,8 +413,6 @@ export const getEventChatInfo = async (event_id: number): Promise<
 
   const response = await requestAndValidate(authToken, request);
 
-  console.log(response);
-
   if (response?.ok) {
     const myJson: ChatInfo = await response.json();
     return myJson;
