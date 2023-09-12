@@ -230,8 +230,8 @@ const strings = {
     removeMemberInfo: 'Are you sure you want to remove this member?',
     duplicate: 'Clone',
     suggestion: 'Suggestion',
-    accept: 'Accept',
-    hide: 'Hide',
+    accept: 'Customize this Suggestion',
+    hide: 'Hide Suggestions',
   },
   roulette: {
     total: 'Total',

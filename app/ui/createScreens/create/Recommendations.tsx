@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 import LinearGradient from 'react-native-linear-gradient';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
@@ -47,10 +48,7 @@ const Recommendations: React.FC<Props> = ({
   const STYLES = STYLING(theme);
   const styles = styling(theme);
 
-  const [index, setIndex] = useState<number>(0);
-
   const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
-
   const loadRecommendations = useCallback(async (loc: Coordinate) => {
     const _recommendations = await getRecommendations(
       loc?.latitude,
@@ -72,6 +70,8 @@ const Recommendations: React.FC<Props> = ({
     initializeRecommendations();
   }, [loadRecommendations]);
 
+  const insets = useSafeAreaInsets();
+
   return (
     <>
       <ScrollView
@@ -79,27 +79,18 @@ const Recommendations: React.FC<Props> = ({
         contentContainerStyle={styles.scrollView}
         showsHorizontalScrollIndicator={false}
         pagingEnabled={true}
-        scrollEventThrottle={16}
-        snapToInterval={s(325)}
+        snapToInterval={s(320.5)}
         snapToAlignment={'start'}
-        decelerationRate={'fast'}
-        onScroll={event => {
-          let idx = Math.round(event.nativeEvent.contentOffset.x / s(325));
-          if (idx !== index) {
-            setIndex(idx);
-          }
-        }}>
+        decelerationRate={'fast'}>
         {recommendations.map((recommendation, idx) => (
-          <View key={idx}>
-            <View style={styles.header}>
-              <Text size="s" weight="l">
-                {strings.event.suggestion} #{idx + 1}
-              </Text>
-            </View>
-            <ScrollView
-              contentContainerStyle={styles.scrollViewVertical}
-              showsVerticalScrollIndicator={false}
-              onTouchStart={() => Keyboard.dismiss()}>
+          <ScrollView
+            key={idx}
+            contentContainerStyle={{
+              paddingBottom: insets.bottom + s(75),
+            }}
+            showsVerticalScrollIndicator={false}
+            onTouchStart={() => Keyboard.dismiss()}>
+            <View style={[styles.scrollViewVertical, STYLES.shadow]}>
               {recommendation.places.map((destination: Poi, i: number) => (
                 <View key={i}>
                   <View style={styles.container}>
@@ -130,8 +121,34 @@ const Recommendations: React.FC<Props> = ({
                   </View>
                 </View>
               ))}
-            </ScrollView>
-          </View>
+              <TouchableOpacity
+                style={styles.accept}
+                onPress={() => {
+                  LayoutAnimation.configureNext(
+                    LayoutAnimation.Presets.easeInEaseOut,
+                  );
+                  setRecommendationsShown(false);
+                  setDestinations(recommendations[idx].places);
+                  setDestinationNames(
+                    new Map(
+                      recommendations[idx].places.map(
+                        (place: Poi, i: number) => [
+                          place.id,
+                          recommendations[idx].categories[i],
+                        ],
+                      ),
+                    ),
+                  );
+                }}>
+                <View style={STYLES.icon}>
+                  <Icon icon={icons.check} color={colors[theme].primary} />
+                </View>
+                <Text size="s" color={colors[theme].primary}>
+                  {strings.event.accept}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
         ))}
       </ScrollView>
       <View style={styles.absolute}>
@@ -139,56 +156,22 @@ const Recommendations: React.FC<Props> = ({
           colors={[colors[theme].transparent, colors[theme].background]}
           start={{x: 0, y: 0}}
           end={{x: 0, y: 1}}
-          locations={[0, 0.25]}>
+          locations={[0, 0.1]}>
           <SafeAreaView>
             <View style={styles.footer}>
-              <View style={styles.buttons}>
-                <TouchableOpacity
-                  style={[
-                    styles.button,
-                    {backgroundColor: colors[theme].accent},
-                  ]}
-                  onPress={() => {
-                    LayoutAnimation.configureNext(
-                      LayoutAnimation.Presets.easeInEaseOut,
-                    );
-                    setRecommendationsShown(false);
-                    setDestinations(recommendations[index].places);
-                    setDestinationNames(
-                      new Map(
-                        recommendations[index].places.map(
-                          (place: Poi, idx: number) => [
-                            place.id,
-                            recommendations[index].categories[idx],
-                          ],
-                        ),
-                      ),
-                    );
-                  }}>
-                  <View style={STYLES.icon}>
-                    <Icon icon={icons.check} color={colors[theme].primary} />
-                  </View>
-                  <Text size="s" color={colors[theme].primary}>
-                    {strings.event.accept}
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[
-                    styles.button,
-                    {backgroundColor: colors[theme].secondary},
-                  ]}
-                  onPress={() => {
-                    LayoutAnimation.configureNext(
-                      LayoutAnimation.Presets.easeInEaseOut,
-                    );
-                    setRecommendationsShown(false);
-                  }}>
-                  <View style={STYLES.icon}>
-                    <Icon icon={icons.hide} />
-                  </View>
-                  <Text size="s">{strings.event.hide}</Text>
-                </TouchableOpacity>
-              </View>
+              <TouchableOpacity
+                style={styles.hide}
+                onPress={() => {
+                  LayoutAnimation.configureNext(
+                    LayoutAnimation.Presets.easeInEaseOut,
+                  );
+                  setRecommendationsShown(false);
+                }}>
+                <View style={STYLES.icon}>
+                  <Icon icon={icons.hide} />
+                </View>
+                <Text size="s">{strings.event.hide}</Text>
+              </TouchableOpacity>
             </View>
           </SafeAreaView>
         </LinearGradient>
@@ -199,25 +182,18 @@ const Recommendations: React.FC<Props> = ({
 
 const styling = (theme: 'light' | 'dark') =>
   StyleSheet.create({
-    header: {
-      flexDirection: 'row',
-      justifyContent: 'center',
-      marginLeft: s(15),
-      marginTop: s(5),
-      paddingBottom: s(5),
-      borderBottomWidth: 1,
-      borderColor: colors[theme].secondary,
-    },
     scrollView: {
-      paddingLeft: s(5),
-      paddingRight: s(20),
+      paddingLeft: s(15),
+      paddingRight: s(15),
     },
     scrollViewVertical: {
-      paddingBottom: s(100),
+      margin: s(3),
+      borderRadius: s(5),
+      backgroundColor: colors[theme].primary,
     },
     container: {
-      width: s(310),
-      marginLeft: s(15),
+      width: s(300),
+      marginHorizontal: s(7),
       paddingBottom: s(5),
       borderBottomWidth: 1,
       borderColor: colors[theme].secondary,
@@ -226,33 +202,42 @@ const styling = (theme: 'light' | 'dark') =>
       flexDirection: 'row',
       justifyContent: 'space-between',
       paddingVertical: s(10),
-      paddingHorizontal: s(5),
+      paddingHorizontal: s(10),
     },
     card: {
       marginBottom: s(10),
     },
     footer: {
-      height: s(100),
+      height: s(75),
       width: s(350),
     },
     absolute: {
       position: 'absolute',
       bottom: 0,
     },
-    buttons: {
+    accept: {
       flexDirection: 'row',
-      justifyContent: 'space-between',
-      paddingHorizontal: s(20),
-      paddingVertical: s(10),
-      marginTop: s(30),
-    },
-    button: {
-      flexDirection: 'row',
+      alignSelf: 'center',
       alignItems: 'center',
       justifyContent: 'center',
-      width: s(150),
+      paddingHorizontal: s(20),
       paddingVertical: s(10),
+      marginVertical: s(10),
+      width: s(300),
       borderRadius: s(5),
+      backgroundColor: colors[theme].accent,
+    },
+    hide: {
+      flexDirection: 'row',
+      alignSelf: 'center',
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingHorizontal: s(20),
+      paddingVertical: s(10),
+      marginTop: s(15),
+      width: s(314),
+      borderRadius: s(5),
+      backgroundColor: colors[theme].secondary,
     },
   });
 
