@@ -23,7 +23,7 @@ interface Props {
   bookmarked?: boolean;
   options?: Option[];
   voted?: boolean;
-  onVote?: () => void;
+  onVote?: () => Promise<void>;
 }
 
 const PoiCardXL: React.FC<Props> = ({
@@ -59,7 +59,7 @@ const PoiCardXL: React.FC<Props> = ({
         {!noBookmark ? (
           <Icon
             size="m"
-            disabled={disabled}
+            disabled={disabled || loading}
             icon={bookmarked ? icons.bookmarked : icons.bookmark}
             color={bookmarked ? colors[theme].accent : colors[theme].neutral}
             onPress={() =>
@@ -77,7 +77,7 @@ const PoiCardXL: React.FC<Props> = ({
             disabled={disabled || loading}
             icon={icons.like}
             color={voted ? colors[theme].accent : colors[theme].secondary}
-            onPress={onVote}
+            onPress={() => withLoading(onVote)}
           />
         </View>
       ) : null}

@@ -153,7 +153,7 @@ const Destinations: React.FC<Props> = ({
             ? myVotes.get(selectedDestination?.id) === selectedSuggestion?.id
             : false
         }
-        onVote={() => {
+        onVote={async () => {
           if (selectedDestination && selectedSuggestion) {
             onVote(
               event,

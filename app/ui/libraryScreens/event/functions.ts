@@ -18,7 +18,7 @@ export const onVote = async (
   setMyVotes: (myVotes: Map<number, number>) => void,
   destination: Destination,
   suggestion: Suggestion,
-) => {
+): Promise<void> => {
   const response = await vote(event.id, destination.id, suggestion.id);
 
   if (response) {

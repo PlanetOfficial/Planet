@@ -136,8 +136,8 @@ const DestinationView: React.FC<Props> = ({
                     ? myVotes.get(item.id) === findPrimary(item.suggestions).id
                     : false
                 }
-                onVote={() => {
-                  onVote(
+                onVote={async () => {
+                  await onVote(
                     event,
                     setEventDetail,
                     myVotes,

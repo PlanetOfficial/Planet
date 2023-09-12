@@ -30,7 +30,7 @@ interface SuggestionCardProps {
   eventId: number;
   destination?: Destination;
   voted: boolean;
-  onVote: (suggestion: Suggestion) => void;
+  onVote: (suggestion: Suggestion) => Promise<void>;
 }
 
 const SuggestionCard: React.FC<SuggestionCardProps> = ({
@@ -223,7 +223,7 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
               },
             ]}
             voted={voted}
-            onVote={() => onVote(suggestion)}
+            onVote={async () => await onVote(suggestion)}
           />
         </TouchableOpacity>
       ) : null}
