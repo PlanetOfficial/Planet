@@ -23,11 +23,9 @@ export const getPois = async (
 
   const response = await fetch(
     PoiAPIURL +
-      `/poi?category=${JSON.stringify(
-        category,
-      )}&latitude=${latitude}&longitude=${longitude}&filters=${JSON.stringify(
-        filters,
-      )}` +
+      `/poi?category=${JSON.stringify(category)}&latitude=${latitude.toFixed(
+        5,
+      )}&longitude=${longitude.toFixed(5)}&filters=${JSON.stringify(filters)}` +
       (filters && filters['Open Now'] ? `&time=${new Date()}` : ''),
     {
       method: 'GET',
