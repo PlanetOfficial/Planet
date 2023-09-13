@@ -162,7 +162,7 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
           <PoiCardXL
             place={suggestion.poi}
             width={width}
-            noBookmark={true}
+            withBookmarkIcon={false}
             options={[
               {
                 name: 'See Votes',

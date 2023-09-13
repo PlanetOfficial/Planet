@@ -6,13 +6,11 @@ import colors from '../../constants/colors';
 import icons from '../../constants/icons';
 import STYLING from '../../constants/styles';
 
-import Icon from './Icon';
 import Text from './Text';
+import BookmarkIcon from './BookmarkIcon';
 
 import {Poi} from '../../utils/types';
-import {getInfoString, handleBookmark, useLoadingState} from '../../utils/Misc';
-
-import {useBookmarkContext} from '../../context/BookmarkContext';
+import {getInfoString} from '../../utils/Misc';
 
 interface Props {
   place: Poi;
@@ -24,9 +22,6 @@ const PoiCard: React.FC<Props> = ({place, disabled, bookmarked}) => {
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
   const STYLES = STYLING(theme);
-
-  const {bookmarks, setBookmarks} = useBookmarkContext();
-  const [loading, withLoading] = useLoadingState();
 
   return (
     <View style={[styles.container, STYLES.shadow]}>
@@ -43,14 +38,10 @@ const PoiCard: React.FC<Props> = ({place, disabled, bookmarked}) => {
             {getInfoString(place)}
           </Text>
         </View>
-        <Icon
-          size="m"
-          disabled={disabled || loading}
-          icon={bookmarked ? icons.bookmarked : icons.bookmark}
-          color={bookmarked ? colors[theme].accent : colors[theme].neutral}
-          onPress={() =>
-            withLoading(() => handleBookmark(place, bookmarks, setBookmarks))
-          }
+        <BookmarkIcon
+          place={place}
+          bookmarked={bookmarked}
+          disabled={disabled}
         />
       </View>
     </View>

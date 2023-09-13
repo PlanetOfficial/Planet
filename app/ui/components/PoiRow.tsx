@@ -1,23 +1,16 @@
 import React from 'react';
-import {Image, StyleSheet, View, useColorScheme} from 'react-native';
+import {Image, StyleSheet, View} from 'react-native';
 import {s} from 'react-native-size-matters';
 
-import colors from '../../constants/colors';
 import strings from '../../constants/strings';
 import icons from '../../constants/icons';
 import numbers from '../../constants/numbers';
 
-import Icon from './Icon';
 import Text from './Text';
+import BookmarkIcon from './BookmarkIcon';
 
 import {Category, Coordinate, Poi} from '../../utils/types';
-import {
-  getDistanceFromCoordinates,
-  handleBookmark,
-  useLoadingState,
-} from '../../utils/Misc';
-
-import {useBookmarkContext} from '../../context/BookmarkContext';
+import {getDistanceFromCoordinates} from '../../utils/Misc';
 
 interface Props {
   place: Poi;
@@ -27,11 +20,6 @@ interface Props {
 }
 
 const PoiRow: React.FC<Props> = ({place, bookmarked, myLocation, category}) => {
-  const theme = useColorScheme() || 'light';
-
-  const {bookmarks, setBookmarks} = useBookmarkContext();
-  const [loading, withLoading] = useLoadingState();
-
   const getAddressString = (): string => {
     let poiString: string = '';
 
@@ -89,15 +77,7 @@ const PoiRow: React.FC<Props> = ({place, bookmarked, myLocation, category}) => {
         </Text>
         <Text size="xs">{getInfoString()}</Text>
       </View>
-      <Icon
-        size="l"
-        disabled={loading}
-        icon={bookmarked ? icons.bookmarked : icons.bookmark}
-        color={bookmarked ? colors[theme].accent : colors[theme].neutral}
-        onPress={() =>
-          withLoading(() => handleBookmark(place, bookmarks, setBookmarks))
-        }
-      />
+      <BookmarkIcon place={place} bookmarked={bookmarked} />
     </View>
   );
 };

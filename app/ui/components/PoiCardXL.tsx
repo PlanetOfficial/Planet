@@ -9,17 +9,16 @@ import STYLING from '../../constants/styles';
 import Icon from './Icon';
 import Text from './Text';
 import OptionMenu from './OptionMenu';
+import BookmarkIcon from './BookmarkIcon';
 
 import {Option, Poi} from '../../utils/types';
-import {getInfoString, handleBookmark, useLoadingState} from '../../utils/Misc';
-
-import {useBookmarkContext} from '../../context/BookmarkContext';
+import {getInfoString, useLoadingState} from '../../utils/Misc';
 
 interface Props {
   place: Poi;
   disabled?: boolean;
   width?: Animated.AnimatedInterpolation<string | number> | number;
-  noBookmark?: boolean;
+  withBookmarkIcon?: boolean;
   bookmarked?: boolean;
   options?: Option[];
   voted?: boolean;
@@ -30,8 +29,8 @@ const PoiCardXL: React.FC<Props> = ({
   place,
   disabled = false,
   width,
-  noBookmark = false,
-  bookmarked,
+  withBookmarkIcon = true,
+  bookmarked = false,
   options,
   voted,
   onVote,
@@ -40,7 +39,6 @@ const PoiCardXL: React.FC<Props> = ({
   const styles = styling(theme);
   const STYLES = STYLING(theme);
 
-  const {bookmarks, setBookmarks} = useBookmarkContext();
   const [loading, withLoading] = useLoadingState();
 
   return (
@@ -56,15 +54,11 @@ const PoiCardXL: React.FC<Props> = ({
             {getInfoString(place)}
           </Text>
         </View>
-        {!noBookmark ? (
-          <Icon
-            size="m"
-            disabled={disabled || loading}
-            icon={bookmarked ? icons.bookmarked : icons.bookmark}
-            color={bookmarked ? colors[theme].accent : colors[theme].neutral}
-            onPress={() =>
-              withLoading(() => handleBookmark(place, bookmarks, setBookmarks))
-            }
+        {withBookmarkIcon ? (
+          <BookmarkIcon
+            place={place}
+            bookmarked={bookmarked}
+            disabled={disabled}
           />
         ) : options ? (
           <OptionMenu options={options} />
