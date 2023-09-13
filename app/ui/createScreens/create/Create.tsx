@@ -143,8 +143,6 @@ const Create = ({
       ) : recommendationsShown ? (
         <Recommendations
           navigation={navigation}
-          bookmarks={bookmarks}
-          setBookmarks={setBookmarks}
           setRecommendationsShown={setRecommendationsShown}
           setDestinations={setDestinations}
           setDestinationNames={setDestinationNames}

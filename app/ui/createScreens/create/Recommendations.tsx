@@ -24,13 +24,11 @@ import Text from '../../components/Text';
 import PoiCardXL from '../../components/PoiCardXL';
 
 import {Coordinate, Poi, Recommendation} from '../../../utils/types';
-import {fetchUserLocation, handleBookmark} from '../../../utils/Misc';
+import {fetchUserLocation} from '../../../utils/Misc';
 import {getRecommendations} from '../../../utils/api/recommenderAPI';
 
 interface Props {
   navigation: any;
-  bookmarks: Poi[];
-  setBookmarks: (bookmarks: Poi[]) => void;
   setRecommendationsShown: (recommendationsShown: boolean) => void;
   setDestinations: (destinations: Poi[]) => void;
   setDestinationNames: (destinationNames: Map<number, string>) => void;
@@ -38,8 +36,6 @@ interface Props {
 
 const Recommendations: React.FC<Props> = ({
   navigation,
-  bookmarks,
-  setBookmarks,
   setRecommendationsShown,
   setDestinations,
   setDestinationNames,
@@ -102,21 +98,10 @@ const Recommendations: React.FC<Props> = ({
                       onPress={() =>
                         navigation.navigate('Poi', {
                           poi: destination,
-                          bookmarked: bookmarks.some(
-                            bookmark => bookmark.id === destination.id,
-                          ),
                           mode: 'inCreate',
                         })
                       }>
-                      <PoiCardXL
-                        place={destination}
-                        bookmarked={bookmarks.some(
-                          bookmark => bookmark.id === destination.id,
-                        )}
-                        handleBookmark={(poi: Poi) =>
-                          handleBookmark(poi, bookmarks, setBookmarks)
-                        }
-                      />
+                      <PoiCardXL place={destination} />
                     </TouchableOpacity>
                   </View>
                 </View>
