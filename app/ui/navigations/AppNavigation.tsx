@@ -29,7 +29,7 @@ import Requests from '../friendsScreens/requests/Requests';
 import User from '../friendsScreens/user/User';
 
 import Event from '../libraryScreens/event/Event';
-import EventChat from '../libraryScreens/event/EventChat';
+import EventChat from '../libraryScreens/eventChat/EventChat';
 import EventSettings from '../libraryScreens/eventSettings/EventSettings';
 import Notifications from '../libraryScreens/notifications/Notifications';
 import Roulette from '../libraryScreens/roulette/Roulette';
