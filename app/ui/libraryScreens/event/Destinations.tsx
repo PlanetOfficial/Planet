@@ -148,7 +148,7 @@ const Destinations: React.FC<Props> = ({
         }
         onVote={async () => {
           if (selectedDestination && selectedSuggestion) {
-            onVote(
+            await onVote(
               event,
               setEventDetail,
               myVotes,
