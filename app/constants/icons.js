@@ -11,6 +11,7 @@ const icons = {
   bookmarked: require('../assets/icons/bookmarked.png'),
   calendar: require('../assets/icons/calendar.png'),
   call: require('../assets/icons/call.png'),
+  chat: require('../assets/icons/messenger.png'),
   check: require('../assets/icons/check.png'),
   checked: require('../assets/icons/checked.png'),
   close: require('../assets/icons/x.png'),

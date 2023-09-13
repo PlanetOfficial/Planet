@@ -355,6 +355,10 @@ const strings = {
     searchPlace: 'Unable to search for places. Please try again later.',
     noResultsFound: 'No Results Found',
     noResultsFoundDescription: 'Try searching for something else',
+    internalError: 'Internal error retrieving chat, please try again later.',
+    chatNotExist: 'Chat does not exist.',
+    generalChatError:
+      'Error retrieving chat, chats may not be available for this event. Try creating a new event.',
   },
 };
 
