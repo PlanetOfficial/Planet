@@ -18,7 +18,6 @@ import PoiCardXL from '../../components/PoiCardXL';
 import OptionMenu from '../../components/OptionMenu';
 
 import {Poi} from '../../../utils/types';
-import {handleBookmark} from '../../../utils/Misc';
 
 import {handleMove} from './functions';
 import AddSeparator from './AddSeparator';
@@ -27,8 +26,6 @@ interface Props {
   navigation: any;
   destinations: Poi[];
   setDestinations: (destinations: Poi[]) => void;
-  bookmarks: Poi[];
-  setBookmarks: (bookmarks: Poi[]) => void;
   setInsertionIndex: (insertionIndex: number) => void;
   destinationNames: Map<number, string>;
 }
@@ -37,8 +34,6 @@ const DestinationsList: React.FC<Props> = ({
   navigation,
   destinations,
   setDestinations,
-  bookmarks,
-  setBookmarks,
   setInsertionIndex,
   destinationNames,
 }) => {
@@ -117,21 +112,10 @@ const DestinationsList: React.FC<Props> = ({
               onPress={() =>
                 navigation.navigate('Poi', {
                   poi: destination,
-                  bookmarked: bookmarks.some(
-                    bookmark => bookmark.id === destination.id,
-                  ),
                   mode: 'inCreate',
                 })
               }>
-              <PoiCardXL
-                place={destination}
-                bookmarked={bookmarks.some(
-                  bookmark => bookmark.id === destination.id,
-                )}
-                handleBookmark={(poi: Poi) =>
-                  handleBookmark(poi, bookmarks, setBookmarks)
-                }
-              />
+              <PoiCardXL place={destination} />
             </TouchableOpacity>
           </View>
           <TouchableOpacity

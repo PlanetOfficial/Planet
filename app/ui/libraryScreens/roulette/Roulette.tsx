@@ -15,8 +15,6 @@ import {getCurrentSuggestion} from './functions';
 import Spinner from './Spinner';
 import Info from './Info';
 
-import {useBookmarkContext} from '../../../context/BookmarkContext';
-
 const Roulette = ({
   navigation,
   route,
@@ -37,8 +35,6 @@ const Roulette = ({
   const [destination, setDestination] = useState<Destination>(
     route.params.destination,
   );
-
-  const {bookmarks, setBookmarks} = useBookmarkContext();
 
   const rotation = useSharedValue(0);
   const [currentAngle, setCurrentAngle] = useState<number>(rotation.value);
@@ -84,8 +80,6 @@ const Roulette = ({
         navigation={navigation}
         isSpinning={isSpinning}
         currentSuggestion={currentSuggestion}
-        bookmarks={bookmarks}
-        setBookmarks={setBookmarks}
         totalVotes={totalVotes}
       />
 

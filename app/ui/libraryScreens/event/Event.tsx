@@ -20,8 +20,6 @@ import {postSuggestion} from '../../../utils/api/suggestionAPI';
 import Header from './Header';
 import Destinations from './Destinations';
 
-import {useBookmarkContext} from '../../../context/BookmarkContext';
-
 const EventPage = ({
   navigation,
   route,
@@ -51,8 +49,6 @@ const EventPage = ({
     useState<boolean>(false);
   const [insertionDestination, setInsertionDestination] =
     useState<Destination>();
-
-  const {bookmarks, setBookmarks} = useBookmarkContext();
 
   const loadData = useCallback(async () => {
     const myUserId = await EncryptedStorage.getItem('user_id');
@@ -159,8 +155,6 @@ const EventPage = ({
           onSuggestionClose={onSuggestionClose}
           myVotes={myVotes}
           setMyVotes={setMyVotes}
-          bookmarks={bookmarks}
-          setBookmarks={setBookmarks}
           refreshing={refreshing}
           setRefreshing={setRefreshing}
           resetFlag={resetFlag}

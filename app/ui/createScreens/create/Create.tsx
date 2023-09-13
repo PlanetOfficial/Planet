@@ -23,8 +23,6 @@ import SaveButton from './SaveButton';
 import DestinationsList from './DestinationsList';
 import Recommendations from './Recommendations';
 
-import {useBookmarkContext} from '../../../context/BookmarkContext';
-
 const Create = ({
   navigation,
   route,
@@ -53,8 +51,6 @@ const Create = ({
   );
   const [recommendationsShown, setRecommendationsShown] =
     useState<boolean>(true);
-
-  const {bookmarks, setBookmarks} = useBookmarkContext();
 
   const addMembers = useCallback(() => {
     const _members = route.params?.members;
@@ -141,16 +137,12 @@ const Create = ({
           navigation={navigation}
           destinations={destinations}
           setDestinations={setDestinations}
-          bookmarks={bookmarks}
-          setBookmarks={setBookmarks}
           setInsertionIndex={setInsertionIndex}
           destinationNames={destinationNames}
         />
       ) : recommendationsShown ? (
         <Recommendations
           navigation={navigation}
-          bookmarks={bookmarks}
-          setBookmarks={setBookmarks}
           setRecommendationsShown={setRecommendationsShown}
           setDestinations={setDestinations}
           setDestinationNames={setDestinationNames}
