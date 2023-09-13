@@ -131,12 +131,10 @@ const Recommendations: React.FC<Props> = ({
                   setDestinations(recommendation.places);
                   setDestinationNames(
                     new Map(
-                      recommendations[idx].places.map(
-                        (place: Poi, i: number) => [
-                          place.id,
-                          recommendations[idx].categories[i],
-                        ],
-                      ),
+                      recommendation.places.map((place: Poi, i: number) => [
+                        place.id,
+                        recommendation.categories[i],
+                      ]),
                     ),
                   );
                 }}>
