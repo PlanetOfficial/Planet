@@ -23,7 +23,6 @@ import {
   Destination,
   Event,
   EventDetail,
-  Poi,
   Suggestion,
 } from '../../../utils/types';
 
@@ -39,7 +38,6 @@ interface Props {
   onSuggestionClose: () => void;
   myVotes: Map<number, number>;
   setMyVotes: (myVotes: Map<number, number>) => void;
-  bookmarks: Poi[];
   refreshing: boolean;
   setRefreshing: (refreshing: boolean) => void;
   setInsertionDestination: (insertionDestination: Destination) => void;
@@ -60,7 +58,6 @@ const DestinationView: React.FC<Props> = ({
   onSuggestionClose,
   myVotes,
   setMyVotes,
-  bookmarks,
   refreshing,
   setRefreshing,
   setInsertionDestination,
@@ -116,20 +113,12 @@ const DestinationView: React.FC<Props> = ({
               onPress={() =>
                 navigation.navigate('Poi', {
                   poi: findPrimary(item.suggestions).poi,
-                  bookmarked: bookmarks.some(
-                    bookmark =>
-                      bookmark.id === findPrimary(item.suggestions).poi.id,
-                  ),
                   mode: 'none',
                 })
               }>
               <PoiCardXL
                 place={findPrimary(item.suggestions).poi}
                 disabled={displayingSuggestion}
-                bookmarked={bookmarks.some(
-                  bookmark =>
-                    bookmark.id === findPrimary(item.suggestions).poi.id,
-                )}
                 width={item.id === selectedDestination?.id ? cardWidth : s(310)}
                 voted={
                   findPrimary(item.suggestions)

@@ -26,7 +26,6 @@ interface Props {
   filterRef: any;
   mapRef: React.RefObject<MapView>;
   scrollViewRef: React.RefObject<ScrollView>;
-  bookmarks: Poi[];
   myLocation: Coordinate;
   category: Category;
   mode: ExploreModes;
@@ -41,7 +40,6 @@ const Results: React.FC<Props> = ({
   filterRef,
   mapRef,
   scrollViewRef,
-  bookmarks,
   myLocation,
   category,
   mode,
@@ -64,16 +62,12 @@ const Results: React.FC<Props> = ({
               onPress={() =>
                 navigation.navigate('Poi', {
                   poi: item,
-                  bookmarked: bookmarks.some(
-                    bookmark => bookmark.id === item.id,
-                  ),
                   mode: mode,
                   category: category.name,
                 })
               }>
               <PoiRow
                 place={item}
-                bookmarked={bookmarks.some(bookmark => bookmark.id === item.id)}
                 myLocation={myLocation}
                 category={category}
               />
@@ -140,17 +134,11 @@ const Results: React.FC<Props> = ({
             onPress={() =>
               navigation.navigate('Poi', {
                 poi: place,
-                bookmarked: bookmarks.some(
-                  bookmark => bookmark.id === place.id,
-                ),
                 mode: mode,
                 category: category.name,
               })
             }>
-            <PoiCardXL
-              place={place}
-              bookmarked={bookmarks.some(bookmark => bookmark.id === place.id)}
-            />
+            <PoiCardXL place={place} />
           </TouchableOpacity>
         ))}
       </ScrollView>

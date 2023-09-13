@@ -15,10 +15,9 @@ import {getInfoString} from '../../utils/Misc';
 interface Props {
   place: Poi;
   disabled?: boolean;
-  bookmarked: boolean;
 }
 
-const PoiCard: React.FC<Props> = ({place, disabled, bookmarked}) => {
+const PoiCard: React.FC<Props> = ({place, disabled}) => {
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
   const STYLES = STYLING(theme);
@@ -38,11 +37,7 @@ const PoiCard: React.FC<Props> = ({place, disabled, bookmarked}) => {
             {getInfoString(place)}
           </Text>
         </View>
-        <BookmarkIcon
-          place={place}
-          bookmarked={bookmarked}
-          disabled={disabled}
-        />
+        <BookmarkIcon place={place} disabled={disabled} />
       </View>
     </View>
   );

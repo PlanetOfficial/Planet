@@ -14,12 +14,11 @@ import {getDistanceFromCoordinates} from '../../utils/Misc';
 
 interface Props {
   place: Poi;
-  bookmarked: boolean;
   myLocation?: Coordinate;
   category?: Category;
 }
 
-const PoiRow: React.FC<Props> = ({place, bookmarked, myLocation, category}) => {
+const PoiRow: React.FC<Props> = ({place, myLocation, category}) => {
   const getAddressString = (): string => {
     let poiString: string = '';
 
@@ -77,7 +76,7 @@ const PoiRow: React.FC<Props> = ({place, bookmarked, myLocation, category}) => {
         </Text>
         <Text size="xs">{getInfoString()}</Text>
       </View>
-      <BookmarkIcon place={place} bookmarked={bookmarked} />
+      <BookmarkIcon place={place} />
     </View>
   );
 };

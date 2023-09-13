@@ -22,8 +22,6 @@ import Header from './Header';
 import SaveButton from './SaveButton';
 import DestinationsList from './DestinationsList';
 
-import {useBookmarkContext} from '../../../context/BookmarkContext';
-
 const Create = ({
   navigation,
   route,
@@ -51,8 +49,6 @@ const Create = ({
   const [destinationNames, setDestinationNames] = useState<Map<number, string>>(
     new Map(),
   );
-
-  const {bookmarks} = useBookmarkContext();
 
   const addMembers = useCallback(() => {
     const _members = route.params?.members;
@@ -138,7 +134,6 @@ const Create = ({
           navigation={navigation}
           destinations={destinations}
           setDestinations={setDestinations}
-          bookmarks={bookmarks}
           setInsertionIndex={setInsertionIndex}
           destinationNames={destinationNames}
         />

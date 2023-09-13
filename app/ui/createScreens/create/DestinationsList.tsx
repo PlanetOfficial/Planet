@@ -26,7 +26,6 @@ interface Props {
   navigation: any;
   destinations: Poi[];
   setDestinations: (destinations: Poi[]) => void;
-  bookmarks: Poi[];
   setInsertionIndex: (insertionIndex: number) => void;
   destinationNames: Map<number, string>;
 }
@@ -35,7 +34,6 @@ const DestinationsList: React.FC<Props> = ({
   navigation,
   destinations,
   setDestinations,
-  bookmarks,
   setInsertionIndex,
   destinationNames,
 }) => {
@@ -114,18 +112,10 @@ const DestinationsList: React.FC<Props> = ({
               onPress={() =>
                 navigation.navigate('Poi', {
                   poi: destination,
-                  bookmarked: bookmarks.some(
-                    bookmark => bookmark.id === destination.id,
-                  ),
                   mode: 'inCreate',
                 })
               }>
-              <PoiCardXL
-                place={destination}
-                bookmarked={bookmarks.some(
-                  bookmark => bookmark.id === destination.id,
-                )}
-              />
+              <PoiCardXL place={destination} />
             </TouchableOpacity>
           </View>
           <TouchableOpacity

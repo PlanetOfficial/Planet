@@ -20,8 +20,6 @@ import PoiCard from '../../components/PoiCard';
 
 import {Coordinate, Poi, Recommendation} from '../../../utils/types';
 
-import {useBookmarkContext} from '../../../context/BookmarkContext';
-
 interface Props {
   navigation: any;
   location: Coordinate;
@@ -40,8 +38,6 @@ const Recommendations: React.FC<Props> = ({
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
   const STYLES = STYLING(theme);
-
-  const {bookmarks} = useBookmarkContext();
 
   return (
     <>
@@ -78,18 +74,10 @@ const Recommendations: React.FC<Props> = ({
                     onPress={() => {
                       navigation.navigate('Poi', {
                         poi: place,
-                        bookmarked: bookmarks.some(
-                          (bookmark: Poi) => bookmark.id === place.id,
-                        ),
                         mode: 'none',
                       });
                     }}>
-                    <PoiCard
-                      place={place}
-                      bookmarked={bookmarks.some(
-                        (bookmark: Poi) => bookmark.id === place.id,
-                      )}
-                    />
+                    <PoiCard place={place} />
                   </TouchableOpacity>
                 </View>
               ))}

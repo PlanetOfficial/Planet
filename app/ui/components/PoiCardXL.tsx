@@ -19,7 +19,6 @@ interface Props {
   disabled?: boolean;
   width?: Animated.AnimatedInterpolation<string | number> | number;
   withBookmarkIcon?: boolean;
-  bookmarked?: boolean;
   options?: Option[];
   voted?: boolean;
   onVote?: () => Promise<void>;
@@ -30,7 +29,6 @@ const PoiCardXL: React.FC<Props> = ({
   disabled = false,
   width,
   withBookmarkIcon = true,
-  bookmarked = false,
   options,
   voted,
   onVote,
@@ -55,11 +53,7 @@ const PoiCardXL: React.FC<Props> = ({
           </Text>
         </View>
         {withBookmarkIcon ? (
-          <BookmarkIcon
-            place={place}
-            bookmarked={bookmarked}
-            disabled={disabled}
-          />
+          <BookmarkIcon place={place} disabled={disabled} />
         ) : options ? (
           <OptionMenu options={options} />
         ) : null}

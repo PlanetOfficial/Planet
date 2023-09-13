@@ -15,13 +15,12 @@ import Text from '../../components/Text';
 import PoiCard from '../../components/PoiCard';
 import UserIcon from '../../components/UserIcon';
 
-import {Poi, Suggestion, UserInfo} from '../../../utils/types';
+import {Suggestion, UserInfo} from '../../../utils/types';
 
 interface Props {
   navigation: any;
   isSpinning: boolean;
   currentSuggestion: Suggestion;
-  bookmarks: Poi[];
   totalVotes: number;
 }
 
@@ -29,7 +28,6 @@ const Info: React.FC<Props> = ({
   navigation,
   isSpinning,
   currentSuggestion,
-  bookmarks,
   totalVotes,
 }) => {
   const theme = useColorScheme() || 'light';
@@ -42,19 +40,10 @@ const Info: React.FC<Props> = ({
         onPress={() => {
           navigation.navigate('Poi', {
             poi: currentSuggestion.poi,
-            bookmarked: bookmarks.some(
-              bookmark => bookmark.id === currentSuggestion.poi.id,
-            ),
             mode: 'none',
           });
         }}>
-        <PoiCard
-          place={currentSuggestion.poi}
-          disabled={isSpinning}
-          bookmarked={bookmarks.some(
-            bookmark => bookmark.id === currentSuggestion.poi.id,
-          )}
-        />
+        <PoiCard place={currentSuggestion.poi} disabled={isSpinning} />
       </TouchableOpacity>
       <View style={styles.votes}>
         <Text size="s">{`${strings.roulette.votes} (${currentSuggestion.votes.length}/${totalVotes}):`}</Text>

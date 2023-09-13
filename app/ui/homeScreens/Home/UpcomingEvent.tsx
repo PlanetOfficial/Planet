@@ -18,9 +18,7 @@ import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 import PoiCard from '../../components/PoiCard';
 
-import {useBookmarkContext} from '../../../context/BookmarkContext';
-
-import {Destination, EventDetail, Poi, Suggestion} from '../../../utils/types';
+import {Destination, EventDetail, Suggestion} from '../../../utils/types';
 
 interface Props {
   navigation: any;
@@ -31,8 +29,6 @@ const UpcomingEvent: React.FC<Props> = ({navigation, upcomingEvent}) => {
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
   const STYLES = STYLING(theme);
-
-  const {bookmarks} = useBookmarkContext();
 
   return (
     <>
@@ -76,18 +72,10 @@ const UpcomingEvent: React.FC<Props> = ({navigation, upcomingEvent}) => {
                     onPress={() => {
                       navigation.navigate('Poi', {
                         poi: poi,
-                        bookmarked: bookmarks.some(
-                          (bookmark: Poi) => bookmark.id === poi.id,
-                        ),
                         mode: 'none',
                       });
                     }}>
-                    <PoiCard
-                      place={poi}
-                      bookmarked={bookmarks.some(
-                        (bookmark: Poi) => bookmark.id === poi.id,
-                      )}
-                    />
+                    <PoiCard place={poi} />
                   </TouchableOpacity>
                 );
               })}

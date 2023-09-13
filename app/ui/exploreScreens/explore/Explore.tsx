@@ -208,15 +208,10 @@ const Explore = ({
                 onPress={() =>
                   navigation.navigate('Poi', {
                     poi: item,
-                    bookmarked: true,
                     mode: mode,
                   })
                 }>
-                <PoiRow
-                  place={item}
-                  bookmarked={true}
-                  myLocation={myLocation}
-                />
+                <PoiRow place={item} myLocation={myLocation} />
               </TouchableOpacity>
             );
           }}

@@ -28,7 +28,6 @@ import {getPois} from '../../../utils/api/poiAPI';
 import {isLocationOffset, getRegionFromPoints} from '../../../utils/Misc';
 import {Poi, Coordinate, Category, ExploreModes} from '../../../utils/types';
 
-import {useBookmarkContext} from '../../../context/BookmarkContext';
 import {useLocationContext} from '../../../context/LocationContext';
 
 import Map from './Map';
@@ -70,7 +69,6 @@ const SearchCategory = ({
   const [places, setPlaces] = useState<Poi[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
-  const {bookmarks} = useBookmarkContext();
 
   const {location, setLocation} = useLocationContext();
   const [tempLocation, setTempLocation] = useState<Coordinate>(location);
@@ -276,7 +274,6 @@ const SearchCategory = ({
             filterRef={filterRef}
             mapRef={mapRef}
             scrollViewRef={scrollViewRef}
-            bookmarks={bookmarks}
             myLocation={myLocation}
             category={category}
             mode={mode}

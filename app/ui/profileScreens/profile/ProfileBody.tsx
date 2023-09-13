@@ -62,11 +62,10 @@ const ProfileBody: React.FC<Props> = ({navigation, myLocation}) => {
               onPress={() =>
                 navigation.navigate('Poi', {
                   poi: item,
-                  bookmarked: true,
                   mode: 'none',
                 })
               }>
-              <PoiRow place={item} bookmarked={true} myLocation={myLocation} />
+              <PoiRow place={item} myLocation={myLocation} />
             </TouchableOpacity>
           );
         }}

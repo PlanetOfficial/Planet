@@ -19,7 +19,6 @@ import {makePrimary, removeSuggestion} from '../../../utils/api/suggestionAPI';
 
 interface SuggestionCardProps {
   navigation: any;
-  bookmarked: boolean;
   suggestion?: Suggestion;
   onSuggestionClose: () => void;
   loadData: () => void;
@@ -35,7 +34,6 @@ interface SuggestionCardProps {
 
 const SuggestionCard: React.FC<SuggestionCardProps> = ({
   navigation,
-  bookmarked,
   suggestion,
   onSuggestionClose,
   loadData,
@@ -155,7 +153,6 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
             }, 1000);
             navigation.navigate('Poi', {
               poi: suggestion.poi,
-              bookmarked: bookmarked,
               mode: 'none',
             });
           }}>
