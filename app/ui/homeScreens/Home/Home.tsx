@@ -51,28 +51,32 @@ const Home = ({navigation}: {navigation: any}) => {
     setUpcomingEvent(_event);
   }, []);
 
-  const loadRecommendations = useCallback(async (loc: Coordinate) => {
-    setRecommendationsLoading(true);
+  const loadRecommendations = useCallback(
+    async (loc: Coordinate, reload: boolean) => {
+      setRecommendationsLoading(true);
 
-    const _recommendations = await getRecommendations(
-      loc?.latitude,
-      loc?.longitude,
-    );
-    if (_recommendations) {
-      setRecommendations(_recommendations);
-    } else {
-      Alert.alert(strings.error.error, strings.error.loadRecommendations);
-    }
+      const _recommendations = await getRecommendations(
+        loc?.latitude,
+        loc?.longitude,
+        reload,
+      );
+      if (_recommendations) {
+        setRecommendations(_recommendations);
+      } else {
+        Alert.alert(strings.error.error, strings.error.loadRecommendations);
+      }
 
-    setRecommendationsLoading(false);
-  }, []);
+      setRecommendationsLoading(false);
+    },
+    [],
+  );
 
   useEffect(() => {
     const initializeRecommendations = async () => {
       const _location = await fetchUserLocation();
 
       setMyLocation(_location);
-      loadRecommendations(_location);
+      loadRecommendations(_location, false);
     };
 
     initializeRecommendations();

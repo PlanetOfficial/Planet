@@ -229,6 +229,9 @@ const strings = {
     removeMember: 'Remove Member',
     removeMemberInfo: 'Are you sure you want to remove this member?',
     duplicate: 'Clone',
+    suggestion: 'Suggestion',
+    accept: 'Customize this Suggestion',
+    hide: 'Hide Suggestions',
   },
   roulette: {
     total: 'Total',
