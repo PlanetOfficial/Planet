@@ -35,7 +35,7 @@ import {
 
 import {useLocationContext} from '../../../context/LocationContext';
 
-const SearchMap = ({
+const SetSearchLocation = ({
   navigation,
   route,
 }: {
@@ -226,4 +226,4 @@ const styling = (theme: 'light' | 'dark') =>
     },
   });
 
-export default SearchMap;
+export default SetSearchLocation;

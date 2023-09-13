@@ -47,7 +47,7 @@ import Settings from '../profileScreens/settingsScreens/Settings';
 import Explore from '../exploreScreens/explore/Explore';
 import AllCategories from '../exploreScreens/allCategories/AllCategories';
 import SearchCategory from '../exploreScreens/searchCategory/SearchCategory';
-import SearchMap from '../exploreScreens/searchMap/SearchMap';
+import SetSearchLocation from '../exploreScreens/setSearchLocation/SetSearchLocation';
 
 import {BookmarkStateProvider} from '../../context/BookmarkContext';
 import {FriendsStateProvider} from '../../context/FriendsContext';
@@ -129,8 +129,8 @@ const mainStackScreens = () => (
 
     <Stack.Screen name="SearchCategory" component={SearchCategory} />
     <Stack.Screen
-      name="SearchMap"
-      component={SearchMap}
+      name="SetSearchLocation"
+      component={SetSearchLocation}
       options={{
         presentation: 'modal',
         gestureEnabled: false,

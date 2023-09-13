@@ -164,7 +164,7 @@ const Explore = ({
                     : colors[theme].secondary
                 }
                 onPress={() => {
-                  navigation.navigate('SearchMap', {
+                  navigation.navigate('SetSearchLocation', {
                     myLocation,
                   });
                 }}
