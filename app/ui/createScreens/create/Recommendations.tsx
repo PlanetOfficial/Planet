@@ -128,7 +128,7 @@ const Recommendations: React.FC<Props> = ({
                     LayoutAnimation.Presets.easeInEaseOut,
                   );
                   setRecommendationsShown(false);
-                  setDestinations(recommendations[idx].places);
+                  setDestinations(recommendation.places);
                   setDestinationNames(
                     new Map(
                       recommendations[idx].places.map(
