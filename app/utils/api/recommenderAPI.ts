@@ -9,6 +9,7 @@ import {requestAndValidate} from './authAPI';
 export const getRecommendations = async (
   latitude: number,
   longitude: number,
+  reload: boolean,
 ): Promise<Recommendation[] | null> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
@@ -19,7 +20,8 @@ export const getRecommendations = async (
   const request = async (authtoken: string) => {
     const response = await fetch(
       RecommenderAPIURL +
-        `/recommendation?latitude=${latitude}&longitude=${longitude}`,
+        `/recommendation?latitude=${latitude}&longitude=${longitude}` +
+        (reload ? `&time=${new Date()}` : ''),
       {
         method: 'GET',
         headers: {

@@ -21,6 +21,7 @@ import {Poi, UserInfo} from '../../../utils/types';
 import Header from './Header';
 import SaveButton from './SaveButton';
 import DestinationsList from './DestinationsList';
+import Recommendations from './Recommendations';
 
 const Create = ({
   navigation,
@@ -39,7 +40,6 @@ const Create = ({
 }) => {
   const theme = useColorScheme() || 'light';
   const STYLES = STYLING(theme);
-  StatusBar.setBarStyle(colors[theme].statusBar, true);
 
   const [eventTitle, setEventTitle] = useState<string>('');
   const [date, setDate] = useState<string>();
@@ -49,6 +49,8 @@ const Create = ({
   const [destinationNames, setDestinationNames] = useState<Map<number, string>>(
     new Map(),
   );
+  const [recommendationsShown, setRecommendationsShown] =
+    useState<boolean>(true);
 
   const addMembers = useCallback(() => {
     const _members = route.params?.members;
@@ -108,13 +110,14 @@ const Create = ({
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
+      StatusBar.setBarStyle(colors[theme].statusBar, true);
       addMembers();
       addDestination();
       initializeDestinations();
     });
 
     return unsubscribe;
-  }, [navigation, addMembers, addDestination, initializeDestinations]);
+  }, [navigation, addMembers, addDestination, initializeDestinations, theme]);
 
   return (
     <View style={STYLES.container}>
@@ -137,6 +140,15 @@ const Create = ({
           setInsertionIndex={setInsertionIndex}
           destinationNames={destinationNames}
         />
+      ) : recommendationsShown ? (
+        <Recommendations
+          navigation={navigation}
+          bookmarks={bookmarks}
+          setBookmarks={setBookmarks}
+          setRecommendationsShown={setRecommendationsShown}
+          setDestinations={setDestinations}
+          setDestinationNames={setDestinationNames}
+        />
       ) : (
         <ScrollView
           scrollIndicatorInsets={{right: 1}}
@@ -158,7 +170,7 @@ const Create = ({
           </TouchableOpacity>
         </ScrollView>
       )}
-      {eventTitle ? (
+      {!recommendationsShown ? (
         <SaveButton
           navigation={navigation}
           eventTitle={eventTitle}

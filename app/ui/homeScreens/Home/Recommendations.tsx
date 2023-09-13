@@ -24,7 +24,7 @@ interface Props {
   navigation: any;
   location: Coordinate;
   recommendations: Recommendation[];
-  loadRecommendations: (location: Coordinate) => void;
+  loadRecommendations: (location: Coordinate, reload: boolean) => void;
   recommendationsLoading: boolean;
 }
 
@@ -47,7 +47,7 @@ const Recommendations: React.FC<Props> = ({
           size="s"
           icon={icons.reload}
           onPress={() => {
-            loadRecommendations(location);
+            loadRecommendations(location, true);
           }}
         />
       </View>

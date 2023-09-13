@@ -21,6 +21,7 @@ const icons = {
   edit: require('../assets/icons/edit.png'),
   friends: require('../assets/icons/friends.png'),
   gallery: require('../assets/icons/gallery.png'),
+  hide: require('../assets/icons/hide.png'),
   history: require('../assets/icons/history.png'),
   like: require('../assets/icons/like.png'),
   link: require('../assets/icons/link.png'),
