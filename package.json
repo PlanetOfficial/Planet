@@ -17,7 +17,7 @@
     "@react-native-community/blur": "^4.3.2",
     "@react-native-community/geolocation": "^3.0.5",
     "@react-native-firebase/app": "^18.2.0",
-    "@react-native-firebase/messaging": "^18.2.0",
+    "@react-native-firebase/messaging": "^18.3.1",
     "@react-native-picker/picker": "^2.4.10",
     "@react-native-segmented-control/segmented-control": "^2.4.2",
     "@react-navigation/bottom-tabs": "^6.5.8",
