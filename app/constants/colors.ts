@@ -82,7 +82,7 @@ export const darkChatTheme = {
   label_bg_transparent: '#FFFFFF33', // 33 = 20% opacity
   light_gray: '#DBDDE1',
   modal_shadow: '#00000099', // 99 = 60% opacity; x=0, y= 1, radius=4
-  overlay: '#000000CC', // CC = 80% opacity
+  overlay: '#FFFFFFCC', // CC = 80% opacity
   shadow_icon: '#00000040', // 40 = 25% opacity; x=0, y=0, radius=4
   static_black: dark.neutral,
   static_white: dark.background,
