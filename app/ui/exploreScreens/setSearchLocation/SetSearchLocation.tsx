@@ -35,7 +35,7 @@ import {
 
 import {useLocationContext} from '../../../context/LocationContext';
 
-const SearchMap = ({
+const SetSearchLocation = ({
   navigation,
   route,
 }: {
@@ -54,7 +54,7 @@ const SearchMap = ({
   StatusBar.setBarStyle(colors[theme].statusBar, true);
 
   const {myLocation} = route.params;
-  const {setLocation} = useLocationContext();
+  const {setLocation, locationName, setLocationName} = useLocationContext();
 
   const [searchText, setSearchText] = useState<string>('');
   const [searchResults, setSearchResults] = useState<
@@ -108,10 +108,40 @@ const SearchMap = ({
         contentContainerStyle={STYLES.flatList}
         scrollIndicatorInsets={{right: 1}}
         onScrollBeginDrag={() => Keyboard.dismiss()}>
+        {locationName !== '' ? (
+          <TouchableOpacity
+            style={[
+              styles.borderedRow,
+              {
+                borderColor: colors[theme].accent,
+              },
+            ]}
+            onPress={() => {
+              setLocation(myLocation);
+              setLocationName('');
+              navigation.goBack();
+            }}>
+            <Text color={colors[theme].accent}>
+              {`${strings.explore.selected}: ${locationName}`}
+            </Text>
+            <Icon
+              size="m"
+              icon={icons.locationFilled}
+              color={colors[theme].accent}
+            />
+          </TouchableOpacity>
+        ) : null}
+
         <TouchableOpacity
-          style={styles.yourLocation}
+          style={[
+            styles.borderedRow,
+            {
+              borderColor: colors[theme].blue,
+            },
+          ]}
           onPress={() => {
             setLocation(myLocation);
+            setLocationName('');
             navigation.goBack();
           }}>
           <Text color={colors[theme].blue}>{strings.explore.yourLocation}</Text>
@@ -141,6 +171,7 @@ const SearchMap = ({
                       latitude: response.lat,
                       longitude: response.lng,
                     });
+                    setLocationName(item.structured_formatting.main_text);
                     navigation.goBack();
                   } else {
                     Alert.alert(
@@ -168,17 +199,17 @@ const SearchMap = ({
 
 const styling = (theme: 'light' | 'dark') =>
   StyleSheet.create({
-    yourLocation: {
+    borderedRow: {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
       marginHorizontal: s(20),
+      marginBottom: s(5),
       paddingHorizontal: s(10),
       paddingVertical: s(10),
-      minHeight: s(55),
+      minHeight: s(50),
       borderRadius: s(5),
       borderWidth: 1,
-      borderColor: colors[theme].blue,
     },
     row: {
       flexDirection: 'row',
@@ -195,4 +226,4 @@ const styling = (theme: 'light' | 'dark') =>
     },
   });
 
-export default SearchMap;
+export default SetSearchLocation;

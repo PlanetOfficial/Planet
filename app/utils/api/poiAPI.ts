@@ -14,20 +14,18 @@ export const getPois = async (
   filters?: {[key: string]: string | string[]},
 ): Promise<Poi[] | null> => {
   // rounding the latitude and longitude for caching purposes
-  // note that by adding half of the offset, we round the values instead of truncating
+  // note that by adding half of the offset, we round the values to nearest multiple of locationOffThreshold instead of truncating
   const offset = numbers.locationOffThreshold * 2;
   latitude =
-    Math.round(latitude / offset) * offset + numbers.locationOffThreshold;
+    Math.floor(latitude / offset) * offset + numbers.locationOffThreshold;
   longitude =
-    Math.round(longitude / offset) * offset + numbers.locationOffThreshold;
+    Math.floor(longitude / offset) * offset + numbers.locationOffThreshold;
 
   const response = await fetch(
     PoiAPIURL +
-      `/poi?category=${JSON.stringify(
-        category,
-      )}&latitude=${latitude}&longitude=${longitude}&filters=${JSON.stringify(
-        filters,
-      )}` +
+      `/poi?category=${JSON.stringify(category)}&latitude=${latitude.toFixed(
+        5,
+      )}&longitude=${longitude.toFixed(5)}&filters=${JSON.stringify(filters)}` +
       (filters && filters['Open Now'] ? `&time=${new Date()}` : ''),
     {
       method: 'GET',

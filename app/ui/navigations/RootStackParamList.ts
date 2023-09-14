@@ -18,7 +18,7 @@ type RootStackParamList = {
     myLocation: Coordinate;
     category: Category;
   };
-  SearchMap: {
+  SetSearchLocation: {
     mode: ExploreModes;
     myLocation: Coordinate;
     category: Category;

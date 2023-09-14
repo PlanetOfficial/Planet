@@ -30,6 +30,8 @@ const LocationStateProvider = ({
     longitude: 0,
   });
 
+  const [locationName, setLocationName] = useState<string>('');
+
   const initializeLocation = async () => {
     const result = await fetchUserLocation();
     if (result) {
@@ -40,8 +42,14 @@ const LocationStateProvider = ({
   };
 
   const locationContext = useMemo(
-    () => ({location, setLocation, initializeLocation}),
-    [location],
+    () => ({
+      location,
+      setLocation,
+      locationName,
+      setLocationName,
+      initializeLocation,
+    }),
+    [location, locationName],
   );
 
   useEffect(() => {
