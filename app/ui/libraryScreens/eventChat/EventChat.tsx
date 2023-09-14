@@ -9,8 +9,9 @@ import {
   MessageInput,
   MessageList,
   OverlayProvider,
+  Thread,
 } from 'stream-chat-react-native';
-import type {DeepPartial, Theme} from 'stream-chat-react-native';
+import type {DeepPartial, MessageType, Theme} from 'stream-chat-react-native';
 
 import Icon from '../../components/Icon';
 import Text from '../../components/Text';
@@ -48,9 +49,10 @@ const EventChat = ({
     setTheme(getTheme());
   }, [colorScheme, getTheme]);
 
-  const [channel, setChannel] = useState<ChannelType>();
-  const [streamClient, setStreamClient] = useState<StreamChat | null>();
   const [streamChatApiKey, setStreamChatApiKey] = useState('');
+  const [streamClient, setStreamClient] = useState<StreamChat | null>();
+  const [channel, setChannel] = useState<ChannelType>();
+  const [thread, setThread] = useState<MessageType | null>();
 
   useEffect(() => {
     const setupClient = async () => {
@@ -104,33 +106,43 @@ const EventChat = ({
     setupClient();
   }, [route.params.event.id]);
 
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('blur', async () => {
+  const onBackPress = () => {
+    if (thread) {
+      setThread(undefined);
+    } else {
       setChannel(undefined);
       if (streamChatApiKey.length > 0) {
         const client = StreamChat.getInstance(streamChatApiKey);
         client.disconnectUser();
       }
-    });
 
-    return unsubscribe;
-  }, [navigation, streamChatApiKey]);
+      navigation.goBack();
+    }
+  }
 
   return (
     <OverlayProvider value={{style: theme}}>
       <SafeAreaView>
         <View style={STYLES.header}>
-          <Icon onPress={() => navigation.goBack()} icon={icons.back} />
+          <Icon onPress={onBackPress} icon={icons.back}/>
           <Text size="s">{route.params.event.name}</Text>
-          <Icon icon={icons.back} color={'transparent'} />
+          <Icon icon={icons.back} color={'transparent'}/>
         </View>
       </SafeAreaView>
       <SafeAreaView style={styles.container}>
         {streamClient && channel ? (
           <Chat client={streamClient}>
-            <Channel channel={channel}>
-              <MessageList />
-              <MessageInput />
+            <Channel channel={channel} thread={thread} threadList={!!thread}>
+              {
+                thread ? (
+                  <Thread/>
+                ) : (
+                  <>
+                    <MessageList onThreadSelect={setThread}/>
+                    <MessageInput/>
+                  </>
+                )
+              }
             </Channel>
           </Chat>
         ) : null}

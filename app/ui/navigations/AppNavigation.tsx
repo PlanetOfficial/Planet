@@ -186,7 +186,12 @@ const mainStackScreens = () => (
     />
 
     <Stack.Screen name="Event" component={Event} />
-    <Stack.Screen name="EventChat" component={EventChat} />
+    <Stack.Screen 
+      name="EventChat" 
+      component={EventChat}
+      options={{
+        gestureEnabled: false,
+      }} />
     <Stack.Screen name="EventSettings" component={EventSettings} />
     <Stack.Screen name="Roulette" component={Roulette} />
     <Stack.Screen
