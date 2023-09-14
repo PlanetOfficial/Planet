@@ -37,4 +37,60 @@ const dark = {
   androidNavigationBarStyle: 'light' as 'dark' | 'light',
 };
 
+export const lightChatTheme = {
+  accent_blue: '#005FFF',
+  accent_green: '#20E070',
+  accent_red: '#FF3742',
+  bg_gradient_end: light.background,
+  bg_gradient_start: light.background,
+  black: light.neutral,
+  blue_alice: '#E9F2FF',
+  border: '#00000014', // 14 = 8% opacity; top: x=0, y=-1; bottom: x=0, y=1
+  grey: '#7A7A7A',
+  grey_dark: '#72767E',
+  grey_gainsboro: '#DBDBDB',
+  grey_whisper: '#ECEBEB',
+  icon_background: light.background,
+  label_bg_transparent: '#00000033', // 33 = 20% opacity
+  light_gray: '#DBDDE1',
+  modal_shadow: '#00000099', // 99 = 60% opacity; x=0, y= 1, radius=4
+  overlay: '#000000CC', // CC = 80% opacity
+  shadow_icon: '#00000040', // 40 = 25% opacity; x=0, y=0, radius=4
+  static_black: light.neutral,
+  static_white: light.background,
+  targetedMessageBackground: '#FBF4DD', // dark mode = #302D22
+  transparent: light.background,
+  white: light.background,
+  white_smoke: light.background,
+  white_snow: light.background,
+};
+
+export const darkChatTheme = {
+  accent_blue: '#005FFF',
+  accent_green: '#20E070',
+  accent_red: '#FF3742',
+  bg_gradient_end: dark.background,
+  bg_gradient_start: dark.background,
+  black: dark.neutral,
+  blue_alice: '#E9F2FF',
+  border: '#00000014', // 14 = 8% opacity; top: x=0, y=-1; bottom: x=0, y=1
+  grey: '#7A7A7A',
+  grey_dark: '#72767E',
+  grey_gainsboro: '#242424',
+  grey_whisper: '#131313',
+  icon_background: dark.background,
+  label_bg_transparent: '#FFFFFF33', // 33 = 20% opacity
+  light_gray: '#DBDDE1',
+  modal_shadow: '#00000099', // 99 = 60% opacity; x=0, y= 1, radius=4
+  overlay: '#FFFFFFCC', // CC = 80% opacity
+  shadow_icon: '#00000040', // 40 = 25% opacity; x=0, y=0, radius=4
+  static_black: dark.neutral,
+  static_white: dark.background,
+  targetedMessageBackground: '#302D22', // dark mode = #302D22
+  transparent: dark.background,
+  white: dark.background,
+  white_smoke: dark.background,
+  white_snow: dark.background,
+};
+
 export default {light, dark};

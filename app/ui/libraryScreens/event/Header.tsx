@@ -86,14 +86,15 @@ const Header: React.FC<Props> = ({
             </TouchableOpacity>
           )}
         </View>
-        <Icon
-          color={colors[theme].accent}
-          icon={icons.chat}
-          disabled={displayingSuggestion}
-          button={true}
-          padding={-2}
-          onPress={() => navigation.navigate('EventChat', {event})}
-        />
+        <View style={STYLES.icon}>
+          <Icon
+            icon={icons.chat}
+            disabled={displayingSuggestion}
+            button={true}
+            padding={-2}
+            onPress={() => navigation.navigate('EventChat', {event})}
+          />
+        </View>
         <Icon
           icon={icons.more}
           disabled={displayingSuggestion}

@@ -1,7 +1,7 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, {useEffect, useState} from 'react';
-import {Alert, SafeAreaView} from 'react-native';
+import React, {useCallback, useEffect, useState} from 'react';
+import {Alert, SafeAreaView, View, useColorScheme} from 'react-native';
 import EncryptedStorage from 'react-native-encrypted-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Channel as ChannelType, StreamChat} from 'stream-chat';
 import {
   Channel,
@@ -9,12 +9,20 @@ import {
   MessageInput,
   MessageList,
   OverlayProvider,
+  Thread,
 } from 'stream-chat-react-native';
-import {getEventChatInfo} from '../../../utils/api/eventAPI';
-import {Event} from '../../../utils/types';
+import type {DeepPartial, MessageType, Theme} from 'stream-chat-react-native';
+
 import Icon from '../../components/Icon';
+import Text from '../../components/Text';
+
+import {lightChatTheme, darkChatTheme} from '../../../constants/colors';
 import icons from '../../../constants/icons';
 import strings from '../../../constants/strings';
+import STYLING from '../../../constants/styles';
+
+import {getEventChatInfo} from '../../../utils/api/eventAPI';
+import {Event} from '../../../utils/types';
 
 const EventChat = ({
   navigation,
@@ -27,9 +35,24 @@ const EventChat = ({
     };
   };
 }) => {
-  const [channel, setChannel] = useState<ChannelType>();
-  const [streamClient, setStreamClient] = useState<StreamChat | null>();
+  const colorScheme = useColorScheme();
+  const STYLES = STYLING(colorScheme || 'light');
+  const getTheme = useCallback(
+    (): DeepPartial<Theme> => ({
+      colors: colorScheme === 'dark' ? darkChatTheme : lightChatTheme,
+    }),
+    [colorScheme],
+  );
+  const [theme, setTheme] = useState(getTheme());
+
+  useEffect(() => {
+    setTheme(getTheme());
+  }, [colorScheme, getTheme]);
+
   const [streamChatApiKey, setStreamChatApiKey] = useState('');
+  const [streamClient, setStreamClient] = useState<StreamChat | null>();
+  const [channel, setChannel] = useState<ChannelType>();
+  const [thread, setThread] = useState<MessageType | null>();
 
   useEffect(() => {
     const setupClient = async () => {
@@ -83,27 +106,41 @@ const EventChat = ({
     setupClient();
   }, [route.params.event.id]);
 
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('blur', async () => {
+  const onBackPress = () => {
+    if (thread) {
+      setThread(undefined);
+    } else {
       setChannel(undefined);
       if (streamChatApiKey.length > 0) {
         const client = StreamChat.getInstance(streamChatApiKey);
         client.disconnectUser();
       }
-    });
 
-    return unsubscribe;
-  }, [navigation, streamChatApiKey]);
+      navigation.goBack();
+    }
+  };
 
   return (
-    <OverlayProvider topInset={60}>
+    <OverlayProvider value={{style: theme}}>
+      <SafeAreaView>
+        <View style={STYLES.header}>
+          <Icon onPress={onBackPress} icon={icons.back} />
+          <Text size="s">{route.params.event.name}</Text>
+          <Icon icon={icons.back} color={'transparent'} />
+        </View>
+      </SafeAreaView>
       <SafeAreaView style={styles.container}>
-        <Icon onPress={() => navigation.goBack()} icon={icons.back} />
         {streamClient && channel ? (
           <Chat client={streamClient}>
-            <Channel channel={channel}>
-              <MessageList />
-              <MessageInput />
+            <Channel channel={channel} thread={thread} threadList={!!thread}>
+              {thread ? (
+                <Thread />
+              ) : (
+                <>
+                  <MessageList onThreadSelect={setThread} />
+                  <MessageInput />
+                </>
+              )}
             </Channel>
           </Chat>
         ) : null}
