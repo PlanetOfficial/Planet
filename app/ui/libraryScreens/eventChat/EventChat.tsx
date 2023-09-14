@@ -1,7 +1,7 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, {useEffect, useState} from 'react';
-import {Alert, SafeAreaView} from 'react-native';
+import React, {useCallback, useEffect, useState} from 'react';
+import {Alert, SafeAreaView, View, useColorScheme} from 'react-native';
 import EncryptedStorage from 'react-native-encrypted-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Channel as ChannelType, StreamChat} from 'stream-chat';
 import {
   Channel,
@@ -10,11 +10,18 @@ import {
   MessageList,
   OverlayProvider,
 } from 'stream-chat-react-native';
-import {getEventChatInfo} from '../../../utils/api/eventAPI';
-import {Event} from '../../../utils/types';
+import type {DeepPartial, Theme} from 'stream-chat-react-native';
+
 import Icon from '../../components/Icon';
+import Text from '../../components/Text';
+
+import {lightChatTheme, darkChatTheme} from '../../../constants/colors';
 import icons from '../../../constants/icons';
 import strings from '../../../constants/strings';
+import STYLING from '../../../constants/styles';
+
+import {getEventChatInfo} from '../../../utils/api/eventAPI';
+import {Event} from '../../../utils/types';
 
 const EventChat = ({
   navigation,
@@ -27,6 +34,20 @@ const EventChat = ({
     };
   };
 }) => {
+  const colorScheme = useColorScheme();
+  const STYLES = STYLING(colorScheme || 'light');
+  const getTheme = useCallback(
+    (): DeepPartial<Theme> => ({
+      colors: colorScheme === 'dark' ? darkChatTheme : lightChatTheme,
+    }),
+    [colorScheme],
+  );
+  const [theme, setTheme] = useState(getTheme());
+
+  useEffect(() => {
+    setTheme(getTheme());
+  }, [colorScheme, getTheme]);
+
   const [channel, setChannel] = useState<ChannelType>();
   const [streamClient, setStreamClient] = useState<StreamChat | null>();
   const [streamChatApiKey, setStreamChatApiKey] = useState('');
@@ -96,9 +117,15 @@ const EventChat = ({
   }, [navigation, streamChatApiKey]);
 
   return (
-    <OverlayProvider topInset={60}>
+    <OverlayProvider value={{style: theme}}>
+      <SafeAreaView>
+        <View style={STYLES.header}>
+          <Icon onPress={() => navigation.goBack()} icon={icons.back} />
+          <Text size="s">{route.params.event.name}</Text>
+          <Icon icon={icons.back} color={'transparent'} />
+        </View>
+      </SafeAreaView>
       <SafeAreaView style={styles.container}>
-        <Icon onPress={() => navigation.goBack()} icon={icons.back} />
         {streamClient && channel ? (
           <Chat client={streamClient}>
             <Channel channel={channel}>
