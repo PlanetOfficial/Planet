@@ -14,7 +14,7 @@ export const getPois = async (
   filters?: {[key: string]: string | string[]},
 ): Promise<Poi[] | null> => {
   // rounding the latitude and longitude for caching purposes
-  // note that by adding half of the offset, we round the values instead of truncating
+  // note that by adding half of the offset, we round the values to nearest multiple of locationOffThreshold instead of truncating
   const offset = numbers.locationOffThreshold * 2;
   latitude =
     Math.floor(latitude / offset) * offset + numbers.locationOffThreshold;

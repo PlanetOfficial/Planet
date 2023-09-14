@@ -111,7 +111,7 @@ const SetSearchLocation = ({
         {locationName !== '' ? (
           <TouchableOpacity
             style={[
-              styles.specialRow,
+              styles.borderedRow,
               {
                 borderColor: colors[theme].accent,
               },
@@ -134,7 +134,7 @@ const SetSearchLocation = ({
 
         <TouchableOpacity
           style={[
-            styles.specialRow,
+            styles.borderedRow,
             {
               borderColor: colors[theme].blue,
             },
@@ -199,7 +199,7 @@ const SetSearchLocation = ({
 
 const styling = (theme: 'light' | 'dark') =>
   StyleSheet.create({
-    specialRow: {
+    borderedRow: {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
