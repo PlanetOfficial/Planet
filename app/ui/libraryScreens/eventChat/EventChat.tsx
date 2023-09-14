@@ -118,31 +118,29 @@ const EventChat = ({
 
       navigation.goBack();
     }
-  }
+  };
 
   return (
     <OverlayProvider value={{style: theme}}>
       <SafeAreaView>
         <View style={STYLES.header}>
-          <Icon onPress={onBackPress} icon={icons.back}/>
+          <Icon onPress={onBackPress} icon={icons.back} />
           <Text size="s">{route.params.event.name}</Text>
-          <Icon icon={icons.back} color={'transparent'}/>
+          <Icon icon={icons.back} color={'transparent'} />
         </View>
       </SafeAreaView>
       <SafeAreaView style={styles.container}>
         {streamClient && channel ? (
           <Chat client={streamClient}>
             <Channel channel={channel} thread={thread} threadList={!!thread}>
-              {
-                thread ? (
-                  <Thread/>
-                ) : (
-                  <>
-                    <MessageList onThreadSelect={setThread}/>
-                    <MessageInput/>
-                  </>
-                )
-              }
+              {thread ? (
+                <Thread />
+              ) : (
+                <>
+                  <MessageList onThreadSelect={setThread} />
+                  <MessageInput />
+                </>
+              )}
             </Channel>
           </Chat>
         ) : null}
