@@ -14,7 +14,7 @@ import LinearGradient from 'react-native-linear-gradient';
 
 import icons from '../../constants/icons';
 import colors from '../../constants/colors';
-import screen from '../../constants/images';
+import {onboarding} from '../../constants/images';
 import strings from '../../constants/strings';
 
 import Text from '../components/Text';
@@ -72,7 +72,7 @@ const Welcome = ({navigation}: {navigation: any}) => {
               {strings.login.description1}
             </Text>
             <View style={styles.image}>
-              <Image source={screen.one} style={styles.img} />
+              <Image source={onboarding.one} style={styles.img} />
             </View>
           </View>
           <View style={styles.page}>
@@ -85,7 +85,7 @@ const Welcome = ({navigation}: {navigation: any}) => {
               {strings.login.description2}
             </Text>
             <View style={styles.image}>
-              <Image source={screen.two} style={styles.img} />
+              <Image source={onboarding.two} style={styles.img} />
             </View>
           </View>
           <View style={styles.page}>
@@ -98,7 +98,7 @@ const Welcome = ({navigation}: {navigation: any}) => {
               {strings.login.description3}
             </Text>
             <View style={styles.image}>
-              <Image source={screen.three} style={styles.img} />
+              <Image source={onboarding.three} style={styles.img} />
             </View>
           </View>
           <View style={styles.page}>
@@ -219,10 +219,12 @@ const styling = (theme: 'light' | 'dark') =>
       borderRadius: s(5),
     },
     image: {
-      width: vs(400) / 1.6,
-      marginBottom: vs(40),
+      width: s(300),
+      height: vs(450),
+      marginVertical: vs(20),
     },
     img: {
+      resizeMode: 'contain',
       width: '100%',
       height: '100%',
     },

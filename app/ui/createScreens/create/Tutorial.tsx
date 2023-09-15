@@ -14,7 +14,7 @@ import {s, vs} from 'react-native-size-matters';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import colors from '../../../constants/colors';
-import screen from '../../../constants/images';
+import {create} from '../../../constants/images';
 import strings from '../../../constants/strings';
 import STYLING from '../../../constants/styles';
 
@@ -52,31 +52,31 @@ const Tutorial = () => {
             <View style={styles.page}>
               <Text size="s">{strings.create.step1}</Text>
               <View style={styles.image}>
-                <Image source={screen.one} style={styles.img} />
+                <Image source={create.text} style={styles.img} />
               </View>
             </View>
             <View style={styles.page}>
               <Text size="s">{strings.create.step2}</Text>
               <View style={styles.image}>
-                <Image source={screen.one} style={styles.img} />
+                <Image source={create.date} style={styles.img} />
               </View>
             </View>
             <View style={styles.page}>
               <Text size="s">{strings.create.step3}</Text>
               <View style={styles.image}>
-                <Image source={screen.one} style={styles.img} />
+                <Image source={create.suggestions} style={styles.img} />
               </View>
             </View>
             <View style={styles.page}>
               <Text size="s">{strings.create.step4}</Text>
               <View style={styles.image}>
-                <Image source={screen.one} style={styles.img} />
+                <Image source={create.destination} style={styles.img} />
               </View>
             </View>
             <View style={styles.page}>
               <Text size="s">{strings.create.step5}</Text>
               <View style={styles.image}>
-                <Image source={screen.one} style={styles.img} />
+                <Image source={create.friends} style={styles.img} />
               </View>
             </View>
           </ScrollView>
@@ -134,7 +134,7 @@ const styling = (theme: 'light' | 'dark') =>
     },
     image: {
       width: s(280),
-      height: vs(350),
+      height: vs(375),
       marginVertical: vs(20),
     },
     img: {
