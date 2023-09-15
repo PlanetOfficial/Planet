@@ -7,6 +7,7 @@ import {
   Keyboard,
   ScrollView,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import colors from '../../../constants/colors';
 import icons from '../../../constants/icons';
@@ -22,6 +23,7 @@ import Header from './Header';
 import SaveButton from './SaveButton';
 import DestinationsList from './DestinationsList';
 import Recommendations from './Recommendations';
+import Tutorial from './Tutorial';
 
 const Create = ({
   navigation,
@@ -51,6 +53,7 @@ const Create = ({
   );
   const [recommendationsShown, setRecommendationsShown] =
     useState<boolean>(true);
+  const [showTutorial, setShowTutorial] = useState<boolean>(false);
 
   const addMembers = useCallback(() => {
     const _members = route.params?.members;
@@ -108,16 +111,32 @@ const Create = ({
     destinationNames,
   ]);
 
+  const determineOnboardingStatus = useCallback(async () => {
+    const tutorial = await AsyncStorage.getItem('create_tutorial');
+
+    if (tutorial === null) {
+      setShowTutorial(true);
+    }
+  }, []);
+
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       StatusBar.setBarStyle(colors[theme].statusBar, true);
       addMembers();
       addDestination();
       initializeDestinations();
+      determineOnboardingStatus();
     });
 
     return unsubscribe;
-  }, [navigation, addMembers, addDestination, initializeDestinations, theme]);
+  }, [
+    navigation,
+    addMembers,
+    addDestination,
+    initializeDestinations,
+    determineOnboardingStatus,
+    theme,
+  ]);
 
   return (
     <View style={STYLES.container}>
@@ -178,6 +197,8 @@ const Create = ({
           destinationNames={destinationNames}
         />
       ) : null}
+
+      {showTutorial ? <Tutorial /> : null}
     </View>
   );
 };
