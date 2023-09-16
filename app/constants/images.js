@@ -4,7 +4,7 @@ export const onboarding = {
   three: require('../assets/images/onboarding-3.png'),
 };
 
-export const create = {
+export const createWalkThrough = {
   text: require('../assets/images/create-text.png'),
   date: require('../assets/images/create-date.png'),
   suggestions: require('../assets/images/create-suggestions.png'),

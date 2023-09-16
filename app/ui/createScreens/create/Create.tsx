@@ -112,7 +112,7 @@ const Create = ({
   ]);
 
   const determineOnboardingStatus = useCallback(async () => {
-    const tutorial = await AsyncStorage.getItem('create_tutorial');
+    const tutorial = await AsyncStorage.getItem('create_tutorial_completed');
 
     if (tutorial === null) {
       setShowTutorial(true);
@@ -198,7 +198,7 @@ const Create = ({
         />
       ) : null}
 
-      {showTutorial ? <Tutorial /> : null}
+      <Tutorial showTutorial={showTutorial} />
     </View>
   );
 };

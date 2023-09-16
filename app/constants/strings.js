@@ -186,7 +186,7 @@ const strings = {
     removePfp: 'Remove Profile Picture',
     removePfpPrompt: 'Are you sure you want to remove your profile picture?',
   },
-  create: {
+  createWalkthroughText: {
     tutorial: 'How to create an event',
     step1: 'Step 1: Name the event',
     step2: 'Step 2: Set the date and time',
