@@ -123,7 +123,7 @@ const UpcomingEvent: React.FC<Props> = ({navigation, upcomingEvent}) => {
         </>
       ) : (
         <TouchableOpacity
-          style={STYLES.actionButton}
+          style={[STYLES.actionButton, STYLES.shadow]}
           onPress={() => navigation.navigate('Create')}>
           <View style={STYLES.icon}>
             <Icon icon={icons.plus} color={colors[theme].primary} />

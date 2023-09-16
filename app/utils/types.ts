@@ -210,6 +210,14 @@ export interface GoogleAutocompleteResult {
   };
 }
 
+export interface RecommenderSurveyQuestion {
+  id: number;
+  prompt: string;
+  yes: string;
+  no: string;
+  neutral: string;
+}
+
 export type ExploreModes = 'create' | 'suggest' | 'add' | 'none';
 export type ExploreModesWithInCreate =
   | 'create'

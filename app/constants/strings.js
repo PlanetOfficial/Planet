@@ -98,6 +98,9 @@ const strings = {
     suggestedFriends: 'Suggested Friends',
     customize: 'Customize this event',
     noRecommendations: 'No Recommendations Found',
+    surveyPrompt:
+      'Help us narrow down your interest by answering our quick survey!',
+    answerSurvey: 'Begin Survey',
   },
   poi: {
     reviews: 'Reviews',
