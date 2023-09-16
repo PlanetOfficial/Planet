@@ -101,6 +101,8 @@ const strings = {
     surveyPrompt:
       'Help us narrow down your interest by answering our quick survey!',
     answerSurvey: 'Begin Survey',
+    cuisinePrompt: 'Finally, select three or more cuisines you like:',
+    done: 'Done',
   },
   poi: {
     reviews: 'Reviews',

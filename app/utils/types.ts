@@ -210,6 +210,16 @@ export interface GoogleAutocompleteResult {
   };
 }
 
+export interface RecommenderSurvey {
+  questions: RecommenderSurveyQuestion[];
+  cuisines: RecommenderSurveyCuisine[];
+}
+
+export interface RecommenderSurveyCuisine {
+  id: number;
+  name: string;
+}
+
 export interface RecommenderSurveyQuestion {
   id: number;
   prompt: string;

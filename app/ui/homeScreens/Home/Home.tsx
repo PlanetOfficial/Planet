@@ -24,7 +24,7 @@ import {
   Coordinate,
   EventDetail,
   Recommendation,
-  RecommenderSurveyQuestion,
+  RecommenderSurvey,
 } from '../../../utils/types';
 import {fetchUserLocation, shareApp} from '../../../utils/Misc';
 import {getUpcomingEvent} from '../../../utils/api/eventAPI';
@@ -54,9 +54,9 @@ const Home = ({navigation}: {navigation: any}) => {
   const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
   const [recommendationsLoading, setRecommendationsLoading] =
     useState<boolean>(false);
-  const [initialSurey, setInitialSurvey] = useState<
-    RecommenderSurveyQuestion[] | null
-  >(null);
+  const [initialSurey, setInitialSurvey] = useState<RecommenderSurvey | null>(
+    null,
+  );
 
   const initializeUpcomingEvent = useCallback(async () => {
     const _event = await getUpcomingEvent();
