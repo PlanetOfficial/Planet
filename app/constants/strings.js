@@ -366,6 +366,7 @@ const strings = {
     chatNotExist: 'Chat does not exist.',
     generalChatError:
       'Error retrieving chat, chats may not be available for this event. Try creating a new event.',
+    submitSurvey: 'Unable to submit survey. Please try again later.',
   },
 };
 

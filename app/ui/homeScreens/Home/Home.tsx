@@ -171,7 +171,13 @@ const Home = ({navigation}: {navigation: any}) => {
         <Separator />
         {myLocation ? (
           initialSurey ? (
-            <InitialSurvey initialSurvey={initialSurey} />
+            <InitialSurvey
+              initialSurvey={initialSurey}
+              setInitialSurvey={setInitialSurvey}
+              loadRecommendations={() => {
+                loadRecommendations(myLocation, true);
+              }}
+            />
           ) : (
             <Recommendations
               navigation={navigation}

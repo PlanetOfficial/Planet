@@ -7,6 +7,7 @@ import {
   Modal,
   SafeAreaView,
   Pressable,
+  Alert,
 } from 'react-native';
 import {s, vs} from 'react-native-size-matters';
 
@@ -19,12 +20,19 @@ import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 
 import {RecommenderSurvey} from '../../../utils/types';
+import {postRecommenderSurvey} from '../../../utils/api/recommenderAPI';
 
 interface Props {
   initialSurvey: RecommenderSurvey;
+  setInitialSurvey: (initialSurvey: RecommenderSurvey | null) => void;
+  loadRecommendations: () => void;
 }
 
-const InitialSurvey: React.FC<Props> = ({initialSurvey}) => {
+const InitialSurvey: React.FC<Props> = ({
+  initialSurvey,
+  setInitialSurvey,
+  loadRecommendations,
+}) => {
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
   const STYLES = STYLING(theme);
@@ -34,6 +42,18 @@ const InitialSurvey: React.FC<Props> = ({initialSurvey}) => {
 
   const [answers, setAnswers] = useState<Map<number, string>>(new Map());
   const [cuisines, setCuisines] = useState<number[]>([]);
+
+  const handleDone = async () => {
+    const response = await postRecommenderSurvey(answers, cuisines);
+
+    if (response) {
+      setVisible(false);
+      setInitialSurvey(null);
+      loadRecommendations();
+    } else {
+      Alert.alert(strings.error.submitSurvey);
+    }
+  };
 
   return (
     <>
@@ -122,7 +142,8 @@ const InitialSurvey: React.FC<Props> = ({initialSurvey}) => {
                             ? colors[theme].accent
                             : colors[theme].secondary,
                       },
-                    ]}>
+                    ]}
+                    onPress={handleDone}>
                     <Text color={colors[theme].primary}>
                       {strings.home.done}
                     </Text>
@@ -157,7 +178,7 @@ const InitialSurvey: React.FC<Props> = ({initialSurvey}) => {
                       style={styles.button}
                       onPress={() => {
                         const _answers = new Map(answers);
-                        _answers.set(index, 'yes');
+                        _answers.set(initialSurvey.questions[index].id, 'yes');
                         setAnswers(_answers);
                         setIndex(index + 1);
                       }}>
@@ -169,7 +190,7 @@ const InitialSurvey: React.FC<Props> = ({initialSurvey}) => {
                       style={styles.button}
                       onPress={() => {
                         const _answers = new Map(answers);
-                        _answers.set(index, 'no');
+                        _answers.set(initialSurvey.questions[index].id, 'no');
                         setAnswers(_answers);
                         setIndex(index + 1);
                       }}>
@@ -182,7 +203,10 @@ const InitialSurvey: React.FC<Props> = ({initialSurvey}) => {
                     style={styles.neutral}
                     onPress={() => {
                       const _answers = new Map(answers);
-                      _answers.set(index, 'neutral');
+                      _answers.set(
+                        initialSurvey.questions[index].id,
+                        'neutral',
+                      );
                       setAnswers(_answers);
                       setIndex(index + 1);
                     }}>
