@@ -116,7 +116,6 @@ const authStackScreens = () => (
     <Stack.Screen
       name="SignUpInvite"
       component={SignUpInvite}
-      options={{gestureEnabled: false}}
     />
     <Stack.Screen name="ResetPwd" component={ResetPwd} />
     <Stack.Screen name="ForgotPwd" component={ForgotPwd} />
