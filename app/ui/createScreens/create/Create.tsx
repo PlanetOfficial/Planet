@@ -111,7 +111,7 @@ const Create = ({
     destinationNames,
   ]);
 
-  const determineOnboardingStatus = useCallback(async () => {
+  const determineTutorialStatus = useCallback(async () => {
     const tutorial = await AsyncStorage.getItem('create_tutorial_completed');
 
     if (tutorial === null) {
@@ -125,7 +125,7 @@ const Create = ({
       addMembers();
       addDestination();
       initializeDestinations();
-      determineOnboardingStatus();
+      determineTutorialStatus();
     });
 
     return unsubscribe;
@@ -134,7 +134,7 @@ const Create = ({
     addMembers,
     addDestination,
     initializeDestinations,
-    determineOnboardingStatus,
+    determineTutorialStatus,
     theme,
   ]);
 
