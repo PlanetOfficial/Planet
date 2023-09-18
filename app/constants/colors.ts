@@ -1,6 +1,8 @@
 import {StatusBarStyle} from 'react-native';
 
 const colors = {
+  transparent: 'transparent',
+  black: '#000000',
   blue: '#3482F6',
   green: '#2ac42c',
   dim: 'rgba(0,0,0,.3)',

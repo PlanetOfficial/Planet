@@ -50,7 +50,7 @@ const styling = (theme: 'light' | 'dark') =>
       justifyContent: 'center',
     },
     shadow: {
-      shadowColor: '#000',
+      shadowColor: colors[theme].black,
       shadowOffset: {
         width: 0,
         height: 1,
