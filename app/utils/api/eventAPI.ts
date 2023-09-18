@@ -76,7 +76,7 @@ export const postEvent = async (
   name: string,
   datetime: string | undefined,
   members: number[],
-): Promise<Boolean> => {
+): Promise<boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
   if (!authToken) {
@@ -112,7 +112,7 @@ export const postEvent = async (
 export const editName = async (
   event_id: number,
   name: string,
-): Promise<Boolean> => {
+): Promise<boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
   if (!authToken) {
@@ -144,7 +144,7 @@ export const editName = async (
 export const editDatetime = async (
   event_id: number,
   datetime: string,
-): Promise<Boolean> => {
+): Promise<boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
   if (!authToken) {
@@ -173,7 +173,7 @@ export const editDatetime = async (
 /**
  * @requires auth_token should be set in EncryptedStorage before calling this function
  */
-export const leaveEvent = async (event_id: number): Promise<Boolean> => {
+export const leaveEvent = async (event_id: number): Promise<boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
   if (!authToken) {
@@ -205,7 +205,7 @@ export const leaveEvent = async (event_id: number): Promise<Boolean> => {
 export const kickFromEvent = async (
   event_id: number,
   user_id: number,
-): Promise<Boolean> => {
+): Promise<boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
   if (!authToken) {
@@ -237,7 +237,7 @@ export const kickFromEvent = async (
 export const inviteToEvent = async (
   event_id: number,
   user_ids: number[],
-): Promise<Boolean> => {
+): Promise<boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
   if (!authToken) {
@@ -266,7 +266,7 @@ export const inviteToEvent = async (
 /**
  * @requires auth_token should be set in EncryptedStorage before calling this function
  */
-export const changeEventStatus = async (event_id: number): Promise<Boolean> => {
+export const changeEventStatus = async (event_id: number): Promise<boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
   if (!authToken) {
@@ -361,7 +361,7 @@ export const getEventsNotifications = async (): Promise<
 /**
  * @requires auth_token should be set in EncryptedStorage before calling this function
  */
-export const reportEvent = async (event_id: number): Promise<Boolean> => {
+export const reportEvent = async (event_id: number): Promise<boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
   if (!authToken) {
