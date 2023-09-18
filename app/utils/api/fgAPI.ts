@@ -8,7 +8,7 @@ import {requestAndValidate} from './authAPI';
 export const postFG = async (
   user_ids: number[],
   name: string,
-): Promise<Boolean> => {
+): Promise<boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
   if (!authToken) {
@@ -41,7 +41,7 @@ export const editFG = async (
   id: number,
   user_ids: number[],
   name: string,
-): Promise<Boolean> => {
+): Promise<boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
   if (!authToken) {
@@ -70,7 +70,7 @@ export const editFG = async (
 /**
  * @requires auth_token should be set in EncryptedStorage before calling this function
  */
-export const deleteFG = async (id: number): Promise<Boolean> => {
+export const deleteFG = async (id: number): Promise<boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
   if (!authToken) {
@@ -97,7 +97,7 @@ export const deleteFG = async (id: number): Promise<Boolean> => {
 /**
  * @requires auth_token should be set in EncryptedStorage before calling this function
  */
-export const blockFriend = async (user_id: number): Promise<Boolean> => {
+export const blockFriend = async (user_id: number): Promise<boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
   if (!authToken) {
@@ -126,7 +126,7 @@ export const blockFriend = async (user_id: number): Promise<Boolean> => {
 /**
  * @requires auth_token should be set in EncryptedStorage before calling this function
  */
-export const unBlockFriend = async (user_id: number): Promise<Boolean> => {
+export const unBlockFriend = async (user_id: number): Promise<boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
   if (!authToken) {

@@ -72,7 +72,7 @@ const User = ({
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', async () => {
-      withLoading(initializeData);
+      await withLoading(initializeData);
     });
 
     return unsubscribe;

@@ -229,7 +229,7 @@ export const saveImage = async (base64: string): Promise<string | null> => {
  * @requires auth_token should be set in EncryptedStorage before calling this function
  * This removes the user's profile in the cache if a succesful response.
  */
-export const removeImage = async (): Promise<Boolean> => {
+export const removeImage = async (): Promise<boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
   if (!authToken) {
@@ -346,7 +346,7 @@ export const editBirthday = async (birthday: string) => {
 /**
  * @requires auth_token should be set in EncryptedStorage before calling this function
  */
-export const removeAccount = async (): Promise<Boolean> => {
+export const removeAccount = async (): Promise<boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
   if (!authToken) {
@@ -423,7 +423,7 @@ export const requestAndValidate = async (
 /**
  * @requires auth_token should be set in EncryptedStorage before calling this function
  */
-export const reportUser = async (user_id: number): Promise<Boolean> => {
+export const reportUser = async (user_id: number): Promise<boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
   if (!authToken) {
@@ -452,7 +452,7 @@ export const reportUser = async (user_id: number): Promise<Boolean> => {
 export const submitReferralCode = async (
   authToken: string,
   code: string,
-): Promise<Boolean> => {
+): Promise<boolean> => {
   const response = await fetch(UserAPIURL + '/referral', {
     method: 'POST',
     body: JSON.stringify({code}),

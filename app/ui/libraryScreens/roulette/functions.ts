@@ -37,7 +37,7 @@ export const getCurrentSuggestion = (
   return destination.suggestions[0];
 };
 
-export const onSpinPress = async (
+export const onSpinPress = (
   rotation: SharedValue<number>,
   setIsSpinning: (isSpinning: boolean) => void,
   setCurrentAngle: (angle: number) => void,

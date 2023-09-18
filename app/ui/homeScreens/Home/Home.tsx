@@ -101,8 +101,8 @@ const Home = ({navigation}: {navigation: any}) => {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', async () => {
-      fetchRecommenderSurvey();
-      initializeUpcomingEvent();
+      await fetchRecommenderSurvey();
+      await initializeUpcomingEvent();
     });
 
     return unsubscribe;

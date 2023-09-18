@@ -39,7 +39,7 @@ export const getNotificationSettings =
 /**
  * @requires auth_token should be set in EncryptedStorage before calling this function
  */
-export const toggleNotifyFriendRequest = async (): Promise<Boolean> => {
+export const toggleNotifyFriendRequest = async (): Promise<boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
   if (!authToken) {
@@ -69,7 +69,7 @@ export const toggleNotifyFriendRequest = async (): Promise<Boolean> => {
 /**
  * @requires auth_token should be set in EncryptedStorage before calling this function
  */
-export const toggleNotifyFriendRequestAccept = async (): Promise<Boolean> => {
+export const toggleNotifyFriendRequestAccept = async (): Promise<boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
   if (!authToken) {
@@ -99,7 +99,7 @@ export const toggleNotifyFriendRequestAccept = async (): Promise<Boolean> => {
 /**
  * @requires auth_token should be set in EncryptedStorage before calling this function
  */
-export const toggleNotifyEventInvite = async (): Promise<Boolean> => {
+export const toggleNotifyEventInvite = async (): Promise<boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
   if (!authToken) {
@@ -129,7 +129,7 @@ export const toggleNotifyEventInvite = async (): Promise<Boolean> => {
 /**
  * @requires auth_token should be set in EncryptedStorage before calling this function
  */
-export const toggleNotifyNewSuggestion = async (): Promise<Boolean> => {
+export const toggleNotifyNewSuggestion = async (): Promise<boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
   if (!authToken) {
@@ -160,7 +160,7 @@ export const toggleNotifyNewSuggestion = async (): Promise<Boolean> => {
 /**
  * @requires auth_token should be set in EncryptedStorage before calling this function
  */
-export const toggleNotifySetPrimary = async (): Promise<Boolean> => {
+export const toggleNotifySetPrimary = async (): Promise<boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
   if (!authToken) {

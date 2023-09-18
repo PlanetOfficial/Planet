@@ -54,7 +54,7 @@ const SearchCategory = ({
   const STYLES = STYLING(theme);
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', async () => {
+    const unsubscribe = navigation.addListener('focus', () => {
       StatusBar.setBarStyle(colors[theme].statusBar, true);
     });
 
@@ -95,7 +95,7 @@ const SearchCategory = ({
   );
 
   const handleSheetChange = useCallback(
-    async (fromIndex: number, toIndex: number) => {
+    (fromIndex: number, toIndex: number) => {
       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
       setBottomSheetIndex(toIndex);
       filterRef.current?.closeDropdown();

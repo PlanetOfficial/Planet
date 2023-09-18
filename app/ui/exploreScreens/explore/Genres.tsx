@@ -141,7 +141,7 @@ const styling = (theme: 'light' | 'dark') =>
       right: 0,
     },
     overlay: {
-      backgroundColor: 'rgba(0, 0, 0, 0.2)',
+      backgroundColor: colors[theme].dim,
     },
     row: {
       flexDirection: 'row',

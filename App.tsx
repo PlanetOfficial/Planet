@@ -69,7 +69,7 @@ export default function App() {
     initialize();
 
     // handle foreground notifications
-    const unsubscribe = messaging().onMessage(async remoteMessage => {
+    const unsubscribe = messaging().onMessage(remoteMessage => {
       if (remoteMessage?.notification?.body) {
         setNotificationText(remoteMessage?.notification?.body);
         setTimeout(() => {

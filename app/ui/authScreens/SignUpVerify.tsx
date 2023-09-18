@@ -63,7 +63,10 @@ const SignUpVerify = ({
     const response = await verifyCode(authToken, code);
 
     if (response) {
-      navigation.navigate('SignUpInvite', {authToken: authToken});
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'SignUpInvite', params: {authToken: authToken}}],
+      });
     } else {
       setError(strings.signUp.codeVerifyFailed);
     }

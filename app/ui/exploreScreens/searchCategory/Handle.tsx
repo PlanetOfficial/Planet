@@ -10,6 +10,7 @@ import Animated, {
   useDerivedValue,
 } from 'react-native-reanimated';
 import {toRad} from 'react-native-redash';
+import colors from '../../../constants/colors';
 
 // @ts-ignore
 export const transformOrigin = ({x, y}, ...transformations) => {
@@ -131,13 +132,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: 14,
     borderBottomWidth: 1,
-    borderBottomColor: 'transparent',
+    borderBottomColor: colors.light.transparent,
   },
   indicator: {
     position: 'absolute',
     width: 12,
     height: 4,
-    backgroundColor: '#999',
+    backgroundColor: colors.light.secondary,
   },
   leftIndicator: {
     borderTopStartRadius: 2,
