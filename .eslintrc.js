@@ -3,12 +3,12 @@ module.exports = {
   extends: ['@react-native', 'plugin:@typescript-eslint/recommended'],
   plugins: ['react', 'react-native', '@typescript-eslint'],
   rules: {
-    "require-await": 1,
-    "react-native/split-platform-components": 2,
-    "react-native/no-inline-styles": 2,
-    "react-native/no-color-literals": 2,
-    "react-native/no-raw-text": 2,
-    "react-native/no-single-element-style-arrays": 2,
+    'require-await': 'error',
+    'react-native/split-platform-components': 'error',
+    'react-native/no-inline-styles': 'error',
+    'react-native/no-color-literals': 'error',
+    'react-native/no-raw-text': 'error',
+    'react-native/no-single-element-style-arrays': 'error',
     'no-async-promise-executor': 'error',
     'no-await-in-loop': 'error',
     'no-class-assign': 'error',
@@ -22,13 +22,12 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   parserOptions: {
     project: true,
-    tsconfigRootDir: __dirname,
-    "ecmaFeatures": {
-      "jsx": true
+    'ecmaFeatures': {
+      'jsx': true
     },
   },
   env: {
-    "react-native/react-native": true,
+    'react-native/react-native': true,
     node: true,
   },
   settings: {
