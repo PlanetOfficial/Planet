@@ -83,7 +83,7 @@ const SignUpInvite = ({
   };
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', async () => {
+    const unsubscribe = navigation.addListener('focus', () => {
       setTimeout(() => {
         setSkippable(true);
       }, 7500);

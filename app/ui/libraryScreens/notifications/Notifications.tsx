@@ -45,7 +45,7 @@ const Notifications = ({navigation}: {navigation: any}) => {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', async () => {
-      initializeNotifications();
+      await initializeNotifications();
     });
 
     return unsubscribe;

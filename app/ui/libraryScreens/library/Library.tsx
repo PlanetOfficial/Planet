@@ -60,7 +60,7 @@ const Library = ({navigation}: {navigation: any}) => {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', async () => {
-      loadData();
+      await loadData();
     });
 
     return unsubscribe;

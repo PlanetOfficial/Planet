@@ -114,7 +114,7 @@ const SignUpBirthday = ({
                   ),
                 )
           }
-          onConfirm={async newDate => {
+          onConfirm={newDate => {
             setDatePickerOpen(false);
             setBirthday(moment(newDate).format('YYYY-MM-DD'));
           }}

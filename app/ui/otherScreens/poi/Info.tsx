@@ -95,7 +95,7 @@ const Info: React.FC<Props> = ({destination, destinationDetails, location}) => {
           <Icon
             icon={icons.directions}
             button={true}
-            onPress={() => handleMapPress(destination, location)}
+            onPress={async () => await handleMapPress(destination, location)}
           />
         </View>
       ) : null}

@@ -49,7 +49,7 @@ const NotificationSettings = ({navigation}: {navigation: any}) => {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', async () => {
-      initializeData();
+      await initializeData();
     });
 
     return unsubscribe;
