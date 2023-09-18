@@ -98,6 +98,11 @@ const strings = {
     suggestedFriends: 'Suggested Friends',
     customize: 'Customize this event',
     noRecommendations: 'No Recommendations Found',
+    surveyPrompt:
+      'Help us narrow down your interests by answering our quick survey!',
+    answerSurvey: 'Begin Survey',
+    cuisinePrompt: 'Finally, select three or more cuisines you like:',
+    done: 'Done',
   },
   poi: {
     reviews: 'Reviews',
@@ -185,6 +190,15 @@ const strings = {
     pfpUploadError: 'Error uploading profile picture',
     removePfp: 'Remove Profile Picture',
     removePfpPrompt: 'Are you sure you want to remove your profile picture?',
+  },
+  createWalkthroughText: {
+    tutorial: 'How to create an event',
+    step1: 'Step 1: Name the event',
+    step2: 'Step 2: Set the date and time',
+    step3: 'Step 3: Choose from our suggestions',
+    step4: 'Step 4: Add more destinations',
+    step5: 'Step 5: Invite your friends',
+    create: 'Create!',
   },
   event: {
     destinations: 'Destinations',
@@ -361,6 +375,7 @@ const strings = {
     chatNotExist: 'Chat does not exist.',
     generalChatError:
       'Error retrieving chat, chats may not be available for this event. Try creating a new event.',
+    submitSurvey: 'Unable to submit survey. Please try again later.',
   },
 };
 

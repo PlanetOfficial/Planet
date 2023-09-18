@@ -18,19 +18,17 @@ import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 import PoiCard from '../../components/PoiCard';
 
-import {Coordinate, Poi, Recommendation} from '../../../utils/types';
+import {Poi, Recommendation} from '../../../utils/types';
 
 interface Props {
   navigation: any;
-  location: Coordinate;
   recommendations: Recommendation[];
-  loadRecommendations: (location: Coordinate, reload: boolean) => void;
+  loadRecommendations: () => void;
   recommendationsLoading: boolean;
 }
 
 const Recommendations: React.FC<Props> = ({
   navigation,
-  location,
   recommendations,
   loadRecommendations,
   recommendationsLoading,
@@ -47,7 +45,7 @@ const Recommendations: React.FC<Props> = ({
           size="s"
           icon={icons.reload}
           onPress={() => {
-            loadRecommendations(location, true);
+            loadRecommendations();
           }}
         />
       </View>

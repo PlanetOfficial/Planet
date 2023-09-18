@@ -63,7 +63,9 @@ const FriendsList = ({navigation}: {navigation: any}) => {
           tintColor={colors[theme].accent}
         />
       }>
-      <TouchableOpacity style={STYLES.actionButton} onPress={() => shareApp()}>
+      <TouchableOpacity
+        style={[STYLES.actionButton, STYLES.shadow]}
+        onPress={() => shareApp()}>
         <View style={STYLES.icon}>
           <Icon size="m" icon={icons.link} color={colors[theme].primary} />
         </View>
