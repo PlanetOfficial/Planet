@@ -1,7 +1,7 @@
 module.exports = {
   root: true,
-  extends: ['@react-native', 'plugin:@typescript-eslint/recommended'],
-  plugins: ['react', 'react-native', '@typescript-eslint'],
+  extends: ['@react-native'],
+  plugins: ['react', 'react-native'],
   rules: {
     'require-await': 'error',
     'react-native/split-platform-components': 'error',
@@ -19,7 +19,6 @@ module.exports = {
     'require-atomic-updates': 'error',
   },
   ignorePatterns: ['e2e/*'],
-  parser: '@typescript-eslint/parser',
   parserOptions: {
     project: true,
     'ecmaFeatures': {

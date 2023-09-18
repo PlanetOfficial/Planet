@@ -29,8 +29,6 @@
     "@react-navigation/stack": "^6.3.17",
     "@stream-io/flat-list-mvcp": "^0.10.3",
     "@types/react-native-svg-charts": "^5.0.12",
-    "@typescript-eslint/eslint-plugin": "^6.7.0",
-    "@typescript-eslint/parser": "^6.7.0",
     "eslint-plugin-jest": "^27.4.0",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-native": "^4.1.0",
