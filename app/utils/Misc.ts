@@ -1,10 +1,5 @@
 import {useState} from 'react';
-import {
-  Platform,
-  Alert,
-  Animated,
-  Share,
-} from 'react-native';
+import {Platform, Alert, Animated, Share} from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import {
   StackCardInterpolatedStyle,
@@ -19,7 +14,7 @@ import strings from '../constants/strings';
 import {Coordinate, Poi} from './types';
 
 import {bookmark} from './api/bookmarkAPI';
-import { requestAndroidLocationPermissions } from './Misc.android';
+import {requestAndroidLocationPermissions} from './Misc.android';
 
 export const getRegionFromPoints = (points: Coordinate[]) => {
   const minLat = Math.min(...points.map(point => point.latitude));

@@ -3,7 +3,6 @@ module.exports = {
   extends: ['@react-native'],
   plugins: ['react', 'react-native'],
   rules: {
-    'require-await': 'error',
     'react-native/split-platform-components': 'error',
     'react-native/no-inline-styles': 'error',
     'react-native/no-color-literals': 'error',
@@ -15,14 +14,15 @@ module.exports = {
     'no-compare-neg-zero': 'error',
     'no-cond-assign': 'error',
     'no-const-assign': 'error',
-    'no-constant-condition': ['error', { checkLoops: false }],
+    'require-await': 'error',
+    'no-constant-condition': ['error', {checkLoops: false}],
     'require-atomic-updates': 'error',
   },
   ignorePatterns: ['e2e/*'],
   parserOptions: {
     project: true,
-    'ecmaFeatures': {
-      'jsx': true
+    ecmaFeatures: {
+      jsx: true,
     },
   },
   env: {
@@ -32,6 +32,6 @@ module.exports = {
   settings: {
     react: {
       version: 'detect',
-    }
-  }
+    },
+  },
 };

@@ -1,5 +1,5 @@
-import { Alert, PermissionsAndroid } from "react-native";
-import strings from "../constants/strings";
+import {Alert, PermissionsAndroid} from 'react-native';
+import strings from '../constants/strings';
 
 export const requestAndroidNotificationPermissions = async () => {
   await PermissionsAndroid.request(
