@@ -34,7 +34,6 @@
     "eslint-plugin-jest": "^27.4.0",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-native": "^4.1.0",
-    "eslint-plugin-simple-import-sort": "^10.0.0",
     "haversine-distance": "^1.2.1",
     "moment": "^2.29.4",
     "react": "18.2.0",

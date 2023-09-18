@@ -1,11 +1,9 @@
 module.exports = {
   root: true,
   extends: ['@react-native', 'plugin:@typescript-eslint/recommended'],
-  plugins: ['simple-import-sort', 'react', 'react-native', '@typescript-eslint'],
+  plugins: ['react', 'react-native', '@typescript-eslint'],
   rules: {
     "require-await": 1,
-    'simple-import-sort/imports': 'error',
-    'simple-import-sort/exports': 'error',
     "react-native/split-platform-components": 2,
     "react-native/no-inline-styles": 2,
     "react-native/no-color-literals": 2,
