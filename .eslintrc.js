@@ -3,7 +3,6 @@ module.exports = {
   extends: ['@react-native'],
   plugins: ['react', 'react-native'],
   rules: {
-    'react-native/split-platform-components': 'error',
     'react-native/no-inline-styles': 'error',
     'react-native/no-color-literals': 'error',
     'react-native/no-raw-text': 'error',

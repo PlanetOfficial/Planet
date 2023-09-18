@@ -1,5 +1,11 @@
 import {useState} from 'react';
-import {Platform, Alert, Animated, Share} from 'react-native';
+import {
+  Platform,
+  PermissionsAndroid,
+  Alert,
+  Animated,
+  Share,
+} from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import {
   StackCardInterpolatedStyle,
@@ -14,7 +20,6 @@ import strings from '../constants/strings';
 import {Coordinate, Poi} from './types';
 
 import {bookmark} from './api/bookmarkAPI';
-import {requestAndroidLocationPermissions} from './Misc.android';
 
 export const getRegionFromPoints = (points: Coordinate[]) => {
   const minLat = Math.min(...points.map(point => point.latitude));
@@ -65,7 +70,19 @@ export const fetchUserLocation = async (): Promise<Coordinate> => {
       },
     );
   } else if (Platform.OS === 'android') {
-    await requestAndroidLocationPermissions();
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      );
+      if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
+        Alert.alert(
+          strings.error.locationPermission,
+          strings.error.locationPermissionInfo,
+        );
+      }
+    } catch (err) {
+      console.warn(err);
+    }
   }
   return new Promise(res => {
     Geolocation.getCurrentPosition(

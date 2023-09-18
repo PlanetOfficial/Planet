@@ -2,7 +2,12 @@ import 'react-native-gesture-handler';
 import React, {useEffect, useState} from 'react';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import messaging from '@react-native-firebase/messaging';
-import {Platform, StatusBar, useColorScheme} from 'react-native';
+import {
+  PermissionsAndroid,
+  Platform,
+  StatusBar,
+  useColorScheme,
+} from 'react-native';
 import SystemNavigationBar from 'react-native-system-navigation-bar';
 
 import SplashScreen from './app/ui/otherScreens/splashScreen/SplashScreen';
@@ -11,7 +16,6 @@ import {cacheCategories, updateCaches} from './app/utils/CacheHelpers';
 import {saveTokenToDatabase} from './app/utils/api/authAPI';
 import Notification from './app/ui/components/Notification';
 import colors from './app/constants/colors';
-import {requestAndroidNotificationPermissions} from './app/utils/Misc.android';
 
 export default function App() {
   const [isLoading, setLoading] = useState<boolean>(true);
@@ -23,7 +27,9 @@ export default function App() {
 
   const requestNotificationPerms = async () => {
     if (Platform.OS === 'android') {
-      await requestAndroidNotificationPermissions();
+      PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+      );
     } else {
       await messaging().requestPermission();
     }
