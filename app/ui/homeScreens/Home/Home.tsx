@@ -20,16 +20,25 @@ import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 import Separator from '../../components/SeparatorR';
 
-import {Coordinate, EventDetail, Recommendation} from '../../../utils/types';
+import {
+  Coordinate,
+  EventDetail,
+  Recommendation,
+  RecommenderSurvey,
+} from '../../../utils/types';
 import {fetchUserLocation, shareApp} from '../../../utils/Misc';
 import {getUpcomingEvent} from '../../../utils/api/eventAPI';
-import {getRecommendations} from '../../../utils/api/recommenderAPI';
+import {
+  getRecommendations,
+  getRecommenderSurvey,
+} from '../../../utils/api/recommenderAPI';
 
 import UpcomingEvent from './UpcomingEvent';
 import Recommendations from './Recommendations';
 import Suggestions from '../../friendsScreens/friends/Suggestions';
 
 import {useFriendsContext} from '../../../context/FriendsContext';
+import InitialSurvey from './InitialSurvey';
 
 const Home = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';
@@ -45,6 +54,9 @@ const Home = ({navigation}: {navigation: any}) => {
   const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
   const [recommendationsLoading, setRecommendationsLoading] =
     useState<boolean>(false);
+  const [initialSurvey, setInitialSurvey] = useState<RecommenderSurvey | null>(
+    null,
+  );
 
   const initializeUpcomingEvent = useCallback(async () => {
     const _event = await getUpcomingEvent();
@@ -82,13 +94,19 @@ const Home = ({navigation}: {navigation: any}) => {
     initializeRecommendations();
   }, [loadRecommendations]);
 
+  const fetchRecommenderSurvey = useCallback(async () => {
+    const response = await getRecommenderSurvey();
+    setInitialSurvey(response);
+  }, []);
+
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', async () => {
+      fetchRecommenderSurvey();
       initializeUpcomingEvent();
     });
 
     return unsubscribe;
-  }, [navigation, initializeUpcomingEvent]);
+  }, [navigation, initializeUpcomingEvent, fetchRecommenderSurvey]);
 
   const GetGreetings = () => {
     const myDate = new Date();
@@ -152,13 +170,24 @@ const Home = ({navigation}: {navigation: any}) => {
         )}
         <Separator />
         {myLocation ? (
-          <Recommendations
-            navigation={navigation}
-            location={myLocation}
-            recommendations={recommendations}
-            loadRecommendations={loadRecommendations}
-            recommendationsLoading={recommendationsLoading}
-          />
+          initialSurvey ? (
+            <InitialSurvey
+              initialSurvey={initialSurvey}
+              setInitialSurvey={setInitialSurvey}
+              loadRecommendations={() => {
+                loadRecommendations(myLocation, true);
+              }}
+            />
+          ) : (
+            <Recommendations
+              navigation={navigation}
+              recommendations={recommendations}
+              loadRecommendations={() => {
+                loadRecommendations(myLocation, true);
+              }}
+              recommendationsLoading={recommendationsLoading}
+            />
+          )
         ) : null}
       </ScrollView>
     </View>

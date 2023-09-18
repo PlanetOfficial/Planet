@@ -98,6 +98,11 @@ const strings = {
     suggestedFriends: 'Suggested Friends',
     customize: 'Customize this event',
     noRecommendations: 'No Recommendations Found',
+    surveyPrompt:
+      'Help us narrow down your interests by answering our quick survey!',
+    answerSurvey: 'Begin Survey',
+    cuisinePrompt: 'Finally, select three or more cuisines you like:',
+    done: 'Done',
   },
   poi: {
     reviews: 'Reviews',
@@ -370,6 +375,7 @@ const strings = {
     chatNotExist: 'Chat does not exist.',
     generalChatError:
       'Error retrieving chat, chats may not be available for this event. Try creating a new event.',
+    submitSurvey: 'Unable to submit survey. Please try again later.',
   },
 };
 
