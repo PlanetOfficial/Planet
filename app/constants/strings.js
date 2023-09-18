@@ -99,7 +99,7 @@ const strings = {
     customize: 'Customize this event',
     noRecommendations: 'No Recommendations Found',
     surveyPrompt:
-      'Help us narrow down your interest by answering our quick survey!',
+      'Help us narrow down your interests by answering our quick survey!',
     answerSurvey: 'Begin Survey',
     cuisinePrompt: 'Finally, select three or more cuisines you like:',
     done: 'Done',

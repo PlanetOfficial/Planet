@@ -19,7 +19,10 @@ import STYLING from '../../../constants/styles';
 import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 
-import {RecommenderSurvey} from '../../../utils/types';
+import {
+  RecommenderSurvey,
+  RecommenderSurveyResponse,
+} from '../../../utils/types';
 import {postRecommenderSurvey} from '../../../utils/api/recommenderAPI';
 
 interface Props {
@@ -40,11 +43,20 @@ const InitialSurvey: React.FC<Props> = ({
   const [visible, setVisible] = useState<boolean>(false);
   const [index, setIndex] = useState<number>(0);
 
-  const [answers, setAnswers] = useState<Map<number, string>>(new Map());
-  const [cuisines, setCuisines] = useState<number[]>([]);
+  const [answers, setAnswers] = useState<
+    Map<number, RecommenderSurveyResponse>
+  >(new Map());
+  const [selectedCuisines, setSelectedCuisines] = useState<number[]>([]);
+
+  const isOnCuisineQuestions = index === initialSurvey.questions.length;
 
   const handleDone = async () => {
-    const response = await postRecommenderSurvey(answers, cuisines);
+    const answersObj: {[key: number]: RecommenderSurveyResponse} = {};
+    answers.forEach((value, key) => {
+      answersObj[key] = value;
+    });
+
+    const response = await postRecommenderSurvey(answersObj, selectedCuisines);
 
     if (response) {
       setVisible(false);
@@ -80,7 +92,7 @@ const InitialSurvey: React.FC<Props> = ({
         />
         <SafeAreaView>
           <View style={[styles.container, STYLES.shadow]}>
-            {index === initialSurvey.questions.length ? (
+            {isOnCuisineQuestions ? (
               <>
                 <View style={styles.header}>
                   <Icon
@@ -104,25 +116,30 @@ const InitialSurvey: React.FC<Props> = ({
                         style={[
                           styles.cuisine,
                           {
-                            backgroundColor: cuisines.includes(cuisine.id)
+                            backgroundColor: selectedCuisines.includes(
+                              cuisine.id,
+                            )
                               ? colors[theme].accent
                               : colors[theme].secondary,
                           },
                         ]}
                         onPress={() => {
-                          if (cuisines.includes(cuisine.id)) {
-                            setCuisines(
-                              cuisines.filter(id => id !== cuisine.id),
+                          if (selectedCuisines.includes(cuisine.id)) {
+                            setSelectedCuisines(
+                              selectedCuisines.filter(id => id !== cuisine.id),
                             );
                           } else {
-                            setCuisines([...cuisines, cuisine.id]);
+                            setSelectedCuisines([
+                              ...selectedCuisines,
+                              cuisine.id,
+                            ]);
                           }
                         }}>
                         <Text
                           size="s"
                           weight="l"
                           color={
-                            cuisines.includes(cuisine.id)
+                            selectedCuisines.includes(cuisine.id)
                               ? colors[theme].primary
                               : colors[theme].neutral
                           }>
@@ -138,7 +155,7 @@ const InitialSurvey: React.FC<Props> = ({
                       styles.button,
                       {
                         backgroundColor:
-                          cuisines.length > 2
+                          selectedCuisines.length > 2
                             ? colors[theme].accent
                             : colors[theme].secondary,
                       },

@@ -1,5 +1,9 @@
 import {RecommenderAPIURL} from './APIConstants';
-import {Recommendation, RecommenderSurvey} from '../types';
+import {
+  Recommendation,
+  RecommenderSurvey,
+  RecommenderSurveyResponse,
+} from '../types';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {requestAndValidate} from './authAPI';
 
@@ -81,7 +85,7 @@ export const getRecommenderSurvey =
  * @requires auth_token should be set in EncryptedStorage before calling this function
  */
 export const postRecommenderSurvey = async (
-  answers: Map<number, string>,
+  answers: {[key: number]: RecommenderSurveyResponse},
   cuisines: number[],
 ): Promise<boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
@@ -89,12 +93,6 @@ export const postRecommenderSurvey = async (
   if (!authToken) {
     return false;
   }
-
-  // convert answers to object
-  const answersObj: {[key: number]: string} = {};
-  answers.forEach((value, key) => {
-    answersObj[key] = value;
-  });
 
   const request = async (authtoken: string) => {
     const response = await fetch(RecommenderAPIURL + '/initialize', {
@@ -105,8 +103,8 @@ export const postRecommenderSurvey = async (
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        answers: answersObj,
-        cuisines: cuisines,
+        answers,
+        cuisines,
       }),
     });
 
@@ -115,9 +113,5 @@ export const postRecommenderSurvey = async (
 
   const response = await requestAndValidate(authToken, request);
 
-  if (response?.ok) {
-    return true;
-  } else {
-    return false;
-  }
+  return response?.ok;
 };

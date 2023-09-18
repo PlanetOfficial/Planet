@@ -54,7 +54,7 @@ const Home = ({navigation}: {navigation: any}) => {
   const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
   const [recommendationsLoading, setRecommendationsLoading] =
     useState<boolean>(false);
-  const [initialSurey, setInitialSurvey] = useState<RecommenderSurvey | null>(
+  const [initialSurvey, setInitialSurvey] = useState<RecommenderSurvey | null>(
     null,
   );
 
@@ -170,9 +170,9 @@ const Home = ({navigation}: {navigation: any}) => {
         )}
         <Separator />
         {myLocation ? (
-          initialSurey ? (
+          initialSurvey ? (
             <InitialSurvey
-              initialSurvey={initialSurey}
+              initialSurvey={initialSurvey}
               setInitialSurvey={setInitialSurvey}
               loadRecommendations={() => {
                 loadRecommendations(myLocation, true);
@@ -181,9 +181,10 @@ const Home = ({navigation}: {navigation: any}) => {
           ) : (
             <Recommendations
               navigation={navigation}
-              location={myLocation}
               recommendations={recommendations}
-              loadRecommendations={loadRecommendations}
+              loadRecommendations={() => {
+                loadRecommendations(myLocation, true);
+              }}
               recommendationsLoading={recommendationsLoading}
             />
           )

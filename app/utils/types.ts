@@ -228,6 +228,8 @@ export interface RecommenderSurveyQuestion {
   neutral: string;
 }
 
+export type RecommenderSurveyResponse = 'yes' | 'no' | 'neutral';
+
 export type ExploreModes = 'create' | 'suggest' | 'add' | 'none';
 export type ExploreModesWithInCreate =
   | 'create'
