@@ -90,7 +90,7 @@ const InitialSurvey: React.FC<Props> = ({
           style={[STYLES.dim, STYLES.absolute]}
           onPress={() => setVisible(false)}
         />
-        <SafeAreaView>
+        <SafeAreaView pointerEvents="box-none">
           <View style={[styles.container, STYLES.shadow]}>
             {isOnCuisineQuestions ? (
               <>
