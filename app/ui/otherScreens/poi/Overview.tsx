@@ -24,8 +24,11 @@ const Overview: React.FC<Props> = ({destination, destinationDetails}) => {
   const open = destinationDetails.periods
     ? isOpen(destinationDetails.periods)
     : false;
-  
-  const hasOverviewTopInfo = destination.rating || destination.price || destinationDetails.hours?.length === 7;
+
+  const hasOverviewTopInfo =
+    destination.rating ||
+    destination.price ||
+    destinationDetails.hours?.length === 7;
 
   return (
     <View style={styles.container}>

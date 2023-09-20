@@ -21,7 +21,8 @@ export const getPois = async (
   longitude =
     Math.floor(longitude / offset) * offset + numbers.locationOffThreshold;
 
-  const shouldResetAPICache = (filters && filters['Open Now']) || category.is_live_category;
+  const shouldResetAPICache =
+    (filters && filters['Open Now']) || category.is_live_category;
   const response = await fetch(
     PoiAPIURL +
       `/poi?category=${JSON.stringify(category)}&latitude=${latitude.toFixed(
