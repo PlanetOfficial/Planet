@@ -372,6 +372,8 @@ const strings = {
     searchPlace: 'Unable to search for places. Please try again later.',
     noResultsFound: 'No Results Found',
     noResultsFoundDescription: 'Try searching for something else',
+    noResultsFoundDescriptionLiveCategory:
+      'Live events are not enabled for this area. However, if we detect enough demand we will enable it for this area.',
     internalError: 'Internal error retrieving chat, please try again later.',
     chatNotExist: 'Chat does not exist.',
     generalChatError:

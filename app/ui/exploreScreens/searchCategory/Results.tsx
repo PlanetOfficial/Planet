@@ -79,7 +79,9 @@ const Results: React.FC<Props> = ({
             <Text weight="l">{strings.error.noResultsFound}</Text>
             <Text> </Text>
             <Text size="s" weight="l">
-              {strings.error.noResultsFoundDescription}
+              {category.is_live_category
+                ? strings.error.noResultsFoundDescriptionLiveCategory
+                : strings.error.noResultsFoundDescription}
             </Text>
           </View>
         }
