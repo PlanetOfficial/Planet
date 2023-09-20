@@ -24,69 +24,82 @@ const Overview: React.FC<Props> = ({destination, destinationDetails}) => {
   const open = destinationDetails.periods
     ? isOpen(destinationDetails.periods)
     : false;
+  
+  const hasOverviewTopInfo = destination.rating || destination.price || destinationDetails.hours?.length === 7;
 
   return (
     <View style={styles.container}>
-      <View style={styles.top}>
-        <View style={styles.hours}>
-          {destination.rating ? (
-            <>
-              <Text
-                color={
-                  colors[theme].accent
-                }>{`★ ${destination.rating}/5`}</Text>
-              <Text size="xs" weight="l">
-                {`(${destination.rating_count} ${strings.poi.reviews})`}
+      {hasOverviewTopInfo ? (
+        <View style={styles.top}>
+          <View style={styles.hours}>
+            {destination.rating ? (
+              <>
+                <Text
+                  color={
+                    colors[theme].accent
+                  }>{`★ ${destination.rating}/5`}</Text>
+                <Text size="xs" weight="l">
+                  {`(${destination.rating_count} ${strings.poi.reviews})`}
+                </Text>
+              </>
+            ) : (
+              <Text size="s" color={colors[theme].secondary}>
+                {strings.poi.noRating}
               </Text>
-            </>
-          ) : (
-            <Text size="s" color={colors[theme].secondary}>
-              {strings.poi.noRating}
-            </Text>
-          )}
-        </View>
-        <View style={styles.separator} />
-        <View style={styles.price}>
-          {destination.price ? (
-            <>
-              <Text weight="b" color={colors[theme].accent}>
-                {'$'.repeat(destination.price)}
+            )}
+          </View>
+          <View style={styles.separator} />
+          <View style={styles.price}>
+            {destination.price ? (
+              <>
+                <Text weight="b" color={colors[theme].accent}>
+                  {'$'.repeat(destination.price)}
+                </Text>
+                <Text weight="b" color={colors[theme].secondary}>
+                  {'$'.repeat(4 - destination.price)}
+                </Text>
+              </>
+            ) : (
+              <Text size="s" color={colors[theme].secondary}>
+                {strings.poi.noPrice}
               </Text>
-              <Text weight="b" color={colors[theme].secondary}>
-                {'$'.repeat(4 - destination.price)}
-              </Text>
-            </>
-          ) : (
-            <Text size="s" color={colors[theme].secondary}>
-              {strings.poi.noPrice}
-            </Text>
-          )}
-        </View>
-        <View style={styles.separator} />
-        <View style={styles.hours}>
-          {destinationDetails.hours?.length === 7 ? (
-            <>
-              {open ? (
-                <Text color={colors[theme].green}>{strings.poi.open}</Text>
-              ) : (
-                <Text color={colors[theme].red}>{strings.poi.closed}</Text>
-              )}
+            )}
+          </View>
+          <View style={styles.separator} />
+          <View style={styles.hours}>
+            {destinationDetails.hours?.length === 7 ? (
+              <>
+                {open ? (
+                  <Text color={colors[theme].green}>{strings.poi.open}</Text>
+                ) : (
+                  <Text color={colors[theme].red}>{strings.poi.closed}</Text>
+                )}
 
-              <Text size="xs" weight="l">
-                {
-                  destinationDetails.hours[
-                    (currentDate.getDay() + 6) % 7
-                  ].split(' ')[1]
-                }
+                <Text size="xs" weight="l">
+                  {
+                    destinationDetails.hours[
+                      (currentDate.getDay() + 6) % 7
+                    ].split(' ')[1]
+                  }
+                </Text>
+              </>
+            ) : (
+              <Text size="s" color={colors[theme].secondary}>
+                {strings.poi.noHours}
               </Text>
-            </>
-          ) : (
-            <Text size="s" color={colors[theme].secondary}>
-              {strings.poi.noHours}
-            </Text>
-          )}
+            )}
+          </View>
         </View>
-      </View>
+      ) : null}
+      {destinationDetails.date_and_time ? (
+        <Text>{destinationDetails.date_and_time}</Text>
+      ) : null}
+      {destinationDetails.canceled ? (
+        <Text color={colors[theme].red}>({strings.poi.canceled})</Text>
+      ) : null}
+      {destinationDetails.labels ? (
+        <Text>({destinationDetails.labels})</Text>
+      ) : null}
       {destinationDetails.description ? (
         <View style={styles.description}>
           <Text size="s" weight="l" lineHeight={s(20)}>

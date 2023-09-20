@@ -119,6 +119,7 @@ const strings = {
     closed: 'Closed',
     images: 'Images',
     viewMoreReviews: 'View More Reviews',
+    canceled: 'Canceled',
   },
   explore: {
     categories: 'Categories',

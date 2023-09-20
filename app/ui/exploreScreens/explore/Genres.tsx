@@ -81,6 +81,7 @@ const Genres: React.FC<Props> = ({navigation, myLocation, mode}) => {
                   supplier: genre.supplier,
                   filter: genre.filter,
                   icon: genre.icon,
+                  is_live_category: genre.is_live_category,
                 },
                 myLocation,
                 mode,
