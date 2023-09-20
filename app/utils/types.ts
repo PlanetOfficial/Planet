@@ -60,6 +60,7 @@ export interface Poi {
   rating: number;
   rating_count: number;
   display_date: string;
+  rank: number;
 }
 
 export interface PoiDetail {
@@ -75,7 +76,8 @@ export interface PoiDetail {
   attributes?: string[];
   date_and_time?: string;
   canceled?: boolean;
-  labels: string;
+  labels?: string;
+  phq_attendance?: number;
 }
 
 export interface PlaceOpeningHoursPeriod {
