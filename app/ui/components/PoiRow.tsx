@@ -50,7 +50,12 @@ const PoiRow: React.FC<Props> = ({place, myLocation, category}) => {
     }
 
     if (place.start_datetime) {
-      poiString += place.start_datetime;
+      poiString += new Date(place.start_datetime).toLocaleString([], {
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+      });
     }
 
     return poiString;

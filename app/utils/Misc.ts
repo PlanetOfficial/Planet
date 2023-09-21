@@ -144,7 +144,13 @@ export const getInfoString = (poi: Poi): string => {
   }
 
   if (poi.start_datetime) {
-    poiString += poi.start_datetime;
+    poiString += new Date(poi.start_datetime).toLocaleString([], {
+      month: 'numeric',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true,
+    });
   }
 
   return poiString;

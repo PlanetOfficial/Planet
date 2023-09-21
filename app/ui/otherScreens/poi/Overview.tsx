@@ -41,9 +41,14 @@ const Overview: React.FC<Props> = ({destination, destinationDetails}) => {
           <View style={styles.block}>
             {destination.start_datetime ? (
               <>
-                <Text size="s">9/21/23</Text>
+                <Text size="s">
+                  {new Date(destination.start_datetime).toLocaleDateString()}
+                </Text>
                 <Text size="s" weight="l">
-                  5:00 pm
+                  {new Date(destination.start_datetime).toLocaleTimeString([], {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })}
                 </Text>
               </>
             ) : (
