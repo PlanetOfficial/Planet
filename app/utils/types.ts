@@ -59,7 +59,7 @@ export interface Poi {
   price: number;
   rating: number;
   rating_count: number;
-  display_date: string;
+  start_datetime: string;
   rank: number;
 }
 
@@ -74,7 +74,7 @@ export interface PoiDetail {
   url?: string;
   website?: string;
   attributes?: string[];
-  date_and_time?: string;
+  start_datetime?: string;
   canceled?: boolean;
   labels?: string;
   phq_attendance?: number;

@@ -49,8 +49,8 @@ const PoiRow: React.FC<Props> = ({place, myLocation, category}) => {
       poiString += '・' + '$'.repeat(place.price);
     }
 
-    if (place.display_date) {
-      poiString += place.display_date;
+    if (place.start_datetime) {
+      poiString += place.start_datetime;
     }
 
     return poiString;

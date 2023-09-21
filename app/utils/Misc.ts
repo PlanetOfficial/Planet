@@ -143,8 +143,8 @@ export const getInfoString = (poi: Poi): string => {
     poiString += '$'.repeat(poi.price);
   }
 
-  if (poi.display_date) {
-    poiString += poi.display_date;
+  if (poi.start_datetime) {
+    poiString += poi.start_datetime;
   }
 
   return poiString;

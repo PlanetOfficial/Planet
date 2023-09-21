@@ -39,7 +39,7 @@ const Overview: React.FC<Props> = ({destination, destinationDetails}) => {
       {isLiveEvent ? (
         <View style={styles.top}>
           <View style={styles.block}>
-            {destination.display_date ? (
+            {destination.start_datetime ? (
               <>
                 <Text size="s">9/21/23</Text>
                 <Text size="s" weight="l">
