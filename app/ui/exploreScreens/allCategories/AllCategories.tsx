@@ -51,7 +51,9 @@ const AllCategories = ({
           <Icon size="m" icon={icons.back} color="transparent" />
         </View>
       </SafeAreaView>
-      <ScrollView scrollIndicatorInsets={{right: 1}}>
+      <ScrollView
+        contentContainerStyle={STYLES.scrollView}
+        scrollIndicatorInsets={{right: 1}}>
         {genres.map(genre => (
           <GenreContainer
             key={genre.id}
