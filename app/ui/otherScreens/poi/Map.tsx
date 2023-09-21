@@ -10,13 +10,14 @@ import icons from '../../../constants/icons';
 interface Props {
   latitude: number;
   longitude: number;
+  initiallyExpanded: boolean;
 }
 
-const Map: React.FC<Props> = ({latitude, longitude}) => {
-  const [expanded, setExpanded] = useState<boolean>(false);
+const Map: React.FC<Props> = ({latitude, longitude, initiallyExpanded}) => {
+  const [expanded, setExpanded] = useState<boolean>(initiallyExpanded);
 
   return (
-    <View style={styles.container}>
+    <View>
       <MapView
         style={[styles.map, {height: expanded ? s(360) : s(180)}]}
         initialRegion={{
@@ -49,9 +50,6 @@ const Map: React.FC<Props> = ({latitude, longitude}) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   map: {
     width: '100%',
   },

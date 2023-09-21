@@ -150,6 +150,23 @@ const Info: React.FC<Props> = ({destination, destinationDetails, location}) => {
           </View>
         </View>
       ) : null}
+      {destinationDetails?.labels &&
+      destinationDetails.labels.split(', ')?.length > 0 ? (
+        <View style={styles.row}>
+          <View style={styles.texts}>
+            <Text size="s">{strings.poi.labels}:</Text>
+            <View style={styles.info}>
+              {destinationDetails.labels
+                ?.split(', ')
+                ?.map((label: string, index: number) => (
+                  <Text key={index} size="s" weight="l">
+                    {'・' + label}
+                  </Text>
+                ))}
+            </View>
+          </View>
+        </View>
+      ) : null}
     </View>
   );
 };

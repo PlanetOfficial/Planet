@@ -16,6 +16,7 @@ const styling = (theme: 'light' | 'dark') =>
       paddingBottom: s(30),
     },
     center: {
+      paddingHorizontal: s(20),
       paddingVertical: s(50),
       alignItems: 'center',
     },

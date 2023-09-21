@@ -78,7 +78,7 @@ const Results: React.FC<Props> = ({
           <View style={STYLES.center}>
             <Text weight="l">{strings.error.noResultsFound}</Text>
             <Text> </Text>
-            <Text size="s" weight="l">
+            <Text size="s" weight="l" center={true}>
               {category.is_live_category
                 ? strings.error.noResultsFoundDescriptionLiveCategory
                 : strings.error.noResultsFoundDescription}
@@ -100,14 +100,12 @@ const Results: React.FC<Props> = ({
         showsHorizontalScrollIndicator={false}
         pagingEnabled={true}
         scrollEventThrottle={16}
-        snapToInterval={s(280) + s(20)}
+        snapToInterval={s(301)}
         snapToAlignment={'start'}
         decelerationRate={'fast'}
         onScroll={event => {
           filterRef.current?.closeDropdown();
-          let idx = Math.round(
-            event.nativeEvent.contentOffset.x / (s(280) + s(20)),
-          );
+          let idx = Math.round(event.nativeEvent.contentOffset.x / s(301));
           if (idx !== selectedIndex) {
             setSelectedIndex(idx);
             mapRef.current?.animateToRegion(
