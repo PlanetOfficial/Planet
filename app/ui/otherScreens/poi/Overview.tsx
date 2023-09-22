@@ -39,7 +39,11 @@ const Overview: React.FC<Props> = ({destination, destinationDetails}) => {
       {isLiveEvent ? (
         <View style={styles.top}>
           <View style={styles.block}>
-            {destination.start_datetime ? (
+            {destinationDetails.canceled ? (
+              <Text size="s" color={colors[theme].red}>
+                {strings.poi.canceled}
+              </Text>
+            ) : destination.start_datetime ? (
               <>
                 <Text size="s">
                   {new Date(destination.start_datetime).toLocaleDateString()}
