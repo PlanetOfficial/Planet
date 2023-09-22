@@ -383,7 +383,7 @@ const strings = {
     noResultsFound: 'No Results Found',
     noResultsFoundDescription: 'Try searching for something else',
     noResultsFoundDescriptionLiveCategory:
-      'Live events are not enabled for this area. However, if we detect enough demand we will enable it for this area.',
+      'Live events may not be enabled for this area. However, if we detect enough demand we will enable it for this area.',
     internalError: 'Internal error retrieving chat, please try again later.',
     chatNotExist: 'Chat does not exist.',
     generalChatError:
