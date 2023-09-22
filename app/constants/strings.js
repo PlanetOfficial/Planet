@@ -45,6 +45,7 @@ const strings = {
     edit: 'Edit',
     success: 'Success',
     continue: 'Continue',
+    gotIt: 'Got It!',
   },
   title: {
     home: 'Home',
@@ -114,11 +115,21 @@ const strings = {
     noPrice: 'No Price',
     noHours: 'No Hours',
     noRating: 'No Rating',
+    noDate: 'No Date',
+    noRank: 'No Popularity',
+    noAttendance: 'No Attendance',
     attributes: 'Attributes',
     open: 'Open',
     closed: 'Closed',
     images: 'Images',
     viewMoreReviews: 'View More Reviews',
+    canceled: 'Canceled',
+    rank: 'Popularity',
+    attendance: 'Attendance',
+    labels: 'Labels',
+    rankDescription: 'Our popularity index for this event, out of 100.',
+    attendanceDescription:
+      'This number represents the expected number of people attending this event.',
   },
   explore: {
     categories: 'Categories',
@@ -371,6 +382,8 @@ const strings = {
     searchPlace: 'Unable to search for places. Please try again later.',
     noResultsFound: 'No Results Found',
     noResultsFoundDescription: 'Try searching for something else',
+    noResultsFoundDescriptionLiveCategory:
+      'Live events may not be enabled for this area. However, if we detect enough demand we will enable it for this area.',
     internalError: 'Internal error retrieving chat, please try again later.',
     chatNotExist: 'Chat does not exist.',
     generalChatError:

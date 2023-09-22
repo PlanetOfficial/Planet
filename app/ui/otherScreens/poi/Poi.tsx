@@ -149,10 +149,13 @@ const PoiPage = ({
             destinationDetails={destinationDetails}
           />
         ) : null}
-        {destination?.latitude && destination.longitude ? (
+        {destinationDetails &&
+        destination?.latitude &&
+        destination.longitude ? (
           <Map
             latitude={destination.latitude}
             longitude={destination.longitude}
+            initiallyExpanded={destinationDetails.reviews?.length === 0}
           />
         ) : null}
         {destination && destinationDetails && myLocation ? (

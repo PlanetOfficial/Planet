@@ -143,6 +143,16 @@ export const getInfoString = (poi: Poi): string => {
     poiString += '$'.repeat(poi.price);
   }
 
+  if (poi.start_datetime) {
+    poiString += new Date(poi.start_datetime).toLocaleString([], {
+      month: 'numeric',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true,
+    });
+  }
+
   return poiString;
 };
 

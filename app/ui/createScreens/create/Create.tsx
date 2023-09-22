@@ -51,8 +51,9 @@ const Create = ({
   const [destinationNames, setDestinationNames] = useState<Map<number, string>>(
     new Map(),
   );
-  const [recommendationsShown, setRecommendationsShown] =
-    useState<boolean>(true);
+  const [recommendationsShown, setRecommendationsShown] = useState<boolean>(
+    !route.params?.destination,
+  );
   const [showTutorial, setShowTutorial] = useState<boolean>(false);
 
   const addMembers = useCallback(() => {

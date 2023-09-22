@@ -34,6 +34,7 @@ export interface Genre {
   icon: Image;
   image: Image;
   categories: Category[];
+  is_live_category: boolean;
 }
 
 export interface Category {
@@ -43,6 +44,7 @@ export interface Category {
   supplier: string;
   filter: Filter[];
   icon: Image;
+  is_live_category: boolean;
 }
 
 export interface Poi {
@@ -57,6 +59,8 @@ export interface Poi {
   price: number;
   rating: number;
   rating_count: number;
+  start_datetime: string;
+  rank: number;
 }
 
 export interface PoiDetail {
@@ -70,6 +74,10 @@ export interface PoiDetail {
   url?: string;
   website?: string;
   attributes?: string[];
+  start_datetime?: string;
+  canceled?: boolean;
+  labels?: string;
+  phq_attendance?: number;
 }
 
 export interface PlaceOpeningHoursPeriod {
