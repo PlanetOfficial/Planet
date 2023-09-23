@@ -110,7 +110,7 @@ const SignUpBirthday = ({
               ? moment(birthday, '').toDate()
               : new Date(
                   new Date().setFullYear(
-                    new Date().getFullYear() - numbers.minimumAge,
+                    new Date().getFullYear() - 18,
                   ),
                 )
           }
