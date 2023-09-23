@@ -1,11 +1,9 @@
 import React from 'react';
 import {useColorScheme} from 'react-native';
-import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
 import NavBar from './NavBar';
 import RootStackParamList from './RootStackParamList';
-import colors from '../../constants/colors';
 import {verticalAnimation} from '../../utils/Misc';
 
 import Welcome from '../authScreens/Welcome';
@@ -70,34 +68,25 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedInStack}) => {
     <FriendsStateProvider isLoggedInStack={isLoggedInStack}>
       <BookmarkStateProvider isLoggedInStack={isLoggedInStack}>
         <LocationStateProvider isLoggedInStack={isLoggedInStack}>
-          <NavigationContainer
-            theme={{
-              ...DefaultTheme,
-              colors: {
-                ...DefaultTheme.colors,
-                background: colors[theme].background,
-              },
-            }}>
-            {isLoggedInStack ? (
-              <Stack.Navigator
-                initialRouteName="TabStack"
-                screenOptions={{
-                  headerShown: false,
-                }}>
-                {mainStackScreens()}
-                {authStackScreens()}
-              </Stack.Navigator>
-            ) : (
-              <Stack.Navigator
-                initialRouteName="Welcome"
-                screenOptions={{
-                  headerShown: false,
-                }}>
-                {authStackScreens()}
-                {mainStackScreens()}
-              </Stack.Navigator>
-            )}
-          </NavigationContainer>
+          {isLoggedInStack ? (
+            <Stack.Navigator
+              initialRouteName="TabStack"
+              screenOptions={{
+                headerShown: false,
+              }}>
+              {mainStackScreens()}
+              {authStackScreens()}
+            </Stack.Navigator>
+          ) : (
+            <Stack.Navigator
+              initialRouteName="Welcome"
+              screenOptions={{
+                headerShown: false,
+              }}>
+              {authStackScreens()}
+              {mainStackScreens()}
+            </Stack.Navigator>
+          )}
         </LocationStateProvider>
       </BookmarkStateProvider>
     </FriendsStateProvider>
