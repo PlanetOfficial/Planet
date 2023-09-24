@@ -20,14 +20,15 @@ import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import { FriendsStateProvider, useFriendsContext } from './app/context/FriendsContext';
 import { BookmarkStateProvider } from './app/context/BookmarkContext';
 import { LocationStateProvider } from './app/context/LocationContext';
+import { ForegroundNotificationData, ScreenName } from './app/utils/types';
+import AppBody from './app/ui/AppBody';
 
 export default function App() {
   const [isLoading, setLoading] = useState<boolean>(true);
   const [isLoggedInStack, setLoggedInStack] = useState<boolean>(false);
   const navigationRef = useRef<any>(null);
-
-  type ScreenName = 'Friends' | 'Requests' | 'Notifications' | '';
-  const [foregroundNotificationData, setForegroundNotificationData] = useState<{screenName: ScreenName, notificationText: string}>({screenName: '', notificationText: ''});
+  
+  const [foregroundNotificationData, setForegroundNotificationData] = useState<ForegroundNotificationData>({screenName: '', notificationText: ''});
 
   const theme = useColorScheme() || 'light';
 
@@ -136,29 +137,6 @@ export default function App() {
     });
   }, []);
 
-  const AppBody = () => {
-    const {refreshFriends} = useFriendsContext();
-
-    return (
-      <>
-        <AppNavigation isLoggedInStack={isLoggedInStack} />
-        {foregroundNotificationData.notificationText !== '' && foregroundNotificationData.screenName !== '' ? (
-          <Notification
-            message={foregroundNotificationData.notificationText}
-            onPress={() => {
-              if (foregroundNotificationData.screenName === 'Friends' || foregroundNotificationData.screenName === 'Requests') {
-                refreshFriends();
-              }
-
-              navigationRef.current?.navigate(foregroundNotificationData.screenName);
-              setForegroundNotificationData({screenName: '', notificationText: ''});
-            }}
-          />
-        ) : null}
-      </>
-    );
-  };
-
   return isLoading ? <SplashScreen /> : (
     <FriendsStateProvider isLoggedInStack={isLoggedInStack}>
       <BookmarkStateProvider isLoggedInStack={isLoggedInStack}>
@@ -173,7 +151,12 @@ export default function App() {
             }}
             ref={navigationRef}
           >
-            <AppBody />
+            <AppBody 
+              isLoggedInStack={isLoggedInStack}
+              foregroundNotificationData={foregroundNotificationData}
+              setForegroundNotificationData={setForegroundNotificationData}
+              navigationRef={navigationRef}
+            />
           </NavigationContainer>
         </LocationStateProvider>
       </BookmarkStateProvider>
