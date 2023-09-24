@@ -17,16 +17,30 @@ import {saveTokenToDatabase} from './app/utils/api/authAPI';
 import Notification from './app/ui/components/Notification';
 import colors from './app/constants/colors';
 import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
+import { FriendsStateProvider, useFriendsContext } from './app/context/FriendsContext';
+import { BookmarkStateProvider } from './app/context/BookmarkContext';
+import { LocationStateProvider } from './app/context/LocationContext';
 
 export default function App() {
   const [isLoading, setLoading] = useState<boolean>(true);
   const [isLoggedInStack, setLoggedInStack] = useState<boolean>(false);
   const navigationRef = useRef<any>(null);
 
-  const [screenToNavigate, setScreenToNavigate] = useState<string>('');
-  const [notificationText, setNotificationText] = useState<string>('');
+  type ScreenName = 'Friends' | 'Requests' | 'Notifications' | '';
+  const [foregroundNotificationData, setForegroundNotificationData] = useState<{screenName: ScreenName, notificationText: string}>({screenName: '', notificationText: ''});
 
   const theme = useColorScheme() || 'light';
+
+  const getScreenName = (screenToNavigate: string): ScreenName => {
+    switch (screenToNavigate) {
+      case 'FRIENDS':
+        return 'Friends';
+      case 'USER_PROFILE':
+        return 'Requests';
+      default:
+        return 'Notifications';
+    }
+  }
 
   const requestNotificationPerms = async () => {
     if (Platform.OS === 'android') {
@@ -71,20 +85,37 @@ export default function App() {
 
     initialize();
 
+    // do not continue execution and setup listeners until app is loaded
+    if (isLoading) {
+      return;
+    }
+
+    // handle push notifications from background state
+    messaging().onNotificationOpenedApp(remoteMessage => {
+      if (remoteMessage?.data?.screen) {
+        navigationRef.current?.navigate(getScreenName(remoteMessage.data.screen));
+      }
+    });
+    
+    // handle push notifications from quit state
+    messaging()
+      .getInitialNotification()
+      .then(remoteMessage => {
+        if (remoteMessage?.data?.screen) {
+          navigationRef.current?.navigate(getScreenName(remoteMessage.data.screen));
+        }
+      });
+
     // handle foreground notifications
-    const unsubscribe = messaging().onMessage(remoteMessage => {
+    messaging().onMessage(remoteMessage => {
       if (remoteMessage?.notification?.body && remoteMessage?.data?.screen) {
-        setScreenToNavigate(remoteMessage?.data?.screen); // store in an object instead
-        setNotificationText(remoteMessage?.notification?.body);
+        setForegroundNotificationData({screenName: getScreenName(remoteMessage.data.screen), notificationText: remoteMessage.notification.body})
         setTimeout(() => {
-          setScreenToNavigate('');
-          setNotificationText('');
+          setForegroundNotificationData({screenName: '', notificationText: ''});
         }, 5000);
       }
     });
-
-    return unsubscribe;
-  }, [theme]);
+  }, [theme, isLoading]);
 
   useEffect(() => {
     // Get the device token
@@ -103,40 +134,47 @@ export default function App() {
     });
   }, []);
 
-  const getCorrectStack = () => {
+  const AppBody = () => {
+    const {refreshFriends} = useFriendsContext();
+
     return (
-      <NavigationContainer
-        theme={{
-          ...DefaultTheme,
-          colors: {
-            ...DefaultTheme.colors,
-            background: colors[theme].background,
-          },
-        }}
-        ref={navigationRef}
-      >
+      <>
         <AppNavigation isLoggedInStack={isLoggedInStack} />
-        {notificationText !== '' ? (
+        {foregroundNotificationData.notificationText !== '' && foregroundNotificationData.screenName !== '' ? (
           <Notification
-            message={notificationText}
+            message={foregroundNotificationData.notificationText}
             onPress={() => {
-              // TODO: navigate to the correct screen
-              let screenName = 'Notifications';
-              if (screenToNavigate === 'FRIEND_REQUESTS') {
-                screenName = 'Requests';
-                // TODO: update friends context, make this logic modular
-              } else if (screenToNavigate === 'FRIENDS') {
-                screenName = 'Friends';
-                // TODO: update friends context
+              if (foregroundNotificationData.screenName === 'Friends' || foregroundNotificationData.screenName === 'Requests') {
+                refreshFriends();
               }
-              navigationRef.current?.navigate(screenName);
-              setNotificationText('');
+
+              navigationRef.current?.navigate(foregroundNotificationData.screenName);
+              setForegroundNotificationData({screenName: '', notificationText: ''});
             }}
           />
         ) : null}
-      </NavigationContainer>
+      </>
     );
   };
 
-  return isLoading ? <SplashScreen /> : getCorrectStack();
+  return isLoading ? <SplashScreen /> : (
+    <FriendsStateProvider isLoggedInStack={isLoggedInStack}>
+      <BookmarkStateProvider isLoggedInStack={isLoggedInStack}>
+        <LocationStateProvider isLoggedInStack={isLoggedInStack}>
+          <NavigationContainer
+            theme={{
+              ...DefaultTheme,
+              colors: {
+                ...DefaultTheme.colors,
+                background: colors[theme].background,
+              },
+            }}
+            ref={navigationRef}
+          >
+            <AppBody />
+          </NavigationContainer>
+        </LocationStateProvider>
+      </BookmarkStateProvider>
+    </FriendsStateProvider>
+  );
 }

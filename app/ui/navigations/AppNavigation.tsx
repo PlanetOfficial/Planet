@@ -65,31 +65,25 @@ const Stack = createStackNavigator<RootStackParamList>();
 const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedInStack}) => {
   const theme = useColorScheme() || 'light';
   return (
-    <FriendsStateProvider isLoggedInStack={isLoggedInStack}>
-      <BookmarkStateProvider isLoggedInStack={isLoggedInStack}>
-        <LocationStateProvider isLoggedInStack={isLoggedInStack}>
-          {isLoggedInStack ? (
-            <Stack.Navigator
-              initialRouteName="TabStack"
-              screenOptions={{
-                headerShown: false,
-              }}>
-              {mainStackScreens()}
-              {authStackScreens()}
-            </Stack.Navigator>
-          ) : (
-            <Stack.Navigator
-              initialRouteName="Welcome"
-              screenOptions={{
-                headerShown: false,
-              }}>
-              {authStackScreens()}
-              {mainStackScreens()}
-            </Stack.Navigator>
-          )}
-        </LocationStateProvider>
-      </BookmarkStateProvider>
-    </FriendsStateProvider>
+    isLoggedInStack ? (
+      <Stack.Navigator
+        initialRouteName="TabStack"
+        screenOptions={{
+          headerShown: false,
+        }}>
+        {mainStackScreens()}
+        {authStackScreens()}
+      </Stack.Navigator>
+    ) : (
+      <Stack.Navigator
+        initialRouteName="Welcome"
+        screenOptions={{
+          headerShown: false,
+        }}>
+        {authStackScreens()}
+        {mainStackScreens()}
+      </Stack.Navigator>
+    )
   );
 };
 
