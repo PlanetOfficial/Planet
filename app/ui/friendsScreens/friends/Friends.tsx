@@ -67,7 +67,11 @@ const Friends = ({navigation}: {navigation: any}) => {
           <Icon
             size="m"
             icon={icons.back}
-            onPress={() => navigation.canGoBack() ? navigation.goBack() : console.log('cannot go back')}
+            onPress={() =>
+              navigation.canGoBack()
+                ? navigation.goBack()
+                : console.log('cannot go back')
+            }
           />
           <Text>{strings.friends.friends}</Text>
           {requests.length > 0 ? (

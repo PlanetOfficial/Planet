@@ -11,24 +11,26 @@ import {
 import SystemNavigationBar from 'react-native-system-navigation-bar';
 
 import SplashScreen from './app/ui/otherScreens/splashScreen/SplashScreen';
-import AppNavigation from './app/ui/navigations/AppNavigation';
 import {cacheCategories, updateCaches} from './app/utils/CacheHelpers';
 import {saveTokenToDatabase} from './app/utils/api/authAPI';
-import Notification from './app/ui/components/Notification';
 import colors from './app/constants/colors';
-import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
-import { FriendsStateProvider, useFriendsContext } from './app/context/FriendsContext';
-import { BookmarkStateProvider } from './app/context/BookmarkContext';
-import { LocationStateProvider } from './app/context/LocationContext';
-import { ForegroundNotificationData, ScreenName } from './app/utils/types';
+import {DefaultTheme, NavigationContainer} from '@react-navigation/native';
+import {FriendsStateProvider} from './app/context/FriendsContext';
+import {BookmarkStateProvider} from './app/context/BookmarkContext';
+import {LocationStateProvider} from './app/context/LocationContext';
+import {ForegroundNotificationData, ScreenName} from './app/utils/types';
 import AppBody from './app/ui/AppBody';
 
 export default function App() {
   const [isLoading, setLoading] = useState<boolean>(true);
   const [isLoggedInStack, setLoggedInStack] = useState<boolean>(false);
   const navigationRef = useRef<any>(null);
-  
-  const [foregroundNotificationData, setForegroundNotificationData] = useState<ForegroundNotificationData>({screenName: '', notificationText: ''});
+
+  const [foregroundNotificationData, setForegroundNotificationData] =
+    useState<ForegroundNotificationData>({
+      screenName: '',
+      notificationText: '',
+    });
 
   const theme = useColorScheme() || 'light';
 
@@ -43,7 +45,7 @@ export default function App() {
       default:
         return '';
     }
-  }
+  };
 
   const requestNotificationPerms = async () => {
     if (Platform.OS === 'android') {
@@ -96,23 +98,30 @@ export default function App() {
     // handle push notifications from background state
     messaging().onNotificationOpenedApp(remoteMessage => {
       if (remoteMessage?.data?.screen) {
-        navigationRef.current?.navigate(getScreenName(remoteMessage.data.screen));
+        navigationRef.current?.navigate(
+          getScreenName(remoteMessage.data.screen),
+        );
       }
     });
-    
+
     // handle push notifications from quit state
     messaging()
       .getInitialNotification()
       .then(remoteMessage => {
         if (remoteMessage?.data?.screen) {
-          navigationRef.current?.navigate(getScreenName(remoteMessage.data.screen));
+          navigationRef.current?.navigate(
+            getScreenName(remoteMessage.data.screen),
+          );
         }
       });
 
     // handle foreground notifications
     messaging().onMessage(remoteMessage => {
       if (remoteMessage?.notification?.body && remoteMessage?.data?.screen) {
-        setForegroundNotificationData({screenName: getScreenName(remoteMessage.data.screen), notificationText: remoteMessage.notification.body})
+        setForegroundNotificationData({
+          screenName: getScreenName(remoteMessage.data.screen),
+          notificationText: remoteMessage.notification.body,
+        });
         setTimeout(() => {
           setForegroundNotificationData({screenName: '', notificationText: ''});
         }, 5000);
@@ -137,7 +146,9 @@ export default function App() {
     });
   }, []);
 
-  return isLoading ? <SplashScreen /> : (
+  return isLoading ? (
+    <SplashScreen />
+  ) : (
     <FriendsStateProvider isLoggedInStack={isLoggedInStack}>
       <BookmarkStateProvider isLoggedInStack={isLoggedInStack}>
         <LocationStateProvider isLoggedInStack={isLoggedInStack}>
@@ -149,9 +160,8 @@ export default function App() {
                 background: colors[theme].background,
               },
             }}
-            ref={navigationRef}
-          >
-            <AppBody 
+            ref={navigationRef}>
+            <AppBody
               isLoggedInStack={isLoggedInStack}
               foregroundNotificationData={foregroundNotificationData}
               setForegroundNotificationData={setForegroundNotificationData}

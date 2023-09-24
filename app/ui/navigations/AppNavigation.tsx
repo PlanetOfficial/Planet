@@ -1,5 +1,4 @@
 import React from 'react';
-import {useColorScheme} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 
 import NavBar from './NavBar';
@@ -48,10 +47,6 @@ import AllCategories from '../exploreScreens/allCategories/AllCategories';
 import SearchCategory from '../exploreScreens/searchCategory/SearchCategory';
 import SetSearchLocation from '../exploreScreens/setSearchLocation/SetSearchLocation';
 
-import {BookmarkStateProvider} from '../../context/BookmarkContext';
-import {FriendsStateProvider} from '../../context/FriendsContext';
-import {LocationStateProvider} from '../../context/LocationContext';
-
 interface AppNavigationProps {
   isLoggedInStack: boolean;
 }
@@ -63,27 +58,24 @@ function TabStack() {
 const Stack = createStackNavigator<RootStackParamList>();
 
 const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedInStack}) => {
-  const theme = useColorScheme() || 'light';
-  return (
-    isLoggedInStack ? (
-      <Stack.Navigator
-        initialRouteName="TabStack"
-        screenOptions={{
-          headerShown: false,
-        }}>
-        {mainStackScreens()}
-        {authStackScreens()}
-      </Stack.Navigator>
-    ) : (
-      <Stack.Navigator
-        initialRouteName="Welcome"
-        screenOptions={{
-          headerShown: false,
-        }}>
-        {authStackScreens()}
-        {mainStackScreens()}
-      </Stack.Navigator>
-    )
+  return isLoggedInStack ? (
+    <Stack.Navigator
+      initialRouteName="TabStack"
+      screenOptions={{
+        headerShown: false,
+      }}>
+      {mainStackScreens()}
+      {authStackScreens()}
+    </Stack.Navigator>
+  ) : (
+    <Stack.Navigator
+      initialRouteName="Welcome"
+      screenOptions={{
+        headerShown: false,
+      }}>
+      {authStackScreens()}
+      {mainStackScreens()}
+    </Stack.Navigator>
   );
 };
 
