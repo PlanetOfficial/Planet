@@ -34,6 +34,7 @@ export default function App() {
 
   const theme = useColorScheme() || 'light';
 
+  // converts from backend string to frontend
   const getScreenName = (screenToNavigate: string): ScreenName => {
     switch (screenToNavigate) {
       case 'FRIENDS':
