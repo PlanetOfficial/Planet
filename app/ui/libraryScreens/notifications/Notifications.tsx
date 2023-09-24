@@ -58,7 +58,7 @@ const Notifications = ({navigation}: {navigation: any}) => {
           <Icon
             size="m"
             icon={icons.back}
-            onPress={() => navigation.goBack()}
+            onPress={() => navigation.canGoBack() ? navigation.goBack() : console.log('cannot go back')}
           />
           <Text>{strings.notifications.notifications}</Text>
           <Icon

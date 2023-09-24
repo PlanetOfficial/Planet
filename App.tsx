@@ -37,8 +37,10 @@ export default function App() {
         return 'Friends';
       case 'USER_PROFILE':
         return 'Requests';
-      default:
+      case 'EVENT':
         return 'Notifications';
+      default:
+        return '';
     }
   }
 
