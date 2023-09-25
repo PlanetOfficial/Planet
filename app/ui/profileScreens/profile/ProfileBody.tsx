@@ -16,7 +16,6 @@ import PoiRow from '../../components/PoiRow';
 
 import {useBookmarkContext} from '../../../context/BookmarkContext';
 
-import {handleBookmark} from '../../../utils/Misc';
 import {Coordinate, Poi} from '../../../utils/types';
 
 interface Props {
@@ -31,7 +30,7 @@ const ProfileBody: React.FC<Props> = ({navigation, myLocation}) => {
 
   const [selectedIndex, setIndex] = useState<number>(0);
 
-  const {bookmarks, setBookmarks} = useBookmarkContext();
+  const {bookmarks} = useBookmarkContext();
 
   return (
     <>
@@ -63,18 +62,10 @@ const ProfileBody: React.FC<Props> = ({navigation, myLocation}) => {
               onPress={() =>
                 navigation.navigate('Poi', {
                   poi: item,
-                  bookmarked: true,
                   mode: 'none',
                 })
               }>
-              <PoiRow
-                place={item}
-                bookmarked={true}
-                myLocation={myLocation}
-                handleBookmark={(poi: Poi) =>
-                  handleBookmark(poi, bookmarks, setBookmarks)
-                }
-              />
+              <PoiRow place={item} myLocation={myLocation} />
             </TouchableOpacity>
           );
         }}

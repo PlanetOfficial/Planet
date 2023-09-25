@@ -49,7 +49,7 @@ const AccountSettings = ({navigation}: {navigation: any}) => {
     setFriendGroups([]);
   };
 
-  const handleLogout = async () => {
+  const handleLogout = () => {
     Alert.alert(strings.settings.logout, strings.settings.logoutInfo, [
       {
         text: strings.main.cancel,
@@ -81,7 +81,7 @@ const AccountSettings = ({navigation}: {navigation: any}) => {
     navigation.navigate('ResetPwd', {authToken});
   };
 
-  const handleRemoveAccount = async () => {
+  const handleRemoveAccount = () => {
     Alert.alert(
       strings.settings.removeAccount,
       strings.settings.removeAccountInfo,
@@ -92,7 +92,7 @@ const AccountSettings = ({navigation}: {navigation: any}) => {
         },
         {
           text: strings.main.remove,
-          onPress: async () => {
+          onPress: () => {
             Alert.alert('Are you sure?', 'This action cannot be undone.', [
               {
                 text: strings.main.cancel,

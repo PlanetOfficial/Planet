@@ -14,7 +14,7 @@ import {
   saveImage,
 } from '../../../utils/api/authAPI';
 
-export const handleEditPfp = async (setPfpURL: (url: string) => void) => {
+export const handleEditPfp = (setPfpURL: (url: string) => void) => {
   ImagePicker.openPicker({
     width: 300,
     height: 300,
@@ -46,7 +46,7 @@ export const handleEditPfp = async (setPfpURL: (url: string) => void) => {
     });
 };
 
-export const handleRemovePfp = async (setPfpURL: (url: string) => void) => {
+export const handleRemovePfp = (setPfpURL: (url: string) => void) => {
   Alert.alert(
     strings.profile.removePfp,
     strings.profile.removePfpPrompt,
@@ -73,7 +73,7 @@ export const handleRemovePfp = async (setPfpURL: (url: string) => void) => {
   );
 };
 
-export const handleEditDisplayName = async (
+export const handleEditDisplayName = (
   _displayName: string,
   setDisplayName: (displayName: string) => void,
 ) => {
@@ -114,7 +114,7 @@ export const handleEditDisplayName = async (
   );
 };
 
-export const handleEditUsername = async (
+export const handleEditUsername = (
   _username: string,
   setUsername: (username: string) => void,
 ) => {

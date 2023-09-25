@@ -28,7 +28,6 @@ import {getPois} from '../../../utils/api/poiAPI';
 import {isLocationOffset, getRegionFromPoints} from '../../../utils/Misc';
 import {Poi, Coordinate, Category, ExploreModes} from '../../../utils/types';
 
-import {useBookmarkContext} from '../../../context/BookmarkContext';
 import {useLocationContext} from '../../../context/LocationContext';
 
 import Map from './Map';
@@ -55,7 +54,7 @@ const SearchCategory = ({
   const STYLES = STYLING(theme);
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', async () => {
+    const unsubscribe = navigation.addListener('focus', () => {
       StatusBar.setBarStyle(colors[theme].statusBar, true);
     });
 
@@ -70,7 +69,6 @@ const SearchCategory = ({
   const [places, setPlaces] = useState<Poi[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
-  const {bookmarks, setBookmarks} = useBookmarkContext();
 
   const {location, setLocation} = useLocationContext();
   const [tempLocation, setTempLocation] = useState<Coordinate>(location);
@@ -97,7 +95,7 @@ const SearchCategory = ({
   );
 
   const handleSheetChange = useCallback(
-    async (fromIndex: number, toIndex: number) => {
+    (fromIndex: number, toIndex: number) => {
       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
       setBottomSheetIndex(toIndex);
       filterRef.current?.closeDropdown();
@@ -276,8 +274,6 @@ const SearchCategory = ({
             filterRef={filterRef}
             mapRef={mapRef}
             scrollViewRef={scrollViewRef}
-            bookmarks={bookmarks}
-            setBookmarks={setBookmarks}
             myLocation={myLocation}
             category={category}
             mode={mode}

@@ -4,12 +4,13 @@ import {
   ActivityIndicator,
   useColorScheme,
   StyleSheet,
+  SafeAreaView,
+  View,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 
 import colors from '../../../constants/colors';
 import strings from '../../../constants/strings';
-import STYLING from '../../../constants/styles';
 
 import Text from '../../components/Text';
 
@@ -36,53 +37,66 @@ const SaveButton: React.FC<Props> = ({
   destinationNames,
 }) => {
   const theme = useColorScheme() || 'light';
-  const STYLES = STYLING(theme);
+  const styles = styling(theme);
 
   const [loading, withLoading] = useLoadingState();
 
+  const disabled =
+    eventTitle === '' || !destinations || destinations.length === 0;
+
   return (
-    <TouchableOpacity
-      style={[
-        STYLES.button,
-        styles.button,
-        {
-          backgroundColor:
-            destinations && destinations.length > 0
-              ? colors[theme].accent
-              : colors[theme].secondary,
-        },
-      ]}
-      disabled={loading || !destinations || destinations.length === 0}
-      onPress={() =>
-        withLoading(() =>
-          handleSave(
-            navigation,
-            eventTitle,
-            date,
-            members,
-            destinations,
-            destinationNames,
-          ),
-        )
-      }>
-      {loading ? (
-        <ActivityIndicator color={colors[theme].primary} />
-      ) : (
-        <Text size="l" weight="b" color={colors[theme].primary}>
-          {strings.main.save}
-        </Text>
-      )}
-    </TouchableOpacity>
+    <View style={styles.container}>
+      <SafeAreaView>
+        <TouchableOpacity
+          style={[
+            styles.button,
+            {
+              backgroundColor: disabled
+                ? colors[theme].secondary
+                : colors[theme].accent,
+            },
+          ]}
+          disabled={loading || disabled}
+          onPress={() =>
+            withLoading(() =>
+              handleSave(
+                navigation,
+                eventTitle,
+                date,
+                members,
+                destinations,
+                destinationNames,
+              ),
+            )
+          }>
+          {loading ? (
+            <ActivityIndicator color={colors[theme].primary} />
+          ) : (
+            <Text color={colors[theme].primary}>{strings.main.save}</Text>
+          )}
+        </TouchableOpacity>
+      </SafeAreaView>
+    </View>
   );
 };
 
-const styles = StyleSheet.create({
-  button: {
-    minWidth: s(100),
-    minHeight: s(45),
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
+const styling = (theme: 'light' | 'dark') =>
+  StyleSheet.create({
+    container: {
+      alignSelf: 'center',
+      position: 'absolute',
+      bottom: 0,
+    },
+    button: {
+      marginBottom: s(20),
+      paddingHorizontal: s(15),
+      paddingVertical: s(7.5),
+      borderRadius: s(5),
+      backgroundColor: colors[theme].accent,
+      minWidth: s(80),
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+  });
 
 export default SaveButton;

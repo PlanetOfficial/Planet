@@ -18,8 +18,6 @@ import STYLING from '../../../constants/styles';
 import Icon from '../../components/Icon';
 import Text from '../../components/Text';
 
-import {useBookmarkContext} from '../../../context/BookmarkContext';
-
 import {
   Coordinate,
   ExploreModesWithInCreate,
@@ -57,8 +55,6 @@ const PoiPage = ({
   const [destination, setDestination] = useState<Poi>();
   const [destinationDetails, setDestinationDetails] = useState<PoiDetail>();
   const [mode] = useState<ExploreModesWithInCreate>(route.params.mode);
-
-  const {bookmarks, setBookmarks} = useBookmarkContext();
 
   const [myLocation, setMyLocation] = useState<Coordinate>();
 
@@ -136,8 +132,6 @@ const PoiPage = ({
         navigation={navigation}
         scrollPosition={scrollPosition}
         destination={destination}
-        bookmarks={bookmarks}
-        setBookmarks={setBookmarks}
         setGalleryVisible={setGalleryVisible}
       />
 
@@ -155,10 +149,13 @@ const PoiPage = ({
             destinationDetails={destinationDetails}
           />
         ) : null}
-        {destination?.latitude && destination.longitude ? (
+        {destinationDetails &&
+        destination?.latitude &&
+        destination.longitude ? (
           <Map
             latitude={destination.latitude}
             longitude={destination.longitude}
+            initiallyExpanded={destinationDetails.reviews?.length === 0}
           />
         ) : null}
         {destination && destinationDetails && myLocation ? (
@@ -170,7 +167,10 @@ const PoiPage = ({
         ) : null}
         {destinationDetails?.reviews &&
         destinationDetails?.reviews?.length > 0 ? (
-          <Reviews reviews={destinationDetails?.reviews} />
+          <Reviews
+            reviews={destinationDetails?.reviews}
+            url={destinationDetails?.url}
+          />
         ) : null}
       </Animated.ScrollView>
 

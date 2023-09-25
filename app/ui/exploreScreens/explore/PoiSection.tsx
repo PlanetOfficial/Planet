@@ -6,20 +6,16 @@ import Text from '../../components/Text';
 import PoiCard from '../../components/PoiCard';
 import Separator from '../../components/SeparatorR';
 
-import {Poi} from '../../../utils/types';
-import {handleBookmark} from '../../../utils/Misc';
-
-import {useBookmarkContext} from '../../../context/BookmarkContext';
+import {ExploreModes, Poi} from '../../../utils/types';
 
 interface Props {
   navigation: any;
   title: string;
   pois: Poi[];
+  mode: ExploreModes;
 }
 
-const PoiSection: React.FC<Props> = ({navigation, title, pois}) => {
-  const {bookmarks, setBookmarks} = useBookmarkContext();
-
+const PoiSection: React.FC<Props> = ({navigation, title, pois, mode}) => {
   return (
     <>
       <View style={styles.header}>
@@ -36,19 +32,10 @@ const PoiSection: React.FC<Props> = ({navigation, title, pois}) => {
             onPress={() =>
               navigation.navigate('Poi', {
                 poi: poi,
-                bookmarked: bookmarks.some(
-                  (bookmark: Poi) => bookmark.id === poi.id,
-                ),
-                mode: 'none',
+                mode: mode,
               })
             }>
-            <PoiCard
-              place={poi}
-              bookmarked={bookmarks.some(bookmark => bookmark.id === poi.id)}
-              handleBookmark={(_poi: Poi) =>
-                handleBookmark(_poi, bookmarks, setBookmarks)
-              }
-            />
+            <PoiCard place={poi} />
           </TouchableOpacity>
         ))}
       </ScrollView>

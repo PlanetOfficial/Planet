@@ -14,11 +14,11 @@ import LinearGradient from 'react-native-linear-gradient';
 
 import icons from '../../constants/icons';
 import colors from '../../constants/colors';
+import {onboarding} from '../../constants/images';
 import strings from '../../constants/strings';
 
 import Text from '../components/Text';
-
-import screen from '../../constants/images';
+import ScrollIndicator from '../components/ScrollIndicator';
 
 const Welcome = ({navigation}: {navigation: any}) => {
   const theme = 'light';
@@ -26,6 +26,24 @@ const Welcome = ({navigation}: {navigation: any}) => {
   StatusBar.setBarStyle(colors[theme].statusBar, true);
 
   const [index, setIndex] = useState<number>(0);
+
+  const steps = [
+    {
+      title: strings.login.title1,
+      description: strings.login.description1,
+      image: onboarding.one,
+    },
+    {
+      title: strings.login.title2,
+      description: strings.login.description2,
+      image: onboarding.two,
+    },
+    {
+      title: strings.login.title3,
+      description: strings.login.description3,
+      image: onboarding.three,
+    },
+  ];
 
   return (
     <View style={styles.container}>
@@ -63,45 +81,21 @@ const Welcome = ({navigation}: {navigation: any}) => {
               </Text>
             </View>
           </View>
-          <View style={styles.page}>
-            <View style={styles.title}>
-              <Text size="xxl" weight="b" color={colors[theme].primary}>
-                {strings.login.title1}
+          {steps.map((step, i) => (
+            <View key={i} style={styles.page}>
+              <View style={styles.title}>
+                <Text size="xxl" weight="b" color={colors[theme].primary}>
+                  {step.title}
+                </Text>
+              </View>
+              <Text weight="l" color={colors[theme].primary} center={true}>
+                {step.description}
               </Text>
+              <View style={styles.image}>
+                <Image source={onboarding.two} style={styles.img} />
+              </View>
             </View>
-            <Text weight="l" color={colors[theme].primary} center={true}>
-              {strings.login.description1}
-            </Text>
-            <View style={styles.image}>
-              <Image source={screen.one} style={styles.img} />
-            </View>
-          </View>
-          <View style={styles.page}>
-            <View style={styles.title}>
-              <Text size="xxl" weight="b" color={colors[theme].primary}>
-                {strings.login.title2}
-              </Text>
-            </View>
-            <Text weight="l" color={colors[theme].primary} center={true}>
-              {strings.login.description2}
-            </Text>
-            <View style={styles.image}>
-              <Image source={screen.two} style={styles.img} />
-            </View>
-          </View>
-          <View style={styles.page}>
-            <View style={styles.title}>
-              <Text size="xxl" weight="b" color={colors[theme].primary}>
-                {strings.login.title3}
-              </Text>
-            </View>
-            <Text weight="l" color={colors[theme].primary} center={true}>
-              {strings.login.description3}
-            </Text>
-            <View style={styles.image}>
-              <Image source={screen.three} style={styles.img} />
-            </View>
-          </View>
+          ))}
           <View style={styles.page}>
             <View style={styles.welcome}>
               <Image source={icons.logo} style={styles.logo} />
@@ -142,23 +136,7 @@ const Welcome = ({navigation}: {navigation: any}) => {
         </ScrollView>
       </LinearGradient>
       <SafeAreaView>
-        <View style={styles.scrollIndicator}>
-          {Array.from(Array(5), (_, i) => (
-            <View
-              key={i}
-              style={[
-                styles.circle,
-                {
-                  width: i === index ? s(20) : s(8),
-                  backgroundColor:
-                    i === index
-                      ? colors[theme].accent
-                      : colors[theme].secondary,
-                },
-              ]}
-            />
-          ))}
-        </View>
+        <ScrollIndicator max={5} index={index} />
       </SafeAreaView>
     </View>
   );
@@ -210,20 +188,13 @@ const styling = (theme: 'light' | 'dark') =>
       borderColor: colors[theme].accent,
       borderWidth: 2,
     },
-    scrollIndicator: {
-      flexDirection: 'row',
-      marginBottom: vs(20),
-    },
-    circle: {
-      height: s(8),
-      marginHorizontal: s(3),
-      borderRadius: s(5),
-    },
     image: {
-      width: vs(400) / 1.6,
-      marginBottom: vs(40),
+      width: s(300),
+      height: vs(430),
+      marginVertical: vs(20),
     },
     img: {
+      resizeMode: 'contain',
       width: '100%',
       height: '100%',
     },

@@ -45,6 +45,7 @@ const strings = {
     edit: 'Edit',
     success: 'Success',
     continue: 'Continue',
+    gotIt: 'Got It!',
   },
   title: {
     home: 'Home',
@@ -83,6 +84,10 @@ const strings = {
     skip: 'Skip',
     sendAnInviteLink: 'Send an Invite Link',
     changeNumber: 'Change Phone Number',
+    promptReferral: 'Have a referral code?',
+    referralDescription: 'Enter it here!',
+    referralSuccess: 'Referral code successfully applied!',
+    referralError: 'Referral code is invalid.',
   },
   home: {
     upcomingEvent: 'Upcoming Event',
@@ -94,6 +99,11 @@ const strings = {
     suggestedFriends: 'Suggested Friends',
     customize: 'Customize this event',
     noRecommendations: 'No Recommendations Found',
+    surveyPrompt:
+      'Help us narrow down your interests by answering our quick survey!',
+    answerSurvey: 'Begin Survey',
+    cuisinePrompt: 'Finally, select three or more cuisines you like:',
+    done: 'Done',
   },
   poi: {
     reviews: 'Reviews',
@@ -105,10 +115,22 @@ const strings = {
     noPrice: 'No Price',
     noHours: 'No Hours',
     noRating: 'No Rating',
+    noDate: 'No Date',
+    noRank: 'No Popularity',
+    noAttendance: 'No Attendance',
     attributes: 'Attributes',
     open: 'Open',
     closed: 'Closed',
     images: 'Images',
+    viewMoreReviews: 'View More Reviews',
+    canceled: 'Canceled',
+    rank: 'Impact Score',
+    attendance: 'Attendance',
+    labels: 'Labels',
+    rankDescription:
+      'This number represents the expected impact of the event on a scale of 1-100.',
+    attendanceDescription:
+      'This number represents the expected number of people attending this event.',
   },
   explore: {
     categories: 'Categories',
@@ -118,6 +140,7 @@ const strings = {
     setLocation: 'Set Search Location',
     searchLocation: 'Search Location',
     yourLocation: 'Your Location',
+    selected: 'Selected',
   },
   greeting: {
     morning: 'Good Morning',
@@ -180,6 +203,15 @@ const strings = {
     removePfp: 'Remove Profile Picture',
     removePfpPrompt: 'Are you sure you want to remove your profile picture?',
   },
+  createWalkthroughText: {
+    tutorial: 'How to create an event',
+    step1: 'Step 1: Name the event',
+    step2: 'Step 2: Set the date and time',
+    step3: 'Step 3: Choose from our suggestions',
+    step4: 'Step 4: Add more destinations',
+    step5: 'Step 5: Invite your friends',
+    create: 'Create!',
+  },
   event: {
     destinations: 'Destinations',
     yourEvents: 'Your Events',
@@ -225,6 +257,9 @@ const strings = {
     removeMember: 'Remove Member',
     removeMemberInfo: 'Are you sure you want to remove this member?',
     duplicate: 'Clone',
+    suggestion: 'Suggestion',
+    accept: 'Customize this Suggestion',
+    hide: 'Hide Suggestions',
   },
   roulette: {
     total: 'Total',
@@ -348,6 +383,13 @@ const strings = {
     searchPlace: 'Unable to search for places. Please try again later.',
     noResultsFound: 'No Results Found',
     noResultsFoundDescription: 'Try searching for something else',
+    noResultsFoundDescriptionLiveCategory:
+      'Live events may not be enabled for this area. However, if we detect enough demand we will enable it for this area.',
+    internalError: 'Internal error retrieving chat, please try again later.',
+    chatNotExist: 'Chat does not exist.',
+    generalChatError:
+      'Error retrieving chat, chats may not be available for this event. Try creating a new event.',
+    submitSurvey: 'Unable to submit survey. Please try again later.',
   },
 };
 

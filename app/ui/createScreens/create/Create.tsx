@@ -1,6 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {
-  StyleSheet,
   View,
   TouchableOpacity,
   useColorScheme,
@@ -8,12 +7,14 @@ import {
   Keyboard,
   ScrollView,
 } from 'react-native';
-import {s} from 'react-native-size-matters';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import colors from '../../../constants/colors';
+import icons from '../../../constants/icons';
 import strings from '../../../constants/strings';
 import STYLING from '../../../constants/styles';
 
+import Icon from '../../components/Icon';
 import Text from '../../components/Text';
 
 import {Poi, UserInfo} from '../../../utils/types';
@@ -21,8 +22,8 @@ import {Poi, UserInfo} from '../../../utils/types';
 import Header from './Header';
 import SaveButton from './SaveButton';
 import DestinationsList from './DestinationsList';
-
-import {useBookmarkContext} from '../../../context/BookmarkContext';
+import Recommendations from './Recommendations';
+import Tutorial from './Tutorial';
 
 const Create = ({
   navigation,
@@ -40,9 +41,7 @@ const Create = ({
   };
 }) => {
   const theme = useColorScheme() || 'light';
-  const styles = styling(theme);
   const STYLES = STYLING(theme);
-  StatusBar.setBarStyle(colors[theme].statusBar, true);
 
   const [eventTitle, setEventTitle] = useState<string>('');
   const [date, setDate] = useState<string>();
@@ -52,8 +51,10 @@ const Create = ({
   const [destinationNames, setDestinationNames] = useState<Map<number, string>>(
     new Map(),
   );
-
-  const {bookmarks, setBookmarks} = useBookmarkContext();
+  const [recommendationsShown, setRecommendationsShown] = useState<boolean>(
+    !route.params?.destination,
+  );
+  const [showTutorial, setShowTutorial] = useState<boolean>(false);
 
   const addMembers = useCallback(() => {
     const _members = route.params?.members;
@@ -111,15 +112,32 @@ const Create = ({
     destinationNames,
   ]);
 
+  const determineTutorialStatus = useCallback(async () => {
+    const tutorial = await AsyncStorage.getItem('create_tutorial_completed');
+
+    if (tutorial === null) {
+      setShowTutorial(true);
+    }
+  }, []);
+
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
+      StatusBar.setBarStyle(colors[theme].statusBar, true);
       addMembers();
       addDestination();
       initializeDestinations();
+      determineTutorialStatus();
     });
 
     return unsubscribe;
-  }, [navigation, addMembers, addDestination, initializeDestinations]);
+  }, [
+    navigation,
+    addMembers,
+    addDestination,
+    initializeDestinations,
+    determineTutorialStatus,
+    theme,
+  ]);
 
   return (
     <View style={STYLES.container}>
@@ -139,30 +157,38 @@ const Create = ({
           navigation={navigation}
           destinations={destinations}
           setDestinations={setDestinations}
-          bookmarks={bookmarks}
-          setBookmarks={setBookmarks}
           setInsertionIndex={setInsertionIndex}
           destinationNames={destinationNames}
+        />
+      ) : recommendationsShown ? (
+        <Recommendations
+          navigation={navigation}
+          setRecommendationsShown={setRecommendationsShown}
+          setDestinations={setDestinations}
+          setDestinationNames={setDestinationNames}
         />
       ) : (
         <ScrollView
           scrollIndicatorInsets={{right: 1}}
           onTouchStart={() => Keyboard.dismiss()}>
           <TouchableOpacity
-            style={[styles.addButton, STYLES.shadow]}
+            style={[STYLES.actionButton, STYLES.shadow]}
             onPress={() => {
               setInsertionIndex(0);
               navigation.navigate('ModeExplore', {
                 mode: 'create',
               });
             }}>
-            <Text size="l" weight="b" color={colors[theme].accent}>
+            <View style={STYLES.icon}>
+              <Icon icon={icons.plus} color={colors[theme].primary} />
+            </View>
+            <Text color={colors[theme].primary}>
               {strings.event.addDestination}
             </Text>
           </TouchableOpacity>
         </ScrollView>
       )}
-      {eventTitle ? (
+      {!recommendationsShown ? (
         <SaveButton
           navigation={navigation}
           eventTitle={eventTitle}
@@ -172,20 +198,10 @@ const Create = ({
           destinationNames={destinationNames}
         />
       ) : null}
+
+      <Tutorial showTutorial={showTutorial} />
     </View>
   );
 };
-
-const styling = (theme: 'light' | 'dark') =>
-  StyleSheet.create({
-    addButton: {
-      alignItems: 'center',
-      marginTop: s(30),
-      marginHorizontal: s(40),
-      paddingVertical: s(20),
-      borderRadius: s(5),
-      backgroundColor: colors[theme].primary,
-    },
-  });
 
 export default Create;

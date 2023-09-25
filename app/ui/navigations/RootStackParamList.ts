@@ -18,7 +18,7 @@ type RootStackParamList = {
     myLocation: Coordinate;
     category: Category;
   };
-  SearchMap: {
+  SetSearchLocation: {
     mode: ExploreModes;
     myLocation: Coordinate;
     category: Category;
@@ -71,6 +71,9 @@ type RootStackParamList = {
   Event: {
     event: Event;
     destination: PoiType;
+  };
+  EventChat: {
+    event: Event;
   };
   EventSettings: {
     event: Event;

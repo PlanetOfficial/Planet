@@ -20,16 +20,25 @@ import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 import Separator from '../../components/SeparatorR';
 
-import {Coordinate, EventDetail, Recommendation} from '../../../utils/types';
+import {
+  Coordinate,
+  EventDetail,
+  Recommendation,
+  RecommenderSurvey,
+} from '../../../utils/types';
 import {fetchUserLocation, shareApp} from '../../../utils/Misc';
 import {getUpcomingEvent} from '../../../utils/api/eventAPI';
-import {getRecommendations} from '../../../utils/api/recommenderAPI';
+import {
+  getRecommendations,
+  getRecommenderSurvey,
+} from '../../../utils/api/recommenderAPI';
 
 import UpcomingEvent from './UpcomingEvent';
 import Recommendations from './Recommendations';
 import Suggestions from '../../friendsScreens/friends/Suggestions';
 
 import {useFriendsContext} from '../../../context/FriendsContext';
+import InitialSurvey from './InitialSurvey';
 
 const Home = ({navigation}: {navigation: any}) => {
   const theme = useColorScheme() || 'light';
@@ -45,46 +54,59 @@ const Home = ({navigation}: {navigation: any}) => {
   const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
   const [recommendationsLoading, setRecommendationsLoading] =
     useState<boolean>(false);
+  const [initialSurvey, setInitialSurvey] = useState<RecommenderSurvey | null>(
+    null,
+  );
 
   const initializeUpcomingEvent = useCallback(async () => {
     const _event = await getUpcomingEvent();
     setUpcomingEvent(_event);
   }, []);
 
-  const loadRecommendations = useCallback(async (loc: Coordinate) => {
-    setRecommendationsLoading(true);
+  const loadRecommendations = useCallback(
+    async (loc: Coordinate, reload: boolean) => {
+      setRecommendationsLoading(true);
 
-    const _recommendations = await getRecommendations(
-      loc?.latitude,
-      loc?.longitude,
-    );
-    if (_recommendations) {
-      setRecommendations(_recommendations);
-    } else {
-      Alert.alert(strings.error.error, strings.error.loadRecommendations);
-    }
+      const _recommendations = await getRecommendations(
+        loc?.latitude,
+        loc?.longitude,
+        reload,
+      );
+      if (_recommendations) {
+        setRecommendations(_recommendations);
+      } else {
+        Alert.alert(strings.error.error, strings.error.loadRecommendations);
+      }
 
-    setRecommendationsLoading(false);
-  }, []);
+      setRecommendationsLoading(false);
+    },
+    [],
+  );
 
   useEffect(() => {
     const initializeRecommendations = async () => {
       const _location = await fetchUserLocation();
 
       setMyLocation(_location);
-      loadRecommendations(_location);
+      loadRecommendations(_location, false);
     };
 
     initializeRecommendations();
   }, [loadRecommendations]);
 
+  const fetchRecommenderSurvey = useCallback(async () => {
+    const response = await getRecommenderSurvey();
+    setInitialSurvey(response);
+  }, []);
+
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', async () => {
-      initializeUpcomingEvent();
+      await fetchRecommenderSurvey();
+      await initializeUpcomingEvent();
     });
 
     return unsubscribe;
-  }, [navigation, initializeUpcomingEvent]);
+  }, [navigation, initializeUpcomingEvent, fetchRecommenderSurvey]);
 
   const GetGreetings = () => {
     const myDate = new Date();
@@ -105,7 +127,7 @@ const Home = ({navigation}: {navigation: any}) => {
         <View style={STYLES.header}>
           <Text size="l">{GetGreetings()}</Text>
           <Icon
-            size="m"
+            size="l"
             icon={icons.friends}
             color={colors[theme].accent}
             onPress={() => navigation.navigate('Friends')}
@@ -138,7 +160,7 @@ const Home = ({navigation}: {navigation: any}) => {
           <TouchableOpacity
             style={styles.shareButton}
             onPress={() => shareApp()}>
-            <View style={styles.icon}>
+            <View style={STYLES.icon}>
               <Icon size="m" icon={icons.link} color={colors[theme].primary} />
             </View>
             <Text color={colors[theme].primary}>
@@ -148,13 +170,24 @@ const Home = ({navigation}: {navigation: any}) => {
         )}
         <Separator />
         {myLocation ? (
-          <Recommendations
-            navigation={navigation}
-            location={myLocation}
-            recommendations={recommendations}
-            loadRecommendations={loadRecommendations}
-            recommendationsLoading={recommendationsLoading}
-          />
+          initialSurvey ? (
+            <InitialSurvey
+              initialSurvey={initialSurvey}
+              setInitialSurvey={setInitialSurvey}
+              loadRecommendations={() => {
+                loadRecommendations(myLocation, true);
+              }}
+            />
+          ) : (
+            <Recommendations
+              navigation={navigation}
+              recommendations={recommendations}
+              loadRecommendations={() => {
+                loadRecommendations(myLocation, true);
+              }}
+              recommendationsLoading={recommendationsLoading}
+            />
+          )
         ) : null}
       </ScrollView>
     </View>
@@ -187,9 +220,6 @@ const styling = (theme: 'light' | 'dark') =>
       paddingVertical: s(10),
       borderRadius: s(5),
       backgroundColor: colors[theme].accent,
-    },
-    icon: {
-      marginRight: s(10),
     },
   });
 

@@ -34,6 +34,7 @@ export interface Genre {
   icon: Image;
   image: Image;
   categories: Category[];
+  is_live_category: boolean;
 }
 
 export interface Category {
@@ -43,6 +44,7 @@ export interface Category {
   supplier: string;
   filter: Filter[];
   icon: Image;
+  is_live_category: boolean;
 }
 
 export interface Poi {
@@ -57,6 +59,8 @@ export interface Poi {
   price: number;
   rating: number;
   rating_count: number;
+  start_datetime: string;
+  rank: number;
 }
 
 export interface PoiDetail {
@@ -70,6 +74,10 @@ export interface PoiDetail {
   url?: string;
   website?: string;
   attributes?: string[];
+  start_datetime?: string;
+  canceled?: boolean;
+  labels?: string;
+  phq_attendance?: number;
 }
 
 export interface PlaceOpeningHoursPeriod {
@@ -118,6 +126,13 @@ export interface EventDetail {
   datetime: string;
   members: UserInfo[];
   destinations: Destination[];
+}
+
+export interface ChatInfo {
+  getstream_user_token: string;
+  channel_id: string;
+  getstream_api_key: string;
+  channel_type: string;
 }
 
 export interface Destination {
@@ -202,6 +217,33 @@ export interface GoogleAutocompleteResult {
     secondary_text: string;
   };
 }
+
+export interface RecommenderSurvey {
+  questions: RecommenderSurveyQuestion[];
+  cuisines: RecommenderSurveyCuisine[];
+}
+
+export interface RecommenderSurveyCuisine {
+  id: number;
+  name: string;
+}
+
+export interface RecommenderSurveyQuestion {
+  id: number;
+  prompt: string;
+  yes: string;
+  no: string;
+  neutral: string;
+}
+
+export interface ForegroundNotificationData {
+  screenName: ScreenName;
+  notificationText: string;
+}
+
+export type ScreenName = 'Friends' | 'Requests' | 'Notifications' | '';
+
+export type RecommenderSurveyResponse = 'yes' | 'no' | 'neutral';
 
 export type ExploreModes = 'create' | 'suggest' | 'add' | 'none';
 export type ExploreModesWithInCreate =

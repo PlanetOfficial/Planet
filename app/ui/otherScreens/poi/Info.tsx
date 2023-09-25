@@ -95,7 +95,7 @@ const Info: React.FC<Props> = ({destination, destinationDetails, location}) => {
           <Icon
             icon={icons.directions}
             button={true}
-            onPress={() => handleMapPress(destination, location)}
+            onPress={async () => await handleMapPress(destination, location)}
           />
         </View>
       ) : null}
@@ -146,6 +146,23 @@ const Info: React.FC<Props> = ({destination, destinationDetails, location}) => {
                   </Text>
                 ),
               )}
+            </View>
+          </View>
+        </View>
+      ) : null}
+      {destinationDetails?.labels &&
+      destinationDetails.labels.split(', ')?.length > 0 ? (
+        <View style={styles.row}>
+          <View style={styles.texts}>
+            <Text size="s">{strings.poi.labels}:</Text>
+            <View style={styles.info}>
+              {destinationDetails.labels
+                ?.split(', ')
+                ?.map((label: string, index: number) => (
+                  <Text key={index} size="s" weight="l">
+                    {'・' + label}
+                  </Text>
+                ))}
             </View>
           </View>
         </View>

@@ -73,9 +73,9 @@ const FriendGroupEdit: React.FC<Props> = ({
               strings.main.rename,
               strings.friends.renameFriendGroup,
               [
-                {text: 'Cancel', style: 'cancel'},
+                {text: strings.main.cancel, style: 'cancel'},
                 {
-                  text: 'Save',
+                  text: strings.main.save,
                   onPress: (name: string) => setTempName(name),
                 },
               ],

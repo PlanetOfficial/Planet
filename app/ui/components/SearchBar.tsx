@@ -68,7 +68,7 @@ const SearchBar: React.FC<Props> = ({
             setSearching(true);
           }}
           onChangeText={search}
-          clearButtonMode="while-editing"
+          clearButtonMode={'while-editing'}
         />
       </View>
       {searching ? (

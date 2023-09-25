@@ -19,7 +19,6 @@ import {makePrimary, removeSuggestion} from '../../../utils/api/suggestionAPI';
 
 interface SuggestionCardProps {
   navigation: any;
-  bookmarked: boolean;
   suggestion?: Suggestion;
   onSuggestionClose: () => void;
   loadData: () => void;
@@ -30,12 +29,11 @@ interface SuggestionCardProps {
   eventId: number;
   destination?: Destination;
   voted: boolean;
-  onVote: (suggestion: Suggestion) => void;
+  onVote: (suggestion: Suggestion) => Promise<void>;
 }
 
 const SuggestionCard: React.FC<SuggestionCardProps> = ({
   navigation,
-  bookmarked,
   suggestion,
   onSuggestionClose,
   loadData,
@@ -155,13 +153,13 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
             }, 1000);
             navigation.navigate('Poi', {
               poi: suggestion.poi,
-              bookmarked: bookmarked,
               mode: 'none',
             });
           }}>
           <PoiCardXL
             place={suggestion.poi}
             width={width}
+            withBookmarkIcon={false}
             options={[
               {
                 name: 'See Votes',
@@ -222,7 +220,7 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
               },
             ]}
             voted={voted}
-            onVote={() => onVote(suggestion)}
+            onVote={async () => await onVote(suggestion)}
           />
         </TouchableOpacity>
       ) : null}

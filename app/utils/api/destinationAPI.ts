@@ -9,7 +9,7 @@ export const postDestination = async (
   event_id: number,
   poi_id: number,
   name: string,
-): Promise<Boolean> => {
+): Promise<boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
   if (!authToken) {
@@ -42,7 +42,7 @@ export const renameDestination = async (
   event_id: number,
   destination_id: number,
   name: string,
-): Promise<Boolean> => {
+): Promise<boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
   if (!authToken) {
@@ -74,7 +74,7 @@ export const renameDestination = async (
 export const removeDestination = async (
   event_id: number,
   destination_id: number,
-): Promise<Boolean> => {
+): Promise<boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
   if (!authToken) {
@@ -106,7 +106,7 @@ export const removeDestination = async (
 export const reorderDestinations = async (
   event_id: number,
   destination_ids: number[],
-): Promise<Boolean> => {
+): Promise<boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
   if (!authToken) {

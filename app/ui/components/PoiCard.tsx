@@ -6,8 +6,8 @@ import colors from '../../constants/colors';
 import icons from '../../constants/icons';
 import STYLING from '../../constants/styles';
 
-import Icon from './Icon';
 import Text from './Text';
+import BookmarkIcon from './BookmarkIcon';
 
 import {Poi} from '../../utils/types';
 import {getInfoString} from '../../utils/Misc';
@@ -15,16 +15,9 @@ import {getInfoString} from '../../utils/Misc';
 interface Props {
   place: Poi;
   disabled?: boolean;
-  bookmarked: boolean;
-  handleBookmark: (poi: Poi) => void;
 }
 
-const PoiCard: React.FC<Props> = ({
-  place,
-  disabled,
-  bookmarked,
-  handleBookmark,
-}) => {
+const PoiCard: React.FC<Props> = ({place, disabled}) => {
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
   const STYLES = STYLING(theme);
@@ -44,13 +37,7 @@ const PoiCard: React.FC<Props> = ({
             {getInfoString(place)}
           </Text>
         </View>
-        <Icon
-          size="m"
-          disabled={disabled}
-          icon={bookmarked ? icons.bookmarked : icons.bookmark}
-          color={bookmarked ? colors[theme].accent : colors[theme].neutral}
-          onPress={() => handleBookmark(place)}
-        />
+        <BookmarkIcon place={place} disabled={disabled} />
       </View>
     </View>
   );

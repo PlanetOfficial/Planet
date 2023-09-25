@@ -1,6 +1,6 @@
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {EventAPIURL} from './APIConstants';
-import {Event, EventDetail, EventNotification} from '../types';
+import {ChatInfo, Event, EventDetail, EventNotification} from '../types';
 import {requestAndValidate} from './authAPI';
 
 /**
@@ -76,7 +76,7 @@ export const postEvent = async (
   name: string,
   datetime: string | undefined,
   members: number[],
-): Promise<Boolean> => {
+): Promise<boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
   if (!authToken) {
@@ -112,7 +112,7 @@ export const postEvent = async (
 export const editName = async (
   event_id: number,
   name: string,
-): Promise<Boolean> => {
+): Promise<boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
   if (!authToken) {
@@ -144,7 +144,7 @@ export const editName = async (
 export const editDatetime = async (
   event_id: number,
   datetime: string,
-): Promise<Boolean> => {
+): Promise<boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
   if (!authToken) {
@@ -173,7 +173,7 @@ export const editDatetime = async (
 /**
  * @requires auth_token should be set in EncryptedStorage before calling this function
  */
-export const leaveEvent = async (event_id: number): Promise<Boolean> => {
+export const leaveEvent = async (event_id: number): Promise<boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
   if (!authToken) {
@@ -181,7 +181,7 @@ export const leaveEvent = async (event_id: number): Promise<Boolean> => {
   }
 
   const request = async (authtoken: string) => {
-    const response = await fetch(EventAPIURL + '/member', {
+    const response = await fetch(EventAPIURL + '/member/v2', {
       method: 'DELETE',
       body: JSON.stringify({event_id}),
       headers: {
@@ -205,7 +205,7 @@ export const leaveEvent = async (event_id: number): Promise<Boolean> => {
 export const kickFromEvent = async (
   event_id: number,
   user_id: number,
-): Promise<Boolean> => {
+): Promise<boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
   if (!authToken) {
@@ -213,7 +213,7 @@ export const kickFromEvent = async (
   }
 
   const request = async (authtoken: string) => {
-    const response = await fetch(EventAPIURL + '/member/kick', {
+    const response = await fetch(EventAPIURL + '/member/kick/v2', {
       method: 'DELETE',
       body: JSON.stringify({event_id, user_id}),
       headers: {
@@ -237,7 +237,7 @@ export const kickFromEvent = async (
 export const inviteToEvent = async (
   event_id: number,
   user_ids: number[],
-): Promise<Boolean> => {
+): Promise<boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
   if (!authToken) {
@@ -245,7 +245,7 @@ export const inviteToEvent = async (
   }
 
   const request = async (authtoken: string) => {
-    const response = await fetch(EventAPIURL + '/member', {
+    const response = await fetch(EventAPIURL + '/member/v2', {
       method: 'POST',
       body: JSON.stringify({event_id, user_ids}),
       headers: {
@@ -266,7 +266,7 @@ export const inviteToEvent = async (
 /**
  * @requires auth_token should be set in EncryptedStorage before calling this function
  */
-export const changeEventStatus = async (event_id: number): Promise<Boolean> => {
+export const changeEventStatus = async (event_id: number): Promise<boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
   if (!authToken) {
@@ -361,7 +361,7 @@ export const getEventsNotifications = async (): Promise<
 /**
  * @requires auth_token should be set in EncryptedStorage before calling this function
  */
-export const reportEvent = async (event_id: number): Promise<Boolean> => {
+export const reportEvent = async (event_id: number): Promise<boolean> => {
   const authToken = await EncryptedStorage.getItem('auth_token');
 
   if (!authToken) {
@@ -385,4 +385,38 @@ export const reportEvent = async (event_id: number): Promise<Boolean> => {
   const response = await requestAndValidate(authToken, request);
 
   return response.ok;
+};
+
+/**
+ * @requires auth_token should be set in EncryptedStorage before calling this function
+ */
+export const getEventChatInfo = async (
+  event_id: number,
+): Promise<ChatInfo | null> => {
+  const authToken = await EncryptedStorage.getItem('auth_token');
+
+  if (!authToken) {
+    return null;
+  }
+
+  const request = async (authtoken: string) => {
+    const response = await fetch(EventAPIURL + `/event/chatInfo/${event_id}`, {
+      method: 'GET',
+      headers: {
+        'X-Xano-Authorization': `Bearer ${authtoken}`,
+        'X-Xano-Authorization-Only': 'true',
+      },
+    });
+
+    return response;
+  };
+
+  const response = await requestAndValidate(authToken, request);
+
+  if (response?.ok) {
+    const myJson: ChatInfo = await response.json();
+    return myJson;
+  } else {
+    return null;
+  }
 };

@@ -18,7 +18,6 @@ import Text from '../../components/Text';
 import PoiRow from '../../components/PoiRow';
 import PoiCardXL from '../../components/PoiCardXL';
 
-import {handleBookmark} from '../../../utils/Misc';
 import {Poi, Coordinate, Category, ExploreModes} from '../../../utils/types';
 
 interface Props {
@@ -27,8 +26,6 @@ interface Props {
   filterRef: any;
   mapRef: React.RefObject<MapView>;
   scrollViewRef: React.RefObject<ScrollView>;
-  bookmarks: Poi[];
-  setBookmarks: (bookmarks: Poi[]) => void;
   myLocation: Coordinate;
   category: Category;
   mode: ExploreModes;
@@ -43,8 +40,6 @@ const Results: React.FC<Props> = ({
   filterRef,
   mapRef,
   scrollViewRef,
-  bookmarks,
-  setBookmarks,
   myLocation,
   category,
   mode,
@@ -67,19 +62,12 @@ const Results: React.FC<Props> = ({
               onPress={() =>
                 navigation.navigate('Poi', {
                   poi: item,
-                  bookmarked: bookmarks.some(
-                    bookmark => bookmark.id === item.id,
-                  ),
                   mode: mode,
                   category: category.name,
                 })
               }>
               <PoiRow
                 place={item}
-                bookmarked={bookmarks.some(bookmark => bookmark.id === item.id)}
-                handleBookmark={(poi: Poi) =>
-                  handleBookmark(poi, bookmarks, setBookmarks)
-                }
                 myLocation={myLocation}
                 category={category}
               />
@@ -90,8 +78,10 @@ const Results: React.FC<Props> = ({
           <View style={STYLES.center}>
             <Text weight="l">{strings.error.noResultsFound}</Text>
             <Text> </Text>
-            <Text size="s" weight="l">
-              {strings.error.noResultsFoundDescription}
+            <Text size="s" weight="l" center={true}>
+              {category.is_live_category
+                ? strings.error.noResultsFoundDescriptionLiveCategory
+                : strings.error.noResultsFoundDescription}
             </Text>
           </View>
         }
@@ -110,14 +100,12 @@ const Results: React.FC<Props> = ({
         showsHorizontalScrollIndicator={false}
         pagingEnabled={true}
         scrollEventThrottle={16}
-        snapToInterval={s(280) + s(20)}
+        snapToInterval={s(301)}
         snapToAlignment={'start'}
         decelerationRate={'fast'}
         onScroll={event => {
           filterRef.current?.closeDropdown();
-          let idx = Math.round(
-            event.nativeEvent.contentOffset.x / (s(280) + s(20)),
-          );
+          let idx = Math.round(event.nativeEvent.contentOffset.x / s(301));
           if (idx !== selectedIndex) {
             setSelectedIndex(idx);
             mapRef.current?.animateToRegion(
@@ -146,20 +134,11 @@ const Results: React.FC<Props> = ({
             onPress={() =>
               navigation.navigate('Poi', {
                 poi: place,
-                bookmarked: bookmarks.some(
-                  bookmark => bookmark.id === place.id,
-                ),
                 mode: mode,
                 category: category.name,
               })
             }>
-            <PoiCardXL
-              place={place}
-              bookmarked={bookmarks.some(bookmark => bookmark.id === place.id)}
-              handleBookmark={(poi: Poi) =>
-                handleBookmark(poi, bookmarks, setBookmarks)
-              }
-            />
+            <PoiCardXL place={place} />
           </TouchableOpacity>
         ))}
       </ScrollView>

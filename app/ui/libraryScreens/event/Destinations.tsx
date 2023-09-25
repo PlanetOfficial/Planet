@@ -8,7 +8,6 @@ import {
   Destination,
   Event,
   EventDetail,
-  Poi,
   Suggestion,
 } from '../../../utils/types';
 
@@ -27,8 +26,6 @@ interface Props {
   onSuggestionClose: () => void;
   myVotes: Map<number, number>;
   setMyVotes: (myVotes: Map<number, number>) => void;
-  bookmarks: Poi[];
-  setBookmarks: (bookmarks: Poi[]) => void;
   refreshing: boolean;
   setRefreshing: (refreshing: boolean) => void;
   resetFlag: boolean;
@@ -47,8 +44,6 @@ const Destinations: React.FC<Props> = ({
   onSuggestionClose,
   myVotes,
   setMyVotes,
-  bookmarks,
-  setBookmarks,
   refreshing,
   setRefreshing,
   resetFlag,
@@ -114,8 +109,6 @@ const Destinations: React.FC<Props> = ({
         onSuggestionClose={onSuggestionClose}
         myVotes={myVotes}
         setMyVotes={setMyVotes}
-        bookmarks={bookmarks}
-        setBookmarks={setBookmarks}
         refreshing={refreshing}
         setRefreshing={setRefreshing}
         setInsertionDestination={setInsertionDestination}
@@ -128,7 +121,7 @@ const Destinations: React.FC<Props> = ({
       />
 
       <Animated.View
-        pointerEvents={'none'}
+        pointerEvents="none"
         style={[
           styles.dim,
           {
@@ -139,9 +132,6 @@ const Destinations: React.FC<Props> = ({
 
       <SuggestionCard
         navigation={navigation}
-        bookmarked={bookmarks.some(
-          bookmark => bookmark.id === selectedSuggestion?.poi.id,
-        )}
         suggestion={selectedSuggestion}
         onSuggestionClose={onSuggestionClose}
         loadData={loadData}
@@ -156,9 +146,9 @@ const Destinations: React.FC<Props> = ({
             ? myVotes.get(selectedDestination?.id) === selectedSuggestion?.id
             : false
         }
-        onVote={() => {
+        onVote={async () => {
           if (selectedDestination && selectedSuggestion) {
-            onVote(
+            await onVote(
               event,
               setEventDetail,
               myVotes,

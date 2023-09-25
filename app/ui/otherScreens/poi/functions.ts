@@ -91,7 +91,7 @@ export const handleMapPress = async (
   if (!destination) {
     return;
   }
-  showLocation({
+  await showLocation({
     latitude: destination.latitude,
     longitude: destination.longitude,
     sourceLatitude: location.latitude,

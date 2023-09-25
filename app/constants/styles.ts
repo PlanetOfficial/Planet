@@ -16,6 +16,7 @@ const styling = (theme: 'light' | 'dark') =>
       paddingBottom: s(30),
     },
     center: {
+      paddingHorizontal: s(20),
       paddingVertical: s(50),
       alignItems: 'center',
     },
@@ -49,17 +50,8 @@ const styling = (theme: 'light' | 'dark') =>
       marginHorizontal: s(10),
       justifyContent: 'center',
     },
-    button: {
-      position: 'absolute',
-      alignSelf: 'center',
-      paddingHorizontal: s(15),
-      paddingVertical: s(7.5),
-      bottom: s(40),
-      borderRadius: s(5),
-      backgroundColor: colors[theme].accent,
-    },
     shadow: {
-      shadowColor: '#000',
+      shadowColor: colors[theme].black,
       shadowOffset: {
         width: 0,
         height: 1,
@@ -139,6 +131,20 @@ const styling = (theme: 'light' | 'dark') =>
       justifyContent: 'space-between',
       paddingHorizontal: s(35),
       paddingVertical: s(20),
+    },
+    icon: {
+      marginRight: s(10),
+    },
+    actionButton: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginHorizontal: s(20),
+      marginTop: s(10),
+      marginBottom: s(20),
+      paddingVertical: s(10),
+      borderRadius: s(5),
+      backgroundColor: colors[theme].accent,
     },
   });
 

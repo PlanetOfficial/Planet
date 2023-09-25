@@ -45,7 +45,7 @@ const Notifications = ({navigation}: {navigation: any}) => {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', async () => {
-      initializeNotifications();
+      await initializeNotifications();
     });
 
     return unsubscribe;
@@ -58,7 +58,9 @@ const Notifications = ({navigation}: {navigation: any}) => {
           <Icon
             size="m"
             icon={icons.back}
-            onPress={() => navigation.goBack()}
+            onPress={() =>
+              navigation.canGoBack() ? navigation.goBack() : null
+            }
           />
           <Text>{strings.notifications.notifications}</Text>
           <Icon

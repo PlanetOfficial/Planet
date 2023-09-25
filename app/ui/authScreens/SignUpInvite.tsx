@@ -29,6 +29,7 @@ import {fetchUserLocation, shareApp, useLoadingState} from '../../utils/Misc';
 import {cacheUserInfo} from '../../utils/CacheHelpers';
 
 import {useLocationContext} from '../../context/LocationContext';
+import {handleReferral} from './functions';
 
 const SignUpInvite = ({
   navigation,
@@ -82,7 +83,7 @@ const SignUpInvite = ({
   };
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', async () => {
+    const unsubscribe = navigation.addListener('focus', () => {
       setTimeout(() => {
         setSkippable(true);
       }, 7500);
@@ -124,7 +125,7 @@ const SignUpInvite = ({
           <TouchableOpacity
             style={styles.button}
             onPress={() => shareApp(setShared)}>
-            <View style={styles.icon}>
+            <View style={STYLES.icon}>
               <Icon icon={icons.link} size="m" color={colors[theme].primary} />
             </View>
             <Text size="l" color={colors[theme].primary}>
@@ -133,6 +134,13 @@ const SignUpInvite = ({
           </TouchableOpacity>
         </ScrollView>
         <SafeAreaView>
+          <TouchableOpacity
+            style={styles.referral}
+            onPress={() => handleReferral(authToken)}>
+            <Text size="s" weight="l" color={colors[theme].neutral}>
+              {strings.signUp.promptReferral}
+            </Text>
+          </TouchableOpacity>
           <TouchableOpacity
             style={[
               STYLES.buttonBig,
@@ -187,8 +195,8 @@ const styling = (theme: 'light' | 'dark') =>
       borderRadius: s(10),
       backgroundColor: colors[theme].accent,
     },
-    icon: {
-      marginRight: s(10),
+    referral: {
+      alignSelf: 'center',
     },
   });
 

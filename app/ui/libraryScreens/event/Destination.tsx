@@ -23,10 +23,8 @@ import {
   Destination,
   Event,
   EventDetail,
-  Poi,
   Suggestion,
 } from '../../../utils/types';
-import {handleBookmark} from '../../../utils/Misc';
 
 import {onVote} from './functions';
 import Suggestions from './Suggestions';
@@ -40,8 +38,6 @@ interface Props {
   onSuggestionClose: () => void;
   myVotes: Map<number, number>;
   setMyVotes: (myVotes: Map<number, number>) => void;
-  bookmarks: Poi[];
-  setBookmarks: (bookmarks: Poi[]) => void;
   refreshing: boolean;
   setRefreshing: (refreshing: boolean) => void;
   setInsertionDestination: (insertionDestination: Destination) => void;
@@ -62,8 +58,6 @@ const DestinationView: React.FC<Props> = ({
   onSuggestionClose,
   myVotes,
   setMyVotes,
-  bookmarks,
-  setBookmarks,
   refreshing,
   setRefreshing,
   setInsertionDestination,
@@ -119,31 +113,20 @@ const DestinationView: React.FC<Props> = ({
               onPress={() =>
                 navigation.navigate('Poi', {
                   poi: findPrimary(item.suggestions).poi,
-                  bookmarked: bookmarks.some(
-                    bookmark =>
-                      bookmark.id === findPrimary(item.suggestions).poi.id,
-                  ),
                   mode: 'none',
                 })
               }>
               <PoiCardXL
                 place={findPrimary(item.suggestions).poi}
                 disabled={displayingSuggestion}
-                bookmarked={bookmarks.some(
-                  bookmark =>
-                    bookmark.id === findPrimary(item.suggestions).poi.id,
-                )}
                 width={item.id === selectedDestination?.id ? cardWidth : s(310)}
-                handleBookmark={(poi: Poi) =>
-                  handleBookmark(poi, bookmarks, setBookmarks)
-                }
                 voted={
                   findPrimary(item.suggestions)
                     ? myVotes.get(item.id) === findPrimary(item.suggestions).id
                     : false
                 }
-                onVote={() => {
-                  onVote(
+                onVote={async () => {
+                  await onVote(
                     event,
                     setEventDetail,
                     myVotes,

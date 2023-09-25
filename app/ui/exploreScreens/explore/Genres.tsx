@@ -81,6 +81,7 @@ const Genres: React.FC<Props> = ({navigation, myLocation, mode}) => {
                   supplier: genre.supplier,
                   filter: genre.filter,
                   icon: genre.icon,
+                  is_live_category: genre.is_live_category,
                 },
                 myLocation,
                 mode,
@@ -141,7 +142,7 @@ const styling = (theme: 'light' | 'dark') =>
       right: 0,
     },
     overlay: {
-      backgroundColor: 'rgba(0, 0, 0, 0.2)',
+      backgroundColor: colors[theme].dim,
     },
     row: {
       flexDirection: 'row',

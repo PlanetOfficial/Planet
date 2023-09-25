@@ -49,13 +49,13 @@ const NotificationSettings = ({navigation}: {navigation: any}) => {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', async () => {
-      initializeData();
+      await initializeData();
     });
 
     return unsubscribe;
   }, [navigation]);
 
-  const toggle = async (func: () => Promise<Boolean>, key: keyof NS) => {
+  const toggle = async (func: () => Promise<boolean>, key: keyof NS) => {
     const response = await func();
     if (response && notificationsSettings) {
       setNotificationsSettings({

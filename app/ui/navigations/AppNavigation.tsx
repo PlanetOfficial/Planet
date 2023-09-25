@@ -1,11 +1,8 @@
 import React from 'react';
-import {useColorScheme} from 'react-native';
-import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
 import NavBar from './NavBar';
 import RootStackParamList from './RootStackParamList';
-import colors from '../../constants/colors';
 import {verticalAnimation} from '../../utils/Misc';
 
 import Welcome from '../authScreens/Welcome';
@@ -29,6 +26,7 @@ import Requests from '../friendsScreens/requests/Requests';
 import User from '../friendsScreens/user/User';
 
 import Event from '../libraryScreens/event/Event';
+import EventChat from '../libraryScreens/eventChat/EventChat';
 import EventSettings from '../libraryScreens/eventSettings/EventSettings';
 import Notifications from '../libraryScreens/notifications/Notifications';
 import Roulette from '../libraryScreens/roulette/Roulette';
@@ -47,11 +45,7 @@ import Settings from '../profileScreens/settingsScreens/Settings';
 import Explore from '../exploreScreens/explore/Explore';
 import AllCategories from '../exploreScreens/allCategories/AllCategories';
 import SearchCategory from '../exploreScreens/searchCategory/SearchCategory';
-import SearchMap from '../exploreScreens/searchMap/SearchMap';
-
-import {BookmarkStateProvider} from '../../context/BookmarkContext';
-import {FriendsStateProvider} from '../../context/FriendsContext';
-import {LocationStateProvider} from '../../context/LocationContext';
+import SetSearchLocation from '../exploreScreens/setSearchLocation/SetSearchLocation';
 
 interface AppNavigationProps {
   isLoggedInStack: boolean;
@@ -64,42 +58,24 @@ function TabStack() {
 const Stack = createStackNavigator<RootStackParamList>();
 
 const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedInStack}) => {
-  const theme = useColorScheme() || 'light';
-  return (
-    <FriendsStateProvider isLoggedInStack={isLoggedInStack}>
-      <BookmarkStateProvider isLoggedInStack={isLoggedInStack}>
-        <LocationStateProvider isLoggedInStack={isLoggedInStack}>
-          <NavigationContainer
-            theme={{
-              ...DefaultTheme,
-              colors: {
-                ...DefaultTheme.colors,
-                background: colors[theme].background,
-              },
-            }}>
-            {isLoggedInStack ? (
-              <Stack.Navigator
-                initialRouteName="TabStack"
-                screenOptions={{
-                  headerShown: false,
-                }}>
-                {mainStackScreens()}
-                {authStackScreens()}
-              </Stack.Navigator>
-            ) : (
-              <Stack.Navigator
-                initialRouteName="Welcome"
-                screenOptions={{
-                  headerShown: false,
-                }}>
-                {authStackScreens()}
-                {mainStackScreens()}
-              </Stack.Navigator>
-            )}
-          </NavigationContainer>
-        </LocationStateProvider>
-      </BookmarkStateProvider>
-    </FriendsStateProvider>
+  return isLoggedInStack ? (
+    <Stack.Navigator
+      initialRouteName="TabStack"
+      screenOptions={{
+        headerShown: false,
+      }}>
+      {mainStackScreens()}
+      {authStackScreens()}
+    </Stack.Navigator>
+  ) : (
+    <Stack.Navigator
+      initialRouteName="Welcome"
+      screenOptions={{
+        headerShown: false,
+      }}>
+      {authStackScreens()}
+      {mainStackScreens()}
+    </Stack.Navigator>
   );
 };
 
@@ -112,11 +88,7 @@ const authStackScreens = () => (
     <Stack.Screen name="SignUpCreds" component={SignUpCreds} />
     <Stack.Screen name="SignUpPhone" component={SignUpPhone} />
     <Stack.Screen name="SignUpVerify" component={SignUpVerify} />
-    <Stack.Screen
-      name="SignUpInvite"
-      component={SignUpInvite}
-      options={{gestureEnabled: false}}
-    />
+    <Stack.Screen name="SignUpInvite" component={SignUpInvite} />
     <Stack.Screen name="ResetPwd" component={ResetPwd} />
     <Stack.Screen name="ForgotPwd" component={ForgotPwd} />
     <Stack.Screen name="ForgotPwdVerify" component={ForgotPwdVerify} />
@@ -129,8 +101,8 @@ const mainStackScreens = () => (
 
     <Stack.Screen name="SearchCategory" component={SearchCategory} />
     <Stack.Screen
-      name="SearchMap"
-      component={SearchMap}
+      name="SetSearchLocation"
+      component={SetSearchLocation}
       options={{
         presentation: 'modal',
         gestureEnabled: false,
@@ -185,6 +157,13 @@ const mainStackScreens = () => (
     />
 
     <Stack.Screen name="Event" component={Event} />
+    <Stack.Screen
+      name="EventChat"
+      component={EventChat}
+      options={{
+        gestureEnabled: false,
+      }}
+    />
     <Stack.Screen name="EventSettings" component={EventSettings} />
     <Stack.Screen name="Roulette" component={Roulette} />
     <Stack.Screen

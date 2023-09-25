@@ -9,6 +9,7 @@ import {
   resetPassword,
   saveTokenToDatabase,
   sendCodeForgotPwd,
+  submitReferralCode,
   verifyCodeUsername,
 } from '../../utils/api/authAPI';
 import {
@@ -16,6 +17,7 @@ import {
   cacheUserInfo,
   clearCaches,
 } from '../../utils/CacheHelpers';
+import prompt from 'react-native-prompt-android';
 
 export const handleLogin = async (
   navigation: any,
@@ -153,4 +155,27 @@ export const handleResetPassword = async (
     });
   } else {
   }
+};
+
+export const handleReferral = (authToken: string) => {
+  prompt(
+    strings.signUp.promptReferral,
+    strings.signUp.referralDescription,
+    [
+      {text: 'Cancel', style: 'cancel'},
+      {
+        text: 'Submit',
+        onPress: async code => {
+          const response = await submitReferralCode(authToken, code);
+
+          if (response) {
+            Alert.alert(strings.signUp.referralSuccess);
+          } else {
+            Alert.alert(strings.signUp.referralError);
+          }
+        },
+      },
+    ],
+    {},
+  );
 };

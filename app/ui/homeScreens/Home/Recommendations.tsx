@@ -18,22 +18,17 @@ import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 import PoiCard from '../../components/PoiCard';
 
-import {Coordinate, Poi, Recommendation} from '../../../utils/types';
-import {handleBookmark} from '../../../utils/Misc';
-
-import {useBookmarkContext} from '../../../context/BookmarkContext';
+import {Poi, Recommendation} from '../../../utils/types';
 
 interface Props {
   navigation: any;
-  location: Coordinate;
   recommendations: Recommendation[];
-  loadRecommendations: (location: Coordinate) => void;
+  loadRecommendations: () => void;
   recommendationsLoading: boolean;
 }
 
 const Recommendations: React.FC<Props> = ({
   navigation,
-  location,
   recommendations,
   loadRecommendations,
   recommendationsLoading,
@@ -41,8 +36,6 @@ const Recommendations: React.FC<Props> = ({
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
   const STYLES = STYLING(theme);
-
-  const {bookmarks, setBookmarks} = useBookmarkContext();
 
   return (
     <>
@@ -52,7 +45,7 @@ const Recommendations: React.FC<Props> = ({
           size="s"
           icon={icons.reload}
           onPress={() => {
-            loadRecommendations(location);
+            loadRecommendations();
           }}
         />
       </View>
@@ -79,21 +72,10 @@ const Recommendations: React.FC<Props> = ({
                     onPress={() => {
                       navigation.navigate('Poi', {
                         poi: place,
-                        bookmarked: bookmarks.some(
-                          (bookmark: Poi) => bookmark.id === place.id,
-                        ),
                         mode: 'none',
                       });
                     }}>
-                    <PoiCard
-                      place={place}
-                      bookmarked={bookmarks.some(
-                        (bookmark: Poi) => bookmark.id === place.id,
-                      )}
-                      handleBookmark={(poi: Poi) => {
-                        handleBookmark(poi, bookmarks, setBookmarks);
-                      }}
-                    />
+                    <PoiCard place={place} />
                   </TouchableOpacity>
                 </View>
               ))}

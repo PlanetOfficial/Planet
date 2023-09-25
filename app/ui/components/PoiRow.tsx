@@ -1,35 +1,24 @@
 import React from 'react';
-import {Image, StyleSheet, View, useColorScheme} from 'react-native';
+import {Image, StyleSheet, View} from 'react-native';
 import {s} from 'react-native-size-matters';
 
-import colors from '../../constants/colors';
 import strings from '../../constants/strings';
 import icons from '../../constants/icons';
 import numbers from '../../constants/numbers';
 
-import Icon from './Icon';
 import Text from './Text';
+import BookmarkIcon from './BookmarkIcon';
 
 import {Category, Coordinate, Poi} from '../../utils/types';
 import {getDistanceFromCoordinates} from '../../utils/Misc';
 
 interface Props {
   place: Poi;
-  bookmarked: boolean;
-  handleBookmark: (poi: Poi) => void;
   myLocation?: Coordinate;
   category?: Category;
 }
 
-const PoiRow: React.FC<Props> = ({
-  place,
-  bookmarked,
-  handleBookmark,
-  myLocation,
-  category,
-}) => {
-  const theme = useColorScheme() || 'light';
-
+const PoiRow: React.FC<Props> = ({place, myLocation, category}) => {
   const getAddressString = (): string => {
     let poiString: string = '';
 
@@ -60,6 +49,15 @@ const PoiRow: React.FC<Props> = ({
       poiString += '・' + '$'.repeat(place.price);
     }
 
+    if (place.start_datetime) {
+      poiString += new Date(place.start_datetime).toLocaleString([], {
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+      });
+    }
+
     return poiString;
   };
 
@@ -87,12 +85,7 @@ const PoiRow: React.FC<Props> = ({
         </Text>
         <Text size="xs">{getInfoString()}</Text>
       </View>
-      <Icon
-        size="l"
-        icon={bookmarked ? icons.bookmarked : icons.bookmark}
-        color={bookmarked ? colors[theme].accent : colors[theme].neutral}
-        onPress={() => handleBookmark(place)}
-      />
+      <BookmarkIcon place={place} />
     </View>
   );
 };

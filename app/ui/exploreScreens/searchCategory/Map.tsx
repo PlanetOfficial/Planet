@@ -56,11 +56,6 @@ const Map: React.FC<Props> = ({
         latitudeDelta: numbers.defaultLatitudeDelta,
         longitudeDelta: numbers.defaultLongitudeDelta,
       }}
-      onPanDrag={() => {
-        if (bottomSheetIndex === 1) {
-          bottomSheetRef.current?.snapToIndex(0);
-        }
-      }}
       onRegionChangeComplete={region => {
         setTempLocation({
           latitude: region.latitude,
@@ -98,9 +93,16 @@ const Map: React.FC<Props> = ({
               }}>
               <View style={styles.pin}>
                 <Image style={styles.icon} source={icons.pin} />
-                <Text size="xs" color={colors[theme].accent}>
-                  {place.rating}
-                </Text>
+                {place.rating ? (
+                  <Text size="xs" color={colors[theme].accent}>
+                    {place.rating}
+                  </Text>
+                ) : null}
+                {place.rank ? (
+                  <Text size="xs" color={colors[theme].purple}>
+                    {place.rank}
+                  </Text>
+                ) : null}
               </View>
             </Marker>
           ))

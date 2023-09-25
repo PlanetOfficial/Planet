@@ -18,7 +18,6 @@ import PoiCardXL from '../../components/PoiCardXL';
 import OptionMenu from '../../components/OptionMenu';
 
 import {Poi} from '../../../utils/types';
-import {handleBookmark} from '../../../utils/Misc';
 
 import {handleMove} from './functions';
 import AddSeparator from './AddSeparator';
@@ -27,8 +26,6 @@ interface Props {
   navigation: any;
   destinations: Poi[];
   setDestinations: (destinations: Poi[]) => void;
-  bookmarks: Poi[];
-  setBookmarks: (bookmarks: Poi[]) => void;
   setInsertionIndex: (insertionIndex: number) => void;
   destinationNames: Map<number, string>;
 }
@@ -37,8 +34,6 @@ const DestinationsList: React.FC<Props> = ({
   navigation,
   destinations,
   setDestinations,
-  bookmarks,
-  setBookmarks,
   setInsertionIndex,
   destinationNames,
 }) => {
@@ -51,9 +46,9 @@ const DestinationsList: React.FC<Props> = ({
       onTouchStart={() => Keyboard.dismiss()}>
       {destinations.map((destination: Poi, index: number) => (
         <View key={index}>
-          <View style={styles.destination}>
-            <View style={styles.destinationHeader}>
-              <Text>{destinationNames.get(destination.id)}</Text>
+          <View style={styles.container}>
+            <View style={styles.header}>
+              <Text size="s">{destinationNames.get(destination.id)}</Text>
               <OptionMenu
                 options={[
                   {
@@ -80,9 +75,9 @@ const DestinationsList: React.FC<Props> = ({
                           strings.main.rename,
                           strings.event.renamePrompt,
                           [
-                            {text: 'Cancel', style: 'cancel'},
+                            {text: strings.main.cancel, style: 'cancel'},
                             {
-                              text: 'Save',
+                              text: strings.main.save,
                               onPress: name => {
                                 const _destinations = [...destinations];
                                 destinationNames.set(
@@ -117,21 +112,10 @@ const DestinationsList: React.FC<Props> = ({
               onPress={() =>
                 navigation.navigate('Poi', {
                   poi: destination,
-                  bookmarked: bookmarks.some(
-                    bookmark => bookmark.id === destination.id,
-                  ),
                   mode: 'inCreate',
                 })
               }>
-              <PoiCardXL
-                place={destination}
-                bookmarked={bookmarks.some(
-                  bookmark => bookmark.id === destination.id,
-                )}
-                handleBookmark={(poi: Poi) =>
-                  handleBookmark(poi, bookmarks, setBookmarks)
-                }
-              />
+              <PoiCardXL place={destination} />
             </TouchableOpacity>
           </View>
           <TouchableOpacity
@@ -153,15 +137,16 @@ const styles = StyleSheet.create({
   scrollView: {
     paddingBottom: s(100),
   },
-  destination: {
+  container: {
     marginHorizontal: s(20),
     marginBottom: s(10),
   },
-  destinationHeader: {
+  header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingVertical: s(10),
     paddingHorizontal: s(5),
   },
 });
+
 export default DestinationsList;

@@ -18,10 +18,7 @@ import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 import PoiCard from '../../components/PoiCard';
 
-import {useBookmarkContext} from '../../../context/BookmarkContext';
-
-import {Destination, EventDetail, Poi, Suggestion} from '../../../utils/types';
-import {handleBookmark} from '../../../utils/Misc';
+import {Destination, EventDetail, Suggestion} from '../../../utils/types';
 
 interface Props {
   navigation: any;
@@ -32,8 +29,6 @@ const UpcomingEvent: React.FC<Props> = ({navigation, upcomingEvent}) => {
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
   const STYLES = STYLING(theme);
-
-  const {bookmarks, setBookmarks} = useBookmarkContext();
 
   return (
     <>
@@ -77,21 +72,10 @@ const UpcomingEvent: React.FC<Props> = ({navigation, upcomingEvent}) => {
                     onPress={() => {
                       navigation.navigate('Poi', {
                         poi: poi,
-                        bookmarked: bookmarks.some(
-                          (bookmark: Poi) => bookmark.id === poi.id,
-                        ),
                         mode: 'none',
                       });
                     }}>
-                    <PoiCard
-                      place={poi}
-                      bookmarked={bookmarks.some(
-                        (bookmark: Poi) => bookmark.id === poi.id,
-                      )}
-                      handleBookmark={(p: Poi) => {
-                        handleBookmark(p, bookmarks, setBookmarks);
-                      }}
-                    />
+                    <PoiCard place={poi} />
                   </TouchableOpacity>
                 );
               })}
@@ -139,9 +123,9 @@ const UpcomingEvent: React.FC<Props> = ({navigation, upcomingEvent}) => {
         </>
       ) : (
         <TouchableOpacity
-          style={styles.create}
+          style={[STYLES.actionButton, STYLES.shadow]}
           onPress={() => navigation.navigate('Create')}>
-          <View style={styles.plus}>
+          <View style={STYLES.icon}>
             <Icon icon={icons.plus} color={colors[theme].primary} />
           </View>
           <Text color={colors[theme].primary} center={true}>
@@ -205,20 +189,6 @@ const styling = (theme: 'light' | 'dark') =>
       marginLeft: s(15),
       backgroundColor:
         theme === 'light' ? colors[theme].primary : colors[theme].neutral,
-    },
-    create: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'center',
-      marginHorizontal: s(20),
-      marginTop: s(10),
-      marginBottom: s(20),
-      paddingVertical: s(10),
-      borderRadius: s(5),
-      backgroundColor: colors[theme].accent,
-    },
-    plus: {
-      marginRight: s(10),
     },
     row: {
       flexDirection: 'row',

@@ -15,16 +15,14 @@ import STYLING from '../../../constants/styles';
 
 import Icon from '../../components/Icon';
 import Text from '../../components/Text';
+import BookmarkIcon from '../../components/BookmarkIcon';
 
 import {Poi} from '../../../utils/types';
-import {handleBookmark} from '../../../utils/Misc';
 
 interface Props {
   navigation: any;
   scrollPosition: Animated.Value;
   destination: Poi | undefined;
-  bookmarks: Poi[];
-  setBookmarks: (bookmarks: Poi[]) => void;
   setGalleryVisible: (galleryVisible: boolean) => void;
 }
 
@@ -32,8 +30,6 @@ const Header: React.FC<Props> = ({
   navigation,
   scrollPosition,
   destination,
-  bookmarks,
-  setBookmarks,
   setGalleryVisible,
 }) => {
   const theme = 'light';
@@ -83,20 +79,9 @@ const Header: React.FC<Props> = ({
               numberOfLines={1}>
               {destination?.name}
             </Animated.Text>
-            <Icon
-              size="m"
-              icon={
-                bookmarks.some(bookmark => bookmark.id === destination?.id)
-                  ? icons.bookmarked
-                  : icons.bookmark
-              }
-              onPress={() =>
-                destination
-                  ? handleBookmark(destination, bookmarks, setBookmarks)
-                  : null
-              }
-              color={colors[theme].primary}
-            />
+            {destination ? (
+              <BookmarkIcon place={destination} color={colors[theme].primary} />
+            ) : null}
           </View>
         </SafeAreaView>
         <Animated.View style={[styles.bottom, {opacity: bottomTitleOpacity}]}>

@@ -9,27 +9,26 @@ import STYLING from '../../constants/styles';
 import Icon from './Icon';
 import Text from './Text';
 import OptionMenu from './OptionMenu';
+import BookmarkIcon from './BookmarkIcon';
 
 import {Option, Poi} from '../../utils/types';
-import {getInfoString} from '../../utils/Misc';
+import {getInfoString, useLoadingState} from '../../utils/Misc';
 
 interface Props {
   place: Poi;
   disabled?: boolean;
   width?: Animated.AnimatedInterpolation<string | number> | number;
-  bookmarked?: boolean;
-  handleBookmark?: (poi: Poi) => void;
+  withBookmarkIcon?: boolean;
   options?: Option[];
   voted?: boolean;
-  onVote?: () => void;
+  onVote?: () => Promise<void>;
 }
 
 const PoiCardXL: React.FC<Props> = ({
   place,
   disabled = false,
   width,
-  bookmarked,
-  handleBookmark,
+  withBookmarkIcon = true,
   options,
   voted,
   onVote,
@@ -37,6 +36,8 @@ const PoiCardXL: React.FC<Props> = ({
   const theme = useColorScheme() || 'light';
   const styles = styling(theme);
   const STYLES = STYLING(theme);
+
+  const [loading, withLoading] = useLoadingState();
 
   return (
     <Animated.View style={[styles.container, STYLES.shadow, {width: width}]}>
@@ -51,14 +52,8 @@ const PoiCardXL: React.FC<Props> = ({
             {getInfoString(place)}
           </Text>
         </View>
-        {handleBookmark ? (
-          <Icon
-            size="m"
-            disabled={disabled}
-            icon={bookmarked ? icons.bookmarked : icons.bookmark}
-            color={bookmarked ? colors[theme].accent : colors[theme].neutral}
-            onPress={() => handleBookmark(place)}
-          />
+        {withBookmarkIcon ? (
+          <BookmarkIcon place={place} disabled={disabled} />
         ) : options ? (
           <OptionMenu options={options} />
         ) : null}
@@ -67,10 +62,10 @@ const PoiCardXL: React.FC<Props> = ({
         <View style={styles.voteButton}>
           <Icon
             size="m"
-            disabled={disabled}
+            disabled={disabled || loading}
             icon={icons.like}
             color={voted ? colors[theme].accent : colors[theme].secondary}
-            onPress={onVote}
+            onPress={() => withLoading(onVote)}
           />
         </View>
       ) : null}
