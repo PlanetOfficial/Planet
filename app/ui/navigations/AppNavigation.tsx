@@ -89,7 +89,7 @@ const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedInStack}) => {
               </Stack.Navigator>
             ) : (
               <Stack.Navigator
-                initialRouteName="SignUpInvite"
+                initialRouteName="Welcome"
                 screenOptions={{
                   headerShown: false,
                 }}>
