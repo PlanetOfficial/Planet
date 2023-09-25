@@ -137,7 +137,7 @@ const SignUpInvite = ({
           <TouchableOpacity
             style={styles.referral}
             onPress={() => handleReferral(authToken)}>
-            <Text size="s" weight="l">
+            <Text size="s" weight="l" color={colors[theme].neutral}>
               {strings.signUp.promptReferral}
             </Text>
           </TouchableOpacity>

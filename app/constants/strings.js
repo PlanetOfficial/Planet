@@ -124,10 +124,11 @@ const strings = {
     images: 'Images',
     viewMoreReviews: 'View More Reviews',
     canceled: 'Canceled',
-    rank: 'Popularity',
+    rank: 'Impact Score',
     attendance: 'Attendance',
     labels: 'Labels',
-    rankDescription: 'Our popularity index for this event, out of 100.',
+    rankDescription:
+      'This number represents the expected impact of the event on a scale of 1-100.',
     attendanceDescription:
       'This number represents the expected number of people attending this event.',
   },
