@@ -1,11 +1,8 @@
 import React from 'react';
-import {useColorScheme} from 'react-native';
-import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
 import NavBar from './NavBar';
 import RootStackParamList from './RootStackParamList';
-import colors from '../../constants/colors';
 import {verticalAnimation} from '../../utils/Misc';
 
 import Welcome from '../authScreens/Welcome';
@@ -50,10 +47,6 @@ import AllCategories from '../exploreScreens/allCategories/AllCategories';
 import SearchCategory from '../exploreScreens/searchCategory/SearchCategory';
 import SetSearchLocation from '../exploreScreens/setSearchLocation/SetSearchLocation';
 
-import {BookmarkStateProvider} from '../../context/BookmarkContext';
-import {FriendsStateProvider} from '../../context/FriendsContext';
-import {LocationStateProvider} from '../../context/LocationContext';
-
 interface AppNavigationProps {
   isLoggedInStack: boolean;
 }
@@ -65,42 +58,24 @@ function TabStack() {
 const Stack = createStackNavigator<RootStackParamList>();
 
 const AppNavigation: React.FC<AppNavigationProps> = ({isLoggedInStack}) => {
-  const theme = useColorScheme() || 'light';
-  return (
-    <FriendsStateProvider isLoggedInStack={isLoggedInStack}>
-      <BookmarkStateProvider isLoggedInStack={isLoggedInStack}>
-        <LocationStateProvider isLoggedInStack={isLoggedInStack}>
-          <NavigationContainer
-            theme={{
-              ...DefaultTheme,
-              colors: {
-                ...DefaultTheme.colors,
-                background: colors[theme].background,
-              },
-            }}>
-            {isLoggedInStack ? (
-              <Stack.Navigator
-                initialRouteName="TabStack"
-                screenOptions={{
-                  headerShown: false,
-                }}>
-                {mainStackScreens()}
-                {authStackScreens()}
-              </Stack.Navigator>
-            ) : (
-              <Stack.Navigator
-                initialRouteName="Welcome"
-                screenOptions={{
-                  headerShown: false,
-                }}>
-                {authStackScreens()}
-                {mainStackScreens()}
-              </Stack.Navigator>
-            )}
-          </NavigationContainer>
-        </LocationStateProvider>
-      </BookmarkStateProvider>
-    </FriendsStateProvider>
+  return isLoggedInStack ? (
+    <Stack.Navigator
+      initialRouteName="TabStack"
+      screenOptions={{
+        headerShown: false,
+      }}>
+      {mainStackScreens()}
+      {authStackScreens()}
+    </Stack.Navigator>
+  ) : (
+    <Stack.Navigator
+      initialRouteName="Welcome"
+      screenOptions={{
+        headerShown: false,
+      }}>
+      {authStackScreens()}
+      {mainStackScreens()}
+    </Stack.Navigator>
   );
 };
 

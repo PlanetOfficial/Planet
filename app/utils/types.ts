@@ -236,6 +236,13 @@ export interface RecommenderSurveyQuestion {
   neutral: string;
 }
 
+export interface ForegroundNotificationData {
+  screenName: ScreenName;
+  notificationText: string;
+}
+
+export type ScreenName = 'Friends' | 'Requests' | 'Notifications' | '';
+
 export type RecommenderSurveyResponse = 'yes' | 'no' | 'neutral';
 
 export type ExploreModes = 'create' | 'suggest' | 'add' | 'none';
