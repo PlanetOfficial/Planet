@@ -1334,14 +1334,14 @@
   dependencies:
     regenerator-runtime "^0.13.11"
 
-"@babel/runtime@^7.12.0", "@babel/runtime@^7.12.5", "@babel/runtime@^7.16.3":
+"@babel/runtime@^7.12.0", "@babel/runtime@^7.12.5", "@babel/runtime@^7.16.3", "@babel/runtime@^7.22.11":
   version "7.22.15"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.22.15.tgz#38f46494ccf6cf020bd4eed7124b425e83e523b8"
   integrity sha512-T0O+aa+4w0u06iNmapipJXMV4HoUir03hpx3/YqXXhu9xim3w+dVphjFWl1OH8NbZHw5Lbm9k45drDkgq2VNNA==
   dependencies:
     regenerator-runtime "^0.14.0"
 
-"@babel/runtime@^7.22.10", "@babel/runtime@^7.22.6":
+"@babel/runtime@^7.22.6":
   version "7.22.10"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.22.10.tgz#ae3e9631fd947cb7e3610d3e9d8fef5f76696682"
   integrity sha512-21t/fkKLMZI4pqP2wlmsQAWnYW1PDyKyyUV4vCi+B25ydmdaYTKXPwCj0BzSUnZf4seIiYvSA3jcZ3gdsMFkLQ==
@@ -2380,7 +2380,7 @@
     deepmerge "^4.2.2"
     svgo "^2.8.0"
 
-"@tanem/svg-injector@^10.1.61":
+"@tanem/svg-injector@^10.1.62":
   version "10.1.62"
   resolved "https://registry.yarnpkg.com/@tanem/svg-injector/-/svg-injector-10.1.62.tgz#17983a0b4726eb882e945018be1944ef8539e4b6"
   integrity sha512-74/VTSpUfbdPstcIqzLKLcSp/DXfsrFpzxnh/FGGQFEqQZ59IqgFqjB2TALGwZihmepiC5JobKRA+hRnrjmzFA==
@@ -8302,13 +8302,13 @@ react-shallow-renderer@^16.15.0:
     object-assign "^4.1.1"
     react-is "^16.12.0 || ^17.0.0 || ^18.0.0"
 
-react-svg@^16.1.19:
-  version "16.1.21"
-  resolved "https://registry.yarnpkg.com/react-svg/-/react-svg-16.1.21.tgz#be9cd5870f1bcc16c0d26bb3c7680bd650b9c5db"
-  integrity sha512-OEfGYyDvA6ucomQ2/i2sU8vGwFakuXaraCp0DG+yuUrT/ASQfhu+y8WpwZuxHiKl+qFsMFKjq/hm4lLYQR3R6g==
+react-svg@^16.1.22:
+  version "16.1.23"
+  resolved "https://registry.yarnpkg.com/react-svg/-/react-svg-16.1.23.tgz#f631468b895add880a3514c2a8280b87363778c8"
+  integrity sha512-vF0AGtdnvHa4eYGhXgM6ddsjhMHXFucEGVz8XD0DXAmTcKxS0H0Qvdm/fDxKbLpD6krpyi/G5qbq2evMfj2SCw==
   dependencies:
-    "@babel/runtime" "^7.22.10"
-    "@tanem/svg-injector" "^10.1.61"
+    "@babel/runtime" "^7.22.11"
+    "@tanem/svg-injector" "^10.1.62"
     "@types/prop-types" "^15.7.5"
     prop-types "^15.8.1"
 
