@@ -21,7 +21,7 @@
     "@react-native-community/netinfo": "^9.4.1",
     "@react-native-firebase/app": "^18.2.0",
     "@react-native-firebase/messaging": "^18.2.0",
-    "@react-native-picker/picker": "^2.4.10",
+    "@react-native-picker/picker": "^2.5.0",
     "@react-native-segmented-control/segmented-control": "^2.4.2",
     "@react-navigation/bottom-tabs": "^6.5.8",
     "@react-navigation/material-top-tabs": "^6.6.3",
