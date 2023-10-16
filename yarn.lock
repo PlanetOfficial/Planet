@@ -7753,10 +7753,10 @@ react-native-image-crop-picker@^0.40.0:
   resolved "https://registry.yarnpkg.com/react-native-image-crop-picker/-/react-native-image-crop-picker-0.40.0.tgz#cf378a4cbdb64b9b6ff94399b8515ff3bdccbf9c"
   integrity sha512-FpqiCS4CiPQp8qIorlELWKbpi1d9lyhJki9spZr4LShv9hk65GWo6tYJupfTV19o5XcRwJn8d4MHIUoyWMJRTQ==
 
-react-native-image-picker@^5.6.0:
-  version "5.6.0"
-  resolved "https://registry.yarnpkg.com/react-native-image-picker/-/react-native-image-picker-5.6.0.tgz#e7b6637dc5296cddb486106b711eb4eedabd083d"
-  integrity sha512-QHHb0qw3VXDedllrfS6SjxNG1SubnjUjIR2OH1HVbjv/IRVa3v4fI1MHbQaSNXlGopT9kL9jcnh7tbcX1z74Vg==
+react-native-image-picker@^7.0.0:
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/react-native-image-picker/-/react-native-image-picker-7.0.1.tgz#8e7c778fe31867f2facb9e3a8fb21a5d020c5df1"
+  integrity sha512-WACwhGCGlHvRzwFS4OjVKbkVMLx95f6g3ouaZ1IQM1LO7zq4Ytn1iBkOja8KkutV10E9B+IitgoWL3VUpuRl7Q==
 
 react-native-image-resizer@^1.4.5:
   version "1.4.5"
