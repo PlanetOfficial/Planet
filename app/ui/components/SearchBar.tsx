@@ -6,6 +6,7 @@ import {
   useColorScheme,
   TouchableOpacity,
   LayoutAnimation,
+  Platform,
 } from 'react-native';
 import {s} from 'react-native-size-matters';
 
@@ -58,13 +59,15 @@ const SearchBar: React.FC<Props> = ({
           autoCapitalize="none"
           autoCorrect={false}
           onFocus={() => {
-            LayoutAnimation.configureNext(
-              LayoutAnimation.create(
-                200,
-                LayoutAnimation.Types.easeInEaseOut,
-                LayoutAnimation.Properties.opacity,
-              ),
-            );
+            if (Platform.OS === 'ios') {
+              LayoutAnimation.configureNext(
+                LayoutAnimation.create(
+                  200,
+                  LayoutAnimation.Types.easeInEaseOut,
+                  LayoutAnimation.Properties.opacity,
+                ),
+              );
+            }
             setSearching(true);
           }}
           onChangeText={search}
