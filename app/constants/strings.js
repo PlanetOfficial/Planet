@@ -21,9 +21,9 @@ const strings = {
     title1: 'Discover',
     description1: 'Personalized reccomendations based on your interests',
     title2: 'Explore',
-    description2: 'Find new places and events to go to with your friends',
+    description2: 'Find new places to go to with your friends',
     title3: 'Decide',
-    description3: 'Suggest alternatives and vote for your favorites',
+    description3: 'Plan, suggest, and vote with your friends',
   },
   main: {
     appName: 'Planet',
