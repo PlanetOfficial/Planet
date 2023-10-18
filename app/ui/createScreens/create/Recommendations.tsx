@@ -177,8 +177,8 @@ const styling = (theme: 'light' | 'dark') =>
     container: {
       width: s(300),
       marginHorizontal: s(7),
-      paddingBottom: s(5),
-      borderBottomWidth: 1,
+      paddingTop: s(5),
+      borderTopWidth: 1,
       borderColor: colors[theme].secondary,
     },
     cardHeader: {
