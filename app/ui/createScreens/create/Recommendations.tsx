@@ -87,6 +87,30 @@ const Recommendations: React.FC<Props> = ({
             showsVerticalScrollIndicator={false}
             onTouchStart={() => Keyboard.dismiss()}>
             <View style={[styles.scrollViewVertical, STYLES.shadow]}>
+              <TouchableOpacity
+                style={styles.accept}
+                onPress={() => {
+                  LayoutAnimation.configureNext(
+                    LayoutAnimation.Presets.easeInEaseOut,
+                  );
+                  setRecommendationsShown(false);
+                  setDestinations(recommendation.places);
+                  setDestinationNames(
+                    new Map(
+                      recommendation.places.map((place: Poi, i: number) => [
+                        place.id,
+                        recommendation.categories[i],
+                      ]),
+                    ),
+                  );
+              }}>
+                <View style={STYLES.icon}>
+                  <Icon icon={icons.check} color={colors[theme].primary} />
+                </View>
+                <Text size="s" color={colors[theme].primary}>
+                  {strings.event.accept}
+                </Text>
+              </TouchableOpacity>
               {recommendation.places.map((destination: Poi, i: number) => (
                 <View key={i}>
                   <View style={styles.container}>
@@ -106,30 +130,6 @@ const Recommendations: React.FC<Props> = ({
                   </View>
                 </View>
               ))}
-              <TouchableOpacity
-                style={styles.accept}
-                onPress={() => {
-                  LayoutAnimation.configureNext(
-                    LayoutAnimation.Presets.easeInEaseOut,
-                  );
-                  setRecommendationsShown(false);
-                  setDestinations(recommendation.places);
-                  setDestinationNames(
-                    new Map(
-                      recommendation.places.map((place: Poi, i: number) => [
-                        place.id,
-                        recommendation.categories[i],
-                      ]),
-                    ),
-                  );
-                }}>
-                <View style={STYLES.icon}>
-                  <Icon icon={icons.check} color={colors[theme].primary} />
-                </View>
-                <Text size="s" color={colors[theme].primary}>
-                  {strings.event.accept}
-                </Text>
-              </TouchableOpacity>
             </View>
           </ScrollView>
         ))}
