@@ -103,7 +103,7 @@ const Recommendations: React.FC<Props> = ({
                       ]),
                     ),
                   );
-              }}>
+                }}>
                 <View style={STYLES.icon}>
                   <Icon icon={icons.check} color={colors[theme].primary} />
                 </View>
