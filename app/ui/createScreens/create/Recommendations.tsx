@@ -87,25 +87,6 @@ const Recommendations: React.FC<Props> = ({
             showsVerticalScrollIndicator={false}
             onTouchStart={() => Keyboard.dismiss()}>
             <View style={[styles.scrollViewVertical, STYLES.shadow]}>
-              {recommendation.places.map((destination: Poi, i: number) => (
-                <View key={i}>
-                  <View style={styles.container}>
-                    <View style={styles.cardHeader}>
-                      <Text size="s">{recommendation.categories[i]}</Text>
-                    </View>
-                    <TouchableOpacity
-                      style={styles.card}
-                      onPress={() =>
-                        navigation.navigate('Poi', {
-                          poi: destination,
-                          mode: 'inCreate',
-                        })
-                      }>
-                      <PoiCardXL place={destination} />
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              ))}
               <TouchableOpacity
                 style={styles.accept}
                 onPress={() => {
@@ -130,6 +111,25 @@ const Recommendations: React.FC<Props> = ({
                   {strings.event.accept}
                 </Text>
               </TouchableOpacity>
+              {recommendation.places.map((destination: Poi, i: number) => (
+                <View key={i}>
+                  <View style={styles.container}>
+                    <View style={styles.cardHeader}>
+                      <Text size="s">{recommendation.categories[i]}</Text>
+                    </View>
+                    <TouchableOpacity
+                      style={styles.card}
+                      onPress={() =>
+                        navigation.navigate('Poi', {
+                          poi: destination,
+                          mode: 'inCreate',
+                        })
+                      }>
+                      <PoiCardXL place={destination} />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              ))}
             </View>
           </ScrollView>
         ))}
@@ -177,8 +177,8 @@ const styling = (theme: 'light' | 'dark') =>
     container: {
       width: s(300),
       marginHorizontal: s(7),
-      paddingBottom: s(5),
-      borderBottomWidth: 1,
+      paddingTop: s(5),
+      borderTopWidth: 1,
       borderColor: colors[theme].secondary,
     },
     cardHeader: {
