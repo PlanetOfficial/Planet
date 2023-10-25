@@ -29,9 +29,9 @@ const Welcome = ({navigation}: {navigation: any}) => {
 
   const steps = [
     {
-      title: strings.login.title1,
-      description: strings.login.description1,
-      image: onboarding.one,
+      title: strings.login.title3,
+      description: strings.login.description3,
+      image: onboarding.three,
     },
     {
       title: strings.login.title2,
@@ -39,9 +39,9 @@ const Welcome = ({navigation}: {navigation: any}) => {
       image: onboarding.two,
     },
     {
-      title: strings.login.title3,
-      description: strings.login.description3,
-      image: onboarding.three,
+      title: strings.login.title1,
+      description: strings.login.description1,
+      image: onboarding.one,
     },
   ];
 
@@ -92,7 +92,7 @@ const Welcome = ({navigation}: {navigation: any}) => {
                 {step.description}
               </Text>
               <View style={styles.image}>
-                <Image source={onboarding.two} style={styles.img} />
+                <Image source={step.image} style={styles.img} />
               </View>
             </View>
           ))}

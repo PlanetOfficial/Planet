@@ -65,6 +65,7 @@
 		89C6BE57DB24E9ADA2F236DE /* Pods-RivaletMobile-RivaletMobileTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RivaletMobile-RivaletMobileTests.release.xcconfig"; path = "Target Support Files/Pods-RivaletMobile-RivaletMobileTests/Pods-RivaletMobile-RivaletMobileTests.release.xcconfig"; sourceTree = "<group>"; };
 		8A3AD543FD2F401796D79560 /* Lato-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-Regular.ttf"; path = "../app/assets/fonts/Lato/Lato-Regular.ttf"; sourceTree = "<group>"; };
 		92EDC21835704FE987A1C11F /* Lato-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-BoldItalic.ttf"; path = "../app/assets/fonts/Lato/Lato-BoldItalic.ttf"; sourceTree = "<group>"; };
+		BCFF96E62AE6051800424C38 /* RivaletMobileRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = RivaletMobileRelease.entitlements; path = RivaletMobile/RivaletMobileRelease.entitlements; sourceTree = "<group>"; };
 		C59296A552C342F3AE4A3EF7 /* OFL.txt */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = OFL.txt; path = ../app/assets/fonts/Lato/OFL.txt; sourceTree = "<group>"; };
 		CB6A3DEC035046F5A702FE04 /* Lato-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-BlackItalic.ttf"; path = "../app/assets/fonts/Lato/Lato-BlackItalic.ttf"; sourceTree = "<group>"; };
 		DC28F1617DDC47CCBB12D289 /* Lato-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-Italic.ttf"; path = "../app/assets/fonts/Lato/Lato-Italic.ttf"; sourceTree = "<group>"; };
@@ -115,6 +116,7 @@
 		13B07FAE1A68108700A75B9A /* RivaletMobile */ = {
 			isa = PBXGroup;
 			children = (
+				BCFF96E62AE6051800424C38 /* RivaletMobileRelease.entitlements */,
 				109E1C6D2A1C3589009D8805 /* RivaletMobile.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
@@ -569,8 +571,10 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = RivaletMobile/RivaletMobile.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = XM6FA6V3YM;
+				DEVELOPMENT_TEAM = 9M6G43HY45;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = RivaletMobile/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Planet;
@@ -579,14 +583,15 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.0;
+				MARKETING_VERSION = 1.2.2;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.RivaletMobile;
 				PRODUCT_NAME = RivaletMobile;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -600,9 +605,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = RivaletMobile/RivaletMobile.entitlements;
+				CODE_SIGN_ENTITLEMENTS = RivaletMobile/RivaletMobileRelease.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = XM6FA6V3YM;
+				DEVELOPMENT_TEAM = 9M6G43HY45;
 				INFOPLIST_FILE = RivaletMobile/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Planet;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
@@ -610,7 +617,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.0;
+				MARKETING_VERSION = 1.2.2;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -618,6 +625,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = RivaletMobile;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -696,8 +704,10 @@
 					"$(inherited)",
 					"-Wl",
 					"-ld_classic",
-					" ",
-					"-Wl -ld_classic ",
+					"-Wl",
+					"-ld_classic",
+					"-Wl",
+					"-ld_classic",
 				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
@@ -772,8 +782,10 @@
 					"$(inherited)",
 					"-Wl",
 					"-ld_classic",
-					" ",
-					"-Wl -ld_classic ",
+					"-Wl",
+					"-ld_classic",
+					"-Wl",
+					"-ld_classic",
 				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
