@@ -98,9 +98,9 @@ export default function App() {
 
     // handle push notifications from background state
     messaging().onNotificationOpenedApp(remoteMessage => {
-      if (remoteMessage?.data?.screen) {
+      if (remoteMessage?.data?.screen?.toString()) {
         navigationRef.current?.navigate(
-          getScreenName(remoteMessage.data.screen),
+          getScreenName(remoteMessage.data.screen.toString()),
         );
       }
     });
@@ -109,18 +109,18 @@ export default function App() {
     messaging()
       .getInitialNotification()
       .then(remoteMessage => {
-        if (remoteMessage?.data?.screen) {
+        if (remoteMessage?.data?.screen?.toString()) {
           navigationRef.current?.navigate(
-            getScreenName(remoteMessage.data.screen),
+            getScreenName(remoteMessage.data.screen.toString()),
           );
         }
       });
 
     // handle foreground notifications
     messaging().onMessage(remoteMessage => {
-      if (remoteMessage?.notification?.body && remoteMessage?.data?.screen) {
+      if (remoteMessage?.notification?.body && remoteMessage?.data?.screen?.toString()) {
         setForegroundNotificationData({
-          screenName: getScreenName(remoteMessage.data.screen),
+          screenName: getScreenName(remoteMessage.data.screen?.toString()),
           notificationText: remoteMessage.notification.body,
         });
         setTimeout(() => {
