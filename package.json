@@ -73,7 +73,7 @@
     "react-native-video": "^5.2.1",
     "react-phone-number-input": "^3.3.5",
     "react-svg": "^16.1.22",
-    "stream-chat-react-native": "^5.17.1"
+    "stream-chat-react-native": "^5.22.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
