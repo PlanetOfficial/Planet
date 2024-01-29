@@ -118,7 +118,10 @@ export default function App() {
 
     // handle foreground notifications
     messaging().onMessage(remoteMessage => {
-      if (remoteMessage?.notification?.body && remoteMessage?.data?.screen?.toString()) {
+      if (
+        remoteMessage?.notification?.body &&
+        remoteMessage?.data?.screen?.toString()
+      ) {
         setForegroundNotificationData({
           screenName: getScreenName(remoteMessage.data.screen?.toString()),
           notificationText: remoteMessage.notification.body,
