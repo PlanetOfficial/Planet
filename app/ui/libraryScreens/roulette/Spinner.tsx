@@ -149,18 +149,18 @@ const Spinner: React.FC<Props> = ({
                   <PieChart
                     widthAndHeight={s(249.6)}
                     series={destination.suggestions.map(
-                      (_suggestion: Suggestion, index: number) => {
+                      (_suggestion: Suggestion) => {
                         return _suggestion.votes.length;
-                      }
+                      },
                     )}
                     sliceColor={destination.suggestions.map(
                       (_suggestion: Suggestion, index: number) => {
                         return colors[theme].primaryShades[
                           index % colors[theme].primaryShades.length
                         ];
-                      }
+                      },
                     )}
-                    coverRadius={0.40}
+                    coverRadius={0.4}
                     coverFill={colors[theme].background}
                   />
                 </Svg>
