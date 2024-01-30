@@ -13,7 +13,7 @@ import Animated, {
   runOnJS,
   SharedValue,
 } from 'react-native-reanimated';
-import {PieChart} from 'react-native-svg-charts';
+import PieChart from 'react-native-pie-chart';
 import {Svg} from 'react-native-svg';
 import {s} from 'react-native-size-matters';
 
@@ -147,21 +147,21 @@ const Spinner: React.FC<Props> = ({
               <View style={styles.circleContainer}>
                 <Svg width={s(250)} height={s(250)}>
                   <PieChart
-                    style={{height: s(249.6)}}
-                    innerRadius={'40%'}
-                    data={destination.suggestions.map(
+                    widthAndHeight={s(249.6)}
+                    series={destination.suggestions.map(
                       (_suggestion: Suggestion, index: number) => {
-                        return {
-                          key: index,
-                          value: _suggestion.votes.length,
-                          svg: {
-                            fill: colors[theme].primaryShades[
-                              index % colors[theme].primaryShades.length
-                            ],
-                          },
-                        };
-                      },
+                        return _suggestion.votes.length;
+                      }
                     )}
+                    sliceColor={destination.suggestions.map(
+                      (_suggestion: Suggestion, index: number) => {
+                        return colors[theme].primaryShades[
+                          index % colors[theme].primaryShades.length
+                        ];
+                      }
+                    )}
+                    coverRadius={0.40}
+                    coverFill={colors[theme].background}
                   />
                 </Svg>
               </View>
