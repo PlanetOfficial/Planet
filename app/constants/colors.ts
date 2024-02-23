@@ -20,7 +20,7 @@ const light = {
   accent: '#f36f3f',
   red: '#ff0000',
   blur: 'rgba(255,255,255,.8)',
-  primaryShades: ['#f9a67a', '#f6ae2d', '#ff6c32', '#fc2f00'],
+  primaryShades: ['#5B5F97', '#3DA5D9', '#FFC145', '#FF6B6C'],
   statusBar: 'dark-content' as StatusBarStyle,
   androidNavigationBarStyle: 'dark' as 'dark' | 'light',
 };
@@ -35,7 +35,7 @@ const dark = {
   accent: '#f38158',
   red: '#ff5533',
   blur: 'rgba(0,0,0,.6)',
-  primaryShades: ['#FAB794', '#F7BE56', '#FF895A', '#E75432'],
+  primaryShades: ['#5B5F97', '#3DA5D9', '#FFC145', '#FF6B6C'],
   statusBar: 'light-content' as StatusBarStyle,
   androidNavigationBarStyle: 'light' as 'dark' | 'light',
 };
