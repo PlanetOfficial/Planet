@@ -17,7 +17,7 @@ import Text from '../../components/Text';
 import Icon from '../../components/Icon';
 
 import {Event, EventDetail} from '../../../utils/types';
-import {onStatusChange} from './functions';
+import {onSharePress, onStatusChange} from './functions';
 
 interface Props {
   navigation: any;
@@ -85,6 +85,19 @@ const Header: React.FC<Props> = ({
               </Text>
             </TouchableOpacity>
           )}
+        </View>
+        <View style={STYLES.icon}>
+          <Icon
+            icon={icons.share}
+            disabled={displayingSuggestion}
+            button={true}
+            padding={-4}
+            onPress={
+              displayingSuggestion
+                ? onSuggestionClose
+                : () => onSharePress(event)
+            }
+          />
         </View>
         <View style={STYLES.icon}>
           <Icon

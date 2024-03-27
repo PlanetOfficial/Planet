@@ -1,4 +1,4 @@
-import {Alert} from 'react-native';
+import {Alert, Share} from 'react-native';
 
 import strings from '../../../constants/strings';
 
@@ -55,3 +55,10 @@ export const onStatusChange = async (
     Alert.alert(strings.error.error, strings.error.changeCompletionStatus);
   }
 };
+
+export const onSharePress = (event: Event) => {
+  const message = `https://www.youtube.com`;
+  Share.share({
+    message,
+  });
+}

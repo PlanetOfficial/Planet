@@ -46,6 +46,7 @@ const icons = {
   roulette: require('../assets/icons/roulette.png'),
   selected: require('../assets/icons/selected.png'),
   settings: require('../assets/icons/settings.png'),
+  share: require('../assets/icons/share.png'),
   shrink: require('../assets/icons/shrink.png'),
   unchecked: require('../assets/icons/unchecked.png'),
   unselected: require('../assets/icons/unselected.png'),
