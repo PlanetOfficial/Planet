@@ -65,4 +65,4 @@ export const onSharePress = (event: EventDetail | undefined) => {
   Share.share({
     message,
   });
-}
+};
