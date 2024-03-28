@@ -1,4 +1,4 @@
-import {Alert} from 'react-native';
+import {Alert, Share} from 'react-native';
 
 import strings from '../../../constants/strings';
 
@@ -54,4 +54,15 @@ export const onStatusChange = async (
   } else {
     Alert.alert(strings.error.error, strings.error.changeCompletionStatus);
   }
+};
+
+export const onSharePress = (event: EventDetail | undefined) => {
+  if (!event) {
+    return;
+  }
+
+  const message = event.link;
+  Share.share({
+    message,
+  });
 };
