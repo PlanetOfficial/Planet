@@ -95,7 +95,7 @@ const Header: React.FC<Props> = ({
             onPress={
               displayingSuggestion
                 ? onSuggestionClose
-                : () => onSharePress(event)
+                : () => onSharePress(eventDetail)
             }
           />
         </View>

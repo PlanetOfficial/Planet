@@ -56,8 +56,12 @@ export const onStatusChange = async (
   }
 };
 
-export const onSharePress = (event: Event) => {
-  const message = `https://www.youtube.com`;
+export const onSharePress = (event: EventDetail | undefined) => {
+  if (!event) {
+    return;
+  }
+
+  const message = event.link;
   Share.share({
     message,
   });

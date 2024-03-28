@@ -126,6 +126,7 @@ export interface EventDetail {
   datetime: string;
   members: UserInfo[];
   destinations: Destination[];
+  link: string;
 }
 
 export interface ChatInfo {
