@@ -6,6 +6,10 @@ export interface UserInfo {
   count?: number;
 }
 
+interface BrowserUserInfo {
+  display_name: string;
+}
+
 export interface UserDetail {
   shared_events: Event[];
 }
@@ -149,6 +153,7 @@ export interface Suggestion {
   is_primary: boolean;
   poi: Poi;
   votes: UserInfo[];
+  browser_votes: BrowserUserInfo[];
 }
 
 export interface Spin {
