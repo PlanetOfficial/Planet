@@ -46,11 +46,19 @@ const Info: React.FC<Props> = ({
         <PoiCard place={currentSuggestion.poi} disabled={isSpinning} />
       </TouchableOpacity>
       <View style={styles.votes}>
-        <Text size="s">{`${strings.roulette.votes} (${currentSuggestion.votes.length}/${totalVotes}):`}</Text>
+        <Text size="s">{`${strings.roulette.votes} (${
+          currentSuggestion.votes.length +
+          currentSuggestion.browser_votes.length
+        }/${totalVotes}):`}</Text>
         <FlatList
           style={styles.votesList}
           scrollIndicatorInsets={{right: 1}}
-          data={currentSuggestion.votes}
+          data={
+            [
+              ...currentSuggestion.votes,
+              ...currentSuggestion.browser_votes,
+            ] as UserInfo[]
+          }
           renderItem={({item}) => (
             <TouchableOpacity
               style={styles.user}
@@ -70,7 +78,7 @@ const Info: React.FC<Props> = ({
               </View>
             </TouchableOpacity>
           )}
-          keyExtractor={(item: UserInfo) => item.id.toString()}
+          // keyExtractor={(item: UserInfo) => item.id.toString()}
         />
       </View>
     </View>

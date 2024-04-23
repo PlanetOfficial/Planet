@@ -89,12 +89,16 @@ const DestinationView: React.FC<Props> = ({
                 disabled={
                   displayingSuggestion ||
                   !item.suggestions.some(
-                    suggestion => suggestion.votes.length > 0,
+                    suggestion =>
+                      suggestion.votes.length > 0 ||
+                      suggestion.browser_votes.length > 0,
                   )
                 }
                 color={
                   !item.suggestions.some(
-                    suggestion => suggestion.votes.length > 0,
+                    suggestion =>
+                      suggestion.votes.length > 0 ||
+                      suggestion.browser_votes.length > 0,
                   )
                     ? colors[theme].secondary
                     : colors[theme].accent

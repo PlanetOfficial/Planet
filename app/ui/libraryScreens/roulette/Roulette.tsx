@@ -41,8 +41,10 @@ const Roulette = ({
   const [isSpinning, setIsSpinning] = useState<boolean>(false);
 
   const totalVotes = destination.suggestions
-    .map((suggestion: Suggestion) =>
-      suggestion.votes.length ? suggestion.votes.length : 0,
+    .map(
+      (suggestion: Suggestion) =>
+        (suggestion.votes.length ? suggestion.votes.length : 0) +
+        (suggestion.browser_votes.length ? suggestion.browser_votes.length : 0),
     )
     .reduce((a: number, b: number) => a + b, 0);
 
