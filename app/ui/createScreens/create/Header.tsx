@@ -80,7 +80,6 @@ const Header: React.FC<Props> = ({
         <View style={[styles.container, STYLES.shadow]}>
           <TextInput
             style={styles.title}
-            autoFocus={true}
             value={eventTitle}
             selectTextOnFocus={true}
             onChangeText={text => setEventTitle(text)}
