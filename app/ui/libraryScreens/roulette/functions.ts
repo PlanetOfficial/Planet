@@ -17,18 +17,14 @@ export const getCurrentSuggestion = (
   totalVotes: number,
 ): Suggestion => {
   const angle = ang < 0 ? 360 + ang : ang;
-  const votes = destination.suggestions
-    .sort((a: Suggestion, b: Suggestion) => {
-      if (a.votes && b.votes) {
-        return a.votes.length + a.browser_votes.length - (b.votes.length + b.browser_votes.length);
-      } else {
-        return 0;
-      }
-    })
-    .map((place: Suggestion) => ((place.votes.length ? place.votes.length : 0) + (place.browser_votes.length ? place.browser_votes.length : 0)));
+  const votes = destination.suggestions.map(
+    (place: Suggestion) =>
+      (place.votes.length ? place.votes.length : 0) +
+      (place.browser_votes.length ? place.browser_votes.length : 0),
+  );
 
   let voteIndex = Math.floor(angle / (360 / totalVotes));
-  for (let i = 0; i < votes.length; i++) {
+  for (let i = votes.length - 1; i >= 0; i--) {
     if (voteIndex < votes[i]) {
       return destination.suggestions[i];
     }
