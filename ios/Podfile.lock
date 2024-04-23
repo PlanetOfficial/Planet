@@ -1079,7 +1079,7 @@ PODS:
     - React-Core
   - react-native-image-resizer (1.4.5):
     - React-Core
-  - react-native-maps (1.7.1):
+  - react-native-maps (1.14.0):
     - React-Core
   - react-native-netinfo (9.4.1):
     - React-Core
@@ -1664,7 +1664,7 @@ SPEC CHECKSUMS:
   react-native-geolocation: ef66fb798d96284c6043f0b16c15d9d1d4955db4
   react-native-image-picker: e8f292d7d7f04778cfd0fa91466ac66acea96b1a
   react-native-image-resizer: d9fb629a867335bdc13230ac2a58702bb8c8828f
-  react-native-maps: 667f9b975549c6fa9b1631bf859440f68ebd3b8f
+  react-native-maps: cbf2f03bfeebfd7ec45966b066db13a075fd2af3
   react-native-netinfo: fefd4e98d75cbdd6e85fc530f7111a8afdf2b0c5
   react-native-pager-view: d211379f61895b6349bd7e571b44a26d005c2975
   react-native-safe-area-context: 9697629f7b2cda43cf52169bb7e0767d330648c2
